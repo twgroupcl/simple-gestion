@@ -19,9 +19,14 @@ class Company extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
+    protected $fillable = [
+        'uid', 'name', 'real_name', 'logo', 'unique_hash', 'payment_data', 'status',
+    ];
     // protected $hidden = [];
     // protected $dates = [];
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
 
     /*
     |--------------------------------------------------------------------------
@@ -34,6 +39,11 @@ class Company extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function branches()
+    {
+        return $this->belongsToMany(Branch::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

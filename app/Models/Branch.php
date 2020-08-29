@@ -19,15 +19,25 @@ class Branch extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
+    protected $fillable = [
+        'name', 'unique_hash', 'address', 'status'
+    ];
     // protected $hidden = [];
     // protected $dates = [];
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
