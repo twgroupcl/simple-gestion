@@ -19,7 +19,11 @@ class AttributeModule extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
+    protected $fillable = [
+        'code',
+        'name',
+        'status',
+    ];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -34,6 +38,11 @@ class AttributeModule extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function families()
+    {
+        return $this->hasMany(AttributeFamily::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
