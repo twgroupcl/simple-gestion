@@ -1,61 +1,73 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+## About TWGroup Starter Pack for Laravel
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+TWGroup Starter Pack, provide a bunch of packages and first config steps to develop new web project on a record time, we belive developers must focus on business logic and CRUDs and basically stuff must be an automatic task. At this time the Starter Pack contains this packages:
 
-## About Laravel
+- [Laravel](https://laravel.com/).
+- [Backpack](https://backpackforlaravel.com/).
+- [Laravel UI](https://styde.net/paquete-laravel-ui-en-laravel-6/).
+- [Package: settings](https://backpackforlaravel.com/docs/4.1/install-optionals#settings).
+- [Package: permission manager](https://github.com/Laravel-Backpack/PermissionManager#install).
+- [Package: Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar).
+- [Package: Inverse seed generator (iSeed)](https://github.com/orangehill/iseed).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Starter Pack is a powerful compilation of packages to develop awesome projects.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installation & First steps
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone or Fork "TWGroup Starter Pack for Laravel".
+```bash
+git clone git@github.com:twgroupcl/twg-starter-pack.git
+```
+2. Config .env params
+3. Install packages
+```bash
+composer install
+npm install
+npm run dev
+```
+3. Generate key & create symlink
+```bash
+php artisan key:generate
+php artisan storage:link
+```
+4. Run migrations & seeders
+```bash
+php artisan migrate:fresh --seed
+```
 
-## Learning Laravel
+All done, now you can put your hands to create some code.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Create Modules
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+With "TWGroup Starter Pack for Laravel" is very easy start a new module. Here are the simple steps you need to run:
 
-## Laravel Sponsors
+1. Create a migration.
+```bash
+php artisan make:migration create_customers_table
+```
+2. Let Backpack take care of duty.
+```bash
+php artisan backpack:crud customer #use singular, not plural
+```
+The "backpack:crud" would generate:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- a migration file
+- a model (app\Models\Tag.php)
+- a request file, for form validation (app\Http\Requests\TagCrudRequest.php)
+- a controller file, where you can customize how the CrudPanel looks and feels (app\Http\Controllers\Admin\TagCrudController.php)
+- a route, as a line inside routes/backpack/custom.php
 
-### Premium Partners
+It will also add:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+- a route inside routes/backpack/custom.php, pointing to that controller;
+- a sidebar item inside resources/views/vendor/backpack/base/inc/sidebar_content.blade.php;
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+There are also secret functions that only the creator of this pack knows, you must discover them for yourself or work at TWGroup.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability, please send an e-mail to Jorge Castro via [jorge.castro@twgroup.cl](mailto:jorge.castro@twgroup.cl). All security vulnerabilities will be promptly addressed.
 
-## License
+## Licence
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This repository is private. At this time is forbbiden make public forks.
