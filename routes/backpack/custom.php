@@ -25,4 +25,8 @@ Route::group([
     Route::crud('unit', 'UnitCrudController');
     Route::crud('company', 'CompanyCrudController');
     Route::crud('branch', 'BranchCrudController');
+    Route::crud('attributemodule', 'AttributeModuleCrudController');
+    Route::crud('attributefamily', 'AttributeFamilyCrudController');
+    Route::crud('attribute', 'AttributeCrudController');
+    Route::crud('attributegroup', 'AttributeGroupCrudController');
 }); // this should be the absolute last line of this file

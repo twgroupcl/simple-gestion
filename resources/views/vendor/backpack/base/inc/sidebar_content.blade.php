@@ -21,3 +21,8 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('unit') }}'><i class='nav-icon la la-question'></i> Units</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('company') }}'><i class='nav-icon la la-question'></i> Companies</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('branch') }}'><i class='nav-icon la la-question'></i> Branches</a></li>
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('attributemodule') }}'><i class='nav-icon la la-question'></i> AttributeModules</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('attributefamily') }}'><i class='nav-icon la la-question'></i> AttributeFamilies</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('attribute') }}'><i class='nav-icon la la-question'></i> Attributes</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('attributegroup') }}'><i class='nav-icon la la-question'></i> AttributeGroups</a></li>
