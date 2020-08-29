@@ -14,8 +14,18 @@ class CreateRegionsTable extends Migration
     public function up()
     {
         Schema::create('regions', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('country_id');
+            $table->string('name');
+            $table->string('ISO_3166_2_CL');
             $table->timestamps();
+            $table->integer('order')->default(0);
+
+            $table->softDeletes();
+        });
+
+        Schema::table('regions', function (Blueprint $table) {
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 
