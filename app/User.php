@@ -49,6 +49,24 @@ class User extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
+    function localAvatarImage()
+    {
+        $letter = strtoupper(substr(backpack_user()->name, 0, 1));
+        $imageFilePath = storage_path('app/public/images/' . $letter.'.png');
+
+        $avatar = imagecreatetruecolor(60, 60);
+        $bg_color = imagecolorallocate($avatar, 65, 172, 44);
+        imagefill($avatar, 0, 0, $bg_color);
+        $avatar_text_color = imagecolorallocate($avatar, 0, 0, 0);
+        $font = 'packages/source-sans-pro/TTF/SourceSansPro-Black.ttf';
+        $white = imagecolorallocate($avatar, 255, 255, 255);
+        imagettftext($avatar, 30, 0, 20, 40, $white, $font, $letter);
+        imagepng($avatar, $imageFilePath);
+        imagedestroy($avatar);
+
+        return env('APP_URL').'/storage/images/' . $letter.'.png';
+    }
+
     public function default_company()
     {
         $default_branch_id = $this->default_branch();

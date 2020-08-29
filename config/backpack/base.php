@@ -24,7 +24,7 @@ return [
     // ----
 
     // Project name. Shown in the window title.
-    'project_name' => 'Backpack Admin Panel',
+    'project_name' => 'TWGroup Starter Pack',
 
     // When clicking on the admin panel's top-left logo/name,
     // where should the user be redirected?
@@ -71,7 +71,7 @@ return [
     // ------
 
     // Menu logo. You can replace this with an <img> tag if you have a logo.
-    'project_logo'   => '<b>Back</b>pack',
+    'project_logo'   => '<b>TWGroup</b> SP',
 
     // Show / hide breadcrumbs on admin panel pages.
     'breadcrumbs' => true,
@@ -105,13 +105,13 @@ return [
     // change background color with bg-dark, bg-primary, bg-secondary, bg-danger, bg-warning, bg-success, bg-info, bg-blue, bg-light-blue, bg-indigo, bg-purple, bg-pink, bg-red, bg-orange, bg-yellow, bg-green, bg-teal, bg-cyan, bg-white
 
     // Developer or company name. Shown in footer.
-    'developer_name' => 'Cristian Tabacitu',
+    'developer_name' => 'TWGroup',
 
     // Developer website. Link in footer. Type false if you want to hide it.
-    'developer_link' => 'http://tabacitu.ro',
+    'developer_link' => 'https://twgroup.cl',
 
     // Show powered by Laravel Backpack in the footer? true/false
-    'show_powered_by' => true,
+    'show_powered_by' => false,
 
     // -------
     // SCRIPTS
@@ -240,7 +240,7 @@ return [
     // Other options:
     // - placehold (generic image with his first letter)
     // - example_method_name (specify the method on the User model that returns the URL)
-    'avatar_type' => 'gravatar',
+    'avatar_type' => 'localAvatarImage',
 
     /*
     |--------------------------------------------------------------------------
