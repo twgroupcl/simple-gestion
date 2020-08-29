@@ -18,4 +18,8 @@ Route::group([
     Route::crud('region', 'RegionCrudController');
     Route::crud('province', 'ProvinceCrudController');
     Route::crud('commune', 'CommuneCrudController');
+    Route::crud('currency', 'CurrencyCrudController');
+    Route::crud('businessactivity', 'BusinessActivityCrudController');
+    Route::crud('tax', 'TaxCrudController');
+    Route::crud('invoicetype', 'InvoiceTypeCrudController');
 }); // this should be the absolute last line of this file
