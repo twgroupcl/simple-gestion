@@ -14,8 +14,19 @@ class CreateTaxesTable extends Migration
     public function up()
     {
         Schema::create('taxes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->double('amount', 10, 2);
+            $table->string('type')->default('%');
+            $table->integer('code')->nullable();
+            $table->unsignedBigInteger('country_id');
             $table->timestamps();
+
+            $table->softDeletes();
+        });
+
+        Schema::table('taxes', function (Blueprint $table) {
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 

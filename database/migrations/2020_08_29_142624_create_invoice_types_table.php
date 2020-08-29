@@ -14,8 +14,18 @@ class CreateInvoiceTypesTable extends Migration
     public function up()
     {
         Schema::create('invoice_types', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->unsignedBigInteger('code');
+            $table->unsignedBigInteger('country_id');
             $table->timestamps();
+
+            $table->softDeletes();
+        });
+
+        Schema::table('invoice_types', function (Blueprint $table) {
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 

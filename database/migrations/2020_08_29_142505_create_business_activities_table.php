@@ -14,8 +14,19 @@ class CreateBusinessActivitiesTable extends Migration
     public function up()
     {
         Schema::create('business_activities', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->string('tax');
+            $table->string('tributary_category');
+            $table->boolean('net_available');
+            $table->unsignedBigInteger('country_id');
             $table->timestamps();
+
+            $table->softDeletes();
+        });
+
+        Schema::table('business_activities', function (Blueprint $table) {
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 
