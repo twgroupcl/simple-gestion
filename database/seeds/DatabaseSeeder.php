@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CurrenciesTableSeeder::class);
         $this->call(UnitsTableSeeder::class);
         $this->call([CompaniesTableSeeder::class, BranchesTableSeeder::class, BranchCompanyTableSeeder::class, RolesTableSeeder::class, UsersTableSeeder::class, ModelHasRolesTableSeeder::class, CompanyUserTableSeeder::class, BranchUserTableSeeder::class]);
+        $this->call([AttributeModulesTableSeeder::class, AttributeFamiliesTableSeeder::class, AttributeFieldsTableSeeder::class, AttributesTableSeeder::class, AttributeGroupsTableSeeder::class, AttributeGroupMappingTableSeeder::class]);
     }
 }
