@@ -34,6 +34,7 @@ php artisan storage:link
 ```bash
 php artisan migrate:fresh --seed
 ```
+5. Small fix: Add "images" folder to route "/storage/app/public/" and set CHMOD to write.
 
 All done, now you can put your hands to create some code.
 
