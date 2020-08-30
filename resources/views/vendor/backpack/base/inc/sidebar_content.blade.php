@@ -26,3 +26,4 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('attributefamily') }}'><i class='nav-icon la la-question'></i> AttributeFamilies</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('attribute') }}'><i class='nav-icon la la-question'></i> Attributes</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('attributegroup') }}'><i class='nav-icon la la-question'></i> AttributeGroups</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('customer') }}'><i class='nav-icon la la-question'></i> Customers</a></li>
