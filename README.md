@@ -67,12 +67,20 @@ There are also secret functions that only the creator of this pack knows, you mu
 
 ## Child repos
 
-TWGroup team members can use this repository as a template, to make this work you need:
+TWGroup team members can use this repository as a template, to make this work follow this instructions.
 
-1. Sync remote.
+### Sync with parent repository
+
+1. Make sure you have push al important changes.
+2. Sync remote. [git-upstream-template](https://github.com/rioam2/git-upstream-template)
 ```bash
 npx git-upstream-template git@github.com:twgroupcl/twg-starter-pack.git
 ```
+Note: if sync fail, you can rollback with: git stash pop
+
+### Push important changes to parent repository
+
+1. 
 
 ## Security Vulnerabilities
 
