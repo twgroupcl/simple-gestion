@@ -65,6 +65,15 @@ It will also add:
 
 There are also secret functions that only the creator of this pack knows, you must discover them for yourself or work at TWGroup.
 
+## Child repos
+
+TWGroup team members can use this repository as a template, to make this work you need:
+
+1. Sync remote.
+```bash
+npx git-upstream-template git@github.com:twgroupcl/twg-starter-pack.git
+```
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability, please send an e-mail to Jorge Castro via [jorge.castro@twgroup.cl](mailto:jorge.castro@twgroup.cl). All security vulnerabilities will be promptly addressed.
