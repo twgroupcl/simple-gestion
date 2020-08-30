@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Traits\CustomAttributeRelations;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Customer extends Model
 {
     use CrudTrait;
+    use CustomAttributeRelations;
 
     /*
     |--------------------------------------------------------------------------
