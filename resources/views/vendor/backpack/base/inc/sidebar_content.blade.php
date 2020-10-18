@@ -3,13 +3,20 @@
 
 @hasanyrole('Super admin|Administrador')
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-lock"></i> Seguridad</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-lock"></i> Control acceso</a>
 	<ul class="nav-dropdown-items">
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i> <span>Usuarios</span></a></li>
         @can('permission.role')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-id-badge"></i> <span>Roles</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i class="nav-icon la la-key"></i> <span>Permisos</span></a></li>
         @endcan
+        @hasanyrole('Super admin')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('company') }}'><i class='nav-icon la la-building'></i> Empresas</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('branch') }}'><i class='nav-icon la la-store-alt'></i> Sucursales</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('branchcompany') }}'><i class='nav-icon la la-sitemap'></i> Empresa / Sucursal</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('companyuser') }}'><i class='nav-icon la la-sitemap'></i> Empresa / Usuario</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('branchuser') }}'><i class='nav-icon la la-sitemap'></i> Sucursal / Usuario</a></li>
+        @endhasanyrole
 	</ul>
 </li>
 @endhasanyrole
@@ -28,8 +35,6 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('tax') }}'><i class='nav-icon la la-calculator'></i> Impuestos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoicetype') }}'><i class='nav-icon la la-exchange'></i> Documentos electrónicos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('unit') }}'><i class='nav-icon la la-arrows-h'></i> Unidades</a></li>
-        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('company') }}'><i class='nav-icon la la-building'></i> Empresas</a></li>
-        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('branch') }}'><i class='nav-icon la la-sitemap'></i> Sucursales</a></li>
 	</ul>
 </li>
 
@@ -54,3 +59,5 @@
 	</ul>
 </li>
 @endcanany
+
+

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompanyUserTable extends Migration
+class CreateBranchUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,17 @@ class CreateCompanyUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('company_user', function (Blueprint $table) {
+        Schema::create('branch_users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('company_id');
-            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unsignedBigInteger('branch_id');
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
 
-        Schema::table('company_user', function (Blueprint $table) {
+        Schema::table('branch_users', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('company_id')->references('id')->on('companies');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 
@@ -35,6 +34,6 @@ class CreateCompanyUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('company_user');
+        Schema::dropIfExists('branch_users');
     }
 }
