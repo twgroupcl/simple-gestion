@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Branch extends Model
+class BranchCompany extends Model
 {
     use CrudTrait;
 
@@ -15,18 +15,13 @@ class Branch extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'branches';
+    protected $table = 'branch_companies';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = [
-        'name', 'unique_hash', 'address', 'status'
-    ];
+    // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
 
     /*
     |--------------------------------------------------------------------------
@@ -39,11 +34,6 @@ class Branch extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function companies()
-    {
-        return $this->belongsToMany(Company::class, 'branch_companies');
-    }
 
     /*
     |--------------------------------------------------------------------------

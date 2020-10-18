@@ -30,4 +30,12 @@ Route::group([
     Route::crud('attribute', 'AttributeCrudController');
     Route::crud('attributegroup', 'AttributeGroupCrudController');
     Route::crud('customer', 'CustomerCrudController');
+    Route::crud('companyuser', 'CompanyUserCrudController');
+    Route::crud('branchcompany', 'BranchCompanyCrudController');
+    Route::crud('branchuser', 'BranchUserCrudController');
+    Route::get('set_current_branch/{branch_id}', function($branch_id) {
+        $user = backpack_user()->set_current_branch($branch_id);
+
+        return redirect()->route('backpack.dashboard');
+    })->name('set_current_branch');
 }); // this should be the absolute last line of this file

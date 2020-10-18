@@ -111,6 +111,8 @@ class User extends Authenticatable
 
         $this->set_current_company($branch->companies->first()->id);
 
+        // @todo: set new role from company_users
+
         return;
     }
 
@@ -129,11 +131,11 @@ class User extends Authenticatable
 
     public function companies()
     {
-        return $this->belongsToMany(Company::class)->withPivot(['id', 'user_id', 'company_id']);
+        return $this->belongsToMany(Company::class, 'company_users')->withPivot(['id', 'user_id', 'company_id']);
     }
 
     public function branches()
     {
-        return $this->belongsToMany(Branch::class)->withPivot(['is_default', 'branch_id']);
+        return $this->belongsToMany(Branch::class, 'branch_users')->withPivot(['is_default', 'branch_id']);
     }
 }
