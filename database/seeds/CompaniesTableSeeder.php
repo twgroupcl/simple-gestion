@@ -45,6 +45,20 @@ class CompaniesTableSeeder extends Seeder
                 'unique_hash' => '234944671d293c50919d764456af71c8',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
+            2 => 
+            array (
+                'created_at' => '2020-10-18 21:57:16',
+                'deleted_at' => NULL,
+                'id' => 3,
+                'logo' => NULL,
+                'name' => 'Cristobal Rojas Rojas',
+                'payment_data' => NULL,
+                'real_name' => '10997824-8',
+                'status' => 1,
+                'uid' => '10997824-8',
+                'unique_hash' => '1269616902103f28d121323c7d269e00',
+                'updated_at' => '2020-10-18 21:57:16',
+            ),
         ));
         
         

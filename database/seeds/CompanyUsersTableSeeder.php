@@ -12,12 +12,12 @@ class CompanyUsersTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('company_users')->delete();
-
+        
         \DB::table('company_users')->insert(array (
-            0 =>
+            0 => 
             array (
                 'company_id' => 1,
                 'created_at' => NULL,
@@ -26,8 +26,17 @@ class CompanyUsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'user_id' => 1,
             ),
+            1 => 
+            array (
+                'company_id' => 2,
+                'created_at' => NULL,
+                'id' => 2,
+                'role_id' => 2,
+                'updated_at' => NULL,
+                'user_id' => 2,
+            ),
         ));
-
-
+        
+        
     }
 }
