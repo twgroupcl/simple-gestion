@@ -2,36 +2,22 @@
 
 namespace App\Models;
 
-use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class SellerCategory extends Model
+class SellerAddress extends Model
 {
-    use CrudTrait;
-    use SoftDeletes;
-
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
 
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
-
-    protected $table = 'seller_categories';
+    protected $table = 'seller_addresses';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = [
-        'code',
-        'name',
-        'slug',
-        'status',
-        'company_id',
-    ];
+    // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -41,23 +27,11 @@ class SellerCategory extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new CompanyBranchScope);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -70,20 +44,6 @@ class SellerCategory extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-
-    public function getStatusDescriptionAttribute()
-    {
-        switch ($this->status) {
-            case $this::STATUS_ACTIVE:
-                return 'Activa';
-                break;
-            case $this::STATUS_INACTIVE:
-                return 'Inactiva';
-                break;
-            default:
-                break;
-        }
-    }
 
     /*
     |--------------------------------------------------------------------------
