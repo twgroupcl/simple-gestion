@@ -17,7 +17,7 @@ class CreateProductCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('code')->nullable();
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->integer('position')->default(0);
             $table->string('image')->nullable();
             $table->string('display_mode')->default('products_and_description')->nullable();
