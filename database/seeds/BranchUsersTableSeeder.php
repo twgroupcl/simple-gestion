@@ -12,12 +12,12 @@ class BranchUsersTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('branch_users')->delete();
-
+        
         \DB::table('branch_users')->insert(array (
-            0 =>
+            0 => 
             array (
                 'branch_id' => 1,
                 'created_at' => NULL,
@@ -26,7 +26,7 @@ class BranchUsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'user_id' => 1,
             ),
-            1 =>
+            1 => 
             array (
                 'branch_id' => 2,
                 'created_at' => NULL,
@@ -35,8 +35,17 @@ class BranchUsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'user_id' => 1,
             ),
+            2 => 
+            array (
+                'branch_id' => 5,
+                'created_at' => NULL,
+                'id' => 3,
+                'is_default' => 1,
+                'updated_at' => NULL,
+                'user_id' => 2,
+            ),
         ));
-
-
+        
+        
     }
 }
