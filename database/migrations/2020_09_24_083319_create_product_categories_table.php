@@ -23,6 +23,7 @@ class CreateProductCategoriesTable extends Migration
             $table->string('display_mode')->default('products_and_description')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->integer('status')->default(1);
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
             $table->softDeletes();
@@ -30,6 +31,7 @@ class CreateProductCategoriesTable extends Migration
 
         Schema::table('product_categories', function (Blueprint $table) {
             $table->foreign('parent_id')->references('id')->on('product_categories');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

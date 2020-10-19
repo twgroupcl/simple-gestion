@@ -31,7 +31,7 @@ class CreateProductInventorySourcesTable extends Migration
             $table->decimal('latitude', 10, 5)->nullable();
             $table->decimal('longitude', 10, 5)->nullable();
             $table->integer('status')->default(1);
-            $table->unsignedBigInteger('business_id');
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
             $table->softDeletes();
@@ -39,7 +39,7 @@ class CreateProductInventorySourcesTable extends Migration
 
         Schema::table('product_inventory_sources', function (Blueprint $table) {
             $table->foreign('commune_id')->references('id')->on('communes');
-            $table->foreign('business_id')->references('id')->on('businesses');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

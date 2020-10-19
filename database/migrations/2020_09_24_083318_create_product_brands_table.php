@@ -20,9 +20,14 @@ class CreateProductBrandsTable extends Migration
             $table->string('slug')->unique();
             $table->string('image')->nullable();
             $table->integer('status')->default(1);
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
             $table->softDeletes();
+        });
+
+        Schema::table('product_brands', function (Blueprint $table) {
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

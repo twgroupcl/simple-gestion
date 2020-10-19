@@ -18,6 +18,7 @@ class CreateProductClassesTable extends Migration
             $table->string('name');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->integer('status')->default(1);
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
             $table->softDeletes();
@@ -25,6 +26,7 @@ class CreateProductClassesTable extends Migration
 
         Schema::table('product_classes', function (Blueprint $table) {
             $table->foreign('category_id')->references('id')->on('product_categories');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

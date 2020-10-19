@@ -53,10 +53,11 @@ class CreateProductsTable extends Migration
             $table->longText('images_json')->nullable();
             $table->longText('attributes_json')->nullable();
             $table->longText('variations_json')->nullable();
-            $table->unsignedBigInteger('business_id');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('template_id')->nullable();
             $table->integer('status')->default(1);
+            $table->unsignedBigInteger('seller_id');
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
             $table->softDeletes();
@@ -67,10 +68,11 @@ class CreateProductsTable extends Migration
             $table->foreign('product_class_id')->references('id')->on('product_classes');
             $table->foreign('product_brand_id')->references('id')->on('product_brands');
             $table->foreign('currency_id')->references('id')->on('currencies');
-            $table->foreign('business_id')->references('id')->on('businesses');
             $table->foreign('parent_id')->references('id')->on('products');
             $table->foreign('template_id')->references('id')->on('products');
-            $table->unique(['business_id', 'sku']);
+            $table->foreign('seller_id')->references('id')->on('sellers');
+            $table->foreign('company_id')->references('id')->on('companies');
+            $table->unique(['company_id', 'seller_id', 'sku']);
         });
     }
 
