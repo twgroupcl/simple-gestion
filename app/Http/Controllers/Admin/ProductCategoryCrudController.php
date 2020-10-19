@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ProductCategoryRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -13,6 +14,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class ProductCategoryCrudController extends CrudController
 {
+
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
@@ -28,7 +30,8 @@ class ProductCategoryCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\ProductCategory::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/productcategory');
-        CRUD::setEntityNameStrings('productcategory', 'product_categories');
+        CRUD::setEntityNameStrings('categoría de producto', 'categorías de producto');
+        $this->crud->denyAccess('show');
     }
 
     /**
@@ -39,13 +42,29 @@ class ProductCategoryCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'code',
+            'label' => 'Codigo',
+            'type' => 'text',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'position',
+            'label' => 'Posición',
+            'type' => 'number',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'parent',
+            'type' => 'relationship',
+            'label' => 'Categoría padre',
+        ]);
     }
 
     /**
@@ -58,13 +77,71 @@ class ProductCategoryCrudController extends CrudController
     {
         CRUD::setValidation(ProductCategoryRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
+        
+        CRUD::addField([
+            'name' => 'slug',
+            'label' => 'Slug',
+            'type' => 'text',
+        ]);
+
+        CRUD::addField([
+            'name' => 'code',
+            'label' => 'Codigo',
+            'type' => 'text',
+        ]);
+
+
+        /* CRUD::addField([
+            'name' => 'image',
+            'type' => 'image',
+            'label' => 'Imagen',
+            'crop' => true,
+        ]); */
+
+        CRUD::addField([
+            'name' => 'position',
+            'label' => 'Posición',
+            'type' => 'text',
+        ]);
+
+        CRUD::addField([  // TO DO: Maked nested
+            'label'     => "Categoría padre",
+            'type'      => 'select2',
+            'name'      => 'parent_id',
+            'entity'    => 'parent',
+            'model'     => "App\Models\ProductCategory", 
+            'attribute' => 'name',
+         ]); 
+
+         CRUD::addField([
+            'name'        => 'display_mode',
+            'label'       => "Modo de visualizacion",
+            'type'        => 'select2_from_array',
+            'options'     => ['products_and_description' => 'Productos y descripcion'],
+            'allows_null' => false,
+            'default'     => 'products_and_description',
+         ]);
+
+        CRUD::addField([
+            'name' => 'status',
+            'label' => 'Estado',
+            'type' => 'checkbox',
+            'default' => 1,
+        ]);
+
+        CRUD::addField([
+            'name' => 'slug_formatter',
+            'type' => 'slug_formatter',
+            'origen' => 'name',
+            'slug' => 'slug',
+        ]);
     }
 
     /**
