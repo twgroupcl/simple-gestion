@@ -41,6 +41,8 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bankaccounttype') }}'><i class='nav-icon la la-briefcase'></i> Tipos cuentas</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('contacttype') }}'><i class='nav-icon la la-thumbs-up'></i> Tipos contactos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('producttype') }}'><i class='nav-icon la la-book'></i> Tipos productos</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('paymentmethod') }}'><i class='nav-icon la la-cash-register'></i> Métodos pago</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('shippingmethod') }}'><i class='nav-icon la la-truck'></i> Métodos shipping</a></li>
 	</ul>
 </li>
 
