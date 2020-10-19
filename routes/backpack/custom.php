@@ -42,4 +42,6 @@ Route::group([
     Route::crud('bank', 'BankCrudController');
     Route::crud('bankaccounttype', 'BankAccountTypeCrudController');
     Route::crud('contacttype', 'ContactTypeCrudController');
+    Route::crud('sellercategory', 'SellerCategoryCrudController');
+    Route::crud('seller', 'SellerCrudController');
 }); // this should be the absolute last line of this file
