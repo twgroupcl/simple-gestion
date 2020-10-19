@@ -17,7 +17,7 @@ class CreateSellerCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('code')->nullable();
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->integer('status')->default(1);
             $table->unsignedBigInteger('company_id');
             $table->timestamps();

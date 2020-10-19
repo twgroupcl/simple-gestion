@@ -26,7 +26,9 @@ class ProductBrandRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'code' => 'required',
+            'name' => 'required',
+            'slug' => 'required'
         ];
     }
 
@@ -38,7 +40,9 @@ class ProductBrandRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'code' => 'Código',
+            'name' => 'Nombre',
+            'slug' => 'Slug',
         ];
     }
 
@@ -50,7 +54,7 @@ class ProductBrandRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'required' => 'Es necesario que complete el campo :attribute',
         ];
     }
 }
