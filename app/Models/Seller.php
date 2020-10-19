@@ -45,6 +45,7 @@ class Seller extends Model
         'banks_data',
         'contacts_data',
         'is_approved',
+        'rejected_reason',
         'source',
         'status',
         'meta_title',
