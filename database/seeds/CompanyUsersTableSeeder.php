@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class CompanyUserTableSeeder extends Seeder
+class CompanyUsersTableSeeder extends Seeder
 {
 
     /**

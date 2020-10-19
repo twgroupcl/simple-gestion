@@ -12,14 +12,14 @@ class AttributesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('attributes')->delete();
-        
+
         \DB::table('attributes')->insert(array (
-            0 => 
+            0 =>
             array (
-                'admin_name' => 'texto',
+                'admin_name' => '¿Dónde nos conoció?',
                 'code' => 'txt',
                 'company_id' => 1,
                 'created_at' => '2020-08-22 09:57:55',
@@ -41,7 +41,7 @@ class AttributesTableSeeder extends Seeder
                 'validation' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }
