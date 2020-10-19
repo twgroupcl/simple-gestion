@@ -658,6 +658,18 @@ class SellerCrudController extends CrudController
             'rut_fields' => ['uid', 'rut'],
             'tab' => 'General',
         ]);
+
+        CRUD::addField([
+            'name' => 'radio_script',
+            'type' => 'radio_readonly_fields',
+            'readonly_fields' => [
+                'textarea' => ['rejected_reason'],
+                //'input' => ['commission_percentage'] test
+            ],
+            'radiobutton_name' => 'is_approved',
+            'is_value' => ['Rechazado'],
+            'tab' => 'General',
+        ]);
     }
 
     /**
