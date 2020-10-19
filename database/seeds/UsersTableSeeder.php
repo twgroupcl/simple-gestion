@@ -31,13 +31,24 @@ class UsersTableSeeder extends Seeder
             1 => 
             array (
                 'created_at' => '2020-10-18 22:00:26',
-                'email' => 'cristobal223@hotmail.com',
+                'email' => 'negocio@twgroup.cl',
                 'email_verified_at' => NULL,
                 'id' => 2,
-                'name' => 'Cristobal Rojas',
-                'password' => '$2y$10$40CGai6JTGBFtoBoGs4kUe5Yg5CV2Qjhf3uxEqwtrC38dkU7mpge.',
+                'name' => 'Negocio',
+                'password' => '$2y$10$oKPMQ7Ma90sHB4L/iqdo.u77AJKOphLogJJ14H7kgGEy6hajyAYfG',
                 'remember_token' => NULL,
-                'updated_at' => '2020-10-18 22:00:26',
+                'updated_at' => '2020-10-19 12:53:19',
+            ),
+            2 => 
+            array (
+                'created_at' => '2020-10-19 12:52:23',
+                'email' => 'vendedor@twgroup.cl',
+                'email_verified_at' => NULL,
+                'id' => 3,
+                'name' => 'Vendedor',
+                'password' => '$2y$10$IJV6UouAYNQpvLEbIUQl4O81qNcmEzzERAXzPIz8PYQcqD4GOzQzK',
+                'remember_token' => NULL,
+                'updated_at' => '2020-10-19 12:52:23',
             ),
         ));
         

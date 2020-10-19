@@ -40,6 +40,7 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bank') }}'><i class='nav-icon la la-landmark'></i> Bancos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bankaccounttype') }}'><i class='nav-icon la la-briefcase'></i> Tipos cuentas</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('contacttype') }}'><i class='nav-icon la la-thumbs-up'></i> Tipos contactos</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('producttype') }}'><i class='nav-icon la la-book'></i> Tipos productos</a></li>
 	</ul>
 </li>
 
@@ -86,7 +87,7 @@
 
 @canany(['product.list'])
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Productos / Servicios</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Productos</a>
 	<ul class="nav-dropdown-items">
         @can('product.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('product') }}'><i class='nav-icon la la-box'></i> Productos</a></li>
@@ -105,11 +106,7 @@
         @endcan
 
         @can('productclassattribute.list')
-        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productclassattribute') }}'><i class='nav-icon la la-info'></i> Atributos de clases</a></li>
-        @endcan
-
-        @can('producttype.list')
-        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('producttype') }}'><i class='nav-icon la la-book'></i> Tipos de productos</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productclassattribute') }}'><i class='nav-icon la la-info'></i> Atributos clases</a></li>
         @endcan
 
         @can('productinventorysource.list')
