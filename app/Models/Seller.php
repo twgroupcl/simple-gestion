@@ -42,6 +42,8 @@ class Seller extends Model
         'notes',
         'addresses_data',
         'activities_data',
+        'payments_data',
+        'shippings_data',
         'banks_data',
         'contacts_data',
         'is_approved',

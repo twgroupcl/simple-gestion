@@ -511,12 +511,11 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'paymentmethods',
+            'name' => 'payments_data',
             'type' => 'repeatable',
             'label' => 'Métodos de pago',
             'new_item_label'  => 'Agregar método de pago',
             'default' => '{}',
-            'fake' => true,
             'fields' => [
                 [
                     'name' => 'payment_method_id',
@@ -549,12 +548,11 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'shippingmethods',
+            'name' => 'shippings_data',
             'type' => 'repeatable',
             'label' => 'Métodos de envío',
             'new_item_label'  => 'Agregar método de envío',
             'default' => '{}',
-            'fake' => true,
             'fields' => [
                 [
                     'name' => 'shipping_method_id',
