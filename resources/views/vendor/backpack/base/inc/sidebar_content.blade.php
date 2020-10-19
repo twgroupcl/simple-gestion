@@ -68,3 +68,18 @@
 	</ul>
 </li>
 @endcanany
+
+@canany(['seller.list'])
+<li class="nav-item nav-dropdown">
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-briefcase"></i> Vendedores</a>
+	<ul class="nav-dropdown-items">
+        @can('seller.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('seller') }}'><i class='nav-icon la la-briefcase'></i> Vendedores</a></li>
+        @endcan
+
+        @can('sellercategory.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('sellercategory') }}'><i class='nav-icon la la-layer-group'></i> Categorías</a></li>
+        @endcan
+	</ul>
+</li>
+@endcanany
