@@ -63,14 +63,14 @@ class BranchesTableSeeder extends Seeder
             ),
             4 => 
             array (
-                'address' => 'Aconcagua 669, La calera, Valparaíso',
+                'address' => 'Calle falsita 321',
                 'created_at' => '2020-10-18 21:58:15',
                 'deleted_at' => NULL,
                 'id' => 5,
-                'name' => 'Aconcagua 669',
+                'name' => 'Sucursal vendedor',
                 'status' => 1,
                 'unique_hash' => 'ed920d0e12d54d38a633d26ee7ceb078',
-                'updated_at' => '2020-10-18 21:58:15',
+                'updated_at' => '2020-10-19 12:54:53',
             ),
         ));
         

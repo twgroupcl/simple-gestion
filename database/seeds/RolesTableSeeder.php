@@ -33,6 +33,14 @@ class RolesTableSeeder extends Seeder
                 'name' => 'Administrador negocio',
                 'updated_at' => '2020-10-18 20:51:38',
             ),
+            2 =>
+            array (
+                'created_at' => '2020-10-19 12:43:14',
+                'guard_name' => 'web',
+                'id' => 3,
+                'name' => 'Vendedor marketplace',
+                'updated_at' => '2020-10-19 12:43:14',
+            ),
         ));
 
 

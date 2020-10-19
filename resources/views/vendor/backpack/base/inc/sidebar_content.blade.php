@@ -40,6 +40,7 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bank') }}'><i class='nav-icon la la-landmark'></i> Bancos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bankaccounttype') }}'><i class='nav-icon la la-briefcase'></i> Tipos cuentas</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('contacttype') }}'><i class='nav-icon la la-thumbs-up'></i> Tipos contactos</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('producttype') }}'><i class='nav-icon la la-book'></i> Tipos productos</a></li>
 	</ul>
 </li>
 
@@ -79,6 +80,37 @@
 
         @can('sellercategory.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('sellercategory') }}'><i class='nav-icon la la-layer-group'></i> Categorías</a></li>
+        @endcan
+	</ul>
+</li>
+@endcanany
+
+@canany(['product.list'])
+<li class="nav-item nav-dropdown">
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Productos</a>
+	<ul class="nav-dropdown-items">
+        @can('product.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('product') }}'><i class='nav-icon la la-box'></i> Productos</a></li>
+        @endcan
+
+        @can('productbrand.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productbrand') }}'><i class='nav-icon la la-tags'></i> Marcas</a></li>
+        @endcan
+
+        @can('productcategory.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productcategory') }}'><i class='nav-icon la la-thumbtack'></i> Categorías</a></li>
+        @endcan
+
+        @can('productclass.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productclass') }}'><i class='nav-icon la la-hashtag'></i> Clases</a></li>
+        @endcan
+
+        @can('productclassattribute.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productclassattribute') }}'><i class='nav-icon la la-info'></i> Atributos clases</a></li>
+        @endcan
+
+        @can('productinventorysource.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productinventorysource') }}'><i class='nav-icon la la-warehouse'></i> Bodegas</a></li>
         @endcan
 	</ul>
 </li>
