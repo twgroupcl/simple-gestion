@@ -44,4 +44,12 @@ Route::group([
     Route::crud('contacttype', 'ContactTypeCrudController');
     Route::crud('sellercategory', 'SellerCategoryCrudController');
     Route::crud('seller', 'SellerCrudController');
+    Route::crud('productbrand', 'ProductBrandCrudController');
+    Route::crud('productcategory', 'ProductCategoryCrudController');
+    Route::crud('producttype', 'ProductTypeCrudController');
+    Route::crud('productclass', 'ProductClassCrudController');
+    Route::crud('productclassattribute', 'ProductClassAttributeCrudController');
+    Route::crud('product', 'ProductCrudController');
+    Route::crud('productinventorysource', 'ProductInventorySourceCrudController');
+    Route::crud('productinventory', 'ProductInventoryCrudController');
 }); // this should be the absolute last line of this file

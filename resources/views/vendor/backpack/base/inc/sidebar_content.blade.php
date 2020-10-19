@@ -83,3 +83,38 @@
 	</ul>
 </li>
 @endcanany
+
+@canany(['product.list'])
+<li class="nav-item nav-dropdown">
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Productos / Servicios</a>
+	<ul class="nav-dropdown-items">
+        @can('product.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('product') }}'><i class='nav-icon la la-box'></i> Productos</a></li>
+        @endcan
+
+        @can('productbrand.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productbrand') }}'><i class='nav-icon la la-tags'></i> Marcas</a></li>
+        @endcan
+
+        @can('productcategory.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productcategory') }}'><i class='nav-icon la la-thumbtack'></i> Categorías</a></li>
+        @endcan
+
+        @can('productclass.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productclass') }}'><i class='nav-icon la la-hashtag'></i> Clases</a></li>
+        @endcan
+
+        @can('productclassattribute.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productclassattribute') }}'><i class='nav-icon la la-info'></i> Atributos de clases</a></li>
+        @endcan
+
+        @can('producttype.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('producttype') }}'><i class='nav-icon la la-book'></i> Tipos de productos</a></li>
+        @endcan
+
+        @can('productinventorysource.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productinventorysource') }}'><i class='nav-icon la la-warehouse'></i> Bodegas</a></li>
+        @endcan
+	</ul>
+</li>
+@endcanany
