@@ -115,6 +115,16 @@ class Seller extends Model
         return $this->hasMany(SellerAddress::class);
     }
 
+    public function shippingmethods()
+    {
+        return $this->hasMany(ShippingMethodSeller::class);
+    }
+
+    public function paymentmethods()
+    {
+        return $this->hasMany(PaymentMethodSeller::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
