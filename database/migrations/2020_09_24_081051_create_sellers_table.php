@@ -28,8 +28,9 @@ class CreateSellersTable extends Migration
             $table->longText('activities_data')->nullable();
             $table->longText('banks_data')->nullable();
             $table->longText('contacts_data')->nullable();
-            $table->boolean('is_approved')->default(false);
-            $table->string('source')->default('admin');
+            $table->integer('is_approved')->default(0);
+            $table->longText('rejected_reason')->nullable();
+            $table->string('source')->default('Admin');
             $table->integer('status')->default(1);
             $table->text('meta_title')->nullable();
             $table->text('meta_keywords')->nullable();
