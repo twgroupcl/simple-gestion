@@ -12,22 +12,22 @@ class AttributeGroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('attribute_groups')->delete();
-        
+
         \DB::table('attribute_groups')->insert(array (
-            0 => 
+            0 =>
             array (
                 'attribute_family_id' => 1,
                 'id' => 1,
-                'is_tab' => 0,
+                'is_tab' => 1,
                 'is_user_defined' => 1,
-                'name' => 'others',
+                'name' => 'Adicionales',
                 'position' => 0,
             ),
         ));
-        
-        
+
+
     }
 }

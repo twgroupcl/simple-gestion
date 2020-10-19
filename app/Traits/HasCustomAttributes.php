@@ -11,8 +11,11 @@ trait HasCustomAttributes
     private $extraFields = [];
     private $modelName = null;
 
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { store as traitStore; }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate; }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function getExtras()
     {
@@ -35,7 +38,6 @@ trait HasCustomAttributes
             $attributesCollection = $attributesCollection->collapse();
 
             $attributesCollection->each(function ($attribute) {
-
                 $entry = $this->crud->getCurrentEntry();
                 if (!empty($entry) && $entry) {
                     $value = $this->crud->getCurrentEntry()->attribute_values()->where('attribute_id', $attribute->id)->first();

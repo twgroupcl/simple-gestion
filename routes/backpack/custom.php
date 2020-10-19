@@ -38,4 +38,8 @@ Route::group([
 
         return redirect()->route('backpack.dashboard');
     })->name('set_current_branch');
+    Route::crud('customersegment', 'CustomerSegmentCrudController');
+    Route::crud('bank', 'BankCrudController');
+    Route::crud('bankaccounttype', 'BankAccountTypeCrudController');
+    Route::crud('contacttype', 'ContactTypeCrudController');
 }); // this should be the absolute last line of this file

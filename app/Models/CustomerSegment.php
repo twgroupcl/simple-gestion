@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\User;
 use App\Scopes\CompanyBranchScope;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Customer extends Model
+class CustomerSegment extends Model
 {
     use CrudTrait;
-    use CustomAttributeRelations;
     use SoftDeletes;
 
     /*
@@ -25,40 +21,21 @@ class Customer extends Model
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
-    const IS_COMPANY = 1;
-    const IS_NOT_COMPANY = 0;
+    const USER_DEFINED = 1;
+    const USER_NOT_DEFINED = 0;
 
-    protected $table = 'customers';
+    protected $table = 'customer_segments';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     protected $fillable = [
-        'uid',
-        'first_name',
-        'last_name',
-        'email',
-        'phone',
-        'cellphone',
-        'password',
-        'is_company',
-        'notes',
-        'addresses_data',
-        'activities_data',
-        'banks_data',
-        'contacts_data',
+        'name',
+        'is_user_defined',
         'status',
-        'customer_segment_id',
-        'user_id',
         'company_id',
     ];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $casts = [
-        'addresses_data' => 'array',
-        'activities_data' => 'array',
-        'banks_data' => 'array',
-        'contacts_data' => 'array',
-    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -82,26 +59,6 @@ class Customer extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function customer_segment()
-    {
-        return $this->belongsTo(CustomerSegment::class);
-    }
-
-    public function business_activity()
-    {
-        return $this->belongsTo(BusinessActivity::class);
-    }
-
-    public function addresses()
-    {
-        return $this->hasMany(CustomerAddress::class);
     }
 
     /*
@@ -130,27 +87,18 @@ class Customer extends Model
         }
     }
 
-    public function getIsCompanyDescriptionAttribute()
+    public function getIsUserDefinedDescriptionAttribute()
     {
         switch ($this->is_user_defined) {
-            case $this::IS_COMPANY:
-                return 'Jurídica';
+            case $this::USER_DEFINED:
+                return 'Si';
                 break;
-            case $this::IS_NOT_COMPANY:
-                return 'Natural';
+            case $this::USER_NOT_DEFINED:
+                return 'No';
                 break;
             default:
                 break;
         }
-    }
-
-    public function getFullNameAttribute()
-    {
-        if (!empty($this->last_name)) {
-            return $this->first_name . ' ' . $this->last_name;
-        }
-
-        return $this->first_name;
     }
 
     /*
@@ -158,11 +106,4 @@ class Customer extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-
-    public function setPasswordAttribute($value)
-    {
-        $attribute_name = 'password';
-
-        $this->attributes[$attribute_name] = Hash::make($value);
-    }
 }

@@ -15,7 +15,7 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('uid');
+            $table->string('uid')->unique();
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();
@@ -26,16 +26,21 @@ class CreateCustomersTable extends Migration
             $table->longText('notes')->nullable();
             $table->longText('addresses_data')->nullable();
             $table->longText('activities_data')->nullable();
+            $table->longText('banks_data')->nullable();
+            $table->longText('contacts_data')->nullable();
             $table->integer('status')->default(1);
-            $table->unsignedBigInteger('branch_id');
+            $table->unsignedBigInteger('customer_segment_id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
             $table->softDeletes();
         });
 
         Schema::table('customers', function (Blueprint $table) {
-            $table->foreign('branch_id')->references('id')->on('branches');
-            $table->unique(['branch_id', 'uid']);
+            $table->foreign('customer_segment_id')->references('id')->on('customer_segments');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

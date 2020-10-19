@@ -6,10 +6,12 @@
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-lock"></i> Control acceso</a>
 	<ul class="nav-dropdown-items">
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i class="nav-icon la la-user"></i> <span>Usuarios</span></a></li>
+
         @can('permission.role')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-id-badge"></i> <span>Roles</span></a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i class="nav-icon la la-key"></i> <span>Permisos</span></a></li>
         @endcan
+
         @hasanyrole('Super admin')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('company') }}'><i class='nav-icon la la-building'></i> Empresas</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('branch') }}'><i class='nav-icon la la-store-alt'></i> Sucursales</a></li>
@@ -35,6 +37,9 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('tax') }}'><i class='nav-icon la la-calculator'></i> Impuestos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoicetype') }}'><i class='nav-icon la la-exchange'></i> Documentos electrónicos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('unit') }}'><i class='nav-icon la la-arrows-h'></i> Unidades</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bank') }}'><i class='nav-icon la la-landmark'></i> Bancos</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bankaccounttype') }}'><i class='nav-icon la la-briefcase'></i> Tipos cuentas</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('contacttype') }}'><i class='nav-icon la la-thumbs-up'></i> Tipos contactos</a></li>
 	</ul>
 </li>
 
@@ -56,8 +61,10 @@
         @can('customer.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('customer') }}'><i class='nav-icon la la-user'></i> Clientes</a></li>
         @endcan
+
+        @can('customersegment.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('customersegment') }}'><i class='nav-icon la la-shapes'></i> Segmentos</a></li>
+        @endcan
 	</ul>
 </li>
 @endcanany
-
-

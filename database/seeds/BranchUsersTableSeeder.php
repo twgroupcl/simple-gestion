@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class BranchUserTableSeeder extends Seeder
+class BranchUsersTableSeeder extends Seeder
 {
 
     /**
