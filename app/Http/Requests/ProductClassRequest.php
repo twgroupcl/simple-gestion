@@ -26,7 +26,8 @@ class ProductClassRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|min:1|max:255',
+            'status' => 'required',
         ];
     }
 
@@ -38,7 +39,8 @@ class ProductClassRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'name' => 'nombre',
+            'status' => 'estado',
         ];
     }
 
