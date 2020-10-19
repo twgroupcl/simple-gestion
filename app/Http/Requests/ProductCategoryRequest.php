@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SlugRule;
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
+use App\Rules\ImageDimensionCategoryRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductCategoryRequest extends FormRequest
@@ -26,7 +29,22 @@ class ProductCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|min:1|max:255',
+            'code' => 'required|min:1|max:255',
+            'position' => 'required|numeric|min:0',
+            'display_mode' => [
+                'required',
+                Rule::in(['products_and_description']),
+            ],
+            'image' => [
+                'required',
+                new ImageDimensionCategoryRule(1024, 1024),
+            ],
+            'slug' => [
+                'required',
+                'unique:product_categories',
+                new SlugRule(),
+            ]
         ];
     }
 
@@ -38,7 +56,12 @@ class ProductCategoryRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'name' => 'nombre',
+            'code' => 'codigo',
+            'display_mode' => 'modo de visualizacion',
+            'image' => 'imagen',
+            'parent_id' => 'categoria padre',
+            'position' => 'posición'
         ];
     }
 

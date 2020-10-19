@@ -98,12 +98,12 @@ class ProductCategoryCrudController extends CrudController
         ]);
 
 
-        /* CRUD::addField([
+        CRUD::addField([
             'name' => 'image',
             'type' => 'image',
             'label' => 'Imagen',
             'crop' => true,
-        ]); */
+        ]);
 
         CRUD::addField([
             'name' => 'position',

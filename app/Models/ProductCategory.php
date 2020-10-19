@@ -15,6 +15,9 @@ class ProductCategory extends Model
     use CrudTrait;
     use SoftDeletes;
 
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -29,8 +32,7 @@ class ProductCategory extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    
 
     
     /*
