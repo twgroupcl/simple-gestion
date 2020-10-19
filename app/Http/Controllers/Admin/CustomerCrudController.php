@@ -191,7 +191,7 @@ class CustomerCrudController extends CrudController
         CRUD::addField([
             'name' => 'cellphone',
             'type' => 'text',
-            'label' => 'Teléfono Movil',
+            'label' => 'Teléfono móvil',
             'tab' => 'General',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-4',
@@ -324,7 +324,7 @@ class CustomerCrudController extends CrudController
                     'wrapper' => ['class' => 'form-group col-md-12'],
                 ],
             ],
-            'new_item_label' => 'Agregar Dirección',
+            'new_item_label' => 'Agregar dirección',
             'tab' => 'Direcciones',
         ]);
 
@@ -339,13 +339,12 @@ class CustomerCrudController extends CrudController
                     'type' => 'select2_from_array',
                     'label' => 'Giro',
                     'options' => BusinessActivity::orderBy('name', 'asc')->pluck('name', 'id')->toArray(),
-                    'tab' => 'General',
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-12',
                     ],
                 ],
             ],
-            'new_item_label' => 'Agregar Giro',
+            'new_item_label' => 'Agregar giro',
             'tab' => 'Actividades comerciales',
         ]);
 
@@ -360,7 +359,6 @@ class CustomerCrudController extends CrudController
                     'type' => 'select2_from_array',
                     'label' => 'Tipo de cuenta',
                     'options' => BankAccountType::orderBy('name', 'asc')->pluck('name', 'id')->toArray(),
-                    'tab' => 'Datos bancarios',
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-4',
                     ],
@@ -370,7 +368,6 @@ class CustomerCrudController extends CrudController
                     'type' => 'select2_from_array',
                     'label' => 'Banco',
                     'options' => Bank::orderBy('name', 'asc')->pluck('name', 'id')->toArray(),
-                    'tab' => 'Datos Bancarios',
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-4',
                     ],
@@ -379,7 +376,6 @@ class CustomerCrudController extends CrudController
                     'name' => 'account_number',
                     'type' => 'text',
                     'label' => 'Número de Cuenta',
-                    'tab' => 'Datos Bancarios',
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-4',
                     ],
@@ -404,7 +400,9 @@ class CustomerCrudController extends CrudController
                     'name' => 'last_name',
                     'type' => 'text',
                     'label' => 'Apellido',
-                    'wrapper' => ['class' => 'form-group col-md-4'],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-4'
+                    ],
                 ],
                 [
                     'name' => 'email',

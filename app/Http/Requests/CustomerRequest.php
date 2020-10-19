@@ -165,7 +165,6 @@ class CustomerRequest extends FormRequest
             '*.date' => 'El campo :attribute debe ser de tipo fecha',
             '*.unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
             '*.exists' => 'No se pudo encontrar una relación con el campo :attribute.',
-            'accepts_terms.accepted' => 'Debe aceptar los términos y condiciones',
             'activities_data_validation.*.*.required' => 'Es necesario completar todos los campos de Giros',
             'activities_data_validation.*.*.distinct' => 'Los campos :attribute(s) no pueden estar repetidos',
             'contact_data_validation.*.*.distinct' => 'No puedes repetir el mismo valor de :attribute',

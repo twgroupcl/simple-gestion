@@ -23,7 +23,6 @@ class CreateSellersTable extends Migration
             $table->string('cellphone')->nullable();
             $table->string('web')->nullable();
             $table->string('password')->nullable();
-            $table->boolean('is_company')->default(false);
             $table->longText('notes')->nullable();
             $table->longText('addresses_data')->nullable();
             $table->longText('activities_data')->nullable();
