@@ -44,6 +44,7 @@ $radioButtonName = $field['radiobutton_name'];
         })
     }
         
+    setFieldsToReadonly(readonlyFields,true)
 </script>
 @endpush
 

@@ -665,7 +665,7 @@ class SellerCrudController extends CrudController
                 //'input' => ['commission_percentage'] test
             ],
             'radiobutton_name' => 'is_approved',
-            'is_value' => ['Rechazado'],
+            'is_value' => ['En revisión', 'Aprobado'],
             'tab' => 'General',
         ]);
     }
