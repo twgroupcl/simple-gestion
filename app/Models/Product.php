@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
+use Intervention\Image\Image;
 use App\Scopes\CompanyBranchScope;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
