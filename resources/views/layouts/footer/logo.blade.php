@@ -1,0 +1,1 @@
+<img src="{{ asset('images/site/logo-footer.png') }}" class="img-fluid logo-footer" />
