@@ -28,7 +28,15 @@ class ProductCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Product::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/product');
-        CRUD::setEntityNameStrings('product', 'products');
+        CRUD::setEntityNameStrings('producto', 'productos');
+
+        $this->crud->denyAccess('show');
+
+        /* $this->isAdmin = backpack_user()->hasRole('Super admin');
+
+        if ( !$this->isAdmin ) {
+            $this->userBusiness = Business::where('user_id', backpack_user()->id)->firstOrFail();
+        } */
     }
 
     /**
@@ -39,13 +47,56 @@ class ProductCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        // If not admin, show only user products
+        // if(!$this->isAdmin) $this->crud->addClause('where', 'business_id', '=', $this->userBusiness->id);
+    
+        // Hide children products
+        $this->crud->addClause('where', 'parent_id', '=', null);
+        
+        CRUD::addColumn([
+            'name' => 'sku',
+            'label' => 'SKU',
+            'type' => 'text',
+            ]);
+            
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'product_class',
+            'label' => 'Clase de producto',
+            'type' => 'relationship',
+        ]);
+        CRUD::addColumn([
+            'name' => 'product_type',
+            'label' => 'Tipo de producto',
+            'type' => 'relationship',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'is_approved_text',
+            'label' => 'Estado de aprobacion',
+            'type' => 'text',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    switch($column['text']) {
+                        case 'Aprobado': 
+                            return 'badge badge-success';
+                            break;
+                        case 'Pendiente': 
+                            return 'badge badge-default';
+                            break;
+                        case 'Rechazado': 
+                            return 'badge badge-danger';
+                            break; 
+                    }
+                },
+            ],
+        ]);
     }
 
     /**
