@@ -8,6 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return redirect('/seller/register');
+        //return redirect('/seller/register');
+        return view('checkout');
     }
 }

@@ -1,84 +1,16 @@
-@extends('layouts.base')
+@extends('layouts.base', ['collaboration' => true])
 
 @section('content')
 <!-- Page title-->
 <!-- Page Content-->
-<!-- Hero (Banners + Slider)-->
-<section class="bg-secondary py-4 pt-md-5">
-    <div class="container py-xl-2">
-        <div class="row">
-            <!-- Slider     -->
-            <div class="col-xl-12 pt-xl-4 order-xl-2">
-                <div class="cz-carousel">
-                    <div class="cz-carousel-inner" data-carousel-options="{&quot;items&quot;: 1, &quot;controls&quot;: false, &quot;loop&quot;: false}">
-                        <div>
-                            <div class="row align-items-center">
-                                <div class="col-md-12 order-md-2">
-                                    <img class="d-block mx-auto" src="{{ asset('img/home/hero-slider/banner-01.png') }}" alt="Registra tu Pyme">
-                                </div>
-                                {{-- <div class="col-lg-5 col-md-6 offset-lg-1 order-md-1 pt-4 pb-md-4 text-center text-md-left">
-                                    <h2 class="font-weight-light pb-1 from-bottom">World of music with</h2>
-                                    <h1 class="display-4 from-bottom delay-1">Headphones</h1>
-                                    <h5 class="font-weight-light pb-3 from-bottom delay-2">Choose between top brands</h5>
-                                    <a class="btn btn-primary btn-shadow scale-up delay-4" href="shop-grid-ls.html">
-                                        Shop Now<i class="czi-arrow-right ml-2 mr-n1"></i>
-                                    </a>
-                                </div> --}}
-                            </div>
-                        </div>
-                        <div>
-                            <div class="row align-items-center">
-                                <div class="col-md-6 order-md-2"><img class="d-block mx-auto" src="{{ asset('img/home/hero-slider/04.jpg') }}" alt="VR Collection"></div>
-                                <div class="col-lg-5 col-md-6 offset-lg-1 order-md-1 pt-4 pb-md-4 text-center text-md-left">
-                                    <h2 class="font-weight-light pb-1 from-left">Explore the best</h2>
-                                    <h1 class="display-4 from-left delay-1">VR Collection</h1>
-                                    <h5 class="font-weight-light pb-3 from-left delay-2">on the market</h5><a class="btn btn-primary btn-shadow scale-up delay-4" href="shop-grid-ls.html">Shop Now<i class="czi-arrow-right ml-2 mr-n1"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="row align-items-center">
-                                <div class="col-md-6 order-md-2"><img class="d-block mx-auto" src="{{ asset('img/home/hero-slider/06.jpg') }}" alt="VR Collection"></div>
-                                <div class="col-lg-5 col-md-6 offset-lg-1 order-md-1 pt-4 pb-md-4 text-center text-md-left">
-                                    <h2 class="font-weight-light pb-1 scale-up">Check our huge</h2>
-                                    <h1 class="display-4 scale-up delay-1">Smartphones</h1>
-                                    <h5 class="font-weight-light pb-3 scale-up delay-2">&amp; Accessories collection
-                                    </h5><a class="btn btn-primary btn-shadow scale-up delay-4" href="shop-grid-ls.html">Shop Now<i class="czi-arrow-right ml-2 mr-n1"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Banner group-->
-            {{-- <div class="col-xl-3 order-xl-1 pt-4 mt-3 mt-xl-0 pt-xl-0">
-                <div class="table-responsive" data-simplebar>
-                    <div class="d-flex d-xl-block"><a class="media w-100 align-items-center bg-faded-info rounded-lg pt-2 pl-2 mb-4 mr-4 mr-xl-0" href="#" style="min-width: 16rem;"><img src="{{ asset('img/home/banners/banner-sm01.png') }}" width="125" alt="Banner">
-                            <div class="media-body py-4 px-2">
-                                <h5 class="mb-2"><span class="font-weight-light">Next Gen</span><br>Video <span class="font-weight-light">with</span><br>360 Cam</h5>
-                                <div class="text-info font-size-sm">Shop now<i class="czi-arrow-right font-size-xs ml-1"></i></div>
-                            </div>
-                        </a><a class="media w-100 align-items-center bg-faded-warning rounded-lg pt-2 pl-2 mb-4 mr-4 mr-xl-0" href="#" style="min-width: 16rem;"><img src="{{ asset('img/home/banners/banner-sm02.png') }}" width="125" alt="Banner">
-                            <div class="media-body py-4 px-2">
-                                <h5 class="mb-2"><span class="font-weight-light">Top
-                                        Rated</span><br>Gadgets<br><span class="font-weight-light">are on
-                                    </span>Sale</h5>
-                                <div class="text-warning font-size-sm">Shop now<i class="czi-arrow-right font-size-xs ml-1"></i>
-                                </div>
-                            </div>
-                        </a><a class="media w-100 align-items-center bg-faded-success rounded-lg pt-2 pl-2 mb-4" href="#" style="min-width: 16rem;"><img src="{{ asset('img/home/banners/banner-sm03.png') }}" width="125" alt="Banner">
-                            <div class="media-body py-4 px-2">
-                                <h5 class="mb-2"><span class="font-weight-light">Catch Big</span><br>Deals <span class="font-weight-light">on</span><br>Earbuds</h5>
-                                <div class="text-success font-size-sm">Shop now<i class="czi-arrow-right font-size-xs ml-1"></i>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div> --}}
-        </div>
+<!-- Hero One item + Dots + Loop (defaults)-->
+<div class="cz-carousel cz-dots-enabled">
+    <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        <a href=""><img src="{{ asset('img/home/hero-slider/banner-01.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
+        <img src="{{ asset('img/home/hero-slider/banner-02.png') }}" alt="Contigo Pyme Banner 2">
+        <img src="{{ asset('img/home/hero-slider/banner-03.png') }}" alt="Contigo Pyme Banner 3">
     </div>
-</section>
+</div>
 <!-- Products grid (Trending products)-->
 <section class="container pt-5">
     <!-- Heading-->
@@ -266,11 +198,23 @@
         </div>
     </div>
 </section>
-<!-- Promo banner-->
+
 <section class="container mt-4 mb-grid-gutter">
+    <div class="rounded-lg py-4">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <img src="{{ asset('img/home-banner-01.png') }}" alt="Banner promoción 1" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Promo banner-->
+{{-- <section class="container mt-4 mb-grid-gutter">
     <div class="bg-faded-info rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-5">
+                <img src="{{ asset('img/home-banner-01.png') }}" alt="Banner promoción 1" class="img-fluid">
                 <div class="px-4 pr-sm-0 pl-sm-5"><span class="badge badge-danger">Limited Offer</span>
                     <h3 class="mt-4 mb-1 text-body font-weight-light">All new</h3>
                     <h2 class="mb-1">Last Gen iPad Pro</h2>
@@ -286,9 +230,9 @@
             <div class="col-md-7"><img src="{{ asset('img/home/banners/offer.jpg') }}" alt="iPad Pro Offer"></div>
         </div>
     </div>
-</section>
+</section> --}}
 <!-- Brands carousel-->
-<section class="container mb-5">
+{{-- <section class="container mb-5">
     <div class="cz-carousel border-right">
         <div class="cz-carousel-inner" data-carousel-options="{ &quot;nav&quot;: false, &quot;controls&quot;: false, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 4000, &quot;loop&quot;: true, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1},&quot;360&quot;:{&quot;items&quot;:2},&quot;600&quot;:{&quot;items&quot;:3},&quot;991&quot;:{&quot;items&quot;:4},&quot;1200&quot;:{&quot;items&quot;:4}} }">
             <div><a class="d-block bg-white border py-4 py-sm-5 px-2" href="#" style="margin-right: -.0625rem;"><img class="d-block mx-auto" src="{{ asset('img/shop/brands/13.png') }}" style="width: 165px;" alt="Brand"></a></div>
@@ -301,7 +245,7 @@
             <div><a class="d-block bg-white border py-4 py-sm-5 px-2" href="#" style="margin-right: -.0625rem;"><img class="d-block mx-auto" src="{{ asset('img/shop/brands/20.png') }}" style="width: 165px;" alt="Brand"></a></div>
         </div>
     </div>
-</section>
+</section> --}}
 <!-- Product widgets-->
 <section class="container pb-4 pb-md-5">
     <div class="row">
@@ -424,49 +368,73 @@
         </div>
     </div>
 </section>
+
+<section class="container mt-4 mb-grid-gutter">
+    <div class="rounded-lg py-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <img src="{{ asset('img/home-banner-02.png') }}" alt="Banner promoción 2" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <img src="{{ asset('img/home-banner-03.png') }}" alt="Banner promoción 3" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-4 mb-grid-gutter">
+    <div class="rounded-lg py-4">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <img src="{{ asset('img/home-banner-04.png') }}" alt="Banner promoción 4" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- YouTube feed-->
 {{-- <section class="container pb-5 mb-md-3">
     <div class="border rounded-lg p-3">
         <div class="row">
             <div class="col-md-4 mb-3 mb-md-0">
                 <div class="bg-secondary p-5 text-center"><img class="d-block mb-4 mx-auto" src="{{ asset('img/home/yt-logo.png') }}" width="120" alt="YouTube">
-                    <div class="media justify-content-center align-items-center mb-4"><img class="mr-2" src="{{ asset('img/home/yt-subscribers.png') }}" width="126" alt="YouTube Subscribers"><span class="font-size-sm">250k+</span></div><a class="btn btn-primary border-0 btn-sm mb-3" href="#" style="background-color: #ff0000;"><i class="czi-add-user mr-2"></i>Subscribe*</a>
-                    <p class="font-size-sm mb-0">*View latest gadgets reviews available for purchase in our store.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 pb-2">
-                    <h2 class="h4 mb-3">Latest videos from Cartzilla channel</h2><a class="btn btn-outline-accent btn-sm mb-3" href="#">More videos<i class="czi-arrow-right font-size-xs ml-1 mr-n1"></i></a>
-                </div>
-                <div class="row no-gutters">
-                    <div class="col-lg-4 col-6 mb-3"><a class="video-cover video-popup-btn d-block text-decoration-0 px-2" href="https://www.youtube.com/embed/vS93u75NnPo">
-                            <div class="video-cover-thumb mb-2"><span class="badge badge-dark">6:16</span><img class="w-100" src="{{ asset('img/home/video/cover01.jpg') }}" alt="Video cover">
-                            </div>
-                            <h6 class="font-size-sm pt-1">5 New Cool Gadgets You Must See on Cartzilla - Cheap
-                                Budget</h6>
-                        </a></div>
-                    <div class="col-lg-4 col-6 mb-3"><a class="video-cover video-popup-btn d-block text-decoration-0 px-2" href="https://www.youtube.com/embed/B6LaYgGogf0">
-                            <div class="video-cover-thumb mb-2"><span class="badge badge-dark">7:27</span><img class="w-100" src="{{ asset('img/home/video/cover02.jpg') }}" alt="Video cover">
-                            </div>
-                            <h6 class="font-size-sm pt-1">5 Super Useful Gadgets on Cartzilla You Must Have in 2020
-                            </h6>
-                        </a></div>
-                    <div class="col-lg-4 col-6 mb-3"><a class="video-cover video-popup-btn d-block text-decoration-0 px-2" href="https://www.youtube.com/embed/kB-ROfRS9V4">
-                            <div class="video-cover-thumb mb-2"><span class="badge badge-dark">6:20</span><img class="w-100" src="{{ asset('img/home/video/cover03.jpg') }}" alt="Video cover">
-                            </div>
-                            <h6 class="font-size-sm pt-1">Top 5 New Amazing Gadgets on Cartzilla You Must See</h6>
-                        </a></div>
-                    <div class="col-lg-4 col-6 mb-3 d-lg-none"><a class="video-cover video-popup-btn d-block text-decoration-0 px-2" href="https://www.youtube.com/embed/sJK67XXE_Rg">
-                            <div class="video-cover-thumb mb-2"><span class="badge badge-dark">6:11</span><img class="w-100" src="{{ asset('img/home/video/cover04.jpg') }}" alt="Video cover">
-                            </div>
-                            <h6 class="font-size-sm font-weight-bold pt-1">5 Amazing Construction Inventions and
-                                Working Tools Available...</h6>
-                        </a></div>
-                </div>
-            </div>
-        </div>
+<div class="media justify-content-center align-items-center mb-4"><img class="mr-2" src="{{ asset('img/home/yt-subscribers.png') }}" width="126" alt="YouTube Subscribers"><span class="font-size-sm">250k+</span></div><a class="btn btn-primary border-0 btn-sm mb-3" href="#" style="background-color: #ff0000;"><i class="czi-add-user mr-2"></i>Subscribe*</a>
+<p class="font-size-sm mb-0">*View latest gadgets reviews available for purchase in our store.
+</p>
+</div>
+</div>
+<div class="col-md-8">
+    <div class="d-flex flex-wrap justify-content-between align-items-center pt-3 pb-2">
+        <h2 class="h4 mb-3">Latest videos from Cartzilla channel</h2><a class="btn btn-outline-accent btn-sm mb-3" href="#">More videos<i class="czi-arrow-right font-size-xs ml-1 mr-n1"></i></a>
     </div>
+    <div class="row no-gutters">
+        <div class="col-lg-4 col-6 mb-3"><a class="video-cover video-popup-btn d-block text-decoration-0 px-2" href="https://www.youtube.com/embed/vS93u75NnPo">
+                <div class="video-cover-thumb mb-2"><span class="badge badge-dark">6:16</span><img class="w-100" src="{{ asset('img/home/video/cover01.jpg') }}" alt="Video cover">
+                </div>
+                <h6 class="font-size-sm pt-1">5 New Cool Gadgets You Must See on Cartzilla - Cheap
+                    Budget</h6>
+            </a></div>
+        <div class="col-lg-4 col-6 mb-3"><a class="video-cover video-popup-btn d-block text-decoration-0 px-2" href="https://www.youtube.com/embed/B6LaYgGogf0">
+                <div class="video-cover-thumb mb-2"><span class="badge badge-dark">7:27</span><img class="w-100" src="{{ asset('img/home/video/cover02.jpg') }}" alt="Video cover">
+                </div>
+                <h6 class="font-size-sm pt-1">5 Super Useful Gadgets on Cartzilla You Must Have in 2020
+                </h6>
+            </a></div>
+        <div class="col-lg-4 col-6 mb-3"><a class="video-cover video-popup-btn d-block text-decoration-0 px-2" href="https://www.youtube.com/embed/kB-ROfRS9V4">
+                <div class="video-cover-thumb mb-2"><span class="badge badge-dark">6:20</span><img class="w-100" src="{{ asset('img/home/video/cover03.jpg') }}" alt="Video cover">
+                </div>
+                <h6 class="font-size-sm pt-1">Top 5 New Amazing Gadgets on Cartzilla You Must See</h6>
+            </a></div>
+        <div class="col-lg-4 col-6 mb-3 d-lg-none"><a class="video-cover video-popup-btn d-block text-decoration-0 px-2" href="https://www.youtube.com/embed/sJK67XXE_Rg">
+                <div class="video-cover-thumb mb-2"><span class="badge badge-dark">6:11</span><img class="w-100" src="{{ asset('img/home/video/cover04.jpg') }}" alt="Video cover">
+                </div>
+                <h6 class="font-size-sm font-weight-bold pt-1">5 Amazing Construction Inventions and
+                    Working Tools Available...</h6>
+            </a></div>
+    </div>
+</div>
+</div>
+</div>
 </section> --}}
 <!-- Blog + Instagram info cards-->
 {{-- <section class="container-fluid px-0">
@@ -485,6 +453,7 @@
             </a></div>
     </div>
 </section> --}}
+
 <!-- Toast: Added to Cart-->
 <div class="toast-container toast-bottom-center">
     <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">

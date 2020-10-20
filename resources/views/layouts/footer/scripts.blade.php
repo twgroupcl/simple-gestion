@@ -1,6 +1,7 @@
-<!-- Back To Top Button--><a class="btn-scroll-top" href="#top" data-scroll><span
-    class="btn-scroll-top-tooltip text-muted font-size-sm mr-2">Top</span><i
-    class="btn-scroll-top-icon czi-arrow-up"> </i></a>
+<!-- Back To Top Button-->
+<a class="btn-scroll-top" href="#top" data-scroll>
+    <span class="btn-scroll-top-tooltip text-muted font-size-sm mr-2">Top</span><i class="btn-scroll-top-icon czi-arrow-up"></i>
+</a>
 <!-- Vendor scrits: js libraries and plugins-->
 <script src="{{ asset('vendor/jquery/dist/jquery.slim.min.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
