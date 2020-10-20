@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use Intervention\Image\Image;
 use App\Scopes\CompanyBranchScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Product extends Model
@@ -106,7 +106,8 @@ class Product extends Model
                     'parent_id' => $this->id,
                     'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
                     'product_class_id' => $this->product_class_id,
-                    'business_id' => $this->business_id,
+                    'seller_id' => $this->seller_id,
+                    'company_id' => $this->company_id,
                     'currency_id' => $this->currency_id,
                     'use_inventory_control' => $this->use_inventory_control,
                     'status' => 1, // always 1?
@@ -131,7 +132,8 @@ class Product extends Model
                         'inventories_json' => $inventoriesArray,
                         'parent_id' => $this->id,
                         'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
-                        'business_id' => $this->business_id,
+                        'seller_id' => $this->seller_id,
+                        'company_id' => $this->company_id,
                         'currency_id' => $this->currency_id,
                         'use_inventory_control' => $this->use_inventory_control,
                         'status' => 1, // always 1?
