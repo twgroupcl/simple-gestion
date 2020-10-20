@@ -54,4 +54,6 @@ Route::group([
     Route::crud('productinventory', 'ProductInventoryCrudController');
     Route::crud('shippingmethod', 'ShippingMethodCrudController');
     Route::crud('paymentmethod', 'PaymentMethodCrudController');
+    Route::crud('quotation', 'QuotationCrudController');
+    Route::post('quotation/addresses', 'QuotationCrudController@addresses');
 }); // this should be the absolute last line of this file
