@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
+use App\Http\Requests\ProductVariantUpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -23,7 +25,6 @@ class ProductCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate; }
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -38,11 +39,11 @@ class ProductCrudController extends CrudController
 
         $this->crud->denyAccess('show');
 
-        /* $this->isAdmin = backpack_user()->hasRole('Super admin');
+        /* $this->isAdmin = backpack_user()->hasRole('Administrador negocio');
 
-        if ( !$this->isAdmin ) {
-            $this->userBusiness = Business::where('user_id', backpack_user()->id)->firstOrFail();
-        } */
+        if ( backpack_user()->hasRole('Vendedor marketplace') ) {
+            $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        }  */
     }
 
     /**
@@ -222,11 +223,11 @@ class ProductCrudController extends CrudController
         
         CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Negocio',
+            'label' => 'Vendedor',
             'entity' => 'seller',
-            //'default' => $this->userBusiness ?? '',
+            //'default' => $this->userSeller ?? '',
             'type' => 'relationship',
-            'placeholder' => 'selecciona un negocio',
+            'placeholder' => 'selecciona un vendedor',
             'wrapper' => [
                // 'style' => $this->isAdmin ? '' : 'display:none',
             ],
@@ -316,14 +317,14 @@ class ProductCrudController extends CrudController
 
        CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Negocio',
+            'label' => 'Vendedor',
             'entity' => 'seller',
             'type' => 'relationship',
             'tab' => 'Información general',
             'wrapper' => [
                 //'style' => $this->isAdmin ? '' : 'display:none',
             ],
-            'placeholder' => 'selecciona un negocio',
+            'placeholder' => 'selecciona un vendedor',
         ]);
 
         CRUD::addField([
@@ -944,39 +945,5 @@ class ProductCrudController extends CrudController
             $formattedOptions[$option['option_name']] = $option['option_name'];
         } 
         return $formattedOptions;
-    }
-
-    /**
-     * Overwrite update function to allow saving of custom attributes
-     * 
-     * TODO: This logic has to be move to an observer
-     */
-    public function update()
-    {
-            // validations happen here
-            $response = $this->traitUpdate();
-
-            $requestCollection = collect($this->crud->getRequest()->all());
-            
-            $attributes = [];
-
-            // get id and values of every attribute
-            foreach($requestCollection as $param => $value) {
-                $isAnAtributte = substr($param, 0, 9) == 'attribute'; 
-                if($isAnAtributte) {
-                    array_push($attributes, [
-                        'id' =>  Str::replaceFirst('attribute-', '', $param),
-                        'value' => $value,
-                    ]);
-                }
-            }
-
-            // get current product
-            $product = $this->crud->getModel()->find($this->crud->getCurrentEntryId());
-            
-            // update or create the attributes on the db
-            $product->updateOrCreateAttributes($attributes);
-
-            return $response;
     }
 }

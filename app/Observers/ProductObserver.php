@@ -29,6 +29,7 @@ class ProductObserver
     {
         $this->validateSpecialPrice($product);
         $this->validateRejectFields($product);
+        $this->syncAttributes($product);
         $this->multiUploadImages($product);
 
         if ($product->product_type->id == Product::PRODUCT_TYPE_CONFIGURABLE) {
@@ -182,5 +183,25 @@ class ProductObserver
            $product->rejected_reason = null;
            $product->date_of_rejected = null;
        }
+    }
+
+    public function syncAttributes($product) {
+
+            $attributesFromJson = $product->attributes_json;
+            $attributes = [];
+
+            // get id and values of every attribute
+            foreach($attributesFromJson as $param => $value) {
+                $isAnAtributte = substr($param, 0, 9) == 'attribute'; 
+                if($isAnAtributte) {
+                    array_push($attributes, [
+                        'id' =>  Str::replaceFirst('attribute-', '', $param),
+                        'value' => $value,
+                    ]);
+                }
+            }
+
+            // update or create the attributes on the db
+            $product->updateOrCreateAttributes($attributes);
     }
 }
