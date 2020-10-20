@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+use App\Cruds\BaseCrudFields;
+use App\Models\ProductClassAttribute;
 use App\Http\Requests\ProductClassAttributeRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -28,7 +31,8 @@ class ProductClassAttributeCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\ProductClassAttribute::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/productclassattribute');
-        CRUD::setEntityNameStrings('productclassattribute', 'product_class_attributes');
+        CRUD::setEntityNameStrings('atributo de clase de producto', 'atributos de clase de producto');
+        $this->crud->denyAccess('show');
     }
 
     /**
@@ -39,13 +43,61 @@ class ProductClassAttributeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+            'orderable'  => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                return $query->orderBy('product_class_attributes.json_attributes->name', $columnDirection);
+            },
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->whereRaw('LOWER(json_attributes->"$.name") like ?', '%'.strtolower($searchTerm).'%');
+            }
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'product_class',
+            'label' => 'Clase de producto',
+            'type' => 'relationship',
+            'orderable'  => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                return $query->leftJoin('product_classes', 'product_class_attributes.product_class_id', '=', 'product_classes.id')
+                    ->orderBy('product_classes.name', $columnDirection);
+            },
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'attribute_type',
+            'label' => 'Tipo de atributo',
+            'type' => 'text',
+            'orderable'  => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                    return $query->orderBy('product_class_attributes.json_attributes->type_attribute', $columnDirection);
+            },
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'is_required_text',
+            'label' => 'Es requerido',
+            'type' => 'text',
+            'orderable'  => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                    return $query->orderBy('product_class_attributes.is_required', $columnDirection);
+            }
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'is_configurable_text',
+            'label' => 'Puede ser usado en variantes',
+            'type' => 'text',
+            'orderable'  => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                    return $query->orderBy('product_class_attributes.is_configurable', $columnDirection);
+            }
+        ]);
+
+        
     }
 
     /**
@@ -58,13 +110,70 @@ class ProductClassAttributeCrudController extends CrudController
     {
         CRUD::setValidation(ProductClassAttributeRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
+        
+        CRUD::addField([
+            'name' => 'product_class_id',
+            'label' => 'Clase de producto',
+            'type' => 'relationship',
+            'entity' => 'product_class',
+            'attribute' => 'name',
+        ]); 
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+             'name' => 'name',
+             'label' => 'Nombre del atributo',
+             'fake' => true,
+             'store_in' => 'json_attributes'
+         ]);
+
+         CRUD::addField([
+            'name' => 'type_attribute',
+            'label' => 'Tipo de atributo',
+            'type' => 'select2_from_array',
+            'options' => [
+                'text' => 'Texto',
+                'checkbox' => 'Checkbox',
+                'select' => 'Seleccion',
+            ],
+            'fake' => true,
+            'store_in' => 'json_attributes',
+        ]);
+
+        CRUD::addField([ 
+            'name'  => 'json_options',
+            'label' => 'Opciones',
+            'type'  => 'repeatable',
+            'new_item_label'  => 'agregar nueva opción',
+            'fields' => [
+                [
+                    'name'    => 'option_name',
+                    'type'    => 'text',
+                    'label'   => 'Opción',
+                ],
+            ],
+            'wrapper' => [
+                'style' => 'display:none',
+                'id' => 'optionsItems'
+            ],
+        ]);
+            
+        CRUD::addField([
+            'name' => 'is_required',
+            'label' => 'Es requerido',
+            'type' => 'checkbox',
+        ]);
+
+        CRUD::addField([
+            'name' => 'is_configurable',
+            'label' => 'Permitir el uso de este atributo para la creación de variantes',
+            'type' => 'checkbox',
+        ]);
+
+        CRUD::addField([
+            'name' => 'customHideOptions',
+            'type' => 'product_class_attribute.hide_options',
+        ]);
     }
 
     /**
@@ -76,5 +185,38 @@ class ProductClassAttributeCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    /**
+     * Get and filter a list of configurable attributes depending of the product class
+     * 
+     */
+    public function searchConfigurableAttributes(Request $request) {
+        $search_term = $request->input('q');
+        $form = collect($request->input('form'))->pluck('value', 'name');
+        $options = ProductClassAttribute::query();
+
+        // if there is not product class selected, return empty
+        if (! $form['product_class_id']) {
+            return [];
+        }
+
+        // find attributes that are configurable and belong to the product class
+        if ($form['product_class_id']) {
+            $options = $options->where([
+                'product_class_id' => $form['product_class_id'],
+                'is_configurable' => 1,
+                'json_attributes->type_attribute' => 'select',
+            ])->select('id', 'json_attributes->name as descripcion_name');
+        }
+
+        // filter by search term
+        if ($search_term) {
+            $results = $options->whereRaw('LOWER(json_attributes->"$.name") like ?', '%'.strtolower($search_term).'%')->paginate(10);
+        } else {
+            $results = $options->paginate(10);
+        }
+
+        return $options->paginate(10);
     }
 }
