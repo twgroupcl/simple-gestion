@@ -62,7 +62,6 @@ class SellerStoreRequest extends FormRequest
             'visible_name' => 'required|string',
             'email' => 'required|email',
             'phone' => ['nullable', $phoneRule],
-            'cellphone' => ['nullable', $phoneRule],
             'web' => 'nullable|string',
             'seller_category_id' => 'required|exists:seller_categories,id',
 
@@ -72,7 +71,8 @@ class SellerStoreRequest extends FormRequest
             'commune_id' => 'required|int|exists:communes,id',
 
             'legal_representative_name' => 'required',
-
+            'custom_1' => 'required',
+            'custom_2' => 'required',
         ];
     }
 
