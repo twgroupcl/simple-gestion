@@ -202,12 +202,12 @@ $selected_commune = "";
                             <div class="col-sm-6 form-group">
                                 <label for="custom_1">¿Tienes contrato con Transbank? <span class='text-danger'>*</span></label><br>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" id="custom_1_si" name="custom_1">
-                                    <label class="custom-control-label" for="custom_1">Sí</label>
+                                    <input class="custom-control-input" type="radio" id="custom_1_si" value="si" name="custom_1">
+                                    <label class="custom-control-label" for="custom_1_si">Sí</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" id="custom_1_no" name="custom_1" checked>
-                                    <label class="custom-control-label" for="custom_1">No</label>
+                                    <input class="custom-control-input" type="radio" id="custom_1_no" value="no" name="custom_1" checked>
+                                    <label class="custom-control-label" for="custom_1_no">No</label>
                                 </div>
                                 @error('custom_1')
                                 <span class="invalid-feedback" role="alert">
