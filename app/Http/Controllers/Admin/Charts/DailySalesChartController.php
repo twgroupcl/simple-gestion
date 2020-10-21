@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Charts;
 
+use App\Models\Order;
 use Backpack\CRUD\app\Http\Controllers\ChartController;
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
