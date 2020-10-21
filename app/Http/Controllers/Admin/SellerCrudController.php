@@ -189,29 +189,39 @@ class SellerCrudController extends CrudController
             'options' => SellerCategory::pluck('name', 'id')->toArray(),
             'tab' => 'General',
             'wrapperAttributes' => [
-                'class' => 'form-group col-md-12',
+                'class' => 'form-group col-md-6',
             ],
         ]);
 
-        // CRUD::addField([
-        //     'name' => 'password',
-        //     'type' => 'password',
-        //     'label' => 'Contraseña',
-        //     'tab' => 'General',
-        //     'wrapper' => [
-        //         'class' => 'form-group col-6',
-        //     ],
-        // ]);
+        CRUD::addField([
+            'name' => 'legal_representative_name',
+            'type' => 'text',
+            'label' => 'Representante legal',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
 
-        // CRUD::addField([
-        //     'name' => 'password_confirmation',
-        //     'type' => 'password',
-        //     'label' => 'Repetir contraseña',
-        //     'tab' => 'General',
-        //     'wrapper' => [
-        //         'class' => 'form-group col-6',
-        //     ],
-        // ]);
+        CRUD::addField([
+            'name' => 'password',
+            'type' => 'password',
+            'label' => 'Contraseña',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-6',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'password_confirmation',
+            'type' => 'password',
+            'label' => 'Repetir contraseña',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-6',
+            ],
+        ]);
 
         CRUD::addField([
             'name' => 'notes',
@@ -647,6 +657,31 @@ class SellerCrudController extends CrudController
                     'commission_percentage'
                 ],
                 'tab' => 'Administrador',
+            ]);
+
+            CRUD::addField([
+                'name' => 'custom_1',
+                'label' => 'Contrato transbank',
+                'type' => 'radio',
+                'options' => [
+                    1 => 'Sí',
+                    0 => 'No',
+                ],
+                'default' => 0,
+                'inline' => true,
+                'tab' => 'Administrador',
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
+                ],
+            ]);
+
+            CRUD::addField([
+                'name' => 'custom_2',
+                'label' => 'Courier',
+                'tab' => 'Administrador',
+                'wrapper' => [
+                    'class' => 'form-group col-6',
+                ],
             ]);
         }
 
