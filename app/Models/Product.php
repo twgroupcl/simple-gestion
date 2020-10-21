@@ -507,6 +507,25 @@ class Product extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function scopeBetweenDates($query, $from = null, $to = null)
+    {
+        return $query->whereBetween('created_at', [$from, $to]);
+    }
+
+    public function scopeSearch($query, $q = null)
+    {
+        return $query->bySeller();
+    }
+
+    public function scopeBySeller($query)
+    {
+        if (auth()->user()->hasRole('Super admin')) {
+            return $query;
+        }
+
+        return $query->where('seller_id', Seller::whereUserId(auth()->user()->id)->first()->id);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
