@@ -47,6 +47,14 @@
 					'header' => 'Ventas por día',
 				]
 			],
+	    	// [
+		    //     'type' => 'chart',
+		    //     'wrapperClass' => 'col-md-6 most-purchased-product-categories',
+		    //     'controller' => \App\Http\Controllers\Admin\Charts\MostPurchasedProductCategoriesChartController::class,
+			// 	'content' => [
+			// 	    'header' => '10 Categorías más compradas',
+		    // 	]
+			// ],
 		]
 	];
 
