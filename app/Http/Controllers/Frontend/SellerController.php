@@ -19,6 +19,16 @@ class SellerController extends Controller
 
     public function store(SellerStoreRequest $request)
     {
+        $sellerAddresses = json_encode([
+            [
+                'street' => $request['street'],
+                'number' => $request['number'],
+                'subnumber' => $request['subnumber'] ? $request['subnumber'] : '',
+                'commune_id' => $request['commune_id'],
+            ]
+        ], true);
+        $request['addresses_data'] = $sellerAddresses;
+        $request['company_id'] = 1;
         Seller::create($request->all());
 
         return redirect(backpack_url('login'))->with('success', 'Usted se ha registrado con éxito.');
