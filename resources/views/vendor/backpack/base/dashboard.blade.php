@@ -55,6 +55,14 @@
 			// 	    'header' => '10 Categorías más compradas',
 		    // 	]
 			// ],
+			[
+		        'type' => 'chart',
+		        'wrapperClass' => 'col-md-12 most-purchased-products',
+		        'controller' => \App\Http\Controllers\Admin\Charts\MostPurchasedProductsChartController::class,
+				'content' => [
+				    'header' => '10 Productos más vendidos',
+		    	]
+			],
 		]
 	];
 
