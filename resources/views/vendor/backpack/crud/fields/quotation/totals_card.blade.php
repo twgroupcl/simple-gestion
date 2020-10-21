@@ -25,7 +25,6 @@
                         name="discount_amount_field">
                         <div class="input-group-append">
                             <select class="form-control" name="discount_type">
-                                <option value="amount" {{ isset($entry) && $entry->discount_type == 'amount' ? 'selected' : '' }}>$</option>
                                 <option value="percentage" {{ isset($entry) && ($entry->discount_percent > 1) ? 'selected' : '' }}>%</option>
                             </select>
                         </div>
@@ -41,7 +40,10 @@
                     <div>
                         <h6 class="my-0">Descuento total</h6>
                     </div>
-                    <span id="total-discount-field" class="text-muted">$0</span>
+                    <div>
+                        <span class="text-muted">-</span>
+                        <span id="total-discount-field" class="text-muted">$0</span>
+                    </div>
                 </li> 
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
@@ -57,16 +59,12 @@
                     <span id="total-tax-field" class="text-muted">$0</span>
                 </li> 
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div class="col-md-4 pl-0">
-                        <h6 class="mt-2">% Retencion</h6>
+                    <div>
+                        <h6 class="my-0">Retención</h6>
                     </div>
-                    <div class="col-md-1"></div>
-                    <div class="input-group mb-6 pr-0">
-                        <input type="text" 
-                        value="" 
-                        class="form-control format-number" 
-                        aria-label="Descuento" 
-                        name="retencion">
+                    <div>
+                        <span class="text-muted">-</span>
+                        <span id="retenction-card" class="text-muted retencion">$0</span>
                     </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
