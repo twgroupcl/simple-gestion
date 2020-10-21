@@ -159,6 +159,7 @@
                 </div>
             </div> --}}
             {{-- <hr class="hr-light pb-4 mb-3"> --}}
+            @if($header)
             <div class="row pb-2">
                 <div class="col-md-6 text-center text-md-left mb-4">
                     {{-- <div class="text-nowrap mb-4"><a class="d-inline-block align-middle mt-n1 mr-3" href="#"><img class="d-block" width="90" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
@@ -199,6 +200,7 @@
                     <img class="d-inline-block img-fluid" width="120" src="{{ asset('img/logo-webpay.png') }}" alt="Métodos de pago" />
                 </div>
             </div>
+            @endif
             <div class="pb-4 font-size-xs text-light opacity-50 text-center text-md-left">Desarrollado por <a class="text-light" href="https://twgroup.cl/" target="_blank" rel="noopener">TWGroup</a></div>
         </div>
     </div>

@@ -17,6 +17,7 @@ class CompanyBranchScope implements Scope
 
     	$user = backpack_user();
 
+        //@todo: agregar un company por defecto
         if(!empty($user)) {
             $table = $model->getTable();
 

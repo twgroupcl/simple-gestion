@@ -37,6 +37,7 @@
         <div class="navbar navbar-expand-lg navbar-dark">
             <div class="container"><a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="index.html" style="min-width: 7rem;"><img width="100" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a><a class="navbar-brand d-sm-none mr-2" href="index.html" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
                 <!-- Search-->
+                @if($header)
                 <div class="input-group-overlay d-none d-lg-block mx-4">
                     <div class="input-group-prepend-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
                     <input class="form-control prepended-form-control appended-form-control" type="text" placeholder="Buscar productos">
@@ -118,7 +119,9 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
+        @if($header)
         <div class="navbar navbar-expand-lg navbar-dark navbar-stuck-menu mt-n2 pt-0 pb-2">
             <div class="container">
                 <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -921,5 +924,6 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </header>
