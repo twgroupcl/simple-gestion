@@ -42,7 +42,7 @@
 			[
 				'type'    => 'most-purchased-product-categories',
 				'wrapper' => ['class' => 'col-sm-12'],
-				'content' => 'Scripts',
+				'content' => 'Filtros de categorías',
 			],
 			[
 				'type' => 'chart',
