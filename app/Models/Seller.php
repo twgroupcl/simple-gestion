@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Support\Str;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\Hash;
