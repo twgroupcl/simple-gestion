@@ -16,9 +16,11 @@
         "freshwork/chilean-bundle": "^2.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "intervention/image": "^2.5",
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
+        "livewire/livewire": "^2.3",
         "orangehill/iseed": "^2.6"
     },
     "require-dev": {

@@ -2,9 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
 use App\Models\Customer;
+use App\Observers\ProductObserver;
 use App\Observers\CustomerObserver;
+use App\Models\ProductClassAttribute;
+use App\Models\Seller;
+use App\Observers\SellerObserver;
 use Illuminate\Support\ServiceProvider;
+use App\Observers\ProductClassAttributeObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,7 +34,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //Schema::defaultStringLength(191);
-
+        Seller::observe(SellerObserver::class);
         Customer::observe(CustomerObserver::class);
+        ProductClassAttribute::observe(ProductClassAttributeObserver::class);
+        Product::observe(ProductObserver::class);
     }
 }

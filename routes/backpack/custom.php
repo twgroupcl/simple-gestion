@@ -42,4 +42,22 @@ Route::group([
     Route::crud('bank', 'BankCrudController');
     Route::crud('bankaccounttype', 'BankAccountTypeCrudController');
     Route::crud('contacttype', 'ContactTypeCrudController');
+    Route::crud('sellercategory', 'SellerCategoryCrudController');
+    Route::crud('seller', 'SellerCrudController');
+    Route::crud('productbrand', 'ProductBrandCrudController');
+    Route::crud('productcategory', 'ProductCategoryCrudController');
+    Route::crud('producttype', 'ProductTypeCrudController');
+    Route::crud('productclass', 'ProductClassCrudController');
+    Route::crud('productclassattribute', 'ProductClassAttributeCrudController');
+    Route::crud('product', 'ProductCrudController');
+    Route::crud('productinventorysource', 'ProductInventorySourceCrudController');
+    Route::crud('productinventory', 'ProductInventoryCrudController');
+    Route::crud('shippingmethod', 'ShippingMethodCrudController');
+    Route::crud('paymentmethod', 'PaymentMethodCrudController');
+    Route::crud('quotation', 'QuotationCrudController');
+    Route::post('quotation/addresses', 'QuotationCrudController@addresses');
+
+     // API routes
+     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
+     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
 }); // this should be the absolute last line of this file

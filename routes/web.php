@@ -13,10 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return redirect(backpack_url('dashboard'));
+// });
+
+Route::get('/', 'Frontend\HomeController@index');
+
+Route::get('/seller/register', 'Frontend\SellerController@index');
+Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');

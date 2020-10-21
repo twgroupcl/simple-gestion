@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Currency;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 if (! function_exists('parseCurrency')) {
     function parseCurrency($value)
@@ -58,5 +60,42 @@ if (! function_exists('sanitizeNumber')) {
         $number = str_replace(',', '.', $number);
 
         return $number;
+    }
+}
+
+if (! function_exists('currencyFormat')) {
+    /**
+     * Price format
+     *
+     * @param string $value amount 
+     * @param string $currency currency code (currencies table)
+     * @param bool $symbol return amount with symbol or not
+     * @return string price formatted
+     */
+    function currencyFormat(string $value, string $currency, bool $symbol = false) : string
+    {
+        $currency = Currency::where('code',$currency)->firstOrFail();
+        
+        $price = number_format(
+            $value,
+            $currency->precision,
+            $currency->decimal_separator,
+            $currency->thousand_separator
+        );
+
+        $price = $symbol ? $currency->symbol . $price : $price;
+
+        return $price;
+    }
+}
+
+if (! function_exists('determineSource')) {
+    function determineSource(Request $request): string
+    {
+        if ( strpos($request->path(), 'admin/') !== false ) {
+            return "Admin";
+        } 
+        
+        return "Front";
     }
 }

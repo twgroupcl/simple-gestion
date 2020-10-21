@@ -51,13 +51,13 @@ class CompaniesTableSeeder extends Seeder
                 'deleted_at' => NULL,
                 'id' => 3,
                 'logo' => NULL,
-                'name' => 'Cristobal Rojas Rojas',
+                'name' => 'Negocio',
                 'payment_data' => NULL,
-                'real_name' => '10997824-8',
+                'real_name' => 'Negocio',
                 'status' => 1,
-                'uid' => '10997824-8',
+                'uid' => '66666666-6',
                 'unique_hash' => '1269616902103f28d121323c7d269e00',
-                'updated_at' => '2020-10-18 21:57:16',
+                'updated_at' => '2020-10-19 12:54:26',
             ),
         ));
         
