@@ -182,7 +182,7 @@ $selected_commune = "";
                                 @enderror
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="phone">Tu teléfono <span class='text-danger'>*</span></label>
+                                <label for="phone">Tu teléfono</label>
                                 <input class="form-control @error('phone') is-invalid @enderror" type="text" value="{{ old('phone') }}" id="phone" name="phone">
                                 @error('phone')
                                 <span class="invalid-feedback" role="alert">
