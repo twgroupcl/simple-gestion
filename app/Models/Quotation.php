@@ -97,6 +97,13 @@ class Quotation extends Model
         static::addGlobalScope(new CompanyBranchScope);
     }
 
+    public function updateWithoutEvents(array $options=[])
+    {
+        return static::withoutEvents(function() use ($options) {
+            return $this->update($options);
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
