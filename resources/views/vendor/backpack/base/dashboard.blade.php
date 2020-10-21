@@ -40,6 +40,11 @@
 	'class' => 'row',
 	'content' => [
 			[
+				'type'    => 'most-purchased-product-categories',
+				'wrapper' => ['class' => 'col-sm-12'],
+				'content' => 'Scripts',
+			],
+			[
 				'type' => 'chart',
 				'wrapperClass' => 'col-md-6 daily-sales',
 				'controller' => \App\Http\Controllers\Admin\Charts\DailySalesChartController::class,
