@@ -21,11 +21,15 @@ class CreateProductClassAttributesTable extends Migration
             $table->longText('validations')->nullable();
             $table->boolean('is_required')->default(false);
             $table->boolean('is_configurable')->default(false);
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
+
+            $table->softDeletes();
         });
 
         Schema::table('product_class_attributes', function (Blueprint $table) {
             $table->foreign('product_class_id')->references('id')->on('product_classes');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

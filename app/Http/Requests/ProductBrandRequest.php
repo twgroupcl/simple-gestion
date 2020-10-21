@@ -28,7 +28,8 @@ class ProductBrandRequest extends FormRequest
         return [
             'code' => 'required',
             'name' => 'required',
-            'slug' => 'required'
+            'slug' => 'required',
+            'image' => 'required',
         ];
     }
 
@@ -43,6 +44,7 @@ class ProductBrandRequest extends FormRequest
             'code' => 'Código',
             'name' => 'Nombre',
             'slug' => 'Slug',
+            'image' => 'Imagen',
         ];
     }
 

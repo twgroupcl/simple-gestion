@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ProductClass;
+use Illuminate\Http\Request;
+use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ProductClassRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -28,7 +31,8 @@ class ProductClassCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\ProductClass::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/productclass');
-        CRUD::setEntityNameStrings('productclass', 'product_classes');
+        CRUD::setEntityNameStrings('clase de producto', 'clases de producto');
+        $this->crud->denyAccess('show');
     }
 
     /**
@@ -39,13 +43,27 @@ class ProductClassCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+
+        CRUD::addColumn([
+            'name' => 'status_description',
+            'label' => 'Estado',
+            'type' => 'text',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Activo') {
+                        return 'badge badge-success';
+                    }
+                    return 'badge badge-default';
+                },
+            ],
+        ]);
     }
 
     /**
@@ -58,13 +76,29 @@ class ProductClassCrudController extends CrudController
     {
         CRUD::setValidation(ProductClassRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
+
+        CRUD::addField([  // TO DO: Maked nested
+            'label'     => "Categoría",
+            'type'      => 'select2',
+            'name'      => 'category_id',
+            'entity'    => 'category',
+            'model'     => "App\Models\ProductCategory", 
+            'attribute' => 'name',
+         ]); 
+
+        CRUD::addField([
+            'name' => 'status',
+            'label' => 'Activo',
+            'type' => 'checkbox',
+            'default' => '1',
+        ]);
     }
 
     /**
@@ -76,5 +110,36 @@ class ProductClassCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+
+    /**
+     * Get and filter a list of categories depending on the category selected
+     * 
+     */
+    public function searchProductClasses(Request $request) {
+        $search_term = $request->input('q');
+        $form = collect($request->input('form'));
+        $categories = [];
+
+        foreach($form as $data) {
+            if($data['name'] == 'categories[]') array_push($categories, $data['value']);
+        }
+
+        $options = ProductClass::query();
+
+        if ( empty($categories) ) {
+            $options = $options->whereNull('category_id')->where('status', '1');
+        } else {
+            $options = $options->whereNull('category_id')->orWhereIn('category_id', $categories);
+        }
+
+        if ($search_term) {
+            $results = $options->whereRaw('LOWER(name) like ?', '%'.strtolower($search_term).'%')->paginate(10);
+        } else {
+            $results = $options->paginate(10);
+        }
+
+        return $options->paginate(10);
     }
 }

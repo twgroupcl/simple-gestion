@@ -135,6 +135,13 @@ class ProductBrandCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'image',
+            'type' => 'image',
+            'label' => 'Imagen',
+            'crop' => true,
+        ]);
+
+        CRUD::addField([
             'name' => 'status',
             'label' => 'Activo',
             'type' => 'checkbox',

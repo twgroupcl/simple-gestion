@@ -45,6 +45,11 @@ class Company extends Model
         return $this->belongsToMany(Branch::class);
     }
 
+    public function inventory_sources()
+    {
+        return $this->hasMany(ProductInventorySource::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
