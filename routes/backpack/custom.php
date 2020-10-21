@@ -57,6 +57,9 @@ Route::group([
     Route::crud('quotation', 'QuotationCrudController');
     Route::post('quotation/addresses', 'QuotationCrudController@addresses');
 
+    //CHART routes
+    Route::get('charts/daily-sales', 'Charts\DailySalesChartController@response')->name('charts.daily-sales.index');
+
      // API routes
      Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
      Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
