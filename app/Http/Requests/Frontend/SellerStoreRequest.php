@@ -57,7 +57,7 @@ class SellerStoreRequest extends FormRequest
         $phoneRule = new PhoneRule;
 
         return [
-            'uid' => ['required', 'string', $rutRule],
+            'uid' => ['required', 'unique:sellers,uid', 'string', $rutRule],
             'name' => 'required|string',
             'visible_name' => 'required|string',
             'email' => 'required|email',
