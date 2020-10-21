@@ -220,12 +220,14 @@
     
     function repeatables(element) {
         let lastRepetibleItem = element.children('div[data-repeatable-identifier]').last()
-        let checkboxField = $(lastRepetibleItem).find(".checkbox-is-custom")
+        let checkboxCustomField = $(lastRepetibleItem).find(".checkbox-is-custom")
+        let checkboxDescriptionField = $(lastRepetibleItem).find(".checkbox-edit-description")
         
-        addListenerToCheckbox(checkboxField)
+        addListenerToCheckboxCustom(checkboxCustomField)
+        addListenerToCheckboxDescription(checkboxDescriptionField)
     }
 
-    function addListenerToCheckbox(element) {
+    function addListenerToCheckboxCustom(element) {
         // Add click listeners to hide/show related fields to the checkbox
         element.click(function () {
             if (element.prop('checked')) {
@@ -238,6 +240,17 @@
                 element.parent().parent().siblings('.custom-product-name').hide()
                 element.parent().parent().siblings('.product-select').show()
                 element.parent().parent().siblings('.custom-product-name').children('.product-name-field').val('')
+            }
+        })
+    }
+
+    function addListenerToCheckboxDescription(element) {
+        // Add click listeners to hide/show related fields to the checkbox
+        element.click(function () {
+            if (element.prop('checked')) {
+                element.parent().parent().siblings('.custom-description').show()                
+            } else {
+                element.parent().parent().siblings('.custom-description').hide()  
             }
         })
     }
