@@ -159,7 +159,7 @@
                 </div>
             </div> --}}
             {{-- <hr class="hr-light pb-4 mb-3"> --}}
-            @if($header)
+            @if($footer)
             <div class="row pb-2">
                 <div class="col-md-6 text-center text-md-left mb-4">
                     {{-- <div class="text-nowrap mb-4"><a class="d-inline-block align-middle mt-n1 mr-3" href="#"><img class="d-block" width="90" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>

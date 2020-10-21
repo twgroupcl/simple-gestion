@@ -1,4 +1,5 @@
 <!-- Toolbar for handheld devices-->
+@if($footer)
 <div class="cz-handheld-toolbar">
     <div class="d-table table-fixed w-100">
         {{-- <a class="d-table-cell cz-handheld-toolbar-item" href="account-wishlist.html">
@@ -18,3 +19,4 @@
         </a>
     </div>
 </div>
+@endif
