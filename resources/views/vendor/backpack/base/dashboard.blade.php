@@ -40,6 +40,11 @@
 	'class' => 'row',
 	'content' => [
 			[
+				'type'    => 'script',
+				'wrapper' => ['class' => 'col-sm-12'],
+				'content' => 'Scripts',
+			],
+			[
 				'type'    => 'most-purchased-product-categories',
 				'wrapper' => ['class' => 'col-sm-12'],
 				'content' => 'Filtros de categorías',
