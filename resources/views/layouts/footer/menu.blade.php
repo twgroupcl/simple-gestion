@@ -55,7 +55,7 @@
                 </div>
             </div> --}}
             <div class="col-md-12">
-                <div class="widget pb-2 mb-4">
+                <div class="widget pb-2 mb-2">
                     <h3 class="widget-title text-dark pb-1">Organizan</h3>
                     <div class="d-flex flex-wrap">
                         <div class="col-6 mb-2 text-center">
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="widget pb-2 mb-4">
+                <div class="widget pb-2 mb-2">
                     <h3 class="widget-title text-dark pb-1">Colaboran</h3>
                     <div class="d-flex flex-wrap">
                         <div class="col-6 col-md-2 mb-2 text-center">

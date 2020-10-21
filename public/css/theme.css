@@ -161,7 +161,8 @@ sup {
 }
 
 a {
-  color: #fe696a;
+  color: #fa3f3a;
+  /*color: #fe696a;*/
   text-decoration: none;
   background-color: transparent;
 }
@@ -2577,8 +2578,10 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #fe696a;
-  border-color: #fe696a;
+  background: linear-gradient(45deg, rgba(255,146,61,1) 0%, rgba(255,99,55,1) 45%, rgba(249,58,58,1) 100%);
+  border: none;
+  /*background-color: #fe696a;*/
+  /*border-color: #fe696a;*/
   box-shadow: none;
 }
 
