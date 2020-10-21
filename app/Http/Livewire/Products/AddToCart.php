@@ -21,6 +21,10 @@ class AddToCart extends Component
 
     public function addToCart(Product $product)
     {
+
+        $this->dispatchBrowserEvent('show-toast', ['message' => 'Se ha añadido al carro']);
+
+
         $this->emit('cart:add', $product, $this->qty);
     }
 
