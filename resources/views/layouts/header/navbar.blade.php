@@ -66,7 +66,7 @@
                         <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-user"></i></div>
                         <div class="navbar-tool-text ml-n3"><small>Hola, Invitado</small>Mi cuenta</div>
                     </a>
-                    {{-- @livewire('cart.cart') --}} <!--//, ['user' => $user], key($user->id))-->
+                    @livewire('cart.cart')<!--//, ['user' => $user], key($user->id))-->
                 </div>
             </div>
             @endif

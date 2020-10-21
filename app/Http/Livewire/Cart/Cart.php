@@ -22,10 +22,15 @@ class Cart extends Component
 
         $qty = $qty == null ? 1 : $qty;
 
-        $session = session()->getId();
-        $user = auth()->check() ? auth()->user() : null;
-        $cart = CartModel::getInstance($user, $session);
-
+        $session = session();
+        if (auth()->check()) {
+            $user = auth()->user();
+            $cart = CartModel::getInstance($user,$session); 
+        } else {
+            $cart = CartModel::getInstance(null, $session); 
+        }
+        $cart->company_id = 1;
+        
         $cart->save();
 
         $this->addItem($cart, $product, $qty);

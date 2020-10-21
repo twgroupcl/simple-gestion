@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class CartCounter extends Component
 {
-    public $count;
+    public $count = 0;
     public $cart;
 
     protected $listeners = [
@@ -19,7 +19,7 @@ class CartCounter extends Component
     public function mount()
     {
         $this->cart = $this->getCart();
-        $this->count = $this->cart->items_count ? $this->cart->items_count : 0;
+        $this->count = $this->cart->items_count;
     }
 
 
@@ -46,9 +46,11 @@ class CartCounter extends Component
 
     private function getCart(): Cart
     {
-        $session = session()->getId();
-        $user = auth()->check() ? auth()->user() : null;
-        $cart = Cart::getInstance($user, $session);
+        if (auth()->check()) {
+            $cart = Cart::getInstance(auth()->user(), session());
+        } else {
+            $cart = Cart::getInstance(null, session());
+        }
 
         return $cart;
     }
