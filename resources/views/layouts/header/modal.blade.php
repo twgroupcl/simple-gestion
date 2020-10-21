@@ -10,16 +10,17 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body tab-content py-4">
-                <form class="needs-validation tab-pane fade show active" autocomplete="off" novalidate id="signin-tab">
+                <form method="POST" action="{{ url('login-customer') }}" class="needs-validation tab-pane fade show active" autocomplete="off" novalidate id="signin-tab">
+                    @csrf
                     <div class="form-group">
                         <label for="si-email">Email</label>
-                        <input class="form-control" type="email" id="si-email" placeholder="" required>
+                        <input class="form-control" name="email" type="email" id="si-email" placeholder="" required>
                         <div class="invalid-feedback">Por favor ingresa un email válido.</div>
                     </div>
                     <div class="form-group">
                         <label for="si-password">Contraseña</label>
                         <div class="password-toggle">
-                            <input class="form-control" type="password" id="si-password" required>
+                            <input class="form-control" type="password" name="password" id="si-password" required>
                             <label class="password-toggle-btn">
                                 <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Mostrar contraseña</span>
                             </label>
@@ -33,26 +34,27 @@
                     </div>
                     <button class="btn btn-primary btn-block btn-shadow" type="submit">Iniciar sesión</button>
                 </form>
-                <form class="needs-validation tab-pane fade" autocomplete="off" novalidate id="signup-tab">
+                <form method="POST" action="{{ url('customer') }}" class="needs-validation tab-pane fade" autocomplete="off" novalidate id="signup-tab">
+                    @csrf
                     <div class="form-group">
                         <label for="su-firstname">Nombre</label>
-                        <input class="form-control" type="text" id="su-firstname" placeholder="Escribe aquí tu nombre" required>
+                        <input class="form-control" type="text" name="first_name" id="su-firstname" placeholder="Escribe aquí tu nombre" required>
                         <div class="invalid-feedback">Por favor ingresa tu nombre.</div>
                     </div>
                     <div class="form-group">
                         <label for="su-lastname">Apellido</label>
-                        <input class="form-control" type="text" id="su-lastname" placeholder="Escribe aquí tu apellido" required>
+                        <input class="form-control" type="text" name="last_name" id="su-lastname" placeholder="Escribe aquí tu apellido" required>
                         <div class="invalid-feedback">Por favor ingresa tu apellido.</div>
                     </div>
                     <div class="form-group">
                         <label for="su-email">Email</label>
-                        <input class="form-control" type="email" id="su-email" placeholder="Escribe aquí tu email" required>
+                        <input class="form-control" type="email" name="email" id="su-email" placeholder="Escribe aquí tu email" required>
                         <div class="invalid-feedback">Por favor ingresa un email válido.</div>
                     </div>
                     <div class="form-group">
                         <label for="su-password">Contraseña</label>
                         <div class="password-toggle">
-                            <input class="form-control" type="password" id="su-password" required>
+                            <input class="form-control" type="password" name="password" id="su-password" required>
                             <label class="password-toggle-btn">
                                 <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Mostrar contraseña</span>
                             </label>
