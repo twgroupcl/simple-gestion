@@ -58,33 +58,33 @@
                 <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-dark pb-1">Organizan</h3>
                     <div class="d-flex flex-wrap">
-                        <div class="col-md-6 mb-2 text-center">
-                            <img class="img-fluid" width="50%" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
+                        <div class="col-6 mb-2 text-center">
+                            <img class="img-fluid" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
                         </div>
-                        <div class="col-md-6 mb-2 text-center">
-                            <img class="img-fluid" width="50%" src="{{ asset('img/logos/logo-corfo.png') }}" alt="Corfo" />
+                        <div class="col-6 mb-2 text-center">
+                            <img class="img-fluid" src="{{ asset('img/logos/logo-corfo.png') }}" alt="Corfo" />
                         </div>
                     </div>
                 </div>
                 <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-dark pb-1">Colaboran</h3>
                     <div class="d-flex flex-wrap">
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-twgroup.png') }}" alt="CRCP" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-worklab.png') }}" alt="Corfo" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-transbank.png') }}" alt="Corfo" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-pedidosya.png') }}" alt="Corfo" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-vr.png') }}" alt="Corfo" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-ani.png') }}" alt="Corfo" />
                         </div>
                     </div>

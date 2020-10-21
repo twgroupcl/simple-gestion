@@ -17,18 +17,20 @@ class CompanyBranchScope implements Scope
 
     	$user = backpack_user();
 
-    	$table = $model->getTable();
+        if(!empty($user)) {
+            $table = $model->getTable();
 
-		$hasCompanyColumn = Schema::connection('mysql')->hasColumn($model->getTable(), 'company_id');
+            $hasCompanyColumn = Schema::connection('mysql')->hasColumn($model->getTable(), 'company_id');
 
-		$hasBranchColumn = Schema::connection('mysql')->hasColumn($model->getTable(), 'branch_id');
+            $hasBranchColumn = Schema::connection('mysql')->hasColumn($model->getTable(), 'branch_id');
 
-		if ($hasCompanyColumn) {
-			$builder->where($table.'.company_id', $user->current()->company->id);
-		}
+            if ($hasCompanyColumn) {
+                $builder->where($table.'.company_id', $user->current()->company->id);
+            }
 
-		if ($hasBranchColumn) {
-			$builder->where($table.'.branch_id', $user->current()->branch->id);
-		}
+            if ($hasBranchColumn) {
+                $builder->where($table.'.branch_id', $user->current()->branch->id);
+            }
+        }
     }
 }
