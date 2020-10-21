@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\DB;
  */
 class MostPurchasedProductCategoriesChartController extends ChartController
 {
+    public $period;
+    public $names = [];
+    public $quantity = [];
+
     public function setup()
     {
         $this->chart = new Chart();
