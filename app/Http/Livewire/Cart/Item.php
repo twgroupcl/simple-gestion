@@ -20,7 +20,7 @@ class Item extends Component
     public $confirm;
     public $communeSelected;
     public $individualShipment;
-public $show;
+    public $show;
 
     protected $listeners = [
         'toAdd' => 'add',
