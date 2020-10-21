@@ -6,6 +6,7 @@ use Livewire\Component;
 
 class AddToCart extends Component
 {
+    public $view = 'standard';
     public $product;
     public $qty;
 
@@ -25,6 +26,6 @@ class AddToCart extends Component
 
     public function render()
     {
-        return view('livewire.products.add-to-cart');
+        return view('livewire.products.add-to-cart.' . $this->view);
     }
 }
