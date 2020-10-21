@@ -25,3 +25,4 @@ Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');

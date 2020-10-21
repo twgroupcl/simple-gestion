@@ -3,7 +3,7 @@
     
     <livewire:cart.cart-counter/>
 
-    <a class="navbar-tool-text" href="shop-cart.html">
+    <a class="navbar-tool-text" href="{{route('shopping-cart')}}">
         <small>Carro</small>$1,247.00
     </a>
     <!-- Cart dropdown-->
