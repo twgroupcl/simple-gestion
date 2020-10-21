@@ -150,6 +150,18 @@ class Quotation extends Model
         return $this->id;
     }
 
+    public function getQuotationStatusTextAttribute() 
+    {
+        switch ($this->quotation_status) {
+            case self::STATUS_DRAFT: 
+                return 'Borrador';
+                break;
+            default: 
+                return 'Otro';
+                break;
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
