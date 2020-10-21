@@ -73,7 +73,7 @@ class SellerStoreRequest extends FormRequest
 
             'legal_representative_name' => 'Tu nombre',
             'custom_1' => 'Contrato con transbank',
-            'custom_2' => 'Currier utilizado',
+            'custom_2' => 'Despacho utilizado',
         ];
     }
 
