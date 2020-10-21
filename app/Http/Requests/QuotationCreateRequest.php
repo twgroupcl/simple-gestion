@@ -33,8 +33,8 @@ class QuotationCreateRequest extends FormRequest
         return [
             'seller_id' => 'required',
             'customer_id' => 'required',
-            'creation_date' => 'required',
-            'due_date' => 'required|after:creation_date',
+            'quotation_date' => 'required',
+            'expiry_date' => 'required|after:quotation_date',
             'total' => 'numeric|min:1',
             'title' => 'required',
             'address_id' => 'required',

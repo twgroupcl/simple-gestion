@@ -123,6 +123,8 @@ class QuotationCrudController extends CrudController
 
         $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
+        $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'current_tab', 'save_action']);
+
         CRUD::addField([
             'label' => 'Cliente',
             'name' => 'customer_id',
@@ -177,7 +179,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Fecha cotización',
-            'name' => 'creation_date',
+            'name' => 'quotation_date',
             'type' => 'date',
             'default' => date("Y-m-d"),
             'wrapper' => [
@@ -188,7 +190,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Fecha expiración',
-            'name' => 'due_date',
+            'name' => 'expiry_date',
             'type' => 'date',
             'wrapper' => [
                 'class' => 'form-group col-md-3',

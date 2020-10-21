@@ -65,6 +65,7 @@ class Quotation extends Model
         'tax_percent',
         'tax_amount',
         'tax_total',
+        'tax_type',
         'tax_specific',
         'quotation_status',
         'items_data',
