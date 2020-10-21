@@ -29,7 +29,6 @@ class ProductBrandRequest extends FormRequest
             'code' => 'required',
             'name' => 'required',
             'slug' => 'required',
-            'image' => 'required',
         ];
     }
 
@@ -44,7 +43,6 @@ class ProductBrandRequest extends FormRequest
             'code' => 'Código',
             'name' => 'Nombre',
             'slug' => 'Slug',
-            'image' => 'Imagen',
         ];
     }
 
