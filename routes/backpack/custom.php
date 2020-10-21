@@ -59,6 +59,7 @@ Route::group([
 
     //CHART routes
     Route::get('charts/daily-sales', 'Charts\DailySalesChartController@response')->name('charts.daily-sales.index');
+    Route::get('charts/most-purchased-product-categories', 'Charts\MostPurchasedProductCategoriesChartController@response')->name('charts.most-purchased-product-categories.index');
 
      // API routes
      Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
