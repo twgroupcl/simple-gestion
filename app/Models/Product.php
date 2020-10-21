@@ -484,6 +484,10 @@ class Product extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function order_items() {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function custom_attributes() {
         return $this->hasMany(ProductAttribute::class, 'product_id');
     }
