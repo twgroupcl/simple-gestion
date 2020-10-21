@@ -61,6 +61,11 @@
 		    // 	]
 			// ],
 			[
+				'type'    => 'most-purchased-products',
+				'wrapper' => ['class' => 'col-sm-12'],
+				'content' => 'Filtros',
+			],
+			[
 		        'type' => 'chart',
 		        'wrapperClass' => 'col-md-12 most-purchased-products',
 		        'controller' => \App\Http\Controllers\Admin\Charts\MostPurchasedProductsChartController::class,
