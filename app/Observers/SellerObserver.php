@@ -12,6 +12,11 @@ use App\Models\ShippingMethodSeller;
 class SellerObserver
 {
 
+    public function creating(Seller $seller)
+    {
+        $seller->source = determineSource(request());
+    }
+
     public function created(Seller $seller)
     {
         $this->syncAddresses($seller);
@@ -21,15 +26,26 @@ class SellerObserver
 
     public function updated(Seller $seller)
     {
-        SellerAddress::where('seller_id', $seller->id)->delete();
+        if ($seller->isDirty()) {
+            $dirtyModel = $seller->getDirty();
+            if (array_key_exists('shippings_data', $dirtyModel)) {
+                $this->syncShippingMethods($seller);
+            }
 
-        $this->syncAddresses($seller);
-        $this->syncShippingMethods($seller);
-        $this->syncPaymentMethods($seller);
+            if (array_key_exists('payments_data', $dirtyModel)) {
+                $this->syncPaymentMethods($seller);
+            }
+
+            if (array_key_exists('addresses_data', $dirtyModel)) {
+                $this->syncAddresses($seller);
+            }
+        }
     }
 
     public function syncAddresses(Seller $seller)
     {
+        $seller->addresses()->delete();
+
         $addresses_data = is_array($seller->addresses_data)
             ? $seller->addresses_data
             : json_decode($seller->addresses_data, true);
@@ -49,9 +65,9 @@ class SellerObserver
 
         $request = request();
 
-        $shippingmethods_data = is_array($request->shippingmethods)
-            ? $request->shippingmethods
-            : json_decode($request->shippingmethods, true);
+        $shippingmethods_data = is_array($request->shippings_data)
+            ? $request->shippings_data
+            : json_decode($request->shippings_data, true);
 
         $shippingmethods = collect($shippingmethods_data)->map(function ($shippingmethod) {
             if( !empty($shippingmethod['shipping_method_id'])  && strlen($shippingmethod['key']) > 0){
@@ -75,9 +91,9 @@ class SellerObserver
 
         $request = request();
 
-        $paymentmethods_data = is_array($request->paymentmethods)
-            ? $request->paymentmethods
-            : json_decode($request->paymentmethods, true);
+        $paymentmethods_data = is_array($request->payments_data)
+            ? $request->payments_data
+            : json_decode($request->payments_data, true);
 
         $paymentmethods = collect($paymentmethods_data)->map(function ($paymentmethod) {
             if( !empty($paymentmethod['payment_method_id'])  && strlen($paymentmethod['key']) > 0){
@@ -89,6 +105,7 @@ class SellerObserver
         $paymentmethods = $paymentmethods->filter();
 
         if($paymentmethods->count() > 0){
+            
             $seller->paymentmethods()->saveMany(
                 $paymentmethods
             );

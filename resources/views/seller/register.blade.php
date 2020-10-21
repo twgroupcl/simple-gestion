@@ -50,7 +50,7 @@ $selected_commune = "";
                     </div>
 
                     <!-- Billing detail-->
-                    <form method="POST" action="{{ route('seller.store') }}">
+                    <form method="POST" action="{{ route('seller.frontend.store') }}">
                         @csrf
                         <div class="row pb-4">
                             <div class="col-sm-6 form-group">
@@ -164,27 +164,27 @@ $selected_commune = "";
                                 @enderror
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="contact_name">Tu nombre <span class='text-danger'>*</span></label>
-                                <input class="form-control @error('contact_name') is-invalid @enderror" type="text" value="{{ old('contact_name') }}" id="contact_name" name="contact_name">
-                                @error('contact_name')
+                                <label for="legal_representative_name">Tu nombre <span class='text-danger'>*</span></label>
+                                <input class="form-control @error('legal_representative_name') is-invalid @enderror" type="text" value="{{ old('legal_representative_name') }}" id="legal_representative_name" name="legal_representative_name">
+                                @error('legal_representative_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="contact_email">Tu email <span class='text-danger'>*</span></label>
-                                <input class="form-control @error('contact_email') is-invalid @enderror" type="email" value="{{ old('contact_email') }}" id="contact_email" name="contact_email">
-                                @error('contact_email')
+                                <label for="email">Tu email <span class='text-danger'>*</span></label>
+                                <input class="form-control @error('email') is-invalid @enderror" type="email" value="{{ old('email') }}" id="email" name="email">
+                                @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="contact_phone">Tu teléfono <span class='text-danger'>*</span></label>
-                                <input class="form-control @error('contact_phone') is-invalid @enderror" type="text" value="{{ old('contact_phone') }}" id="contact_phone" name="contact_phone">
-                                @error('contact_phone')
+                                <label for="phone">Tu teléfono</label>
+                                <input class="form-control @error('phone') is-invalid @enderror" type="text" value="{{ old('phone') }}" id="phone" name="phone">
+                                @error('phone')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -202,12 +202,12 @@ $selected_commune = "";
                             <div class="col-sm-6 form-group">
                                 <label for="custom_1">¿Tienes contrato con Transbank? <span class='text-danger'>*</span></label><br>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" id="custom_1_si" name="custom_1">
-                                    <label class="custom-control-label" for="custom_1">Sí</label>
+                                    <input class="custom-control-input" type="radio" id="custom_1_si" value="si" name="custom_1">
+                                    <label class="custom-control-label" for="custom_1_si">Sí</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" id="custom_1_no" name="custom_1" checked>
-                                    <label class="custom-control-label" for="custom_1">No</label>
+                                    <input class="custom-control-input" type="radio" id="custom_1_no" value="no" name="custom_1" checked>
+                                    <label class="custom-control-label" for="custom_1_no">No</label>
                                 </div>
                                 @error('custom_1')
                                 <span class="invalid-feedback" role="alert">
@@ -240,3 +240,10 @@ $selected_commune = "";
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/rut-formatter.js') }}"></script>
+<script>
+    $('#uid').rut();
+</script>
+@endpush
