@@ -31,11 +31,13 @@ class QuotationCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'business_id' => 'required',
+            'seller_id' => 'required',
             'customer_id' => 'required',
             'creation_date' => 'required',
             'due_date' => 'required|after:creation_date',
             'total' => 'numeric|min:1',
+            'title' => 'required',
+            'address_id' => 'required',
 
             // Order items data
             'quotation_items_json_validation.*.name' => 'required',

@@ -6,8 +6,10 @@ use App\Models\Tax;
 use App\Models\Customer;
 use App\Models\Quotation;
 use Illuminate\Http\Request;
+use App\Cruds\BaseCrudFields;
 use App\Models\CustomerAddress;
 use App\Http\Requests\QuotationRequest;
+use App\Http\Requests\QuotationCreateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -117,15 +119,9 @@ class QuotationCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(QuotationRequest::class);
+        CRUD::setValidation(QuotationCreateRequest::class);
 
-        //CRUD::setFromDb(); // fields
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
         CRUD::addField([
             'label' => 'Cliente',
@@ -252,7 +248,7 @@ class QuotationCrudController extends CrudController
                     'model' => 'App\Models\Product',
                     'placeholder' => 'Selecciona un producto',
                     'attribute' => 'name',
-                    'data_source' => url('admin/api/products/getByBusiness'),
+                    'data_source' => url('admin/api/products/getBySeller'),
                     'minimum_input_length' => 0,
                     'include_all_form_fields'  => true,
                     'dependencies'  => ['business_id'],
@@ -343,6 +339,7 @@ class QuotationCrudController extends CrudController
                     'type' => 'textarea',
                     'wrapper' => [
                         'class' => 'col-md-12 custom-description',
+                        'style' => 'display:none',
                     ],
                 ],
                 [
@@ -351,7 +348,21 @@ class QuotationCrudController extends CrudController
                     'type' => 'checkbox',
                     'attributes' => [
                         'class' => 'checkbox-is-custom',
-                    ]
+                    ],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-3',
+                    ],
+                ],
+                [
+                    'label' => 'Editar descripción',
+                    'name' => 'edit_description',
+                    'type' => 'checkbox',
+                    'attributes' => [
+                        'class' => 'checkbox-edit-description',
+                    ],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-2',
+                    ],
                 ],
 
                 // Hidden inputs
