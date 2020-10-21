@@ -288,12 +288,40 @@ class ProductCrudController extends CrudController
             CRUD::setValidation(ProductVariantUpdateRequest::class);
         }
 
+        // General fields
+        $this->setGeneralFields();
 
-        /**
-         * Tab Informacion general
-         * 
-         */
+        // Images fields
+        $this->setImagesFields();
 
+        // Variations fields
+        if($product->product_type->id == Product::PRODUCT_TYPE_CONFIGURABLE) {
+            $this->setVariationsField($product);
+        }
+
+        // Price and Shipping dimensions fields
+        if($product->product_type->id == Product::PRODUCT_TYPE_SIMPLE) {
+            $this->setPriceDimensionsFields($product);
+        }
+
+        // Inventory control fields
+        if($product->product_type->id == Product::PRODUCT_TYPE_SIMPLE && $product->use_inventory_control) {
+            $this->setInventoryFields($product);
+        }
+
+        // Custom attributes fields
+        if(count($attributes) !== 0) {
+            $this->setAttributesFields($attributes, $product);
+        }
+
+        // Status and visibility fields
+        $this->setStatusVisibilityFields();
+        
+        // SEO fields
+        $this->setSeoFields();
+    }
+
+    public function setGeneralFields() {
         CRUD::addField([
             'name' => 'name',
             'label' => 'Nombre del producto',
@@ -341,6 +369,15 @@ class ProductCrudController extends CrudController
             'tab' => 'Información general'
         ]);
 
+        CRUD::addField([
+            'label' => 'Marca',
+            'name' => 'product_brand_id',
+            'type' => 'relationship',
+            'entity' => 'brand',
+            'placeholder' => 'Selecciona una marca',
+            'tab' => 'Información general'
+        ]);
+
         CRUD::addField([ 
             'label'     => "Categorías",
             'type'      => 'product.select2_multiple',
@@ -379,13 +416,9 @@ class ProductCrudController extends CrudController
             'default' => '1',
             'tab' => 'Información general'
         ]);
+    }
 
-        
-        /**
-         *  Tab Imagenes
-         * 
-         */
-        
+    public function setImagesFields() {
         CRUD::addField([ 
             'name'  => 'images_json',
             'label' => 'Imágenes',
@@ -402,181 +435,143 @@ class ProductCrudController extends CrudController
             'new_item_label'  => 'Agregar otra imagen',
             'tab' => 'Imágenes',
         ]);
+    }
 
+    public function setPriceDimensionsFields($product) {
+        CRUD::addField([
+            'name' => 'currency_id',
+            'label' => 'Moneda',
+            'type' => 'relationship',
+            'entity' => 'currency',
+            'tab' => 'Precio y envío',
+            'placeholder' => 'Selecciona una moneda',
+            'default' => 63,
+            'wrapper' => [
+                'style' => 'display:none',
+                'class' => 'form-group col-lg-12 required',
+            ],
+        ]);
 
-        /**
-         * Tab variaciones (only when is a configurable product)
-         * 
-         */
+        CRUD::addField([
+            'name' => 'price',
+            'label' => 'Precio',
+            'type' => 'product.number_format',
+            'tab' => 'Precio y envío',
+            'attributes' => [
+                'step' => 'any',
+            ],
+            'wrapper' => [
+                'class' => 'form-group col-lg-12 required',
+            ],
+        ]);
 
-        if($product->product_type->id == Product::PRODUCT_TYPE_CONFIGURABLE) {
-            $this->setVariationsField($product);
+        CRUD::addField([
+            'name' => 'cost',
+            'label' => 'Costo',
+            'type' => 'product.number_format',
+            'tab' => 'Precio y envío',
+            'attributes' => [
+                'step' => 'any',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'special_price',
+            'label' => 'Precio de oferta',
+            'type' => 'product.number_format',
+            'tab' => 'Precio y envío',
+            'attributes' => [
+                'step' => 'any',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'special_price_from',
+            'label' => 'Precio de oferta desde',
+            'type' => 'date',
+            'tab' => 'Precio y envío',
+            'wrapper' => [
+                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group required',
+                'id' => 'special_price_from',
+                'style' => 'display:none',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'special_price_to',
+            'label' => 'Precio de oferta hasta',
+            'type' => 'date',
+            'tab' => 'Precio y envío',
+            'wrapper' => [
+                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group required',
+                'id' => 'special_price_to',
+                'style' => 'display:none',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'weight',
+            'label' => 'Peso (kg)',
+            'type' => 'product.number_format',
+            'tab' => 'Precio y envío',
+            'attributes' => [
+                'step' => 'any',
+            ],
+            'wrapper' => [
+                'class' => 'form-group mb-3 col required',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'height',
+            'label' => 'Alto (cm)',
+            'type' => 'product.number_format',
+            'tab' => 'Precio y envío',
+            'attributes' => [
+                'step' => 'any',
+            ],
+            'wrapper' => [
+                'class' => 'form-group mb-3 col required',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'width',
+            'label' => 'Ancho (cm)',
+            'type' => 'product.number_format',
+            'tab' => 'Precio y envío',
+            'attributes' => [
+                'step' => 'any',
+            ],
+            'wrapper' => [
+                'class' => 'form-group mb-3 col required',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'depth',
+            'label' => 'Largo (cm)',
+            'type' => 'product.number_format',
+            'tab' => 'Precio y envío',
+            'attributes' => [
+                'step' => 'any',
+            ],
+            'wrapper' => [
+                'class' => 'form-group mb-3 col required',
+            ],
+        ]);
+        
+        if ($product->use_inventory_control) {
+            CRUD::addField([
+                'name' => 'critical_stock',
+                'label' => 'Alertar cuando el stock este por debajo de',
+                'type' => 'number',
+                'tab' => 'Precio y envío',
+            ]);
         }
+    }
 
-
-        /**
-         * Tab Precio y envio
-         * 
-         */
-
-
-        if($product->product_type->id == Product::PRODUCT_TYPE_SIMPLE) {
-
-            CRUD::addField([
-                'name' => 'currency_id',
-                'label' => 'Moneda',
-                'type' => 'relationship',
-                'entity' => 'currency',
-                'tab' => 'Precio y envío',
-                'placeholder' => 'Selecciona una moneda',
-                'default' => 63,
-                'wrapper' => [
-                    'style' => 'display:none',
-                    'class' => 'form-group col-lg-12 required',
-                ],
-            ]);
-
-            CRUD::addField([
-                'name' => 'price',
-                'label' => 'Precio',
-                'type' => 'product.number_format',
-                'tab' => 'Precio y envío',
-                'attributes' => [
-                    'step' => 'any',
-                ],
-                'wrapper' => [
-                    'class' => 'form-group col-lg-12 required',
-                ],
-            ]);
-
-            CRUD::addField([
-                'name' => 'cost',
-                'label' => 'Costo',
-                'type' => 'product.number_format',
-                'tab' => 'Precio y envío',
-                'attributes' => [
-                    'step' => 'any',
-                ],
-            ]);
-
-            CRUD::addField([
-                'name' => 'special_price',
-                'label' => 'Precio de oferta',
-                'type' => 'product.number_format',
-                'tab' => 'Precio y envío',
-                'attributes' => [
-                    'step' => 'any',
-                ],
-            ]);
-
-            CRUD::addField([
-                'name' => 'special_price_from',
-                'label' => 'Precio de oferta desde',
-                'type' => 'date',
-                'tab' => 'Precio y envío',
-                'wrapper' => [
-                    'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group required',
-                    'id' => 'special_price_from',
-                    'style' => 'display:none',
-                ]
-            ]);
-
-            CRUD::addField([
-                'name' => 'special_price_to',
-                'label' => 'Precio de oferta hasta',
-                'type' => 'date',
-                'tab' => 'Precio y envío',
-                'wrapper' => [
-                    'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group required',
-                    'id' => 'special_price_to',
-                    'style' => 'display:none',
-                ]
-            ]);
-
-            CRUD::addField([
-                'name' => 'weight',
-                'label' => 'Peso (kg)',
-                'type' => 'product.number_format',
-                'tab' => 'Precio y envío',
-                'attributes' => [
-                    'step' => 'any',
-                ],
-                'wrapper' => [
-                    'class' => 'form-group mb-3 col required',
-                ],
-            ]);
-
-            CRUD::addField([
-                'name' => 'height',
-                'label' => 'Alto (cm)',
-                'type' => 'product.number_format',
-                'tab' => 'Precio y envío',
-                'attributes' => [
-                    'step' => 'any',
-                ],
-                'wrapper' => [
-                    'class' => 'form-group mb-3 col required',
-                ],
-            ]);
-
-            CRUD::addField([
-                'name' => 'width',
-                'label' => 'Ancho (cm)',
-                'type' => 'product.number_format',
-                'tab' => 'Precio y envío',
-                'attributes' => [
-                    'step' => 'any',
-                ],
-                'wrapper' => [
-                    'class' => 'form-group mb-3 col required',
-                ],
-            ]);
-
-            CRUD::addField([
-                'name' => 'depth',
-                'label' => 'Largo (cm)',
-                'type' => 'product.number_format',
-                'tab' => 'Precio y envío',
-                'attributes' => [
-                    'step' => 'any',
-                ],
-                'wrapper' => [
-                    'class' => 'form-group mb-3 col required',
-                ],
-            ]);
-            
-            if ($product->use_inventory_control) {
-                CRUD::addField([
-                    'name' => 'critical_stock',
-                    'label' => 'Alertar cuando el stock este por debajo de',
-                    'type' => 'number',
-                    'tab' => 'Precio y envío',
-                ]);
-            }
-        }
-
-        /**
-         * Tab control de inventario
-         * 
-         */
-        if($product->product_type->id == Product::PRODUCT_TYPE_SIMPLE && $product->use_inventory_control) {
-            $this->setInventoryFields($product);
-        }
-
-        /**
-         * Tab atributos adicionales
-         * 
-         */
-
-        if(count($attributes) !== 0) {
-            $this->setAttributesFields($attributes, $product);
-        }
-
-         /**
-         * Tab Estado y visibilidad
-         * 
-         */
-
+    public function setStatusVisibilityFields() {
         CRUD::addField([
             'name' => 'is_approved',
             'label' => 'Aprobado',
@@ -658,13 +653,9 @@ class ProductCrudController extends CrudController
             'type' => 'product.show_hide_fields',
             'tab' => 'Estado y visibilidad',
         ]);
+    }
 
-
-        /**
-         * Tab Configuracion SEO
-         * 
-         */
-
+    public function setSeoFields() {
         CRUD::addField([
             'name' => 'meta_title',
             'label' => 'Título para los buscadores',
@@ -696,12 +687,6 @@ class ProductCrudController extends CrudController
         ]);
     }
 
-       /**
-     * Set the custom attributes fields on the crud
-     * 
-     * @param ProductTypeAttribute[] $attributes
-     * @return void
-     */
     public function setAttributesFields($attributes, $product) 
     {
         foreach($attributes as $attribute) {

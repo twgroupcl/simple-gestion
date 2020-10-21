@@ -60,7 +60,6 @@ class ProductInventorySourceRequest extends FormRequest
             'commune_id' => 'comuna',
             'address_street' => 'calle',
             'address_number' => 'numero de calle',
-            'business_id' => 'negocio',
             'priority' => 'prioridad',
             'contact_uid' => 'RUT de contacto',
             'contact_first_name' => 'nombre de contacto',

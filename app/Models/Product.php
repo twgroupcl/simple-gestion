@@ -464,6 +464,10 @@ class Product extends Model
         return $this->belongsTo(ProductType::class);
     }
 
+    public function brand() {
+        return $this->belongsTo(ProductBrand::class, 'product_brand_id');
+    }
+
     public function parent() {
         return $this->belongsTo(Product::class, 'parent_id');
     }
