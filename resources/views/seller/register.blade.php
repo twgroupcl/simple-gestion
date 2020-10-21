@@ -50,7 +50,7 @@ $selected_commune = "";
                     </div>
 
                     <!-- Billing detail-->
-                    <form method="POST" action="{{ route('seller.store') }}">
+                    <form method="POST" action="{{ route('seller.frontend.store') }}">
                         @csrf
                         <div class="row pb-4">
                             <div class="col-sm-6 form-group">

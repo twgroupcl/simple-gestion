@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'Frontend\HomeController@index');
 
 Route::get('/seller/register', 'Frontend\SellerController@index');
+Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
 
 Auth::routes();
 
