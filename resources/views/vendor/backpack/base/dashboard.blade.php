@@ -35,4 +35,19 @@
 		]),
 	]);
 
+	$widgets['before_content'][] = [
+	'type' => 'div',
+	'class' => 'row',
+	'content' => [
+			[
+				'type' => 'chart',
+				'wrapperClass' => 'col-md-6 daily-sales',
+				'controller' => \App\Http\Controllers\Admin\Charts\DailySalesChartController::class,
+				'content' => [
+					'header' => 'Ventas por día',
+				]
+			],
+		]
+	];
+
 @endphp
