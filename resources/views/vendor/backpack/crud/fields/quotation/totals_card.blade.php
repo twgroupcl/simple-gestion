@@ -272,7 +272,7 @@
             calculateTotals();
         });
 
-        $(document).on('change', 'select[data-repeatable-input-name="tax_id"]', function () {
+        $(document).on('change', 'select[data-repeatable-input-name="additional_tax_id"]', function () {
             calculateTotals();
         });
 

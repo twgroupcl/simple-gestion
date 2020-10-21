@@ -23,6 +23,8 @@ class QuotationObserver
         $quotation->email = $quotation->customer->email;
         $quotation->phone = $quotation->customer->phone;
         $quotation->cellphone = $quotation->customer->cellphone;
+
+        $quotation->is_company = $quotation->customer->is_company;
     }
 
 
@@ -126,12 +128,13 @@ class QuotationObserver
                         'discount_percent' => $item['discount_percent'],
                         'discount_amount' => $item['discount_amount'],
                         'discount_total' => $item['discount_total'],
-                        'tax_percent' => $item['tax_percent'],
-                        'tax_amount' => $item['tax_amount'],
-                        'tax_total' => $item['tax_total'],
+                        //'tax_percent' => $item['tax_percent'],
+                        'additional_tax_id' => $item['additional_tax_id'] == 0 ? null : $item['additional_tax_id'],
+                        'additional_tax_amount' => $item['additional_tax_amount'],
+                        'additional_tax_total' => $item['additional_tax_total'],
                         'total' => $item['total'],
                         'currency_id' => $quotation->currency_id,
-                        'business_id' => $quotation->business_id,
+                        'seller_id' => $quotation->seller_id,
                     ];
 
                     if ( isset($options['set_item_status']) ) $props['item_status'] = $options['set_item_status'];
@@ -156,15 +159,17 @@ class QuotationObserver
                         'width' => $product->width,
                         'sub_total' => $item['sub_total'], 
                         'is_custom' => false,
+                        'parent_id' => $product->parent_id,
+                        'seller_id' => $quotation->seller_id,
                         'discount_percent' => $item['discount_percent'],
                         'discount_amount' => $item['discount_amount'],
                         'discount_total' => $item['discount_total'],
-                        'tax_percent' => $item['tax_percent'],
-                        'tax_amount' => $item['tax_amount'],
-                        'tax_total' => $item['tax_total'],
+                        //'tax_percent' => $item['tax_percent'],
+                        'additional_tax_id' => $item['additional_tax_id'] == 0 ? null : $item['additional_tax_id'],
+                        'additional_tax_amount' => $item['additional_tax_amount'],
+                        'additional_tax_total' => $item['additional_tax_total'],
                         'total' => $item['total'],
                         'currency_id' => $quotation->currency_id,
-                        'business_id' => $quotation->business_id,
                     ];
 
                     if ( isset($options['set_item_status']) ) $props['item_status'] = $options['set_item_status'];
@@ -178,15 +183,21 @@ class QuotationObserver
             $itemQty = collect($items)->sum('qty');
             $itemCount = count($items);
             $sub_total = collect($items)->sum('sub_total');
-            $tax_total = collect($items)->sum('tax_total');
+
+            $hasDiscountPerItem = collect($items)->sum('discount_total') > 0 ? 1 : 0;
+            $hasTaxPerItem = collect($items)->sum('additional_tax_total') > 0 ? 1 : 0;
+
+            //dd(collect($items)->sum('discount_total') , collect($items)->sum('additional_tax_total'), $hasTaxPerItem,  $hasDiscountPerItem);
+
             $discount_total = $quotation->discount_total;
 
             $propsToUpdate = [
                 'items_qty' => $itemQty,
                 'items_count' => $itemCount,
-                'tax_total' => $tax_total,
                 'sub_total' => $sub_total,
                 'discount_total' => $discount_total,
+                'has_discount_per_item' => $hasDiscountPerItem,
+                'has_tax_per_item' => $hasTaxPerItem,
             ];
 
             if ( isset($options['set_quotation_status']) ) $propsToUpdate['quotation_status'] = ($options['set_quotation_status']);

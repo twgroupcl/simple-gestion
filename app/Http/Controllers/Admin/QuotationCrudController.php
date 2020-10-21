@@ -308,7 +308,7 @@ class QuotationCrudController extends CrudController
                 ],
                 [
                     'label' => 'Impuesto',
-                    'name' => 'tax_id',
+                    'name' => 'additional_tax_id',
                     'type' => 'select2_from_array',
                     'atributte' => 'name',
                     'options' => array_merge([0 => 'No aplica'] , Tax::all()->map( function($item) {
@@ -370,7 +370,7 @@ class QuotationCrudController extends CrudController
                 // Hidden inputs
                 [
                     'label' => 'tax_amount',
-                    'name' => 'tax_amount',
+                    'name' => 'additional_tax_amount',
                     'type' => 'hidden',
                     'attributes' => [
                         'class' => 'tax_amount_item'
@@ -386,7 +386,7 @@ class QuotationCrudController extends CrudController
                 ],
                 [
                     'label' => 'tax_total',
-                    'name' => 'tax_total',
+                    'name' => 'additional_tax_total',
                     'type' => 'hidden',
                     'attributes' => [
                         'class' => 'tax_total_item'
