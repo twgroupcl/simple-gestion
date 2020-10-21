@@ -12,6 +12,11 @@ use App\Models\ShippingMethodSeller;
 class SellerObserver
 {
 
+    public function creating(Seller $seller)
+    {
+        $seller->source = determineSource(request());
+    }
+
     public function created(Seller $seller)
     {
         $this->syncAddresses($seller);

@@ -372,10 +372,10 @@
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
-            <div class="col-md-6">
+            <div class="col-md-6 pb-3">
                 <img src="{{ asset('img/home-banner-02.png') }}" alt="Banner promoción 2" class="img-fluid">
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 pb-3">
                 <img src="{{ asset('img/home-banner-03.png') }}" alt="Banner promoción 3" class="img-fluid">
             </div>
         </div>

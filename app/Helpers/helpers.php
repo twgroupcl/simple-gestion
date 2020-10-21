@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 if (! function_exists('parseCurrency')) {
     function parseCurrency($value)
@@ -58,5 +59,16 @@ if (! function_exists('sanitizeNumber')) {
         $number = str_replace(',', '.', $number);
 
         return $number;
+    }
+}
+
+if (! function_exists('determineSource')) {
+    function determineSource(Request $request): string
+    {
+        if ( strpos($request->path(), 'admin/') !== false ) {
+            return "Admin";
+        } 
+        
+        return "Front";
     }
 }

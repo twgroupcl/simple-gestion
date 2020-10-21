@@ -58,33 +58,33 @@
                 <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-dark pb-1">Organizan</h3>
                     <div class="d-flex flex-wrap">
-                        <div class="col-md-6 mb-2 text-center">
-                            <img class="img-fluid" width="50%" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
+                        <div class="col-6 mb-2 text-center">
+                            <img class="img-fluid" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
                         </div>
-                        <div class="col-md-6 mb-2 text-center">
-                            <img class="img-fluid" width="50%" src="{{ asset('img/logos/logo-corfo.png') }}" alt="Corfo" />
+                        <div class="col-6 mb-2 text-center">
+                            <img class="img-fluid" src="{{ asset('img/logos/logo-corfo.png') }}" alt="Corfo" />
                         </div>
                     </div>
                 </div>
                 <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-dark pb-1">Colaboran</h3>
                     <div class="d-flex flex-wrap">
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-twgroup.png') }}" alt="CRCP" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-worklab.png') }}" alt="Corfo" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-transbank.png') }}" alt="Corfo" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-pedidosya.png') }}" alt="Corfo" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-vr.png') }}" alt="Corfo" />
                         </div>
-                        <div class="col-md-2 mb-2 text-center">
+                        <div class="col-6 col-md-2 mb-2 text-center">
                             <img class="img-fluid" src="{{ asset('img/logos/footer-ani.png') }}" alt="Corfo" />
                         </div>
                     </div>
@@ -159,6 +159,7 @@
                 </div>
             </div> --}}
             {{-- <hr class="hr-light pb-4 mb-3"> --}}
+            @if($header)
             <div class="row pb-2">
                 <div class="col-md-6 text-center text-md-left mb-4">
                     {{-- <div class="text-nowrap mb-4"><a class="d-inline-block align-middle mt-n1 mr-3" href="#"><img class="d-block" width="90" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
@@ -199,6 +200,7 @@
                     <img class="d-inline-block img-fluid" width="120" src="{{ asset('img/logo-webpay.png') }}" alt="Métodos de pago" />
                 </div>
             </div>
+            @endif
             <div class="pb-4 font-size-xs text-light opacity-50 text-center text-md-left">Desarrollado por <a class="text-light" href="https://twgroup.cl/" target="_blank" rel="noopener">TWGroup</a></div>
         </div>
     </div>
