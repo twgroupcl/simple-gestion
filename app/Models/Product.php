@@ -519,7 +519,7 @@ class Product extends Model
 
     public function scopeBySeller($query)
     {
-        if (auth()->user()->hasRole('Super admin')) {
+        if (!auth()->user() || auth()->user()->hasRole('Super admin')) {
             return $query;
         }
 
