@@ -20,6 +20,9 @@ class CustomerAddress extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $appends = [
+        'addressDescription',
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -33,6 +36,16 @@ class CustomerAddress extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function commune()
+    {
+        return $this->belongsTo(Commune::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -44,6 +57,15 @@ class CustomerAddress extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    public function getAddressDescriptionAttribute()
+    {
+        if (!empty($this->subnumber)) {
+            return "{$this->street} $this->number ({$this->subnumber}) - {$this->commune->name}";
+        }
+
+        return $this->street.' '.$this->number.' - '.$this->commune->name;
+    }
 
     /*
     |--------------------------------------------------------------------------

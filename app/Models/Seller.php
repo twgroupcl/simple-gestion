@@ -40,11 +40,17 @@ class Seller extends Model
         'web',
         'password',
         'notes',
+        'legal_representative_name',
+        'custom_1',
+        'custom_2',
         'addresses_data',
         'activities_data',
+        'payments_data',
+        'shippings_data',
         'banks_data',
         'contacts_data',
         'is_approved',
+        'rejected_reason',
         'source',
         'status',
         'meta_title',
@@ -113,6 +119,16 @@ class Seller extends Model
     public function addresses()
     {
         return $this->hasMany(SellerAddress::class);
+    }
+
+    public function shippingmethods()
+    {
+        return $this->hasMany(ShippingMethodSeller::class);
+    }
+
+    public function paymentmethods()
+    {
+        return $this->hasMany(PaymentMethodSeller::class);
     }
 
     /*

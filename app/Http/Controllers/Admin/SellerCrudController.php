@@ -6,7 +6,9 @@ use App\Models\Bank;
 use App\Models\Commune;
 use App\Models\ContactType;
 use App\Cruds\BaseCrudFields;
+use App\Models\PaymentMethod;
 use App\Models\SellerCategory;
+use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
 use App\Http\Requests\SellerRequest;
@@ -494,7 +496,7 @@ class SellerCrudController extends CrudController
             'wrapper' => [
                 'class' => 'form-group col-md-12'
             ],
-            'tab' => 'Estilos',
+            'tab' => 'SEO',
         ]);
 
         CRUD::addField([
@@ -505,82 +507,96 @@ class SellerCrudController extends CrudController
             'wrapper' => [
                 'class' => 'form-group col-md-12'
             ],
-            'tab' => 'Estilos',
+            'tab' => 'SEO',
         ]);
 
-        // CRUD::addField([
-        //     'name' => 'paymentmethods',
-        //     'type' => 'repeatable',
-        //     'label' => 'Métodos de pago',
-        //     'new_item_label'  => 'agregar nuevo metodo de pago',
-        //     'fake' => true,
-        //     'fields' => [
-        //         [
-        //             'name' => 'payment_method_id',
-        //             'type' => 'select2_from_array',
-        //             'options' => PaymentMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
-        //             'label' => 'Metodo de pago',
-        //             'wrapper' => [
-        //                 'class' => 'form-group col-12'
-        //             ],
-        //         ],
-        //         [
-        //             'name' => 'key',
-        //             'type'  => 'text',
-        //             'label' => 'Código',
-        //             'wrapper' => [
-        //                 'class' => 'form-group col-12'
-        //             ],
-        //         ],
-        //         [
-        //             'name' => 'status',
-        //             'label' => 'Activo',
-        //             'type' => 'checkbox',
-        //             'wrapperAttributes' => [
-        //                 'class' => 'form-group col-md-12',
-        //             ],
-        //             'default' => true,
-        //         ]
-        //     ],
-        //     'tab' => 'Métodos de pago',
-        // ]);
+        CRUD::addField([
+            'name' => 'payments_data',
+            'type' => 'repeatable',
+            'label' => 'Métodos de pago',
+            'new_item_label'  => 'Agregar método de pago',
+            'default' => '{}',
+            'fields' => [
+                [
+                    'name' => 'payment_method_id',
+                    'type' => 'select2_from_array',
+                    'options' => PaymentMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
+                    'label' => 'Metodo de pago',
+                    'wrapper' => [
+                        'class' => 'form-group col-12'
+                    ],
+                ],
+                [
+                    'name' => 'key',
+                    'type'  => 'text',
+                    'label' => 'Llave',
+                    'wrapper' => [
+                        'class' => 'form-group col-12'
+                    ],
+                ],
+                [
+                    'name' => 'status',
+                    'label' => 'Activo',
+                    'type' => 'checkbox',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-12',
+                    ],
+                    'default' => true,
+                ]
+            ],
+            'tab' => 'Venta',
+        ]);
 
-        // CRUD::addField([
-        //     'name' => 'shippingmethods',
-        //     'type' => 'repeatable',
-        //     'label' => 'Métodos de shipping',
-        //     'new_item_label'  => 'agregar nuevo metodo de envio',
-        //     'fake' => true,
-        //     'fields' => [
-        //         [
-        //             'name' => 'shipping_method_id',
-        //             'type' => 'select2_from_array',
-        //             'options' => ShippingMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
-        //             'label' => 'Metodo de envio',
-        //             'wrapper' => [
-        //                 'class' => 'form-group col-12'
-        //             ],
-        //         ],
-        //         [
-        //             'name' => 'status',
-        //             'label' => 'Activo',
-        //             'type' => 'checkbox',
-        //             'wrapperAttributes' => [
-        //                 'class' => 'form-group col-md-12',
-        //             ],
-        //             'default' => false,
+        CRUD::addField([
+            'name' => 'shippings_data',
+            'type' => 'repeatable',
+            'label' => 'Métodos de envío',
+            'new_item_label'  => 'Agregar método de envío',
+            'default' => '{}',
+            'fields' => [
+                [
+                    'name' => 'shipping_method_id',
+                    'type' => 'select2_from_array',
+                    'options' => ShippingMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
+                    'label' => 'Metodo de envío',
+                    'wrapper' => [
+                        'class' => 'form-group col-12'
+                    ],
+                ],
+                [
+                    'name' => 'key',
+                    'type'  => 'text',
+                    'label' => 'Llave',
+                    'wrapper' => [
+                        'class' => 'form-group col-12'
+                    ],
+                ],
+                [
+                    'name' => 'status',
+                    'label' => 'Activo',
+                    'type' => 'checkbox',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-12',
+                    ],
+                    'default' => true,
 
-        //         ]
-        //     ],
-        //     'tab' => 'Métodos de shipping',
-        // ]);
+                ]
+            ],
+            'tab' => 'Venta',
+        ]);
 
         if(backpack_user()->hasAnyRole('Super admin|Administrador')) {
             CRUD::addField([
                 'name' => 'is_approved',
-                'type' => 'checkbox',
                 'label' => 'Aprobado',
-                'default' => false,
+                'type' => 'radio',
+                'options' => [
+                    0 => 'En revisión',
+                    1 => 'Aprobado',
+                    2 => 'Rechazado'
+                ],
+                'default' => 0,
+                'inline' => true,
                 'tab' => 'Administrador',
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-12',
@@ -588,15 +604,12 @@ class SellerCrudController extends CrudController
             ]);
 
             CRUD::addField([
-                'name' => 'source',
-                'type' => 'text',
-                'label' => 'Fuente',
+                'name' => 'rejected_reason',
+                'type' => 'textarea',
+                'label' => 'Motivo de rechazo',
                 'tab' => 'Administrador',
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-md-12',
-                ],
-                'attributes' => [
-                    'readonly' => 'readonly',
+                'wrapper' => [
+                    'class' => 'form-group col-12',
                 ],
             ]);
 
@@ -643,6 +656,18 @@ class SellerCrudController extends CrudController
             'rut_fields' => ['uid', 'rut'],
             'tab' => 'General',
         ]);
+
+        CRUD::addField([
+            'name' => 'radio_script',
+            'type' => 'radio_readonly_fields',
+            'readonly_fields' => [
+                'textarea' => ['rejected_reason'],
+                //'input' => ['commission_percentage'] test
+            ],
+            'radiobutton_name' => 'is_approved',
+            'is_value' => ['En revisión', 'Aprobado'],
+            'tab' => 'General',
+        ]);
     }
 
     /**
@@ -654,5 +679,20 @@ class SellerCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        if(backpack_user()->hasAnyRole('Super admin|Administrador')) {
+            CRUD::addField([
+                'name' => 'source',
+                'type' => 'text',
+                'label' => 'Fuente',
+                'tab' => 'Administrador',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-md-12',
+                ],
+                'attributes' => [
+                    'readonly' => 'readonly',
+                ],
+            ]);
+        }
     }
 }

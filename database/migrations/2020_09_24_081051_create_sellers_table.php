@@ -18,6 +18,9 @@ class CreateSellersTable extends Migration
             $table->string('uid');
             $table->string('name');
             $table->string('visible_name');
+            $table->string('legal_representative_name');
+            $table->string('custom_1');
+            $table->string('custom_2');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('cellphone')->nullable();
@@ -28,8 +31,9 @@ class CreateSellersTable extends Migration
             $table->longText('activities_data')->nullable();
             $table->longText('banks_data')->nullable();
             $table->longText('contacts_data')->nullable();
-            $table->boolean('is_approved')->default(false);
-            $table->string('source')->default('admin');
+            $table->integer('is_approved')->default(0);
+            $table->longText('rejected_reason')->nullable();
+            $table->string('source')->default('Admin');
             $table->integer('status')->default(1);
             $table->text('meta_title')->nullable();
             $table->text('meta_keywords')->nullable();
@@ -42,6 +46,8 @@ class CreateSellersTable extends Migration
             $table->string('logo')->nullable();
             $table->string('banner')->nullable();
             $table->longText('styles_json')->nullable();
+            $table->longText('shippings_data')->nullable();
+            $table->longText('payments_data')->nullable();
             $table->unsignedBigInteger('seller_category_id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('company_id');

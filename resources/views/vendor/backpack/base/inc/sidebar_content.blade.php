@@ -41,6 +41,8 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bankaccounttype') }}'><i class='nav-icon la la-briefcase'></i> Tipos cuentas</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('contacttype') }}'><i class='nav-icon la la-thumbs-up'></i> Tipos contactos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('producttype') }}'><i class='nav-icon la la-book'></i> Tipos productos</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('paymentmethod') }}'><i class='nav-icon la la-cash-register'></i> Métodos pago</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('shippingmethod') }}'><i class='nav-icon la la-truck'></i> Métodos shipping</a></li>
 	</ul>
 </li>
 
@@ -111,6 +113,17 @@
 
         @can('productinventorysource.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productinventorysource') }}'><i class='nav-icon la la-warehouse'></i> Bodegas</a></li>
+        @endcan
+	</ul>
+</li>
+@endcanany
+
+@canany(['quotation.list'])
+<li class="nav-item nav-dropdown">
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Ventas</a>
+	<ul class="nav-dropdown-items">
+        @can('quotation.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('quotation') }}'><i class='nav-icon la la-calculator'></i> Cotizaciones</a></li>
         @endcan
 	</ul>
 </li>

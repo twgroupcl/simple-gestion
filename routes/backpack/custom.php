@@ -52,8 +52,12 @@ Route::group([
     Route::crud('product', 'ProductCrudController');
     Route::crud('productinventorysource', 'ProductInventorySourceCrudController');
     Route::crud('productinventory', 'ProductInventoryCrudController');
+    Route::crud('shippingmethod', 'ShippingMethodCrudController');
+    Route::crud('paymentmethod', 'PaymentMethodCrudController');
+    Route::crud('quotation', 'QuotationCrudController');
+    Route::post('quotation/addresses', 'QuotationCrudController@addresses');
 
-    // API routes
-    Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
-    Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
+     // API routes
+     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
+     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
 }); // this should be the absolute last line of this file
