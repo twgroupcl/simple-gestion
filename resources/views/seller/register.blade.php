@@ -23,31 +23,20 @@ $selected_commune = "";
             <section class="col-12 pt-2 pt-lg-4 pb-4 mb-3">
                 <div class="pt-2 px-4 px-xl-5">
                     <img src="{{ asset('img/seller-register.png') }}" alt="Registro vendedor" class="img-fluid">
+
                     <!-- Title-->
-                    <h2 class="h6 border-bottom pb-3 mt-3 mb-3">1 - Completa la solicitud inscripción</h2>
-
-                    <div class="row justify-content-md-center">
-                        @if ($message = Session::get('success'))
-                        <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @endif
-
-                        @if ($message = Session::get('error'))
-                        <div class="alert alert-danger alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
-                        </div>
-                        @endif
-
-                        @if ($message = Session::get('warning'))
-                        <div class="alert alert-warning alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button>
-                            <strong>{{ $message }}</strong>
+                    <div class="row justify-content-md-center mt-3">
+                        @if (isset($success))
+                        <div class="alert alert-success alert-with-icon" role="alert">
+                            <div class="alert-icon-box">
+                                <i class="alert-icon czi-check-circle"></i>
+                            </div>
+                            {{ $success }}
                         </div>
                         @endif
                     </div>
+
+                    <h2 class="h6 border-bottom pb-3 mt-3 mb-3">1 - Completa la solicitud de inscripción</h2>
 
                     <!-- Billing detail-->
                     <form method="POST" action="{{ route('seller.frontend.store') }}">

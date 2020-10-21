@@ -27,10 +27,12 @@ class SellerController extends Controller
                 'commune_id' => $request['commune_id'],
             ]
         ], true);
+
         $request['addresses_data'] = $sellerAddresses;
         $request['company_id'] = 1;
+
         Seller::create($request->all());
 
-        return redirect(backpack_url('login'))->with('success', 'Usted se ha registrado con éxito.');
+        return view('seller.register')->with('success', 'Tu solicitud ha sido enviada con éxito. Pronto nos contactaremos contigo.');
     }
 }
