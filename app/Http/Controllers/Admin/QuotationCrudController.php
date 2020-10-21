@@ -237,7 +237,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Productos o servicios',
-            'name' => 'quotation_items_json',
+            'name' => 'items_data',
             'type' => 'quotation.repeatable',
             'new_item_label' => 'Agregar producto / servicio',
             'fields' => [

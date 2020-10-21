@@ -189,7 +189,7 @@
 
         function calculateTotals() {
 
-            let items = $('div[data-repeatable-holder="quotation_items_json"]').children()
+            let items = $('div[data-repeatable-holder="items_data"]').children()
 
             let subTotalGeneral = calculateItemsData(items).subTotalGeneral
             let totalDiscountItems = calculateItemsData(items).totalDiscountItems

@@ -14,6 +14,23 @@ class QuotationObserver
      * @param  \App\Quotation  $quotation
      * @return void
      */
+    public function creating(Quotation $quotation) {
+
+        // Ask for this latter
+        $quotation->uid = $quotation->customer->uid;
+        $quotation->first_name = $quotation->customer->first_name;
+        
+        // Just for test
+        $quotation->tax_type = 1;
+    }
+
+
+    /**
+     * Handle the quotation "created" event.
+     *
+     * @param  \App\Quotation  $quotation
+     * @return void
+     */
     public function created(Quotation $quotation)
     {
         $this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'pending', 'set_item_status' => 'pending']);
@@ -27,7 +44,7 @@ class QuotationObserver
      */
     public function updated(Quotation $quotation)
     {
-        if ( $quotation->isDirty('quotation_items_json') ) {
+        if ( $quotation->isDirty('items_data') ) {
             $this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'pending', 'set_item_status' => 'pending']);
         }
     }
@@ -67,11 +84,11 @@ class QuotationObserver
 
         public function syncQuotationItems($quotation, $options = []) {
     
-        if ($quotation->is_custom && !empty($quotation->quotation_items_json)) {
+        if ( !empty($quotation->items_data) ) {
 
             QuotationItem::where('quotation_id', $quotation->id)->delete();
             
-            $items = $quotation->quotation_items_json;
+            $items = $quotation->items_data;
             
             foreach($items as &$item) {
 

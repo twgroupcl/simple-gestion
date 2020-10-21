@@ -9,7 +9,7 @@ class QuotationCreateRequest extends FormRequest
 {
 
     private $prepareData = [
-        'quotation_items_json',
+        'items_data',
     ];
 
     /**
@@ -40,10 +40,10 @@ class QuotationCreateRequest extends FormRequest
             'address_id' => 'required',
 
             // Order items data
-            'quotation_items_json_validation.*.name' => 'required',
-            'quotation_items_json_validation.*.qty' => 'required',
-            'quotation_items_json_validation.*.price' => 'required',
-            'quotation_items_json_validation.*.total' => 'required',
+            'items_data_validation.*.name' => 'required',
+            'items_data_validation.*.qty' => 'required',
+            'items_data_validation.*.price' => 'required',
+            'items_data_validation.*.total' => 'required',
 
             'quotations_items_json' => function($attribute, $value, $fail) {
                 $items = json_decode($value, true);
@@ -67,10 +67,10 @@ class QuotationCreateRequest extends FormRequest
             'total' => 'monto total',
 
             // Order items data
-            'quotation_items_json_validation.*.name' => 'nombre del producto / servicio',
-            'quotation_items_json_validation.*.qty' => 'cantidad del producto / servicio',
-            'quotation_items_json_validation.*.price' => 'precio del producto / servicio',
-            'quotation_items_json_validation.*.total' => 'total',
+            'items_data_validation.*.name' => 'nombre del producto / servicio',
+            'items_data_validation.*.qty' => 'cantidad del producto / servicio',
+            'items_data_validation.*.price' => 'precio del producto / servicio',
+            'items_data_validation.*.total' => 'total',
         ];
     }
 

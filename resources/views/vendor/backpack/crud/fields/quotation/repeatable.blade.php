@@ -210,7 +210,7 @@
             initializeFieldsWithJavascript(container_holder);
             
             // Function to add custom listeners to the checkbox field
-            var repetibleContainer = $('div[data-repeatable-holder="quotation_items_json"]')    
+            var repetibleContainer = $('div[data-repeatable-holder="items_data"]')    
             repeatables(repetibleContainer)
 
             // Show and hide corresponding fields when the repeatabla is loading old data
@@ -256,7 +256,7 @@
     }
 
     function initialize() {
-        let repetibleContainer = $('div[data-repeatable-holder="quotation_items_json"]')
+        let repetibleContainer = $('div[data-repeatable-holder="items_data"]')
         let repetibleItems = repetibleContainer.children('div[data-repeatable-identifier]')
 
         $(repetibleItems).each( function() {
