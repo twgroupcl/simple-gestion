@@ -39,7 +39,9 @@ class ProductCategoryRequest extends FormRequest
             'icon' => 'required',
             'slug' => [
                 'required',
-                'unique:product_categories',
+                Rule::unique('product_categories')->where( function($query) {
+                    return $query->where('id', '!=', request('id'));
+                }),
                 new SlugRule(),
             ]
         ];
