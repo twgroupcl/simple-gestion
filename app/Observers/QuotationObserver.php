@@ -16,12 +16,13 @@ class QuotationObserver
      */
     public function creating(Quotation $quotation) {
 
-        // Ask for this latter
+        // Store customter address
         $quotation->uid = $quotation->customer->uid;
         $quotation->first_name = $quotation->customer->first_name;
-        
-        // Just for test
-        $quotation->tax_type = 1;
+        $quotation->last_name = $quotation->customer->last_name;
+        $quotation->email = $quotation->customer->email;
+        $quotation->phone = $quotation->customer->phone;
+        $quotation->cellphone = $quotation->customer->cellphone;
     }
 
 
@@ -33,7 +34,7 @@ class QuotationObserver
      */
     public function created(Quotation $quotation)
     {
-        $this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'pending', 'set_item_status' => 'pending']);
+        $this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'BORRADOR', 'set_item_status' => 'pending']);
     }
 
     /**
@@ -45,7 +46,7 @@ class QuotationObserver
     public function updated(Quotation $quotation)
     {
         if ( $quotation->isDirty('items_data') ) {
-            $this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'pending', 'set_item_status' => 'pending']);
+            $this->syncQuotationItems($quotation, [ 'set_item_status' => 'pending']);
         }
     }
 

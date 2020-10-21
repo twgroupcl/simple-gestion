@@ -260,14 +260,17 @@
         let repetibleItems = repetibleContainer.children('div[data-repeatable-identifier]')
 
         $(repetibleItems).each( function() {
-            let element = $(this).find(".checkbox-is-custom")
+            let isCustomCheckbox = $(this).find(".checkbox-is-custom")
+            let editDescriptionCheckbox = $(this).find('.checkbox-edit-description')
 
-            if (element.prop('checked')) {
-                element.parent().parent().siblings('.custom-product-name').show()
-                element.parent().parent().siblings('.product-select').hide()
+            editDescriptionCheckbox.prop('checked', false)
+            
+            if (isCustomCheckbox.prop('checked')) {
+                isCustomCheckbox.parent().parent().siblings('.custom-product-name').show()
+                isCustomCheckbox.parent().parent().siblings('.product-select').hide()
             } else {
-                element.parent().parent().siblings('.custom-product-name').hide()
-                element.parent().parent().siblings('.product-select').show()
+                isCustomCheckbox.parent().parent().siblings('.custom-product-name').hide()
+                isCustomCheckbox.parent().parent().siblings('.product-select').show()
             }
         })
     }
