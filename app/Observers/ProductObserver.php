@@ -185,23 +185,23 @@ class ProductObserver
        }
     }
 
-    public function syncAttributes($product) {
+    public function syncAttributes($product) 
+    {
+        $attributesFromJson = $product->attributes_json ?? [];
+        $attributes = [];
 
-            $attributesFromJson = $product->attributes_json;
-            $attributes = [];
-
-            // get id and values of every attribute
-            foreach($attributesFromJson as $param => $value) {
-                $isAnAtributte = substr($param, 0, 9) == 'attribute'; 
-                if($isAnAtributte) {
-                    array_push($attributes, [
-                        'id' =>  Str::replaceFirst('attribute-', '', $param),
-                        'value' => $value,
-                    ]);
-                }
+        // Get ID and values of every attribute
+        foreach($attributesFromJson as $param => $value) {
+            $isAnAtributte = substr($param, 0, 9) == 'attribute'; 
+            if($isAnAtributte) {
+                array_push($attributes, [
+                    'id' =>  Str::replaceFirst('attribute-', '', $param),
+                    'value' => $value,
+                ]);
             }
+        }
 
-            // update or create the attributes on the db
-            $product->updateOrCreateAttributes($attributes);
-    }
+        // Update or create the attributes on the db
+        $product->updateOrCreateAttributes($attributes);
+}
 }
