@@ -6,7 +6,8 @@
         <div class="card-body py-2"><a class="product-meta d-block font-size-xs pb-1" href="#">{{$product->showCategory()}}</a>
             <h3 class="product-title font-size-sm"><a href="shop-single-v2.html">{{$product->name}}</a></h3>
             <div class="d-flex justify-content-between">
-                <div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>
+                <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->
+                <div class="product-price"><span class="text-accent">{{ currencyFormat($product->price, 'CLP', true)}}</span></div>
                 <div class="star-rating"><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i>
                 </div>
             </div>
