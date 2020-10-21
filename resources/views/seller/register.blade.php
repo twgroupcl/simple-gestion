@@ -1,4 +1,4 @@
-@extends('layouts.base', ['collaboration' => true])
+@extends('layouts.base', ['collaboration' => true, 'header' => false, 'footer' => false])
 
 @php
 $selected = false;
