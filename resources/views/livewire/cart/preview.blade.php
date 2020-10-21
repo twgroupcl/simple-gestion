@@ -86,7 +86,7 @@
                             </div>
                             <button class="btn btn-secondary btn-block" type="submit">Aplicar cupón</button>
                         </form>
-                    </div><a class="btn btn-primary btn-shadow btn-block mt-4" href="marketplace-checkout.html"><i
+                    </div><a class="btn btn-primary btn-shadow btn-block mt-4" href="{{ route('checkout') }}"><i
                             class="czi-locked font-size-lg mr-2"></i>Realizar Pago</a>
                     {{-- <div class="text-center pt-2"><small
                             class="text-form text-muted">100% money back guarantee</small></div>
