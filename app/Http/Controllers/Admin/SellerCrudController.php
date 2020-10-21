@@ -511,12 +511,11 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'paymentmethods',
+            'name' => 'payments_data',
             'type' => 'repeatable',
             'label' => 'Métodos de pago',
             'new_item_label'  => 'Agregar método de pago',
             'default' => '{}',
-            'fake' => true,
             'fields' => [
                 [
                     'name' => 'payment_method_id',
@@ -549,12 +548,11 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'shippingmethods',
+            'name' => 'shippings_data',
             'type' => 'repeatable',
             'label' => 'Métodos de envío',
             'new_item_label'  => 'Agregar método de envío',
             'default' => '{}',
-            'fake' => true,
             'fields' => [
                 [
                     'name' => 'shipping_method_id',
@@ -656,6 +654,18 @@ class SellerCrudController extends CrudController
             'name' => 'rut_formatter',
             'type' => 'rut_formatter',
             'rut_fields' => ['uid', 'rut'],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
+            'name' => 'radio_script',
+            'type' => 'radio_readonly_fields',
+            'readonly_fields' => [
+                'textarea' => ['rejected_reason'],
+                //'input' => ['commission_percentage'] test
+            ],
+            'radiobutton_name' => 'is_approved',
+            'is_value' => ['En revisión', 'Aprobado'],
             'tab' => 'General',
         ]);
     }

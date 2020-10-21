@@ -44,6 +44,8 @@ class CreateSellersTable extends Migration
             $table->string('logo')->nullable();
             $table->string('banner')->nullable();
             $table->longText('styles_json')->nullable();
+            $table->longText('shippings_data')->nullable();
+            $table->longText('payments_data')->nullable();
             $table->unsignedBigInteger('seller_category_id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('company_id');
