@@ -50,6 +50,8 @@
 
     <!-- Footer-->
     @include('layouts.footer.index')
+    @livewire('flash-message')
+
 </body>
 
 </html>
