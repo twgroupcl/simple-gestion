@@ -67,6 +67,8 @@ class SellerRequest extends FormRequest
             'web' => 'nullable|string',
             'seller_category_id' => 'required|exists:seller_categories,id',
             'notes' => 'nullable|string',
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required',
 
             // addresses data
             'addresses_data' => 'nullable|string',
@@ -100,6 +102,10 @@ class SellerRequest extends FormRequest
             //contact data
             'contact_data_validation.*.contact_type_id' => 'required|exists:contact_types,id',
             'contact_data_validation.*.url' => 'required|distinct',
+
+            'legal_representative_name' => 'nullable|string',
+            'custom_1' => 'nullable',
+            'custom_2' => 'nullable|string',
         ];
     }
 
@@ -120,6 +126,7 @@ class SellerRequest extends FormRequest
             'web' => 'Sitio web',
             'seller_category_id' => 'Categoría',
             'notes' => 'Notas',
+            'password' => 'Contraseña',
 
             // addresses data
             'addresses_data' => 'Direcciones',
@@ -151,6 +158,10 @@ class SellerRequest extends FormRequest
             //contact data
             'contact_data_validation.*.contact_type_id' => 'Plataforma en Contactos',
             'contact_data_validation.*.url' => 'URL en Contactos',
+
+            'legal_representative_name' => 'Representante legal',
+            'custom_1' => 'Transbank',
+            'custom_2' => 'Despacho',
         ];
     }
 

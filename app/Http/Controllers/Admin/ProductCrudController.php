@@ -189,10 +189,11 @@ class ProductCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'product_type_id',
             'label' => 'Tipo de producto',
+            'name' => 'product_type_id',
             'type' => 'relationship',
             'entity' => 'product_type',
+            'placeholder' => 'Selecciona un tipo de producto',
         ]);
 
         CRUD::addField([

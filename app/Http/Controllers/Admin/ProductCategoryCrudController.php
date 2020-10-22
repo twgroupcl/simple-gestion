@@ -97,18 +97,30 @@ class ProductCategoryCrudController extends CrudController
             'type' => 'text',
         ]);
 
+        CRUD::addField([
+            'label'   => "Icono",
+            'name'    => 'icon',
+            'type'    => 'icon_picker',
+            'iconset' => 'fontawesome', // options: fontawesome, glyphicon, ionicon, weathericon, mapicon, octicon, typicon, elusiveicon, materialdesign
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ],
+        ]);
 
         CRUD::addField([
             'name' => 'image',
             'type' => 'image',
             'label' => 'Imagen',
             'crop' => true,
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ],
         ]);
 
         CRUD::addField([
             'name' => 'position',
             'label' => 'Posición',
-            'type' => 'text',
+            'type' => 'number',
         ]);
 
         CRUD::addField([  // TO DO: Maked nested

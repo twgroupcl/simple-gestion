@@ -18,9 +18,9 @@ class CreateSellersTable extends Migration
             $table->string('uid');
             $table->string('name');
             $table->string('visible_name');
-            $table->string('legal_representative_name');
-            $table->string('custom_1');
-            $table->string('custom_2');
+            $table->string('legal_representative_name')->nullable();
+            $table->string('custom_1')->nullable();
+            $table->string('custom_2')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('cellphone')->nullable();
