@@ -37,7 +37,9 @@
                 </form>
             </div>
             <!-- Profile form-->
-            <form>
+            <form action="{{ route('customer.update', ['customer' => $customer]) }}" method="POST">
+                @method('PUT')
+                @csrf
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -116,7 +118,7 @@
                     <div class="col-12">
                         <hr class="mt-2 mb-3">
                         <div class="d-flex flex-wrap justify-content-end align-items-center">
-                            <button class="btn btn-primary mt-3 mt-sm-0" type="button">Actualizar perfil</button>
+                            <input class="btn btn-primary mt-3 mt-sm-0" type="submit" value="Actualizar perfil">
                         </div>
                     </div>
                 </div>
