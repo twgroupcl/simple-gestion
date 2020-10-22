@@ -19,10 +19,11 @@ $selected_commune = "";
 <div class="container mb-5 pb-3">
     <div class="bg-light box-shadow-lg rounded-lg overflow-hidden">
         <div class="row">
+            <img src="{{ asset('img/steps-register.png') }}" alt="Pasos registro" class="img-fluid">
             <!-- Content-->
             <section class="col-12 pt-2 pt-lg-4 pb-4 mb-3">
                 <div class="pt-2 px-4 px-xl-5">
-                    <img src="{{ asset('img/seller-register.png') }}" alt="Registro vendedor" class="img-fluid">
+                    <img src="{{ asset('img/seller-register.png') }}" alt="Registro vendedor" class="img-fluid mt-5">
 
                     <!-- Title-->
                     <div class="row justify-content-md-center mt-3">
@@ -36,7 +37,7 @@ $selected_commune = "";
                         @endif
                     </div>
 
-                    <h2 class="h6 border-bottom pb-3 mt-3 mb-3">1 - Completa la solicitud de Inscripción</h2>
+                    <h2 class="h6 border-bottom pb-3 mt-3 mb-3">1 - Completa la Solicitud de Inscripción</h2>
 
                     <!-- Billing detail-->
                     <form method="POST" action="{{ route('seller.frontend.store') }}">
@@ -221,8 +222,6 @@ $selected_commune = "";
                             </div>
                         </div>
                     </form>
-
-                    <img src="{{ asset('img/stepts-register.png') }}" alt="Pasos registro" class="img-fluid">
                 </div>
             </section>
         </div>

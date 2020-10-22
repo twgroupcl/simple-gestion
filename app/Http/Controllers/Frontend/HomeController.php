@@ -10,6 +10,6 @@ class HomeController extends Controller
     {
         //return redirect('/seller/register');
         //return view('vendor');
-        return view('categories');
+        return view('marketplace');
     }
 }
