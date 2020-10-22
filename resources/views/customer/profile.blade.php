@@ -40,6 +40,7 @@
             <form action="{{ route('customer.update', ['customer' => $customer]) }}" method="POST">
                 @method('PUT')
                 @csrf
+                <input type="hidden" name="id" value="{{ $customer->id }}">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
