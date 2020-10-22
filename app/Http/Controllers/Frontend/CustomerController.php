@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
+use App\Http\Requests\Frontend\CustomerUpdateRequest;
 use App\User;
 
 class CustomerController extends Controller
@@ -103,19 +104,15 @@ class CustomerController extends Controller
         return view('customer.order');
     }
 
-    public function update(Customer $customer)
+    public function update(CustomerUpdateRequest $request, Customer $customer)
     {
-        $validatedData = request()->validate([
-            'uid' => 'required|unique:customers,uid,'.$customer->id,
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'password' => 'confirmed',
-        ]);
-        if (blank($validatedData['password'])) {
-            unset($validatedData['password']);
+        $requestValidated = $request->validated();
+        if (blank($requestValidated['password'])) {
+            unset($requestValidated['password']);
+            unset($requestValidated['password_confirmation']);
         }
 
-        $customer->update($validatedData);
+        $customer->update($requestValidated);
 
         return redirect()->route('customer.profile');
     }
