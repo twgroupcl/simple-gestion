@@ -103,7 +103,7 @@
             </nav>
         </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-0">My addresses</h1>
+            <h1 class="h3 text-light mb-0">Mis direcciones</h1>
         </div>
     </div>
 </div>
@@ -115,7 +115,7 @@
         <section class="col-lg-8">
             <!-- Toolbar-->
             <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-4">
-                <h6 class="font-size-base text-light mb-0">List of your registered addresses:</h6>
+                <h6 class="font-size-base text-light mb-0">Lista de tus direcciones registradas:</h6>
                 <a class="btn btn-primary btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="czi-sign-out mr-2"></i> Cerrar sesión
                 </a>
@@ -129,8 +129,8 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Address</th>
-                            <th>Actions</th>
+                            <th>Direcciones</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
