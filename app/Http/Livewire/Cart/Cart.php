@@ -9,33 +9,49 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 use App\Models\Cart as CartModel;
 use App\Models\{Product, CartItem, Customer};
+use Backpack\Settings\app\Models\Setting;
 
 class Cart extends Component
 {
+    public $subtotal;
+    public $cart;
 
     protected $listeners = [
         'cart:add' => 'add',
+        'cart.updateSubtotal' => 'updateSubtotal'
     ];
+
+    public function mount()
+    {
+        $this->getCart();
+        $this->cart->company_id = 1;
+
+        $this->subtotal = $this->cart->sub_total ?? 0;
+    }
 
     public function add(Request $request, Product $product, $qty = 1)
     {
+        //get update cart
+        $this->getCart();
+        if (!$this->cart->company_id) {
+            $this->cart->company_id = 1;
+            $this->cart->save();
+        }
 
         $qty = $qty == null ? 1 : $qty;
 
-        $session = session();
-        if (auth()->check()) {
-            $user = auth()->user();
-            $cart = CartModel::getInstance($user,$session); 
-        } else {
-            $cart = CartModel::getInstance(null, $session); 
-        }
-        $cart->company_id = 1;
-        
-        $cart->save();
+        $this->addItem($this->cart, $product, $qty);
 
-        $this->addItem($cart, $product, $qty);
-        $this->emit('dropdown.update');
+        $this->cart->recalculateSubtotal();
+        $this->cart->save();
 
+        $this->updateSubtotal();
+
+    }
+
+    public function updateSubtotal()
+    {
+        $this->subtotal = $this->cart->sub_total;
     }
 
 
@@ -51,6 +67,7 @@ class Cart extends Component
         $item = $cart->cart_items->where('product_id', $product->id)->first();
         if ($item !== null) {
             $item->qty = $item->qty + $qty;
+            $item->sub_total = $item->price * $item->qty;
             $item->update();
         } else {
             $data = [
@@ -64,6 +81,7 @@ class Cart extends Component
                 'height' => $product->height,
                 'depth' => $product->depth,
                 'weight' => $product->weight,
+                'sub_total' => $product->price * $qty,
                 /*'sub_total' => ,
                 'shipping_total' => ,
                 'discount_total' => ,
@@ -90,11 +108,25 @@ class Cart extends Component
 
             $cart = CartItem::create($data);
             $this->emit('cart-counter:increment');
+
             if($cart){
                 session()->flash('message', '¡Éxito! El artículo se añadió al carro.');
             }else{
                 session()->flash('error', 'Ocurrió un error al momento de agregar el producto.');                
             }
+        }
+
+        $this->emit('dropdown.update');
+    }
+
+    private function getCart()
+    {
+        $session = session();
+        if (auth()->check()) {
+            $user = auth()->user();
+            $this->cart = CartModel::getInstance($user,$session); 
+        } else {
+            $this->cart = CartModel::getInstance(null, $session); 
         }
     }
 }
