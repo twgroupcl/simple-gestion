@@ -169,10 +169,7 @@
             let globalDiscount = calculateGlobalDiscount(itemSubTotal - itemDiscount)
             totalDiscount = itemDiscount + globalDiscount
 
-            return {
-                itemDiscount,
-                globalDiscount,
-            }
+            return Number(totalDiscount)
         }
 
         function calculateGlobalDiscount(subtotal) {
@@ -190,63 +187,56 @@
             return discount
         }
 
-        function setDiscountFields(globalDiscount) {
+        function setDiscountFields(globalDiscount, totalDiscountItems) {
             let discountType = $('select[name="discount_type"]').val()
             let discountValue = parseDecimal($('input[name="discount_amount_field"]').val())
             let totalDiscount = 0
         
             if (discountType == 'percentage') {
                 $('input[name="discount_percent"]').val(discountValue)
-                $('input[name="discount_amount"]').val(globalDiscount)
+                $('input[name="discount_amount"]').val(0)
             } else {
                 $('input[name="discount_amount"]').val(globalDiscount)
                 $('input[name="discount_percent"]').val(0)
             }
 
-            globalDiscount 
-            document.querySelector('#total-discount-field').innerText = formatWithComma(globalDiscount)
-            //$('input[name="discount_amount"]').val(globalDiscount)
+            totalDiscount = globalDiscount + totalDiscountItems
+            document.querySelector('#total-discount-field').innerText = formatWithComma(totalDiscount)
+            $('input[name="discount_total"]').val(totalDiscount)
         }
 
         function calculateItemsData(items) {
             let subTotalGeneral = 0
             let totalDiscountItems = 0
-            let totalDiscountGlobal = 0
             let totalVaxItem = 0
             let totalVaxGeneral = 0
-            let acumTotalValue = 0
 
 
             $(items).each( function() {
                 let price = parseDecimal($(this).find('.price').val())
-                let discountItem = calculateItemDiscount($(this)).itemDiscount
-                let discountGlobal = calculateItemDiscount($(this)).globalDiscount
+                let discountAmount = calculateItemDiscount($(this))
                 let itemQty = Number($(this).find('.qty').val())
                 let subTotal = $(this).find('.subtotal')
 
-                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
-                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
+                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountAmount)
+                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountAmount)
                 
                 let subTotalValue = (price * itemQty) 
-                let totalValue = ( (price * itemQty) - discountItem)
+                let totalValue = ( (price * itemQty) - discountAmount) + taxAmount
                 
                 subTotal.val(formatWithComma(totalValue))
 
                 subTotalGeneral += subTotalValue
-                acumTotalValue += totalValue
-                totalDiscountItems+= discountItem
-                totalDiscountGlobal += discountGlobal
+                totalDiscountItems+= discountAmount
                 totalVaxItem += taxAmount
                 totalVaxGeneral += taxAmountGeneral
             })
 
             return {
-                totalValue: acumTotalValue,
                 subTotalGeneral,
                 totalDiscountItems,
                 totalVaxItem,
                 totalVaxGeneral,
-                totalDiscountGlobal,
             }
         }
 
@@ -256,26 +246,25 @@
             let items = $('div[data-repeatable-holder="items_data"]').children()
             let itemsData = calculateItemsData(items)
 
-            let subTotalGeneral = itemsData.totalValue
-            
-            let totalDiscountGlobal = itemsData.totalDiscountGlobal
+            let subTotalGeneral = itemsData.subTotalGeneral
+            let totalDiscountItems = itemsData.totalDiscountItems
             let totalVaxItems = itemsData.totalVaxItem
             let totalVaxGeneral = itemsData.totalVaxGeneral
 
             if ($('select[name="tax_type"]').val() === 'H') {
-                $('input[name="tax_amount"]').val( (-1) * totalVaxGeneral)
+                $('input[name="tax_amount"]').val( (-1) * totalVaxItems)
                 document.querySelector('#retencion-field').innerText = formatWithComma(totalVaxGeneral);
                 document.querySelector('#amount-tax-field').innerText = 0
             } else {
-                $('input[name="tax_amount"]').val(totalVaxGeneral)
+                $('input[name="tax_amount"]').val(totalVaxItems)
                 document.querySelector('#amount-tax-field').innerText = formatWithComma(totalVaxGeneral);
                 document.querySelector('#retencion-field').innerText = 0
             }
 
-            let net = subTotalGeneral - totalDiscountGlobal
-            let total = subTotalGeneral - totalDiscountGlobal + totalVaxItems + totalVaxGeneral
+            let net = subTotalGeneral - totalDiscountItems
+            let total = subTotalGeneral - totalDiscountItems + totalVaxItems + totalVaxGeneral
 
-            setDiscountFields(totalDiscountGlobal)
+            setDiscountFields(0, totalDiscountItems)
 
             $('input[name="tax_specific"]').val(totalVaxItems)
             document.querySelector('#total-tax-additional').innerText = formatWithComma(totalVaxItems);

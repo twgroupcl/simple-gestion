@@ -188,8 +188,8 @@ class QuotationObserver
             $hasTaxPerItem = collect($items)->sum('additional_tax_total') > 0 ? 1 : 0;
 
             //dd(collect($items)->sum('discount_total') , collect($items)->sum('additional_tax_total'), $hasTaxPerItem,  $hasDiscountPerItem);
-
-            $discount_total = $quotation->discount_total;
+            //dd($quotation->discount_amount, collect($items)->sum('discount_total'));
+            $discount_total = $quotation->discount_amount + collect($items)->sum('discount_total');
 
             $propsToUpdate = [
                 'items_qty' => $itemQty,
