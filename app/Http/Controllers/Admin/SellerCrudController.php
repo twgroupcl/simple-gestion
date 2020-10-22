@@ -677,7 +677,7 @@ class SellerCrudController extends CrudController
 
             CRUD::addField([
                 'name' => 'custom_2',
-                'label' => 'Courier',
+                'label' => 'Despacho',
                 'tab' => 'Administrador',
                 'wrapper' => [
                     'class' => 'form-group col-6',

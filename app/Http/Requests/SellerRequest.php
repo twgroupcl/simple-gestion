@@ -161,7 +161,7 @@ class SellerRequest extends FormRequest
 
             'legal_representative_name' => 'Representante legal',
             'custom_1' => 'Transbank',
-            'custom_2' => 'Courier',
+            'custom_2' => 'Despacho',
         ];
     }
 

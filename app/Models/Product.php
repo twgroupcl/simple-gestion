@@ -489,6 +489,10 @@ class Product extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function order_items() {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function custom_attributes() {
         return $this->hasMany(ProductAttribute::class, 'product_id');
     }
@@ -507,6 +511,25 @@ class Product extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    public function scopeBetweenDates($query, $from = null, $to = null)
+    {
+        return $query->whereBetween('created_at', [$from, $to]);
+    }
+
+    public function scopeSearch($query, $q = null)
+    {
+        return $query->bySeller();
+    }
+
+    public function scopeBySeller($query)
+    {
+        if (!auth()->user() || auth()->user()->hasRole('Super admin')) {
+            return $query;
+        }
+
+        return $query->where('seller_id', Seller::whereUserId(auth()->user()->id)->first()->id);
+    }
 
     /*
     |--------------------------------------------------------------------------

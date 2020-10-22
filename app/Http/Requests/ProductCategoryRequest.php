@@ -36,13 +36,12 @@ class ProductCategoryRequest extends FormRequest
                 'required',
                 Rule::in(['products_and_description']),
             ],
-            'image' => [
-                'required',
-                new ImageDimensionCategoryRule(1024, 1024),
-            ],
+            'icon' => 'required',
             'slug' => [
                 'required',
-                'unique:product_categories',
+                Rule::unique('product_categories')->where( function($query) {
+                    return $query->where('id', '!=', request('id'));
+                }),
                 new SlugRule(),
             ]
         ];
@@ -59,7 +58,7 @@ class ProductCategoryRequest extends FormRequest
             'name' => 'nombre',
             'code' => 'codigo',
             'display_mode' => 'modo de visualizacion',
-            'image' => 'imagen',
+            'icon' => 'icono',
             'parent_id' => 'categoria padre',
             'position' => 'posición'
         ];
