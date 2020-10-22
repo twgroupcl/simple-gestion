@@ -81,7 +81,9 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" style="min-width: 14rem;">
                                 <h6 class="dropdown-header">Cuenta</h6>
-                                <a class="dropdown-item d-flex align-items-center" href="dashboard-settings.html"><i class="czi-settings opacity-60 mr-2"></i>Perfil</a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.profile') }}"><i class="czi-settings opacity-60 mr-2"></i>Perfil</a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.address') }}"><i class="czi-settings opacity-60 mr-2"></i>Direcciones</a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.order') }}"><i class="czi-settings opacity-60 mr-2"></i>Órdenes</a>
                                 {{-- <div class="dropdown-divider"></div>
                                 <h6 class="dropdown-header">Seller Dashboard</h6>
                                 <a class="dropdown-item d-flex align-items-center" href="dashboard-sales.html"><i class="czi-dollar opacity-60 mr-2"></i>Sales<span class="font-size-xs text-muted ml-auto">$1,375.00</span></a>
@@ -89,8 +91,7 @@
                                 <a class="dropdown-item d-flex align-items-center" href="dashboard-add-new-product.html"><i class="czi-cloud-upload opacity-60 mr-2"></i>Add New Product</a>
                                 <a class="dropdown-item d-flex align-items-center" href="dashboard-payouts.html"><i class="czi-currency-exchange opacity-60 mr-2"></i>Payouts</a> --}}
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="czi-sign-out opacity-60 mr-2"></i> Cerrar sesión
                                 </a>
 

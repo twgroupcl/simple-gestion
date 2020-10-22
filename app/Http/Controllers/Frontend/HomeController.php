@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         //return redirect('/seller/register');
         //return view('vendor');
-        return view('customer.order');
+        return view('marketplace');
     }
 
     public function productDetail(Request $request)

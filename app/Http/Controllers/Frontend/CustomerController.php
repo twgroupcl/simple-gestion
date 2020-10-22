@@ -79,4 +79,19 @@ class CustomerController extends Controller
 
         return view('customer.recovery')->with('success', '¡Hemos enviado un email con el enlace de restablecimiento de contraseña!');
     }
+
+    public function profile()
+    {
+        return view('customer.profile');
+    }
+
+    public function address()
+    {
+        return view('customer.address');
+    }
+
+    public function order()
+    {
+        return view('customer.order');
+    }
 }
