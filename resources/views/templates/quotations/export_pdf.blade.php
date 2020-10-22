@@ -21,7 +21,7 @@
     }
 
     .h3-titulo {
-        margin-bottom: 2px;
+        margin-bottom: 6px;
     }
 
     .p-estrecho {
