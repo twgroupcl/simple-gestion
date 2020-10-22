@@ -4,7 +4,7 @@
         <div class="px-4 mb-4">
             <div class="media align-items-center">
                 <div class="media-body pl-3">
-                    <h3 class="font-size-base mb-0">Susan Gardner</h3><span class="text-accent font-size-sm">s.gardner@example.com</span>
+                    <h3 class="font-size-base mb-0">{{ $customer->first_name }}</h3><span class="text-accent font-size-sm">{{ $customer->email }}</span>
                 </div>
             </div>
         </div>
