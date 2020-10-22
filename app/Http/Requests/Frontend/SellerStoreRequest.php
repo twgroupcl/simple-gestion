@@ -73,7 +73,7 @@ class SellerStoreRequest extends FormRequest
 
             'legal_representative_name' => 'Tu nombre',
             'custom_1' => 'Contrato con transbank',
-            'custom_2' => 'Currier utilizado',
+            'custom_2' => 'Despacho utilizado',
         ];
     }
 
@@ -88,7 +88,7 @@ class SellerStoreRequest extends FormRequest
             'required' => 'Es necesario completar el campo :attribute.',
             'string' => 'El campo :attribute debe ser texto',
             'date' => 'El campo :attribute debe ser de tipo fecha',
-            'unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
+            'unique' => 'El campo :attribute ya está siendo utilizado por otra tienda.',
             'exists' => 'No se pudo encontrar una relación con el campo :attribute.',
         ];
     }
