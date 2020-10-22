@@ -2,7 +2,7 @@
     <div class="widget widget-cart px-3 pt-2 pb-3">
         <div style="height: {{$items->count() > 3 ? '15' : $items->count() * 5}}rem;" data-simplebar data-simplebar-auto-hide="false">
             @foreach ($items as $item)
-                @livewire('cart.item', ['item' => $item, 'view' => 'cart.dropdown-item'], key($loop->index))
+                @livewire('cart.item', ['item' => $item, 'view' => 'cart.dropdown-item'], key($item->id + $loop->index))
             @endforeach
         </div>
         <div class="d-flex flex-wrap justify-content-between align-items-center py-3">

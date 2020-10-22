@@ -24,6 +24,7 @@ class Item extends Component
 
     protected $listeners = [
         'setQty',
+        'cart-item.updateQty' => 'updateQty',
         'updateItem' => 'updateCommune',
         'select-shipping-item' => 'addShippingItem',
     ];
@@ -46,6 +47,11 @@ class Item extends Component
         $this->total = $this->item->product->price * $qty;
         $this->item->qty = $qty;
         $this->emitUp('change', $this->item->id, $this->qty);
+    }
+
+    public function updateQty()
+    {
+        $this->qty = $this->item->qty;
     }
 
     public function deleteConfirm($id)

@@ -18,6 +18,7 @@ class Dropdown extends Component
     {
         $this->cart = Cart::getInstance(null,session());
         $this->items = $this->cart->cart_items;
+        $this->emitTo('cart.item', 'cart-item.updateQty');
     }
 
     public function mount()

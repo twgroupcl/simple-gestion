@@ -34,7 +34,6 @@ class Cart extends Component
         $cart->save();
 
         $this->addItem($cart, $product, $qty);
-        $this->emit('dropdown.update');
 
     }
 
@@ -90,11 +89,13 @@ class Cart extends Component
 
             $cart = CartItem::create($data);
             $this->emit('cart-counter:increment');
+
             if($cart){
                 session()->flash('message', '¡Éxito! El artículo se añadió al carro.');
             }else{
                 session()->flash('error', 'Ocurrió un error al momento de agregar el producto.');                
             }
         }
+        $this->emit('dropdown.update');
     }
 }
