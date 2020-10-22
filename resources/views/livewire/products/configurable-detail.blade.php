@@ -226,9 +226,18 @@
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Touch screen:</span><span>No</span></li>
                     </ul> --}}
                 </div>
-                {{-- <div class="col-lg-5 col-sm-6 offset-lg-1">
-                    <h3 class="h6">Functions</h3>
+                <div class="col-lg-5 col-sm-6 offset-lg-1">
+                    @if ($selectedChildrenId)
+                    <h3 class="h6">Dimensiones de envio</h3>
                     <ul class="list-unstyled font-size-sm pb-2">
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($currentProduct->weight, 2, ',', '.') }}</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($currentProduct->height, 2, ',', '.') }}</span></li>                    
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($currentProduct->depth, 2, ',', '.') }}</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($currentProduct->width, 2, ',', '.') }}</span></li>
+                    </ul>
+                    @endif
+                   {{-- <h3 class="h6">Functions</h3>
+                     <ul class="list-unstyled font-size-sm pb-2">
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Phone calls:</span><span>Incoming call notification</span></li>
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Monitoring:</span><span>Heart rate / Physical activity</span></li>
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">GPS support:</span><span>Yes</span></li>
@@ -243,8 +252,8 @@
                     <ul class="list-unstyled font-size-sm pb-2">
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Dimensions:</span><span>195 x 20 mm</span></li>
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Weight:</span><span>32 g</span></li>
-                    </ul>
-                </div> --}}
+                    </ul> --}}
+                </div> 
             </div>
         </div>
     </div>
