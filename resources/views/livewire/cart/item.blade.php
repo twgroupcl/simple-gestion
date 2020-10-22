@@ -11,7 +11,8 @@
             <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>8.5</div>
             <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>White &amp; Blue
             </div>
-            <div class="font-size-lg text-accent pt-2">{{ currencyFormat($product->price,'CLP',true) }} <!--$154.<small>00</small>--></div>
+            <div class="d-inline font-size-lg text-accent pt-2">{{ currencyFormat($product->price,'CLP',true) }} <!--$154.<small>00</small>--></div>
+            <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="#">por {{ $product->seller->visible_name }}</a>
         </div>
     </div>
     <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left"
