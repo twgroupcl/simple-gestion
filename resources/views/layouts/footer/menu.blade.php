@@ -2,6 +2,17 @@
     $collaboration = (isset($collaboration)) ? $collaboration : false;
 @endphp
 
+<!-- Toast: Added to Cart-->
+<div class="toast-container toast-bottom-center">
+    <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white"><i class="czi-check-circle mr-2"></i>
+            <h6 class="font-size-sm text-white mb-0 mr-auto">Added to cart!</h6>
+            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="toast-body">This item has been added to your cart.</div>
+    </div>
+</div>
+
 <!-- Footer-->
 <footer class="bg-light pt-5">
     @if($collaboration)
@@ -54,8 +65,10 @@
                     </ul>
                 </div>
             </div> --}}
-            <div class="col-md-12">
-                <div class="widget pb-2 mb-2">
+            <div class="col-md-12 mb-4">
+                <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
+
+                {{-- <div class="widget pb-2 mb-2">
                     <h3 class="widget-title text-dark pb-1">Organizan</h3>
                     <div class="d-flex flex-wrap">
                         <div class="col-6 mb-2 text-center">
@@ -88,7 +101,7 @@
                             <img class="img-fluid" src="{{ asset('img/logos/footer-ani.png') }}" alt="Corfo" />
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 {{-- <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-light pb-1">Stay informed</h3>
                     <form class="cz-subscribe-form validate" action="https://studio.us12.list-manage.com/subscribe/post?u=c7103e2c981361a6639545bd5&amp;amp;id=29ca296126" method="post" name="mc-embedded-subscribe-form" target="_blank" novalidate>

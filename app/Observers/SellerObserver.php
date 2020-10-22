@@ -2,19 +2,56 @@
 
 namespace App\Observers;
 
+use App\User;
 use App\Models\Seller;
+use App\Models\BranchUser;
+use App\Models\CompanyUser;
 use App\Models\SellerAddress;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use App\Models\PaymentMethodSeller;
 use App\Models\ShippingMethodSeller;
+use Backpack\Settings\app\Models\Setting;
 
 class SellerObserver
 {
-
     public function creating(Seller $seller)
     {
         $seller->source = determineSource(request());
+
+        if(Setting::get('seller_create_user')) {
+            $user = User::create([
+                'name' => $seller->name,
+                'email' => $seller->email,
+                'password' => $seller->password,
+            ]);
+
+            $seller->user_id = $user->id;
+
+            $seller_role_id = Setting::get('default_seller_role');
+            $seller_role = Role::find($seller_role_id)->name;
+
+            $seller_company = CompanyUser::create([
+                'user_id' => $seller->user_id,
+                'company_id' => $seller->company_id,
+                'role_id' => $seller_role_id,
+            ]);
+
+            if(empty(backpack_user())) {
+                $branch_id = Setting::get('default_branch');
+            } else {
+                $branch_id = backpack_user()->current()->branch->id;
+            }
+
+            $seller_branch = BranchUser::create([
+                'user_id' => $seller->user_id,
+                'branch_id' => $branch_id,
+                'is_default' => 1,
+            ]);
+
+            $user->assignRole($seller_role);
+        }
     }
 
     public function created(Seller $seller)
@@ -39,6 +76,14 @@ class SellerObserver
             if (array_key_exists('addresses_data', $dirtyModel)) {
                 $this->syncAddresses($seller);
             }
+        }
+
+        if(!empty($seller->user())) {
+            $seller->user()->update([
+                'name' => $seller->name,
+                'email' => $seller->email,
+                'password' => $seller->password,
+            ]);
         }
     }
 
@@ -105,7 +150,7 @@ class SellerObserver
         $paymentmethods = $paymentmethods->filter();
 
         if($paymentmethods->count() > 0){
-            
+
             $seller->paymentmethods()->saveMany(
                 $paymentmethods
             );
