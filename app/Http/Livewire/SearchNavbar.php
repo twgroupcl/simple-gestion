@@ -8,6 +8,17 @@ use App\Models\ProductCategory;
 class SearchNavbar extends Component
 {
     public $categories;
+    public $query;
+    public $selected = '';
+
+    public function search(){
+        return redirect()->to('/search-products/'.$this->selected.'/'.$this->query);
+    }
+
+    public function updatedSelected($value)
+    {
+        $this->selected = $value;
+    }
     
     public function render()
     {

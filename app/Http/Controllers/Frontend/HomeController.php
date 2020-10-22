@@ -20,4 +20,9 @@ class HomeController extends Controller
         $product = Product::where('url_key', $request->slug)->firstorfail();
         return view('product', compact('product'));
     }
+
+    public function searchProduct(Request $request)
+    {
+        
+    } 
 }
