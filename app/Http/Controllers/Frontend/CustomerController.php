@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
+use App\User;
 
 class CustomerController extends Controller
 {
@@ -82,7 +83,8 @@ class CustomerController extends Controller
 
     public function profile()
     {
-        return view('customer.profile');
+        $customer = Customer::firstWhere('user_id', auth()->user()->id);
+        return view('customer.profile', ['customer' => $customer]);
     }
 
     public function address()
