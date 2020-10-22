@@ -122,3 +122,10 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/rut-formatter.js') }}"></script>
+<script>
+    $('.uid').rut();
+</script>
+@endpush
