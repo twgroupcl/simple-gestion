@@ -2,7 +2,9 @@
 
 @section('content')
 <!-- Add New Address-->
-<form class="needs-validation modal fade" method="post" id="add-address" tabindex="-1" novalidate>
+<form class="needs-validation modal fade" method="POST" action="{{ route('address.update', ['customer' => $customer]) }}" id="add-address" tabindex="-1" novalidate>
+    @method('PUT')
+    @csrf
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
