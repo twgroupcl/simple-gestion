@@ -1,6 +1,12 @@
 <div>
     <div class="widget-cart-item pb-2 border-bottom">
-        <button class="close text-danger" type="button" aria-label="Remove"><span aria-hidden="true">&times;</span></button>
+        @if ($confirm == $item->id)
+            <button class="close text-danger" wire:click.prevent="delete" type="button" aria-label="Remove"><span aria-hidden="true"><i
+                class="czi-trash"></i></span></button>
+        @else
+            <button class="close text-danger" wire:click.prevent="deleteConfirm({{$item->id}})" type="button" aria-label="Remove"><span aria-hidden="true"><i
+                class="czi-close-circle"></i></span></button>
+        @endif
         <div class="media align-items-center">
             <a class="d-block mr-2" href="{{route('product',['slug' => $product->url_key])}}"><img width="64" src="{{ url($product->getFirstImagePath()) }}" alt="Product" /></a>
             <div class="media-body">

@@ -29,17 +29,14 @@ class Preview extends Component
 
     public function change(CartItem $item, int $qty)
     {
-        $item = $this->items->find($item->id);
-        $item->qty = $qty;
-        $item->update();
-
+        $this->cart->recalculateSubtotal();
+        $this->cart->update();
         $this->total = $this->getTotal();
-
+        $this->emit('dropdown.update');
     }
 
-    public function deleteItem($itemId)
+    public function deleteItem()
     {
-        CartItem::find($itemId)->delete();
         $this->emit('cart-counter:decrease');
         $this->items = $this->getItems();
         $this->total = $this->getTotal();
