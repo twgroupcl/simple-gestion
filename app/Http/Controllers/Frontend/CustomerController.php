@@ -96,4 +96,21 @@ class CustomerController extends Controller
     {
         return view('customer.order');
     }
+
+    public function update(Customer $customer)
+    {
+        $validatedData = request()->validate([
+            'uid' => 'required|unique:customers,uid,'.$customer->id,
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'password' => 'confirmed',
+        ]);
+        if (blank($validatedData['password'])) {
+            unset($validatedData['password']);
+        }
+
+        $customer->update($validatedData);
+
+        return redirect()->route('customer.profile');
+    }
 }
