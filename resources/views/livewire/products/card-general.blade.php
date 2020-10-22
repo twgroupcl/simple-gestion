@@ -23,7 +23,14 @@
                         <div class="card-body py-2"><a class="product-meta d-block font-size-xs pb-1" href="{{route('product',['slug' => $product->url_key])}}">{{$product->name}}</a>
                             <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}">{{$product->short_description}}</a></h3>
                             <div class="d-flex justify-content-between">
+                                @if ($product->children()->count())
+                                <div class="product-price">
+                                    <span class="text-accent">
+                                        {{currencyFormat($product->getPriceRange()[0],'CLP',true)}} - {{currencyFormat($product->getPriceRange()[1],'CLP',true)}}
+                                    </span></div>
+                                @else 
                                 <div class="product-price"><span class="text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</span></div>
+                                @endif
                                 <!--
                                     <div class="star-rating"><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i>
                                     </div>
