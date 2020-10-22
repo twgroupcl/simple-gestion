@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
+use App\Models\Commune;
 use App\User;
 
 class CustomerController extends Controller
@@ -97,7 +98,11 @@ class CustomerController extends Controller
     public function address()
     {
         $customer = Customer::firstWhere('user_id', auth()->user()->id);
-        return view('customer.address', ['customer' => $customer]);
+        $communes = Commune::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        return view('customer.address', [
+            'customer' => $customer,
+            'communes' => $communes,
+        ]);
     }
 
     public function order()
