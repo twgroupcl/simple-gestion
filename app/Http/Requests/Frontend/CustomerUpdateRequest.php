@@ -60,6 +60,7 @@ class CustomerUpdateRequest extends FormRequest
     {
         return [
             'required' => 'Es necesario completar el campo :attribute.',
+            'confirmed' => 'Los campos :attribute no coinciden.',
             'string' => 'El campo :attribute debe ser texto',
             'date' => 'El campo :attribute debe ser de tipo fecha',
             'unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
