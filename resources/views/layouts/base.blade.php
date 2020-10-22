@@ -52,6 +52,7 @@
     @yield('content')
 
     <!-- Footer-->
+    @livewire('flash-message')
     @include('layouts.footer.index')
 
     <!-- Vendor scrits: js libraries and plugins-->

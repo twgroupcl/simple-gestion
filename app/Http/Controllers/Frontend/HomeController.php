@@ -11,8 +11,8 @@ class HomeController extends Controller
     public function index()
     {
         //return redirect('/seller/register');
-        //return view('vendor');
-        return view('marketplace');
+        $products = Product::where('status','=','1')->with('seller')->with('categories')->limit(6)->get();
+        return view('marketplace', compact('products'));
     }
 
     public function productDetail(Request $request)
