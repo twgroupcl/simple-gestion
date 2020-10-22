@@ -3,129 +3,216 @@
     <h2 class="h6 border-bottom pb-3 mb-3">Información de envío</h2>
     <!-- Shipping detail-->
     <div class="row pb-4">
-        <div class="col-12 form-group text-center">
+        <div class="col-12 form-group text-left">
             <div class="custom-control custom-checkbox pb-3 mb-3">
-                <input class="custom-control-input" type="checkbox" id="same-address">
-                <label class="custom-control-label" for="same-address">¿Eres un cliente de tipo
-                    empresa?</label>
+                <input class="custom-control-input" type="checkbox" id="is-business" wire:model="is_business">
+                <label class="custom-control-label" for="is-business">¿Eres una persona juridica?</label>
             </div>
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-uid">RUT <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="2.895.271-6" id="sd-uid">
+            <input class="form-control" type="text" placeholder="" wire:model="data.uid" id="sd-uid">
+            @error('data.uid') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
+        @if ($is_business)
+            <div class="col-sm-6 form-group">
+                <label for="sd-businessname">Razón social <span class='text-danger'>*</span></label>
+                <input class="form-control" type="text" placeholder="" wire:model="data.business_name"
+                    id="sd-businessname">
+                @error('data.business_name') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+        @else
+            <div class="col-sm-6 form-group">
+                <label for="sd-fisrtname">Nombre <span class='text-danger'>*</span></label>
+                <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="data.first_name"
+                    id="sd-fisrtname">
+                @error('data.first_name') <small class="text-danger">{{ $message }}</small> @enderror
+
+            </div>
+
+            <div class="col-sm-6 form-group">
+                <label for="sd-lastname">Apellido <span class='text-danger'>*</span></label>
+                <input class="form-control" type="text" placeholder="" id="sd-lastname"  wire:model="data.last_name">
+                @error('data.last_name') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+        @endif
         <div class="col-sm-6 form-group">
-            <label for="sd-fisrtname">Nombre <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Jonathan" id="sd-fisrtname">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="sd-lastname">Apellido <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Doe" id="sd-lastname">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="sd-email">Email address <span class='text-danger'>*</span></label>
-            <input class="form-control" type="email" placeholder="contact@createx.studio" id="sd-email">
+            <label for="sd-email">Correo electrónico <span class='text-danger'>*</span></label>
+            <input class="form-control" type="email" placeholder="" wire:model="data.email" id="sd-email">
+            @error('data.email') <small class="text-danger">{{ $message }}</small> @enderror
+
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-street">Calle<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Av. Siempreviva" id="sd-street">
+            <input class="form-control" type="text" placeholder="" wire:model="data.address_street" id="sd-street">
+            @error('data.address_street') <small class="text-danger">{{ $message }}</small> @enderror
+
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-number">Número<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="742" id="sd-number">
+            <input class="form-control" type="text" placeholder="" wire:model="data.address_number" id="sd-number">
+            @error('data.address_number') <small class="text-danger">{{ $message }}</small> @enderror
+
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-subnumber">Oficina/Casa/Dpto</label>
-            <input class="form-control" type="text" placeholder="" id="sd-subnumber">
+            <input class="form-control" type="text" placeholder="" wire:model="data.address_office" id="sd-subnumber">
+            @error('data.address_office') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-commune">Comuna <span class='text-danger'>*</span></label>
-            <select class="custom-select" id="sd-commune">
+            <select class="custom-select" wire:model="data.address_commune_id" id="sd-commune">
                 <option value>Seleccione una comuna</option>
+                @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
+                    <option value="{{ $commune->id }}">{{ $commune->name }}</option>
+                @endforeach
             </select>
+            @error('data.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-cellphone">Celular<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="" id="sd-cellphone">
+            <input class="form-control" type="text" placeholder="" wire:model="data.cellphone" id="sd-cellphone">
+            @error('data.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
+
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-phone">Teléfono fijo</label>
-            <input class="form-control" type="text" placeholder="" id="sd-phone">
+            <input class="form-control" type="text" placeholder="" wire:model="data.phone" id="sd-phone">
+            @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
+
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-receiver">Nombre de quien va a recibir</label>
-            <input class="form-control" type="text" placeholder="" id="sd-receiver">
+            <input class="form-control" type="text" placeholder="" wire:model="data.receiver_name" id="sd-receiver">
+            @error('data.receiver_name') <small class="text-danger">{{ $message }}</small> @enderror
+
         </div>
         <div class="col-12 form-group">
             <label for="sd-message">Detalle</label>
-            <textarea class="form-control" id="sd-message" rows="6"
-                placeholder="Ingrese algun detalle en caso de ser necesario" required=""
-                spellcheck="false" data-gramm="false"></textarea>
+            <textarea class="form-control" wire:model="data.shipping_details" id="sd-message" rows="6"
+                placeholder="Ingrese algun detalle en caso de ser necesario" required="" spellcheck="false"
+                data-gramm="false"></textarea>
+            @error('data.shipping_details') <small class="text-danger">{{ $message }}</small> @enderror
+
         </div>
     </div>
 
     <!-- Title-->
     <h2 class="h6 border-bottom pb-3 mb-3">Información de Facturación</h2>
     <div class="custom-control custom-checkbox pb-3 mb-3">
-        <input class="custom-control-input" type="checkbox" checked="" id="same-address">
-        <label class="custom-control-label" for="same-address">Igual que la dirección de envío</label>
+        <input class="custom-control-input" type="checkbox"  wire:model="anotherDataInvoice"
+            id="same-address">
+        <label class="custom-control-label" for="same-address">Indicar otros datos para facturación</label>
     </div>
-    <!-- Billing detail-->
-    <div id="billing-detail" class="row pb-4">
-        <div class="col-12 form-group text-center">
-            <div class="custom-control custom-checkbox pb-3 mb-3">
-                <input class="custom-control-input" type="checkbox" id="same-address">
-                <label class="custom-control-label" for="same-address">¿A quien se factura es una
-                    empresa?</label>
+    @if ($anotherDataInvoice)
+        <!-- Billing detail-->
+        <div id="billing-detail" class="row pb-4">
+            <div class="col-12 form-group text-left">
+                <div class="custom-control custom-checkbox pb-3 mb-3">
+                    <input class="custom-control-input" type="checkbox" wire:model="invoice.is_business"
+                        id="bd-isbusiness">
+                    <label class="custom-control-label" for="bd-isbusiness">¿Es una persona juridica?</label>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-uid">RUT <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="6.331.817-5" id="bd-uid">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-firstname">Nombre <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Jonathan" id="bd-firstname">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-lastname">Apellido <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Doe" id="bd-lastname">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-email">Email address <span class='text-danger'>*</span></label>
-            <input class="form-control" type="email" placeholder="contact@createx.studio" id="bd-email">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-street">Calle<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Av. Siempreviva" id="bd-street">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-number">Número<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="742" id="bd-number">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-subnumber">Oficina/Casa/Dpto</label>
-            <input class="form-control" type="text" placeholder="" id="bd-subnumber">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-commune">Comuna <span class='text-danger'>*</span></label>
-            <select class="custom-select" id="bd-commune">
-                <option value>Seleccione una comuna</option>
-            </select>
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-cellphone">Celular<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="" id="bd-cellphone">
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="bd-phone">Teléfono fijo</label>
-            <input class="form-control" type="text" placeholder="" id="bd-phone">
-        </div>
+            <div class="col-sm-6 form-group">
+                <label for="bd-uid">RUT <span class='text-danger'>*</span></label>
+                <input class="form-control" type="text" placeholder="" wire:model="invoice.uid" id="bd-uid">
+                @error('invoice.uid') <small class="text-danger">{{ $message }}</small> @enderror
 
-    </div>
+            </div>
+            @if ($invoice['is_business'])
+                <div class="col-sm-6 form-group">
+                    <label for="bd-businessname">Razón social <span class='text-danger'>*</span></label>
+                    <input class="form-control" type="text" placeholder="" wire:model="invoice.business_name"
+                        id="bd-businessname">
+                    @error('invoice.business_name') <small class="text-danger">{{ $message }}</small> @enderror
+
+                </div>
+            @else
+                <div class="col-sm-6 form-group">
+                    <label for="bd-firstname">Nombre <span class='text-danger'>*</span></label>
+                    <input class="form-control" type="text" placeholder="" wire:model="invoice.first_name"
+                        id="bd-firstname">
+                    @error('invoice.first_name') <small class="text-danger">{{ $message }}</small> @enderror
+
+                </div>
+            @endif
+            @if (!$invoice['is_business'])
+                <div class="col-sm-6 form-group">
+                    <label for="bd-lastname">Apellido <span class='text-danger'>*</span></label>
+                    <input class="form-control" type="text" placeholder="" wire:model="invoice.last_name"
+                        id="bd-lastname">
+                    @error('invoice.last_name') <small class="text-danger">{{ $message }}</small> @enderror
+
+                </div>
+            @endif
+            <div class="col-sm-6 form-group">
+                <label for="bd-email">Correo electrónico<span class='text-danger'>*</span></label>
+                <input class="form-control" type="email" placeholder="" wire:model="invoice.email" id="bd-email">
+                @error('invoice.email') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="bd-street">Calle<span class='text-danger'>*</span></label>
+                <input class="form-control" type="text" placeholder="" wire:model="invoice.address_street"
+                    id="bd-street">
+                @error('invoice.address_street') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="bd-number">Número<span class='text-danger'>*</span></label>
+                <input class="form-control" type="text" placeholder="" wire:model="invoice.address_number"
+                    id="bd-number">
+                @error('invoice.address_number') <small class="text-danger">{{ $message }}</small> @enderror
+
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="bd-subnumber">Oficina/Casa/Dpto</label>
+                <input class="form-control" type="text" placeholder="" wire:model="invoice.address_office"
+                    id="bd-subnumber">
+                @error('invoice.address_office') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="bd-commune">Comuna <span class='text-danger'>*</span></label>
+                <select class="custom-select" wire:model="invoice.address_commune_id" id="bd-commune">
+                    <option value>Seleccione una comuna</option>
+                    @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
+                        <option value="{{ $commune->id }}">{{ $commune->name }}</option>
+                    @endforeach
+                </select>
+                @error('invoice.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="bd-cellphone">Celular<span class='text-danger'>*</span></label>
+                <input class="form-control" type="text" placeholder="" wire:model="invoice.cellphone" id="bd-cellphone">
+                @error('invoice.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
+
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="bd-phone">Teléfono fijo</label>
+                <input class="form-control" type="text" placeholder="" wire:model="invoice.phone" id="bd-phone">
+                @error('invoice.phone') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            @if ($invoice['is_business'])
+                <div class="col-sm-6 form-group">
+                    <label for="bd-commune">Giros <span class='text-danger'>*</span></label>
+                    <select class="custom-select" wire:model="invoice.business_activity_id" id="bd-business_activity">
+                        <option value>Seleccione las actividades...</option>
+                        @foreach (\App\Models\BusinessActivity::orderBy('name', 'asc')->get(['id', 'name']) as $businessActivity)
+                            <option value="{{ $businessActivity->id }}">{{ $businessActivity->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('invoice.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
+                    @error('invoice.business_activity_id') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+            @endif
+        </div>
+    @endif
     {{-- <div class="d-none d-lg-flex pt-4 mt-3">
-        <div class="w-50 pr-3"><a class="btn btn-secondary btn-block"  wire:click="prevStep()"><i class="czi-arrow-left mt-sm-0 mr-1"></i><span class="d-none d-sm-inline">Volver al carro</span><span class="d-inline d-sm-none">Back</span></a></div>
-        <div class="w-50 pl-2"><a class="btn btn-primary btn-block"  wire:click="nextStep()"><span class="d-none d-sm-inline">Seleccionar metodos de envío</span><span class="d-inline d-sm-none">Next</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></a></div>
+        <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
+                    class="czi-arrow-left mt-sm-0 mr-1"></i><span class="d-none d-sm-inline">Volver al carro</span><span
+                    class="d-inline d-sm-none">Back</span></a></div>
+        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click="nextStep()"><span
+                    class="d-none d-sm-inline">Seleccionar metodos de envío</span><span
+                    class="d-inline d-sm-none">Next</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></a></div>
     </div> --}}
 
 </div>

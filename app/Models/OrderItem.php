@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Region;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Province extends Model
+class OrderItem extends Model
 {
     use CrudTrait;
 
@@ -16,7 +16,7 @@ class Province extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'provinces';
+    protected $table = 'order_items';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -35,9 +35,9 @@ class Province extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function attribute_region()
+    public function order()
     {
-        return $this->belongsTo(Region::class, 'region_id');
+        return $this->belongsTo(Order::class);
     }
 
     /*

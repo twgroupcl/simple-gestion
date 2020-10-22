@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Models\Province;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Commune extends Model
 {
@@ -34,7 +35,10 @@ class Commune extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function attribute_province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
