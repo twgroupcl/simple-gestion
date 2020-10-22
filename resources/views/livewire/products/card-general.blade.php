@@ -9,6 +9,9 @@
         <div class="row pt-2 mx-n2">
             <!-- Product-->
             @foreach($products as $product)
+            @php
+            if ($product->parent()->count()) continue;
+             @endphp
                 <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
                     <div class="card product-card">
                         <!--

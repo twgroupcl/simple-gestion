@@ -37,7 +37,10 @@
             <div class="tab-content px-lg-3">
                 <!-- General info tab-->
                 <div class="tab-pane fade show active" id="general" role="tabpanel">
-                    <div class="row">
+                    @if ($product->product_type->id == 2)
+                        @livewire('products.configurable-detail', ['product' => $product])   
+                    @elseif ($product->product_type->id == 1)
+                    <div class="row">    
                         <!-- Product gallery-->
                         <div class="col-lg-7 pr-lg-0">
                             <div class="cz-product-gallery">
@@ -181,6 +184,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
                 <!-- Tech specs tab-->
                 <div class="tab-pane fade" id="specs" role="tabpanel">
@@ -188,7 +192,9 @@
                         <div class="media align-items-center mr-md-3"><img src="{{ url($product->getFirstImagePath()) }}" width="90" alt="Product thumb">
                             <div class="mdeia-body pl-3">
                                 <h6 class="font-size-base mb-2">{{$product->name}}</h6>
+                                @if ($product->product_type->id == 1)
                                 <div class="h4 font-weight-normal text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
+                                @endif
                             </div>
                         </div>
                         <div class="d-flex align-items-center pt-3">
