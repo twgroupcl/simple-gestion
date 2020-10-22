@@ -45,14 +45,14 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-city">RUT</label>
-                            <input class="form-control" type="text" id="address-city" required>
+                            <input class="form-control" type="text" id="address-city">
                             <div class="invalid-feedback">Escriba el Rut</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-line1">Nombre</label>
-                            <input class="form-control" type="text" id="address-line1" required>
+                            <input class="form-control" type="text" id="address-line1">
                             <div class="invalid-feedback">Escriba el nombre</div>
                         </div>
                     </div>
@@ -66,21 +66,21 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-zip">Email</label>
-                            <input class="form-control" type="text" id="address-zip" required>
+                            <input class="form-control" type="text" id="address-zip">
                             <div class="invalid-feedback">Escriba el email</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-zip">Teléfono</label>
-                            <input class="form-control" type="text" id="address-zip" required>
+                            <input class="form-control" type="text" id="address-zip">
                             <div class="invalid-feedback">Escriba el teléfono</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-zip">Teléfono móvil</label>
-                            <input class="form-control" type="text" id="address-zip" required>
+                            <input class="form-control" type="text" id="address-zip">
                             <div class="invalid-feedback">Escriba el teléfono móvil</div>
                         </div>
                     </div>
