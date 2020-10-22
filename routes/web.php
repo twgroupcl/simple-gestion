@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return redirect(backpack_url('dashboard'));
 // });
 
-Route::get('/', 'Frontend\HomeController@index');
+Route::get('/', 'Frontend\HomeController@index')->name('index');
 
 Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer.sign');
 Route::post('/customer/register', 'Frontend\CustomerController@store')->name('customer.frontend.store');
@@ -41,4 +41,6 @@ Route::get('/shop-list/', function () {
 
 //Auth::routes();
 
-Route::get('/home', 'Frontend\HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
+Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');

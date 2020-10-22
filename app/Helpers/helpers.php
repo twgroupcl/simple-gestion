@@ -63,22 +63,19 @@ if (! function_exists('sanitizeNumber')) {
     }
 }
 
-if (! function_exists('determineSource')) {
-    function determineSource(Request $request): string
-    {
-        if ( strpos($request->path(), 'admin/') !== false ) {
-            return "Admin";
-        } 
-        
-        return "Front";
-    }
-}
-
 if (! function_exists('currencyFormat')) {
+    /**
+     * Price format
+     *
+     * @param string $value amount
+     * @param string $currency currency code (currencies table)
+     * @param bool $symbol return amount with symbol or not
+     * @return string price formatted
+     */
     function currencyFormat(string $value, string $currency, bool $symbol = false) : string
     {
         $currency = Currency::where('code',$currency)->firstOrFail();
-        
+
         $price = number_format(
             $value,
             $currency->precision,
@@ -89,5 +86,16 @@ if (! function_exists('currencyFormat')) {
         $price = $symbol ? $currency->symbol . $price : $price;
 
         return $price;
+    }
+}
+
+if (! function_exists('determineSource')) {
+    function determineSource(Request $request): string
+    {
+        if ( strpos($request->path(), 'admin/') !== false ) {
+            return "Admin";
+        }
+
+        return "Front";
     }
 }
