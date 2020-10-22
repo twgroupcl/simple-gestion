@@ -6,4 +6,4 @@
 
 @include('layouts.footer.toolbar')
 
-@include('layouts.footer.scripts')
+@include('layouts.footer.top')
