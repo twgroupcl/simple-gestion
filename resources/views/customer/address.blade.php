@@ -13,28 +13,28 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-fn">Calle <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="address-fn" required>
+                            <label for="street">Calle <span class="text-danger">*</span></label>
+                            <input class="form-control" name="street" type="text" id="street" required>
                             <div class="invalid-feedback">Escriba la calle</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-ln">Número <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="address-ln" required>
+                            <label for="number">Número <span class="text-danger">*</span></label>
+                            <input class="form-control" name="number" type="text" id="number" required>
                             <div class="invalid-feedback">Escriba el número!</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-company">Casa/Dpto/Oficina</label>
-                            <input class="form-control" type="text" id="address-company">
+                            <input class="form-control" type="text" name="subnumber" id="address-company">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-country">Comuna <span class="text-danger">*</span></label>
-                            <select class="custom-select" id="address-country" required>
+                            <label for="commune_id">Comuna <span class="text-danger">*</span></label>
+                            <select class="custom-select" name="commune_id" id="commune_id" required>
                                 @foreach ($communes as $id => $commune)
                                     <option value="{{ $id }}">{{ $commune }}</option>
                                 @endforeach
@@ -44,43 +44,43 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-city">RUT</label>
-                            <input class="form-control" type="text" id="address-city">
+                            <label for="uid">RUT</label>
+                            <input class="form-control" name="uid" type="text" id="uid">
                             <div class="invalid-feedback">Escriba el Rut</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-line1">Nombre</label>
-                            <input class="form-control" type="text" id="address-line1">
+                            <label for="first_name">Nombre</label>
+                            <input class="form-control" name="first_name" type="text" id="first_name">
                             <div class="invalid-feedback">Escriba el nombre</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-line2">Apellido</label>
-                            <input class="form-control" type="text" id="address-line2">
+                            <label for="last_name">Apellido</label>
+                            <input class="form-control" name="last_name" type="text" id="last_name">
                             <div class="invalid-feedback">Escriba el apellido</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-zip">Email</label>
-                            <input class="form-control" type="text" id="address-zip">
+                            <label for="email">Email</label>
+                            <input class="form-control" name="email" type="text" id="email">
                             <div class="invalid-feedback">Escriba el email</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-zip">Teléfono</label>
-                            <input class="form-control" type="text" id="address-zip">
+                            <label for="phone">Teléfono</label>
+                            <input class="form-control" name="phone" type="text" id="phone">
                             <div class="invalid-feedback">Escriba el teléfono</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-zip">Teléfono móvil</label>
-                            <input class="form-control" type="text" id="address-zip">
+                            <label for="cellphone">Teléfono móvil</label>
+                            <input class="form-control" name="cellphone" type="text" id="cellphone">
                             <div class="invalid-feedback">Escriba el teléfono móvil</div>
                         </div>
                     </div>
