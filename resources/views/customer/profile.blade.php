@@ -38,14 +38,6 @@
             </div>
             <!-- Profile form-->
             <form>
-                <div class="bg-secondary rounded-lg p-4 mb-4">
-                    <div class="media align-items-center"><img src="img/shop/account/avatar.jpg" width="90" alt="Susan Gardner">
-                        <div class="media-body pl-3">
-                            <button class="btn btn-light btn-shadow btn-sm mb-2" type="button"><i class="czi-loading mr-2"></i>Change avatar</button>
-                            <div class="p mb-0 font-size-ms text-muted">Upload JPG, GIF or PNG image. 300 x 300 required.</div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
