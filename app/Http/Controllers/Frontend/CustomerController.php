@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
+use App\User;
 
 class CustomerController extends Controller
 {
@@ -41,7 +42,13 @@ class CustomerController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('home');
+            if(Auth::user()->hasRole('Cliente Marketplace')) {
+                return redirect()->intended('home');
+            }
+
+            Auth::logout();
+
+            return redirect('home');
         }
 
         return view('customer.sign')->with('error', 'Upps! Las credenciales son incorrectas.');
@@ -78,5 +85,38 @@ class CustomerController extends Controller
         // });
 
         return view('customer.recovery')->with('success', '¡Hemos enviado un email con el enlace de restablecimiento de contraseña!');
+    }
+
+    public function profile()
+    {
+        $customer = Customer::firstWhere('user_id', auth()->user()->id);
+        return view('customer.profile', ['customer' => $customer]);
+    }
+
+    public function address()
+    {
+        return view('customer.address');
+    }
+
+    public function order()
+    {
+        return view('customer.order');
+    }
+
+    public function update(Customer $customer)
+    {
+        $validatedData = request()->validate([
+            'uid' => 'required|unique:customers,uid,'.$customer->id,
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'password' => 'confirmed',
+        ]);
+        if (blank($validatedData['password'])) {
+            unset($validatedData['password']);
+        }
+
+        $customer->update($validatedData);
+
+        return redirect()->route('customer.profile');
     }
 }
