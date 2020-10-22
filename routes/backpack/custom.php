@@ -55,6 +55,7 @@ Route::group([
     Route::crud('shippingmethod', 'ShippingMethodCrudController');
     Route::crud('paymentmethod', 'PaymentMethodCrudController');
     Route::crud('quotation', 'QuotationCrudController');
+    Route::get('quotation/{id}/export', 'QuotationCrudController@exportPDF');
     Route::post('quotation/addresses', 'QuotationCrudController@addresses');
 
     //CHART routes

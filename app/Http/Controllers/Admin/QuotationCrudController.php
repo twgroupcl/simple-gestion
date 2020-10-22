@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Customer;
 use App\Models\Quotation;
@@ -48,13 +49,8 @@ class QuotationCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        //CRUD::setFromDb(); // columns
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+        // Export PDF option
+        $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
 
         CRUD::addColumn([
             'label' => 'Fecha cotización',
@@ -523,5 +519,26 @@ class QuotationCrudController extends CrudController
         $customer = Customer::where('id', $form['customer_id'])->first();
 
         return $customer->addresses()->paginate(100);
+    }
+
+    public function exportPDF($id) {
+
+        $quotation = Quotation::findOrFail($id);
+
+        /* return view('templates.quotations.export_pdf', [
+            'quotation' => $quotation,
+            'due_date' => new Carbon($quotation->expiry_date),
+            'creation_date'=> new Carbon($quotation->quotation_date),
+            'title' => 'Cotizacion',
+        ]); */
+
+        $pdf = \PDF::loadView('templates.quotations.export_pdf', [
+            'quotation' => $quotation,
+            'due_date' => new Carbon($quotation->expiry_date),
+            'creation_date'=> new Carbon($quotation->quotation_date),
+            'title' => 'Cotizacion',
+        ]);
+
+        return $pdf->stream('invoice.pdf');
     }
 }
