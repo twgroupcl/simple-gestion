@@ -84,6 +84,12 @@
                             <div class="invalid-feedback">Escriba el teléfono móvil</div>
                         </div>
                     </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="extra">Detalles</label>
+                            <textarea class="form-control" name="extra" id="extra"></textarea>                            <div class="invalid-feedback">Escriba el teléfono móvil</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
