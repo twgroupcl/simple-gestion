@@ -17,8 +17,10 @@
     <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left"
         style="max-width: 9rem;">
         <div class="form-group mb-0">
-            <label class="font-weight-medium" for="quantity1">Cantidad</label>
-            <input class="form-control" type="number" id="quantity1" value="1">
+            @livewire('qty-item', [
+                'qty' => $item->qty,
+                //'parentListener' => 'setQty' implicit
+            ])
         </div>
         @if ($confirm == $item->id)
             <button wire:click.prevent="delete" class="btn btn-link px-0 text-danger" type="button"><i

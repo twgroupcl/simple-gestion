@@ -16,56 +16,6 @@
                     @foreach ($items as $item)
                         @livewire('cart.item', ['item' => $item], key($item->id))
                     @endforeach
-                    <!-- Item-->
-                    <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
-                        <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left"><a
-                                class="d-inline-block mx-auto mr-sm-4" href="shop-single-v1.html"
-                                style="width: 10rem;"><img src="img/marketplace/products/widget/02.jpg" alt="Product"></a>
-                            <div class="media-body pt-2">
-                                <h3 class="product-title font-size-base mb-2"><a href="shop-single-v1.html">Gravity Devices UI Mockup (PSD)</a></h3>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>Tommy Hilfiger
-                                </div>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Khaki</div>
-                                <div class="font-size-lg text-accent pt-2">$79.<small>50</small></div>
-                            </div>
-                        </div>
-                        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left"
-                            style="max-width: 9rem;">
-                            <div class="form-group mb-0">
-                                <label class="font-weight-medium" for="quantity2">Cantidad</label>
-                                <input class="form-control" type="number" id="quantity2" value="1">
-                            </div>
-                            <button class="btn btn-link px-0 text-danger" type="button"><i
-                                    class="czi-close-circle mr-2"></i><span class="font-size-sm">Eliminar</span></button>
-                        </div>
-                    </div>
-                    <!-- Item-->
-                    <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
-                        <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left"><a
-                                class="d-inline-block mx-auto mr-sm-4" href="shop-single-v1.html"
-                                style="width: 10rem;"><img src="img/marketplace/products/widget/03.jpg" alt="Product"></a>
-                            <div class="media-body pt-2">
-                                <h3 class="product-title font-size-base mb-2"><a href="shop-single-v1.html">3-Color Sun
-                                        Stash Hat</a></h3>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>The North Face
-                                </div>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Pink / Beige / Dark
-                                    blue</div>
-                                <div class="font-size-lg text-accent pt-2">$22.<small>50</small></div>
-                            </div>
-                        </div>
-                        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left"
-                            style="max-width: 9rem;">
-                            <div class="form-group mb-0">
-                                <label class="font-weight-medium" for="quantity3">Cantidad</label>
-                                <input class="form-control" type="number" id="quantity3" value="1">
-                            </div>
-                            <button class="btn btn-link px-0 text-danger" type="button"><i
-                                    class="czi-close-circle mr-2"></i><span class="font-size-sm">Eliminar</span></button>
-                        </div>
-                    </div>
-
-
                 </div>
             </section>
             <!-- Sidebar-->
@@ -74,7 +24,8 @@
                 <div class="cz-sidebar-static h-100 ml-auto border-left">
                     <div class="text-center mb-4 pb-3 border-bottom">
                         <h2 class="h6 mb-3 pb-1">Total Carro</h2>
-                        <h3 class="font-weight-normal">$56.<small>00</small></h3>
+                        <!--<h3 class="font-weight-normal">$56.<small>00</small></h3>-->
+                        <h3 class="font-weight-normal">{{ currencyFormat($total, 'CLP', true) }}</h3>
                     </div>
                     <div class="text-center mb-4 pb-3 border-bottom">
                         <h2 class="h6 mb-3 pb-1">Cupón de descuento</h2>
@@ -86,7 +37,7 @@
                             </div>
                             <button class="btn btn-secondary btn-block" type="submit">Aplicar cupón</button>
                         </form>
-                    </div><a class="btn btn-primary btn-shadow btn-block mt-4" href="{{ route('checkout') }}"><i
+                    </div><a class="btn btn-primary btn-shadow btn-block mt-4" href="{{-- route('checkout') --}}"><i
                             class="czi-locked font-size-lg mr-2"></i>Realizar Pago</a>
                     {{-- <div class="text-center pt-2"><small
                             class="text-form text-muted">100% money back guarantee</small></div>
