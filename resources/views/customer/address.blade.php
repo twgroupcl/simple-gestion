@@ -13,14 +13,14 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-fn">Calle</label>
+                            <label for="address-fn">Calle <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="address-fn" required>
                             <div class="invalid-feedback">Escriba la calle</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-ln">Número</label>
+                            <label for="address-ln">Número <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="address-ln" required>
                             <div class="invalid-feedback">Escriba el número!</div>
                         </div>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-country">Comuna</label>
+                            <label for="address-country">Comuna <span class="text-danger">*</span></label>
                             <select class="custom-select" id="address-country" required>
                                 @foreach ($communes as $id => $commune)
                                     <option value="{{ $id }}">{{ $commune }}</option>
