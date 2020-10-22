@@ -109,15 +109,13 @@
                                     </div>
                                 -->
                                 <div class="d-flex align-items-center pt-2 pb-4">
-                                    <select class="custom-select mr-3" style="width: 5rem;">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    @livewire('products.add-to-cart',['product' => $product])
-
+                                    @livewire('qty-item', [
+                                        'qty' => 1, 
+                                        'emitTo' => [
+                                            'addtocart.cant',
+                                        ]
+                                    ])
+                                    @livewire('products.add-to-cart',['product' => $product, 'view' => 'single'])
                                 </div>
                                 <!--
                                     <div class="d-flex mb-4">
@@ -200,14 +198,13 @@
                         </div>
                         @if ($product->product_type->id == 1)
                         <div class="d-flex align-items-center pt-3">
-                            <select class="custom-select mr-2" style="width: 5rem;">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                            <button class="btn btn-primary btn-shadow mr-2" type="button"><i class="czi-cart font-size-lg mr-sm-2"></i><span class="d-none d-sm-inline">Agregar al carro</span></button>
+                            @livewire('qty-item', [
+                                'qty' => 1, 
+                                'emitTo' => [
+                                    'addtocart.cant',
+                                ]
+                            ])
+                            @livewire('products.add-to-cart',['product' => $product, 'view' => 'single'])
                             {{-- <div class="mr-2">
                                 <button class="btn btn-secondary btn-icon" type="button" data-toggle="tooltip" title="Add to Wishlist"><i class="czi-heart font-size-lg"></i></button>
                             </div>

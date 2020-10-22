@@ -7,12 +7,12 @@
                 <i class="czi-heart"></i>
             </button>
         </div> --}}
-        <a class="card-img-top d-block overflow-hidden" href="shop-single-v2.html">
+        <a class="card-img-top d-block overflow-hidden" href="{{route('product',['slug' => $product->url_key])}}">
             <img src="{{ url($product->getFirstImagePath()) }}" alt="Product">
         </a>
         <div class="card-body py-2"><a class="product-meta d-block font-size-xs pb-1"
                 href="#">{{ $product->showCategory() }}</a>
-            <h3 class="product-title font-size-sm"><a href="shop-single-v2.html">{{ $product->name }}</a></h3>
+            <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}">{{ $product->name }}</a></h3>
             <div class="d-flex justify-content-between">
                 <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->
                 @if ($product->children()->count())
@@ -41,7 +41,7 @@
                 @livewire('products.add-to-cart',['product' => $product])
             @endif
             <div class="text-center">
-                <a class="nav-link-style font-size-ms" href="#quick-view-electro" data-toggle="modal">
+                <a class="nav-link-style font-size-ms" href="{{ route('product',['slug' => $product->url_key]) }}">
                     <i class="czi-eye align-middle mr-1"></i>Ver producto
                 </a>
             </div>
