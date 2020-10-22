@@ -10,8 +10,11 @@
         <a class="card-img-top d-block overflow-hidden" href="{{route('product',['slug' => $product->url_key])}}">
             <img src="{{ url($product->getFirstImagePath()) }}" alt="Product">
         </a>
-        <div class="card-body py-2"><a class="product-meta d-block font-size-xs pb-1"
-                href="#">{{ $product->showCategory() }}</a>
+        <div class="card-body py-2">
+            <div class="row">
+                <a class="product-meta d-block font-size-xs pb-1 col-md-6 col-sm-6" href="">{{ $product->showCategory() }}</a>
+                <a class="product-meta d-block font-size-xs pb-1 col-md-6 col-sm-6 text-right" href="{{url('seller-shop',['id' => $product->seller->id])}}">Tienda {{ $product->seller->name }}</a>
+            </div>
             <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}">{{ $product->name }}</a></h3>
             <div class="d-flex justify-content-between">
                 <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->

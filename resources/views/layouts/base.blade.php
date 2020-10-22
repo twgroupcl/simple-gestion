@@ -37,7 +37,7 @@
     <link rel="stylesheet" media="screen" href="{{ asset('vendor/lightgallery.js/dist/css/lightgallery.min.css') }}" />
     <!-- Main Theme Styles + Bootstrap-->
     <link rel="stylesheet" media="screen" href="{{ asset('css/theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">    
     @livewireStyles
     @stack('styles')
 </head>
@@ -63,6 +63,7 @@
     <script src="{{ asset('vendor/drift-zoom/dist/Drift.min.js') }}"></script>
     <script src="{{ asset('vendor/lightgallery.js/dist/js/lightgallery.min.js') }}"></script>
     <script src="{{ asset('vendor/lg-video.js/dist/lg-video.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
     <!-- Main theme script-->
     <script src="{{ asset('js/theme.min.js') }}"></script>
     {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
