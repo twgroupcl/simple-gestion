@@ -10,7 +10,10 @@
                     <div>
                         <h6 class="my-0">Subtotal base</h6>
                     </div>
-                    <span id="subtotal-card" class="text-muted subtotal">$0</span>
+                    <div>
+                        <span class="text-muted">$</span>
+                        <span id="subtotal-card" class="text-muted subtotal">0</span>
+                    </div>
                     <input type="hidden" name="sub_total">
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -38,41 +41,50 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Descuento acumulado</h6>
+                        <h6 class="my-0">Descuento global</h6>
                     </div>
                     <div>
-                        <span class="text-muted">-</span>
-                        <span id="total-discount-field" class="text-muted">$0</span>
+                        <span class="text-muted">-$</span>
+                        <span id="total-discount-field" class="text-muted">0</span>
                     </div>
                 </li> 
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">Neto</h6>
                     </div>
-                    <span id="net-card" class="text-muted net">$0</span>
+                    <div>
+                        <span class="text-muted">$</span>
+                        <span id="net-card" class="text-muted net">0</span>
+                    </div>
                     <input type="hidden" name="net">
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">Impuestos adicionales</h6>
                     </div>
-                    <span id="total-tax-additional" class="text-muted">$0</span>
+                    <div>
+                        <span class="text-muted">$</span>
+                        <span id="total-tax-additional" class="text-muted">$0</span>
+                    </div>
                     <input type="hidden" name="tax_specific">
                 </li> 
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <li id="iva-container" class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Impuestos</h6>
+                        <h6 class="my-0">IVA (19%)</h6>
                     </div>
-                    <span id="amount-tax-field" class="text-muted">$0</span>
+                    <div>
+                        <span class="text-muted">$</span>
+                        <span id="amount-tax-field" class="text-muted">$0</span>
+                    </div>
                     <input type="hidden" name="tax_amount">
                 </li> 
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <li id="retencion-container" class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">Retención</h6>
                     </div>
                     <div>
-                        <span class="text-muted">-</span>
-                        <span id="retencion-field" class="text-muted retencion">$0</span>
+                        <span class="text-muted">-$</span>
+                        <span id="retencion-field" class="text-muted retencion">0</span>
                     </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
@@ -264,12 +276,26 @@
 
             if ($('select[name="tax_type"]').val() === 'H') {
                 $('input[name="tax_amount"]').val( (-1) * totalVaxGeneral)
-                document.querySelector('#retencion-field').innerText = formatWithComma(totalVaxGeneral);
+                document.querySelector('#retencion-field').innerText = formatWithComma((-1) * totalVaxGeneral);
                 document.querySelector('#amount-tax-field').innerText = 0
-            } else {
+                $('#iva-container').removeClass('d-flex')
+                $('#iva-container').hide()
+                $('#retencion-container').addClass('d-flex')
+                $('#retencion-container').show()
+            } else if ($('select[name="tax_type"]').val() === 'A'){
                 $('input[name="tax_amount"]').val(totalVaxGeneral)
                 document.querySelector('#amount-tax-field').innerText = formatWithComma(totalVaxGeneral);
                 document.querySelector('#retencion-field').innerText = 0
+                $('#retencion-container').removeClass('d-flex')
+                $('#retencion-container').hide()
+                $('#iva-container').addClass('d-flex')
+                $('#iva-container').show()
+            } else {
+                $('input[name="tax_amount"]').val(0)
+                $('#retencion-container').removeClass('d-flex')
+                $('#retencion-container').hide()
+                $('#iva-container').removeClass('d-flex')
+                $('#iva-container').hide()
             }
 
             let net = subTotalGeneral - totalDiscountGlobal

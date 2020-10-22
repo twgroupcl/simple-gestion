@@ -47,9 +47,7 @@ class QuotationObserver
      */
     public function updated(Quotation $quotation)
     {
-        if ( $quotation->isDirty('items_data') ) {
             $this->syncQuotationItems($quotation, [ 'set_item_status' => 'pending']);
-        }
     }
 
     /**
@@ -182,7 +180,7 @@ class QuotationObserver
             // @todo Check this later
             $itemQty = collect($items)->sum('qty');
             $itemCount = count($items);
-            $sub_total = collect($items)->sum('sub_total');
+            $sub_total = collect($items)->sum('total');
 
             $hasDiscountPerItem = collect($items)->sum('discount_total') > 0 ? 1 : 0;
             $hasTaxPerItem = collect($items)->sum('additional_tax_total') > 0 ? 1 : 0;
