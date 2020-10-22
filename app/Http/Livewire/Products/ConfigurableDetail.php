@@ -25,8 +25,6 @@ class ConfigurableDetail extends Component
 
     public function mount($product)
     {
-     
-        
         $this->parentProduct = $product;
         $this->currentProduct = $product;
         
@@ -98,6 +96,9 @@ class ConfigurableDetail extends Component
         if( !empty($selectedChildren) ) {
             $this->selectedChildrenId = $selectedChildren->id;
             $this->currentProduct = $selectedChildren;
+            //dd($this->currentProduct);
+            $this->emit('addToCart.setProduct', $this->currentProduct);
+            
             Debugbar::log($this->currentProduct);
             
         } else {
