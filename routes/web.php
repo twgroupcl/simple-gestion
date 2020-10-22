@@ -29,6 +29,11 @@ Route::post('/customer/recovery', 'Frontend\CustomerController@recovery')->name(
 Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.sign');
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
 
+Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
+Route::get('/shop-list/', function () {
+    return view('shop-list');
+});
+
 //Auth::routes();
 
 Route::get('/home', 'Frontend\HomeController@index')->name('home');

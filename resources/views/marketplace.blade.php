@@ -6,13 +6,13 @@
 <!-- Hero One item + Dots + Loop (defaults)-->
 <div class="cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-        <a href=""><img src="{{ asset('img/home/hero-slider/banner-01.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
+        <a href=""><img src="{{ asset('img/seller-register.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
         <img src="{{ asset('img/home/hero-slider/banner-02.png') }}" alt="Contigo Pyme Banner 2">
         <img src="{{ asset('img/home/hero-slider/banner-03.png') }}" alt="Contigo Pyme Banner 3">
     </div>
 </div>
-@include('layouts.general.section-products')
-<section class="container mt-4 mb-grid-gutter">
+@livewire('products.products-general',['emitTo' => 'products.card-general'])
+<section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
@@ -65,118 +65,25 @@
         <!-- Bestsellers-->
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">Bestsellers</h3>
-                <div class="media align-items-center pb-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/cart/widget/05.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Wireless Bluetooth
-                                Headphones</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$259.<small>00</small></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/cart/widget/06.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Cloud Security Camera</a>
-                        </h6>
-                        <div class="widget-product-meta"><span class="text-accent">$122.<small>00</small></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/cart/widget/07.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Android Smartphone S10</a>
-                        </h6>
-                        <div class="widget-product-meta"><span class="text-accent">$799.<small>00</small></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/cart/widget/08.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Android Smart TV Box</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$67.<small>00</small></span>
-                            <del class="text-muted font-size-xs">$90.<small>43</small></del>
-                        </div>
-                    </div>
-                </div>
-                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">View more<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <h3 class="widget-title">Mejor vendido</h3>                
+                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
+                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
         <!-- New arrivals-->
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">New arrivals</h3>
-                <div class="media align-items-center pb-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/widget/06.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Monoblock Desktop PC</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$1,949.<small>00</small></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/widget/07.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Laserjet Printer
-                                All-in-One</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$428.<small>60</small></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/widget/08.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Console Controller
-                                Charger</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$14.<small>97</small></span>
-                            <del class="text-muted font-size-xs">$16.<small>47</small></del>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/widget/09.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Smart Watch Series 5,
-                                Aluminium</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$349.<small>99</small></span>
-                        </div>
-                    </div>
-                </div>
-                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">View more<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <h3 class="widget-title">Nuevos productos</h3>
+                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
+                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
         <!-- Top rated-->
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">Top rated</h3>
-                <div class="media align-items-center pb-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/widget/10.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Android Smartphone S9</a>
-                        </h6>
-                        <div class="widget-product-meta"><span class="text-accent">$749.<small>99</small></span>
-                            <del class="text-muted font-size-xs">$859.<small>99</small></del>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/widget/11.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Wireless Bluetooth
-                                Headphones</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$428.<small>60</small></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2 border-bottom"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/widget/12.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">360 Degrees Camera</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$98.<small>75</small></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="media align-items-center py-2"><a class="d-block mr-2" href="shop-single-v2.html"><img width="64" src="{{ asset('img/shop/widget/13.jpg') }}" alt="Product" /></a>
-                    <div class="media-body">
-                        <h6 class="widget-product-title"><a href="shop-single-v2.html">Digital Camera 40MP</a></h6>
-                        <div class="widget-product-meta"><span class="text-accent">$210.<small>00</small></span>
-                            <del class="text-muted font-size-xs">$249.<small>00</small></del>
-                        </div>
-                    </div>
-                </div>
-                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">View more<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <h3 class="widget-title">Más vendidos</h3>
+                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
+                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
     </div>
