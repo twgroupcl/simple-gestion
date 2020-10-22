@@ -1,20 +1,19 @@
 $(function(){
-    let URL              = window.location;
-    let elementURL       = URL.href.split('/');
-    let categorySelected = elementURL.pop();
- 
-    if(URL.search != ''){
-        let productTitle = $('.product-title').offset().top - 100
-        $(window).scrollTop(productTitle)
-    }
+    let URL          = window.location;
+    let elementURL   = URL.href.split('/');
+    let query        = elementURL.pop();
 
     $('.input-search').keyup(function(event) {
-        console.log(event.keyCode)
         if (event.keyCode === 13) {
             $('.btn-search').click();
         } 
     });
-    if(!isNaN(categorySelected)){
-        $(".select-search option[value='"+categorySelected+"']").attr("selected", true);
+
+    console.log(elementURL[4])
+    if(elementURL[3] == "search-products" && elementURL[4] != undefined){
+        $('.input-search').val(query);
+    }
+    if(!isNaN(elementURL[4])){
+        $(".select-search option[value='"+elementURL[4]+"']").attr("selected", true);
     }
 });

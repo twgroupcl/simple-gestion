@@ -35,9 +35,13 @@ Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
 
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
-Route::get('/search-product/{category}/{product}', 'Frontend\HomeController@searchProduct');
+Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
+Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
 Route::get('/shop-list/', function () {
     return view('shop-list');
+});
+Route::get('/seller-shop/{id}', function () {
+    return view('vendor');
 });
 
 //Auth::routes();
