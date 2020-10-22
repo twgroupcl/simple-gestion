@@ -16,7 +16,7 @@ class AddToCart extends Component
         'addToCart.setProduct' => 'setProduct',
     ];
 
-    public function setProduct($prod)
+    public function setProduct(Product $prod)
     {
         $this->product = $prod;
     }
@@ -28,7 +28,6 @@ class AddToCart extends Component
 
     public function addToCart()
     {
-        dd($this->product);
 
         $this->dispatchBrowserEvent('show-toast', ['message' => 'Se ha añadido al carro']);
 

@@ -34,7 +34,7 @@
             {{-- <li class="nav-item"><a class="nav-link p-4" href="#reviews" data-toggle="tab" role="tab">Reviews <span class="font-size-sm opacity-60">(74)</span></a></li> --}}
         </ul>
         @if ($product->product_type->id == 2)
-                        @livewire('products.configurable-detail', ['product' => $product])   
+                @livewire('products.configurable-detail', ['product' => $product])   
         @elseif ($product->product_type->id == 1)
         <div class="px-4 pt-lg-3 pb-3 mb-5">
             <div class="tab-content px-lg-3">
@@ -116,7 +116,8 @@
                                         <option value="4">4</option>
                                         <option value="5">5</option>
                                     </select>
-                                    <button class="btn btn-primary btn-shadow btn-block" type="button"><i class="czi-cart font-size-lg mr-2"></i>Agregar al carro</button>
+                                    @livewire('products.add-to-cart',['product' => $product])
+
                                 </div>
                                 <!--
                                     <div class="d-flex mb-4">
