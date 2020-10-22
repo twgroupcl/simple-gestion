@@ -14,34 +14,19 @@
                 </div>
 
 
-                {{-- <div class="steps steps-light pt-2 pb-3 mb-5"><a
-                        class="step-item active" href="shop-cart.html">
-                        <div class="step-progress"><span class="step-count">1</span></div>
-                        <div class="step-label"><i class="czi-cart"></i>Carro</div>
-                    </a><a class="step-item active current" href="checkout-details.html">
-                        <div class="step-progress"><span class="step-count">2</span></div>
-                        <div class="step-label"><i class="czi-user-circle"></i>Detalle</div>
-                    </a><a class="step-item" href="checkout-shipping.html">
-                        <div class="step-progress"><span class="step-count">3</span></div>
-                        <div class="step-label"><i class="czi-package"></i>Envio</div>
-                    </a><a class="step-item" href="checkout-payment.html">
-                        <div class="step-progress"><span class="step-count">4</span></div>
-                        <div class="step-label"><i class="czi-card"></i>Pago</div>
-                    </a><a class="step-item" href="checkout-review.html">
-                        <div class="step-progress"><span class="step-count">5</span></div>
-                        <div class="step-label"><i class="czi-check-circle"></i>Revisión</div>
-                    </a>
-                </div> --}}
                 <div class="pt-2 px-4 pr-lg-0 pl-xl-5">
 
                     @switch($activeStep['number'])
                         @case(1)
                         @break
                         @case(2)
-                        @livewire('checkout.details')
+                        @livewire('checkout.details',['cart'=>$cart] ,key($activeStep['number']))
                         @break
                         @case(3)
-                        @livewire('checkout.shipping', ['items'=>$items])
+                        @livewire('checkout.shipping', ['cart'=>$cart, 'items'=>$items])
+                        @break
+                        @case(4)
+                        @livewire('checkout.payments', ['cart'=>$cart])
                         @break
                         @default
                     @endswitch
@@ -97,10 +82,13 @@
                 <!-- Navigation (desktop)-->
                 <div class="d-none d-lg-flex pt-4 mt-3">
                     <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
-                                class="czi-arrow-left mt-sm-0 mr-1"></i><span class="d-none d-sm-inline">{{$activeStep['prev-button']}}</span><span class="d-inline d-sm-none">Anterior</span></a></div>
+                                class="czi-arrow-left mt-sm-0 mr-1"></i><span
+                                class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
+                                class="d-inline d-sm-none">Anterior</span></a></div>
                     <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click="nextStep()"><span
-                                class="d-none d-sm-inline">{{$activeStep['next-button']}}</span><span
-                                class="d-inline d-sm-none">Siguiente</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></a>
+                                class="d-none d-sm-inline">{{ $activeStep['next-button'] }}</span><span
+                                class="d-inline d-sm-none">Siguiente</span><i
+                                class="czi-arrow-right mt-sm-0 ml-1"></i></a>
                     </div>
                 </div>
             </section>
@@ -122,7 +110,8 @@
                             </li>
                         </ul>
                         <h3 class="font-weight-normal text-center my-4">
-                            {{ currencyFormat($total ? $total : 0, 'CLP', true) }}</h3>
+                            {{ currencyFormat($total ? $total : 0, 'CLP', true) }}
+                        </h3>
                         <div class="col-12 text-center">
                             <img class="d-inline-block img-fluid mx" width="120"
                                 src="{{ asset('img/logo-webpay.png') }}" alt="Métodos de pago" />
@@ -136,10 +125,13 @@
             <div class="col-lg-8">
                 <div class="d-flex pt-4 mt-3">
                     <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
-                    class="czi-arrow-left mt-sm-0 mr-1"></i><span class="d-none d-sm-inline">{{$activeStep['prev-button']}}</span><span class="d-inline d-sm-none">Anterior</span></a></div>
+                                class="czi-arrow-left mt-sm-0 mr-1"></i><span
+                                class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
+                                class="d-inline d-sm-none">Anterior</span></a></div>
                     <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click="nextStep()"><span
-                                class="d-none d-sm-inline">{{$activeStep['next-button']}}</span><span
-                                class="d-inline d-sm-none">Siguiente</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></a>
+                                class="d-none d-sm-inline">{{ $activeStep['next-button'] }}</span><span
+                                class="d-inline d-sm-none">Siguiente</span><i
+                                class="czi-arrow-right mt-sm-0 ml-1"></i></a>
                     </div>
                 </div>
             </div>
