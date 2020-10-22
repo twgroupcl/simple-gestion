@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Frontend\SellerStoreRequest;
 use App\Models\Seller;
+use App\Http\Controllers\Controller;
+use Backpack\Settings\app\Models\Setting;
+use App\Http\Requests\Frontend\SellerStoreRequest;
 
 class SellerController extends Controller
 {
@@ -29,7 +30,9 @@ class SellerController extends Controller
         ], true);
 
         $request['addresses_data'] = $sellerAddresses;
-        $request['company_id'] = 1;
+        $request['company_id'] = Setting::get('default_company');
+
+        $request['password'] = $request['uid'];
 
         Seller::create($request->all());
 

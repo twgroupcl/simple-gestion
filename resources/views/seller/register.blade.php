@@ -11,7 +11,7 @@ $selected_commune = "";
 <div class="page-title-overlap bg-accent pt-4 bg-cp-gradient">
     <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-0">Registro vendedor</h1>
+            <h1 class="h3 text-light mb-0">Solicitud de Inscripción</h1>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@ $selected_commune = "";
                         @endif
                     </div>
 
-                    <h2 class="h6 border-bottom pb-3 mt-3 mb-3">1 - Completa la solicitud de inscripción</h2>
+                    <h2 class="h6 border-bottom pb-3 mt-3 mb-3">1 - Completa la solicitud de Inscripción</h2>
 
                     <!-- Billing detail-->
                     <form method="POST" action="{{ route('seller.frontend.store') }}">
@@ -191,11 +191,11 @@ $selected_commune = "";
                             <div class="col-sm-6 form-group">
                                 <label for="custom_1">¿Tienes contrato con Transbank? <span class='text-danger'>*</span></label><br>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" id="custom_1_si" value="si" name="custom_1">
+                                    <input class="custom-control-input" type="radio" id="custom_1_si" value="1" name="custom_1" {{ (old('custom_1') == 1) ? 'checked' : '' }}>
                                     <label class="custom-control-label" for="custom_1_si">Sí</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input class="custom-control-input" type="radio" id="custom_1_no" value="no" name="custom_1" checked>
+                                    <input class="custom-control-input" type="radio" id="custom_1_no" value="0" name="custom_1" {{ (old('custom_1') == 0) ? 'checked' : ((old('custom_1') == 1) ? '' : 'checked') }}>
                                     <label class="custom-control-label" for="custom_1_no">No</label>
                                 </div>
                                 @error('custom_1')
@@ -205,7 +205,7 @@ $selected_commune = "";
                                 @enderror
                             </div>
                             <div class="col-sm-6 form-group">
-                                <label for="custom_2">¿Qué currier utilizas hoy? <span class='text-danger'>*</span></label>
+                                <label for="custom_2">¿Qué despacho utilizas hoy? <span class='text-danger'>*</span></label>
                                 <input class="form-control @error('custom_2') is-invalid @enderror" type="text" value="{{ old('custom_2') }}" id="custom_2" name="custom_2">
                                 @error('custom_2')
                                 <span class="invalid-feedback" role="alert">

@@ -9,33 +9,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SellerStoreRequest extends FormRequest
 {
-    private $prepareData = [
-        'activities_data',
-        'addresses_data',
-        'bank_data',
-        'contact_data',
-    ];
-
-    protected function prepareForValidation()
-    {
-        foreach ($this->prepareData as $attrName) {
-            if (empty($this->$attrName)) {
-                return;
-            }
-
-            $validation = json_decode($this->$attrName);
-            $forValidation = [];
-
-            foreach ($validation as $attrs) {
-                $forValidation[] = (array) $attrs;
-            }
-
-            $this->merge([
-                $attrName.'_validation' => $forValidation,
-            ]);
-        }
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -97,10 +70,10 @@ class SellerStoreRequest extends FormRequest
             'number' => 'Número en Direcciones',
             'subnumber' => 'Sub Número en Direcciones',
             'commune_id' => 'Comuna en Direcciones',
-            
+
             'legal_representative_name' => 'Tu nombre',
             'custom_1' => 'Contrato con transbank',
-            'custom_2' => 'Currier utilizado',
+            'custom_2' => 'Despacho utilizado',
         ];
     }
 

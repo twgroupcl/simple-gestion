@@ -20,6 +20,7 @@ class CreateProductCategoriesTable extends Migration
             $table->string('slug');
             $table->integer('position')->default(0);
             $table->string('image')->nullable();
+            $table->string('icon')->nullable();
             $table->string('display_mode')->default('products_and_description')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->integer('status')->default(1);
