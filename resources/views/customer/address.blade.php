@@ -144,7 +144,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($customer->addresses_data as $address)
+                        @php
+                            $addresses_data = is_array($customer->addresses_data)
+                                ? $customer->addresses_data
+                                : json_decode($customer->addresses_data, true) ?? [];
+                        @endphp
+                        @forelse ($addresses_data as $address)
                             <tr>
                                 <td class="py-3 align-middle">{{ $address['street'] }} - {{ $address['number']}}</td>
                                 <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
