@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Currency;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 if (! function_exists('parseCurrency')) {
     function parseCurrency($value)
@@ -67,7 +67,7 @@ if (! function_exists('currencyFormat')) {
     /**
      * Price format
      *
-     * @param string $value amount 
+     * @param string $value amount
      * @param string $currency currency code (currencies table)
      * @param bool $symbol return amount with symbol or not
      * @return string price formatted
@@ -75,7 +75,7 @@ if (! function_exists('currencyFormat')) {
     function currencyFormat(string $value, string $currency, bool $symbol = false) : string
     {
         $currency = Currency::where('code',$currency)->firstOrFail();
-        
+
         $price = number_format(
             $value,
             $currency->precision,
@@ -94,8 +94,8 @@ if (! function_exists('determineSource')) {
     {
         if ( strpos($request->path(), 'admin/') !== false ) {
             return "Admin";
-        } 
-        
+        }
+
         return "Front";
     }
 }
