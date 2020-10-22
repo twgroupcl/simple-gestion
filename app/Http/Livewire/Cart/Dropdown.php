@@ -20,14 +20,20 @@ class Dropdown extends Component
     {
         $this->cart = Cart::getInstance(null,session());
         $this->items = $this->cart->cart_items;
+        $this->cart->recalculateSubtotal();
+        $this->cart->update();
         $this->emitTo('cart.item', 'cart-item.updateQty');
-        $this->emit('cart.updateSubtotal');
     }
 
     public function deleteItem()
     {
-        $this->update();
+        $this->cart = Cart::getInstance(null,session());
+        $this->items = $this->cart->cart_items;
+        $this->cart->recalculateSubtotal();
+        $this->cart->update();
         $this->emit('cart-counter:decrease');
+        $this->emit('cart.updateSubtotal');
+
     }
 
     public function mount()

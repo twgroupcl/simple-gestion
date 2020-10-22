@@ -13,7 +13,7 @@
                 <h6 class="widget-product-title"><a href="{{route('product',['slug' => $product->url_key])}}">{{ $item->name }}</a></h6>
                 <div class="widget-product-meta">
                     <!--<span class="text-accent mr-2">$259.<small>00</small></span>-->
-                    <span class="text-accent mr-2">{{ currencyFormat($item->price, Setting::get('default_currency'), true) }}</span>
+                    <span class="text-accent mr-2">{{ $item->price ? currencyFormat($item->price, Setting::get('default_currency'), true) : currencyFormat(0, Setting::get('default_currency'), true) }}</span>
                     <span class="text-muted">x {{$qty}}</span>
                 </div>
             </div>

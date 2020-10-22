@@ -48,7 +48,7 @@ class Item extends Component
         $this->item->sub_total = $this->item->product->price * $qty;
         $this->total = $this->item->product->price * $qty;
         $this->item->update();
-        $this->emitUp('change', $this->item->id, $this->qty);
+        $this->emitUp('change');
     }
 
     public function updateQty()
@@ -64,7 +64,7 @@ class Item extends Component
     public function delete()
     {
         $this->item->delete();
-        $this->emitUp('deleteItem', $this->item->id);
+        $this->emitUp('deleteItem');
     }
 
     public function render()
