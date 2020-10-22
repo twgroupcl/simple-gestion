@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
+use App\Models\Currency;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 if (! function_exists('parseCurrency')) {
     function parseCurrency($value)
@@ -70,5 +71,23 @@ if (! function_exists('determineSource')) {
         } 
         
         return "Front";
+    }
+}
+
+if (! function_exists('currencyFormat')) {
+    function currencyFormat(string $value, string $currency, bool $symbol = false) : string
+    {
+        $currency = Currency::where('code',$currency)->firstOrFail();
+        
+        $price = number_format(
+            $value,
+            $currency->precision,
+            $currency->decimal_separator,
+            $currency->thousand_separator
+        );
+
+        $price = $symbol ? $currency->symbol . $price : $price;
+
+        return $price;
     }
 }

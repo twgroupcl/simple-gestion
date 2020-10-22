@@ -16,7 +16,7 @@
             </nav>
         </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-2">Smartwatch Youth Edition</h1>
+            <h1 class="h3 text-light mb-2">{{$product->name}}</h1>
             {{-- <div>
                 <div class="star-rating"><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star"></i>
                 </div><span class="d-inline-block font-size-sm text-white opacity-70 align-middle mt-1 ml-1">74 Reviews</span>
@@ -29,8 +29,8 @@
     <div class="bg-light box-shadow-lg rounded-lg">
         <!-- Tabs-->
         <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item"><a class="nav-link p-4 active" href="#general" data-toggle="tab" role="tab">General Info</a></li>
-            <li class="nav-item"><a class="nav-link p-4" href="#specs" data-toggle="tab" role="tab">Tech Specs</a></li>
+            <li class="nav-item"><a class="nav-link p-4 active" href="#general" data-toggle="tab" role="tab">Información General</a></li>
+            <li class="nav-item"><a class="nav-link p-4" href="#specs" data-toggle="tab" role="tab">Especificaciones Técnicas</a></li>
             {{-- <li class="nav-item"><a class="nav-link p-4" href="#reviews" data-toggle="tab" role="tab">Reviews <span class="font-size-sm opacity-60">(74)</span></a></li> --}}
         </ul>
         <div class="px-4 pt-lg-3 pb-3 mb-5">
@@ -42,61 +42,68 @@
                         <div class="col-lg-7 pr-lg-0">
                             <div class="cz-product-gallery">
                                 <div class="cz-preview order-sm-2">
-                                    <div class="cz-preview-item active" id="first"><img class="cz-image-zoom" src="img/shop/single/gallery/05.jpg" data-zoom="img/shop/single/gallery/05.jpg" alt="Product image">
-                                        <div class="cz-image-zoom-pane"></div>
-                                    </div>
-                                    <div class="cz-preview-item" id="second"><img class="cz-image-zoom" src="img/shop/single/gallery/06.jpg" data-zoom="img/shop/single/gallery/06.jpg" alt="Product image">
-                                        <div class="cz-image-zoom-pane"></div>
-                                    </div>
-                                    <div class="cz-preview-item" id="third"><img class="cz-image-zoom" src="img/shop/single/gallery/07.jpg" data-zoom="img/shop/single/gallery/07.jpg" alt="Product image">
-                                        <div class="cz-image-zoom-pane"></div>
-                                    </div>
-                                    <div class="cz-preview-item" id="fourth"><img class="cz-image-zoom" src="img/shop/single/gallery/08.jpg" data-zoom="img/shop/single/gallery/08.jpg" alt="Product image">
-                                        <div class="cz-image-zoom-pane"></div>
-                                    </div>
+                                    @foreach($product->getImages() as $key => $value)
+                                        @if($key == 0)
+                                            <div class="cz-preview-item active" id="img-{{$key}}"><img class="cz-image-zoom" src="{{ url($value->path) }}" data-zoom="{{ url($value->path) }}" alt="Product image">
+                                                <div class="cz-image-zoom-pane"></div>
+                                            </div>
+                                        @else
+                                            <div class="cz-preview-item" id="img-{{$key}}"><img class="cz-image-zoom" src="{{ url($value->path) }}" data-zoom="{{ url($value->path) }}" alt="Product image">
+                                                <div class="cz-image-zoom-pane"></div>
+                                            </div>
+                                        @endif
+                                    @endforeach
                                 </div>
-                                <div class="cz-thumblist order-sm-1"><a class="cz-thumblist-item active" href="#first"><img src="img/shop/single/gallery/th05.jpg" alt="Product thumb"></a><a class="cz-thumblist-item" href="#second"><img src="img/shop/single/gallery/th06.jpg" alt="Product thumb"></a><a class="cz-thumblist-item" href="#third"><img src="img/shop/single/gallery/th07.jpg" alt="Product thumb"></a><a class="cz-thumblist-item" href="#fourth"><img src="img/shop/single/gallery/th08.jpg" alt="Product thumb"></a><a class="cz-thumblist-item video-item" href="https://www.youtube.com/watch?v=nrQevwouWn0">
-                                        <div class="cz-thumblist-item-text"><i class="czi-video"></i>Video</div>
-                                    </a></div>
+                                <div class="cz-thumblist order-sm-1">
+                                    @foreach($product->getImages() as $key => $value)
+                                        <a class="cz-thumblist-item" href="#img-{{$key}}"><img src="{{ url($value->path) }}" alt="Product thumb"></a>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                         <!-- Product details-->
                         <div class="col-lg-5 pt-4 pt-lg-0">
                             <div class="product-details ml-auto pb-3">
-                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">$124.<small>99</small></div>
-                                <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Dark blue/Orange</span></div>
+                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, 'CLP', true) }}</div>
+                                <!--
+                                    <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Dark blue/Orange</span></div>
+                                -->
                                 <div class="position-relative mr-n4 mb-3">
-                                    <div class="custom-control custom-option custom-control-inline mb-2">
-                                        <input class="custom-control-input" type="radio" name="color" id="color1" data-label="colorOption" value="Dark blue/Orange" checked>
-                                        <label class="custom-option-label rounded-circle" for="color1"><span class="custom-option-color rounded-circle" style="background-color: #f25540;"></span></label>
-                                    </div>
-                                    <div class="custom-control custom-option custom-control-inline mb-2">
-                                        <input class="custom-control-input" type="radio" name="color" id="color2" data-label="colorOption" value="Dark blue/Green">
-                                        <label class="custom-option-label rounded-circle" for="color2"><span class="custom-option-color rounded-circle" style="background-color: #65805b;"></span></label>
-                                    </div>
-                                    <div class="custom-control custom-option custom-control-inline mb-2">
-                                        <input class="custom-control-input" type="radio" name="color" id="color3" data-label="colorOption" value="Dark blue/White">
-                                        <label class="custom-option-label rounded-circle" for="color3"><span class="custom-option-color rounded-circle" style="background-color: #f5f5f5;"></span></label>
-                                    </div>
-                                    <div class="custom-control custom-option custom-control-inline mb-2">
-                                        <input class="custom-control-input" type="radio" name="color" id="color4" data-label="colorOption" value="Dark blue/Black">
-                                        <label class="custom-option-label rounded-circle" for="color4"><span class="custom-option-color rounded-circle" style="background-color: #333;"></span></label>
-                                    </div>
-                                    <div class="product-badge product-available mt-n1"><i class="czi-security-check"></i>Product available</div>
+                                    <!--
+                                        <div class="custom-control custom-option custom-control-inline mb-2">
+                                            <input class="custom-control-input" type="radio" name="color" id="color1" data-label="colorOption" value="Dark blue/Orange" checked>
+                                            <label class="custom-option-label rounded-circle" for="color1"><span class="custom-option-color rounded-circle" style="background-color: #f25540;"></span></label>
+                                        </div>
+                                        <div class="custom-control custom-option custom-control-inline mb-2">
+                                            <input class="custom-control-input" type="radio" name="color" id="color2" data-label="colorOption" value="Dark blue/Green">
+                                            <label class="custom-option-label rounded-circle" for="color2"><span class="custom-option-color rounded-circle" style="background-color: #65805b;"></span></label>
+                                        </div>
+                                        <div class="custom-control custom-option custom-control-inline mb-2">
+                                            <input class="custom-control-input" type="radio" name="color" id="color3" data-label="colorOption" value="Dark blue/White">
+                                            <label class="custom-option-label rounded-circle" for="color3"><span class="custom-option-color rounded-circle" style="background-color: #f5f5f5;"></span></label>
+                                        </div>
+                                        <div class="custom-control custom-option custom-control-inline mb-2">
+                                            <input class="custom-control-input" type="radio" name="color" id="color4" data-label="colorOption" value="Dark blue/Black">
+                                            <label class="custom-option-label rounded-circle" for="color4"><span class="custom-option-color rounded-circle" style="background-color: #333;"></span></label>
+                                        </div>
+                                    -->
+                                    <div class="product-badge product-available mt-n5"><i class="czi-security-check"></i>Producto disponible</div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="d-flex justify-content-between align-items-center pb-1">
-                                        <label class="font-weight-medium" for="product-size">Size:</label><a class="nav-link-style font-size-sm" href="#size-chart" data-toggle="modal"><i class="czi-ruler lead align-middle mr-1 mt-n1"></i>Size guide</a>
+                                <!--
+                                    <div class="form-group">
+                                        <div class="d-flex justify-content-between align-items-center pb-1">
+                                            <label class="font-weight-medium" for="product-size">Size:</label><a class="nav-link-style font-size-sm" href="#size-chart" data-toggle="modal"><i class="czi-ruler lead align-middle mr-1 mt-n1"></i>Size guide</a>
+                                        </div>
+                                        <select class="custom-select" required id="product-size">
+                                            <option value="">Select size</option>
+                                            <option value="xs">XS</option>
+                                            <option value="s">S</option>
+                                            <option value="m">M</option>
+                                            <option value="l">L</option>
+                                            <option value="xl">XL</option>
+                                        </select>
                                     </div>
-                                    <select class="custom-select" required id="product-size">
-                                        <option value="">Select size</option>
-                                        <option value="xs">XS</option>
-                                        <option value="s">S</option>
-                                        <option value="m">M</option>
-                                        <option value="l">L</option>
-                                        <option value="xl">XL</option>
-                                    </select>
-                                </div>
+                                -->
                                 <div class="d-flex align-items-center pt-2 pb-4">
                                     <select class="custom-select mr-3" style="width: 5rem;">
                                         <option value="1">1</option>
@@ -105,21 +112,23 @@
                                         <option value="4">4</option>
                                         <option value="5">5</option>
                                     </select>
-                                    <button class="btn btn-primary btn-shadow btn-block" type="button"><i class="czi-cart font-size-lg mr-2"></i>Add to Cart</button>
+                                    <button class="btn btn-primary btn-shadow btn-block" type="button"><i class="czi-cart font-size-lg mr-2"></i>Agregar al carro</button>
                                 </div>
-                                <div class="d-flex mb-4">
-                                    <div class="w-100 mr-3">
-                                        <button class="btn btn-secondary btn-block" type="button"><i class="czi-heart font-size-lg mr-2"></i><span class='d-none d-sm-inline'>Add to </span>Wishlist</button>
+                                <!--
+                                    <div class="d-flex mb-4">
+                                        <div class="w-100 mr-3">
+                                            <button class="btn btn-secondary btn-block" type="button"><i class="czi-heart font-size-lg mr-2"></i><span class='d-none d-sm-inline'>Add to </span>Wishlist</button>
+                                        </div>
+                                        <div class="w-100">
+                                            <button class="btn btn-secondary btn-block" type="button"><i class="czi-compare font-size-lg mr-2"></i>Compare</button>
+                                        </div>
                                     </div>
-                                    <div class="w-100">
-                                        <button class="btn btn-secondary btn-block" type="button"><i class="czi-compare font-size-lg mr-2"></i>Compare</button>
-                                    </div>
-                                </div>
+                                -->
                                 <!-- Product panels-->
                                 <div class="accordion mb-4" id="productPanels">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h3 class="accordion-heading"><a href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><i class="czi-delivery text-muted lead align-middle mt-n1 mr-2"></i>Shipping options<span class="accordion-indicator"></span></a></h3>
+                                            <h3 class="accordion-heading"><a href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><i class="czi-delivery text-muted lead align-middle mt-n1 mr-2"></i>Opciones de envío<span class="accordion-indicator"></span></a></h3>
                                         </div>
                                         <div class="collapse show" id="shippingOptions" data-parent="#productPanels">
                                             <div class="card-body font-size-sm">
@@ -149,12 +158,12 @@
                                     </div>
                                     <div class="card">
                                         <div class="card-header">
-                                            <h3 class="accordion-heading"><a class="collapsed" href="#localStore" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="localStore"><i class="czi-location text-muted font-size-lg align-middle mt-n1 mr-2"></i>Find in local store<span class="accordion-indicator"></span></a></h3>
+                                            <h3 class="accordion-heading"><a class="collapsed" href="#localStore" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="localStore"><i class="czi-location text-muted font-size-lg align-middle mt-n1 mr-2"></i>Enviar a casa<span class="accordion-indicator"></span></a></h3>
                                         </div>
                                         <div class="collapse" id="localStore" data-parent="#productPanels">
                                             <div class="card-body">
                                                 <select class="custom-select">
-                                                    <option value>Select your country</option>
+                                                    <option value>Selecciona tu comuna</option>
                                                     <option value="Argentina">Argentina</option>
                                                     <option value="Belgium">Belgium</option>
                                                     <option value="France">France</option>
@@ -176,10 +185,10 @@
                 <!-- Tech specs tab-->
                 <div class="tab-pane fade" id="specs" role="tabpanel">
                     <div class="d-md-flex justify-content-between align-items-start pb-4 mb-4 border-bottom">
-                        <div class="media align-items-center mr-md-3"><img src="img/shop/single/gallery/th05.jpg" width="90" alt="Product thumb">
+                        <div class="media align-items-center mr-md-3"><img src="{{ url($product->getFirstImagePath()) }}" width="90" alt="Product thumb">
                             <div class="mdeia-body pl-3">
-                                <h6 class="font-size-base mb-2">Smartwatch Youth Edition</h6>
-                                <div class="h4 font-weight-normal text-accent">$124.<small>99</small></div>
+                                <h6 class="font-size-base mb-2">{{$product->name}}</h6>
+                                <div class="h4 font-weight-normal text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
                             </div>
                         </div>
                         <div class="d-flex align-items-center pt-3">
@@ -190,7 +199,7 @@
                                 <option value="4">4</option>
                                 <option value="5">5</option>
                             </select>
-                            <button class="btn btn-primary btn-shadow mr-2" type="button"><i class="czi-cart font-size-lg mr-sm-2"></i><span class="d-none d-sm-inline">Add to Cart</span></button>
+                            <button class="btn btn-primary btn-shadow mr-2" type="button"><i class="czi-cart font-size-lg mr-sm-2"></i><span class="d-none d-sm-inline">Agregar al carro</span></button>
                             {{-- <div class="mr-2">
                                 <button class="btn btn-secondary btn-icon" type="button" data-toggle="tooltip" title="Add to Wishlist"><i class="czi-heart font-size-lg"></i></button>
                             </div>
@@ -249,8 +258,8 @@
                     <div class="d-md-flex justify-content-between align-items-start pb-4 mb-4 border-bottom">
                         <div class="media align-items-center mr-md-3"><img src="img/shop/single/gallery/th05.jpg" width="90" alt="Product thumb">
                             <div class="mdeia-body pl-3">
-                                <h6 class="font-size-base mb-2">Smartwatch Youth Edition</h6>
-                                <div class="h4 font-weight-normal text-accent">$124.<small>99</small></div>
+                                <h6 class="font-size-base mb-2">{{$product->name}}</h6>
+                                <div class="h4 font-weight-normal text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
                             </div>
                         </div>
                         <div class="d-flex align-items-center pt-3">
@@ -466,9 +475,8 @@
 <div class="container pt-lg-3 pb-4 pb-sm-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <h2 class="h3 pb-2">Choose your style</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p><img src="img/shop/single/prod-img2.jpg" alt="Product description">
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora.</p>
+            <h2 class="h3 pb-2">Descripción</h2>
+            <p>{!!$product->description!!}</p>
         </div>
     </div>
 </div>
@@ -562,8 +570,8 @@
                         <div class="col-md-3 col-sm-5">
                             <div class="card product-card card-static text-center mx-auto" style="max-width: 20rem;"><a class="card-img-top d-block overflow-hidden" href="#"><img src="img/shop/catalog/70.jpg" alt="Product"></a>
                                 <div class="card-body py-2"><span class="d-inline-block bg-secondary font-size-ms rounded-sm py-1 px-2 mb-3">Your product</span>
-                                    <h3 class="product-title font-size-sm"><a href="#">Smartwatch Youth Edition</a></h3>
-                                    <div class="product-price text-accent">$124.<small>99</small></div>
+                                    <h3 class="product-title font-size-sm"><a href="#">{{$product->name}}</a></h3>
+                                    <div class="product-price text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -596,8 +604,8 @@
                         <div class="col-md-3">
                             <div class="card product-card card-static text-center mx-auto" style="max-width: 20rem;"><a class="card-img-top d-block overflow-hidden" href="#"><img src="img/shop/catalog/70.jpg" alt="Product"></a>
                                 <div class="card-body py-2"><span class="d-inline-block bg-secondary font-size-ms rounded-sm py-1 px-2 mb-3">Your product</span>
-                                    <h3 class="product-title font-size-sm"><a href="#">Smartwatch Youth Edition</a></h3>
-                                    <div class="product-price text-accent">$124.<small>99</small></div>
+                                    <h3 class="product-title font-size-sm"><a href="#">{{$product->name}}</a></h3>
+                                    <div class="product-price text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
                                 </div>
                             </div>
                         </div>

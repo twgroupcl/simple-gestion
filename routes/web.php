@@ -20,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'Frontend\HomeController@index');
 Route::post('/customer', 'Frontend\CustomerController@store');
 Route::post('/login-customer', 'Frontend\CustomerController@authenticate');
+Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
+Route::get('/shop-list/', function () {
+    return view('shop-list');
+});
+
 
 Route::get('/seller/register', 'Frontend\SellerController@index');
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
