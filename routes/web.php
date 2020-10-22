@@ -40,6 +40,9 @@ Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsBy
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });
+Route::get('/shop-grid/', function () {
+    return view('shop-grid');
+});
 Route::get('/seller-shop/{id}', function () {
     return view('vendor');
 });
