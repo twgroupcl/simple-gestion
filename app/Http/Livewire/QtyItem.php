@@ -9,7 +9,7 @@ class QtyItem extends Component
     // quantity
     public $qty;
     //add and dec listeners parent
-    public $add, $dec;
+    public $parentListener = "setQty";
     public $emitTo = [];
 
     public function render()
@@ -17,10 +17,9 @@ class QtyItem extends Component
         return view('livewire.qty-item');
     }
 
-    public function add()
+    public function set()
     {
-        $this->qty++;
-        $this->emitUp($this->add, $this->qty);
+        $this->emitUp($this->parentListener, $this->qty);
         if (count($this->emitTo) > 0) {
             foreach ($this->emitTo as $key) {
                 $this->emit($key, $this->qty);
@@ -28,16 +27,4 @@ class QtyItem extends Component
         }
     }
 
-    public function dec()
-    {
-        if ($this->qty >= 1) {
-            $this->qty--;
-            $this->emitUp($this->dec, $this->qty);
-            if (count($this->emitTo) > 0) {
-                foreach ($this->emitTo as $key) {
-                    $this->emit($key, $this->qty);
-                }
-            }
-        }
-    }
 }

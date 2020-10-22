@@ -10,7 +10,6 @@ class Preview extends Component
     public $cart;
     public $items;
     public $total;
-    public $cartChange;
 
     protected $listeners = [
         'change' => 'change',
@@ -20,7 +19,6 @@ class Preview extends Component
     public function mount()
     {
         $this->items = $this->getItems();
-        $this->cartChange = 'disabled';
         $this->total = $this->getTotal();
     }
 
@@ -31,23 +29,13 @@ class Preview extends Component
 
     public function change(CartItem $item, int $qty)
     {
-        $this->items->find($item->id)->qty = $qty;
-        $this->cartChange = "";
-    }
+        $item = $this->items->find($item->id);
+        $item->qty = $qty;
+        $item->update();
 
-    public function updateCart($items)
-    {
-        //validate
-
-        // @todo update items
-        foreach ($items as $key) {
-            CartItem::find($key['id'])->update($key);
-        }
         $this->total = $this->getTotal();
-        $this->cartChange = 'disabled';
-        $this->redirect('/shopping-cart');
-    }
 
+    }
 
     public function deleteItem($itemId)
     {
