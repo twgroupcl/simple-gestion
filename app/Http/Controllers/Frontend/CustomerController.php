@@ -42,7 +42,13 @@ class CustomerController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('home');
+            if(Auth::user()->hasRole('Cliente Marketplace')) {
+                return redirect()->intended('home');
+            }
+
+            Auth::logout();
+
+            return redirect('home');
         }
 
         return view('customer.sign')->with('error', 'Upps! Las credenciales son incorrectas.');
