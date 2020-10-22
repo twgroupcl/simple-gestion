@@ -6,78 +6,82 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add a new address</h5>
+                <h5 class="modal-title">Añade una nueva dirección</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-fn">First name</label>
+                            <label for="address-fn">Calle</label>
                             <input class="form-control" type="text" id="address-fn" required>
-                            <div class="invalid-feedback">Please fill in you first name!</div>
+                            <div class="invalid-feedback">Escriba la calle</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-ln">Last name</label>
+                            <label for="address-ln">Número</label>
                             <input class="form-control" type="text" id="address-ln" required>
-                            <div class="invalid-feedback">Please fill in you last name!</div>
+                            <div class="invalid-feedback">Escriba el número!</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-company">Company</label>
+                            <label for="address-company">Casa/Dpto/Oficina</label>
                             <input class="form-control" type="text" id="address-company">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-country">Country</label>
+                            <label for="address-country">Comuna</label>
                             <select class="custom-select" id="address-country" required>
-                                <option value>Select country</option>
-                                <option value="Argentina">Argentina</option>
-                                <option value="Belgium">Belgium</option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="Spain">Spain</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="USA">USA</option>
+                                @foreach ($communes as $id => $commune)
+                                    <option value="{{ $id }}">{{ $commune }}</option>
+                                @endforeach
                             </select>
-                            <div class="invalid-feedback">Please select your country!</div>
+                            <div class="invalid-feedback">Seleccione la comuna</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-city">City</label>
+                            <label for="address-city">RUT</label>
                             <input class="form-control" type="text" id="address-city" required>
-                            <div class="invalid-feedback">Please fill in your city!</div>
+                            <div class="invalid-feedback">Escriba el Rut</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-line1">Line 1</label>
+                            <label for="address-line1">Nombre</label>
                             <input class="form-control" type="text" id="address-line1" required>
-                            <div class="invalid-feedback">Please fill in your address!</div>
+                            <div class="invalid-feedback">Escriba el nombre</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-line2">Line 2</label>
+                            <label for="address-line2">Apellido</label>
                             <input class="form-control" type="text" id="address-line2">
+                            <div class="invalid-feedback">Escriba el apellido</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-zip">ZIP code</label>
+                            <label for="address-zip">Email</label>
                             <input class="form-control" type="text" id="address-zip" required>
-                            <div class="invalid-feedback">Please add your ZIP code!</div>
+                            <div class="invalid-feedback">Escriba el email</div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox" id="address-primary">
-                            <label class="custom-control-label" for="address-primary">Make this address primary</label>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="address-zip">Teléfono</label>
+                            <input class="form-control" type="text" id="address-zip" required>
+                            <div class="invalid-feedback">Escriba el teléfono</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="address-zip">Teléfono móvil</label>
+                            <input class="form-control" type="text" id="address-zip" required>
+                            <div class="invalid-feedback">Escriba el teléfono móvil</div>
                         </div>
                     </div>
                 </div>
