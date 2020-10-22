@@ -107,7 +107,7 @@ class SettingsTableSeeder extends Seeder
                 'key' => 'default_customer_role',
                 'name' => 'Rol cliente por defecto',
                 'description' => NULL,
-                'value' => '1',
+                'value' => '4',
                 'field' => '{"label" : "Valor", "name" : "value", "type" : "text"}',
                 'active' => 1,
                 'created_at' => NULL,

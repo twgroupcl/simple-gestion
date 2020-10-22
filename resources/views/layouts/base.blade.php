@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -35,9 +35,9 @@
     <link rel="stylesheet" media="screen" href="{{ asset('vendor/tiny-slider/dist/tiny-slider.css') }}" />
     <link rel="stylesheet" media="screen" href="{{ asset('vendor/drift-zoom/dist/drift-basic.min.css') }}" />
     <link rel="stylesheet" media="screen" href="{{ asset('vendor/lightgallery.js/dist/css/lightgallery.min.css') }}" />
-    <link rel=“stylesheet” media=“screen” href="{{ asset('packages/bootstrap-iconpicker/icon-fonts/font-awesome-5.12.0-1/css/all.min.css') }}" />
     <!-- Main Theme Styles + Bootstrap-->
     <link rel="stylesheet" media="screen" href="{{ asset('css/theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @livewireStyles
     @stack('styles')
 </head>
@@ -51,6 +51,22 @@
 
     <!-- Footer-->
     @include('layouts.footer.index')
+
+    <!-- Vendor scrits: js libraries and plugins-->
+    <script src="{{ asset('vendor/jquery/dist/jquery.slim.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('vendor/bs-custom-file-input/dist/bs-custom-file-input.min.js') }}"></script>
+    <script src="{{ asset('vendor/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src="{{ asset('vendor/tiny-slider/dist/min/tiny-slider.js') }}"></script>
+    <script src="{{ asset('vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
+    <script src="{{ asset('vendor/drift-zoom/dist/Drift.min.js') }}"></script>
+    <script src="{{ asset('vendor/lightgallery.js/dist/js/lightgallery.min.js') }}"></script>
+    <script src="{{ asset('vendor/lg-video.js/dist/lg-video.min.js') }}"></script>
+    <!-- Main theme script-->
+    <script src="{{ asset('js/theme.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+    @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>
