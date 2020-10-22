@@ -420,6 +420,11 @@ class Product extends Model
         }
     }
 
+    public function showCategory(): string
+    {
+        return $this->categories()->first()->name;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | HELPERS

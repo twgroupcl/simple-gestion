@@ -49,6 +49,7 @@
     @yield('content')
 
     <!-- Footer-->
+    @livewire('flash-message')
     @include('layouts.footer.index')
 </body>
 

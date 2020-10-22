@@ -41,7 +41,7 @@
                         @livewire('checkout.details')
                         @break
                         @case(3)
-                        @livewire('checkout.shipping')
+                        @livewire('checkout.shipping', ['items'=>$items])
                         @break
                         @default
                     @endswitch

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Checkout;
 
 use Livewire\Component;
+use App\Models\CartItem;
 
 class Checkout extends Component
 {
@@ -11,6 +12,8 @@ class Checkout extends Component
     public $subtotal;
     public $shippingtotal;
     public $total;
+    public $cart;
+    public $items;
 
     protected $listeners = [
         'prev-step' => 'prevStep',
@@ -70,6 +73,10 @@ class Checkout extends Component
 
         //Initialize active step
         $this->activeStep = $this->steps[1];
+
+        //Get items
+        $this->items = $this->getItems();
+        //dd($this->cart);
     }
 
     public function render()
@@ -77,15 +84,21 @@ class Checkout extends Component
         return view('livewire.checkout.checkout');
     }
 
-    function prevStep(){
+    public function prevStep(){
         //$this->activestep -= 1;
         //$this->steps[$this->activestep ]['status'] = '';
         $currentStep  = array_search($this->activeStep, $this->steps);
         $this->activeStep = $this->steps[$currentStep - 1];
     }
-    function nextStep(){
+    public function nextStep(){
         $currentStep  = array_search($this->activeStep, $this->steps);
         $this->activeStep = $this->steps[$currentStep + 1];
 
     }
+
+    public function getItems(){
+        return CartItem::whereCartId($this->cart->id)->with('product')->get();
+
+    }
+
 }

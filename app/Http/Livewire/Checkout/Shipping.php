@@ -6,6 +6,7 @@ use Livewire\Component;
 
 class Shipping extends Component
 {
+    public $items;
     public function render()
     {
         return view('livewire.checkout.shipping');

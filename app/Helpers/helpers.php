@@ -63,7 +63,6 @@ if (! function_exists('sanitizeNumber')) {
     }
 }
 
-
 if (! function_exists('currencyFormat')) {
     /**
      * Price format
