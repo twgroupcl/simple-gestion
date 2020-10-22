@@ -65,8 +65,10 @@
                     </ul>
                 </div>
             </div> --}}
-            <div class="col-md-12">
-                <div class="widget pb-2 mb-2">
+            <div class="col-md-12 mb-4">
+                <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
+
+                {{-- <div class="widget pb-2 mb-2">
                     <h3 class="widget-title text-dark pb-1">Organizan</h3>
                     <div class="d-flex flex-wrap">
                         <div class="col-6 mb-2 text-center">
@@ -99,7 +101,7 @@
                             <img class="img-fluid" src="{{ asset('img/logos/footer-ani.png') }}" alt="Corfo" />
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 {{-- <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-light pb-1">Stay informed</h3>
                     <form class="cz-subscribe-form validate" action="https://studio.us12.list-manage.com/subscribe/post?u=c7103e2c981361a6639545bd5&amp;amp;id=29ca296126" method="post" name="mc-embedded-subscribe-form" target="_blank" novalidate>
