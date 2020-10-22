@@ -96,7 +96,8 @@ class CustomerController extends Controller
 
     public function address()
     {
-        return view('customer.address');
+        $customer = Customer::firstWhere('user_id', auth()->user()->id);
+        return view('customer.address', ['customer' => $customer]);
     }
 
     public function order()
