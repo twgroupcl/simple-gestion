@@ -134,24 +134,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="py-3 align-middle">396 Lillian Blvd, Holbrook, NY 11741, USA<span class="align-middle badge badge-info ml-2">Primary</span></td>
-                            <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
-                                    <div class="czi-trash"></div>
-                                </a></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 align-middle">769, Industrial, West Chicago, IL 60185, USA</td>
-                            <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
-                                    <div class="czi-trash"></div>
-                                </a></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 align-middle">514 S. Magnolia St. Orlando, FL 32806, USA</td>
-                            <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
-                                    <div class="czi-trash"></div>
-                                </a></td>
-                        </tr>
+                        @forelse ($customer->addresses_data as $address)
+                            <tr>
+                                <td class="py-3 align-middle">{{ $address['street'] }} - {{ $address['number']}}</td>
+                                <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
+                                        <div class="czi-trash"></div>
+                                    </a></td>
+                            </tr>
+                        @empty
+                            No se encontraron direcciones
+                        @endforelse
                     </tbody>
                 </table>
             </div>
