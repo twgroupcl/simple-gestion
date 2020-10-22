@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ProductCategoryMappingTableSeeder extends Seeder
+class ProductSuperAttributesTableSeeder extends Seeder
 {
 
     /**
@@ -14,34 +14,27 @@ class ProductCategoryMappingTableSeeder extends Seeder
     {
         
 
-        \DB::table('product_category_mapping')->delete();
+        \DB::table('product_super_attributes')->delete();
         
-        \DB::table('product_category_mapping')->insert(array (
+        \DB::table('product_super_attributes')->insert(array (
             0 => 
             array (
-                'product_id' => 1,
-                'product_category_id' => 1,
+                'product_id' => 10,
+                'product_class_attribute_id' => 3,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             1 => 
             array (
-                'product_id' => 2,
-                'product_category_id' => 1,
+                'product_id' => 10,
+                'product_class_attribute_id' => 4,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             2 => 
             array (
-                'product_id' => 10,
-                'product_category_id' => 6,
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
-            3 => 
-            array (
                 'product_id' => 13,
-                'product_category_id' => 6,
+                'product_class_attribute_id' => 3,
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
