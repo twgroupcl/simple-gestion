@@ -68,7 +68,7 @@
                         <!-- Product details-->
                         <div class="col-lg-5 pt-4 pt-lg-0">
                             <div class="product-details ml-auto pb-3">
-                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, 'CLP', true) }}</div>
+                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</div>
                                 <!--
                                     <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Dark blue/Orange</span></div>
                                 -->
