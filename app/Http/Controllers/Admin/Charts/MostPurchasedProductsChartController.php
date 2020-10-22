@@ -15,7 +15,7 @@ use ConsoleTVs\Charts\Classes\Chartjs\Chart;
  */
 class MostPurchasedProductsChartController extends ChartController
 {
-    private array $products;
+    private $products = [];
 
     public function setup()
     {
