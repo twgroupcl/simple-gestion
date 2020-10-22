@@ -33,6 +33,8 @@ class ConfigurableDetail extends Component
         $this->getPriceFrom();
         $this->getInitialOptions();
         $this->setCorrectOption();
+
+        Debugbar::log('Componente motando');
     }
 
 
@@ -62,8 +64,6 @@ class ConfigurableDetail extends Component
                 'items' => ($key == 0) ? $options : [],
             ]);
         }
-
-        Debugbar::log($this->options);
     }
 
     public function addToCart()
@@ -74,7 +74,6 @@ class ConfigurableDetail extends Component
 
     public function updatedOptions($value, $index)
     {
-        Debugbar::log('test');
         $this->loadNextSelect(explode(".",$index)[0]);
         
         $this->setCorrectOption();
