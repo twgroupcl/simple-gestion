@@ -30,14 +30,18 @@
         <!-- Tabs-->
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item"><a class="nav-link p-4 active" href="#general" data-toggle="tab" role="tab">Información General</a></li>
-            <li class="nav-item"><a class="nav-link p-4" href="#specs" data-toggle="tab" role="tab">Especificaciones Técnicas</a></li>
+            <li class="nav-item"><a class="nav-link p-4" href="#specs" data-toggle="tab" role="tab">Detalles del Producto</a></li>
             {{-- <li class="nav-item"><a class="nav-link p-4" href="#reviews" data-toggle="tab" role="tab">Reviews <span class="font-size-sm opacity-60">(74)</span></a></li> --}}
         </ul>
+        @if ($product->product_type->id == 2)
+                @livewire('products.configurable-detail', ['product' => $product])   
+        @elseif ($product->product_type->id == 1)
         <div class="px-4 pt-lg-3 pb-3 mb-5">
             <div class="tab-content px-lg-3">
                 <!-- General info tab-->
                 <div class="tab-pane fade show active" id="general" role="tabpanel">
-                    <div class="row">
+                    
+                    <div class="row">    
                         <!-- Product gallery-->
                         <div class="col-lg-7 pr-lg-0">
                             <div class="cz-product-gallery">
@@ -64,7 +68,7 @@
                         <!-- Product details-->
                         <div class="col-lg-5 pt-4 pt-lg-0">
                             <div class="product-details ml-auto pb-3">
-                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, 'CLP', true) }}</div>
+                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</div>
                                 <!--
                                     <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Dark blue/Orange</span></div>
                                 -->
@@ -105,14 +109,13 @@
                                     </div>
                                 -->
                                 <div class="d-flex align-items-center pt-2 pb-4">
-                                    <select class="custom-select mr-3" style="width: 5rem;">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                    <button class="btn btn-primary btn-shadow btn-block" type="button"><i class="czi-cart font-size-lg mr-2"></i>Agregar al carro</button>
+                                    @livewire('qty-item', [
+                                        'qty' => 1, 
+                                        'emitTo' => [
+                                            'addtocart.cant',
+                                        ]
+                                    ])
+                                    @livewire('products.add-to-cart',['product' => $product, 'view' => 'single'])
                                 </div>
                                 <!--
                                     <div class="d-flex mb-4">
@@ -188,18 +191,20 @@
                         <div class="media align-items-center mr-md-3"><img src="{{ url($product->getFirstImagePath()) }}" width="90" alt="Product thumb">
                             <div class="mdeia-body pl-3">
                                 <h6 class="font-size-base mb-2">{{$product->name}}</h6>
+                                @if ($product->product_type->id == 1)
                                 <div class="h4 font-weight-normal text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
+                                @endif
                             </div>
                         </div>
+                        @if ($product->product_type->id == 1)
                         <div class="d-flex align-items-center pt-3">
-                            <select class="custom-select mr-2" style="width: 5rem;">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                            <button class="btn btn-primary btn-shadow mr-2" type="button"><i class="czi-cart font-size-lg mr-sm-2"></i><span class="d-none d-sm-inline">Agregar al carro</span></button>
+                            @livewire('qty-item', [
+                                'qty' => 1, 
+                                'emitTo' => [
+                                    'addtocart.cant',
+                                ]
+                            ])
+                            @livewire('products.add-to-cart',['product' => $product, 'view' => 'single'])
                             {{-- <div class="mr-2">
                                 <button class="btn btn-secondary btn-icon" type="button" data-toggle="tooltip" title="Add to Wishlist"><i class="czi-heart font-size-lg"></i></button>
                             </div>
@@ -207,11 +212,18 @@
                                 <button class="btn btn-secondary btn-icon" type="button" data-toggle="tooltip" title="Compare"><i class="czi-compare font-size-lg"></i></button>
                             </div> --}}
                         </div>
+                        @endif
                     </div>
                     <!-- Specs table-->
                     <div class="row pt-2">
                         <div class="col-lg-5 col-sm-6">
-                            <h3 class="h6">General specs</h3>
+                            <h3 class="h6">Especificaciones generales</h3>
+                            <ul class="list-unstyled font-size-sm pb-2">
+                                @foreach ($product->getAttributesWithNames() as $attribute)
+                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">{{ $attribute['name'] }}:</span><span>{{ $attribute['value'] }}</span></li>
+                                @endforeach
+                            </ul>
+                            {{-- <h3 class="h6">General specs</h3>
                             <ul class="list-unstyled font-size-sm pb-2">
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Model:</span><span>Amazfit Smartwatch</span></li>
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Gender:</span><span>Unisex</span></li>
@@ -230,9 +242,9 @@
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Display size:</span><span>1.28"</span></li>
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Screen resolution:</span><span>176 x 176</span></li>
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Touch screen:</span><span>No</span></li>
-                            </ul>
+                            </ul> --}}
                         </div>
-                        <div class="col-lg-5 col-sm-6 offset-lg-1">
+                        {{-- <div class="col-lg-5 col-sm-6 offset-lg-1">
                             <h3 class="h6">Functions</h3>
                             <ul class="list-unstyled font-size-sm pb-2">
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Phone calls:</span><span>Incoming call notification</span></li>
@@ -250,7 +262,7 @@
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Dimensions:</span><span>195 x 20 mm</span></li>
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Weight:</span><span>32 g</span></li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <!-- Reviews tab-->
@@ -469,6 +481,7 @@
                 </div> --}}
             </div>
         </div>
+        @endif
     </div>
 </div>
 <!-- Product description-->

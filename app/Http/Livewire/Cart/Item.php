@@ -23,8 +23,7 @@ class Item extends Component
     public $show;
 
     protected $listeners = [
-        'toAdd' => 'add',
-        'toDec' => 'dec',
+        'setQty',
         'updateItem' => 'updateCommune',
         'select-shipping-item' => 'addShippingItem',
     ];
@@ -41,18 +40,10 @@ class Item extends Component
         $this->shippingMethods =  $this->getShippingMethods();
     }
 
-    public function add($qty)
+    public function setQty($qty)
     {
         $this->qty = $qty;
-        $this->total += $this->item->product->price;
-        $this->item->qty = $qty;
-        $this->emitUp('change', $this->item->id, $this->qty);
-    }
-
-    public function dec($qty)
-    {
-        $this->qty = $qty;
-        $this->total -= $this->item->product->price;
+        $this->total = $this->item->product->price * $qty;
         $this->item->qty = $qty;
         $this->emitUp('change', $this->item->id, $this->qty);
     }
