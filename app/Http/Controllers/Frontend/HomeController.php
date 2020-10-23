@@ -29,7 +29,8 @@ class HomeController extends Controller
     } 
     
     public function getProductsByCategory(Request $request){        
-        $products = ProductCategory::where('id','=',$request->id)->with('products')->get();
+        $category = ProductCategory::where('id','=',$request->category)->with('products')->first();
+        $products = $category->products;
         return view('shop-grid',compact('products'));
     }
 }
