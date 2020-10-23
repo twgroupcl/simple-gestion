@@ -22,7 +22,7 @@ class SearchNavbar extends Component
     
     public function render()
     {
-        $selected = $this->selected;
+        //$selected = $this->selected;
         return view('livewire.search-navbar');
     }
 

@@ -30,20 +30,12 @@ class HomeController extends Controller
     public function searchProduct(Request $request)
     {
         $products = Product::where('status','=','1')->where('name','LIKE','%'.$request->product.'%')->get();
-<<<<<<< HEAD
         return view('shop-grid', compact('products'));        
     } 
     
     public function getProductsByCategory(Request $request){        
         $category = ProductCategory::where('id','=',$request->category)->with('products')->first();
-        $products = $category->products;
-=======
-        return view('shop-grid', compact('products'));
-    }
-
-    public function getProductsByCategory(Request $request){
-        $products = ProductCategory::where('id','=',$request->id)->with('products')->get();
->>>>>>> develop
+        $products = ($category)?$category->products:'';
         return view('shop-grid',compact('products'));
     }
 }
