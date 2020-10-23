@@ -61,6 +61,9 @@
     .container {
         margin: 20px;
     }
+
+    .size-totals {
+    }
 </style>
 
 </head>
@@ -96,10 +99,10 @@
                 <strong>Direccion de facturación del cliente</strong>
             </div>
             <p>
-                <p class="p-estrecho">{{ $quotation->address->first_name }} {{ $quotation->customer->addresses->first()->last_name }}</p>
-                <p class="p-estrecho">{{ $quotation->address->address_street }} {{ $quotation->customer->addresses->first()->address_number }}</p>
+                <p class="p-estrecho">{{ $quotation->first_name }} {{ $quotation->last_name }}</p>
+                <p class="p-estrecho">{{ $quotation->customer->addresses->first()->street }} {{ $quotation->customer->addresses->first()->number }}</p>
                 <p class="p-estrecho">{{ $quotation->address->commune->name }}</p>
-                <p class="p-estrecho">Telefono: {{  $quotation->customer->addresses->first()->phone  }}</p>
+                <p class="p-estrecho">@if ($quotation->phone) Telefono: {{  $quotation->phone  }} @endif</p>
             </p>
         </td>
         {{-- <td>
@@ -119,15 +122,18 @@
 
   <br/>
 
+  @if (strlen($quotation->preface) < 250)
   <table>
-      <tbody>
-          <tr>
-              <td>
-                {!! $quotation->preface !!}
-              </td>
-          </tr>
-      </tbody>
-  </table>
+    <tbody>
+        <tr>
+            <td>
+              {!! $quotation->preface !!}
+            </td>
+        </tr>
+    </tbody>
+  </table> 
+  @endif
+  
 
   <br>
 
@@ -203,6 +209,7 @@
     <tbody>
         <tr>
             <td class="top-td" width="40%">
+                @if ($quotation->notes)
                 <div class="direccion-facturacion-titulo">
                     <strong>Notas adicionales:</strong>
                 </div>
@@ -210,18 +217,19 @@
                     <p>
                         {{ $quotation->notes }}
                     </p>
-                </p>
+                </p> 
+                @endif
             </td>
-            <td width="27%" ></td>
+            <td width="29%" ></td>
             <td class="top-td">
                 <table>
                     <tbody>
                             <tr>
-                                <td align="right"><strong>Subtotal $</strong></td>
+                                <td align="right" class="size-totals"><strong>Subtotal $</strong></td>
                                 <td align="right">{{ currencyFormat($quotation->sub_total, 'CLP', true)  }}</td>
                             </tr>
                             <tr>
-                                <td align="right"><strong>Descuento $</strong></td>
+                                <td align="right" class="size-totals"><strong>Descuento general $</strong></td>
                                 <td align="right">-{{ currencyFormat($quotation->discount_amount, 'CLP', true) }}</td>
                             </tr>
                             {{-- <tr>
@@ -230,24 +238,24 @@
                             </tr> --}}
                             @if ($quotation->tax_type == 'A')
                             <tr>
-                                <td align="right"><strong>IVA $</strong></td>
+                                <td align="right" class="size-totals"><strong>IVA $</strong></td>
                                 <td align="right">{{ currencyFormat($quotation->tax_amount, 'CLP', true) }}</td>
                             </tr>  
                             @endif
                             @if ($quotation->tax_type == 'H')
                             <tr>
-                                <td align="right"><strong>Retencion $</strong></td>
+                                <td align="right" class="size-totals"><strong>Retencion $</strong></td>
                                 <td align="right">-{{ currencyFormat($quotation->tax_amount, 'CLP', true) }}</td>
                             </tr>      
                             @endif
                             @if ($quotation->has_tax_per_item)
                             <tr>
-                                <td align="right"><strong>Impuestos adicionales $</strong></td>
+                                <td align="right" class="size-totals"><strong>Impuestos adicionales $</strong></td>
                                 <td align="right">{{ currencyFormat($quotation->tax_specific, 'CLP', true) }}</td>
                             </tr>
                             @endif
                             <tr>
-                                <td align="right"><strong>Total $</strong></td>
+                                <td align="right" class="size-totals"><strong>Total $</strong></td>
                                 <td align="right" class="gray">{{ currencyFormat($quotation->total, 'CLP', true) }}</td>
                             </tr>
                     </tbody>
@@ -267,6 +275,18 @@
         </tr>
     </tbody>
 </table>
+
+@if (strlen($quotation->preface) >= 200)
+  <table>
+    <tbody>
+        <tr>
+            <td>
+              {!! $quotation->preface !!}
+            </td>
+        </tr>
+    </tbody>
+  </table> 
+  @endif
 
 </div>
 </body>
