@@ -150,8 +150,13 @@
                             $addresses_data = is_array($customer->addresses_data)
                                 ? $customer->addresses_data
                                 : json_decode($customer->addresses_data, true) ?? [];
-                        @endphp
-                        @forelse ($addresses_data as $address)
+
+                            $paginator = paginate($addresses_data, 10, null, [
+                                'path'  => request()->url(),
+                                'query' => request()->query(),
+                            ]);
+                            @endphp
+                        @forelse ($paginator as $address)
                             <tr>
                                 <td class="py-3 align-middle">{{ $address['street'] }} - {{ $address['number']}}</td>
                                 <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
@@ -167,6 +172,8 @@
                 </table>
             </div>
             <hr class="pb-4">
+            <!-- Pagination-->
+            {{ $paginator->links() }}
             <div class="text-sm-right"><a class="btn btn-primary" href="#add-address" data-toggle="modal">Añadir nueva dirección</a></div>
         </section>
     </div>
