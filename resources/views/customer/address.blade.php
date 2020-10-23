@@ -95,8 +95,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary btn-shadow" type="submit">Add address</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                <button class="btn btn-primary btn-shadow" type="submit">Añadir dirección</button>
             </div>
         </div>
     </div>
@@ -165,7 +165,7 @@
                 </table>
             </div>
             <hr class="pb-4">
-            <div class="text-sm-right"><a class="btn btn-primary" href="#add-address" data-toggle="modal">Add new address</a></div>
+            <div class="text-sm-right"><a class="btn btn-primary" href="#add-address" data-toggle="modal">Añadir nueva dirección</a></div>
         </section>
     </div>
 </div>
