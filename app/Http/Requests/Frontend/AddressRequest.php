@@ -31,7 +31,7 @@ class AddressRequest extends FormRequest
             "number" => 'required',
             "subnumber" => 'nullable',
             "commune_id" => "required",
-            'uid' => ['nullable', 'unique:customers,uid', 'string'/* , $rutRule */],
+            'uid' => ['nullable'/* , 'unique:customers,uid', 'string', $rutRule */],
             "first_name" => 'nullable',
             "last_name" => 'nullable',
             "email" => 'nullable',
