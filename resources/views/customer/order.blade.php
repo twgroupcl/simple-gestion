@@ -15,7 +15,7 @@
         </nav>
       </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-0">My orders</h1>
+            <h1 class="h3 text-light mb-0">Mis órdenes</h1>
         </div>
     </div>
 </div>
@@ -50,9 +50,9 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Order #</th>
-                            <th>Date Purchased</th>
-                            <th>Status</th>
+                            <th>Número #</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -100,7 +100,7 @@
             <!-- Pagination-->
             <nav class="d-flex justify-content-between pt-2" aria-label="Page navigation">
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#"><i class="czi-arrow-left mr-2"></i>Prev</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i class="czi-arrow-left mr-2"></i>Anterior</a></li>
                 </ul>
                 <ul class="pagination">
                     <li class="page-item d-sm-none"><span class="page-link page-link-static">1 / 5</span></li>
@@ -111,7 +111,7 @@
                     <li class="page-item d-none d-sm-block"><a class="page-link" href="#">5</a></li>
                 </ul>
                 <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#" aria-label="Next">Next<i class="czi-arrow-right ml-2"></i></a></li>
+                    <li class="page-item"><a class="page-link" href="#" aria-label="Next">Siguiente<i class="czi-arrow-right ml-2"></i></a></li>
                 </ul>
             </nav>
         </section>
