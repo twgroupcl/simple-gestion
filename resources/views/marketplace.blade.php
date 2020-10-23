@@ -16,7 +16,7 @@
     <!-- Heading-->
     <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
         <h2 class="h3 mb-0 pt-3 mr-2">Productos</h2>
-        <div class="pt-3"><a class="btn btn-outline-accent btn-sm" href="{{url('shop-grid')}}">Más productos<i class="czi-arrow-right ml-1 mr-n1"></i></a></div>
+        <div class="pt-3"><a class="btn btn-outline-accent btn-sm" href="{{ url('shop-grid') }}">Más productos<i class="czi-arrow-right ml-1 mr-n1"></i></a></div>
     </div>
     <!-- Grid-->
     <div class="row pt-2 mx-n2">
@@ -25,7 +25,7 @@
             @if (! $product->parent_id)
             <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
                 @livewire('products.product', ['product' => $product], key($product->id))
-            </div>    
+            </div>
             @endif
         @endforeach
 </section>
@@ -83,8 +83,8 @@
         <!-- Bestsellers-->
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">Mejor vendido</h3>                
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
+                <h3 class="widget-title">Mejor vendido</h3>
+                @livewire('products.products-general',['emitTo' => 'products.short-list'])
                 <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
@@ -92,7 +92,7 @@
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
                 <h3 class="widget-title">Nuevos productos</h3>
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
+                @livewire('products.products-general',['emitTo' => 'products.short-list'])
                 <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
@@ -100,7 +100,7 @@
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
                 <h3 class="widget-title">Más vendidos</h3>
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
+                @livewire('products.products-general',['emitTo' => 'products.short-list'])
                 <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>

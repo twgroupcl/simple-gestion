@@ -35,62 +35,66 @@ class Cart extends Model
     {
         $customer = Customer::where('user_id',$user->id)->first();
 
-        $cart = Cart::whereCustomerId($customer->id);
+        if(!empty($customer)) {
+            $cart = Cart::whereCustomerId($customer->id);
 
-        $sessionId = $session->getId();
-        if ($cart->exists()) {
-            $cart = $cart->first();
-            $cart->session_id = $sessionId;
+            $sessionId = $session->getId();
+            if ($cart->exists()) {
+                $cart = $cart->first();
+                $cart->session_id = $sessionId;
+
+                return $cart;
+            }
+
+            /* if customer have a session but not login
+            if (Cart::whereSessionId($sessionId)->exists()) {
+                $cart = Cart::whereSessionId($sessionId)->first();
+            } else {
+                $cart = new Cart();
+            }
+            */
+
+            //new cart and complete data
+
+            $cart = new Cart();
+
+            $cart->is_guest = false;
+            $cart->session_id = Session::getId();
+            $cart->customer_id = $customer->id;
+            $cart->is_company = $customer->is_company;
+
+            if ($cart->is_company) {
+                $cart->business_name = $customer = $customer->first_name;
+                //todo activity data ??
+                $activity_data = json_decode($customer->activities_data,true);
+            } else {
+                $cart->first_name = $customer->first_name;
+                $cart->last_name = $customer->last_name;
+            }
+
+            $addresses_data = json_decode($customer->addresses_data,true);
+
+            if(!empty($addresses_data) && is_array($addresses_data)) {
+                if (count($addresses_data) > 0) {
+                    $addresses_data = $addresses_data[0];
+                    $cart->address_street = $addresses_data['address_street'];
+                    $cart->address_number = $addresses_data['address_number'];
+                    $cart->address_office = $addresses_data['address_subnumber'];
+                    $cart->address_commune_id = $addresses_data['commune_id'];
+                }
+            }
+
+            $cart->uid = $customer->uid;
+
+            $cart->email = $customer->email;
+            $cart->phone = $customer->phone;
+            $cart->cellphone = $customer->cellphone;
+            $cart->currency_id = 1;
 
             return $cart;
         }
 
-        /* if customer have a session but not login
-        if (Cart::whereSessionId($sessionId)->exists()) {
-            $cart = Cart::whereSessionId($sessionId)->first();
-        } else {
-            $cart = new Cart();
-        }
-         */
-
-        //new cart and complete data
-
-        $cart = new Cart();
-
-        $cart->is_guest = false;
-        $cart->session_id = Session::getId();
-        $cart->customer_id = $customer->id;
-        $cart->is_company = $customer->is_company;
-
-        if ($cart->is_company) {
-            $cart->business_name = $customer = $customer->first_name;
-            //todo activity data ??
-            $activity_data = json_decode($customer->activities_data,true);
-        } else {
-            $cart->first_name = $customer->first_name;
-            $cart->last_name = $customer->last_name;
-        }
-
-        $addresses_data = json_decode($customer->addresses_data,true);
-
-        if(!empty($addresses_data) && is_array($addresses_data)) {
-            if (count($addresses_data) > 0) {
-                $addresses_data = $addresses_data[0];
-                $cart->address_street = $addresses_data['address_street'];
-                $cart->address_number = $addresses_data['address_number'];
-                $cart->address_office = $addresses_data['address_subnumber'];
-                $cart->address_commune_id = $addresses_data['commune_id'];
-            }
-        }
-
-        $cart->uid = $customer->uid;
-
-        $cart->email = $customer->email;
-        $cart->phone = $customer->phone;
-        $cart->cellphone = $customer->cellphone;
-        $cart->currency_id = 1;
-
-        return $cart;
+        return null;
     }
 
     private static function getInstanceGuest(SessionManager $session) : Cart

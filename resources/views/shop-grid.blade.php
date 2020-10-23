@@ -23,7 +23,7 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-        @include('layouts.general.section-category')
+        {{-- @include('layouts.general.section-category') --}}
         <!-- Content  -->
         <section class="col-lg-8">
             <!-- Toolbar-->
@@ -61,8 +61,8 @@
                     @foreach ($products as $product)
                         <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
                             @livewire('products.product', ['product' => $product], key($product->id))
-                        </div>    
-                    @endforeach            
+                        </div>
+                    @endforeach
                 @endif
             </div>
             <!-- Banner-->
