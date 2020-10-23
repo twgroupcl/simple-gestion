@@ -38,17 +38,15 @@ class Cart extends Component
     {
         //get update cart
         $this->getCart();
-        if (!$this->cart->company_id) {
-            $this->cart->company_id = 1;
-            $this->cart->save();
-        }
+        $this->cart->save();
 
         $qty = $qty == null ? 1 : $qty;
 
         $this->addItem($this->cart, $product, $qty);
 
         $this->cart->recalculateSubtotal();
-        $this->cart->save();
+        if ($this->cart->isDirty())
+            $this->cart->update();
         
         $this->updateSubtotal();
 

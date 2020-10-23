@@ -58,10 +58,13 @@ class Cart extends Model
 
             $cart = new Cart();
 
+            $cart->items_count = 0;
             $cart->is_guest = false;
             $cart->session_id = Session::getId();
             $cart->customer_id = $customer->id;
+            $cart->currency_id = 1;
             $cart->is_company = $customer->is_company;
+            $cart->company_id = 1;
 
             if ($cart->is_company) {
                 $cart->business_name = $customer = $customer->first_name;
@@ -72,24 +75,25 @@ class Cart extends Model
                 $cart->last_name = $customer->last_name;
             }
 
-            $addresses_data = json_decode($customer->addresses_data,true);
+            $addresses_data = $customer->addresses_data ? 
+                (is_array($customer->addresses_data) ? $customer->addresses_data : json_decode($customer->addresses_data, true))
+                : 
+                null;
 
             if(!empty($addresses_data) && is_array($addresses_data)) {
                 if (count($addresses_data) > 0) {
                     $addresses_data = $addresses_data[0];
-                    $cart->address_street = $addresses_data['address_street'];
-                    $cart->address_number = $addresses_data['address_number'];
-                    $cart->address_office = $addresses_data['address_subnumber'];
-                    $cart->address_commune_id = $addresses_data['commune_id'];
+                    $cart->address_street = array_key_exists('address_street', $addresses_data) ? $addresses_data['address_street'] : '';
+                    $cart->address_number = array_key_exists('address_number', $addresses_data) ? $addresses_data['address_number'] : '';
+                    $cart->address_office = array_key_exists('address_subnumber', $addresses_data) ? $addresses_data['address_subnumber'] : '';
+                    $cart->address_commune_id = array_key_exists('commune_id', $addresses_data) ? $addresses_data['commune_id'] : '';
                 }
             }
 
             $cart->uid = $customer->uid;
-
             $cart->email = $customer->email;
             $cart->phone = $customer->phone;
             $cart->cellphone = $customer->cellphone;
-            $cart->currency_id = 1;
 
             return $cart;
         }
@@ -111,6 +115,8 @@ class Cart extends Model
         $cart->is_guest = true;
         $cart->items_count = 0;
         $cart->currency_id = 1;
+        $cart->company_id = 1;
+
         return $cart;
     }
 
