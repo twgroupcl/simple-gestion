@@ -396,8 +396,8 @@
         })
     
         $(document).on('change', 'select[data-repeatable-input-name="product_id"]', function () {
-
-        if ($(this).select2('data')[0] == undefined) {
+            
+            if ($(this).select2('data')[0] == undefined) {
                 return;
             }
 

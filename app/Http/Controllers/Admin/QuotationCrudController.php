@@ -242,14 +242,14 @@ class QuotationCrudController extends CrudController
                 [
                     'label' => 'Producto / Servicio',
                     'name' => 'product_id',
-                    'type' => 'quotation.select2_from_ajax',
+                    'type' => 'quotation.select2_custom',
                     'model' => 'App\Models\Product',
                     'placeholder' => 'Selecciona un producto',
                     'attribute' => 'name',
                     'data_source' => url('admin/api/products/getBySeller'),
                     'minimum_input_length' => 0,
                     'include_all_form_fields'  => true,
-                    'dependencies'  => ['business_id'],
+                    'dependencies'  => ['seller_id'],
                     'wrapper' => [
                         'class' => 'form-group col-md-3 product-select',
                     ],
