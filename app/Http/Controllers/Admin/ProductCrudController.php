@@ -59,6 +59,7 @@ class ProductCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+
         // If not admin, show only user products
         if(!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
     
@@ -244,7 +245,7 @@ class ProductCrudController extends CrudController
             'label' => 'Moneda',
             'type' => 'relationship',
             'entity' => 'currency',
-            'default' => Setting::get('default_currency'),
+            'default' => 63,
             'wrapper' => [
                 'style' => 'display:none',
             ],
@@ -453,7 +454,7 @@ class ProductCrudController extends CrudController
             'entity' => 'currency',
             'tab' => 'Precio y envío',
             'placeholder' => 'Selecciona una moneda',
-            'default' => Setting::get('default_currency'),
+            'default' => 63,
             'wrapper' => [
                 'style' => 'display:none',
                 'class' => 'form-group col-lg-12 required',
