@@ -954,7 +954,7 @@ class ProductCrudController extends CrudController
 
         // find attributes that are configurable and belong to the product class
         if ($form['seller_id']) {
-            $options = $options->where('seller_id', $form['seller_id']);
+            $options = $options->where('seller_id', $form['seller_id'])->where('price', '!=', 'null')->orderBy('name');
         }
 
         // filter by search term

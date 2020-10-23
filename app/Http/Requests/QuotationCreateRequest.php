@@ -62,8 +62,8 @@ class QuotationCreateRequest extends FormRequest
         return [
             'business_id' => 'negocio',
             'customer_id' => 'cliente',
-            'creation_date' => 'fecha de creacion',
-            'due_date' => 'fecha de vencimiento',
+            'quotation_date' => 'fecha de creacion',
+            'expiry_date' => 'fecha de vencimiento',
             'total' => 'monto total',
 
             // Order items data

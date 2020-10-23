@@ -16,7 +16,7 @@ class QuotationObserver
      */
     public function creating(Quotation $quotation) {
 
-        // Store customter address
+        // Store customer address
         $quotation->uid = $quotation->customer->uid;
         $quotation->first_name = $quotation->customer->first_name;
         $quotation->last_name = $quotation->customer->last_name;
