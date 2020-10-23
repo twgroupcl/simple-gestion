@@ -1,4 +1,4 @@
-<div>
+<div class="details-form">
     <!-- Title-->
     <h2 class="h6 border-bottom pb-3 mb-3">Información de envío</h2>
     <!-- Shipping detail-->
@@ -6,12 +6,12 @@
         <div class="col-12 form-group text-left">
             <div class="custom-control custom-checkbox pb-3 mb-3">
                 <input class="custom-control-input" type="checkbox" id="is-business" wire:model="is_business">
-                <label class="custom-control-label" for="is-business">¿Eres una persona juridica?</label>
+                <label class="custom-control-label" for="is-business">¿Eres una persona jurídica?</label>
             </div>
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-uid">RUT <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="" wire:model="data.uid" id="sd-uid">
+            <input class="form-control rut-field" type="text" placeholder="" wire:model="data.uid" id="sd-uid">
             @error('data.uid') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         @if ($is_business)
@@ -37,7 +37,7 @@
             </div>
         @endif
         <div class="col-sm-6 form-group">
-            <label for="sd-email">Correo electrónico <span class='text-danger'>*</span></label>
+            <label for="sd-email">E-mail <span class='text-danger'>*</span></label>
             <input class="form-control" type="email" placeholder="" wire:model="data.email" id="sd-email">
             @error('data.email') <small class="text-danger">{{ $message }}</small> @enderror
 
@@ -70,13 +70,13 @@
             @error('data.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
-            <label for="sd-cellphone">Celular<span class='text-danger'>*</span></label>
+            <label for="sd-cellphone">Teléfono móvil<span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="" wire:model="data.cellphone" id="sd-cellphone">
             @error('data.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
 
         </div>
         <div class="col-sm-6 form-group">
-            <label for="sd-phone">Teléfono fijo</label>
+            <label for="sd-phone">Teléfono </label>
             <input class="form-control" type="text" placeholder="" wire:model="data.phone" id="sd-phone">
             @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
 
@@ -90,7 +90,7 @@
         <div class="col-12 form-group">
             <label for="sd-message">Detalle</label>
             <textarea class="form-control" wire:model="data.shipping_details" id="sd-message" rows="6"
-                placeholder="Ingrese algun detalle en caso de ser necesario" required="" spellcheck="false"
+                placeholder="Ingrese algún detalle en caso de ser necesario" required="" spellcheck="false"
                 data-gramm="false"></textarea>
             @error('data.shipping_details') <small class="text-danger">{{ $message }}</small> @enderror
 
@@ -111,12 +111,12 @@
                 <div class="custom-control custom-checkbox pb-3 mb-3">
                     <input class="custom-control-input" type="checkbox" wire:model="invoice.is_business"
                         id="bd-isbusiness">
-                    <label class="custom-control-label" for="bd-isbusiness">¿Es una persona juridica?</label>
+                    <label class="custom-control-label" for="bd-isbusiness">¿Es una persona jurídica?</label>
                 </div>
             </div>
             <div class="col-sm-6 form-group">
                 <label for="bd-uid">RUT <span class='text-danger'>*</span></label>
-                <input class="form-control" type="text" placeholder="" wire:model="invoice.uid" id="bd-uid">
+                <input class="form-control rut-field" type="text" placeholder="" wire:model="invoice.uid" id="bd-uid">
                 @error('invoice.uid') <small class="text-danger">{{ $message }}</small> @enderror
 
             </div>
@@ -147,7 +147,7 @@
                 </div>
             @endif
             <div class="col-sm-6 form-group">
-                <label for="bd-email">Correo electrónico<span class='text-danger'>*</span></label>
+                <label for="bd-email">E-mail<span class='text-danger'>*</span></label>
                 <input class="form-control" type="email" placeholder="" wire:model="invoice.email" id="bd-email">
                 @error('invoice.email') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
@@ -181,13 +181,13 @@
                 @error('invoice.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
             <div class="col-sm-6 form-group">
-                <label for="bd-cellphone">Celular<span class='text-danger'>*</span></label>
+                <label for="bd-cellphone">Teléfono móvil<span class='text-danger'>*</span></label>
                 <input class="form-control" type="text" placeholder="" wire:model="invoice.cellphone" id="bd-cellphone">
                 @error('invoice.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
 
             </div>
             <div class="col-sm-6 form-group">
-                <label for="bd-phone">Teléfono fijo</label>
+                <label for="bd-phone">Teléfono </label>
                 <input class="form-control" type="text" placeholder="" wire:model="invoice.phone" id="bd-phone">
                 @error('invoice.phone') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
@@ -216,3 +216,21 @@
     </div> --}}
 
 </div>
+@push('scripts')
+    <script src="{{ asset('js/rut-formatter.js') }}"></script>
+    <script>
+
+        $(document).ready(function(){
+            var observer = new MutationObserver(function(mutations, observer) {
+                $('.rut-field').rut()
+            });
+            document.querySelectorAll('.details-form').forEach(fields => {
+                observer.observe(fields, {
+                    subtree: true,
+                    attributes: true,
+                });
+            })
+            $('.rut-field').rut()
+        })
+    </script>
+@endpush

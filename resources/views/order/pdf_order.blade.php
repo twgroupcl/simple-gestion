@@ -168,8 +168,8 @@ if($addressInvoice){
         @php
         $product = Product::where('id',$item->product_id)->first();
         $subtotal += ($product->price * $item->qty);
-        $subtotalshipping += $item->shipping_total;
-        $total += ($product->price * $item->qty) + $item->shipping_total;
+        $subtotalshipping += ($item->shipping_total  * $item->qty) ;
+        $total += ($product->price * $item->qty) + ($item->shipping_total  * $item->qty);
         @endphp
         <tr class="product-item">
             <td width="30%" class="product-item">
@@ -184,7 +184,7 @@ if($addressInvoice){
                     {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}</p>
             </td>
             <td width="30%" align="right" class="product-item">
-                <p> {{ currencyFormat($product->price * $item->qty + $item->shipping_total ? $product->price * $item->qty + $item->shipping_total : 0, 'CLP', true) }}
+                <p> {{ currencyFormat((($product->price * $item->qty) + ($item->shipping_total  * $item->qty ))? (($product->price * $item->qty) + ($item->shipping_total   * $item->qty) ) : 0, 'CLP', true) }}
                 </p>
             </td>
         </tr>

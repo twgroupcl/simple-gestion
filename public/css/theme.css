@@ -17322,5 +17322,8 @@ html:not([dir=rtl]) .cz-range-slider-ui.noUi-horizontal .noUi-handle {
 
 .steps-light .step-item.active .step-count, .steps-light .step-item.active .step-progress {
     color: #fff;
-    background-color: #3b733a !important;
+    background-color: #329230 !important;
+}
+.select-shipping{
+    width: 250px;
 }

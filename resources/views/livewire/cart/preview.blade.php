@@ -9,7 +9,7 @@
                     <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3">
                         <div class="py-1"><a class="btn btn-outline-accent btn-sm" href="{{ route('index') }}"><i
                                     class="czi-arrow-left mr-1 ml-n1"></i>Volver a comprar</a></div>
-                        <div class="d-none d-sm-block py-1 font-size-ms">Tines 3 productos en tu carro</div>
+                        <div class="d-none d-sm-block py-1 font-size-ms">Tienes {{count($items)}} productos en tu carro</div>
                         {{-- <div class="py-1"><a class="btn btn-outline-danger btn-sm" href="marketplace-category.html"><i
                                     class="czi-close font-size-xs mr-1 ml-n1"></i>Limpiar carro</a></div> --}}
                     </div>
@@ -23,7 +23,7 @@
                 <hr class="d-lg-none">
                 <div class="cz-sidebar-static h-100 ml-auto border-left">
                     <div class="text-center mb-4 pb-3 border-bottom">
-                        <h2 class="h6 mb-3 pb-1">Total Carro</h2>
+                        <h2 class="h6 mb-3 pb-1">Total en Carro</h2>
                         <!--<h3 class="font-weight-normal">$56.<small>00</small></h3>-->
                         <h3 class="font-weight-normal">{{ currencyFormat($total, 'CLP', true) }}</h3>
                     </div>
