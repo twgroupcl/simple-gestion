@@ -58,7 +58,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($customer->orders as $order)
+                        @php
+                            $orders = $customer->orders()->paginate(1);
+                        @endphp
+                        {{-- @dd($customer->orders()->paginate()->links()) --}}
+                        @forelse ($orders as $order)
                             <tr>
                                 <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">{{ $order->id }}</a></td>
                                 <td class="py-3">{{ $order->created_at->format('d-m-Y') }}</td>
@@ -75,22 +79,7 @@
             </div>
             <hr class="pb-4">
             <!-- Pagination-->
-            <nav class="d-flex justify-content-between pt-2" aria-label="Page navigation">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#"><i class="czi-arrow-left mr-2"></i>Anterior</a></li>
-                </ul>
-                <ul class="pagination">
-                    <li class="page-item d-sm-none"><span class="page-link page-link-static">1 / 5</span></li>
-                    <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link">1<span class="sr-only">(current)</span></span></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">5</a></li>
-                </ul>
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#" aria-label="Next">Siguiente<i class="czi-arrow-right ml-2"></i></a></li>
-                </ul>
-            </nav>
+            {{ $orders->links() }}
         </section>
     </div>
 </div>
