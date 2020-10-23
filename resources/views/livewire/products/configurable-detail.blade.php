@@ -60,9 +60,13 @@
                             -->
                             <div class="product-badge product-available mt-n5"><i class="czi-security-check"></i>Producto disponible</div>
                         </div>
+                        {{-- @if ($selectedChildrenId)
                         <div class="d-flex align-items-center pt-2 pb-4">
-                            @if ($selectedChildrenId)
-                            <span><h4> {{ $currentProduct->name }}</h4></span> @endif
+                            <span><h4> {{ $currentProduct->name }}</h4></span>
+                        </div>
+                        @endif --}}
+                        <div class="product-details mt-2 mb-3 ml-auto">
+                            <span class="h6">Configura tu producto para añadirlo al carro </span>
                         </div>
                         @foreach ($options as $key => $option)
                             <div class="form-group">
