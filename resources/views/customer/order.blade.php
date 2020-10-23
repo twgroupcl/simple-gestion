@@ -59,7 +59,7 @@
                     </thead>
                     <tbody>
                         @php
-                            $orders = $customer->orders()->paginate(1);
+                            $orders = $customer->orders()->paginate(10);
                         @endphp
                         {{-- @dd($customer->orders()->paginate()->links()) --}}
                         @forelse ($orders as $order)
