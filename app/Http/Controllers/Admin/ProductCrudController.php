@@ -166,6 +166,9 @@ class ProductCrudController extends CrudController
             'model'     => "App\Models\ProductCategory",
             'attribute' => 'name', 
             'pivot'     => true,
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
             'attributes' => [
                 'id' => 'categories',
             ]
@@ -403,6 +406,9 @@ class ProductCrudController extends CrudController
             'entity'    => 'categories', 
             'model'     => "App\Models\ProductCategory",
             'attribute' => 'name', 
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
             'pivot'     => true,
             'tab' => 'Información general',
         ]);
@@ -593,35 +599,35 @@ class ProductCrudController extends CrudController
                 0 => 'Rechazado',
             ],
             'default' => null,
-            'tab' => 'Estado y visibilidad'
+            'tab' => 'Administrador'
         ]);
 
         CRUD::addField([
             'name' => 'new',
             'label' => 'Nuevo',
             'type' => 'checkbox',
-            'tab' => 'Estado y visibilidad'
+            'tab' => 'Administrador'
         ]);
 
         CRUD::addField([
             'name' => 'featured',
             'label' => 'Destacado',
             'type' => 'checkbox',
-            'tab' => 'Estado y visibilidad'
+            'tab' => 'Administrador'
         ]);
 
         CRUD::addField([
             'name' => 'visible',
             'label' => 'Visible',
             'type' => 'checkbox',
-            'tab' => 'Estado y visibilidad'
+            'tab' => 'Administrador'
         ]);
 
         CRUD::addField([
             'name' => 'visible_from',
             'label' => 'Visible desde',
             'type' => 'date',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
             'wrapper' => [
                 'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3',
             ]
@@ -631,7 +637,7 @@ class ProductCrudController extends CrudController
             'name' => 'visible_to',
             'label' => 'Visible hasta',
             'type' => 'date',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
             'wrapper' => [
                 'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3',
             ]
@@ -641,7 +647,7 @@ class ProductCrudController extends CrudController
             'name' => 'rejected_reason',
             'label' => 'Razón del rechazo',
             'type' => 'textarea',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
             'wrapper' => [
                 'style' => 'display:none',
                 'id' => 'rejected_reason'
@@ -652,7 +658,7 @@ class ProductCrudController extends CrudController
             'name' => 'date_of_rejected',
             'label' => 'Fecha de rechazo',
             'type' => 'date',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
             'wrapper' => [
                 'style' => 'display:none',
                 'id' => 'date_of_rejected',
@@ -662,7 +668,7 @@ class ProductCrudController extends CrudController
         CRUD::addField([
             'name' => 'CustomShowHidedFields',
             'type' => 'product.show_hide_fields',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
         ]);
     }
 
