@@ -11,7 +11,25 @@
         <img src="{{ asset('img/home/hero-slider/banner-03.png') }}" alt="Contigo Pyme Banner 3">
     </div>
 </div>
-@livewire('products.products-general',['emitTo' => 'products.card-general'])
+<!-- Products grid (Trending products)-->
+<section class="container pt-5">
+    <!-- Heading-->
+    <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
+        <h2 class="h3 mb-0 pt-3 mr-2">Productos</h2>
+        <div class="pt-3"><a class="btn btn-outline-accent btn-sm" href="{{url('shop-grid')}}">Más productos<i class="czi-arrow-right ml-1 mr-n1"></i></a></div>
+    </div>
+    <!-- Grid-->
+    <div class="row pt-2 mx-n2">
+        <!-- Product-->
+        @foreach ($products as $product)
+            @if (! $product->parent_id)
+            <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
+                @livewire('products.product', ['product' => $product], key($product->id))
+            </div>    
+            @endif
+        @endforeach
+</section>
+
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
@@ -175,13 +193,4 @@
 </section> --}}
 
 <!-- Toast: Added to Cart-->
-<div class="toast-container toast-bottom-center">
-    <div class="toast mb-3" id="cart-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-success text-white"><i class="czi-check-circle mr-2"></i>
-            <h6 class="font-size-sm text-white mb-0 mr-auto">Added to cart!</h6>
-            <button class="close text-white ml-2 mb-1" type="button" data-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="toast-body">This item has been added to your cart.</div>
-    </div>
-</div>
 @endsection
