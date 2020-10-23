@@ -71,7 +71,7 @@ class SettingsTableSeeder extends Seeder
                 'key' => 'default_currency',
                 'name' => 'Moneda por defecto',
                 'description' => NULL,
-                'value' => '1',
+                'value' => 'CLP',
                 'field' => '{"label" : "Valor", "name" : "value", "type" : "text"}',
                 'active' => 1,
                 'created_at' => NULL,
