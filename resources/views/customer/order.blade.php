@@ -27,7 +27,7 @@
         <section class="col-lg-8">
             <!-- Toolbar-->
             <div class="d-flex justify-content-between align-items-center pt-lg-2 pb-4 pb-lg-5 mb-lg-3">
-                <div class="form-inline">
+                {{-- <div class="form-inline">
                     <label class="text-light opacity-75 text-nowrap mr-2 d-none d-lg-block" for="order-sort">Sort orders:</label>
                     <select class="form-control custom-select" id="order-sort">
                         <option>All</option>
@@ -36,7 +36,8 @@
                         <option>Delayed</option>
                         <option>Canceled</option>
                     </select>
-                </div>
+                </div> --}}
+                <h6 class="font-size-base text-light mb-0">Lista de las órdenes que realizaste:</h6>
                 <a class="btn btn-primary btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="czi-sign-out mr-2"></i> Cerrar sesión
                 </a>
