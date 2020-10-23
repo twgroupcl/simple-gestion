@@ -27,6 +27,9 @@
                 </div>
                 <!-- Product details-->
                 <div class="col-lg-5 pt-4 pt-lg-0">
+                    <div class="product-details ml-auto">
+                        <span class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $parentProduct->seller->visible_name }}</span>
+                    </div>
                     <div class="product-details ml-auto pb-3">
                         @if ($selectedChildrenId)
                             <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price, 'CLP', true) }}</div>
@@ -86,7 +89,9 @@
                                     'addtocart.cant',
                                 ]
                             ])
+                            <div style="margin-top: 14px">
                             @livewire('products.add-to-cart',['product' => $currentProduct, 'view' => 'single'])
+                            </div>
                         </div>
                         @endif
                         <!--
@@ -100,7 +105,7 @@
                             </div>
                         -->
                         <!-- Product panels-->
-                        <div class="accordion mb-4" id="productPanels">
+                        {{-- <div class="accordion mb-4" id="productPanels">
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="accordion-heading"><a href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><i class="czi-delivery text-muted lead align-middle mt-n1 mr-2"></i>Opciones de envío<span class="accordion-indicator"></span></a></h3>
@@ -150,7 +155,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- Sharing-->
                         {{-- <h6 class="d-inline-block align-middle font-size-base my-2 mr-2">Share:</h6><a class="share-btn sb-twitter mr-2 my-2" href="#"><i class="czi-twitter"></i>Twitter</a><a class="share-btn sb-instagram mr-2 my-2" href="#"><i class="czi-instagram"></i>Instagram</a><a class="share-btn sb-facebook my-2" href="#"><i class="czi-facebook"></i>Facebook</a> --}}
                     </div>
