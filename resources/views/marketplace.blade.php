@@ -83,7 +83,7 @@
         <!-- Bestsellers-->
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">Mejor vendido</h3>                
+                <h3 class="widget-title">Los más vendidos</h3>                
                 @livewire('products.products-general',['emitTo' => 'products.short-list'])                
                 <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
@@ -99,7 +99,7 @@
         <!-- Top rated-->
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">Más vendidos</h3>
+                <h3 class="widget-title">Los más valorados</h3>
                 @livewire('products.products-general',['emitTo' => 'products.short-list'])                
                 <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
