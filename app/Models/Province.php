@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Models\Region;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Province extends Model
 {
@@ -34,6 +35,10 @@ class Province extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function attribute_region()
+    {
+        return $this->belongsTo(Region::class, 'region_id');
+    }
 
     /*
     |--------------------------------------------------------------------------

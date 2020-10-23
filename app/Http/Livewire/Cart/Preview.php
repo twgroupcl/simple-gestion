@@ -27,19 +27,18 @@ class Preview extends Component
         return view('livewire.cart.preview', ['items' => $this->items]);
     }
 
-    public function change(CartItem $item, int $qty)
+    public function change()
     {
-        $item = $this->items->find($item->id);
-        $item->qty = $qty;
-        $item->update();
-
+        $this->cart->recalculateSubtotal();
+        $this->cart->update();
         $this->total = $this->getTotal();
-
+        $this->emit('dropdown.update');
+        $this->emit('cart.updateSubtotal');
     }
 
-    public function deleteItem($itemId)
+    public function deleteItem()
     {
-        CartItem::find($itemId)->delete();
+        $this->change();
         $this->emit('cart-counter:decrease');
         $this->items = $this->getItems();
         $this->total = $this->getTotal();

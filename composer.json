@@ -23,7 +23,8 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
         "livewire/livewire": "^2.3",
-        "orangehill/iseed": "^2.6"
+        "orangehill/iseed": "^2.6",
+        "transbank/transbank-sdk": "^1.8"
     },
     "require-dev": {
         "backpack/generators": "^3.1",

@@ -12,12 +12,12 @@ class CurrenciesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('currencies')->delete();
-        
+
         \DB::table('currencies')->insert(array (
-            0 => 
+            0 =>
             array (
                 'code' => 'USD',
                 'created_at' => '2020-08-22 10:46:37',
@@ -31,7 +31,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:37',
             ),
-            1 => 
+            1 =>
             array (
                 'code' => 'GBP',
                 'created_at' => '2020-08-22 10:46:38',
@@ -45,7 +45,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            2 => 
+            2 =>
             array (
                 'code' => 'EUR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -59,7 +59,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            3 => 
+            3 =>
             array (
                 'code' => 'ZAR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -73,7 +73,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            4 => 
+            4 =>
             array (
                 'code' => 'DKK',
                 'created_at' => '2020-08-22 10:46:38',
@@ -87,7 +87,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            5 => 
+            5 =>
             array (
                 'code' => 'ILS',
                 'created_at' => '2020-08-22 10:46:38',
@@ -101,7 +101,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            6 => 
+            6 =>
             array (
                 'code' => 'SEK',
                 'created_at' => '2020-08-22 10:46:38',
@@ -115,7 +115,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            7 => 
+            7 =>
             array (
                 'code' => 'KES',
                 'created_at' => '2020-08-22 10:46:38',
@@ -129,7 +129,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            8 => 
+            8 =>
             array (
                 'code' => 'KWD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -143,7 +143,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            9 => 
+            9 =>
             array (
                 'code' => 'CAD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -157,7 +157,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            10 => 
+            10 =>
             array (
                 'code' => 'PHP',
                 'created_at' => '2020-08-22 10:46:38',
@@ -171,7 +171,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            11 => 
+            11 =>
             array (
                 'code' => 'INR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -185,7 +185,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            12 => 
+            12 =>
             array (
                 'code' => 'AUD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -199,7 +199,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            13 => 
+            13 =>
             array (
                 'code' => 'SGD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -213,7 +213,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            14 => 
+            14 =>
             array (
                 'code' => 'NOK',
                 'created_at' => '2020-08-22 10:46:38',
@@ -227,7 +227,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            15 => 
+            15 =>
             array (
                 'code' => 'NZD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -241,7 +241,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            16 => 
+            16 =>
             array (
                 'code' => 'VND',
                 'created_at' => '2020-08-22 10:46:38',
@@ -255,7 +255,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            17 => 
+            17 =>
             array (
                 'code' => 'CHF',
                 'created_at' => '2020-08-22 10:46:38',
@@ -269,7 +269,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '\'',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            18 => 
+            18 =>
             array (
                 'code' => 'GTQ',
                 'created_at' => '2020-08-22 10:46:38',
@@ -283,7 +283,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            19 => 
+            19 =>
             array (
                 'code' => 'MYR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -297,7 +297,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            20 => 
+            20 =>
             array (
                 'code' => 'BRL',
                 'created_at' => '2020-08-22 10:46:38',
@@ -311,7 +311,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            21 => 
+            21 =>
             array (
                 'code' => 'THB',
                 'created_at' => '2020-08-22 10:46:38',
@@ -325,7 +325,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            22 => 
+            22 =>
             array (
                 'code' => 'NGN',
                 'created_at' => '2020-08-22 10:46:38',
@@ -339,7 +339,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            23 => 
+            23 =>
             array (
                 'code' => 'ARS',
                 'created_at' => '2020-08-22 10:46:38',
@@ -353,7 +353,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            24 => 
+            24 =>
             array (
                 'code' => 'BDT',
                 'created_at' => '2020-08-22 10:46:38',
@@ -367,7 +367,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            25 => 
+            25 =>
             array (
                 'code' => 'AED',
                 'created_at' => '2020-08-22 10:46:38',
@@ -381,7 +381,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            26 => 
+            26 =>
             array (
                 'code' => 'HKD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -395,7 +395,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            27 => 
+            27 =>
             array (
                 'code' => 'IDR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -409,7 +409,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            28 => 
+            28 =>
             array (
                 'code' => 'MXN',
                 'created_at' => '2020-08-22 10:46:38',
@@ -423,7 +423,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            29 => 
+            29 =>
             array (
                 'code' => 'EGP',
                 'created_at' => '2020-08-22 10:46:38',
@@ -437,7 +437,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            30 => 
+            30 =>
             array (
                 'code' => 'COP',
                 'created_at' => '2020-08-22 10:46:38',
@@ -451,7 +451,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            31 => 
+            31 =>
             array (
                 'code' => 'XOF',
                 'created_at' => '2020-08-22 10:46:38',
@@ -465,7 +465,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            32 => 
+            32 =>
             array (
                 'code' => 'CNY',
                 'created_at' => '2020-08-22 10:46:38',
@@ -479,7 +479,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            33 => 
+            33 =>
             array (
                 'code' => 'RWF',
                 'created_at' => '2020-08-22 10:46:38',
@@ -493,7 +493,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            34 => 
+            34 =>
             array (
                 'code' => 'TZS',
                 'created_at' => '2020-08-22 10:46:38',
@@ -507,7 +507,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            35 => 
+            35 =>
             array (
                 'code' => 'ANG',
                 'created_at' => '2020-08-22 10:46:38',
@@ -521,7 +521,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            36 => 
+            36 =>
             array (
                 'code' => 'TTD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -535,7 +535,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            37 => 
+            37 =>
             array (
                 'code' => 'XCD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -549,7 +549,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            38 => 
+            38 =>
             array (
                 'code' => 'GHS',
                 'created_at' => '2020-08-22 10:46:38',
@@ -563,7 +563,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            39 => 
+            39 =>
             array (
                 'code' => 'BGN',
                 'created_at' => '2020-08-22 10:46:38',
@@ -577,7 +577,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ' ',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            40 => 
+            40 =>
             array (
                 'code' => 'AWG',
                 'created_at' => '2020-08-22 10:46:38',
@@ -591,7 +591,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ' ',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            41 => 
+            41 =>
             array (
                 'code' => 'TRY',
                 'created_at' => '2020-08-22 10:46:38',
@@ -605,7 +605,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            42 => 
+            42 =>
             array (
                 'code' => 'RON',
                 'created_at' => '2020-08-22 10:46:38',
@@ -619,7 +619,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            43 => 
+            43 =>
             array (
                 'code' => 'HRK',
                 'created_at' => '2020-08-22 10:46:38',
@@ -633,7 +633,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            44 => 
+            44 =>
             array (
                 'code' => 'SAR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -647,7 +647,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            45 => 
+            45 =>
             array (
                 'code' => 'JPY',
                 'created_at' => '2020-08-22 10:46:38',
@@ -661,7 +661,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            46 => 
+            46 =>
             array (
                 'code' => 'MVR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -675,7 +675,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            47 => 
+            47 =>
             array (
                 'code' => 'CRC',
                 'created_at' => '2020-08-22 10:46:38',
@@ -689,7 +689,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            48 => 
+            48 =>
             array (
                 'code' => 'PKR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -703,7 +703,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            49 => 
+            49 =>
             array (
                 'code' => 'PLN',
                 'created_at' => '2020-08-22 10:46:38',
@@ -717,7 +717,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ' ',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            50 => 
+            50 =>
             array (
                 'code' => 'LKR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -731,7 +731,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            51 => 
+            51 =>
             array (
                 'code' => 'CZK',
                 'created_at' => '2020-08-22 10:46:38',
@@ -745,7 +745,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ' ',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            52 => 
+            52 =>
             array (
                 'code' => 'UYU',
                 'created_at' => '2020-08-22 10:46:38',
@@ -759,7 +759,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            53 => 
+            53 =>
             array (
                 'code' => 'NAD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -773,7 +773,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            54 => 
+            54 =>
             array (
                 'code' => 'TND',
                 'created_at' => '2020-08-22 10:46:38',
@@ -787,7 +787,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            55 => 
+            55 =>
             array (
                 'code' => 'RUB',
                 'created_at' => '2020-08-22 10:46:38',
@@ -801,7 +801,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            56 => 
+            56 =>
             array (
                 'code' => 'MZN',
                 'created_at' => '2020-08-22 10:46:38',
@@ -815,7 +815,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            57 => 
+            57 =>
             array (
                 'code' => 'OMR',
                 'created_at' => '2020-08-22 10:46:38',
@@ -829,7 +829,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            58 => 
+            58 =>
             array (
                 'code' => 'UAH',
                 'created_at' => '2020-08-22 10:46:38',
@@ -843,7 +843,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            59 => 
+            59 =>
             array (
                 'code' => 'MOP',
                 'created_at' => '2020-08-22 10:46:38',
@@ -857,7 +857,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            60 => 
+            60 =>
             array (
                 'code' => 'TWD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -871,7 +871,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            61 => 
+            61 =>
             array (
                 'code' => 'DOP',
                 'created_at' => '2020-08-22 10:46:38',
@@ -885,7 +885,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => ',',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            62 => 
+            62 =>
             array (
                 'code' => 'CLP',
                 'created_at' => '2020-08-22 10:46:38',
@@ -893,13 +893,13 @@ class CurrenciesTableSeeder extends Seeder
                 'deleted_at' => NULL,
                 'id' => 63,
                 'name' => 'Chilean Peso',
-                'precision' => 2,
+                'precision' => 0,
                 'swap_currency_symbol' => 0,
                 'symbol' => '$',
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            63 => 
+            63 =>
             array (
                 'code' => 'RSD',
                 'created_at' => '2020-08-22 10:46:38',
@@ -913,7 +913,7 @@ class CurrenciesTableSeeder extends Seeder
                 'thousand_separator' => '.',
                 'updated_at' => '2020-08-22 10:46:38',
             ),
-            64 => 
+            64 =>
             array (
                 'code' => 'KGS',
                 'created_at' => '2020-08-22 10:46:38',
@@ -928,7 +928,7 @@ class CurrenciesTableSeeder extends Seeder
                 'updated_at' => '2020-08-22 10:46:38',
             ),
         ));
-        
-        
+
+
     }
 }
