@@ -181,7 +181,9 @@
                             'addtocart.cant',
                         ]
                     ])
-                    @livewire('products.add-to-cart',['product' => $currentProduct, 'view' => 'single'])
+                    <div style="margin-left: 8px; margin-top: 14px">
+                        @livewire('products.add-to-cart',['product' => $currentProduct, 'view' => 'single'])
+                    </div>
                     {{-- <div class="mr-2">
                         <button class="btn btn-secondary btn-icon" type="button" data-toggle="tooltip" title="Add to Wishlist"><i class="czi-heart font-size-lg"></i></button>
                     </div>
@@ -202,12 +204,15 @@
                         @endforeach
                     </ul>
                     @endif
+                    @if ($parentProduct->custom_attributes->count())
                     <h3 class="h6">Especificaciones generales</h3>
                     <ul class="list-unstyled font-size-sm pb-2">
                         @foreach ($parentProduct->getAttributesWithNames() as $attribute)
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">{{ $attribute['name'] }}:</span><span>{{ $attribute['value'] }}</span></li>
                         @endforeach
-                    </ul>
+                    </ul> 
+                    @endif
+                    
                     {{-- <h3 class="h6">General specs</h3>
                     <ul class="list-unstyled font-size-sm pb-2">
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Model:</span><span>Amazfit Smartwatch</span></li>

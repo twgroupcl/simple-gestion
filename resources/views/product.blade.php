@@ -203,7 +203,15 @@
                             <div class="mdeia-body pl-3">
                                 <h6 class="font-size-base mb-2">{{$product->name}}</h6>
                                 @if ($product->product_type->id == 1)
-                                <div class="h4 font-weight-normal text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
+                                    @if ($product->special_price)
+                                        <div class="mb-3">
+                                            <span class="h4 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, Setting::get('default_currency'), true) }}</span>
+                                            <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</del><span class="badge badge-danger badge-shadow align-middle mt-n2">Promo</span>
+                                        </div>
+                                    @else
+                                        <div class="h4 font-weight-normal text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
+                                    @endif
+                                
                                 @endif
                             </div>
                         </div>
@@ -215,7 +223,9 @@
                                     'addtocart.cant',
                                 ]
                             ])
-                            @livewire('products.add-to-cart',['product' => $product, 'view' => 'single'])
+                            <div style="margin-left: 8px; margin-top: 14px">
+                                @livewire('products.add-to-cart',['product' => $product, 'view' => 'single'])
+                            </div>
                             {{-- <div class="mr-2">
                                 <button class="btn btn-secondary btn-icon" type="button" data-toggle="tooltip" title="Add to Wishlist"><i class="czi-heart font-size-lg"></i></button>
                             </div>
@@ -228,12 +238,15 @@
                     <!-- Specs table-->
                     <div class="row pt-2">
                         <div class="col-lg-5 col-sm-6">
+                            @if ($product->custom_attributes->count())
                             <h3 class="h6">Especificaciones generales</h3>
                             <ul class="list-unstyled font-size-sm pb-2">
                                 @foreach ($product->getAttributesWithNames() as $attribute)
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">{{ $attribute['name'] }}:</span><span>{{ $attribute['value'] }}</span></li>
                                 @endforeach
                             </ul>
+                            @endif
+                            
                             {{-- <h3 class="h6">General specs</h3>
                             <ul class="list-unstyled font-size-sm pb-2">
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Model:</span><span>Amazfit Smartwatch</span></li>
@@ -255,8 +268,15 @@
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Touch screen:</span><span>No</span></li>
                             </ul> --}}
                         </div>
-                        {{-- <div class="col-lg-5 col-sm-6 offset-lg-1">
-                            <h3 class="h6">Functions</h3>
+                        <div class="col-lg-5 col-sm-6 offset-lg-1">
+                            <h3 class="h6">Dimensiones de envio</h3>
+                            <ul class="list-unstyled font-size-sm pb-2">
+                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($product->weight, 2, ',', '.') }}</span></li>
+                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($product->height, 2, ',', '.') }}</span></li>                    
+                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($product->depth, 2, ',', '.') }}</span></li>
+                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($product->width, 2, ',', '.') }}</span></li>
+                            </ul>
+                            {{-- <h3 class="h6">Functions</h3>
                             <ul class="list-unstyled font-size-sm pb-2">
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Phone calls:</span><span>Incoming call notification</span></li>
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Monitoring:</span><span>Heart rate / Physical activity</span></li>
@@ -272,8 +292,8 @@
                             <ul class="list-unstyled font-size-sm pb-2">
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Dimensions:</span><span>195 x 20 mm</span></li>
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Weight:</span><span>32 g</span></li>
-                            </ul>
-                        </div> --}}
+                            </ul> --}}
+                        </div> 
                     </div>
                 </div>
                 <!-- Reviews tab-->
