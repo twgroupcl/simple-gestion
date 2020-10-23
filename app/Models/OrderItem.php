@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Support\Carbon;
 
+
 class OrderItem extends Model
 {
     use CrudTrait;
@@ -67,11 +68,13 @@ class OrderItem extends Model
         return $this->belongsTo(Shipping::class);
     }*/
 
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
     public function scopeSearch($query, $q = null)
     {
         return $query->bySeller();
@@ -95,6 +98,7 @@ class OrderItem extends Model
     {
         return $query->orderByDesc('qty')->limit(3);
     }
+
 
     /*
     |--------------------------------------------------------------------------

@@ -35,8 +35,16 @@ Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
 
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
+Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
+Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
 Route::get('/shop-list/', function () {
     return view('shop-list');
+});
+Route::get('/shop-grid/', function () {
+    return view('shop-grid');
+});
+Route::get('/seller-shop/{id}', function () {
+    return view('vendor');
 });
 
 //Auth::routes();
@@ -44,3 +52,20 @@ Route::get('/shop-list/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
 Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
+
+
+Route::group([
+    'prefix' => '/transbank'
+], function () {
+    Route::get('main', function(){
+        return view('payments.transbank.test');
+    });
+
+    // WebPayPlus Mall
+    Route::get('webpay/mall/{order}', 'Payments\Transbank\WebpayPlusMallController@redirect')->name('transbank.webpayplus.mall.redirect');
+    Route::post('webpay/mall/response', 'Payments\Transbank\WebpayPlusMallController@response')->name('transbank.webpayplus.mall.response');
+    Route::get('webpay/mall/download/{order}', 'Payments\Transbank\WebpayPlusMallController@download')->name('transbank.webpayplus.mall.download');
+});
+// Route::get('complete', function(){
+//     return view('payments.transbank.webpay.mall.complete');
+// });

@@ -118,6 +118,16 @@ class Cart extends Model
         $this->session_id = $value;
     }
 
+    public function recalculateSubtotal()
+    {
+        $subtotal = 0;
+        unset($this->cart_items);
+        foreach ($this->cart_items as $item) {
+            $subtotal += $item->sub_total;
+        }
+        $this->sub_total = $subtotal;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
