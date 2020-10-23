@@ -17,6 +17,7 @@ class Checkout extends Component
     public $cart;
     public $items;
 
+
     protected $listeners = [
         'prev-step' => 'prevStep',
         'next-step' => 'nextStep',
@@ -46,18 +47,18 @@ class Checkout extends Component
                 'number'=>2,
                 'icon'=> 'czi-user-circle',
                 'prev-button'=> 'Volver al carro',
-                'next-button'=> 'Seleccionar metodos de envío',
+                'next-button'=> 'Seleccionar métodos de envío',
                 'event-prev'=> null,
                 'event-next'=> 'details:save',
 
             ],
             [
-                'name'=> 'Envio',
+                'name'=> 'Envío',
                 'status'=> '',
                 'number'=>3,
                 'icon'=> 'czi-package',
-                'prev-button'=> 'Volver a metodos de envío',
-                'next-button'=> 'Seleccionar metodo de pago',
+                'prev-button'=> 'Volver a información de envío',
+                'next-button'=> 'Seleccionar método de pago',
                 'event-prev'=> null,
                 'event-next'=> null,
 
@@ -67,8 +68,8 @@ class Checkout extends Component
                 'status'=> '',
                 'number'=>4,
                 'icon'=> 'czi-card',
-                'prev-button'=> 'Volver a metodo de pago',
-                'next-button'=> 'Realizar pago',
+                'prev-button'=> 'Volver a método de pago',
+                'next-button'=> '',
                 'event-prev'=> null,
                 'event-next'=> null,
 
@@ -135,11 +136,12 @@ class Checkout extends Component
     public function addShipping($selected, $item)
     {
 
+
         $cartItem = CartItem::find($item);
 
-        $shippingTotal = $selected['price'] * $cartItem->qty;
+        $shippingTotal = $selected['price'] ;//* $cartItem->qty;
 
-        $cartItem->shipping_total = $shippingTotal;
+        $cartItem->shipping_total = $shippingTotal ;
         $cartItem->update();
         //$this->shippingtotal += $shippingTotal;
 
@@ -165,7 +167,7 @@ class Checkout extends Component
         foreach ($this->getItems() as $item) {
 
             $total += $item->price * $item->qty;
-            $this->shippingtotal += $item->shipping_total ;
+            $this->shippingtotal += ($item->shipping_total  * $item->qty);
         }
         $total += $this->shippingtotal;
         return $total;
@@ -234,6 +236,7 @@ class Checkout extends Component
     }
 
     public function updateTotals(){
+
         $this->cart->recalculateSubtotal();
         $this->cart->update();
         $this->subtotal = $this->getSubTotal();
@@ -242,4 +245,8 @@ class Checkout extends Component
         $this->emit('cart.updateSubtotal');
 
     }
+
+
+
+
 }
