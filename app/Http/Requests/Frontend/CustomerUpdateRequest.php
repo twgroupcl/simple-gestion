@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Frontend;
 
-use App\Rules\RutRule;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,10 +24,7 @@ class CustomerUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $rutRule = new RutRule;
-
         return [
-            'uid' => ['required', 'unique:customers,uid,'.$this->id, 'string', $rutRule],
             'first_name' => 'required|string',
             'last_name' => 'nullable|string',
             'password' => 'confirmed',
@@ -43,7 +39,6 @@ class CustomerUpdateRequest extends FormRequest
     public function attributes()
     {
         return [
-            'uid' => 'RUT',
             'first_name' => 'Nombre',
             'last_name' => 'Apellido',
             'email' => 'Email',
