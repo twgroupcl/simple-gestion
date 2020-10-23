@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Exception;
+use Hamcrest\Arrays\IsArray;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Facades\Session;
@@ -35,7 +36,7 @@ class Cart extends Model
         $customer = Customer::where('user_id',$user->id)->first();
 
         $cart = Cart::whereCustomerId($customer->id);
-        
+
         $sessionId = $session->getId();
         if ($cart->exists()) {
             $cart = $cart->first();
@@ -60,6 +61,7 @@ class Cart extends Model
         $cart->session_id = Session::getId();
         $cart->customer_id = $customer->id;
         $cart->is_company = $customer->is_company;
+
         if ($cart->is_company) {
             $cart->business_name = $customer = $customer->first_name;
             //todo activity data ??
@@ -68,17 +70,21 @@ class Cart extends Model
             $cart->first_name = $customer->first_name;
             $cart->last_name = $customer->last_name;
         }
+
         $addresses_data = json_decode($customer->addresses_data,true);
-        if (count($addresses_data) > 0) {
-            $addresses_data = $addresses_data[0];
-            $cart->address_street = $addresses_data['address_street'];
-            $cart->address_number = $addresses_data['address_number'];
-            $cart->address_office = $addresses_data['address_subnumber'];
-            $cart->address_commune_id = $addresses_data['commune_id'];
-        } 
+
+        if(!empty($addresses_data) && is_array($addresses_data)) {
+            if (count($addresses_data) > 0) {
+                $addresses_data = $addresses_data[0];
+                $cart->address_street = $addresses_data['address_street'];
+                $cart->address_number = $addresses_data['address_number'];
+                $cart->address_office = $addresses_data['address_subnumber'];
+                $cart->address_commune_id = $addresses_data['commune_id'];
+            }
+        }
 
         $cart->uid = $customer->uid;
-        
+
         $cart->email = $customer->email;
         $cart->phone = $customer->phone;
         $cart->cellphone = $customer->cellphone;
@@ -86,7 +92,7 @@ class Cart extends Model
 
         return $cart;
     }
-    
+
     private static function getInstanceGuest(SessionManager $session) : Cart
     {
         //CartModel::where('session_id', $session)->exists() ? CartModel::where('session_id', $session)->first() : new CartModel();
