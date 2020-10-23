@@ -44,11 +44,9 @@ class CustomerController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            if(Auth::user()->hasRole('Cliente Marketplace')) {
-                return redirect()->intended('home');
+            if(!Auth::user()->hasRole('Cliente Marketplace')) {
+                Auth::logout();
             }
-
-            Auth::logout();
 
             return redirect('home');
         }
