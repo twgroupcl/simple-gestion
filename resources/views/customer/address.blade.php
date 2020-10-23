@@ -170,3 +170,10 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/rut-formatter.js') }}"></script>
+<script>
+    $('input#uid').rut();
+</script>
+@endpush
