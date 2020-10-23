@@ -19,16 +19,30 @@ class ProductCategoryMappingTableSeeder extends Seeder
         \DB::table('product_category_mapping')->insert(array (
             0 => 
             array (
-                'created_at' => NULL,
-                'product_category_id' => 1,
                 'product_id' => 1,
+                'product_category_id' => 1,
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
             1 => 
             array (
-                'created_at' => NULL,
-                'product_category_id' => 1,
                 'product_id' => 2,
+                'product_category_id' => 1,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            2 => 
+            array (
+                'product_id' => 10,
+                'product_category_id' => 6,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            3 => 
+            array (
+                'product_id' => 13,
+                'product_category_id' => 6,
+                'created_at' => NULL,
                 'updated_at' => NULL,
             ),
         ));

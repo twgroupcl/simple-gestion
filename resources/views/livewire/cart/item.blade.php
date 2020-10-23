@@ -11,9 +11,23 @@
             <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>8.5</div>
             <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>White &amp; Blue
             </div>
-            <div class="d-inline font-size-lg text-accent pt-2">{{ currencyFormat($product->price,'CLP',true) }} <!--$154.<small>00</small>--></div>
-            <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="#">por {{ $product->seller->visible_name }}</a>
+
+            <div class="font-size-lg text-accent pt-2">{{ currencyFormat($product->price,'CLP',true) }} <!--$154.<small>00</small>--></div>
+            @if($shippingMethods)
+            <div  class="select-shipping mb-0 pt-2">
+                <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected" wire:change="$emit('select-shipping-item')">
+                    <option value="0">Seleccione un metodo de pago</option>
+                    @foreach ($shippingMethods as $key=>$shipping)
+                        <option value="{{$key}}">{{$shipping['name']}} ({{currencyFormat($shipping['price'] ? $shipping['price'] : 0, 'CLP', true)}})</option>
+                    @endforeach
+                    {{-- <option>ChileExpress ($3.500)</option>
+                    <option>Envio Gratis</option> --}}
+                </select>
+            </div>
+            @endif
+
         </div>
+
     </div>
     <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left"
         style="max-width: 9rem;">
@@ -30,5 +44,8 @@
             <button wire:click.prevent="deleteConfirm({{$item->id}})" class="btn btn-link px-0 text-danger" type="button"><i
                 class="czi-close-circle mr-2"></i><span class="font-size-sm">Eliminar</span></button>
         @endif
+
+
     </div>
+
 </div>

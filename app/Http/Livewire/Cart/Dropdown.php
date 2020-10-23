@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Cart;
 
 use App\Models\Cart;
+use App\Models\CartItem;
 use Livewire\Component;
 
 class Dropdown extends Component
@@ -11,13 +12,28 @@ class Dropdown extends Component
     public $items;
     
     protected $listeners = [
-        'dropdown.update' => 'update'
+        'dropdown.update' => 'update',
+        'deleteItem' => 'deleteItem'
     ];
 
     public function update()
     {
         $this->cart = Cart::getInstance(null,session());
         $this->items = $this->cart->cart_items;
+        $this->cart->recalculateSubtotal();
+        $this->cart->update();
+        $this->emitTo('cart.item', 'cart-item.updateQty');
+    }
+
+    public function deleteItem()
+    {
+        $this->cart = Cart::getInstance(null,session());
+        $this->items = $this->cart->cart_items;
+        $this->cart->recalculateSubtotal();
+        $this->cart->update();
+        $this->emit('cart-counter:decrease');
+        $this->emit('cart.updateSubtotal');
+
     }
 
     public function mount()
@@ -30,4 +46,5 @@ class Dropdown extends Component
     {
         return view('livewire.cart.dropdown');
     }
+
 }
