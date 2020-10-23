@@ -19,7 +19,9 @@ $selected_commune = "";
 <div class="container mb-5 pb-3">
     <div class="bg-light box-shadow-lg rounded-lg overflow-hidden">
         <div class="row">
-            <img src="{{ asset('img/steps-register.png') }}" alt="Pasos registro" class="img-fluid">
+            <section class="col-12">
+                <img src="{{ asset('img/steps-register.png') }}" alt="Pasos registro" class="img-fluid">
+            </div>
             <!-- Content-->
             <section class="col-12 pt-2 pt-lg-4 pb-4 mb-3">
                 <div class="pt-2 px-4 px-xl-5">
