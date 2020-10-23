@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Cart;
 
-
+use App\Http\Livewire\Traits\Cursor;
 use \Illuminate\Session\SessionManager;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
@@ -13,6 +13,8 @@ use Backpack\Settings\app\Models\Setting;
 
 class Cart extends Component
 {
+    use Cursor;
+
     public $subtotal;
     public $cart;
 
@@ -25,8 +27,11 @@ class Cart extends Component
     {
         $this->getCart();
         $this->cart->company_id = 1;
-
         $this->subtotal = $this->cart->sub_total ?? 0;
+
+        if ($this->cart->cart_items->count() == 0) {
+            $this->setCursor('not-allowed');
+        } 
     }
 
     public function add(Request $request, Product $product, $qty = 1)
@@ -44,7 +49,7 @@ class Cart extends Component
 
         $this->cart->recalculateSubtotal();
         $this->cart->save();
-
+        
         $this->updateSubtotal();
 
     }
@@ -52,6 +57,10 @@ class Cart extends Component
     public function updateSubtotal()
     {
         $this->subtotal = $this->cart->sub_total;
+        $this->setCursor('not-allowed');
+        if ($this->cart->cart_items->count() > 0) {
+            $this->setCursor('auto');
+        }
     }
 
 

@@ -2,12 +2,15 @@
 
 namespace App\Http\Livewire\Cart;
 
+use App\Http\Livewire\Traits\Cursor;
 use App\Models\Cart;
 use \Illuminate\Session\SessionManager;
 use Livewire\Component;
 
 class CartCounter extends Component
 {
+    use Cursor;
+
     public $count = 0;
     public $cart;
 
@@ -20,8 +23,11 @@ class CartCounter extends Component
     {
         $this->cart = $this->getCart();
         $this->count = $this->cart->items_count;
-    }
 
+        if ($this->count <= 0) {
+            $this->setCursor('not-allowed');
+        }
+    }
 
     public function increment()
     {
@@ -29,6 +35,11 @@ class CartCounter extends Component
         $this->cart = $this->getCart();
         $this->cart->items_count = $this->count;
         $this->cart->update();
+
+        $this->setCursor('not-allowed');
+        if ($this->cart->cart_items->count() > 0) {
+            $this->setCursor('auto');
+        }
     }
 
     public function decrease()
@@ -37,6 +48,11 @@ class CartCounter extends Component
         $this->cart = $this->getCart();
         $this->cart->items_count = $this->count;
         $this->cart->update();
+
+        $this->setCursor('not-allowed');
+        if ($this->cart->cart_items->count() > 0) {
+            $this->setCursor('auto');
+        }
     }
 
     public function render(SessionManager $s)
