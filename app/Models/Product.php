@@ -118,6 +118,7 @@ class Product extends Model
                 // Store reference to the product in the table
                 $variation['product_id'] = $childProduct->id;
 
+
             // Otherwise, update
             } else {
                 Product::where('id', $variation['product_id'])
@@ -150,6 +151,10 @@ class Product extends Model
             
             // Update images JSON
             $childProduct->images_json = $imagesArray;
+
+            // Create Slug
+            $childProduct->url_key = $this->url_key . '-' . $childProduct->id;
+
             $childProduct->update();
         }
 

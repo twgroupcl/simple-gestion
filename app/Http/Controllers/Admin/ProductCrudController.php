@@ -38,12 +38,16 @@ class ProductCrudController extends CrudController
         CRUD::setEntityNameStrings('producto', 'productos');
 
         $this->crud->denyAccess('show');
+        $this->admin = false;
+        $this->userSeller = null;
 
-        /* $this->isAdmin = backpack_user()->hasRole('Administrador negocio');
+        if (backpack_user()->hasRole('Administrador negocio') || backpack_user()->hasRole('Super admin')) {
+            $this->admin = true;
+        }
 
         if ( backpack_user()->hasRole('Vendedor marketplace') ) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-        }  */
+        } 
     }
 
     /**
@@ -55,7 +59,7 @@ class ProductCrudController extends CrudController
     protected function setupListOperation()
     {
         // If not admin, show only user products
-        // if(!$this->isAdmin) $this->crud->addClause('where', 'business_id', '=', $this->userBusiness->id);
+        if(!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
     
         // Hide children products
         $this->crud->addClause('where', 'parent_id', '=', null);
@@ -226,11 +230,11 @@ class ProductCrudController extends CrudController
             'name' => 'seller_id',
             'label' => 'Vendedor',
             'entity' => 'seller',
-            //'default' => $this->userSeller ?? '',
+            'default' => $this->userSeller ?? '',
             'type' => 'relationship',
             'placeholder' => 'selecciona un vendedor',
             'wrapper' => [
-               // 'style' => $this->isAdmin ? '' : 'display:none',
+               'style' => $this->admin ? '' : 'display:none',
             ],
         ]);
 
@@ -314,12 +318,14 @@ class ProductCrudController extends CrudController
         if(count($attributes) !== 0) {
             $this->setAttributesFields($attributes, $product);
         }
-
-        // Status and visibility fields
-        $this->setStatusVisibilityFields();
         
         // SEO fields
         $this->setSeoFields();
+
+        // Status and visibility fields
+        if ($this->admin) {
+            $this->setStatusVisibilityFields();
+        }
     }
 
     public function setGeneralFields() {
@@ -351,7 +357,7 @@ class ProductCrudController extends CrudController
             'type' => 'relationship',
             'tab' => 'Información general',
             'wrapper' => [
-                //'style' => $this->isAdmin ? '' : 'display:none',
+                'style' => $this->admin ? '' : 'display:none',
             ],
             'placeholder' => 'selecciona un vendedor',
         ]);
