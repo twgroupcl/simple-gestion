@@ -1,4 +1,4 @@
-<div>
+<div class="details-form">
     <!-- Title-->
     <h2 class="h6 border-bottom pb-3 mb-3">Información de envío</h2>
     <!-- Shipping detail-->
@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-uid">RUT <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="" wire:model="data.uid" id="sd-uid">
+            <input class="form-control rut-field" type="text" placeholder="" wire:model="data.uid" id="sd-uid">
             @error('data.uid') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         @if ($is_business)
@@ -116,7 +116,7 @@
             </div>
             <div class="col-sm-6 form-group">
                 <label for="bd-uid">RUT <span class='text-danger'>*</span></label>
-                <input class="form-control" type="text" placeholder="" wire:model="invoice.uid" id="bd-uid">
+                <input class="form-control rut-field" type="text" placeholder="" wire:model="invoice.uid" id="bd-uid">
                 @error('invoice.uid') <small class="text-danger">{{ $message }}</small> @enderror
 
             </div>
@@ -216,3 +216,21 @@
     </div> --}}
 
 </div>
+@push('scripts')
+    <script src="{{ asset('js/rut-formatter.js') }}"></script>
+    <script>
+
+        $(document).ready(function(){
+            var observer = new MutationObserver(function(mutations, observer) {
+                $('.rut-field').rut()
+            });
+            document.querySelectorAll('.details-form').forEach(fields => {
+                observer.observe(fields, {
+                    subtree: true,
+                    attributes: true,
+                });
+            })
+            $('.rut-field').rut()
+        })
+    </script>
+@endpush
