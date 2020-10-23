@@ -8,7 +8,7 @@
             </button>
         </div> --}}
         <a class="card-img-top d-block overflow-hidden" href="{{route('product',['slug' => $product->url_key])}}">
-            <img src="{{ url($product->getFirstImagePath()) }}" alt="Product">
+            <img src="{{ url($product->getFirstImagePath()) }}" class="w-100" alt="Product">
         </a>
         <div class="card-body py-2">
             <div class="row">

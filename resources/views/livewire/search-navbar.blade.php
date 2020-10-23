@@ -3,7 +3,7 @@
     <input class="form-control prepended-form-control appended-form-control input-search" wire:model.defer="query" type="text" placeholder="Buscar productos">
     <div class="input-group-append-overlay">
         <select class="custom-select select-search" wire:model="selected">
-            <option value="">Todas las categorías</option>
+            <option value="0" selected>Todas las categorías</option>
             @foreach ($categories as $category)
             <option value="{{ $category->id }}">{{ $category->name }}</option>   
             @endforeach
