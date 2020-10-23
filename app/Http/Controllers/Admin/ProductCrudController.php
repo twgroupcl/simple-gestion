@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ProductRequest;
+use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Requests\ProductVariantUpdateRequest;
@@ -243,7 +244,7 @@ class ProductCrudController extends CrudController
             'label' => 'Moneda',
             'type' => 'relationship',
             'entity' => 'currency',
-            'default' => 63,
+            'default' => Setting::get('default_currency'),
             'wrapper' => [
                 'style' => 'display:none',
             ],
@@ -258,6 +259,15 @@ class ProductCrudController extends CrudController
         CRUD::addField([
             'name' => 'customShowHideSuperAttributes',
             'type' => 'product.show_hide_variants',
+        ]);
+
+        CRUD::addField([
+            'name' => 'is_service',
+            'label' => 'Es un servicio',
+            'type' => 'checkbox',
+            'attributes' => [
+                'class' => 'is_service_checkbox',
+            ]
         ]);
 
         CRUD::addField([
@@ -396,15 +406,6 @@ class ProductCrudController extends CrudController
             'tab' => 'Información general',
         ]);
 
-        CRUD::addField([
-            'name' => 'is_service',
-            'label' => 'Es un servicio',
-            'type' => 'checkbox',
-            'tab' => 'Información general',
-            'attributes' => [
-                'class' => 'is_service_checkbox',
-            ]
-        ]);
 
         CRUD::addField([
             'name' => 'is_template',
@@ -452,7 +453,7 @@ class ProductCrudController extends CrudController
             'entity' => 'currency',
             'tab' => 'Precio y envío',
             'placeholder' => 'Selecciona una moneda',
-            'default' => 63,
+            'default' => Setting::get('default_currency'),
             'wrapper' => [
                 'style' => 'display:none',
                 'class' => 'form-group col-lg-12 required',
@@ -515,58 +516,60 @@ class ProductCrudController extends CrudController
                 'style' => 'display:none',
             ]
         ]);
-
-        CRUD::addField([
-            'name' => 'weight',
-            'label' => 'Peso (kg)',
-            'type' => 'product.number_format',
-            'tab' => 'Precio y envío',
-            'attributes' => [
-                'step' => 'any',
-            ],
-            'wrapper' => [
-                'class' => 'form-group mb-3 col required',
-            ],
-        ]);
-
-        CRUD::addField([
-            'name' => 'height',
-            'label' => 'Alto (cm)',
-            'type' => 'product.number_format',
-            'tab' => 'Precio y envío',
-            'attributes' => [
-                'step' => 'any',
-            ],
-            'wrapper' => [
-                'class' => 'form-group mb-3 col required',
-            ],
-        ]);
-
-        CRUD::addField([
-            'name' => 'width',
-            'label' => 'Ancho (cm)',
-            'type' => 'product.number_format',
-            'tab' => 'Precio y envío',
-            'attributes' => [
-                'step' => 'any',
-            ],
-            'wrapper' => [
-                'class' => 'form-group mb-3 col required',
-            ],
-        ]);
-
-        CRUD::addField([
-            'name' => 'depth',
-            'label' => 'Largo (cm)',
-            'type' => 'product.number_format',
-            'tab' => 'Precio y envío',
-            'attributes' => [
-                'step' => 'any',
-            ],
-            'wrapper' => [
-                'class' => 'form-group mb-3 col required',
-            ],
-        ]);
+        
+        if (!$product->is_service){
+            CRUD::addField([
+                'name' => 'weight',
+                'label' => 'Peso (kg)',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'attributes' => [
+                    'step' => 'any',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group mb-3 col required',
+                ],
+            ]);
+    
+            CRUD::addField([
+                'name' => 'height',
+                'label' => 'Alto (cm)',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'attributes' => [
+                    'step' => 'any',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group mb-3 col required',
+                ],
+            ]);
+    
+            CRUD::addField([
+                'name' => 'width',
+                'label' => 'Ancho (cm)',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'attributes' => [
+                    'step' => 'any',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group mb-3 col required',
+                ],
+            ]);
+    
+            CRUD::addField([
+                'name' => 'depth',
+                'label' => 'Largo (cm)',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'attributes' => [
+                    'step' => 'any',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group mb-3 col required',
+                ],
+            ]);
+        }
         
         if ($product->use_inventory_control) {
             CRUD::addField([
@@ -818,6 +821,9 @@ class ProductCrudController extends CrudController
                     'step' => 'any',
                 ],
             ],
+        ];
+
+        $isProductFields = $product->is_service ? [] : [
             [
                 'label' => "Peso",
                 'name' => "weight",
@@ -870,7 +876,7 @@ class ProductCrudController extends CrudController
             'name'  => 'variations_json',
             'label' => 'Variaciones',
             'type'  => 'product.repeatable',
-            'fields' => array_merge($baseFields, $superAttributesFields, $inventoryFields),
+            'fields' => array_merge($baseFields, $isProductFields, $superAttributesFields, $inventoryFields),
             'new_item_label'  => 'Agregar una nueva variacion',
             'tab' => 'Variaciones',
         ]);

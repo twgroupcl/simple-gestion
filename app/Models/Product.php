@@ -99,10 +99,10 @@ class Product extends Model
                     //'name' => $variation['name'],
                     'name' => $this->name,
                     'price' => sanitizeNumber($variation['price']),
-                    'weight' => sanitizeNumber($variation['weight']),
-                    'height' => sanitizeNumber($variation['height']),
-                    'width' => sanitizeNumber($variation['width']),
-                    'depth' => sanitizeNumber($variation['depth']),
+                    'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
+                    'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
+                    'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
+                    'depth' => $this->is_service ? 0 : sanitizeNumber($variation['depth']),
                     'inventories_json' => $inventoriesArray,
                     'parent_id' => $this->id,
                     'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
@@ -111,6 +111,7 @@ class Product extends Model
                     'company_id' => $this->company_id,
                     'currency_id' => $this->currency_id,
                     'use_inventory_control' => $this->use_inventory_control,
+                    'is_service' => $this->is_service,
                     'status' => 1, // always 1?
                 ]);
 
@@ -128,10 +129,10 @@ class Product extends Model
                         //'name' => $variation['name'],
                         'name' => $this->name,
                         'price' => sanitizeNumber($variation['price']),
-                        'weight' => sanitizeNumber($variation['weight']),
-                        'height' => sanitizeNumber($variation['height']),
-                        'width' => sanitizeNumber($variation['width']),
-                        'depth' => sanitizeNumber($variation['depth']),
+                        'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
+                        'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
+                        'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
+                        'depth' => $this->is_service ? 0 : sanitizeNumber($variation['depth']),
                         'inventories_json' => $inventoriesArray,
                         'parent_id' => $this->id,
                         'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
@@ -139,6 +140,7 @@ class Product extends Model
                         'company_id' => $this->company_id,
                         'currency_id' => $this->currency_id,
                         'use_inventory_control' => $this->use_inventory_control,
+                        'is_service' => $this->is_service,
                         'status' => 1, // always 1?
                     ]);
                 
