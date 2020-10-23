@@ -24,7 +24,7 @@ class HomeController extends Controller
 
     public function searchProduct(Request $request)
     {
-        $products = Product::where('status','=','1')->where('name','LIKE','%'.$request->product.'%')->get();
+        $products = Product::where('status','=','1')->doesnthave('parent')->where('name','LIKE','%'.$request->product.'%')->get();
         return view('shop-grid', compact('products'));
     }
 
