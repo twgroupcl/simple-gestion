@@ -51,11 +51,11 @@ class ProductVariationsRule implements Rule
             $fieldGroupValidator = Validator::make((array) $variant, [
                 //'name' => 'required',
                 //'sku' => 'required',
-                'price'  => new NumericCommaRule(),
-                'width'  => new NumericCommaRule(),
-                'height'  => new NumericCommaRule(),
-                'depth'  => new NumericCommaRule(),
-                'weight'  => new NumericCommaRule(),
+                'price'  => ['required', new NumericCommaRule()],
+                'width'  => ['sometimes', 'required', new NumericCommaRule()],
+                'height'  => ['sometimes', 'required', new NumericCommaRule()],
+                'depth'  => ['sometimes', 'required', new NumericCommaRule()],
+                'weight'  => ['sometimes', 'required', new NumericCommaRule()],
             ]);
 
             if ($fieldGroupValidator->fails()) {

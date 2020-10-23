@@ -822,7 +822,7 @@ class ProductCrudController extends CrudController
                 'name' => "price",
                 'type' => 'product.number_format',
                 'wrapper' => [
-                    'class' => 'col-lg-6 col-md-12',
+                    'class' => $product->is_service ? 'col-lg-12 col-md-12': 'col-lg-6 col-md-12',
                 ],
                 'attributes' => [
                     'step' => 'any',
