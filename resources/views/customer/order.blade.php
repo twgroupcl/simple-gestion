@@ -63,7 +63,7 @@
                                 <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">{{ $order->id }}</a></td>
                                 <td class="py-3">{{ $order->created_at }}</td>
                                 <td class="py-3"><span class="badge badge-info m-0">{{ $order->order_status ?? 'Sin estado' }}</span></td>
-                                <td class="py-3">{{ $order->total }}</td>
+                                <td class="py-3">{{ currencyFormat($order->total, 'CLP', true) }}</td>
                             </tr>
                         @empty
                             <tr>
