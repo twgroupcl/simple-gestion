@@ -2,89 +2,101 @@
 
 @section('content')
 <!-- Add New Address-->
-<form class="needs-validation modal fade" method="post" id="add-address" tabindex="-1" novalidate>
+<form class="needs-validation modal fade" method="POST" action="{{ route('address.update', ['customer' => $customer]) }}" id="add-address" tabindex="-1" novalidate>
+    @method('PUT')
+    @csrf
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add a new address</h5>
+                <h5 class="modal-title">Añade una nueva dirección</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-fn">First name</label>
-                            <input class="form-control" type="text" id="address-fn" required>
-                            <div class="invalid-feedback">Please fill in you first name!</div>
+                            <label for="street">Calle <span class="text-danger">*</span></label>
+                            <input class="form-control" name="street" type="text" id="street" required>
+                            <div class="invalid-feedback">Escriba la calle</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-ln">Last name</label>
-                            <input class="form-control" type="text" id="address-ln" required>
-                            <div class="invalid-feedback">Please fill in you last name!</div>
+                            <label for="number">Número <span class="text-danger">*</span></label>
+                            <input class="form-control" name="number" type="text" id="number" required>
+                            <div class="invalid-feedback">Escriba el número!</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-company">Company</label>
-                            <input class="form-control" type="text" id="address-company">
+                            <label for="address-company">Casa/Dpto/Oficina</label>
+                            <input class="form-control" type="text" name="subnumber" id="address-company">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-country">Country</label>
-                            <select class="custom-select" id="address-country" required>
-                                <option value>Select country</option>
-                                <option value="Argentina">Argentina</option>
-                                <option value="Belgium">Belgium</option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="Spain">Spain</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="USA">USA</option>
+                            <label for="commune_id">Comuna <span class="text-danger">*</span></label>
+                            <select class="custom-select" name="commune_id" id="commune_id" required>
+                                @foreach ($communes as $id => $commune)
+                                    <option value="{{ $id }}">{{ $commune }}</option>
+                                @endforeach
                             </select>
-                            <div class="invalid-feedback">Please select your country!</div>
+                            <div class="invalid-feedback">Seleccione la comuna</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-city">City</label>
-                            <input class="form-control" type="text" id="address-city" required>
-                            <div class="invalid-feedback">Please fill in your city!</div>
+                            <label for="uid">RUT</label>
+                            <input class="form-control" name="uid" type="text" id="uid">
+                            <div class="invalid-feedback">Escriba el Rut</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-line1">Line 1</label>
-                            <input class="form-control" type="text" id="address-line1" required>
-                            <div class="invalid-feedback">Please fill in your address!</div>
+                            <label for="first_name">Nombre</label>
+                            <input class="form-control" name="first_name" type="text" id="first_name">
+                            <div class="invalid-feedback">Escriba el nombre</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-line2">Line 2</label>
-                            <input class="form-control" type="text" id="address-line2">
+                            <label for="last_name">Apellido</label>
+                            <input class="form-control" name="last_name" type="text" id="last_name">
+                            <div class="invalid-feedback">Escriba el apellido</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-zip">ZIP code</label>
-                            <input class="form-control" type="text" id="address-zip" required>
-                            <div class="invalid-feedback">Please add your ZIP code!</div>
+                            <label for="email">Email</label>
+                            <input class="form-control" name="email" type="text" id="email">
+                            <div class="invalid-feedback">Escriba el email</div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="custom-control custom-checkbox">
-                            <input class="custom-control-input" type="checkbox" id="address-primary">
-                            <label class="custom-control-label" for="address-primary">Make this address primary</label>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input class="form-control" name="phone" type="text" id="phone">
+                            <div class="invalid-feedback">Escriba el teléfono</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="cellphone">Teléfono móvil</label>
+                            <input class="form-control" name="cellphone" type="text" id="cellphone">
+                            <div class="invalid-feedback">Escriba el teléfono móvil</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="extra">Detalles</label>
+                            <textarea class="form-control" name="extra" id="extra"></textarea>                            <div class="invalid-feedback">Escriba el teléfono móvil</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary btn-shadow" type="submit">Add address</button>
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
+                <button class="btn btn-primary btn-shadow" type="submit">Añadir dirección</button>
             </div>
         </div>
     </div>
@@ -103,7 +115,7 @@
             </nav>
         </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-0">My addresses</h1>
+            <h1 class="h3 text-light mb-0">Mis direcciones</h1>
         </div>
     </div>
 </div>
@@ -115,7 +127,7 @@
         <section class="col-lg-8">
             <!-- Toolbar-->
             <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-4">
-                <h6 class="font-size-base text-light mb-0">List of your registered addresses:</h6>
+                <h6 class="font-size-base text-light mb-0">Lista de tus direcciones registradas:</h6>
                 <a class="btn btn-primary btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="czi-sign-out mr-2"></i> Cerrar sesión
                 </a>
@@ -129,35 +141,39 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Address</th>
-                            <th>Actions</th>
+                            <th>Direcciones</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="py-3 align-middle">396 Lillian Blvd, Holbrook, NY 11741, USA<span class="align-middle badge badge-info ml-2">Primary</span></td>
-                            <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
-                                    <div class="czi-trash"></div>
-                                </a></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 align-middle">769, Industrial, West Chicago, IL 60185, USA</td>
-                            <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
-                                    <div class="czi-trash"></div>
-                                </a></td>
-                        </tr>
-                        <tr>
-                            <td class="py-3 align-middle">514 S. Magnolia St. Orlando, FL 32806, USA</td>
-                            <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
-                                    <div class="czi-trash"></div>
-                                </a></td>
-                        </tr>
+                        @php
+                            $addresses_data = is_array($customer->addresses_data)
+                                ? $customer->addresses_data
+                                : json_decode($customer->addresses_data, true) ?? [];
+                        @endphp
+                        @forelse ($addresses_data as $address)
+                            <tr>
+                                <td class="py-3 align-middle">{{ $address['street'] }} - {{ $address['number']}}</td>
+                                <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
+                                        <div class="czi-trash"></div>
+                                    </a></td>
+                            </tr>
+                        @empty
+                            No se encontraron direcciones
+                        @endforelse
                     </tbody>
                 </table>
             </div>
             <hr class="pb-4">
-            <div class="text-sm-right"><a class="btn btn-primary" href="#add-address" data-toggle="modal">Add new address</a></div>
+            <div class="text-sm-right"><a class="btn btn-primary" href="#add-address" data-toggle="modal">Añadir nueva dirección</a></div>
         </section>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/rut-formatter.js') }}"></script>
+<script>
+    $('input#uid').rut();
+</script>
+@endpush

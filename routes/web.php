@@ -25,11 +25,15 @@ Route::post('/customer/login', 'Frontend\CustomerController@authenticate')->name
 Route::post('/customer/logout', 'Frontend\CustomerController@logout')->name('logout');
 Route::get('/customer/forget', 'Frontend\CustomerController@forget')->name('customer.forget');
 Route::post('/customer/recovery', 'Frontend\CustomerController@recovery')->name('customer.frontend.recovery');
-Route::put('/customer/{customer}', 'Frontend\CustomerController@update')->name('customer.update');
 
-Route::get('/customer/profile', 'Frontend\CustomerController@profile')->name('customer.profile');
-Route::get('/customer/address', 'Frontend\CustomerController@address')->name('customer.address');
-Route::get('/customer/order', 'Frontend\CustomerController@order')->name('customer.order');
+Route::middleware(['auth'])->group(function () {
+    Route::put('/customer/{customer}', 'Frontend\CustomerController@update')->name('customer.update');
+    Route::get('/customer/profile', 'Frontend\CustomerController@profile')->name('customer.profile');
+    Route::get('/customer/address', 'Frontend\CustomerController@address')->name('customer.address');
+    Route::get('/customer/order', 'Frontend\CustomerController@order')->name('customer.order');
+
+    Route::put('/address/{customer}', 'Frontend\AddressController@store')->name('address.update');
+});
 
 Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.sign');
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
@@ -48,6 +52,7 @@ Route::get('/seller-shop/{id}', function () {
 });
 
 //Auth::routes();
+Route::redirect('/login', '/customer/sign')->name('login');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
