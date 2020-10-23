@@ -13,6 +13,7 @@
             </div>
 
             <div class="font-size-lg text-accent pt-2">{{ currencyFormat($product->price,'CLP',true) }} <!--$154.<small>00</small>--></div>
+            @if($shippingMethods)
             <div  class=" pt-2">
                 <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected" wire:change="$emit('select-shipping-item')">
                     <option value="0">Seleccione un metodo de pago</option>
@@ -23,6 +24,7 @@
                     <option>Envio Gratis</option> --}}
                 </select>
             </div>
+            @endif
 
         </div>
 
