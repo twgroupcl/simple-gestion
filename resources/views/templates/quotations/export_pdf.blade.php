@@ -100,6 +100,7 @@
             </div>
             <p>
                 <p class="p-estrecho">{{ $quotation->first_name }} {{ $quotation->last_name }}</p>
+                <p class="p-estrecho">{{ $quotation->uid }} </p>
                 <p class="p-estrecho">{{ $quotation->customer->addresses->first()->street }} {{ $quotation->customer->addresses->first()->number }}</p>
                 <p class="p-estrecho">{{ $quotation->address->commune->name }}</p>
                 <p class="p-estrecho">@if ($quotation->phone) Telefono: {{  $quotation->phone  }} @endif</p>
@@ -122,7 +123,7 @@
 
   <br/>
 
-  @if (strlen($quotation->preface) < 250)
+  @if (strlen($quotation->preface) < 1000)
   <table>
     <tbody>
         <tr>
@@ -266,6 +267,7 @@
 </table>
 <br>
 
+@if ($quotation->include_payment_data)
 <table>
     <tbody>
         <tr>
@@ -275,8 +277,9 @@
         </tr>
     </tbody>
 </table>
+@endif
 
-@if (strlen($quotation->preface) >= 200)
+@if (strlen($quotation->preface) >= 1000)
   <table>
     <tbody>
         <tr>
