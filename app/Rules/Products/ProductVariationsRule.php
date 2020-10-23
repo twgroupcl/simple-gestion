@@ -40,18 +40,17 @@ class ProductVariationsRule implements Rule
         }
 
         // Check for duplicate SKU
-        $skuDuplicates = collect($variations)->pluck('sku')->push(request('sku'))->duplicates();
+        /* $skuDuplicates = collect($variations)->pluck('sku')->push(request('sku'))->duplicates();
         if ( count($skuDuplicates) ) {
             $this->message = 'El SKU de cada variacion debe ser unico.';
             return false;
-        }
+        } */
 
         // Validate base fields
         foreach ($variations as $key => $variant) {
             $fieldGroupValidator = Validator::make((array) $variant, [
-                'name' => 'required',
-                'sku' => 'required',
-                'name' => 'required',
+                //'name' => 'required',
+                //'sku' => 'required',
                 'price'  => new NumericCommaRule(),
                 'width'  => new NumericCommaRule(),
                 'height'  => new NumericCommaRule(),
@@ -69,7 +68,7 @@ class ProductVariationsRule implements Rule
             }
 
             // Validate unique SKU on DB
-            if ($variant->product_id != '') {
+            /* if ($variant->product_id != '') {
                 $result = Product::where('seller_id', '=',  request('seller_id'))->where('id', '!=', $variant->product_id)->where('sku', '=', $variant->sku);
                 if ( $result->count() ) {
                     $this->message = 'El SKU que intentas usar en tu variacion ya se encuentra en uso.';
@@ -81,7 +80,7 @@ class ProductVariationsRule implements Rule
                     $this->message = 'El SKU que intentas usar en tu variacion ya se encuentra en uso.';
                     return false;
                 }
-            }
+            } */
 
             // Validate inventories fields
             $product = new Product();
@@ -101,12 +100,14 @@ class ProductVariationsRule implements Rule
         // Validate attributes fields
         // First we extract his attributes
         $variantAttributes = [];
+        $variantCount = 0;
         foreach($variations as $variant) {
+            $variantCount++;
             foreach($variant as $param => $value) {
                 // get id and values of every attribute
                 $isAnAtributte = substr($param, 0, 15) == 'super-attribute'; 
                 if($isAnAtributte) {
-                    $variantAttributes[$variant->sku][] = [
+                    $variantAttributes[$variantCount][] = [
                         'id' =>  Str::replaceFirst('super-attribute-', '', $param),
                         'value' => $value,
                     ];

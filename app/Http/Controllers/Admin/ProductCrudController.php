@@ -791,22 +791,22 @@ class ProductCrudController extends CrudController
                 'label' => 'Imagen',
                 'crop' => false,
             ],
-            [
+            /* [
                 'label' => "SKU",
                 'name' => "sku",
                 'type' => 'text',
                 'wrapper' => [
                     'class' => 'col-lg-6 col-md-12',
                 ],
-            ],
-            [
+            ], */
+            /* [
                 'label' => "Nombre",
                 'name' => "name",
                 'type' => 'text',
                 'wrapper' => [
                     'class' => 'col-lg-6 col-md-12',
                 ],
-            ],
+            ], */
             [
                 'label' => "Precio",
                 'name' => "price",

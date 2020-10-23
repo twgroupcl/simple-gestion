@@ -95,8 +95,9 @@ class Product extends Model
             if($variation['product_id'] == '') {
 
                 $childProduct = Product::create([
-                    'sku' => $variation['sku'],
-                    'name' => $variation['name'],
+                    'sku' => Str::uuid()->toString(), // temporal sku
+                    //'name' => $variation['name'],
+                    'name' => $this->name,
                     'price' => sanitizeNumber($variation['price']),
                     'weight' => sanitizeNumber($variation['weight']),
                     'height' => sanitizeNumber($variation['height']),
@@ -123,8 +124,9 @@ class Product extends Model
             } else {
                 Product::where('id', $variation['product_id'])
                     ->update([
-                        'sku' => $variation['sku'],
-                        'name' => $variation['name'],
+                        //'sku' => $variation['sku'],
+                        //'name' => $variation['name'],
+                        'name' => $this->name,
                         'price' => sanitizeNumber($variation['price']),
                         'weight' => sanitizeNumber($variation['weight']),
                         'height' => sanitizeNumber($variation['height']),
@@ -139,7 +141,7 @@ class Product extends Model
                         'use_inventory_control' => $this->use_inventory_control,
                         'status' => 1, // always 1?
                     ]);
-        
+                
                 $childProduct = Product::where('id', $variation['product_id'])->firstOrFail();
                 $childProduct->updateOrCreateAttributes($attributesArray);
             }
@@ -149,10 +151,9 @@ class Product extends Model
             $variation['image'] = $this->uploadChildImage($childProduct, $variation['image']);
             array_push($imagesArray, ['image' => $variation['image']]);
             
-            // Update images JSON
+            // Update children props
             $childProduct->images_json = $imagesArray;
-
-            // Create Slug
+            $childProduct->sku = $this->sku . '-' . $childProduct->id;
             $childProduct->url_key = $this->url_key . '-' . $childProduct->id;
 
             $childProduct->update();
