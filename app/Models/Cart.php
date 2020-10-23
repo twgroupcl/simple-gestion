@@ -36,6 +36,7 @@ class Cart extends Model
     {
         $customer = Customer::where('user_id',$user->id)->first();
         
+        if(!empty($customer)) {
             $cart = Cart::whereCustomerId($customer->id);
 
             if ($cart->exists()) {
@@ -95,6 +96,9 @@ class Cart extends Model
             $cart->cellphone = $customer->cellphone;
             
             return $cart;
+        }
+
+        return self::getInstanceGuest($session);
     }
 
     private static function getInstanceGuest(string $session) : Cart
