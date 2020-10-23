@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use function PHPSTORM_META\map;
+
 class SellersTableSeeder extends Seeder
 {
 
@@ -20,10 +22,10 @@ class SellersTableSeeder extends Seeder
             0 => 
             array (
                 'activities_data' => NULL,
-                'addresses_data' => NULL,
+                'addresses_data' => '[{"street":"Avenida siempre viva","number":"123","subnumber":"4","commune_id":"64","uid":"12.345.678-5","first_name":"Nombre","last_name":"Apellido","email":"email@email","phone":"123123123","cellphone":"1231231","extra":""}]',
                 'banks_data' => NULL,
                 'banner' => NULL,
-                'cellphone' => NULL,
+                'cellphone' => '123123',
                 'commission_enable' => 0,
                 'commission_percentage' => '0.0000',
                 'company_id' => 1,
@@ -61,7 +63,22 @@ class SellersTableSeeder extends Seeder
                 'web' => NULL,
             ),
         ));
-        
+        DB::table('seller_addresses')->insert([
+            [
+                'id' => 1,
+                'street' => 'Avenida siempre viva',
+                'number' => 123,
+                'subnumber' => '4',
+                'commune_id' => 64,
+                'uid' => '12.345.678-5',
+                'first_name' => 'Nombre',
+                'last_name' => 'Apellido',
+                'email' => 'emai@email',
+                'phone' => '123123123',
+                'cellphone' => '1231231',
+                'seller_id' => 1
+            ]
+        ]);
         
     }
 }
