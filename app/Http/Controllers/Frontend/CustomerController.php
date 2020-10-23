@@ -57,7 +57,7 @@ class CustomerController extends Controller
     public function logout()
     {
         Auth::logout();
-
+        request()->session()->regenerate();
         return redirect('home');
     }
 
