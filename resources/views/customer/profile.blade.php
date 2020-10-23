@@ -45,7 +45,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="uid">RUT <span class="text-danger">*</span></label>
-                            <input class="form-control uid @error('uid') is-invalid @enderror" type="text" name="uid" id="uid" placeholder="Escribe aquí tu rut" value="{{ old('uid') ?? $customer->uid }}" required>
+                            <input class="form-control uid @error('uid') is-invalid @enderror" type="text" name="uid" id="uid" placeholder="Escribe aquí tu rut" value="{{ old('uid') ?? $customer->uid }}" disabled>
                             <div class="invalid-feedback">Por favor ingresa tu rut.</div>
                             @error('uid')
                             <span class="invalid-feedback" role="alert">
