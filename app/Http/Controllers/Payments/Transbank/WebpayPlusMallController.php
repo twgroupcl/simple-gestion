@@ -103,6 +103,7 @@ class WebpayPlusMallController extends Controller
             $totalsBySeller[$key]['status'] = $pmSeller->status;
 
             foreach ($order->order_items as $item) {
+
                 $product = Product::find($item->product_id);
                 if ($seller->id === $product->seller->id) {
                     $totalsBySeller[$key]['amount'] += ($item->price * $item->qty) + $item->shipping_total;

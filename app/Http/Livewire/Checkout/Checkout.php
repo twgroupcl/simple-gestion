@@ -24,6 +24,7 @@ class Checkout extends Component
         'finishTask' => 'finishTask',
         'select-shipping' => 'addShipping',
         'pay' => 'pay',
+        'change'=>'updateTotals'
     ];
 
     public function mount(){
@@ -140,7 +141,7 @@ class Checkout extends Component
 
         $cartItem->shipping_total = $shippingTotal;
         $cartItem->update();
-        $this->shippingtotal += $shippingTotal;
+        //$this->shippingtotal += $shippingTotal;
 
         $this->total = $this->getTotal();
         $this->cart->total = $this->total;
@@ -159,9 +160,12 @@ class Checkout extends Component
     }
     private function getTotal(): float
     {
+        $this->shippingtotal = 0;
         $total = 0;
         foreach ($this->getItems() as $item) {
+
             $total += $item->price * $item->qty;
+            $this->shippingtotal += $item->shipping_total ;
         }
         $total += $this->shippingtotal;
         return $total;
@@ -227,5 +231,15 @@ class Checkout extends Component
 
 
          return redirect()->to(route('transbank.webpayplus.mall.redirect',['order'=>$order]));
+    }
+
+    public function updateTotals(){
+        $this->cart->recalculateSubtotal();
+        $this->cart->update();
+        $this->subtotal = $this->getSubTotal();
+        $this->total = $this->getTotal();
+        $this->emit('dropdown.update');
+        $this->emit('cart.updateSubtotal');
+
     }
 }
