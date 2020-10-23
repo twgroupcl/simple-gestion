@@ -6,13 +6,8 @@ trait Cursor
 {
     public $cursor = 'auto';
 
-    public function setCursor($string)
+    public function setCursor(string $string)
     {
         $this->cursor = $string;
-    }
-
-    public function updatedWithCursor($name, $value)
-    {
-        $this->cursor = 'auto';
     }
 }

@@ -10,6 +10,7 @@ use Livewire\Component;
 use App\Models\Cart as CartModel;
 use App\Models\{Product, CartItem, Customer};
 use Backpack\Settings\app\Models\Setting;
+use Illuminate\Support\Facades\DB;
 
 class Cart extends Component
 {
@@ -25,11 +26,10 @@ class Cart extends Component
 
     public function mount()
     {
-        $this->getCart();
-        $this->cart->company_id = 1;
+        $this->cart = $this->getCart();
         $this->subtotal = $this->cart->sub_total ?? 0;
-
-        if ($this->cart->cart_items->count() == 0) {
+        
+        if (!isset($this->cart->cart_items) || $this->cart->cart_items->count() == 0) {
             $this->setCursor('not-allowed');
         } 
     }
@@ -37,28 +37,29 @@ class Cart extends Component
     public function add(Request $request, Product $product, $qty = 1)
     {
         //get update cart
-        $this->getCart();
+        $this->cart = $this->getCart();
         $this->cart->save();
 
         $qty = $qty == null ? 1 : $qty;
 
-        $this->addItem($this->cart, $product, $qty);
+        $this->addItem($product, $qty);
 
-        $this->cart->recalculateSubtotal();
-        if ($this->cart->isDirty())
-            $this->cart->update();
-        
         $this->updateSubtotal();
-
     }
 
     public function updateSubtotal()
     {
+        $this->cart->recalculateSubtotal();
+        $this->cart->recalculateQtys();
+        $this->cart->update();
         $this->subtotal = $this->cart->sub_total;
         $this->setCursor('not-allowed');
         if ($this->cart->cart_items->count() > 0) {
             $this->setCursor('auto');
         }
+        
+        $this->emit('dropdown.update', $this->cart);
+        $this->emit('cart-counter.setCount', $this->cart->items_count);
     }
 
 
@@ -69,16 +70,16 @@ class Cart extends Component
         return view('livewire.cart.cart');
     }
 
-    private function addItem(CartModel $cart, Product $product, $qty = 1)
+    private function addItem(Product $product, $qty = 1)
     {
-        $item = $cart->cart_items->where('product_id', $product->id)->first();
+        $item = $this->cart->cart_items->where('product_id', $product->id)->first();
         if ($item !== null) {
             $item->qty = $item->qty + $qty;
             $item->sub_total = $item->price * $item->qty;
             $item->update();
         } else {
             $data = [
-                'cart_id' => $cart->id,
+                'cart_id' => $this->cart->id,
                 'product_id' => $product->id,
                 'sku' => $product->sku,
                 'name' => $product->name,
@@ -113,27 +114,22 @@ class Cart extends Component
                 $data = array_merge($data, ['product_attributes' => json_encode($attributes)]);
             }
 
-            $cart = CartItem::create($data);
-            $this->emit('cart-counter:increment');
-
-            if($cart){
+            $item = CartItem::create($data);
+            
+            $this->cart->items_count ++;
+            
+            if($item){
                 session()->flash('message', '¡Éxito! El artículo se añadió al carro.');
             }else{
                 session()->flash('error', 'Ocurrió un error al momento de agregar el producto.');                
             }
         }
-
-        $this->emit('dropdown.update');
     }
 
     private function getCart()
     {
-        $session = session();
-        if (auth()->check()) {
-            $user = auth()->user();
-            $this->cart = CartModel::getInstance($user,$session); 
-        } else {
-            $this->cart = CartModel::getInstance(null, $session); 
-        }
+        $session = session()->getId();
+        $user = auth()->check() ? auth()->user() : null;
+        return CartModel::getInstance($user, $session);
     }
 }

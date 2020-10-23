@@ -13,32 +13,25 @@ class Dropdown extends Component
     
     protected $listeners = [
         'dropdown.update' => 'update',
-        'deleteItem' => 'deleteItem'
+        'deleteItem'
     ];
 
     public function update()
     {
-        $this->cart = Cart::getInstance(null,session());
-        $this->items = $this->cart->cart_items;
-        $this->cart->recalculateSubtotal();
-        $this->cart->update();
+
+        $this->cart = $this->getCart();
+        $this->items = CartItem::whereCartId($this->cart->id)->get();
         $this->emitTo('cart.item', 'cart-item.updateQty');
     }
 
     public function deleteItem()
     {
-        $this->cart = Cart::getInstance(null,session());
-        $this->items = $this->cart->cart_items;
-        $this->cart->recalculateSubtotal();
-        $this->cart->update();
-        $this->emit('cart-counter:decrease');
         $this->emit('cart.updateSubtotal');
-
     }
 
     public function mount()
     {
-        $this->cart = Cart::getInstance(null,session());
+        $this->cart = $this->getCart();
         $this->items = $this->cart->cart_items;
     }
 
@@ -47,4 +40,10 @@ class Dropdown extends Component
         return view('livewire.cart.dropdown');
     }
 
+    private function getCart()
+    {
+        $session = session()->getId();
+        $user = auth()->check() ? auth()->user() : null;
+        return Cart::getInstance($user, $session);
+    }
 }
