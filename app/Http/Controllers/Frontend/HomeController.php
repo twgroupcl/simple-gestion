@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function index()
     {
         //return redirect('/seller/register');
-        $products = Product::where('status','=','1')->with('seller')->with('seller')->with('categories')->limit(6)->get();
+        $products = Product::where('status','=','1')->with('seller')->with('categories')->orderBy('id','DESC')->limit(6)->get();
         return view('marketplace', compact('products'));
     }
 
