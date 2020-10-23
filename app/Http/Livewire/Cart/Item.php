@@ -41,7 +41,9 @@ class Item extends Component
         $this->qty = $this->item->qty;
         $this->total = $this->item->product->price * $this->qty;
         $this->communeSelected =  $this->item->cart->address_commune_id;
-        $this->shippingMethods =  $this->getShippingMethods();
+        if ($this->communeSelected) {
+            $this->shippingMethods =  $this->getShippingMethods();
+        }
     }
 
     public function setQty($qty)
