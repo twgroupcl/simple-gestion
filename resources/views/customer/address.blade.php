@@ -159,7 +159,9 @@
                                     </a></td>
                             </tr>
                         @empty
-                            No se encontraron direcciones
+                        <tr>
+                            <td class="py-3 align-middle">No se encontraron direcciones</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
