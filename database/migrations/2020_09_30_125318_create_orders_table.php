@@ -43,6 +43,8 @@ class CreateOrdersTable extends Migration
             $table->boolean('is_guest')->default(false);
             $table->longText('json_value')->nullable();
             $table->integer('status')->default(1);
+            $table->longText('order_items')->nullable();
+
             $table->unsignedBigInteger('company_id');
 
             $table->timestamps();

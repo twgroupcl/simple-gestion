@@ -128,3 +128,5 @@
 	</ul>
 </li>
 @endcanany
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('order') }}'><i class="las la-file-invoice"></i> Orders</a></li>
