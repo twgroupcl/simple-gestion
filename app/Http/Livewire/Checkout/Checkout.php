@@ -213,6 +213,7 @@ class Checkout extends Component
         $order->cellphone = $this->cart->cellphone;
         $order->currency_id = $this->cart->currency_id;
         $order->json_value = json_encode($addressData);
+        $order->status = 1 ; //initiated
         $order->save();
 
         //Add Order Item
