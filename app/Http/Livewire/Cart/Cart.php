@@ -58,7 +58,7 @@ class Cart extends Component
             $this->setCursor('auto');
         }
         
-        $this->emit('dropdown.update', $this->cart);
+        $this->emit('dropdown.update');
         $this->emit('cart-counter.setCount', $this->cart->items_count);
     }
 

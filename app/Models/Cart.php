@@ -193,19 +193,25 @@ class Cart extends Model
                 } 
 
                 foreach ($itemsSession as $key) {
-                    $product = $itemsCustomer->where('product_id',$key->product_id)->first();
+                    $item = $itemsCustomer->where('product_id',$key->product_id)->first();
 
-                    if($product) {
-                        $product->qty += $key->qty;
-                        $product->update();
+                    if($item) {
+                        //item exists
+                        $item->qty += $key->qty;
+                        $item->updateTotals();
+                        $item->update();
                         $key->delete();
                     } else {
+                        //item not exists
                         $key->cart_id = $cartCustomer->id;
                         $key->update();
                     }
                 }
 
                 $cartCustomer->recalculateQtys();
+                $cartCustomer->recalculateSubtotal();
+                $cartCustomer->update();
+
 -               $cartSession->delete();
 
                // DB::rollBack();

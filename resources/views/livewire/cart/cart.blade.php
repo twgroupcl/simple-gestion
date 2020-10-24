@@ -8,6 +8,6 @@
     </a>
     @if ($cursor == 'auto')
         <!-- Cart dropdown-->
-        @livewire('cart.dropdown')    
+        @livewire('cart.dropdown', ['cart' => $cart])    
     @endif
 </div>

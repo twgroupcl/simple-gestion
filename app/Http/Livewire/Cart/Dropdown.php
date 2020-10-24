@@ -18,9 +18,8 @@ class Dropdown extends Component
 
     public function update()
     {
-
         $this->cart = $this->getCart();
-        $this->items = CartItem::whereCartId($this->cart->id)->get();
+        $this->items = $this->cart->cart_items;
         $this->emitTo('cart.item', 'cart-item.updateQty');
     }
 
