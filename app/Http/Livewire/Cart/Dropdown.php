@@ -25,7 +25,10 @@ class Dropdown extends Component
 
     public function deleteItem()
     {
+        //update all cart
         $this->emit('cart.updateSubtotal');
+        //emit event to all components with listeners change
+        $this->emit('change');
     }
 
     public function mount()
