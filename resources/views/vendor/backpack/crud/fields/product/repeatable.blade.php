@@ -264,7 +264,7 @@
 
         function clonePreviusValues() {
             const fieldsToCopy = [
-                'name',
+                //'name',
                 'price',
                 'weight',
                 'height',
