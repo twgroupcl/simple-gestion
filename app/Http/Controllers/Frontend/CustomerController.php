@@ -105,7 +105,8 @@ class CustomerController extends Controller
 
     public function order()
     {
-        return view('customer.order');
+        $customer = Customer::firstWhere('user_id', auth()->user()->id);
+        return view('customer.order', ['customer' => $customer]);
     }
 
     public function update(CustomerUpdateRequest $request, Customer $customer)

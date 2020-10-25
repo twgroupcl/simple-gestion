@@ -2,6 +2,9 @@
 
 use App\Models\Currency;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 if (! function_exists('parseCurrency')) {
@@ -97,5 +100,14 @@ if (! function_exists('determineSource')) {
         }
 
         return "Front";
+    }
+}
+
+if (! function_exists('paginate')) {
+    function paginate($items, $perPage = 1, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }
