@@ -1,5 +1,29 @@
 <div>
     <div class="card product-card">
+        <div class="row">
+           
+            @if ($product->special_price)
+                <div class="col-md-3 col-sm-4 mr-1">
+                    <div class="text-center">
+                        <span class="badge badge-warning badge-shadow">Descto</span>
+                    </div>
+                </div>
+            @endif 
+            @if ($product->new == 1)
+                <div class="col-md-3 col-sm-4">
+                    <div class="text-center">
+                        <span class="badge badge-info badge-shadow">Nuevo</span>
+                    </div>
+                </div>
+            @endif   
+            @if ($product->product_type_id == 2)
+                <div class="col-md-3 col-sm-4">
+                    <div class="text-center">
+                        <span class="badge badge-danger badge-shadow">Variable</span>
+                    </div>
+                </div>
+            @endif 
+        </div>
         {{-- <div class="product-card-actions d-flex align-items-center">
             <a class="btn-action nav-link-style mr-2" href="#"><i class="czi-compare mr-1"></i>Compare</a>
             <button class="btn-wishlist btn-sm" type="button" data-toggle="tooltip" data-placement="left"
@@ -11,10 +35,7 @@
             <img src="{{ url($product->getFirstImagePath()) }}" class="w-100" alt="Product">
         </a>
         <div class="card-body py-2">
-            <div class="row">
-                <a class="product-meta d-block font-size-xs pb-1 col-md-6 col-sm-6" href="">{{ $product->showCategory() }}</a>
-                <a class="product-meta d-block font-size-xs pb-1 col-md-6 col-sm-6 text-right" href="{{url('seller-shop',['id' => $product->seller->id])}}">Tienda {{ $product->seller->name }}</a>
-            </div>
+            <a class="product-meta d-block font-size-xs pb-1" href="">{{ $product->showCategory() }}</a>
             <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}">{{ $product->name }}</a></h3>
             <div class="d-flex justify-content-between">
                 <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->
@@ -26,8 +47,14 @@
                         </span>
                     </div>
                 @else
-                    <div class="product-price"><span
-                            class="text-accent">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</span>
+                    <div class="product-price">
+                        @if($product->special_price)
+                            <span class="text-accent">{{ currencyFormat($product->special_price, Setting::get('default_currency'), true) }}</span>
+                            <del class="font-size-sm text-muted"><small>{{ currencyFormat($product->price,Setting::get('default_currency'), true) }}</small></del>
+                        @else
+                            <span class="text-accent">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</span>
+                        @endif
+
                     </div>
                 @endif
                 {{-- <div class="star-rating">

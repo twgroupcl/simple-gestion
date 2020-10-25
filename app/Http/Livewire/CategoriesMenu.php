@@ -21,6 +21,6 @@ class CategoriesMenu extends Component
 
     public function loadCategories() 
     {
-        $this->categories = ProductCategory::all();
+        $this->categories = ProductCategory::orderBy('name','ASC')->get();
     }
 }
