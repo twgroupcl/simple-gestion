@@ -6,12 +6,12 @@ use App\Models\Bank;
 use App\Models\Commune;
 use App\Models\ContactType;
 use App\Cruds\BaseCrudFields;
+use App\Http\Requests\{SellerStoreRequest, SellerUpdateRequest};
 use App\Models\PaymentMethod;
 use App\Models\SellerCategory;
 use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
-use App\Http\Requests\SellerRequest;
 use App\Http\Traits\HasCustomAttributes;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -64,9 +64,15 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'name' => 'name',
+            'name' => 'visible_name',
             'type' => 'text',
-            'label' => 'Razón social',
+            'label' => 'Nombre visible',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'email',
+            'type' => 'text',
+            'label' => 'Email',
         ]);
 
         CRUD::addColumn([
@@ -90,6 +96,8 @@ class SellerCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->customFilters();
     }
 
     /**
@@ -100,7 +108,7 @@ class SellerCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(SellerRequest::class);
+        CRUD::setValidation(SellerStoreRequest::class);
 
         //CRUD::setFromDb(); // fields
 
@@ -714,6 +722,7 @@ class SellerCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        CRUD::setValidation(SellerUpdateRequest::class);
 
         if(backpack_user()->hasAnyRole('Super admin|Administrador')) {
             CRUD::addField([
@@ -729,5 +738,48 @@ class SellerCrudController extends CrudController
                 ],
             ]);
         }
+    }
+
+     /**
+     * Add filters in list view
+     *
+     * @return void
+     */
+    private function customFilters()
+    {
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'rut',
+            'label' => 'RUT',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'uid', 'LIKE', '%' . $value . '%');
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'visible_name',
+            'label' => 'Nombre visible',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'visible_name', 'LIKE', '%' . $value . '%');
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'email',
+            'label' => 'Email',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'email', 'LIKE', '%' . $value . '%');
+        });
+
+        CRUD::addFilter([
+            'name' => 'seller_category_id',
+            'type' => 'select2',
+            'label' => 'Categoria',
+        ], function () {
+            return SellerCategory::all()->pluck('name', 'id')->toArray();
+        }, function ($values) {
+            $this->crud->addClause('where', 'seller_category_id', 'LIKE', '%' . $values . '%');
+        });
     }
 }
