@@ -8,9 +8,9 @@
                 class="czi-close-circle font-size-sm"></i></span></button>
         @endif
         <div class="media align-items-center">
-            <a class="d-block mr-2" href="{{route('product',['slug' => $product->url_key])}}"><img width="64" src="{{ url($product->getFirstImagePath()) }}" alt="Product" /></a>
+            <a class="d-block mr-2" href="{{ $product->url_key ? route('product',['slug' => $product->url_key]) : '#' }}"><img width="64" src="{{ url($product->getFirstImagePath()) }}" alt="Product" /></a>
             <div class="media-body">
-                <h6 class="widget-product-title"><a href="{{route('product',['slug' => $product->url_key])}}">{{ $item->name }}</a></h6>
+                <h6 class="widget-product-title"><a href="{{$product->url_key ? route('product',['slug' => $product->url_key])  : '#'}}">{{ $item->name }}</a></h6>
                 <div class="widget-product-meta">
                     <!--<span class="text-accent mr-2">$259.<small>00</small></span>-->
                     <span class="text-accent mr-2">{{ $item->price ? currencyFormat($item->price, Setting::get('default_currency'), true) : currencyFormat(0, Setting::get('default_currency'), true) }}</span>

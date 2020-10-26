@@ -202,7 +202,8 @@ class WebpayPlusMallController extends Controller
 
 
         $order = Order::where('id', $this->orderId)->first();
-
+        $order->status = 2 ; //paid
+        $order->update();
         $finalresult = false;
         if (is_array($result->detailOutput)) {
             foreach ($result->detailOutput as $output) {

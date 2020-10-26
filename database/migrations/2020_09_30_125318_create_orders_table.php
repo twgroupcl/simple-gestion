@@ -43,6 +43,8 @@ class CreateOrdersTable extends Migration
             $table->boolean('is_guest')->default(false);
             $table->longText('json_value')->nullable();
             $table->integer('status')->default(1);
+            $table->longText('order_items')->nullable();
+
             $table->unsignedBigInteger('company_id');
 
             $table->timestamps();
@@ -54,7 +56,6 @@ class CreateOrdersTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->foreign('currency_id')->references('id')->on('currencies');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unique(['company_id', 'uid']);
         });
     }
 

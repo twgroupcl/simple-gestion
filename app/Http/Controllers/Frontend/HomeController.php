@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\User;
+use App\Models\Seller;
 use App\Models\Product;
-use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
@@ -38,4 +40,14 @@ class HomeController extends Controller
         $products = ($category)?$category->products:'';
         return view('shop-grid',compact('products'));
     }
+
+    public function getSeller(Request $request){        
+        $seller         = Seller::where('id','=',$request->id)->with('seller_category')->with('company')->first();
+        $products       = Product::where('seller_id','=',$request->id)->get();
+        $user           = User::where('id','=',$seller->user_id)->first();
+        $countProduct   = Product::where('seller_id','=',$request->id)->where('parent_id','=',null)->get()->count();
+        return view('vendor',compact('seller','products','countProduct','user'));
+    }
+
+    
 }

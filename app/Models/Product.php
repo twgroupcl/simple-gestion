@@ -95,13 +95,14 @@ class Product extends Model
             if($variation['product_id'] == '') {
 
                 $childProduct = Product::create([
-                    'sku' => $variation['sku'],
-                    'name' => $variation['name'],
+                    'sku' => Str::uuid()->toString(), // temporal sku
+                    //'name' => $variation['name'],
+                    'name' => $this->name,
                     'price' => sanitizeNumber($variation['price']),
-                    'weight' => sanitizeNumber($variation['weight']),
-                    'height' => sanitizeNumber($variation['height']),
-                    'width' => sanitizeNumber($variation['width']),
-                    'depth' => sanitizeNumber($variation['depth']),
+                    'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
+                    'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
+                    'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
+                    'depth' => $this->is_service ? 0 : sanitizeNumber($variation['depth']),
                     'inventories_json' => $inventoriesArray,
                     'parent_id' => $this->id,
                     'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
@@ -110,6 +111,7 @@ class Product extends Model
                     'company_id' => $this->company_id,
                     'currency_id' => $this->currency_id,
                     'use_inventory_control' => $this->use_inventory_control,
+                    'is_service' => $this->is_service,
                     'status' => 1, // always 1?
                 ]);
 
@@ -118,17 +120,19 @@ class Product extends Model
                 // Store reference to the product in the table
                 $variation['product_id'] = $childProduct->id;
 
+
             // Otherwise, update
             } else {
                 Product::where('id', $variation['product_id'])
                     ->update([
-                        'sku' => $variation['sku'],
-                        'name' => $variation['name'],
+                        //'sku' => $variation['sku'],
+                        //'name' => $variation['name'],
+                        'name' => $this->name,
                         'price' => sanitizeNumber($variation['price']),
-                        'weight' => sanitizeNumber($variation['weight']),
-                        'height' => sanitizeNumber($variation['height']),
-                        'width' => sanitizeNumber($variation['width']),
-                        'depth' => sanitizeNumber($variation['depth']),
+                        'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
+                        'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
+                        'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
+                        'depth' => $this->is_service ? 0 : sanitizeNumber($variation['depth']),
                         'inventories_json' => $inventoriesArray,
                         'parent_id' => $this->id,
                         'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
@@ -136,9 +140,10 @@ class Product extends Model
                         'company_id' => $this->company_id,
                         'currency_id' => $this->currency_id,
                         'use_inventory_control' => $this->use_inventory_control,
+                        'is_service' => $this->is_service,
                         'status' => 1, // always 1?
                     ]);
-        
+                
                 $childProduct = Product::where('id', $variation['product_id'])->firstOrFail();
                 $childProduct->updateOrCreateAttributes($attributesArray);
             }
@@ -148,8 +153,11 @@ class Product extends Model
             $variation['image'] = $this->uploadChildImage($childProduct, $variation['image']);
             array_push($imagesArray, ['image' => $variation['image']]);
             
-            // Update images JSON
+            // Update children props
             $childProduct->images_json = $imagesArray;
+            $childProduct->sku = $this->sku . '-' . $childProduct->id;
+            $childProduct->url_key = $this->url_key . '-' . $childProduct->id;
+
             $childProduct->update();
         }
 
@@ -340,6 +348,9 @@ class Product extends Model
             
             if(!$attribute) continue;
 
+            // Remove empty attributes
+            if (! $custom_attribute->json_value) continue;
+
             array_push($attributes, [
                 'name' => $attribute->json_attributes['name'],
                 'value' => $custom_attribute->json_value,
@@ -357,6 +368,15 @@ class Product extends Model
             return true;
         }
 
+        // If configurable product, check inventory on children products
+        if ($this->product_type->id == self::PRODUCT_TYPE_CONFIGURABLE) {
+            $result = false;
+            foreach ($this->children as $children) {
+                if ($children->haveSufficientQuantity($qty) ) $result = true;
+            }
+            return $result;
+        }
+
         // Total qty on inventories
         foreach($this->inventories as $inventory) {
             $qtyInventory = $inventory->pivot->qty;
@@ -364,7 +384,10 @@ class Product extends Model
         }
 
         // Qty in pending orders
-        // @todo
+        $itemsInOrder = OrderItem::where([ 'shipping_status' => 1, 'product_id' => $this->id])->get();
+        foreach ($itemsInOrder as $orderItem) {
+            $total -= $orderItem->qty;
+        }
 
         return $qty <= $total ? true : false;
     }

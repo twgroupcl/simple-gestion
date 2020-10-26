@@ -68,12 +68,14 @@
                         <!-- Product details-->
                         <div class="col-lg-5 pt-4 pt-lg-0">
                             <div class="product-details ml-auto">
-                                <span class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</span>
+                                <a href="{{ url('seller-shop/'.$product->seller->id) }}" class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</a>
                             </div>
                             <div class="product-details ml-auto pb-3">
                                 @if ($product->special_price)
                                 <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, Setting::get('default_currency'), true) }}</span>
-                                    <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</del><span class="badge badge-danger badge-shadow align-middle mt-n2">Promo</span>
+                                    <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</del>
+                                    <br>
+                                    <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
                                 </div>
                                 @else
                                     <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</div>
@@ -100,7 +102,11 @@
                                             <label class="custom-option-label rounded-circle" for="color4"><span class="custom-option-color rounded-circle" style="background-color: #333;"></span></label>
                                         </div>
                                     -->
-                                    <div class="product-badge product-available mt-n5"><i class="czi-security-check"></i>Producto disponible</div>
+                                    @if ($product->haveSufficientQuantity(1))
+                                        <div class="product-badge product-available mt-n5"><i class="czi-security-check"></i>Producto disponible</div>
+                                    @else
+                                        <div class="product-badge product-not-available mt-n5"><i class="czi-security-close"></i>Producto no disponible</div>
+                                    @endif
                                 </div>
                                 <!--
                                     <div class="form-group">
@@ -117,6 +123,7 @@
                                         </select>
                                     </div>
                                 -->
+                                @if ($product->haveSufficientQuantity(1))
                                 <div class="d-flex align-items-center pt-2 pb-4">
                                     @livewire('qty-item', [
                                         'qty' => 1, 
@@ -128,6 +135,7 @@
                                     @livewire('products.add-to-cart',['product' => $product, 'view' => 'single'])
                                     </div>
                                 </div>
+                                @endif
                                 <!--
                                     <div class="d-flex mb-4">
                                         <div class="w-100 mr-3">
@@ -215,7 +223,7 @@
                                 @endif
                             </div>
                         </div>
-                        @if ($product->product_type->id == 1)
+                        @if ($product->haveSufficientQuantity(1))
                         <div class="d-flex align-items-center pt-3">
                             @livewire('qty-item', [
                                 'qty' => 1, 
@@ -238,7 +246,7 @@
                     <!-- Specs table-->
                     <div class="row pt-2">
                         <div class="col-lg-5 col-sm-6">
-                            @if ($product->custom_attributes->count())
+                            @if ( count($product->getAttributesWithNames()) )
                             <h3 class="h6">Especificaciones generales</h3>
                             <ul class="list-unstyled font-size-sm pb-2">
                                 @foreach ($product->getAttributesWithNames() as $attribute)
@@ -269,13 +277,15 @@
                             </ul> --}}
                         </div>
                         <div class="col-lg-5 col-sm-6 offset-lg-1">
-                            <h3 class="h6">Dimensiones de envio</h3>
-                            <ul class="list-unstyled font-size-sm pb-2">
-                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($product->weight, 2, ',', '.') }}</span></li>
-                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($product->height, 2, ',', '.') }}</span></li>                    
-                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($product->depth, 2, ',', '.') }}</span></li>
-                                <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($product->width, 2, ',', '.') }}</span></li>
-                            </ul>
+                            @if (!$product->is_service)
+                                <h3 class="h6">Dimensiones de envio</h3>
+                                <ul class="list-unstyled font-size-sm pb-2">
+                                    <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($product->weight, 2, ',', '.') }} kg</span></li>
+                                    <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($product->height, 2, ',', '.') }} cm</span></li>                    
+                                    <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($product->depth, 2, ',', '.') }} cm</span></li>
+                                    <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($product->width, 2, ',', '.') }} cm</span></li>
+                                </ul>
+                            @endif
                             {{-- <h3 class="h6">Functions</h3>
                             <ul class="list-unstyled font-size-sm pb-2">
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Phone calls:</span><span>Incoming call notification</span></li>
@@ -519,8 +529,10 @@
 <div class="container pt-lg-3 pb-4 pb-sm-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <h2 class="h3 pb-2">Descripción</h2>
-            <p>{!!$product->description!!}</p>
+            @if ($product->description)
+                <h2 class="h3 pb-2">Descripción</h2>
+                <p>{!!$product->description!!}</p>
+            @endif
         </div>
     </div>
 </div>
