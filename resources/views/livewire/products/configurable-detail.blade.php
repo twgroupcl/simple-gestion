@@ -28,7 +28,7 @@
                 <!-- Product details-->
                 <div class="col-lg-5 pt-4 pt-lg-0">
                     <div class="product-details ml-auto">
-                        <span class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $parentProduct->seller->visible_name }}</span>
+                        <a href="{{ url('seller-shop/'.$parentProduct->seller->id) }}" class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $parentProduct->seller->visible_name }}</a>
                     </div>
                     <div class="product-details ml-auto pb-3">
                         @if ($selectedChildrenId)

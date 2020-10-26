@@ -40,11 +40,14 @@
                     <p class="font-size-ms text-muted">{{$seller->company->name}}</p>
                     <h6>Categoría</h6>
                     <p class="font-size-ms text-muted">{{$seller->seller_category->name}}</p>
-                    <h6>Administrador</h6>
-                    <p class="font-size-ms text-muted">{{$user->name}}</p>
+                    @if($seller->legal_representative_name)
+                        <h6>Administrador</h6>
+                        <p class="font-size-ms text-muted">{{$seller->legal_representative_name}}</p>
+                    @endif
                     <h6>Acerca de la tienda</h6>
-                    <p class="font-size-ms text-muted">Políticas de envío</p>
-                    <p class="font-size-ms text-muted">Políticas de privacidad</p>
+                    <a href="#" class="font-size-ms text-muted">Políticas de envío</a>
+                    <br>
+                    <a href="#" class="font-size-ms text-muted">Políticas de privacidad</a>
                     <hr class="my-4">
                     <!--
                         <h6>Contacts</h6>
