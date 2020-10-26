@@ -44,6 +44,7 @@ class ProductCreateRequest extends FormRequest
                 new SlugRule()],
             'currency_id' => 'required',
             'seller_id' => 'required',
+            'is_service' => 'required',
             'company_id' => 'required',
             'product_class_id' => 'required',
             'use_inventory_control' => [

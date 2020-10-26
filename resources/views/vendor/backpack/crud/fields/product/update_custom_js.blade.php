@@ -5,7 +5,7 @@
 
     $( document ).ready(function() {
 
-        let isServiceField = $('.is_service_checkbox')
+        /* let isServiceField = $('.is_service_checkbox')
         let widthField = $('input[name=width]')
         let heightField = $('input[name=height]')
         let depthField = $('input[name=depth]')
@@ -37,7 +37,7 @@
             heightField.attr('disabled', true)
             depthField.attr('disabled', true)
             weightField.attr('disabled', true)
-        }
+        } */
 
     });
 
