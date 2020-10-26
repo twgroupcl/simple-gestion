@@ -87,4 +87,17 @@
         </section>
     </div>
 </div>
+<!-- Order Details Modal-->
+<livewire:customer.order-detail :order="$orders[0]">
 @endsection
+
+@push('scripts')
+<script>
+    let orders = document.querySelectorAll('a[data-toggle="modal"]');
+    orders.forEach(order => {
+        order.addEventListener('click', () => {
+            Livewire.emit('refreshOrderDetail', event.target.text)
+        })
+    })
+</script>
+@endpush
