@@ -43,7 +43,7 @@ class CreateOrderItemsTable extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('payment_id')->nullable();
             $table->unsignedBigInteger('shipping_id')->nullable();
-            $table->unsignedBigInteger('seller_id')->nullable();
+            $table->unsignedBigInteger('shipping_id')->nullable();
             $table->integer('shipping_status')->default(1);
             $table->timestamps();
         });
