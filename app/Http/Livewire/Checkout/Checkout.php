@@ -144,11 +144,12 @@ class Checkout extends Component
     public function addShipping($selected, $item)
     {
 
-
         $cartItem = CartItem::find($item);
 
-        $shippingTotal = $selected['price']; //* $cartItem->qty;
 
+        $shippingId = $selected['id'];
+        $shippingTotal = $selected['price']; //* $cartItem->qty;
+        $cartItem->shipping_id = $shippingId;
         $cartItem->shipping_total = $shippingTotal;
         $cartItem->update();
         //$this->shippingtotal += $shippingTotal;
@@ -228,6 +229,8 @@ class Checkout extends Component
         $order->save();
 
 
+        $shippingtotal_order =0;
+        $subtotal_order =0;
         $total_order =0;
         //Add Order Item
         foreach ($this->getItems() as $item) {
@@ -240,11 +243,18 @@ class Checkout extends Component
             $orderitem->sku = $item->product->sku;
             $orderitem->price = $item->product->price;
             $orderitem->qty = $item->qty;
+            $orderitem->shipping_id = $item->shipping_id;
             $orderitem->shipping_total = $item->shipping_total;
             $orderitem->sub_total = $item->price * $item->qty;
             $orderitem->save();
+            $shippingtotal_order +=  $item->shipping_total * $item->qty;
+            $subtotal_order += $item->price * $item->qty;
             $total_order +=  ($item->price + $item->shipping_total ) * $item->qty;
         }
+
+        $order->shipping_total =   $shippingtotal_order;
+        $order->sub_total =   $subtotal_order;
+        $order->total =   $total_order;
 
         $order->save();
 

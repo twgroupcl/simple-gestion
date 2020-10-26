@@ -17,6 +17,7 @@
             <div  class="select-shipping mb-0 pt-2">
                 <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected" wire:change="$emit('select-shipping-item')">
                     <option value="0">Seleccione un metodo de pago</option>
+
                     @foreach ($shippingMethods as $key=>$shipping)
                         <option value="{{$key}}">{{$shipping['name']}} ({{currencyFormat($shipping['price'] ? $shipping['price'] : 0, 'CLP', true)}})</option>
                     @endforeach

@@ -47,8 +47,9 @@ class Item extends Component
             if ($this->communeSelected) {
                 $this->shippingMethods =  $this->getShippingMethods();
                 if($this->shippingMethods){
+
                     $this->selected = 0;
-                    $this->shippingSelected = $this->shippingMethods[0];
+                    $this->shippingSelected = $this->shippingMethods[$this->selected];
                     $this->addShippingItem();
                 }
             }
@@ -84,6 +85,7 @@ class Item extends Component
     public function render()
     {
         return view('livewire.' . $this->view);
+        $this->emitUp('select-shipping',$this->shippingSelected , $this->item->id);
     }
 
     // public function addShippingItem($selected)
@@ -103,7 +105,7 @@ class Item extends Component
             if ($shippingmethod->code == 'chilexpress') {
                 $chilexpress = new Chilexpress();
                 $result = $chilexpress->calculateItem($this->item, $this->communeSelected);
-
+                $itemshipping['id'] = $shippingmethod->id;
                 $itemshipping['name'] = $shippingmethod->title;
                 if ($result['is_available']) {
 
@@ -118,6 +120,7 @@ class Item extends Component
                 $itemshipping['is_available'] = $result['is_available'];
             } else {
                 $json_value = json_decode($shippingmethod->json_value);
+                $itemshipping['id'] = $shippingmethod->id;
                 $itemshipping['name'] = $shippingmethod->title;
                 if ($json_value) {
 
