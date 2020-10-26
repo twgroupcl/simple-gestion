@@ -56,7 +56,6 @@ class CreateOrdersTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->foreign('currency_id')->references('id')->on('currencies');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unique(['company_id', 'uid']);
         });
     }
 

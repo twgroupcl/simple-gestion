@@ -84,7 +84,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="uid">RUT</label>
+                            <label for="uid">RUT <span class="text-danger">*</span></label>
                             <input class="form-control uid @error('uid') is-invalid @enderror" type="text" name="uid" id="uid" placeholder="Escribe aquí tu rut" value="{{ old('uid') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu rut.</div>
                             @error('uid')
@@ -96,7 +96,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="first_name">Nombre</label>
+                            <label for="first_name">Nombre <span class="text-danger">*</span></label>
                             <input class="form-control @error('first_name') is-invalid @enderror" type="text" name="first_name" id="first_name" placeholder="Escribe aquí tu nombre" value="{{ old('first_name') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu nombre.</div>
                             @error('first_name')
@@ -108,7 +108,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="last_name">Apellido</label>
+                            <label for="last_name">Apellido <span class="text-danger">*</span></label>
                             <input class="form-control @error('last_name') is-invalid @enderror" type="text" name="last_name" id="last_name" placeholder="Escribe aquí tu apellido" value="{{ old('last_name') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu apellido.</div>
                             @error('last_name')
@@ -120,7 +120,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="email">E-mail</label>
+                            <label for="email">E-mail <span class="text-danger">*</span></label>
                             <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Escribe aquí tu email" value="{{ old('email') }}" required>
                             <div class="invalid-feedback">Por favor ingresa un email válido.</div>
                             @error('email')
@@ -132,7 +132,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="password">Contraseña</label>
+                            <label for="password">Contraseña <span class="text-danger">*</span></label>
                             <div class="password-toggle">
                                 <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" required>
                                 <label class="password-toggle-btn">
@@ -148,7 +148,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="password_confirmation">Confirmar contraseña</label>
+                            <label for="password_confirmation">Confirmar contraseña <span class="text-danger">*</span></label>
                             <div class="password-toggle">
                                 <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" id="password_confirmation" required>
                                 <label class="password-toggle-btn">

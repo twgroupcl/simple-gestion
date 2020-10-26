@@ -44,15 +44,9 @@ class CartController extends Controller
      */
     private function getCart(): ?Cart
     {
-        $guest = !auth()->check();
         $session = Session::getId();
-        if (!$guest) {
-            $userId = auth()->user()->id;
-            $customer = Customer::where('user_id',$userId)->first();
-            $cart = Cart::whereCustomerId($customer->id)->exists() ? Cart::whereCustomerId($customer->id)->first() : null;
-        } else {
-            $cart = Cart::where('session_id', $session)->exists() ? Cart::where('session_id', $session)->first() : null;
-        }
+        $user = auth()->check() ? auth()->user() : null;
+        $cart = Cart::getInstance($user,$session);
 
         /*if (!$cart) {
             $cart = new Cart();

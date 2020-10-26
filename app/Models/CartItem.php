@@ -25,7 +25,11 @@ class CartItem extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
+    public function updateTotals()
+    {
+        $this->sub_total = $this->price * $this->qty;
+        $this->total = $this->price * $this->qty; //@todo calculate total
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

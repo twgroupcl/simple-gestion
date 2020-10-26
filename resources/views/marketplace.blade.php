@@ -85,7 +85,7 @@
             <div class="widget">
                 <h3 class="widget-title">Los más vendidos</h3>                
                 @livewire('products.products-general',['emitTo' => 'products.short-list'])                
-                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
         <!-- New arrivals-->
@@ -93,7 +93,7 @@
             <div class="widget">
                 <h3 class="widget-title">Nuevos productos</h3>
                 @livewire('products.products-general',['emitTo' => 'products.short-list'])
-                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
         <!-- Top rated-->
@@ -101,7 +101,7 @@
             <div class="widget">
                 <h3 class="widget-title">Los más valorados</h3>
                 @livewire('products.products-general',['emitTo' => 'products.short-list'])                
-                <p class="mb-0">...</p><a class="font-size-sm" href="shop-grid-ls.html">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
     </div>
