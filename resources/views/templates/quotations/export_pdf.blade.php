@@ -221,6 +221,11 @@
                         {{ $quotation->notes }}
                     </p>
                 </p> 
+                @elseif ($quotation->include_payment_data)
+                    <div class="direccion-facturacion-titulo">
+                        <strong>Datos de pago:</strong>
+                    </div>
+                    <pre>{!! $quotation->branch->companies->first()->payment_data !!}</pre>
                 @endif
             </td>
             <td width="29%" ></td>
@@ -269,12 +274,15 @@
 </table>
 <br>
 
-@if ($quotation->include_payment_data)
+@if ($quotation->include_payment_data && $quotation->notes)
 <table>
     <tbody>
         <tr>
             <td>
-                Datos de pago
+                <div class="direccion-facturacion-titulo">
+                    <strong>Datos de pago:</strong>
+                </div>
+                <pre>{!! $quotation->branch->companies->first()->payment_data !!}</pre>
             </td>
         </tr>
     </tbody>
