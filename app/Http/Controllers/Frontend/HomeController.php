@@ -13,8 +13,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::where('status','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->limit(6)->get();
-        return view('marketplace', compact('products'));
+        return redirect('/seller/register');
+        //$products = Product::where('status','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->limit(6)->get();
+        //return view('marketplace', compact('products'));
     }
 
     public function getAllProducts()
@@ -32,16 +33,16 @@ class HomeController extends Controller
     public function searchProduct(Request $request)
     {
         $products = Product::where('status','=','1')->where('name','LIKE','%'.$request->product.'%')->get();
-        return view('shop-grid', compact('products'));        
-    } 
-    
-    public function getProductsByCategory(Request $request){        
+        return view('shop-grid', compact('products'));
+    }
+
+    public function getProductsByCategory(Request $request){
         $category = ProductCategory::where('id','=',$request->category)->with('products')->first();
         $products = ($category)?$category->products:'';
         return view('shop-grid',compact('products'));
     }
 
-    public function getSeller(Request $request){        
+    public function getSeller(Request $request){
         $seller         = Seller::where('id','=',$request->id)->with('seller_category')->with('company')->first();
         $products       = Product::where('seller_id','=',$request->id)->get();
         $user           = User::where('id','=',$seller->user_id)->first();
@@ -49,5 +50,5 @@ class HomeController extends Controller
         return view('vendor',compact('seller','products','countProduct','user'));
     }
 
-    
+
 }
