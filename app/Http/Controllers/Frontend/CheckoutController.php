@@ -19,8 +19,10 @@ class CheckoutController extends Controller
     public function index()
     {
 
+
         $session = Session::getId();
-        $cart = Cart::where('session_id', $session)->exists() ? Cart::where('session_id', $session)->first() : null;
+        $user = auth()->check() ? auth()->user() : null;
+        $cart = Cart::getInstance($user,$session);
         if (!$cart) {
             return redirect()->back();
         }
