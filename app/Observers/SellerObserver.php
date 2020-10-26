@@ -70,9 +70,7 @@ class SellerObserver
 
     public function updated(Seller $seller)
     {
-        if ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado') {
-            Mail::to($seller->email)->send(new SellerChangeStatus($seller));
-        }
+       
         
         if ($seller->isDirty()) {
             $dirtyModel = $seller->getDirty();
@@ -86,6 +84,13 @@ class SellerObserver
 
             if (array_key_exists('addresses_data', $dirtyModel)) {
                 $this->syncAddresses($seller);
+            }
+
+            if (
+                array_key_exists('is_approved', $dirtyModel) && 
+                ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado')
+            ) {
+                Mail::to($seller->email)->send(new SellerChangeStatus($seller));
             }
         }
 
