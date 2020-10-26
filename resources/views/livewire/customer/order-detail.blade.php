@@ -8,9 +8,9 @@
             <div class="modal-body pb-0">
                 @forelse ($items ?? [] as $item)
                     <div class="d-sm-flex justify-content-between mb-4 pb-3 pb-sm-2 border-bottom">
-                        <div class="media d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" href="shop-single-v1.html" style="width: 10rem;"><img src="{{ url($item->product->getFirstImagePath()) ?? '' }}" alt="{{ $item->product->name ?? '' }}"></a>
+                        <div class="media d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img src="{{ url($item->product->getFirstImagePath()) ?? '' }}" alt="{{ $item->product->name ?? '' }}"></a>
                             <div class="media-body pt-2">
-                                <h3 class="product-title font-size-base mb-2"><a href="shop-single-v1.html">{{ $item->name ?? '' }}</a></h3>
+                                <h3 class="product-title font-size-base mb-2"><a>{{ $item->name ?? '' }}</a></h3>
                                 <div class="font-size-lg text-accent pt-2">{{ currencyFormat($item->product->price ?? 0, 'CLP', true) }}</div>
                             </div>
                         </div>
