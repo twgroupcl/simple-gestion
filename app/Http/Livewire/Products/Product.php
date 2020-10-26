@@ -18,11 +18,8 @@ class Product extends Component
     }
 
     public function render()
-    {
-        return view('livewire.' . $this->view,[
-            'productos' => ModelsProduct::paginate(10)
-        ]);
-        //return view('livewire.' . $this->view );
+    {     
+        return view('livewire.' . $this->view );
     }
 
     public function getProducts()
