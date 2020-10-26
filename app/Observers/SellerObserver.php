@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Mail\SellerChangeStatus;
 use App\User;
 use App\Models\Seller;
 use App\Models\BranchUser;
@@ -13,6 +14,7 @@ use Spatie\Permission\Models\Role;
 use App\Models\PaymentMethodSeller;
 use App\Models\ShippingMethodSeller;
 use Backpack\Settings\app\Models\Setting;
+use Illuminate\Support\Facades\Mail;
 
 class SellerObserver
 {
@@ -59,10 +61,19 @@ class SellerObserver
         $this->syncAddresses($seller);
         $this->syncPaymentMethods($seller);
         $this->syncShippingMethods($seller);
+
+        if ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado') {
+            Mail::to($seller)->send(new SellerChangeStatus($seller));
+        }
+
     }
 
     public function updated(Seller $seller)
     {
+        if ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado') {
+            Mail::to($seller->email)->send(new SellerChangeStatus($seller));
+        }
+        
         if ($seller->isDirty()) {
             $dirtyModel = $seller->getDirty();
             if (array_key_exists('shippings_data', $dirtyModel)) {
