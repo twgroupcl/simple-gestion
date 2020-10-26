@@ -6,6 +6,7 @@ use Livewire\Component;
 
 class FlashMessage extends Component
 {
+    public $title;
     public $message;
     public $status;
     public $delay;
@@ -15,6 +16,8 @@ class FlashMessage extends Component
 
     public function mount()
     {
+        $this->message = '';
+        $this->title = '';
         $this->session = session()->get('message') ?? [];
         $this->delay= "3000";
         $this->type= 'success';
@@ -67,6 +70,11 @@ class FlashMessage extends Component
     public function setMessage($message)
     {
         $this->message = $message;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     public function render()

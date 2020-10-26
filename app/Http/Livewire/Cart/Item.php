@@ -68,6 +68,7 @@ class Item extends Component
 
     public function delete()
     {
+        $this->emit('showToast', 'Se ha eliminado del carro.', 'Se ha eliminado el producto del carro.', 3000, 'info');
         $this->item->delete();
         $this->emitUp('deleteItem');
     }
