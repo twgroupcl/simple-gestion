@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Rules\NumericCommaRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QuotationCreateRequest extends FormRequest
@@ -42,7 +43,7 @@ class QuotationCreateRequest extends FormRequest
             // Order items data
             'items_data_validation.*.name' => 'required',
             'items_data_validation.*.qty' => 'required',
-            'items_data_validation.*.price' => 'required',
+            'items_data_validation.*.price' => ['required', new NumericCommaRule()],
             'items_data_validation.*.total' => 'required',
 
             'items_data' => function($attribute, $value, $fail) {

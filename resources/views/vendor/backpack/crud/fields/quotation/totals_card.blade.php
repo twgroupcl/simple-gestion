@@ -327,6 +327,7 @@
                 return 0
             }
             number = number.toString()
+            number = number.replaceAll('.', '')
             number = number.replace(',', '.')
             return parseFloat(number);
         }
@@ -371,10 +372,14 @@
         });
 
         $(document).on('keyup', 'input[data-repeatable-input-name="discount"]', function () {
+            let removeDots = $(this).val().replace(/\./g, ',')
+            $(this).val(removeDots)
             calculateTotals();
         });
 
         $(document).on('keyup', 'input[name="discount_amount_field"]', function () {
+            let removeDots = $(this).val().replace(/\./g, ',')
+            $(this).val(removeDots)
             calculateTotals();
         });
 
@@ -414,9 +419,7 @@
                 return;
             }
 
-            // Format price of the product
-            var priceWithTwoDigits = parseFloat($(this).select2('data')[0].price).toFixed(2);
-            var currentPrice = formatWithComma(priceWithTwoDigits);
+            var currentPrice = parseFloat($(this).select2('data')[0].price).toFixed(0);
             
             // Set price and qty 
             $(this).parent().parent().find('.price').val(currentPrice);

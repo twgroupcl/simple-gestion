@@ -60,7 +60,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addColumn([
             'label' => '#',
-            'name' => 'code',
+            'name' => 'id',
             'type' => 'number',
         ]);
 
