@@ -128,9 +128,9 @@ class WebpayPlusMallController extends Controller
         }
 
 
-        $order->total = $amountTotal;
+       // $order->total = $amountTotal;
 
-        $order->save();
+        //$order->save();
 
 
         $response = $this->transaction->initTransaction($buyOrder, $sessionId, $this->returnUrl, $this->finalUrl, $transactions);
