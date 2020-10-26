@@ -255,25 +255,35 @@ class ProductCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'is_service',
+            'label' => 'Es un servicio',
+            'type' => 'checkbox',
+            'wrapper' => [
+                'class' => 'col-md-12 form-group is_service_checkbox',
+            ],
+            'attributes' => [
+                'class' => 'service_check',
+            ],
+        ]);
+
+        CRUD::addField([
             'name' => 'use_inventory_control',
             'label' => 'Usar control de inventario',
             'type' => 'checkbox',
+            'wrapper' => [
+                'class' => 'col-md-12 form-group is_inventory_checkbox',
+            ],
+            'attributes' => [
+                'class' => 'inventory_check',
+            ],
         ]);
+
 
         CRUD::addField([
             'name' => 'customShowHideSuperAttributes',
             'type' => 'product.show_hide_variants',
         ]);
-
-        CRUD::addField([
-            'name' => 'is_service',
-            'label' => 'Es un servicio',
-            'type' => 'checkbox',
-            'attributes' => [
-                'class' => 'is_service_checkbox',
-            ]
-        ]);
-
+        
         CRUD::addField([
             'name' => 'customJs',
             'type' => 'product.custom_js',
