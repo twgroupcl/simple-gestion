@@ -72,12 +72,27 @@ class Cart extends Component
 
     private function addItem(Product $product, $qty = 1)
     {
+        if ( ! $product->haveSufficientQuantity( $qty )) {
+            $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
+            return;
+        }
+
         $item = $this->cart->cart_items->where('product_id', $product->id)->first();
         if ($item !== null) {
+            // @todo QtySelector display total in cart. 
+            // in that case this is not necessary to repeat
+            if ( ! $product->haveSufficientQuantity( $item->qty + $qty )) {
+                $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
+                return;
+            }
+    
             $item->qty = $item->qty + $qty;
             $item->sub_total = $item->price * $item->qty;
             $item->update();
+
+            $this->emit('showToast', 'Cambió la cantidad', 'Has agregado más cantidad de un item al carro.', 3000, 'info');
         } else {
+            
             $data = [
                 'cart_id' => $this->cart->id,
                 'product_id' => $product->id,
@@ -117,12 +132,7 @@ class Cart extends Component
             $item = CartItem::create($data);
             
             $this->cart->items_count ++;
-            
-            if($item){
-                session()->flash('message', '¡Éxito! El artículo se añadió al carro.');
-            }else{
-                session()->flash('error', 'Ocurrió un error al momento de agregar el producto.');                
-            }
+            $this->emit('showToast', '¡Añadido al carro!', 'Has añadido un producto al carro.', 3000, 'success');
         }
     }
 
