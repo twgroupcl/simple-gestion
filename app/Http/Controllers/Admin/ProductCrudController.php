@@ -29,7 +29,7 @@ class ProductCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -42,18 +42,18 @@ class ProductCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasRole('Administrador negocio') || backpack_user()->hasRole('Super admin')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
             $this->admin = true;
         }
 
-        if ( backpack_user()->hasRole('Vendedor marketplace') ) {
+        if ( backpack_user()->hasAnyRole('Vendedor marketplace') ) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-        } 
+        }
     }
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -62,16 +62,16 @@ class ProductCrudController extends CrudController
 
         // If not admin, show only user products
         if(!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
-    
+
         // Hide children products
         $this->crud->addClause('where', 'parent_id', '=', null);
-        
+
         CRUD::addColumn([
             'name' => 'sku',
             'label' => 'SKU',
             'type' => 'text',
             ]);
-            
+
         CRUD::addColumn([
             'name' => 'name',
             'label' => 'Nombre',
@@ -97,15 +97,15 @@ class ProductCrudController extends CrudController
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
                     switch($column['text']) {
-                        case 'Aprobado': 
+                        case 'Aprobado':
                             return 'badge badge-success';
                             break;
-                        case 'Pendiente': 
+                        case 'Pendiente':
                             return 'badge badge-default';
                             break;
-                        case 'Rechazado': 
+                        case 'Rechazado':
                             return 'badge badge-danger';
-                            break; 
+                            break;
                     }
                 },
             ],
@@ -114,18 +114,18 @@ class ProductCrudController extends CrudController
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ProductCreateRequest::class);
-        
+
         $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
         $this->crud->orderSaveAction('save_and_edit', 1);
-    
+
         CRUD::addField([
             'name' => 'name',
             'label' => 'Nombre del producto',
@@ -144,27 +144,27 @@ class ProductCrudController extends CrudController
             'type' => 'text',
         ]);
 
-        /* CRUD::addField([ 
+        /* CRUD::addField([
             'label'     => "Categoría",
             'type'      => 'select2_multiple',
-            'name'      => 'categories', 
-            'entity'    => 'categories', 
+            'name'      => 'categories',
+            'entity'    => 'categories',
             'model'     => "App\Models\ProductCategory",
-            'attribute' => 'name', 
+            'attribute' => 'name',
             'pivot'     => true,
             'attributes' => [
                 'id' => 'categories',
             ]
         ]); */
 
-        CRUD::addField([ 
+        CRUD::addField([
             'label'     => "Categoría",
             'type'      => 'product.select2_multiple',
-            'name'      => 'categories', 
+            'name'      => 'categories',
             'entity'    => 'categories',
-            'maximumSelectionLength' => '1', 
+            'maximumSelectionLength' => '1',
             'model'     => "App\Models\ProductCategory",
-            'attribute' => 'name', 
+            'attribute' => 'name',
             'pivot'     => true,
             'options'   => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
@@ -175,14 +175,14 @@ class ProductCrudController extends CrudController
         ]);
 
 
-        CRUD::addField([ 
+        CRUD::addField([
             'label'       => "Clase de producto",
             'type'        => "select2_from_ajax",
             'name'        => 'product_class_id',
             'placeholder' => 'Selecciona la clase de producto',
-            'entity'      => 'product_class', 
+            'entity'      => 'product_class',
             'attribute'   => "name",
-            'data_source' => url("admin/api/productclass/get"), 
+            'data_source' => url("admin/api/productclass/get"),
             'minimum_input_length' => 0,
             'include_all_form_fields'  => true,
             'dependencies'  => ['categories'],
@@ -209,14 +209,14 @@ class ProductCrudController extends CrudController
             'type' => 'product.product_type_hint',
         ]);
 
-        CRUD::addField([ 
+        CRUD::addField([
             'label'       => "Atributos para variaciones",
             'type'        => "select2_from_ajax_multiple",
             'name'        => 'super_attributes',
             'placeholder' => 'Selecciona los atributos que usaras en tus variaciones',
-            'entity'      => 'super_attributes', 
+            'entity'      => 'super_attributes',
             'attribute'   => "descripcion_name",
-            'data_source' => url("admin/api/productclassattributes/get"), 
+            'data_source' => url("admin/api/productclassattributes/get"),
             'pivot'       => true,
             'minimum_input_length' => 0,
             'include_all_form_fields'  => true,
@@ -225,12 +225,12 @@ class ProductCrudController extends CrudController
                 'id' => 'super_attributes',
             ],
             'wrapper' => [
-               'style' => 'display:none', 
+               'style' => 'display:none',
                'id' => 'super_attributes_wrapper',
             ]
         ]);
 
-        
+
         CRUD::addField([
             'name' => 'seller_id',
             'label' => 'Vendedor',
@@ -286,12 +286,12 @@ class ProductCrudController extends CrudController
             'slug' => 'url_key',
         ]);
 
-        
+
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
@@ -299,7 +299,7 @@ class ProductCrudController extends CrudController
     {
         $product = $this->crud->getModel()->find($this->crud->getCurrentEntryId());
         $attributes = $product->product_class->product_class_attributes;
-        
+
         // Set validations
         if($product->product_type->id == Product::PRODUCT_TYPE_SIMPLE) {
             CRUD::setValidation(ProductUpdateRequest::class);
@@ -332,7 +332,7 @@ class ProductCrudController extends CrudController
         if(count($attributes) !== 0) {
             $this->setAttributesFields($attributes, $product);
         }
-        
+
         // SEO fields
         $this->setSeoFields();
 
@@ -399,13 +399,13 @@ class ProductCrudController extends CrudController
             'tab' => 'Información general'
         ]);
 
-        CRUD::addField([ 
+        CRUD::addField([
             'label'     => "Categorías",
             'type'      => 'product.select2_multiple',
-            'name'      => 'categories', 
-            'entity'    => 'categories', 
+            'name'      => 'categories',
+            'entity'    => 'categories',
             'model'     => "App\Models\ProductCategory",
-            'attribute' => 'name', 
+            'attribute' => 'name',
             'options'   => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
@@ -434,7 +434,7 @@ class ProductCrudController extends CrudController
     }
 
     public function setImagesFields() {
-        CRUD::addField([ 
+        CRUD::addField([
             'name'  => 'images_json',
             'label' => 'Imágenes',
             'type'  => 'repeatable',
@@ -523,12 +523,13 @@ class ProductCrudController extends CrudController
                 'style' => 'display:none',
             ]
         ]);
-        
+
         if (!$product->is_service){
             CRUD::addField([
                 'name' => 'weight',
-                'label' => 'Peso (kg)',
+                'label' => 'Peso',
                 'type' => 'product.number_format',
+                'suffix' => 'kg',
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -537,11 +538,12 @@ class ProductCrudController extends CrudController
                     'class' => 'form-group mb-3 col required',
                 ],
             ]);
-    
+
             CRUD::addField([
                 'name' => 'height',
-                'label' => 'Alto (cm)',
+                'label' => 'Alto',
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -550,11 +552,12 @@ class ProductCrudController extends CrudController
                     'class' => 'form-group mb-3 col required',
                 ],
             ]);
-    
+
             CRUD::addField([
                 'name' => 'width',
-                'label' => 'Ancho (cm)',
+                'label' => 'Ancho',
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -563,11 +566,12 @@ class ProductCrudController extends CrudController
                     'class' => 'form-group mb-3 col required',
                 ],
             ]);
-    
+
             CRUD::addField([
                 'name' => 'depth',
-                'label' => 'Largo (cm)',
+                'label' => 'Largo',
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -577,7 +581,7 @@ class ProductCrudController extends CrudController
                 ],
             ]);
         }
-        
+
         if ($product->use_inventory_control) {
             CRUD::addField([
                 'name' => 'critical_stock',
@@ -704,7 +708,7 @@ class ProductCrudController extends CrudController
         ]);
     }
 
-    public function setAttributesFields($attributes, $product) 
+    public function setAttributesFields($attributes, $product)
     {
         foreach($attributes as $attribute) {
 
@@ -775,13 +779,13 @@ class ProductCrudController extends CrudController
     public function setVariationsField($product) {
 
         $superAttributesFields = [];
-        
+
         foreach($product->super_attributes as $super_attribute) {
             array_push($superAttributesFields, [
                 'label' => $super_attribute->json_attributes['name'],
                 'name' => 'super-attribute-' . $super_attribute->id,
                 'type' => 'select2_from_array',
-                'options' => $this->formatOptions($super_attribute->json_options), 
+                'options' => $this->formatOptions($super_attribute->json_options),
             ]);
         }
 
@@ -835,6 +839,7 @@ class ProductCrudController extends CrudController
                 'label' => "Peso",
                 'name' => "weight",
                 'type' => 'product.number_format',
+                'suffix' => 'kg',
                 'wrapper' => [
                     'class' => 'col-lg-6 col-md-12',
                 ],
@@ -846,6 +851,7 @@ class ProductCrudController extends CrudController
                 'label' => "Alto",
                 'name' => "height",
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12',
                 ],
@@ -857,6 +863,7 @@ class ProductCrudController extends CrudController
                 'label' => "Ancho",
                 'name' => "width",
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12',
                 ],
@@ -868,6 +875,7 @@ class ProductCrudController extends CrudController
                 'label' => "Largo",
                 'name' => "depth",
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12',
                 ],
@@ -879,7 +887,7 @@ class ProductCrudController extends CrudController
 
         $inventoryFields = $product->use_inventory_control ? $this->inventoryFieldsToArray($product) : [];
 
-        CRUD::addField([ 
+        CRUD::addField([
             'name'  => 'variations_json',
             'label' => 'Variaciones',
             'type'  => 'product.repeatable',
@@ -941,14 +949,14 @@ class ProductCrudController extends CrudController
     /**
      * Given a array [0 => ['option_name' => 'the option'] ]
      * returns a array with format ['the option' => 'the option']
-     * 
+     *
      * TODO: This could be move to a general helper class
      */
     public function formatOptions($options) {
         $formattedOptions = [];
         foreach($options as $option) {
             $formattedOptions[$option['option_name']] = $option['option_name'];
-        } 
+        }
         return $formattedOptions;
     }
 }

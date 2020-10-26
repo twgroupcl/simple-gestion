@@ -58,11 +58,16 @@ class Item extends Component
 
     public function setQty($qty)
     {
+        if ( ! $this->item->product->haveSufficientQuantity( $qty )) {
+            $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
+            return;
+        }
         $this->qty = $qty;
         $this->item->qty = $qty;
         $this->item->sub_total = $this->item->product->price * $qty;
         $this->total = $this->item->product->price * $qty;
         $this->item->update();
+        $this->emit('showToast', 'Cambió la cantidad', 'Has agregado más cantidad de un item al carro.', 3000, 'info');
         $this->emitUp('change');
     }
 
@@ -78,6 +83,7 @@ class Item extends Component
 
     public function delete()
     {
+        $this->emit('showToast', 'Se ha eliminado del carro.', 'Se ha eliminado el producto del carro.', 3000, 'info');
         $this->item->delete();
         $this->emitUp('deleteItem');
     }

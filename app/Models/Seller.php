@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Freshwork\ChileanBundle\Rut;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class Seller extends Model
@@ -158,6 +160,13 @@ class Seller extends Model
         }
     }
 
+    public function getUidAttribute()
+    {
+        $rutFormatter = Rut::parse($this->attributes['uid']);
+        
+        return $rutFormatter->format();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
@@ -239,5 +248,10 @@ class Seller extends Model
 
             $this->attributes[$attribute_name] = '/storage/logos/'.$filename;
         }
+    }
+
+    public function setUidAttribute($value)
+    {
+        $this->attributes['uid'] = str_replace('.', '', $value);
     }
 }
