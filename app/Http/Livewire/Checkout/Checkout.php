@@ -227,6 +227,8 @@ class Checkout extends Component
         $order->status = 1; //initiated
         $order->save();
 
+
+        $total_order =0;
         //Add Order Item
         foreach ($this->getItems() as $item) {
             $orderitem = new OrderItem();
@@ -239,10 +241,12 @@ class Checkout extends Component
             $orderitem->price = $item->product->price;
             $orderitem->qty = $item->qty;
             $orderitem->shipping_total = $item->shipping_total;
-            $orderitem->subtotal_total = $item->price * $item->qty;
+            $orderitem->sub_total = $item->price * $item->qty;
             $orderitem->save();
+            $total_order +=  ($item->price + $item->shipping_total ) * $item->qty;
         }
 
+        $order->save();
 
         return redirect()->to(route('transbank.webpayplus.mall.redirect', ['order' => $order]));
     }
