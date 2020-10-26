@@ -80,7 +80,7 @@
                 </li> 
                 <li id="retencion-container" class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Retención</h6>
+                        <h6 class="my-0">Retención (10.75%)</h6>
                     </div>
                     <div>
                         <span class="text-muted">-$</span>
@@ -316,8 +316,6 @@
             document.querySelector('#total-card').innerText = !isNaN(total) ? formatWithComma(total) : 0; 
         }
 
-
-
         /**********************************************
         *  
         * Functions to format and transform numbers
@@ -333,12 +331,15 @@
             return parseFloat(number);
         }
 
+
+        // PENDING TEST THIS
         function formatWithComma(number) {
             if (typeof number == 'number') {
                 number = parseFloat(number).toFixed(2);
             }
             number = number.toString()
             number = number.replace('.', ',')
+            number = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             return number;
         }
 
@@ -362,6 +363,10 @@
         $(document).on('keyup', 'input[data-repeatable-input-name="price"]', function () {
             let removeDots = $(this).val().replace(/\./g, ',')
             $(this).val(removeDots)
+            calculateTotals();
+        });
+
+        $(document).on('click', 'button', function () {
             calculateTotals();
         });
 

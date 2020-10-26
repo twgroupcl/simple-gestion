@@ -45,7 +45,7 @@ class QuotationCreateRequest extends FormRequest
             'items_data_validation.*.price' => 'required',
             'items_data_validation.*.total' => 'required',
 
-            'quotations_items_json' => function($attribute, $value, $fail) {
+            'items_data' => function($attribute, $value, $fail) {
                 $items = json_decode($value, true);
                 if ( !count($items) ) return $fail('Debes añadir por lo menos un producto / servicio.');
             }

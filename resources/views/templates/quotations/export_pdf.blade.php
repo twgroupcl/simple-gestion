@@ -86,7 +86,9 @@
             <p class="p-estrecho"><strong>Fecha de cotización</strong>: {{ $creation_date->format('d/m/Y') }}</p>
             <p class="p-estrecho"><strong>Fecha de vencimiento</strong>: {{ $due_date->format('d/m/Y') }}</p>
             <p class="p-estrecho"><strong>Numero de cotizacion</strong>: #{{ $quotation->id }}</p>
+            @if ($quotation->code)
             <p class="p-estrecho"><strong>Referencia de cotizacion</strong>: {{$quotation->code }}</p>
+            @endif
         </td>
     </tr>
 
@@ -146,7 +148,7 @@
         <th>Cantidad</th>
         <th>Precio unitario $</th>
         @if ($quotation->has_discount_per_item)
-        <th>Descuento por item $</th>  
+        <th>Descuento $</th>  
         @endif
         @if ($quotation->has_tax_per_item)
         <th>Impuesto adicional</th>
