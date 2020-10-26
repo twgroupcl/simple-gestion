@@ -603,7 +603,7 @@ class SellerCrudController extends CrudController
             'tab' => 'Venta',
         ]);
 
-        if(backpack_user()->hasAnyRole('Super admin|Administrador')) {
+        if(backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
             CRUD::addField([
                 'name' => 'is_approved',
                 'label' => 'Aprobado',
@@ -724,7 +724,7 @@ class SellerCrudController extends CrudController
         $this->setupCreateOperation();
         CRUD::setValidation(SellerUpdateRequest::class);
 
-        if(backpack_user()->hasAnyRole('Super admin|Administrador')) {
+        if(backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
             CRUD::addField([
                 'name' => 'source',
                 'type' => 'text',
