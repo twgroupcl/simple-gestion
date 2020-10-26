@@ -85,7 +85,9 @@ class Order extends Model
         $addressData = [];
         $attribute_name =  'json_value';
         $tmpAddressData = json_decode($this->attributes[$attribute_name]);
-
+        $tmpAddressData = is_object($tmpAddressData)
+                                ? $tmpAddressData
+                                : json_decode($tmpAddressData);
 
         $item = [
             'addressShipping'=> json_decode($tmpAddressData->addressShipping),
