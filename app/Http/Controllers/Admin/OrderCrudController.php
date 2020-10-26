@@ -33,7 +33,7 @@ class OrderCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Order::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/order');
-        CRUD::setEntityNameStrings('orden', 'ordenes');
+        CRUD::setEntityNameStrings('orden', 'órdenes');
         $this->crud->denyAccess('create');
         $this->crud->denyAccess('show');
         $this->crud->denyAccess('delete');
@@ -68,7 +68,42 @@ class OrderCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'id',
             'type' => 'text',
-            'label' => 'Nro.',
+            'label' => '#',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'created_at',
+            'type' => 'date',
+            'label' => 'Fecha',
+            'format' => 'L'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'uid',
+            'type' => 'text',
+            'label' => 'RUT',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'first_name',
+            'type' => 'text',
+            'label' => 'Cliente',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'email',
+            'type' => 'text',
+            'label' => 'Email',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'total',
+            'type' => 'number',
+            'label'=> 'Total',
+            'dec_point' => ',',
+            'thousands_sep' => '.',
+            'decimals' => 0,
+            'prefix' => '$'
         ]);
 
         CRUD::addColumn([
@@ -468,11 +503,21 @@ class OrderCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'status_description',
-            'type' => 'text',
+            'type' => 'select2_from_array',
+            'options' => [
+                1 => 'Pendiente',
+                2 => 'Pagada',
+                3 => 'Completada',
+            ],
             'label' => 'Estado',
             'tab' => 'General',
-            'wrapper' => [
-                'class' => 'form-group col-md-4 text-center ',
+            'attributes' => [
+                'readonly' => true,
+                'disabled' => true,
+            ],
+
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
             ],
         ]);
 
@@ -506,7 +551,7 @@ class OrderCrudController extends CrudController
                         'readonly' => 'readonly',
                     ],
                     'wrapperAttributes' => [
-                        'class' => 'form-group col-md-5',
+                        'class' => 'form-group col-md-2',
                     ],
 
                 ],
@@ -525,8 +570,42 @@ class OrderCrudController extends CrudController
                 ],
                 [
                     'name' => 'price',
-                    'type' => 'product.number_format',
+                    'type' => 'number',
                     'label' => 'Precio',
+                    'dec_point' => ',',
+                    'thousands_sep' => '.',
+                    'decimals' => 0,
+                    'prefix' => '$',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ],
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
+                    ],
+
+
+                ],
+                [
+                    'name' => 'shipping_total',
+                    'type' => 'number',
+                    'label' => 'Costo envío',
+                    'dec_point' => ',',
+                    'thousands_sep' => '.',
+                    'decimals' => 0,
+                    'prefix' => '$',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ],
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
+                    ],
+
+
+                ],
+                [
+                    'name' => 'sub_total',
+                    'type' => 'number',
+                    'label' => 'Subtotal',
                     'attributes' => [
                         'readonly' => 'readonly',
                     ],
@@ -545,7 +624,7 @@ class OrderCrudController extends CrudController
                     ],
                     'label' => 'Estado',
                     'wrapperAttributes' => [
-                        'class' => 'form-group col-md-3 shipping_status_select',
+                        'class' => 'form-group col-md-2 shipping_status_select',
 
                     ],
 

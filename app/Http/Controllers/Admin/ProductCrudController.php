@@ -527,8 +527,9 @@ class ProductCrudController extends CrudController
         if (!$product->is_service){
             CRUD::addField([
                 'name' => 'weight',
-                'label' => 'Peso (kg)',
+                'label' => 'Peso',
                 'type' => 'product.number_format',
+                'suffix' => 'kg',
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -540,8 +541,9 @@ class ProductCrudController extends CrudController
     
             CRUD::addField([
                 'name' => 'height',
-                'label' => 'Alto (cm)',
+                'label' => 'Alto',
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -553,8 +555,9 @@ class ProductCrudController extends CrudController
     
             CRUD::addField([
                 'name' => 'width',
-                'label' => 'Ancho (cm)',
+                'label' => 'Ancho',
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -566,8 +569,9 @@ class ProductCrudController extends CrudController
     
             CRUD::addField([
                 'name' => 'depth',
-                'label' => 'Largo (cm)',
+                'label' => 'Largo',
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -835,6 +839,7 @@ class ProductCrudController extends CrudController
                 'label' => "Peso",
                 'name' => "weight",
                 'type' => 'product.number_format',
+                'suffix' => 'kg',
                 'wrapper' => [
                     'class' => 'col-lg-6 col-md-12',
                 ],
@@ -846,6 +851,7 @@ class ProductCrudController extends CrudController
                 'label' => "Alto",
                 'name' => "height",
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12',
                 ],
@@ -857,6 +863,7 @@ class ProductCrudController extends CrudController
                 'label' => "Ancho",
                 'name' => "width",
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12',
                 ],
@@ -868,6 +875,7 @@ class ProductCrudController extends CrudController
                 'label' => "Largo",
                 'name' => "depth",
                 'type' => 'product.number_format',
+                'suffix' => 'cm',
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12',
                 ],

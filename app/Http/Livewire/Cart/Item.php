@@ -23,6 +23,7 @@ class Item extends Component
     public $show;
     public $selected;
     public $shippingSelected;
+    public $showShipping;
 
     protected $listeners = [
         'setQty',
@@ -41,8 +42,16 @@ class Item extends Component
         $this->qty = $this->item->qty;
         $this->total = $this->item->product->price * $this->qty;
         $this->communeSelected =  $this->item->cart->address_commune_id;
-        if ($this->communeSelected) {
-            $this->shippingMethods =  $this->getShippingMethods();
+
+        if($this->showShipping){
+            if ($this->communeSelected) {
+                $this->shippingMethods =  $this->getShippingMethods();
+                if($this->shippingMethods){
+                    $this->selected = 0;
+                    $this->shippingSelected = $this->shippingMethods[0];
+                    $this->addShippingItem();
+                }
+            }
         }
     }
 
@@ -68,6 +77,7 @@ class Item extends Component
 
     public function delete()
     {
+        $this->emit('showToast', 'Se ha eliminado del carro.', 'Se ha eliminado el producto del carro.', 3000, 'info');
         $this->item->delete();
         $this->emitUp('deleteItem');
     }

@@ -34,7 +34,7 @@
             removeButtonDel();
             removeButtonAddItem();
             checkItemStatus();
-            orderStatus();
+            //orderStatus();
         })
 
     </script>

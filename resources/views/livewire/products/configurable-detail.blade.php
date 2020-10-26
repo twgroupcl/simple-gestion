@@ -58,7 +58,11 @@
                                     <label class="custom-option-label rounded-circle" for="color4"><span class="custom-option-color rounded-circle" style="background-color: #333;"></span></label>
                                 </div>
                             -->
-                            <div class="product-badge product-available mt-n5"><i class="czi-security-check"></i>Producto disponible</div>
+                            @if ($currentProduct->haveSufficientQuantity(1))
+                                <div class="product-badge product-available mt-n5"><i class="czi-security-check"></i>Producto disponible</div>
+                            @else
+                                <div class="product-badge product-not-available mt-n5"><i class="czi-security-close"></i>Producto no disponible</div>
+                            @endif
                         </div>
                         {{-- @if ($selectedChildrenId)
                         <div class="d-flex align-items-center pt-2 pb-4">
@@ -85,7 +89,7 @@
                                 </select>
                             </div>
                         @endforeach
-                        @if ($selectedChildrenId)
+                        @if ($selectedChildrenId && $currentProduct->haveSufficientQuantity(1) )
                         <div class="d-flex align-items-center pt-2 pb-4">
                             @livewire('qty-item', [
                                 'qty' => 1,
@@ -177,7 +181,7 @@
                         @endif
                     </div>
                 </div>
-                @if ($selectedChildrenId)
+                @if ( $selectedChildrenId && $currentProduct->haveSufficientQuantity(1) )
                 <div class="d-flex align-items-center pt-3">
                     @livewire('qty-item', [
                         'qty' => 1,
@@ -208,7 +212,7 @@
                         @endforeach
                     </ul>
                     @endif
-                    @if ($parentProduct->custom_attributes->count())
+                    @if ( count($parentProduct->getAttributesWithNames()) )
                     <h3 class="h6">Especificaciones generales</h3>
                     <ul class="list-unstyled font-size-sm pb-2">
                         @foreach ($parentProduct->getAttributesWithNames() as $attribute)
@@ -239,13 +243,13 @@
                     </ul> --}}
                 </div>
                 <div class="col-lg-5 col-sm-6 offset-lg-1">
-                    @if ($selectedChildrenId)
+                    @if ($selectedChildrenId && !$currentProduct->is_service)
                     <h3 class="h6">Dimensiones de envio</h3>
                     <ul class="list-unstyled font-size-sm pb-2">
-                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($currentProduct->weight, 2, ',', '.') }}</span></li>
-                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($currentProduct->height, 2, ',', '.') }}</span></li>
-                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($currentProduct->depth, 2, ',', '.') }}</span></li>
-                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($currentProduct->width, 2, ',', '.') }}</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($currentProduct->weight, 2, ',', '.') }} kg</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($currentProduct->height, 2, ',', '.') }} cm</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($currentProduct->depth, 2, ',', '.') }} cm</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($currentProduct->width, 2, ',', '.') }} cm</span></li>
                     </ul>
                     @endif
                    {{-- <h3 class="h6">Functions</h3>
