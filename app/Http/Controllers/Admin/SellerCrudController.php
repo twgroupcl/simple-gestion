@@ -6,12 +6,12 @@ use App\Models\Bank;
 use App\Models\Commune;
 use App\Models\ContactType;
 use App\Cruds\BaseCrudFields;
+use App\Http\Requests\{SellerStoreRequest, SellerUpdateRequest};
 use App\Models\PaymentMethod;
 use App\Models\SellerCategory;
 use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
-use App\Http\Requests\SellerRequest;
 use App\Http\Traits\HasCustomAttributes;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -64,9 +64,15 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'name' => 'name',
+            'name' => 'visible_name',
             'type' => 'text',
-            'label' => 'Razón social',
+            'label' => 'Nombre de tienda',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'email',
+            'type' => 'text',
+            'label' => 'Email',
         ]);
 
         CRUD::addColumn([
@@ -100,7 +106,7 @@ class SellerCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(SellerRequest::class);
+        CRUD::setValidation(SellerStoreRequest::class);
 
         //CRUD::setFromDb(); // fields
 
@@ -714,6 +720,7 @@ class SellerCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        CRUD::setValidation(SellerUpdateRequest::class);
 
         if(backpack_user()->hasAnyRole('Super admin|Administrador')) {
             CRUD::addField([
