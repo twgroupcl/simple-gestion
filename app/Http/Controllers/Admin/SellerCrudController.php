@@ -66,7 +66,7 @@ class SellerCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'visible_name',
             'type' => 'text',
-            'label' => 'Nombre de tienda',
+            'label' => 'Nombre visible',
         ]);
 
         CRUD::addColumn([
@@ -96,6 +96,8 @@ class SellerCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->customFilters();
     }
 
     /**
@@ -736,5 +738,48 @@ class SellerCrudController extends CrudController
                 ],
             ]);
         }
+    }
+
+     /**
+     * Add filters in list view
+     *
+     * @return void
+     */
+    private function customFilters()
+    {
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'rut',
+            'label' => 'RUT',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'uid', 'LIKE', '%' . $value . '%');
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'visible_name',
+            'label' => 'Nombre visible',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'visible_name', 'LIKE', '%' . $value . '%');
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'email',
+            'label' => 'Email',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'email', 'LIKE', '%' . $value . '%');
+        });
+
+        CRUD::addFilter([
+            'name' => 'seller_category_id',
+            'type' => 'select2',
+            'label' => 'Categoria',
+        ], function () {
+            return SellerCategory::all()->pluck('name', 'id')->toArray();
+        }, function ($values) {
+            $this->crud->addClause('where', 'seller_category_id', 'LIKE', '%' . $values . '%');
+        });
     }
 }
