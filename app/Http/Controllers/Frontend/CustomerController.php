@@ -44,11 +44,9 @@ class CustomerController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            if(Auth::user()->hasRole('Cliente Marketplace')) {
-                return redirect()->intended('home');
+            if(!Auth::user()->hasRole('Cliente Marketplace')) {
+                Auth::logout();
             }
-
-            Auth::logout();
 
             return redirect('home');
         }
@@ -59,7 +57,7 @@ class CustomerController extends Controller
     public function logout()
     {
         Auth::logout();
-
+        request()->session()->regenerate();
         return redirect('home');
     }
 
@@ -107,7 +105,8 @@ class CustomerController extends Controller
 
     public function order()
     {
-        return view('customer.order');
+        $customer = Customer::firstWhere('user_id', auth()->user()->id);
+        return view('customer.order', ['customer' => $customer]);
     }
 
     public function update(CustomerUpdateRequest $request, Customer $customer)

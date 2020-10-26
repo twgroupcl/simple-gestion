@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Frontend;
+namespace App\Http\Requests;
 
+use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomerUpdateRequest extends FormRequest
+class OrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,8 @@ class CustomerUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        // only allow updates if the user is logged in
+        return backpack_auth()->check();
     }
 
     /**
@@ -24,9 +26,7 @@ class CustomerUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|string',
-            'last_name' => 'nullable|string',
-            'password' => 'confirmed',
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 
@@ -38,9 +38,7 @@ class CustomerUpdateRequest extends FormRequest
     public function attributes()
     {
         return [
-            'first_name' => 'Nombre',
-            'last_name' => 'Apellido',
-            'password' => 'Contraseña',
+            //
         ];
     }
 
@@ -51,10 +49,14 @@ class CustomerUpdateRequest extends FormRequest
      */
     public function messages()
     {
+
         return [
-            'required' => 'Es necesario completar el campo :attribute.',
-            'confirmed' => 'Los campos :attribute no coinciden.',
-            'string' => 'El campo :attribute debe ser texto',
+            //
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+
     }
 }

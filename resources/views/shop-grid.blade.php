@@ -23,9 +23,9 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-        @include('layouts.general.section-category')
+        {{-- @include('layouts.general.section-category') --}}
         <!-- Content  -->
-        <section class="col-lg-8">
+        <section class="col-lg-12">
             <!-- Toolbar-->
             <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
                 <!--
@@ -59,10 +59,13 @@
                     <p>No existen productos en esta busqueda</p>
                 @else
                     @foreach ($products as $product)
-                        <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
+                    @php
+                        if ($product->parent()->count()) continue;
+                    @endphp
+                        <div class="col-lg-2 col-md-2 col-sm-6 px-2 mb-4">
                             @livewire('products.product', ['product' => $product], key($product->id))
-                        </div>    
-                    @endforeach            
+                        </div>
+                    @endforeach
                 @endif
             </div>
             <!-- Banner-->

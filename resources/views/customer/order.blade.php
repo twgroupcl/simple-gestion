@@ -1,6 +1,94 @@
 @extends('layouts.base')
 
 @section('content')
+<!-- Order Details Modal-->
+<div class="modal fade" id="order-details">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order No - 34VB5540K83</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body pb-0">
+                <!-- Item-->
+                <div class="d-sm-flex justify-content-between mb-4 pb-3 pb-sm-2 border-bottom">
+                    <div class="media d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" href="shop-single-v1.html" style="width: 10rem;"><img src="img/shop/cart/01.jpg" alt="Product"></a>
+                        <div class="media-body pt-2">
+                            <h3 class="product-title font-size-base mb-2"><a href="shop-single-v1.html">Women Colorblock Sneakers</a></h3>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>8.5</div>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>White &amp; Blue</div>
+                            <div class="font-size-lg text-accent pt-2">$154.<small>00</small></div>
+                        </div>
+                    </div>
+                    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-2">Quantity:</div>1
+                    </div>
+                    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-2">Subtotal</div>$154.<small>00</small>
+                    </div>
+                </div>
+                <!-- Item-->
+                <div class="d-sm-flex justify-content-between my-4 pb-3 pb-sm-2 border-bottom">
+                    <div class="media d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" href="shop-single-v1.html" style="width: 10rem;"><img src="img/shop/cart/02.jpg" alt="Product"></a>
+                        <div class="media-body pt-2">
+                            <h3 class="product-title font-size-base mb-2"><a href="shop-single-v1.html">TH Jeans City Backpack</a></h3>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>Tommy Hilfiger</div>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Khaki</div>
+                            <div class="font-size-lg text-accent pt-2">$79.<small>50</small></div>
+                        </div>
+                    </div>
+                    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-2">Quantity:</div>1
+                    </div>
+                    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-2">Subtotal</div>$79.<small>50</small>
+                    </div>
+                </div>
+                <!-- Item-->
+                <div class="d-sm-flex justify-content-between my-4 pb-3 pb-sm-2 border-bottom">
+                    <div class="media d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" href="shop-single-v1.html" style="width: 10rem;"><img src="img/shop/cart/03.jpg" alt="Product"></a>
+                        <div class="media-body pt-2">
+                            <h3 class="product-title font-size-base mb-2"><a href="shop-single-v1.html">3-Color Sun Stash Hat</a></h3>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Brand:</span>The North Face</div>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Pink / Beige / Dark blue</div>
+                            <div class="font-size-lg text-accent pt-2">$22.<small>50</small></div>
+                        </div>
+                    </div>
+                    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-2">Quantity:</div>1
+                    </div>
+                    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-2">Subtotal</div>$22.<small>50</small>
+                    </div>
+                </div>
+                <!-- Item-->
+                <div class="d-sm-flex justify-content-between my-4">
+                    <div class="media d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" href="shop-single-v1.html" style="width: 10rem;"><img src="img/shop/cart/04.jpg" alt="Product"></a>
+                        <div class="media-body pt-2">
+                            <h3 class="product-title font-size-base mb-2"><a href="shop-single-v1.html">Cotton Polo Regular Fit</a></h3>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>42</div>
+                            <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Light blue</div>
+                            <div class="font-size-lg text-accent pt-2">$9.<small>00</small></div>
+                        </div>
+                    </div>
+                    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-2">Quantity:</div>1
+                    </div>
+                    <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                        <div class="text-muted mb-2">Subtotal</div>$9.<small>00</small>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer-->
+            <div class="modal-footer flex-wrap justify-content-between bg-secondary font-size-md">
+                <div class="px-2 py-1"><span class="text-muted">Subtotal:&nbsp;</span><span>$265.<small>00</small></span></div>
+                <div class="px-2 py-1"><span class="text-muted">Shipping:&nbsp;</span><span>$22.<small>50</small></span></div>
+                <div class="px-2 py-1"><span class="text-muted">Tax:&nbsp;</span><span>$9.<small>50</small></span></div>
+                <div class="px-2 py-1"><span class="text-muted">Total:&nbsp;</span><span class="font-size-lg">$297.<small>00</small></span></div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Page Title-->
 <div class="page-title-overlap bg-dark pt-4 bg-cp-gradient">
     <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
@@ -15,7 +103,7 @@
         </nav>
       </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-0">My orders</h1>
+            <h1 class="h3 text-light mb-0">Mis órdenes</h1>
         </div>
     </div>
 </div>
@@ -27,7 +115,7 @@
         <section class="col-lg-8">
             <!-- Toolbar-->
             <div class="d-flex justify-content-between align-items-center pt-lg-2 pb-4 pb-lg-5 mb-lg-3">
-                <div class="form-inline">
+                {{-- <div class="form-inline">
                     <label class="text-light opacity-75 text-nowrap mr-2 d-none d-lg-block" for="order-sort">Sort orders:</label>
                     <select class="form-control custom-select" id="order-sort">
                         <option>All</option>
@@ -36,7 +124,8 @@
                         <option>Delayed</option>
                         <option>Canceled</option>
                     </select>
-                </div>
+                </div> --}}
+                <h6 class="font-size-base text-light mb-0">Lista de las órdenes que realizaste:</h6>
                 <a class="btn btn-primary btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="czi-sign-out mr-2"></i> Cerrar sesión
                 </a>
@@ -50,70 +139,40 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Order #</th>
-                            <th>Date Purchased</th>
-                            <th>Status</th>
+                            <th>Número #</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
                             <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        $orders = $customer->orders()->paginate(10);
+                        $badge = [
+                        'Pendiente' => 'warning',
+                        'Pagada' => 'info',
+                        'Completada' => 'success',
+                        ];
+                        @endphp
+                        {{-- @dd($customer->orders()->paginate()->links()) --}}
+                        @forelse ($orders as $order)
                         <tr>
-                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">34VB5540K83</a></td>
-                            <td class="py-3">May 21, 2019</td>
-                            <td class="py-3"><span class="badge badge-info m-0">In Progress</span></td>
-                            <td class="py-3">$358.75</td>
+                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">{{ $order->id }}</a></td>
+                            <td class="py-3">{{ $order->created_at->format('d-m-Y') }}</td>
+                            <td class="py-3"><span class="badge badge-{{ array_key_exists($order->order_status, $badge) ? $badge[$order->order_status]: 'secondary' }} m-0">{{ $order->order_status ?? 'Pendiente' }}</span></td>
+                            <td class="py-3">{{ currencyFormat($order->total, 'CLP', true) }}</td>
                         </tr>
+                        @empty
                         <tr>
-                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">78A643CD409</a></td>
-                            <td class="py-3">December 09, 2018</td>
-                            <td class="py-3"><span class="badge badge-danger m-0">Canceled</span></td>
-                            <td class="py-3"><span>$760.50</span></td>
+                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm">No has ordenado nada aún</a></td>
                         </tr>
-                        <tr>
-                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">112P45A90V2</a></td>
-                            <td class="py-3">October 15, 2018</td>
-                            <td class="py-3"><span class="badge badge-warning m-0">Delayed</span></td>
-                            <td class="py-3">$1,264.00</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">28BA67U0981</a></td>
-                            <td class="py-3">July 19, 2018</td>
-                            <td class="py-3"><span class="badge badge-success m-0">Delivered</span></td>
-                            <td class="py-3">$198.35</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">502TR872W2</a></td>
-                            <td class="py-3">April 04, 2018</td>
-                            <td class="py-3"><span class="badge badge-success m-0">Delivered</span></td>
-                            <td class="py-3">$2,133.90</td>
-                        </tr>
-                        <tr>
-                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">47H76G09F33</a></td>
-                            <td class="py-3">March 30, 2018</td>
-                            <td class="py-3"><span class="badge badge-success m-0">Delivered</span></td>
-                            <td class="py-3">$86.40</td>
-                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
             <hr class="pb-4">
             <!-- Pagination-->
-            <nav class="d-flex justify-content-between pt-2" aria-label="Page navigation">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#"><i class="czi-arrow-left mr-2"></i>Prev</a></li>
-                </ul>
-                <ul class="pagination">
-                    <li class="page-item d-sm-none"><span class="page-link page-link-static">1 / 5</span></li>
-                    <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link">1<span class="sr-only">(current)</span></span></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item d-none d-sm-block"><a class="page-link" href="#">5</a></li>
-                </ul>
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#" aria-label="Next">Next<i class="czi-arrow-right ml-2"></i></a></li>
-                </ul>
-            </nav>
+            {{ $orders->links() }}
         </section>
     </div>
 </div>

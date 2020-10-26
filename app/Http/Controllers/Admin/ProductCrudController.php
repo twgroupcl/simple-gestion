@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ProductRequest;
+use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Requests\ProductVariantUpdateRequest;
@@ -39,12 +40,16 @@ class ProductCrudController extends CrudController
         CRUD::setEntityNameStrings('producto', 'productos');
 
         $this->crud->denyAccess('show');
+        $this->admin = false;
+        $this->userSeller = null;
 
-        /* $this->isAdmin = backpack_user()->hasRole('Administrador negocio');
+        if (backpack_user()->hasRole('Administrador negocio') || backpack_user()->hasRole('Super admin')) {
+            $this->admin = true;
+        }
 
         if ( backpack_user()->hasRole('Vendedor marketplace') ) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-        }  */
+        } 
     }
 
     /**
@@ -55,8 +60,9 @@ class ProductCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+
         // If not admin, show only user products
-        // if(!$this->isAdmin) $this->crud->addClause('where', 'business_id', '=', $this->userBusiness->id);
+        if(!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
     
         // Hide children products
         $this->crud->addClause('where', 'parent_id', '=', null);
@@ -161,6 +167,9 @@ class ProductCrudController extends CrudController
             'model'     => "App\Models\ProductCategory",
             'attribute' => 'name', 
             'pivot'     => true,
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
             'attributes' => [
                 'id' => 'categories',
             ]
@@ -227,11 +236,11 @@ class ProductCrudController extends CrudController
             'name' => 'seller_id',
             'label' => 'Vendedor',
             'entity' => 'seller',
-            //'default' => $this->userSeller ?? '',
+            'default' => $this->userSeller ?? '',
             'type' => 'relationship',
             'placeholder' => 'selecciona un vendedor',
             'wrapper' => [
-               // 'style' => $this->isAdmin ? '' : 'display:none',
+               'style' => $this->admin ? '' : 'display:none',
             ],
         ]);
 
@@ -255,6 +264,15 @@ class ProductCrudController extends CrudController
         CRUD::addField([
             'name' => 'customShowHideSuperAttributes',
             'type' => 'product.show_hide_variants',
+        ]);
+
+        CRUD::addField([
+            'name' => 'is_service',
+            'label' => 'Es un servicio',
+            'type' => 'checkbox',
+            'attributes' => [
+                'class' => 'is_service_checkbox',
+            ]
         ]);
 
         CRUD::addField([
@@ -315,12 +333,14 @@ class ProductCrudController extends CrudController
         if(count($attributes) !== 0) {
             $this->setAttributesFields($attributes, $product);
         }
-
-        // Status and visibility fields
-        $this->setStatusVisibilityFields();
         
         // SEO fields
         $this->setSeoFields();
+
+        // Status and visibility fields
+        if ($this->admin) {
+            $this->setStatusVisibilityFields();
+        }
     }
 
     public function setGeneralFields() {
@@ -352,7 +372,7 @@ class ProductCrudController extends CrudController
             'type' => 'relationship',
             'tab' => 'Información general',
             'wrapper' => [
-                //'style' => $this->isAdmin ? '' : 'display:none',
+                'style' => $this->admin ? '' : 'display:none',
             ],
             'placeholder' => 'selecciona un vendedor',
         ]);
@@ -387,19 +407,13 @@ class ProductCrudController extends CrudController
             'entity'    => 'categories', 
             'model'     => "App\Models\ProductCategory",
             'attribute' => 'name', 
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
             'pivot'     => true,
             'tab' => 'Información general',
         ]);
 
-        CRUD::addField([
-            'name' => 'is_service',
-            'label' => 'Es un servicio',
-            'type' => 'checkbox',
-            'tab' => 'Información general',
-            'attributes' => [
-                'class' => 'is_service_checkbox',
-            ]
-        ]);
 
         CRUD::addField([
             'name' => 'is_template',
@@ -510,58 +524,60 @@ class ProductCrudController extends CrudController
                 'style' => 'display:none',
             ]
         ]);
-
-        CRUD::addField([
-            'name' => 'weight',
-            'label' => 'Peso (kg)',
-            'type' => 'product.number_format',
-            'tab' => 'Precio y envío',
-            'attributes' => [
-                'step' => 'any',
-            ],
-            'wrapper' => [
-                'class' => 'form-group mb-3 col required',
-            ],
-        ]);
-
-        CRUD::addField([
-            'name' => 'height',
-            'label' => 'Alto (cm)',
-            'type' => 'product.number_format',
-            'tab' => 'Precio y envío',
-            'attributes' => [
-                'step' => 'any',
-            ],
-            'wrapper' => [
-                'class' => 'form-group mb-3 col required',
-            ],
-        ]);
-
-        CRUD::addField([
-            'name' => 'width',
-            'label' => 'Ancho (cm)',
-            'type' => 'product.number_format',
-            'tab' => 'Precio y envío',
-            'attributes' => [
-                'step' => 'any',
-            ],
-            'wrapper' => [
-                'class' => 'form-group mb-3 col required',
-            ],
-        ]);
-
-        CRUD::addField([
-            'name' => 'depth',
-            'label' => 'Largo (cm)',
-            'type' => 'product.number_format',
-            'tab' => 'Precio y envío',
-            'attributes' => [
-                'step' => 'any',
-            ],
-            'wrapper' => [
-                'class' => 'form-group mb-3 col required',
-            ],
-        ]);
+        
+        if (!$product->is_service){
+            CRUD::addField([
+                'name' => 'weight',
+                'label' => 'Peso (kg)',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'attributes' => [
+                    'step' => 'any',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group mb-3 col required',
+                ],
+            ]);
+    
+            CRUD::addField([
+                'name' => 'height',
+                'label' => 'Alto (cm)',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'attributes' => [
+                    'step' => 'any',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group mb-3 col required',
+                ],
+            ]);
+    
+            CRUD::addField([
+                'name' => 'width',
+                'label' => 'Ancho (cm)',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'attributes' => [
+                    'step' => 'any',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group mb-3 col required',
+                ],
+            ]);
+    
+            CRUD::addField([
+                'name' => 'depth',
+                'label' => 'Largo (cm)',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'attributes' => [
+                    'step' => 'any',
+                ],
+                'wrapper' => [
+                    'class' => 'form-group mb-3 col required',
+                ],
+            ]);
+        }
         
         if ($product->use_inventory_control) {
             CRUD::addField([
@@ -584,35 +600,35 @@ class ProductCrudController extends CrudController
                 0 => 'Rechazado',
             ],
             'default' => null,
-            'tab' => 'Estado y visibilidad'
+            'tab' => 'Administrador'
         ]);
 
         CRUD::addField([
             'name' => 'new',
             'label' => 'Nuevo',
             'type' => 'checkbox',
-            'tab' => 'Estado y visibilidad'
+            'tab' => 'Administrador'
         ]);
 
         CRUD::addField([
             'name' => 'featured',
             'label' => 'Destacado',
             'type' => 'checkbox',
-            'tab' => 'Estado y visibilidad'
+            'tab' => 'Administrador'
         ]);
 
         CRUD::addField([
             'name' => 'visible',
             'label' => 'Visible',
             'type' => 'checkbox',
-            'tab' => 'Estado y visibilidad'
+            'tab' => 'Administrador'
         ]);
 
         CRUD::addField([
             'name' => 'visible_from',
             'label' => 'Visible desde',
             'type' => 'date',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
             'wrapper' => [
                 'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3',
             ]
@@ -622,7 +638,7 @@ class ProductCrudController extends CrudController
             'name' => 'visible_to',
             'label' => 'Visible hasta',
             'type' => 'date',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
             'wrapper' => [
                 'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3',
             ]
@@ -632,7 +648,7 @@ class ProductCrudController extends CrudController
             'name' => 'rejected_reason',
             'label' => 'Razón del rechazo',
             'type' => 'textarea',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
             'wrapper' => [
                 'style' => 'display:none',
                 'id' => 'rejected_reason'
@@ -643,7 +659,7 @@ class ProductCrudController extends CrudController
             'name' => 'date_of_rejected',
             'label' => 'Fecha de rechazo',
             'type' => 'date',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
             'wrapper' => [
                 'style' => 'display:none',
                 'id' => 'date_of_rejected',
@@ -653,7 +669,7 @@ class ProductCrudController extends CrudController
         CRUD::addField([
             'name' => 'CustomShowHidedFields',
             'type' => 'product.show_hide_fields',
-            'tab' => 'Estado y visibilidad',
+            'tab' => 'Administrador',
         ]);
     }
 
@@ -786,33 +802,36 @@ class ProductCrudController extends CrudController
                 'label' => 'Imagen',
                 'crop' => false,
             ],
-            [
+            /* [
                 'label' => "SKU",
                 'name' => "sku",
                 'type' => 'text',
                 'wrapper' => [
                     'class' => 'col-lg-6 col-md-12',
                 ],
-            ],
-            [
+            ], */
+            /* [
                 'label' => "Nombre",
                 'name' => "name",
                 'type' => 'text',
                 'wrapper' => [
                     'class' => 'col-lg-6 col-md-12',
                 ],
-            ],
+            ], */
             [
                 'label' => "Precio",
                 'name' => "price",
                 'type' => 'product.number_format',
                 'wrapper' => [
-                    'class' => 'col-lg-6 col-md-12',
+                    'class' => $product->is_service ? 'col-lg-12 col-md-12': 'col-lg-6 col-md-12',
                 ],
                 'attributes' => [
                     'step' => 'any',
                 ],
             ],
+        ];
+
+        $isProductFields = $product->is_service ? [] : [
             [
                 'label' => "Peso",
                 'name' => "weight",
@@ -865,7 +884,7 @@ class ProductCrudController extends CrudController
             'name'  => 'variations_json',
             'label' => 'Variaciones',
             'type'  => 'product.repeatable',
-            'fields' => array_merge($baseFields, $superAttributesFields, $inventoryFields),
+            'fields' => array_merge($baseFields, $isProductFields, $superAttributesFields, $inventoryFields),
             'new_item_label'  => 'Agregar una nueva variacion',
             'tab' => 'Variaciones',
         ]);

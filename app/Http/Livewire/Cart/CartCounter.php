@@ -2,56 +2,43 @@
 
 namespace App\Http\Livewire\Cart;
 
+use App\Http\Livewire\Traits\Cursor;
 use App\Models\Cart;
 use \Illuminate\Session\SessionManager;
 use Livewire\Component;
 
 class CartCounter extends Component
 {
+    use Cursor;
+
     public $count = 0;
-    public $cart;
 
     protected $listeners = [
-        'cart-counter:increment' => 'increment',
-        'cart-counter:decrease' => 'decrease',
+        'cart-counter.setCount' => 'setCount',
     ];
 
-    public function mount()
+    public function mount($count = 0)
     {
-        $this->cart = $this->getCart();
-        $this->count = $this->cart->items_count;
+        $this->count = $count;
+
+        if ($this->count <= 0) {
+            $this->setCursor('not-allowed');
+        }
+    }
+
+    public function setCount($count)
+    {
+        $this->count = $count;
+        $this->setCursor('not-allowed');
+        if ($this->count > 0) {
+            $this->setCursor('auto');
+        }
     }
 
 
-    public function increment()
-    {
-        $this->count++;
-        $this->cart = $this->getCart();
-        $this->cart->items_count = $this->count;
-        $this->cart->update();
-    }
-
-    public function decrease()
-    {
-        $this->count--;
-        $this->cart = $this->getCart();
-        $this->cart->items_count = $this->count;
-        $this->cart->update();
-    }
-
-    public function render(SessionManager $s)
+    public function render()
     {
         return view('livewire.cart.counter');
     }
 
-    private function getCart(): Cart
-    {
-        if (auth()->check()) {
-            $cart = Cart::getInstance(auth()->user(), session());
-        } else {
-            $cart = Cart::getInstance(null, session());
-        }
-
-        return $cart;
-    }
 }

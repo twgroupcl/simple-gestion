@@ -25,6 +25,7 @@ Route::post('/customer/login', 'Frontend\CustomerController@authenticate')->name
 Route::post('/customer/logout', 'Frontend\CustomerController@logout')->name('logout');
 Route::get('/customer/forget', 'Frontend\CustomerController@forget')->name('customer.forget');
 Route::post('/customer/recovery', 'Frontend\CustomerController@recovery')->name('customer.frontend.recovery');
+Route::get('/customer/exit', 'Frontend\CustomerController@logout')->name('exit');
 
 Route::middleware(['auth'])->group(function () {
     Route::put('/customer/{customer}', 'Frontend\CustomerController@update')->name('customer.update');
@@ -38,23 +39,22 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.sign');
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
 
+Route::get('/home', 'Frontend\HomeController@index')->name('home');
+
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
 Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
 Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });
-Route::get('/shop-grid/', function () {
-    return view('shop-grid');
-});
+Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
 Route::get('/seller-shop/{id}', function () {
     return view('vendor');
 });
 
 //Auth::routes();
-Route::redirect('/login', '/customer/sign')->name('login');
+Route::redirect('/login', '/customer/login')->name('login');
 
-Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
 Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
 

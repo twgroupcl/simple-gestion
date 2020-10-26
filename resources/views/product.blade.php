@@ -68,12 +68,14 @@
                         <!-- Product details-->
                         <div class="col-lg-5 pt-4 pt-lg-0">
                             <div class="product-details ml-auto">
-                                <span class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</span>
+                                <a href="{{ url('seller-shop/'.$product->seller->id) }}" class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</a>
                             </div>
                             <div class="product-details ml-auto pb-3">
                                 @if ($product->special_price)
                                 <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, Setting::get('default_currency'), true) }}</span>
-                                    <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</del><span class="badge badge-danger badge-shadow align-middle mt-n2">Promo</span>
+                                    <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</del>
+                                    <br>
+                                    <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
                                 </div>
                                 @else
                                     <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</div>

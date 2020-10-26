@@ -12,7 +12,6 @@ class SearchNavbar extends Component
     public $selected = 0;
 
     public function search(){
-        //dd($this->selected,$this->query);
         return redirect()->to('/search-products/'.$this->selected.'/'.$this->query);
     }
 
@@ -23,6 +22,7 @@ class SearchNavbar extends Component
     
     public function render()
     {
+        //$selected = $this->selected;
         return view('livewire.search-navbar');
     }
 

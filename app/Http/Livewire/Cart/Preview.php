@@ -24,22 +24,20 @@ class Preview extends Component
 
     public function render()
     {
-        return view('livewire.cart.preview', ['items' => $this->items]);
+        return view('livewire.cart.preview');
     }
 
     public function change()
     {
-        $this->cart->recalculateSubtotal();
-        $this->cart->update();
+        $this->emit('cart.updateSubtotal',null);
+
+        
         $this->total = $this->getTotal();
-        $this->emit('dropdown.update');
-        $this->emit('cart.updateSubtotal');
     }
 
     public function deleteItem()
     {
         $this->change();
-        $this->emit('cart-counter:decrease');
         $this->items = $this->getItems();
         $this->total = $this->getTotal();
     }
