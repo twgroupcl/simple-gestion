@@ -128,7 +128,7 @@ class ProductUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            '*.required*' => 'Es necesario completar el campo :attribute.',
         ];
     }
 }
