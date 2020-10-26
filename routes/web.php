@@ -53,7 +53,7 @@ Route::get('/seller-shop/{id}', function () {
 });
 
 //Auth::routes();
-//Route::redirect('/login', '/customer/sign')->name('login');
+Route::redirect('/login', '/customer/login')->name('login');
 
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
 Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');

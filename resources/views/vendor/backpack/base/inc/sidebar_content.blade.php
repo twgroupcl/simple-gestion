@@ -118,15 +118,17 @@
 </li>
 @endcanany
 
-@canany(['quotation.list'])
+@canany(['quotation.list', 'order.list'])
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Ventas</a>
 	<ul class="nav-dropdown-items">
         @can('quotation.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('quotation') }}'><i class='nav-icon la la-calculator'></i> Cotizaciones</a></li>
         @endcan
+
+        @can('order.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('order') }}'><i class="nav-icon las la-file-invoice"></i> Órdenes</a></li>
+        @endcan
 	</ul>
 </li>
 @endcanany
-
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('order') }}'><i class="las la-file-invoice"></i> Orders</a></li>
