@@ -139,7 +139,7 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Número #</th>
+                            <th>#</th>
                             <th>Fecha</th>
                             <th>Estado</th>
                             <th>Total</th>
