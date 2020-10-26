@@ -14,11 +14,13 @@
                                 <div class="font-size-lg text-accent pt-2">{{ currencyFormat($item->product->price ?? 0, 'CLP', true) }}</div>
                             </div>
                         </div>
-                        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
-                            <div class="text-muted mb-2">Cantidad:</div> {{ $item->qty ?? '' }}
-                        </div>
-                        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
-                            <div class="text-muted mb-2">Subtotal</div>{{ currencyFormat($item->product->price * $item->qty ?? 0, 'CLP', true) }}
+                        <div class="row">
+                            <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                                <div class="text-muted mb-2">Cantidad:</div> {{ $item->qty ?? '' }}
+                            </div>
+                            <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                                <div class="text-muted mb-2">Subtotal</div>{{ currencyFormat($item->product->price * $item->qty ?? 0, 'CLP', true) }}
+                            </div>
                         </div>
                     </div>
                 @empty
