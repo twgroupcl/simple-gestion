@@ -32,6 +32,8 @@ class ProductClassAttribute extends Model
         'company_id',
     ];
 
+    protected $appends = ['descripcion_name'];
+
     protected $fakeColumns = ['json_attributes'];
     // protected $hidden = [];
     // protected $dates = [];
@@ -110,6 +112,12 @@ class ProductClassAttribute extends Model
     |--------------------------------------------------------------------------
     */
     public function getNameAttribute() {
+        $data = $this->json_attributes;
+        return $data['name'];
+    }
+
+   public function getDescripcionNameAttribute()
+    {
         $data = $this->json_attributes;
         return $data['name'];
     }
