@@ -31,7 +31,6 @@
             <div class="modal-footer flex-wrap justify-content-between bg-secondary font-size-md">
                 <div class="px-2 py-1"><span class="text-muted">Subtotal:&nbsp;</span><span>{{ currencyFormat($order->sub_total ?? 0, 'CLP', true) }}</span></div>
                 <div class="px-2 py-1"><span class="text-muted">Shipping:&nbsp;</span><span>{{ currencyFormat($order->shipping_total ?? 0, 'CLP', true) }}</span></div>
-                <div class="px-2 py-1"><span class="text-muted">Tax:&nbsp;</span><span>{{ $order->tax_total ?? '' }}</span></div>
                 <div class="px-2 py-1"><span class="text-muted">Total:&nbsp;</span><span class="font-size-lg">{{ currencyFormat($order->total ?? 0, 'CLP', true) }}</span></div>
             </div>
         </div>
