@@ -93,6 +93,34 @@ class CustomerController extends Controller
         return view('auth.passwords.reset', compact('token'));
     }
 
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email|exists:customers',
+            'password' => 'required|confirmed',
+        ]);
+
+        $passwordReset = DB::table('password_resets')
+            ->where('token', $request->token)
+            ->where('email', $request->email);
+
+        $isAllowed = $passwordReset
+            ->count() !== 0;
+
+        if (! $isAllowed) {
+            return redirect()->back()->withErrors(['email' => 'Email no válido']);
+        }
+
+        Customer::firstWhere('email', $request->email)->update([
+            'password' => $request->password,
+        ]);
+
+        $passwordReset->delete();
+
+        return redirect()->route('customer.sign');
+    }
+
     public function profile()
     {
         $customer = Customer::firstWhere('user_id', auth()->user()->id);
