@@ -122,18 +122,37 @@
             <p class="p-estrecho">{{ $quotation->seller->phone }}</p>
             <p class="p-estrecho">{{$quotation->seller->email }}</p>
         </td>
-        <td width="30%" class="top-td">
-            <p class="p-estrecho"><strong>Fecha de cotización</strong>: {{ $creation_date->format('d/m/Y') }}</p>
+        <td width="31%" class="top-td">
+            <table>
+                <tr>
+                    <td style="text-align: left">Fecha de cotización:</td>
+                    <td style="text-align: right">{{ $creation_date->format('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: left">Fecha de vencimiento:</td>
+                    <td style="text-align: right">{{ $due_date->format('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: left">Numero de cotización:</td>
+                    <td style="text-align: right">#{{ $quotation->id }}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: left">Referencia de cotización:</td>
+                    <td style="text-align: right">{{$quotation->code }}</td>
+                </tr>
+            </table>
+            {{-- <p class="p-estrecho"><strong>Fecha de cotización</strong>: {{ $creation_date->format('d/m/Y') }}</p>
             <p class="p-estrecho"><strong>Fecha de vencimiento</strong>: {{ $due_date->format('d/m/Y') }}</p>
-            <p class="p-estrecho"><strong>Numero de cotización</strong>: #{{ $quotation->id }}</p>
+            <p class="p-estrecho"><strong>Numero de cotización</strong>: </p>
             @if ($quotation->code)
             <p class="p-estrecho"><strong>Referencia de cotización</strong>: {{$quotation->code }}</p>
-            @endif
+            @endif --}}
         </td>
     </tr>
 
   </table>
 </div>
+<br>
   <table width="100%">
     <tr>
         <td width="30%">
