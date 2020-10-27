@@ -8,10 +8,11 @@ $product = $item->product;
                 src="{{ url($product->getFirstImagePath()) }}" alt="Product"></a>
         <div class="media-body pt-2">
             <h3 class="product-title font-size-base mb-2"><a>{{ $product->name }}</a></h3>
-            <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>8.5</div>
-            <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>White &amp; Blue
-            </div>
-
+            @if($showAttributes && filled($product->getAttributesWithNames()))
+                @foreach ($product->getAttributesWithNames() as $attribute)
+                    <div class="font-size-sm"><span class="text-muted mr-2">{{ $attribute['name'] }}:</span>{{ $attribute['value'] }}</div>
+                @endforeach
+            @endif
             <div class="d-inline-block font-size-lg text-accent pt-2">{{ currencyFormat($product->price, 'CLP', true) }}
                 <!--$154.<small>00</small>-->
             </div>

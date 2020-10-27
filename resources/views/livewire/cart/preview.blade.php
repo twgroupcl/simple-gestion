@@ -14,7 +14,7 @@
                                     class="czi-close font-size-xs mr-1 ml-n1"></i>Limpiar carro</a></div> --}}
                     </div>
                     @foreach ($items as $item)
-                        @livewire('cart.item', ['item' => $item , 'showShipping'=>false], key($item->id))
+                        @livewire('cart.item', ['item' => $item , 'showShipping'=>false, 'showAttributes' => true], key($item->id))
                     @endforeach
                 </div>
             </section>
