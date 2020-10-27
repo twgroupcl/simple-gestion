@@ -50,10 +50,6 @@ Route::get('/shop-list/', function () {
 Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
 
-Route::get('/pagination', function () {
-    return view('pagination');
-});
-
 //Auth::routes();
 Route::redirect('/login', '/customer/login')->name('login');
 
