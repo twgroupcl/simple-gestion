@@ -218,6 +218,7 @@ class Checkout extends Component
         $order->phone = $this->cart->phone;
         $order->cellphone = $this->cart->cellphone;
         $order->currency_id = $this->cart->currency_id;
+        $order->customer_id = $this->cart->customer_id;
         $order->json_value = json_encode($addressData);
         $order->status = 1 ; //initiated
         $order->save();
@@ -237,7 +238,8 @@ class Checkout extends Component
             $orderitem->save();
 
         }
-
+         //Destroy cart
+         $this->cart->delete();
 
          return redirect()->to(route('transbank.webpayplus.mall.redirect',['order'=>$order]));
     }

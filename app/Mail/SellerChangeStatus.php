@@ -28,17 +28,22 @@ class SellerChangeStatus extends Mailable
         $this->rejectedText = '';
         if ($seller->getReviewStatus() == 'Aprobado') {
             $this->title = '¡Buenas noticias!';
-            $this->text = 'Felicitaciones ' . $seller->visible_name . ', hemos aprobado su cuenta de vendedor.';
+            $this->text = 'Felicitaciones <strong>' . $seller->visible_name . '</strong>, hemos aprobado tu cuenta de vendedor.<br /><br />Para iniciar sesión haz clic en el bóton "Agregar productos" e ingresa tus datos.<br /><br /><strong>Email:</strong> ' .$seller->email . '<br /><strong>Contraseña:</strong> (RUT empresa sin puntos, ej: 11222333-4)';
+
+            $this->buttonText = 'Agregar productos';
+            $this->buttonLink = config('app.url') . '/admin';
         } else {
             $this->title = 'Se ha rechazado la solicitud.';
-            $this->text = 'Lo sentimos ' . $seller->visible_name . ', hemos rechazado su solicitud para abrir una cuenta de vendedor.';
-            if (strlen($seller->rejected_reason) > 0) { 
+            $this->text = 'Lo sentimos <strong>' . $seller->visible_name . '</strong>, hemos rechazado tu solicitud para abrir una cuenta de vendedor.';
+
+            if (strlen($seller->rejected_reason) > 0) {
                 $this->rejectedText = 'Motivo de rechazo: ' . $seller->rejected_reason;
             }
+
+            $this->buttonText = 'Ir al sitio';
+            $this->buttonLink = config('app.url');
         }
-        
-        $this->buttonText = 'Ir al sitio';
-        $this->buttonLink = 'https://www.contigopyme.cl';
+
         $this->logo = 'img/logo-pyme.png';
     }
 
@@ -49,6 +54,6 @@ class SellerChangeStatus extends Mailable
      */
     public function build()
     {
-        return $this->view('maileclipse::templates.basicEmailTemplate');
+        return $this->subject('Respuesta de su solicitud')->view('maileclipse::templates.basicEmailTemplate');
     }
 }
