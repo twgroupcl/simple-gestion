@@ -11,6 +11,11 @@
                         <div class="media d-block d-sm-flex text-center text-sm-left"><a class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img src="{{ url($item->product->getFirstImagePath()) ?? '' }}" alt="{{ $item->product->name ?? '' }}"></a>
                             <div class="media-body pt-2">
                                 <h3 class="product-title font-size-base mb-2"><a>{{ $item->name ?? '' }}</a></h3>
+                                @if(filled($item->product->getAttributesWithNames()))
+                                    @foreach ($item->product->getAttributesWithNames() as $attribute)
+                                        <div class="font-size-sm"><span class="text-muted mr-2">{{ $attribute['name'] }}</span>{{ $attribute['value'] }}</div>
+                                    @endforeach
+                                @endif
                                 <div class="font-size-lg text-accent pt-2">{{ currencyFormat($item->product->price ?? 0, 'CLP', true) }}</div>
                             </div>
                         </div>
