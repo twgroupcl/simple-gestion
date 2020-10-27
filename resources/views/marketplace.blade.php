@@ -21,13 +21,7 @@
     <!-- Grid-->
     <div class="row pt-2 mx-n2">
         <!-- Product-->
-        @foreach ($products as $product)
-            @if (! $product->parent_id)
-            <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
-                @livewire('products.product', ['product' => $product], key($product->id))
-            </div>
-            @endif
-        @endforeach
+        @livewire('products.card-general',['rows' => 2,'elementsByRow' => 5,'paginateBy' => 7])      
     </div>          
 </section>
 

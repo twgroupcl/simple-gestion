@@ -9,8 +9,6 @@ $(function(){
         } 
     });
 
-    console.log(elementURL)
-
     if(elementURL[3] == "search-products" && elementURL[4] != undefined){
         $('.input-search').val(query);
     }
@@ -18,7 +16,6 @@ $(function(){
         $(".select-search option[value='"+elementURL[4]+"']").attr("selected", true);
     }
     if(elementURL[3] == "search-products" && !isNaN(query)){
-        console.log(elementURL,query)
         $(".select-search option[value='"+query+"']").attr("selected", true);
     }
     /*
