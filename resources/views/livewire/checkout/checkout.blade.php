@@ -86,7 +86,7 @@
                                 class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
                                 class="d-inline d-sm-none">Anterior</span></a></div>
                     @if (!empty($activeStep['next-button']))
-                        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click.prevent="nextStep()"><span
+                        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click="nextStep()"><span
                                     class="d-none d-sm-inline">
 
                                         <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"  wire:loading></span>
@@ -134,7 +134,7 @@
                                 class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
                                 class="d-inline d-sm-none">Anterior</span></a></div>
                     @if (!empty($activeStep['next-button']))
-                        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click="nextStep()"><span
+                        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click.prevent="nextStep()" ><span
                                     class="d-none d-sm-inline">{{ $activeStep['next-button'] }}</span><span
                                     class="d-inline d-sm-none">Siguiente</span><i
                                     class="czi-arrow-right mt-sm-0 ml-1"></i></a>
@@ -145,3 +145,13 @@
         </div>
     </div>
 </div>
+@push('scripts')
+
+<script>
+
+    Livewire.on('select-shipping', (title, message, delay, type) => {
+        alert('ok');
+
+    })
+</script>
+@endpush

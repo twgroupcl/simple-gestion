@@ -35,7 +35,7 @@
             <img src="{{ url($product->getFirstImagePath()) }}" class="w-100" alt="Product">
         </a>
         <div class="card-body py-2">
-            <a class="product-meta d-block font-size-xs pb-1" href="">{{ $product->showCategory() }}</a>
+            <a class="product-meta d-block font-size-xs pb-1" href="{{ url('search-products/'.$product->categories[0]->id) }}">{{ $product->showCategory() }}</a>
             <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}">{{ $product->name }}</a></h3>
             <div class="d-flex justify-content-between">
                 <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->

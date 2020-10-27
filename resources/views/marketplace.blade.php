@@ -28,6 +28,7 @@
             </div>
             @endif
         @endforeach
+    </div>          
 </section>
 
 <section class="container mt-5 mb-grid-gutter">

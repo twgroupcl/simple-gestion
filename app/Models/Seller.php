@@ -29,6 +29,10 @@ class Seller extends Model
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
+    const REVIEW_STATUS_PENDING = 0;
+    const REVIEW_STATUS_APPROVED = 1;
+    const REVIEW_STATUS_REJECTED = 2;
+
     protected $table = 'sellers';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
@@ -93,6 +97,20 @@ class Seller extends Model
         static::addGlobalScope(new CompanyBranchScope);
     }
 
+    public function getReviewStatus()
+    {
+        switch ($this->is_approved) {
+            case $this::REVIEW_STATUS_APPROVED:
+                return 'Aprobado';
+                break;
+            case $this::REVIEW_STATUS_REJECTED:
+                return 'Rechazado';
+                break;
+            default:
+                return 'Pendiente'; //REVIEW_STATUS_PENDING
+                break;
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
