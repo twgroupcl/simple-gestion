@@ -87,6 +87,12 @@ class CustomerController extends Controller
 
         return view('customer.recovery')->with('success', '¡Hemos enviado un email con el enlace de restablecimiento de contraseña!');
     }
+
+    public function reset(Request $request, $token)
+    {
+        return view('auth.passwords.reset', compact('token'));
+    }
+
     public function profile()
     {
         $customer = Customer::firstWhere('user_id', auth()->user()->id);
