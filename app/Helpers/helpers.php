@@ -2,12 +2,14 @@
 
 use App\Models\Currency;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Cache;
+use Backpack\Settings\app\Models\Setting;
+use Illuminate\Pagination\LengthAwarePaginator;
 
-if (! function_exists('parseCurrency')) {
+if (!function_exists('parseCurrency')) {
     function parseCurrency($value)
     {
         if (intval($value) == $value) {
@@ -22,14 +24,14 @@ if (! function_exists('parseCurrency')) {
     }
 }
 
-if (! function_exists('getNextId')) {
+if (!function_exists('getNextId')) {
     function getNextId()
     {
         $user = backpack_user();
 
         $companyBranch = $user->current()->branch->id;
 
-    	$statement = DB::select('SELECT MAX(estimate_number) + 1 AS next_id FROM estimates WHERE company_branch_id = ' . $companyBranch);
+        $statement = DB::select('SELECT MAX(estimate_number) + 1 AS next_id FROM estimates WHERE company_branch_id = ' . $companyBranch);
 
         if ($statement[0]->next_id == null) {
             return 1;
@@ -39,13 +41,13 @@ if (! function_exists('getNextId')) {
     }
 }
 
-if (! function_exists('arrayToObject')) {
+if (!function_exists('arrayToObject')) {
     function arrayToObject($array)
     {
         $obj = new stdClass;
-        foreach($array as $k => $v) {
-            if(strlen($k)) {
-                if(is_array($v)) {
+        foreach ($array as $k => $v) {
+            if (strlen($k)) {
+                if (is_array($v)) {
                     $obj->{$k} = arrayToObject($v);
                 } else {
                     $obj->{$k} = $v;
@@ -56,7 +58,7 @@ if (! function_exists('arrayToObject')) {
     }
 }
 
-if (! function_exists('sanitizeNumber')) {
+if (!function_exists('sanitizeNumber')) {
     function sanitizeNumber($number)
     {
         $number = str_replace('.', '', $number);
@@ -66,7 +68,7 @@ if (! function_exists('sanitizeNumber')) {
     }
 }
 
-if (! function_exists('currencyFormat')) {
+if (!function_exists('currencyFormat')) {
     /**
      * Price format
      *
@@ -75,9 +77,11 @@ if (! function_exists('currencyFormat')) {
      * @param bool $symbol return amount with symbol or not
      * @return string price formatted
      */
-    function currencyFormat(string $value, string $currency, bool $symbol = false) : string
+    function currencyFormat(string $value, string $currency, bool $symbol = false): string
     {
-        $currency = Currency::where('code',$currency)->firstOrFail();
+        $currency = Cache::remember('articles', 30, function () use ($currency) {
+            return Currency::where('code', $currency)->firstOrFail();
+        });
 
         $price = number_format(
             $value,
@@ -92,22 +96,42 @@ if (! function_exists('currencyFormat')) {
     }
 }
 
-if (! function_exists('determineSource')) {
+if (!function_exists('determineSource')) {
     function determineSource(Request $request): string
     {
-        if ( strpos($request->path(), 'admin/') !== false ) {
-            return "Admin";
+        if (strpos($request->path(), 'admin/') !== false) {
+            return 'Admin';
         }
 
-        return "Front";
+        return 'Front';
     }
 }
 
-if (! function_exists('paginate')) {
+if (!function_exists('paginate')) {
     function paginate($items, $perPage = 1, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+}
+
+if (!function_exists('defaultCurrency')) {
+    function defaultCurrency($return_id = false)
+    {
+        $default_currency = 'CLP';
+
+        if ($return_id) {
+            //
+        } else {
+            if (Cache::has('default_currency')) {
+                $default_currency = Cache::get('default_currency');
+            } else {
+                $default_currency = Setting::get('default_currency');
+                Cache::put('default_currency', $default_currency, 30);
+            }
+        }
+
+        return $default_currency;
     }
 }
