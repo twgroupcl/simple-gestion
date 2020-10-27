@@ -6,6 +6,7 @@ use App\Rules\RutRule;
 use App\Rules\PhoneRule;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SellerUpdateRequest extends FormRequest
 {
@@ -58,10 +59,21 @@ class SellerUpdateRequest extends FormRequest
         $phoneRule = new PhoneRule;
 
         return [
-            'uid' => ['required', 'string', $rutRule],
+            'uid' => [
+                'required', 
+                'string', 
+                Rule::unique('sellers')->where( function($query) {
+                    return $query->where('id', '!=', $this->id);
+                }),
+                $rutRule
+            ],
             'name' => 'required|string',
             'visible_name' => 'required|string',
-            'email' => 'required|email',
+            'email' => [
+                'required',
+                Rule::unique('sellers')->ignore($this->id),
+                'email'
+            ],
             'phone' => ['nullable', $phoneRule],
             'cellphone' => ['nullable', $phoneRule],
             'web' => 'nullable|string',
