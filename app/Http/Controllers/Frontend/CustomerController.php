@@ -14,6 +14,7 @@ use App\Http\Requests\Frontend\CustomerStoreRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
 use App\Models\Commune;
 use App\User;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -78,15 +79,14 @@ class CustomerController extends Controller
             ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
         );
 
-        // Mail::send('auth.password.verify', ['token' => $token], function ($message) use ($request) {
-        //     $message->from($request->email);
-        //     $message->to('codingdriver15@gmail.com');
-        //     $message->subject('Reset Password Notification');
-        // });
+        Mail::send('vendor.maileclipse.templates.resetPassword', ['token' => $token], function ($message) use ($request) {
+            $message->from('no-reply@twgroup.cl');
+            $message->to($request->email);
+            $message->subject('Reset Password Notification');
+        });
 
         return view('customer.recovery')->with('success', '¡Hemos enviado un email con el enlace de restablecimiento de contraseña!');
     }
-
     public function profile()
     {
         $customer = Customer::firstWhere('user_id', auth()->user()->id);
