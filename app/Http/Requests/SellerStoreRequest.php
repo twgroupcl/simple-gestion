@@ -6,6 +6,8 @@ use App\Rules\RutRule;
 use App\Rules\PhoneRule;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class SellerStoreRequest extends FormRequest
 {
@@ -31,6 +33,7 @@ class SellerStoreRequest extends FormRequest
             }
 
             $this->merge([
+                'uid' => str_replace('.', '', $this->uid),
                 $attrName.'_validation' => $forValidation,
             ]);
         }
@@ -56,12 +59,20 @@ class SellerStoreRequest extends FormRequest
     {
         $rutRule = new RutRule;
         $phoneRule = new PhoneRule;
-
         return [
-            'uid' => ['required', 'string', $rutRule],
+            'uid' => [
+                'required', 
+                'unique:sellers,uid',
+                'string', 
+                $rutRule
+            ],
             'name' => 'required|string',
             'visible_name' => 'required|string',
-            'email' => 'required|email',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')
+            ],
             'phone' => ['nullable', $phoneRule],
             'cellphone' => ['nullable', $phoneRule],
             'web' => 'nullable|string',
