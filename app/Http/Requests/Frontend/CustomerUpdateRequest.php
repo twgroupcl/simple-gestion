@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Frontend;
 
-use App\Rules\RutRule;
-use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CustomerUpdateRequest extends FormRequest
@@ -25,10 +23,7 @@ class CustomerUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $rutRule = new RutRule;
-
         return [
-            'uid' => ['required', 'unique:customers,uid,'.$this->id, 'string', $rutRule],
             'first_name' => 'required|string',
             'last_name' => 'nullable|string',
             'password' => 'confirmed',
@@ -43,10 +38,8 @@ class CustomerUpdateRequest extends FormRequest
     public function attributes()
     {
         return [
-            'uid' => 'RUT',
             'first_name' => 'Nombre',
             'last_name' => 'Apellido',
-            'email' => 'Email',
             'password' => 'Contraseña',
         ];
     }
@@ -62,9 +55,6 @@ class CustomerUpdateRequest extends FormRequest
             'required' => 'Es necesario completar el campo :attribute.',
             'confirmed' => 'Los campos :attribute no coinciden.',
             'string' => 'El campo :attribute debe ser texto',
-            'date' => 'El campo :attribute debe ser de tipo fecha',
-            'unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
-            'exists' => 'No se pudo encontrar una relación con el campo :attribute.',
         ];
     }
 }

@@ -33,7 +33,7 @@
                     <div class="product-details ml-auto pb-3">
                         @if ($selectedChildrenId)
                             <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price, 'CLP', true) }}</div>
-                        @else 
+                        @else
                             <div class="h3 font-weight-normal text-accent mb-3 mr-1">Desde {{ currencyFormat($priceFrom, 'CLP', true) }}</div>
                         @endif
                     <!--
@@ -58,21 +58,29 @@
                                     <label class="custom-option-label rounded-circle" for="color4"><span class="custom-option-color rounded-circle" style="background-color: #333;"></span></label>
                                 </div>
                             -->
-                            <div class="product-badge product-available mt-n5"><i class="czi-security-check"></i>Producto disponible</div>
+                            @if ($currentProduct->haveSufficientQuantity(1))
+                                <div class="product-badge product-available mt-n5"><i class="czi-security-check"></i>Producto disponible</div>
+                            @else
+                                <div class="product-badge product-not-available mt-n5"><i class="czi-security-close"></i>Producto no disponible</div>
+                            @endif
                         </div>
+                        {{-- @if ($selectedChildrenId)
                         <div class="d-flex align-items-center pt-2 pb-4">
-                            @if ($selectedChildrenId)
-                            <span><h4> {{ $currentProduct->name }}</h4></span> @endif
+                            <span><h4> {{ $currentProduct->name }}</h4></span>
+                        </div>
+                        @endif --}}
+                        <div class="product-details mt-2 mb-3 ml-auto">
+                            <span class="h6">Selecciona tus opciones para añadir al carro.</span>
                         </div>
                         @foreach ($options as $key => $option)
                             <div class="form-group">
                                 <div class="d-flex justify-content-between align-items-center pb-1">
                                     <label class="font-weight-medium" for="product-size">{{ $option['name'] }}</label>
                                 </div>
-                                <select class="custom-select" 
+                                <select class="custom-select"
                                     {{-- wire:change="updatedOptions" --}}
                                     wire:model="options.{{ $key }}.selectedValue"
-                                    name="attribute-{{ $option['id'] }}" 
+                                    name="attribute-{{ $option['id'] }}"
                                     @if(!$option['enableOptions']) disabled @endif
                                 >
                                     @foreach ($option['items'] as $item)
@@ -81,10 +89,10 @@
                                 </select>
                             </div>
                         @endforeach
-                        @if ($selectedChildrenId)
+                        @if ($selectedChildrenId && $currentProduct->haveSufficientQuantity(1) )
                         <div class="d-flex align-items-center pt-2 pb-4">
                             @livewire('qty-item', [
-                                'qty' => 1, 
+                                'qty' => 1,
                                 'emitTo' => [
                                     'addtocart.cant',
                                 ]
@@ -173,10 +181,10 @@
                         @endif
                     </div>
                 </div>
-                @if ($selectedChildrenId)
+                @if ( $selectedChildrenId && $currentProduct->haveSufficientQuantity(1) )
                 <div class="d-flex align-items-center pt-3">
                     @livewire('qty-item', [
-                        'qty' => 1, 
+                        'qty' => 1,
                         'emitTo' => [
                             'addtocart.cant',
                         ]
@@ -204,15 +212,15 @@
                         @endforeach
                     </ul>
                     @endif
-                    @if ($parentProduct->custom_attributes->count())
+                    @if ( count($parentProduct->getAttributesWithNames()) )
                     <h3 class="h6">Especificaciones generales</h3>
                     <ul class="list-unstyled font-size-sm pb-2">
                         @foreach ($parentProduct->getAttributesWithNames() as $attribute)
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">{{ $attribute['name'] }}:</span><span>{{ $attribute['value'] }}</span></li>
                         @endforeach
-                    </ul> 
+                    </ul>
                     @endif
-                    
+
                     {{-- <h3 class="h6">General specs</h3>
                     <ul class="list-unstyled font-size-sm pb-2">
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Model:</span><span>Amazfit Smartwatch</span></li>
@@ -235,13 +243,13 @@
                     </ul> --}}
                 </div>
                 <div class="col-lg-5 col-sm-6 offset-lg-1">
-                    @if ($selectedChildrenId)
+                    @if ($selectedChildrenId && !$currentProduct->is_service)
                     <h3 class="h6">Dimensiones de envio</h3>
                     <ul class="list-unstyled font-size-sm pb-2">
-                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($currentProduct->weight, 2, ',', '.') }}</span></li>
-                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($currentProduct->height, 2, ',', '.') }}</span></li>                    
-                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($currentProduct->depth, 2, ',', '.') }}</span></li>
-                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($currentProduct->width, 2, ',', '.') }}</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($currentProduct->weight, 2, ',', '.') }} kg</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($currentProduct->height, 2, ',', '.') }} cm</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($currentProduct->depth, 2, ',', '.') }} cm</span></li>
+                        <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($currentProduct->width, 2, ',', '.') }} cm</span></li>
                     </ul>
                     @endif
                    {{-- <h3 class="h6">Functions</h3>
@@ -261,7 +269,7 @@
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Dimensions:</span><span>195 x 20 mm</span></li>
                         <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Weight:</span><span>32 g</span></li>
                     </ul> --}}
-                </div> 
+                </div>
             </div>
         </div>
     </div>

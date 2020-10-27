@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Freshwork\ChileanBundle\Rut;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class Seller extends Model
@@ -27,6 +28,10 @@ class Seller extends Model
 
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
+
+    const REVIEW_STATUS_PENDING = 0;
+    const REVIEW_STATUS_APPROVED = 1;
+    const REVIEW_STATUS_REJECTED = 2;
 
     protected $table = 'sellers';
     // protected $primaryKey = 'id';
@@ -92,6 +97,20 @@ class Seller extends Model
         static::addGlobalScope(new CompanyBranchScope);
     }
 
+    public function getReviewStatus()
+    {
+        switch ($this->is_approved) {
+            case $this::REVIEW_STATUS_APPROVED:
+                return 'Aprobado';
+                break;
+            case $this::REVIEW_STATUS_REJECTED:
+                return 'Rechazado';
+                break;
+            default:
+                return 'Pendiente'; //REVIEW_STATUS_PENDING
+                break;
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -157,6 +176,13 @@ class Seller extends Model
             default:
                 break;
         }
+    }
+
+    public function getUidAttribute()
+    {
+        $rutFormatter = Rut::parse($this->attributes['uid']);
+        
+        return $rutFormatter->format();
     }
 
     /*
@@ -240,5 +266,10 @@ class Seller extends Model
 
             $this->attributes[$attribute_name] = '/storage/logos/'.$filename;
         }
+    }
+
+    public function setUidAttribute($value)
+    {
+        $this->attributes['uid'] = str_replace('.', '', $value);
     }
 }

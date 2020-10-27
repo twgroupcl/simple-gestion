@@ -6,8 +6,9 @@ use App\Rules\RutRule;
 use App\Rules\PhoneRule;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class SellerRequest extends FormRequest
+class SellerUpdateRequest extends FormRequest
 {
     private $prepareData = [
         'activities_data',
@@ -58,17 +59,27 @@ class SellerRequest extends FormRequest
         $phoneRule = new PhoneRule;
 
         return [
-            'uid' => ['required', 'string', $rutRule],
+            'uid' => [
+                'required', 
+                'string', 
+                Rule::unique('sellers')->where( function($query) {
+                    return $query->where('id', '!=', $this->id);
+                }),
+                $rutRule
+            ],
             'name' => 'required|string',
             'visible_name' => 'required|string',
-            'email' => 'required|email',
+            'email' => [
+                'required',
+                Rule::unique('sellers')->ignore($this->id),
+                'email'
+            ],
             'phone' => ['nullable', $phoneRule],
             'cellphone' => ['nullable', $phoneRule],
             'web' => 'nullable|string',
             'seller_category_id' => 'required|exists:seller_categories,id',
             'notes' => 'nullable|string',
-            'password' => 'required|confirmed',
-            'password_confirmation' => 'required',
+            'password' => 'confirmed',
 
             // addresses data
             'addresses_data' => 'nullable|string',
@@ -127,6 +138,7 @@ class SellerRequest extends FormRequest
             'seller_category_id' => 'Categoría',
             'notes' => 'Notas',
             'password' => 'Contraseña',
+            'password_confirmation' => 'Repetir contraseña',
 
             // addresses data
             'addresses_data' => 'Direcciones',
@@ -183,6 +195,7 @@ class SellerRequest extends FormRequest
             'contact_data_validation.*.*.distinct' => 'No puedes repetir el mismo valor de :attribute',
             'bank_data_validation.*.*.distinct' => 'No puedes repetir el mismo valor de :attribute',
             'addresses_data_validation.*.*.required' => 'Todos los campos :attribute son obligatorios',
+            'confirmed' => 'Las contraseñas ingresadas no coinciden',
         ];
     }
 }
