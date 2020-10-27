@@ -23,7 +23,11 @@ class Item extends Component
     public $show;
     public $selected;
     public $shippingSelected;
+    // config view
+    // show select shipping
     public $showShipping;
+    // show attributes for configurable products
+    public $showAttributes;
 
     protected $listeners = [
         'setQty',
@@ -34,7 +38,6 @@ class Item extends Component
 
     public function mount(CartItem $item, $view = 'cart.item')
     {
-
         $this->confirm = null;
         $this->item = $item;
         $this->product = $item->product;
