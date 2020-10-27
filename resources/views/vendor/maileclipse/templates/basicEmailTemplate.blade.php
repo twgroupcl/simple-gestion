@@ -118,17 +118,17 @@
 <table class="force-full-width" style="border-collapse: collapse; height: 470px; width: 611px;" cellspacing="0" cellpadding="0" align="center" bgcolor="#4dbfbf">
 <tbody>
 <tr style="height: 263px;">
-<td style="height: 263px; width: 600px;"><br /><img src="{{asset($logo)}}" alt="" width="" height="" /></td>
+<td style="height: 263px; width: 600px; background-color: #e67e23;"><br /><img src="{{asset($logo)}}" alt="" width="" height="" /></td>
 </tr>
 <tr style="height: 43px;">
-<td class="headline" style="height: 43px; width: 600px;">{{ $title }}</td>
+<td class="headline" style="height: 43px; width: 600px; background-color: #e67e23;">{{ $title }}</td>
 </tr>
 <tr style="height: 76px;">
-<td style="height: 76px; width: 600px;"><center>
+<td style="height: 76px; width: 600px; background-color: #e67e23;"><center>
 <table style="margin: 0 auto;" width="60%" cellspacing="0" cellpadding="0">
 <tbody>
 <tr>
-<td style="color: #187272;">
+<td style="color: #ffffff;">
 <p><br />{{ $text }}<br /><br /></p>
 <p>{{$rejectedText}}</p>
 </td>
@@ -138,12 +138,12 @@
 </center></td>
 </tr>
 <tr style="height: 88px;">
-<td style="height: 88px; width: 600px;">
+<td style="height: 88px; width: 600px; background-color: #e67e23;">
 <div><!-- [if mso]>
                         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="8%" stroke="f" fillcolor="#178f8f">
                           <w:anchorlock/>
                           <center>
-                        <![endif]--> <a style="background-color: #178f8f; border-radius: 4px; color: #ffffff; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none;" href="{{$buttonLink}}">{{ $buttonText }}</a> <!-- [if mso]>
+                        <![endif]--> <a style="background-color: #4b566b; border-radius: 4px; color: #ffffff; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none;" href="{{$buttonLink}}">{{ $buttonText }}</a> <!-- [if mso]>
                           </center>
                         </v:roundrect>
                       <![endif]--></div>
@@ -151,16 +151,16 @@
 </tr>
 </tbody>
 </table>
-<table class="force-full-width" style="margin: 0 auto;" cellspacing="0" cellpadding="0" bgcolor="#414141">
+<table class="force-full-width" style="margin: 0px auto; height: 75px;" cellspacing="0" cellpadding="0" bgcolor="#414141">
 <tbody>
-<tr>
-<td style="background-color: #414141;"><br /><br /><img src="https://www.filepicker.io/api/file/R4VBTe2UQeGdAlM7KDc4" alt="google+" /> <img src="https://www.filepicker.io/api/file/cvmSPOdlRaWQZnKFnBGt" alt="facebook" /> <img src="https://www.filepicker.io/api/file/Gvu32apSQDqLMb40pvYe" alt="twitter" /> <br /><br /></td>
+<tr style="height: 19px;">
+<td style="background-color: #414141; height: 19px; width: 600px;">&nbsp;</td>
 </tr>
-<tr>
-<td style="color: #bbbbbb; font-size: 12px;"><a href="#">View in browser</a> | <a href="#">Unsubscribe</a> | <a href="#">Contact</a> <br /><br /></td>
+<tr style="height: 28px;">
+<td style="color: #bbbbbb; font-size: 12px; height: 28px; width: 600px;"><a href="#">Ver en navegador</a><br /><br /></td>
 </tr>
-<tr>
-<td style="color: #bbbbbb; font-size: 12px;">&copy; 2020 Todos los derechos reservados - {{ config('app.name') }}<br /><br /></td>
+<tr style="height: 28px;">
+<td style="color: #bbbbbb; font-size: 12px; height: 28px; width: 600px;">&copy; 2020 Todos los derechos reservados - {{ config('app.name') }}<br /><br /></td>
 </tr>
 </tbody>
 </table>
