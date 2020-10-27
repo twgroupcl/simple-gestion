@@ -18,15 +18,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', 'Api\v1\AuthController@authenticate');
+
 
 // API V1
 Route::group([ 'prefix' => '/v1'], function() {
 
-    // Auth
-   
+    Route::post('/login', 'Api\v1\AuthController@authenticate');
+
     Route::group([ 'middleware' => 'auth.jwt'], function() {
+
         Route::get('/test', 'Api\v1\AuthController@test');
+
+        // Brand
+        Route::post('/brand', 'Api\v1\BrandController@store');
+
     });
     
 });

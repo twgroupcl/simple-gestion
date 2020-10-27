@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use JWTAuth;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
@@ -16,7 +17,7 @@ class AuthController extends Controller
 
         try {
             // Verificar credenciales
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (! $token = Auth::guard('api')->attempt($credentials)) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'credenciales invalidas'
