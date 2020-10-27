@@ -535,8 +535,6 @@ class QuotationCrudController extends CrudController
             'now' => New Carbon(),
         ]);   */
 
-        
-
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('templates.quotations.export_pdf', [
             'quotation' => $quotation,
             'due_date' => new Carbon($quotation->expiry_date),

@@ -25,7 +25,7 @@
             position: fixed;
             top: -65px;
             left: 15px;
-            right: 15px;
+            right: 30px;
             height: 20px;
             line-height: 20px;
             font-size: 11px;
@@ -78,6 +78,14 @@
         margin: 15px;
     }
 
+    .company-info {
+        font-size: 12px;
+        text-align: right;
+        margin-right: 15px;
+        margin-top: 35px;
+        
+    }
+
     /* .page-break {
             page-break-after: always;
     } */
@@ -87,8 +95,8 @@
 </head>
 <body>
 <header>
-        <div style="float: left;">{{ $now->format('d/m/Y')  }}</div>
-        <div style="float: right;">N/P {{ $quotation->id }}</div>
+        <div style="float: left;">{{ $now->format('d/m/Y h:m A')  }}</div>
+        <div style="float: right;">{{ $title }} | N/P {{ $quotation->id }}</div>
 </header> 
 
 <div class="container">
@@ -108,19 +116,39 @@
     </script>
 </footer>
 
+<div style="height: 120px;">
+    <div style="float: left; margin-top: -40px">
+        @if ($quotation->branch->companies->first()->logo)
+        {{-- <img style="max-height: 70px" src="https://twgroup.cl/app/uploads/2020/08/LOGO_PRINCIPAL.png" /> --}}
+        <img style="max-height: 70px" src="{{ asset($quotation->branch->companies->first()->logo) }}" />
+        @else 
+        <h2 style="margin-top:45px">{{ $quotation->seller->visible_name }}</h3>
+        @endif
+    </div>
+
+    <div class="company-info">
+        <p class="p-estrecho">{{ $quotation->branch->name }}</p>
+        <p class="p-estrecho">{{ $quotation->branch->address }}</p>
+        <p class="p-estrecho">RUT {{ $quotation->branch->companies->first()->uid }}</p>
+    </div>
+</div> 
+
 
 <div>
-    <h3 class="h3-titulo">{{ $quotation->seller->visible_name }}</h3>
-  <table width="100%" style="min-height: 130px">
+    <table width="100%" style="min-height: 130px">
     <tr>
-        {{-- <td valign="top">LOGO</td> --}}
-        <td width="67%">
-            <p class="p-estrecho">{{ $quotation->seller->visible_name }}</p>
-            <p class="p-estrecho">{{ $quotation->seller->addresses->first()->street }}</p>
-            <p class="p-estrecho">{{ $quotation->seller->addresses->first()->number }}</p>
-            <p class="p-estrecho">RUT {{ $quotation->seller->uid }}</p>
-            <p class="p-estrecho">{{ $quotation->seller->phone }}</p>
-            <p class="p-estrecho">{{$quotation->seller->email }}</p>
+
+        <td width="67%" class="top-td">
+            <div class="direccion-facturacion-titulo">
+                <strong>Dirección de facturación del cliente</strong>
+            </div>
+            <p>
+                <p class="p-estrecho">{{ $quotation->first_name }} {{ $quotation->last_name }}</p>
+                <p class="p-estrecho">{{ $quotation->uid }} </p>
+                <p class="p-estrecho">{{ $quotation->customer->addresses->first()->street }} {{ $quotation->customer->addresses->first()->number }}</p>
+                <p class="p-estrecho">{{ $quotation->address->commune->name }}</p>
+                <p class="p-estrecho">@if ($quotation->phone) Telefono: {{  $quotation->phone  }} @endif</p>
+            </p>
         </td>
         <td width="31%" class="top-td">
             <table>
@@ -141,48 +169,13 @@
                     <td style="text-align: right">{{$quotation->code }}</td>
                 </tr>
             </table>
-            {{-- <p class="p-estrecho"><strong>Fecha de cotización</strong>: {{ $creation_date->format('d/m/Y') }}</p>
-            <p class="p-estrecho"><strong>Fecha de vencimiento</strong>: {{ $due_date->format('d/m/Y') }}</p>
-            <p class="p-estrecho"><strong>Numero de cotización</strong>: </p>
-            @if ($quotation->code)
-            <p class="p-estrecho"><strong>Referencia de cotización</strong>: {{$quotation->code }}</p>
-            @endif --}}
         </td>
     </tr>
 
   </table>
 </div>
+
 <br>
-  <table width="100%">
-    <tr>
-        <td width="30%">
-            <div class="direccion-facturacion-titulo">
-                <strong>Dirección de facturación del cliente</strong>
-            </div>
-            <p>
-                <p class="p-estrecho">{{ $quotation->first_name }} {{ $quotation->last_name }}</p>
-                <p class="p-estrecho">{{ $quotation->uid }} </p>
-                <p class="p-estrecho">{{ $quotation->customer->addresses->first()->street }} {{ $quotation->customer->addresses->first()->number }}</p>
-                <p class="p-estrecho">{{ $quotation->address->commune->name }}</p>
-                <p class="p-estrecho">@if ($quotation->phone) Telefono: {{  $quotation->phone  }} @endif</p>
-            </p>
-        </td>
-        {{-- <td>
-            <div class="direccion-facturacion-titulo">
-                <strong>Direccion de envio</strong>
-            </div>
-            <p>
-                <p class="p-estrecho">Fecha de cotización: 15/20/2015</p>
-                <p class="p-estrecho">Fecha de fencimiento: 15/20/2015</p>
-                <p class="p-estrecho">Numero de cotizacion: #4532</p>
-                <p class="p-estrecho">Referencia de cotizacion: REF-44533</p>
-            </p>
-        </td> --}}
-    </tr>
-
-  </table>
-
-  <br/>
 
   <table>
     <tbody>
@@ -193,8 +186,6 @@
         </tr>
     </tbody>
   </table> 
-
-  
 
   <br>
 
@@ -215,7 +206,6 @@
       </tr>
     </thead>
     <tbody>
-
         @foreach ($quotation->quotation_items as $key =>$item)
         <tr>
           <th scope="row" class="top-td">{{ $key + 1 }}</th>
@@ -235,36 +225,9 @@
         </tr>
         @endforeach
     </tbody>
-
-    {{-- <tfoot>
-        <tr class="tabla-totales">
-            <td colspan="6"></td>
-            <td align="right">Subtotal $</td>
-            <td align="right">{{ $quotation->sub_total }}</td>
-        </tr>
-        <tr>
-            <td colspan="6"></td>
-            <td align="right">Descuento $</td>
-            <td align="right">-{{ $quotation->discount_total }}</td>
-        </tr>
-        <tr>
-            <td colspan="6"></td>
-            <td align="right">Envio $</td>
-            <td align="right">-{{ $quotation->shipping_total }}</td>
-        </tr>
-        <tr>
-            <td colspan="6"></td>
-            <td align="right">Impuestos $</td>
-            <td align="right">{{ $quotation->tax_total }}</td>
-        </tr>
-        <tr>
-            <td colspan="6"></td>
-            <td align="right">Total $</td>
-            <td align="right" class="gray">$ {{ $quotation->total }}</td>
-        </tr>
-    </tfoot> --}}
   </table>
 
+  <br>
   <br>
   <table class="bottom-table" width="100%">
     <tbody>
@@ -286,9 +249,9 @@
                     <pre>{!! $quotation->branch->companies->first()->payment_data !!}</pre>
                 @endif
             </td>
-            <td width="27%" ></td>
+            <td width="25%" ></td>
             <td class="top-td">
-                <table>
+                <table align="right">
                     <tbody>
                             <tr>
                                 <td align="right" class="size-totals"><strong>Subtotal $</strong></td>
@@ -298,10 +261,6 @@
                                 <td align="right" class="size-totals"><strong>Descuento general $</strong></td>
                                 <td align="right">-{{ currencyFormat($quotation->discount_amount, 'CLP', true) }}</td>
                             </tr>
-                            {{-- <tr>
-                                <td align="right"><strong>Envio $</strong></td>
-                                <td align="right">-{{ $quotation->shipping_total }}</td>
-                            </tr> --}}
                             @if ($quotation->tax_type == 'A')
                             <tr>
                                 <td align="right" class="size-totals"><strong>IVA $</strong></td>
@@ -316,7 +275,7 @@
                             @endif
                             @if ($quotation->has_tax_per_item)
                             <tr>
-                                <td align="right" class="size-totals"><strong>Impuestos adicionales $</strong></td>
+                                <td align="right" class="size-totals"><strong>Impuestos adic. $</strong></td>
                                 <td align="right">{{ currencyFormat($quotation->tax_specific, 'CLP', true) }}</td>
                             </tr>
                             @endif
