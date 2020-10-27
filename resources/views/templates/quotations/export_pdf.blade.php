@@ -8,6 +8,11 @@
     * {
         font-family: Verdana, Arial, sans-serif;
     }
+
+    @page {
+        margin-top: 100px;
+    }
+
     table{
         font-size: x-small;
     }
@@ -16,12 +21,23 @@
         font-size: x-small;
     }
 
+    header {
+            position: fixed;
+            top: -65px;
+            left: 15px;
+            right: 15px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 11px;
+        }
+
     .gray {
         background-color: lightgray
     }
 
     .h3-titulo {
         margin-bottom: 6px;
+        margin-top:-30px;
     }
 
     .p-estrecho {
@@ -59,22 +75,46 @@
     }
 
     .container {
-        margin: 20px;
+        margin: 15px;
     }
 
-    .size-totals {
-    }
+    /* .page-break {
+            page-break-after: always;
+    } */
+
 </style>
 
 </head>
 <body>
-<div class="container">
 <header>
+        <div style="float: left;">{{ $now->format('d/m/Y')  }}</div>
+        <div style="float: right;">N/P {{ $quotation->id }}</div>
+</header> 
+
+<div class="container">
+
+<footer>
+    {{-- TWGroup &copy; {{ date('Y') }} - <a href="https://www.twgroup.cl" target="_blank">www.twgroup.cl</a> --}}
+    <script type="text/php">
+        if (isset($pdf)) {
+            $text = "{PAGE_NUM} / {PAGE_COUNT}";
+            $size = 7;
+            $font = $fontMetrics->getFont('DejaVu Sans');
+            $width = $fontMetrics->get_text_width($text, $font, $size) / 2;
+            $x = ($pdf->get_width() - $width + 15);
+            $y = $pdf->get_height() - 15;
+            $pdf->page_text($x, $y, $text, $font, $size);
+        }
+    </script>
+</footer>
+
+
+<div>
     <h3 class="h3-titulo">{{ $quotation->seller->visible_name }}</h3>
   <table width="100%" style="min-height: 130px">
     <tr>
         {{-- <td valign="top">LOGO</td> --}}
-        <td width="65%">
+        <td width="67%">
             <p class="p-estrecho">{{ $quotation->seller->visible_name }}</p>
             <p class="p-estrecho">{{ $quotation->seller->addresses->first()->street }}</p>
             <p class="p-estrecho">{{ $quotation->seller->addresses->first()->number }}</p>
@@ -82,23 +122,23 @@
             <p class="p-estrecho">{{ $quotation->seller->phone }}</p>
             <p class="p-estrecho">{{$quotation->seller->email }}</p>
         </td>
-        <td width="30%">
+        <td width="30%" class="top-td">
             <p class="p-estrecho"><strong>Fecha de cotización</strong>: {{ $creation_date->format('d/m/Y') }}</p>
             <p class="p-estrecho"><strong>Fecha de vencimiento</strong>: {{ $due_date->format('d/m/Y') }}</p>
-            <p class="p-estrecho"><strong>Numero de cotizacion</strong>: #{{ $quotation->id }}</p>
+            <p class="p-estrecho"><strong>Numero de cotización</strong>: #{{ $quotation->id }}</p>
             @if ($quotation->code)
-            <p class="p-estrecho"><strong>Referencia de cotizacion</strong>: {{$quotation->code }}</p>
+            <p class="p-estrecho"><strong>Referencia de cotización</strong>: {{$quotation->code }}</p>
             @endif
         </td>
     </tr>
 
   </table>
-</header>
+</div>
   <table width="100%">
     <tr>
         <td width="30%">
             <div class="direccion-facturacion-titulo">
-                <strong>Direccion de facturación del cliente</strong>
+                <strong>Dirección de facturación del cliente</strong>
             </div>
             <p>
                 <p class="p-estrecho">{{ $quotation->first_name }} {{ $quotation->last_name }}</p>
@@ -125,7 +165,6 @@
 
   <br/>
 
-  @if (strlen($quotation->preface) < 1000)
   <table>
     <tbody>
         <tr>
@@ -135,7 +174,7 @@
         </tr>
     </tbody>
   </table> 
-  @endif
+
   
 
   <br>
@@ -144,14 +183,14 @@
     <thead style="background-color: lightgray;">
       <tr>
         <th>#</th>
-        <th width="20%">Producto / Servicio</th>
-        <th>Cantidad</th>
-        <th>Precio unitario $</th>
+        <th width="35%">Producto / Servicio</th>
+        <th>Cant.</th>
+        <th>Precio $</th>
         @if ($quotation->has_discount_per_item)
-        <th>Descuento $</th>  
+        <th>Desc. $</th>  
         @endif
         @if ($quotation->has_tax_per_item)
-        <th>Impuesto adicional</th>
+        <th>Impuesto $</th>
         @endif
         <th>Subtotal $</th>
       </tr>
@@ -211,7 +250,7 @@
   <table class="bottom-table" width="100%">
     <tbody>
         <tr>
-            <td class="top-td" width="40%">
+            <td class="top-td" width="45%">
                 @if ($quotation->notes)
                 <div class="direccion-facturacion-titulo">
                     <strong>Notas adicionales:</strong>
@@ -228,7 +267,7 @@
                     <pre>{!! $quotation->branch->companies->first()->payment_data !!}</pre>
                 @endif
             </td>
-            <td width="29%" ></td>
+            <td width="25%" ></td>
             <td class="top-td">
                 <table>
                     <tbody>
@@ -289,17 +328,6 @@
 </table>
 @endif
 
-@if (strlen($quotation->preface) >= 1000)
-  <table>
-    <tbody>
-        <tr>
-            <td>
-              {!! $quotation->preface !!}
-            </td>
-        </tr>
-    </tbody>
-  </table> 
-  @endif
 
 </div>
 </body>
