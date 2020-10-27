@@ -14,6 +14,8 @@ class Shipping extends Component
     public $items;
     public $sellers;
 
+
+
     public function mount()
     {
         $this->sellers = $this->getSellers();

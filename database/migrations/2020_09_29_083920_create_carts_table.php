@@ -64,7 +64,6 @@ class CreateCartsTable extends Migration
             $table->foreign('currency_id')->references('id')->on('currencies');
             $table->foreign('address_commune_id')->references('id')->on('communes');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unique(['company_id', 'uid']);
         });
     }
 

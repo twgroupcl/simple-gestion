@@ -195,6 +195,8 @@ class ProductClassAttributeCrudController extends CrudController
         $search_term = $request->input('q');
         $form = collect($request->input('form'))->pluck('value', 'name');
         $options = ProductClassAttribute::query();
+        //dd($options->first()->toJson());
+        //dd($options->first()->descripcion_name);
 
         // if there is not product class selected, return empty
         if (! $form['product_class_id']) {
@@ -207,7 +209,7 @@ class ProductClassAttributeCrudController extends CrudController
                 'product_class_id' => $form['product_class_id'],
                 'is_configurable' => 1,
                 'json_attributes->type_attribute' => 'select',
-            ])->select('id', 'json_attributes->name as descripcion_name');
+            ])/* ->select('id', 'json_attributes->name as descripcion_name') */;
         }
 
         // filter by search term

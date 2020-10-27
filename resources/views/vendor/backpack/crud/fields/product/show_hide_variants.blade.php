@@ -4,7 +4,7 @@
     const PRODUCT_TYPE_CONFIGURABLE = 2
 
     $( document ).ready(function() {
-
+        //$("#super_attributes").val(null).trigger('change');
         showHideSuperAttributesField()
     });
 
@@ -15,6 +15,7 @@
 
         if(productType.val() == PRODUCT_TYPE_CONFIGURABLE) {
             superAttributesWrapper.show()
+            superAttributes.trigger('change');
         } else {
             superAttributesWrapper.hide()
             superAttributes.val(null).trigger('change');
@@ -23,6 +24,7 @@
         productType.change(function() {
             if(productType.val() == PRODUCT_TYPE_CONFIGURABLE) {
                 superAttributesWrapper.show()
+                superAttributes.trigger('change');
             } else {
                 superAttributesWrapper.hide()
                 superAttributes.val(null).trigger('change');

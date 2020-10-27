@@ -51,7 +51,7 @@ Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
 
 //Auth::routes();
-//Route::redirect('/login', '/customer/sign')->name('login');
+Route::redirect('/login', '/customer/login')->name('login');
 
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
 Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');

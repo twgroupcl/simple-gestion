@@ -41,7 +41,6 @@ class CreateCustomersTable extends Migration
             $table->foreign('customer_segment_id')->references('id')->on('customer_segments');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unique(['company_id', 'uid']);
         });
     }
 

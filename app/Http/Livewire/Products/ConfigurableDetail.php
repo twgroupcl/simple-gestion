@@ -52,7 +52,7 @@ class ConfigurableDetail extends Component
             $options = array_unique($options);
 
             // Add default empty option
-            $options = array_merge([''], $options);
+            $options = array_merge(['Selecciona una opción'], $options);
 
             array_push($this->options, [
                 'id' => $super_attribute->id,
@@ -124,7 +124,7 @@ class ConfigurableDetail extends Component
 
 
             // Load next select options depending on the previous one
-            $itemOptions = [''];
+            $itemOptions = ['Selecciona una opción'];
             foreach($this->parentProduct->children as $children) {
                 $meetPreviusReq = true;
                 
