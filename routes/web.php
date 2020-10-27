@@ -49,6 +49,15 @@ Route::get('/shop-list/', function () {
 });
 Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
+Route::get('/faq', function () {
+    return view('faq');
+});
+Route::get('/faq-single', function () { 
+    return view('faq-single');
+});
+Route::get('/faq-request', function () { 
+    return view('faq-request');
+});
 
 //Auth::routes();
 Route::redirect('/login', '/customer/login')->name('login');

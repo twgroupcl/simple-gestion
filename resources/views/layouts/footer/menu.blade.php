@@ -196,9 +196,9 @@
                     </div> --}}
                     <div class="widget widget-links widget-light">
                         <ul class="widget-list d-flex flex-wrap justify-content-center justify-content-md-start">
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="#">Preguntas frecuentes</a></li>
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="#">Privacidad</a></li>
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="#">Términos y condiciones</a></li>
+                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq') }}">Preguntas frecuentes</a></li>
+                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq-single') }}">Privacidad</a></li>
+                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq-request') }}">Términos y condiciones</a></li>
                         </ul>
                     </div>
                 </div>

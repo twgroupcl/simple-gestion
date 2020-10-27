@@ -40,14 +40,18 @@
                     <p class="font-size-ms text-muted">{{$seller->company->name}}</p>
                     <h6>Categoría</h6>
                     <p class="font-size-ms text-muted">{{$seller->seller_category->name}}</p>
-                    @if($seller->legal_representative_name)
-                        <h6>Administrador</h6>
-                        <p class="font-size-ms text-muted">{{$seller->legal_representative_name}}</p>
-                    @endif
                     <h6>Acerca de la tienda</h6>
-                    <a href="#" class="font-size-ms text-muted">Políticas de envío</a>
-                    <br>
-                    <a href="#" class="font-size-ms text-muted">Políticas de privacidad</a>
+                    @if($seller->return_policy)
+                        <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
+                        <br>
+                    @endif
+                    @if($seller->shipping_policy)
+                        <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
+                        <br>
+                    @endif
+                    @if($seller->privacy_policy)
+                        <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
+                    @endif
                     <hr class="my-4">
                     <!--
                         <h6>Contacts</h6>
@@ -131,4 +135,29 @@
         </div>
     </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="policy">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title title-policy">Políticas</h5>
+      </div>
+      <div class="modal-body">
+        <div class="d-none privacy_policy policy-text">
+            <p class="font-size-sm">{!!$seller->privacy_policy!!}</p>
+        </div>
+        <div class="d-none shipping_policy policy-text">
+            <p class="font-size-sm">{!!$seller->shipping_policy!!}</p>
+        </div>
+        <div class="d-none return_policy policy-text">
+            <p class="font-size-sm">{!!$seller->return_policy!!}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm btn-close-modal" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
