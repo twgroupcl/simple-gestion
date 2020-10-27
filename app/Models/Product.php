@@ -348,6 +348,9 @@ class Product extends Model
             
             if(!$attribute) continue;
 
+            // Remove empty attributes
+            if (! $custom_attribute->json_value) continue;
+
             array_push($attributes, [
                 'name' => $attribute->json_attributes['name'],
                 'value' => $custom_attribute->json_value,
@@ -365,6 +368,15 @@ class Product extends Model
             return true;
         }
 
+        // If configurable product, check inventory on children products
+        if ($this->product_type->id == self::PRODUCT_TYPE_CONFIGURABLE) {
+            $result = false;
+            foreach ($this->children as $children) {
+                if ($children->haveSufficientQuantity($qty) ) $result = true;
+            }
+            return $result;
+        }
+
         // Total qty on inventories
         foreach($this->inventories as $inventory) {
             $qtyInventory = $inventory->pivot->qty;
@@ -372,7 +384,10 @@ class Product extends Model
         }
 
         // Qty in pending orders
-        // @todo
+        $itemsInOrder = OrderItem::where([ 'shipping_status' => 1, 'product_id' => $this->id])->get();
+        foreach ($itemsInOrder as $orderItem) {
+            $total -= $orderItem->qty;
+        }
 
         return $qty <= $total ? true : false;
     }

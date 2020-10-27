@@ -23,6 +23,7 @@ class Item extends Component
     public $show;
     public $selected;
     public $shippingSelected;
+    public $showShipping;
 
     protected $listeners = [
         'setQty',
@@ -41,18 +42,34 @@ class Item extends Component
         $this->qty = $this->item->qty;
         $this->total = $this->item->product->price * $this->qty;
         $this->communeSelected =  $this->item->cart->address_commune_id;
-        if ($this->communeSelected) {
-            $this->shippingMethods =  $this->getShippingMethods();
+
+        if ($this->showShipping) {
+            if ($this->communeSelected) {
+                $this->shippingMethods =  $this->getShippingMethods();
+                // if ($this->shippingMethods) {
+                //     $this->selected =0 ;
+                //     $this->shippingSelected = $this->shippingMethods[0];
+
+                //     $this->addShippingItem();
+                //     //$this->emit('select-shipping-item');
+
+                // }
+            }
         }
     }
 
     public function setQty($qty)
     {
+        if (!$this->item->product->haveSufficientQuantity($qty)) {
+            $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
+            return;
+        }
         $this->qty = $qty;
         $this->item->qty = $qty;
         $this->item->sub_total = $this->item->product->price * $qty;
         $this->total = $this->item->product->price * $qty;
         $this->item->update();
+        $this->emit('showToast', 'Cambió la cantidad', 'Has agregado más cantidad de un item al carro.', 3000, 'info');
         $this->emitUp('change');
     }
 
@@ -61,6 +78,10 @@ class Item extends Component
         $this->qty = $this->item->qty;
     }
 
+
+    public function updateSelected(){
+        dd('aca');
+    }
     public function deleteConfirm($id)
     {
         $this->confirm = $id;
@@ -68,6 +89,7 @@ class Item extends Component
 
     public function delete()
     {
+        $this->emit('showToast', 'Se ha eliminado del carro.', 'Se ha eliminado el producto del carro.', 3000, 'info');
         $this->item->delete();
         $this->emitUp('deleteItem');
     }
@@ -76,6 +98,8 @@ class Item extends Component
     {
         return view('livewire.' . $this->view);
     }
+
+
 
     // public function addShippingItem($selected)
     // {
@@ -94,7 +118,7 @@ class Item extends Component
             if ($shippingmethod->code == 'chilexpress') {
                 $chilexpress = new Chilexpress();
                 $result = $chilexpress->calculateItem($this->item, $this->communeSelected);
-
+                $itemshipping['id'] = $shippingmethod->id;
                 $itemshipping['name'] = $shippingmethod->title;
                 if ($result['is_available']) {
 
@@ -107,8 +131,10 @@ class Item extends Component
                     $itemshipping['message'] = $result['message'];
                 }
                 $itemshipping['is_available'] = $result['is_available'];
+
             } else {
                 $json_value = json_decode($shippingmethod->json_value);
+                $itemshipping['id'] = $shippingmethod->id;
                 $itemshipping['name'] = $shippingmethod->title;
                 if ($json_value) {
 
@@ -191,12 +217,28 @@ class Item extends Component
 
     public function updatedSelected($value)
     {
-        $this->shippingSelected = $this->shippingMethods[$value];
-    }
-    public function addShippingItem(){
-        if ($this->shippingSelected) {
-
-            $this->emitUp('select-shipping',$this->shippingSelected , $this->item->id);
+        if ($value>0) {
+            $this->shippingSelected = $this->shippingMethods[$value];
         }
     }
+    public function addShippingItem()
+    {
+
+
+        if ($this->shippingSelected) {
+            $this->emitUp('select-shipping', $this->shippingSelected, $this->item->id);
+        }
+    }
+    public function setSelected($value)
+    {
+        if ($this->shippingMethods) {
+            $this->selected =$value ;
+            $this->shippingSelected = $this->shippingMethods[$value];
+            $this->addShippingItem();
+            //$this->emit('select-shipping-item');
+
+        }
+    }
+
+
 }

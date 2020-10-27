@@ -18,6 +18,7 @@ class Checkout extends Component
     public $items;
 
 
+
     protected $listeners = [
         'prev-step' => 'prevStep',
         'next-step' => 'nextStep',
@@ -110,8 +111,10 @@ class Checkout extends Component
         // if($this->activeStep['event-prev']){
         //     $this->emit($this->activeStep['event-prev']);
         // }
-        $this->steps[$currentStep - 1]['status'] = '';
-        $this->activeStep = $this->steps[$currentStep - 1];
+        if ($currentStep >0) {
+            $this->steps[$currentStep ]['status'] = '';
+            $this->activeStep = $this->steps[$currentStep - 1];
+        }
     }
     public function nextStep(){
 
@@ -136,18 +139,21 @@ class Checkout extends Component
     public function addShipping($selected, $item)
     {
 
+        logger('checkout shipping');
 
         $cartItem = CartItem::find($item);
 
-        $shippingTotal = $selected['price'] ;//* $cartItem->qty;
+        $shippingId = $selected['id'] ;
+        $shippingTotal = $selected['price'];// * $cartItem->qty;
 
-        $cartItem->shipping_total = $shippingTotal ;
+        $cartItem->shipping_id = $shippingId ;
+        $cartItem->shipping_total = $shippingTotal;// * $cartItem->qty; ;
         $cartItem->update();
         //$this->shippingtotal += $shippingTotal;
 
         $this->total = $this->getTotal();
         $this->cart->total = $this->total;
-        $this->cart->shipping_total += $shippingTotal;
+        $this->cart->shipping_total = $this->shippingtotal;// //$shippingTotal;// *  $cartItem->qty);
         $this->cart->update();
     }
 

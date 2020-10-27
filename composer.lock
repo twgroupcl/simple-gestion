@@ -4,9 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-
-    "content-hash": "3b90b9abcbb863dfa8654cc63ee36d3c",
-
+    "content-hash": "8ea6c50c89d00248d7d4ec4f02a9db34",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -284,7 +282,6 @@
             "time": "2020-04-24T14:33:48+00:00"
         },
         {
-
             "name": "balping/json-raw-encoder",
             "version": "v1.0.1",
             "source": {
@@ -308,12 +305,10 @@
             "autoload": {
                 "psr-4": {
                     "Balping\\JsonRaw\\": "src/"
-
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-
                 "GPL-3.0-only"
             ],
             "authors": [
@@ -328,7 +323,68 @@
                 "json"
             ],
             "time": "2020-06-06T16:24:31+00:00"
-
+        },
+        {
+            "name": "barryvdh/laravel-dompdf",
+            "version": "v0.8.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-dompdf.git",
+                "reference": "30310e0a675462bf2aa9d448c8dcbf57fbcc517d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-dompdf/zipball/30310e0a675462bf2aa9d448c8dcbf57fbcc517d",
+                "reference": "30310e0a675462bf2aa9d448c8dcbf57fbcc517d",
+                "shasum": ""
+            },
+            "require": {
+                "dompdf/dompdf": "^0.8",
+                "illuminate/support": "^5.5|^6|^7|^8",
+                "php": ">=7"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.8-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Barryvdh\\DomPDF\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "PDF": "Barryvdh\\DomPDF\\Facade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\DomPDF\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "A DOMPDF Wrapper for Laravel",
+            "keywords": [
+                "dompdf",
+                "laravel",
+                "pdf"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/barryvdh",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-09-07T11:50:18+00:00"
         },
         {
             "name": "barryvdh/laravel-dompdf",
@@ -2244,6 +2300,12 @@
                 }
             ],
             "description": "A front-end framework for Laravel.",
+            "funding": [
+                {
+                    "url": "https://github.com/calebporzio",
+                    "type": "github"
+                }
+            ],
             "time": "2020-10-15T17:49:47+00:00"
         },
         {
@@ -3215,6 +3277,76 @@
             "time": "2020-05-03T19:32:03+00:00"
         },
         {
+            "name": "qoraiche/laravel-mail-editor",
+            "version": "v2.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Qoraiche/laravel-mail-editor.git",
+                "reference": "4c9bc96e5899faaf1a60c7c4d55ec0779cf474d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Qoraiche/laravel-mail-editor/zipball/4c9bc96e5899faaf1a60c7c4d55ec0779cf474d9",
+                "reference": "4c9bc96e5899faaf1a60c7c4d55ec0779cf474d9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.6|^6.0|^7.0",
+                "reecem/mocker": "1.1.*"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.2",
+                "orchestra/testbench": "^3.0|^4.0",
+                "phpunit/phpunit": "^7.0|^8.0",
+                "sempro/phpunit-pretty-print": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Qoraiche\\MailEclipse\\MailEclipseServiceProvider"
+                    ],
+                    "aliases": {
+                        "MailEclipse": "Qoraiche\\MailEclipse\\Facades\\MailEclipse"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Qoraiche\\MailEclipse\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "yassine qoraiche",
+                    "email": "qoraicheofficiel@hotmail.com",
+                    "homepage": "https://github.com/qoraiche"
+                }
+            ],
+            "description": "Laravel Mailable Editor",
+            "homepage": "https://github.com/Qoraiche/laravel-mail-editor",
+            "keywords": [
+                "laravel",
+                "laravel-mail",
+                "laravel-mailable",
+                "mailEclipse",
+                "mailable",
+                "mailable-editor",
+                "markdown"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/streamaps",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-10-02T19:47:01+00:00"
+        },
+        {
             "name": "ralouphie/getallheaders",
             "version": "3.0.3",
             "source": {
@@ -3409,6 +3541,67 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "reecem/mocker",
+            "version": "v1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ReeceM/mocker.git",
+                "reference": "7cf5c04e87933629a5a3160f7064ef27f119452f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ReeceM/mocker/zipball/7cf5c04e87933629a5a3160f7064ef27f119452f",
+                "reference": "7cf5c04e87933629a5a3160f7064ef27f119452f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/filesystem": "^5.6|^6.0|^7.0|^8.0",
+                "illuminate/support": "^5.6|^6.0|^7.0|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.5|^4.0",
+                "phpunit/phpunit": "^7.5|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ReeceM\\Mocker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ReeceM",
+                    "email": "zsh.rce@gmail.com",
+                    "homepage": "https://githib.com/reecem"
+                }
+            ],
+            "description": "Mock class constructor args based on the reflection class",
+            "homepage": "https://github.com/reecem/mocker",
+            "keywords": [
+                "helper",
+                "laravel",
+                "mocker",
+                "mockery",
+                "reecem",
+                "testing"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/iexistin3d",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://ko-fi.com/reecem",
+                    "type": "ko_fi"
+                }
+            ],
+            "time": "2020-09-10T13:19:53+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
