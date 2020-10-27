@@ -212,6 +212,7 @@ class Checkout extends Component
 
         $order = new Order();
         $order->company_id = $this->cart->company_id;
+        $order->uid = $this->cart->uid;
         $order->first_name = $this->cart->first_name;
         $order->last_name = $this->cart->last_name;
         $order->email = $this->cart->email;
@@ -223,6 +224,10 @@ class Checkout extends Component
         $order->status = 1 ; //initiated
         $order->save();
 
+
+        $shippingtotal_order =0;
+        $subtotal_order =0;
+        $total_order =0;
         //Add Order Item
         foreach($this->getItems() as $item){
             $orderitem = new OrderItem();
@@ -234,12 +239,22 @@ class Checkout extends Component
             $orderitem->sku = $item->product->sku;
             $orderitem->price = $item->product->price;
             $orderitem->qty = $item->qty;
+            $orderitem->shipping_id = $item->shipping_id;
             $orderitem->shipping_total = $item->shipping_total;
             $orderitem->save();
+            $shippingtotal_order +=  $item->shipping_total * $item->qty;
+            $subtotal_order += $item->price * $item->qty;
+            $total_order +=  ($item->price + $item->shipping_total ) * $item->qty;
 
         }
+
+        $order->shipping_total =   $shippingtotal_order;
+        $order->sub_total =   $subtotal_order;
+        $order->total =   $total_order;
+
+        $order->save();
          //Destroy cart
-         $this->cart->delete();
+        $this->cart->delete();
 
          return redirect()->to(route('transbank.webpayplus.mall.redirect',['order'=>$order]));
     }
