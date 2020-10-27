@@ -111,7 +111,7 @@
 <table class="force-full-width" style="border-collapse: collapse; width: auto;" cellspacing="0" cellpadding="0">
 <tbody>
 <tr>
-<td style="font-size: 30px; text-align: center;"><br />{{config('app.name')}}<br /><br /></td>
+<td style="font-size: 30px; text-align: center;"><br /><img src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" /><br /><br /></td>
 </tr>
 </tbody>
 </table>
@@ -129,7 +129,7 @@
 <tbody>
 <tr>
 <td style="color: #ffffff;">
-<p><br />{{ $text }}<br /><br /></p>
+<p><br />{!! $text !!}<br /><br /></p>
 <p>{{$rejectedText}}</p>
 </td>
 </tr>
