@@ -113,10 +113,13 @@ class Item extends Component
     public function getShippingMethods()
     {
 
+        $seller  = $this->item->product->seller;
+        //dd($seller->shippingmethods()->get());
         $tmpshippings = null;
-        $shippingsmethods = ShippingMethod::where('status', 1)->get();
+        $shippingsmethods = $seller->shippingmethods()->where('status', 1)->get() ;// ShippingMethod::where('status', 1)->get();
 
-        foreach ($shippingsmethods as $shippingmethod) {
+        foreach ($shippingsmethods as $shippingmethodseller) {
+            $shippingmethod = $shippingmethodseller->shipping_method;
             $itemshipping = null;
             if ($shippingmethod->code == 'chilexpress') {
                 $chilexpress = new Chilexpress();

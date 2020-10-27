@@ -16,6 +16,7 @@ class Checkout extends Component
     public $total;
     public $cart;
     public $items;
+    public $loading;
 
 
 
@@ -117,6 +118,7 @@ class Checkout extends Component
         }
     }
     public function nextStep(){
+        $this->loading = true;
 
         //$currentStep  = array_search($this->activeStep, $this->steps);
 
@@ -183,6 +185,7 @@ class Checkout extends Component
         $currentStep  = array_search($this->activeStep, $this->steps);
         $this->steps[$currentStep + 1]['status'] = 'active';
         $this->activeStep = $this->steps[$currentStep + 1];
+        $this->loading = false;
     }
 
     public function pay()

@@ -25,7 +25,7 @@ $product = $item->product;
 
                         @foreach ($shippingMethods as $key => $shipping)
                             <option value="{{ $key }}">{{ $shipping['name'] }}
-                                ({{ currencyFormat($shipping['price'] ? $shipping['price'] : 0, 'CLP', true) }})
+                                @if($shipping['price'] && $shipping['price'] > 0) ({{ currencyFormat($shipping['price'] ? $shipping['price'] : 0, 'CLP', true) }})@endif
                             </option>
                         @endforeach
                         {{-- <option>ChileExpress ($3.500)</option>

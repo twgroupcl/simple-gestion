@@ -1,4 +1,4 @@
-<div class="modal fade" id="order-details">
+<div class="modal fade" id="order-details" wire:ignore.self>
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">

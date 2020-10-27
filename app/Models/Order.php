@@ -101,21 +101,24 @@ class Order extends Model
 
     public function getOrderItemsAttribute()
     {
+       if (backpack_user()) {
+           if (backpack_user()->hasRole('Vendedor marketplace')) {
+               $items = [];
+               $userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+               $tmpitems = $this->order_items()->get();
 
-        if (backpack_user()->hasRole('Vendedor marketplace')) {
-            $items = [];
-            $userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-            $tmpitems = $this->order_items()->get();
-
-            foreach($tmpitems as $item){
-                if($item->product->seller_id == $userSeller->id){
-                    $items[] = $item;
-                }
-            }
-            return $items;
-        }else{
-            return $this->order_items()->get();
-        }
+               foreach ($tmpitems as $item) {
+                   if ($item->product->seller_id == $userSeller->id) {
+                       $items[] = $item;
+                   }
+               }
+               return $items;
+           } else {
+               return $this->order_items()->get();
+           }
+       }else{
+                return $this->order_items()->get();
+       }
 
 
     }
