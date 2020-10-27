@@ -43,22 +43,24 @@ class Item extends Component
         $this->total = $this->item->product->price * $this->qty;
         $this->communeSelected =  $this->item->cart->address_commune_id;
 
-        if($this->showShipping){
+        if ($this->showShipping) {
             if ($this->communeSelected) {
                 $this->shippingMethods =  $this->getShippingMethods();
-                if($this->shippingMethods){
+                // if ($this->shippingMethods) {
+                //     $this->selected =0 ;
+                //     $this->shippingSelected = $this->shippingMethods[0];
 
-                    $this->selected = 0;
-                    $this->shippingSelected = $this->shippingMethods[$this->selected];
-                    $this->addShippingItem();
-                }
+                //     $this->addShippingItem();
+                //     //$this->emit('select-shipping-item');
+
+                // }
             }
         }
     }
 
     public function setQty($qty)
     {
-        if ( ! $this->item->product->haveSufficientQuantity( $qty )) {
+        if (!$this->item->product->haveSufficientQuantity($qty)) {
             $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
             return;
         }
@@ -76,6 +78,10 @@ class Item extends Component
         $this->qty = $this->item->qty;
     }
 
+
+    public function updateSelected(){
+        dd('aca');
+    }
     public function deleteConfirm($id)
     {
         $this->confirm = $id;
@@ -91,8 +97,9 @@ class Item extends Component
     public function render()
     {
         return view('livewire.' . $this->view);
-        $this->emitUp('select-shipping',$this->shippingSelected , $this->item->id);
     }
+
+
 
     // public function addShippingItem($selected)
     // {
@@ -124,6 +131,7 @@ class Item extends Component
                     $itemshipping['message'] = $result['message'];
                 }
                 $itemshipping['is_available'] = $result['is_available'];
+
             } else {
                 $json_value = json_decode($shippingmethod->json_value);
                 $itemshipping['id'] = $shippingmethod->id;
@@ -209,12 +217,28 @@ class Item extends Component
 
     public function updatedSelected($value)
     {
-        $this->shippingSelected = $this->shippingMethods[$value];
-    }
-    public function addShippingItem(){
-        if ($this->shippingSelected) {
-
-            $this->emitUp('select-shipping',$this->shippingSelected , $this->item->id);
+        if ($value>0) {
+            $this->shippingSelected = $this->shippingMethods[$value];
         }
     }
+    public function addShippingItem()
+    {
+
+
+        if ($this->shippingSelected) {
+            $this->emitUp('select-shipping', $this->shippingSelected, $this->item->id);
+        }
+    }
+    public function setSelected($value)
+    {
+        if ($this->shippingMethods) {
+            $this->selected =$value ;
+            $this->shippingSelected = $this->shippingMethods[$value];
+            $this->addShippingItem();
+            //$this->emit('select-shipping-item');
+
+        }
+    }
+
+
 }
