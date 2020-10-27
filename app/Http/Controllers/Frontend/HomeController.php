@@ -39,9 +39,9 @@ class HomeController extends Controller
         }else{
             $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->where('name','LIKE','%'.$request->product.'%')->with('categories')->get();
         }
-        return view('shop-grid', compact('products'));        
-    } 
-    
+        return view('shop-grid', compact('products'));
+    }
+
     public function getProductsByCategory(Request $request){
         $category = ProductCategory::where('id','=',$request->category)->with('products')->first();
         $products = ($category)?$category->products:'';
