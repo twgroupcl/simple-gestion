@@ -53,15 +53,16 @@ class QuotationCrudController extends CrudController
         $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
 
         CRUD::addColumn([
-            'label' => 'Fecha cotización',
-            'name' => 'quotation_date',
-            'type' => 'date',
-        ]);
-
-        CRUD::addColumn([
             'label' => '#',
             'name' => 'id',
             'type' => 'number',
+        ]);
+
+        CRUD::addColumn([
+            'label' => 'Fecha cotización',
+            'name' => 'quotation_date',
+            'type' => 'date',
+            'format' => 'L'
         ]);
 
         CRUD::addColumn([
@@ -104,6 +105,7 @@ class QuotationCrudController extends CrudController
             'label' => 'Fecha expiración',
             'name' => 'expiry_date',
             'type' => 'date',
+            'format' => 'L'
         ]);
     }
 
@@ -525,19 +527,26 @@ class QuotationCrudController extends CrudController
 
         $quotation = Quotation::findOrFail($id);
 
-        /* return view('templates.quotations.export_pdf', [
+         /* return view('templates.quotations.export_pdf', [
             'quotation' => $quotation,
             'due_date' => new Carbon($quotation->expiry_date),
             'creation_date'=> new Carbon($quotation->quotation_date),
             'title' => 'Cotizacion',
-        ]); */
+            'now' => New Carbon(),
+        ]);   */
 
-        $pdf = \PDF::loadView('templates.quotations.export_pdf', [
+        
+
+        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('templates.quotations.export_pdf', [
             'quotation' => $quotation,
             'due_date' => new Carbon($quotation->expiry_date),
             'creation_date'=> new Carbon($quotation->quotation_date),
             'title' => 'Cotizacion',
+            'now' => New Carbon(),
         ]);
+
+        //$pdf->getDomPDF()->set_option('enable_php', true);
+        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
 
         return $pdf->stream('invoice.pdf');
     }
