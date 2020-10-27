@@ -10,13 +10,26 @@ class CardGeneral extends Component
 {
 
     use WithPagination;
-    protected $paginationTheme = 'bootstrap-4';
-    //public $productos;
-    
+    protected $paginationTheme = 'bootstrap';
+    public $rows;
+    public $elementsByRow;
+    public $paginateBy;
+
     public function render()
     {
         return view('livewire.products.card-general', [
-            'productos' => ModelsProduct::where('parent_id','=', null)->with('categories')->paginate(4),
+            'productos' => ModelsProduct::where('status','=','1')->where('parent_id','=', null)->where('is_approved','=','1')->with('categories')->orderBy('id','DESC')->paginate($this->paginateBy),
         ]);
     }
+
+    public function mount($rows,$elementsByRow){
+        $this->rows = $rows;
+        $this->elementsByRow = $elementsByRow;
+    }
+
+    public function paginationView()
+    {
+        return 'paginator';
+    }
+
 }

@@ -34,14 +34,14 @@
             {{-- <li class="nav-item"><a class="nav-link p-4" href="#reviews" data-toggle="tab" role="tab">Reviews <span class="font-size-sm opacity-60">(74)</span></a></li> --}}
         </ul>
         @if ($product->product_type->id == 2)
-                @livewire('products.configurable-detail', ['product' => $product])   
+                @livewire('products.configurable-detail', ['product' => $product])
         @elseif ($product->product_type->id == 1)
         <div class="px-4 pt-lg-3 pb-3 mb-5">
             <div class="tab-content px-lg-3">
                 <!-- General info tab-->
                 <div class="tab-pane fade show active" id="general" role="tabpanel">
-                    
-                    <div class="row">    
+
+                    <div class="row">
                         <!-- Product gallery-->
                         <div class="col-lg-7 pr-lg-0">
                             <div class="cz-product-gallery">
@@ -72,13 +72,13 @@
                             </div>
                             <div class="product-details ml-auto pb-3">
                                 @if ($product->special_price)
-                                <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, Setting::get('default_currency'), true) }}</span>
-                                    <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</del>
+                                <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
+                                    <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, defaultCurrency(), true) }}</del>
                                     <br>
                                     <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
                                 </div>
                                 @else
-                                    <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</div>
+                                    <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, defaultCurrency(), true) }}</div>
                                 @endif
                                 <!--
                                     <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Dark blue/Orange</span></div>
@@ -126,7 +126,7 @@
                                 @if ($product->haveSufficientQuantity(1))
                                 <div class="d-flex align-items-center pt-2 pb-4">
                                     @livewire('qty-item', [
-                                        'qty' => 1, 
+                                        'qty' => 1,
                                         'emitTo' => [
                                             'addtocart.cant',
                                         ]
@@ -213,20 +213,20 @@
                                 @if ($product->product_type->id == 1)
                                     @if ($product->special_price)
                                         <div class="mb-3">
-                                            <span class="h4 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, Setting::get('default_currency'), true) }}</span>
-                                            <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</del><span class="badge badge-danger badge-shadow align-middle mt-n2">Promo</span>
+                                            <span class="h4 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
+                                            <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, defaultCurrency(), true) }}</del><span class="badge badge-danger badge-shadow align-middle mt-n2">Promo</span>
                                         </div>
                                     @else
                                         <div class="h4 font-weight-normal text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
                                     @endif
-                                
+
                                 @endif
                             </div>
                         </div>
                         @if ($product->haveSufficientQuantity(1))
                         <div class="d-flex align-items-center pt-3">
                             @livewire('qty-item', [
-                                'qty' => 1, 
+                                'qty' => 1,
                                 'emitTo' => [
                                     'addtocart.cant',
                                 ]
@@ -254,7 +254,7 @@
                                 @endforeach
                             </ul>
                             @endif
-                            
+
                             {{-- <h3 class="h6">General specs</h3>
                             <ul class="list-unstyled font-size-sm pb-2">
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Model:</span><span>Amazfit Smartwatch</span></li>
@@ -281,7 +281,7 @@
                                 <h3 class="h6">Dimensiones de envio</h3>
                                 <ul class="list-unstyled font-size-sm pb-2">
                                     <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($product->weight, 2, ',', '.') }} kg</span></li>
-                                    <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($product->height, 2, ',', '.') }} cm</span></li>                    
+                                    <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($product->height, 2, ',', '.') }} cm</span></li>
                                     <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Largo:</span><span>{{ number_format($product->depth, 2, ',', '.') }} cm</span></li>
                                     <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Ancho:</span><span>{{ number_format($product->width, 2, ',', '.') }} cm</span></li>
                                 </ul>
@@ -303,7 +303,7 @@
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Dimensions:</span><span>195 x 20 mm</span></li>
                                 <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Weight:</span><span>32 g</span></li>
                             </ul> --}}
-                        </div> 
+                        </div>
                     </div>
                 </div>
                 <!-- Reviews tab-->
