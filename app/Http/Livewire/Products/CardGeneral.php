@@ -18,7 +18,7 @@ class CardGeneral extends Component
     public function render()
     {
         return view('livewire.products.card-general', [
-            'productos' => ModelsProduct::where('parent_id','=', null)->with('categories')->paginate($this->paginateBy),
+            'productos' => ModelsProduct::where('status','=','1')->where('parent_id','=', null)->where('is_approved','=','1')->with('categories')->orderBy('id','DESC')->paginate($this->paginateBy),
         ]);
     }
 

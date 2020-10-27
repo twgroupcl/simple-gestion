@@ -33,11 +33,11 @@ class HomeController extends Controller
     {
         $idCategory = $request->category;
         if($idCategory != 0){
-            $products = Product::where('status','=','1')->where('name','LIKE','%'.$request->product.'%')->whereHas('categories', function ($query) use ($idCategory) {
+            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->where('name','LIKE','%'.$request->product.'%')->whereHas('categories', function ($query) use ($idCategory) {
                 return $query->where('product_category_id', '=', $idCategory);
             })->get();
         }else{
-            $products = Product::where('status','=','1')->where('name','LIKE','%'.$request->product.'%')->with('categories')->get();
+            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->where('name','LIKE','%'.$request->product.'%')->with('categories')->get();
         }
         return view('shop-grid', compact('products'));        
     } 
