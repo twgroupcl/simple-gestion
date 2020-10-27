@@ -539,7 +539,7 @@ class QuotationCrudController extends CrudController
             'quotation' => $quotation,
             'due_date' => new Carbon($quotation->expiry_date),
             'creation_date'=> new Carbon($quotation->quotation_date),
-            'title' => 'Cotizacion',
+            'title' => $quotation->title,
             'now' => New Carbon(),
         ]);
 
