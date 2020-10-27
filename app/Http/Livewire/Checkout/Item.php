@@ -100,4 +100,9 @@ class Item extends Component
             $this->emitUp('select-shipping',$this->shippingSelected , $this->item->id);
         }
     }
+
+    public function loadShipping()
+    {
+        dd('aqqui');
+    }
 }
