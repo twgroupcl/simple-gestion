@@ -255,6 +255,7 @@ class Checkout extends Component
 
         $order->save();
          //Destroy cart
+        $this->cart->cart_items()->delete();
         $this->cart->delete();
 
          return redirect()->to(route('transbank.webpayplus.mall.redirect',['order'=>$order]));
