@@ -141,7 +141,10 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th>Direcciones</th>
+                            <th>Calle</th>
+                            <th>Número</th>
+                            <th>Casa/Dpto/Oficina</th>
+                            <th>Comuna</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -157,11 +160,7 @@
                             ]);
                             @endphp
                         @forelse ($paginator as $address)
-                            <tr>
-                                <td class="py-3 align-middle">{{ $address['street'] }} - {{ $address['number']}}</td>
-                                <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
-                                    </a></td>
-                            </tr>
+                            <livewire:customer.address-item :communes="$communes" :address="$address" :key="$loop->index">
                         @empty
                         <tr>
                             <td class="py-3 align-middle">No se encontraron direcciones</td>
