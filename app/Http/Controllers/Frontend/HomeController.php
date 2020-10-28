@@ -15,13 +15,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->limit(6)->get();
-        return view('marketplace', compact('products'));
+        return redirect('/seller/register');
+        //$products = Product::where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->with('seller')->with('categories')->orderBy('id', 'DESC')->limit(6)->get();
+        //return view('marketplace', compact('products'));
     }
 
     public function getAllProducts()
     {
-        $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->get();
+        $products = Product::where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->with('seller')->with('categories')->orderBy('id', 'DESC')->get();
         return view('shop-grid', compact('products'));
     }
 
@@ -34,38 +35,41 @@ class HomeController extends Controller
     public function searchProduct(Request $request)
     {
         $idCategory = $request->category;
-        if($idCategory != 0){
-            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->where('name','LIKE','%'.$request->product.'%')->whereHas('categories', function ($query) use ($idCategory) {
+        if ($idCategory != 0) {
+            $products = Product::where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->where('name', 'LIKE', '%' . $request->product . '%')->whereHas('categories', function ($query) use ($idCategory) {
                 return $query->where('product_category_id', '=', $idCategory);
             })->paginate(12);
-        }else{
-            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->where('name','LIKE','%'.$request->product.'%')->with('categories')->paginate(12);
+        } else {
+            $products = Product::where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->where('name', 'LIKE', '%' . $request->product . '%')->with('categories')->paginate(12);
         }
         return view('shop-grid', compact('products'));
     }
 
-    public function getProductsByCategory(Request $request){
-        if($request->category == 0){
+    public function getProductsByCategory(Request $request)
+    {
+        if ($request->category == 0) {
             $category = false;
-            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('categories')->paginate(12);
-        }else{
-            $category = ProductCategory::where('id','=',$request->category)->with('products')->first();
+            $products = Product::where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->with('categories')->paginate(12);
+        } else {
+            $category = ProductCategory::where('id', '=', $request->category)->with('products')->first();
         }
-        $products = ($category)?$category->products:$products;
-       
-        return view('shop-grid',compact('products'));
+        $products = ($category) ? $category->products : $products;
+
+        return view('shop-grid', compact('products'));
     }
 
-    public function getSeller(Request $request){
-        $seller         = Seller::where('id','=',$request->id)->with('seller_category')->with('company')->first();
-        $products       = Product::where('seller_id','=',$request->id)->where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->get();
-        $countProduct   = Product::where('seller_id','=',$request->id)->where('parent_id','=',null)->where('status','=','1')->where('is_approved','=','1')->get()->count();
-        return view('vendor',compact('seller','products','countProduct'));
+    public function getSeller(Request $request)
+    {
+        $seller         = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
+        $products       = Product::where('seller_id', '=', $request->id)->where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->get();
+        $countProduct   = Product::where('seller_id', '=', $request->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
+        return view('vendor', compact('seller', 'products', 'countProduct'));
     }
 
-    public function getFaq(){
-        $faqs = FaqAnswer::where('status','=','1')->with('faq_topic')->get();
+    public function getFaq()
+    {
+        $faqs = FaqAnswer::where('status', '=', '1')->with('faq_topic')->get();
         $faqTopic = FaqTopic::get();
-        return view('faq',compact('faqs','faqTopic'));
+        return view('faq', compact('faqs', 'faqTopic'));
     }
 }
