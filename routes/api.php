@@ -58,5 +58,14 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.products.store');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
+
+    // Product CLass
+    Route::post('/product-classes', 'Api\v1\ProductClassController@store')
+        ->middleware(['auth.jwt', 'permission:productclass.create'])
+        ->name('api.product-classes.store');
+    Route::get('/product-classes/{id}', 'Api\v1\ProductClassController@show')
+        ->name('api.product-classes.show');
+    Route::get('/product-classes', 'Api\v1\ProductClassController@all')
+        ->name('api.product-classes.all');
 });
 

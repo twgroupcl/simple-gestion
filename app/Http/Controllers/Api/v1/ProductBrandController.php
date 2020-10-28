@@ -20,6 +20,7 @@ class ProductBrandController extends Controller
 
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
+            'status' => 'boolean',
         ]);
       
         if ($validator->fails()) {
@@ -34,6 +35,7 @@ class ProductBrandController extends Controller
                 'name' => $request['name'],
                 'slug' => $request['slug'] ?? Str::slug($request['name']),
                 'code' => $request['code'],
+                'status' => $request['status'] ?? 1,
                 'company_id' => $user->companies->first()->id,
             ]);
         } catch(\Illuminate\Database\QueryException $exception) {
