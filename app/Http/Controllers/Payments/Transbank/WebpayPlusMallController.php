@@ -261,6 +261,6 @@ class WebpayPlusMallController extends Controller
             'order' => $order
         ];
         $pdf = PDF::loadView('order.pdf_order', $data);
-        //return $pdf->download('order_' . $orderId . '.pdf');
+        return $pdf->download('order_' . $orderId . '.pdf');
     }
 }
