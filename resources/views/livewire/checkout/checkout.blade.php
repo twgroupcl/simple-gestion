@@ -81,18 +81,19 @@
                 </div>
                 <!-- Navigation (desktop)-->
                 <div class="d-none d-lg-flex pt-4 mt-3">
-                    <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
+                    <div class="w-50 pr-3"><button class="btn btn-secondary btn-block" wire:click="prevStep()"><i
                                 class="czi-arrow-left mt-sm-0 mr-1"></i><span
                                 class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
-                                class="d-inline d-sm-none">Anterior</span></a></div>
+                                class="d-inline d-sm-none">Anterior</span></button></div>
                     @if (!empty($activeStep['next-button']))
-                        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click="nextStep()"><span
+                        <div class="w-50 pl-2"><button class="btn btn-primary btn-block" @if($loading) disabled @endif wire:click="nextStep()" ><span
                                     class="d-none d-sm-inline">
-
-                                        <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"  wire:loading></span>
+                                    @if($loading)
+                                        <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" ></span>
+                                    @endif
                                                                        {{ $activeStep['next-button'] }}</span><span
                                     class="d-inline d-sm-none">Siguiente</span><i
-                                    class="czi-arrow-right mt-sm-0 ml-1"></i></a>
+                                    class="czi-arrow-right mt-sm-0 ml-1"></i></button>
                         </div>
                     @endif
                 </div>
@@ -103,7 +104,7 @@
                 <hr class="d-lg-none">
                 <div class="cz-sidebar-static h-100 ml-auto border-left">
                     <div class="widget mb-3">
-                        <h2 class="widget-title text-center">Resúmen del pedido</h2>
+                        <h2 class="widget-title text-center">Resumen del pedido</h2>
                         <ul class="list-unstyled font-size-sm pt-3 pb-2 border-bottom">
                             <li class="d-flex justify-content-between align-items-center"><span
                                     class="mr-2">Subtotal:</span><span class="text-right">
