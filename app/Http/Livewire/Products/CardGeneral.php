@@ -13,18 +13,27 @@ class CardGeneral extends Component
     protected $paginationTheme = 'bootstrap';
     public $rows;
     public $elementsByRow;
+    public $columnLg;
+    public $columnMd;
+    public $columnSm;
     public $paginateBy;
-
+    public $showPaginate;
+    
     public function render()
     {
         return view('livewire.products.card-general', [
-            'productos' => ModelsProduct::where('status','=','1')->where('parent_id','=', null)->where('is_approved','=','1')->with('categories')->orderBy('id','DESC')->paginate($this->paginateBy),
+            'productos' => $this->getProducts()
         ]);
     }
 
-    public function mount($rows,$elementsByRow){
-        $this->rows = $rows;
-        $this->elementsByRow = $elementsByRow;
+    public function mount($paginateBy,$showPaginate,$columnLg = null){
+        $this->paginateBy = $paginateBy;
+        $this->columnLg = $columnLg;
+        $this->showPaginate = $showPaginate;
+    }
+
+    public function getProducts(){
+        return ModelsProduct::where('status','=','1')->where('parent_id','=', null)->where('is_approved','=','1')->with('categories')->orderBy('id','DESC')->paginate($this->paginateBy);
     }
 
     public function paginationView()

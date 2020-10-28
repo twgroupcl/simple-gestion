@@ -18,17 +18,17 @@
             @if ($product->children()->count())
                 <div class="product-price">
                     <span class="text-accent">
-                        {{ currencyFormat($product->getPriceRange()[0], \Setting::get('default_currency'), true) }}
-                        - {{ currencyFormat($product->getPriceRange()[1], Setting::get('default_currency'), true) }}
+                        {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
+                        - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
                     </span>
                 </div>
             @else
                 <div class="product-price">
                     @if($product->special_price)
-                        <span class="text-accent">{{ currencyFormat($product->special_price, Setting::get('default_currency'), true) }}</span>
-                        <del class="font-size-sm text-muted"><small>{{ currencyFormat($product->price,Setting::get('default_currency'), true) }}</small></del>
+                        <span class="text-accent">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
+                        <del class="font-size-sm text-muted"><small>{{ currencyFormat($product->price, defaultCurrency(), true) }}</small></del>
                     @else
-                        <span class="text-accent">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</span>
+                        <span class="text-accent">{{ currencyFormat($product->price, defaultCurrency(), true) }}</span>
                     @endif
 
                 </div>

@@ -23,8 +23,10 @@ Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer
 Route::post('/customer/register', 'Frontend\CustomerController@store')->name('customer.frontend.store');
 Route::post('/customer/login', 'Frontend\CustomerController@authenticate')->name('customer.frontend.login');
 Route::post('/customer/logout', 'Frontend\CustomerController@logout')->name('logout');
-Route::get('/customer/forget', 'Frontend\CustomerController@forget')->name('customer.forget');
+Route::get('/customer/forget', 'Frontend\CustomerController@forget')->middleware(['guest'])->name('customer.forget');
 Route::post('/customer/recovery', 'Frontend\CustomerController@recovery')->name('customer.frontend.recovery');
+Route::post('/customer/reset', 'Frontend\CustomerController@updatePassword')->name('password.update');
+Route::get('/customer/reset/{token}', 'Frontend\CustomerController@reset')->name('password.reset');
 Route::get('/customer/exit', 'Frontend\CustomerController@logout')->name('exit');
 
 Route::middleware(['auth'])->group(function () {
@@ -49,6 +51,19 @@ Route::get('/shop-list/', function () {
 });
 Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
+Route::get('/faq', 'Frontend\HomeController@getFaq');
+Route::get('/faq-single', function () { 
+    return view('faq-single');
+});
+Route::get('/faq-request', function () { 
+    return view('faq-request');
+});
+Route::get('/privacy', function () { 
+    return view('privacy');
+});
+Route::get('/terms-conditions', function () { 
+    return view('terms-conditions');
+});
 
 //Auth::routes();
 Route::redirect('/login', '/customer/login')->name('login');

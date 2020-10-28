@@ -40,6 +40,7 @@ class CreateQuotationItemsTable extends Migration
             $table->decimal('tax_amount', 12, 4)->nullable();
             $table->decimal('tax_total', 12, 4)->nullable();
             $table->decimal('total', 12, 4)->nullable();
+            $table->boolean('is_custom')->default(false);
             $table->string('item_status')->nullable();
             $table->longText('json_value')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();

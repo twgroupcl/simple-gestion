@@ -2,15 +2,17 @@
 
 namespace App\Providers;
 
-use App\Models\Order;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Customer;
+use App\Models\Quotation;
+use App\Observers\ProductObserver;
+use App\Observers\CustomerObserver;
+use App\Observers\QuotationObserver;
+use App\Models\Order;
 use App\Models\OrderItem;
 use App\Observers\OrderObserver;
 use App\Observers\SellerObserver;
-use App\Observers\ProductObserver;
-use App\Observers\CustomerObserver;
 use App\Observers\OrderItemObserver;
 use App\Models\ProductClassAttribute;
 use Illuminate\Support\ServiceProvider;
@@ -42,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         Customer::observe(CustomerObserver::class);
         ProductClassAttribute::observe(ProductClassAttributeObserver::class);
         Product::observe(ProductObserver::class);
+        Quotation::observe(QuotationObserver::class);
         Order::observe(OrderObserver::class);
         OrderItem::observe(OrderItemObserver::class);
 

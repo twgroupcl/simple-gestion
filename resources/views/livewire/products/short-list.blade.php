@@ -7,11 +7,11 @@
                     @if ($product->children()->count())
                     <div class="product-price">
                         <span class="text-accent">
-                            {{currencyFormat($product->getPriceRange()[0], \Setting::get('default_currency'), true)}} - {{currencyFormat($product->getPriceRange()[1], Setting::get('default_currency'), true)}}
+                            {{currencyFormat($product->getPriceRange()[0], defaultCurrency(), true)}} - {{currencyFormat($product->getPriceRange()[1], defaultCurrency(), true)}}
                         </span>
                     </div>
-                    @else 
-                    <div class="product-price"><span class="text-accent">{{ currencyFormat($product->price, Setting::get('default_currency'), true) }}</span></div>
+                    @else
+                    <div class="product-price"><span class="text-accent">{{ currencyFormat($product->price, defaultCurrency(), true) }}</span></div>
                     @endif
                 </div>
             </div>
