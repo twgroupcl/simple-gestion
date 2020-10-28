@@ -82,7 +82,7 @@ class CustomerController extends Controller
         Mail::send('vendor.maileclipse.templates.resetPassword', ['token' => $token], function ($message) use ($request) {
             $message->from('no-reply@twgroup.cl');
             $message->to($request->email);
-            $message->subject('Reset Password Notification');
+            $message->subject('Notificación de cambio de contraseña');
         });
 
         return view('customer.recovery')->with('success', '¡Hemos enviado un email con el enlace de restablecimiento de contraseña!');
