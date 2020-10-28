@@ -17,10 +17,12 @@ use Illuminate\Http\Request;
 use Transbank\Webpay\Webpay;
 use App\Models\PaymentMethod;
 use Barryvdh\DomPDF\Facade as PDF;
+use App\Models\PaymentMethodSeller;
 use Transbank\Webpay\Configuration;
 use App\Http\Controllers\Controller;
+use App\Mail\OrderUpdated;
+use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentMethodBusiness;
-use App\Models\PaymentMethodSeller;
 
 class WebpayPlusMallController extends Controller
 {
@@ -128,7 +130,7 @@ class WebpayPlusMallController extends Controller
         }
 
 
-       // $order->total = $amountTotal;
+        // $order->total = $amountTotal;
 
         //$order->save();
 
@@ -202,7 +204,7 @@ class WebpayPlusMallController extends Controller
 
 
         $order = Order::where('id', $this->orderId)->first();
-        $order->status = 2 ; //paid
+        $order->status = 2; //paid
         $order->update();
         $finalresult = false;
         if (is_array($result->detailOutput)) {
@@ -228,6 +230,16 @@ class WebpayPlusMallController extends Controller
             }
         }
         if ($finalresult) {
+            // $order = Order::where('id', $orderId)->first();
+            $sellers = $order->getSellers();
+            //Order to customer
+            Mail::to($order->email)->send(new OrderUpdated($order, 1, null));
+            //Order to seller
+            foreach ($sellers as $seller) {
+                Mail::to($seller->email)->send(new OrderUpdated($order, 2, $seller));
+            }
+            //Order to admin
+
             return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
         } else {
             return view('payments.transbank.webpay.mall.failed', compact('result', 'order'));
@@ -237,10 +249,18 @@ class WebpayPlusMallController extends Controller
     public function download($orderId)
     {
         $order = Order::where('id', $orderId)->first();
+        // $sellers = $order->getSellers();
+        // //Order to customer
+        // Mail::to($order->email)->send(new OrderUpdated($order,1,null));
+        // //Order to seller
+        // foreach($sellers as $seller){
+        //     Mail::to($seller->email)->send(new OrderUpdated($order,2,$seller));
+        // }
+        // //Order to admin
         $data = [
-            'order'=>$order
+            'order' => $order
         ];
         $pdf = PDF::loadView('order.pdf_order', $data);
-         return $pdf->download('order_' . $orderId . '.pdf');
+        //return $pdf->download('order_' . $orderId . '.pdf');
     }
 }
