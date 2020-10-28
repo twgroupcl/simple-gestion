@@ -54,6 +54,7 @@ class ProductCategoryController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $productCategory,
+            'message' => 'Marca de producto creada exitosamente',
         ], 200);
 
     }
@@ -64,7 +65,7 @@ class ProductCategoryController extends Controller
 
         if (!$productCategory) return response()->json([ 
             'status' => 'error', 
-            'message' => 'The product category no exists'
+            'message' => 'La categoria indicada no existe'
         ],  404);
 
         

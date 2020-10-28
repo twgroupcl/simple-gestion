@@ -36,20 +36,27 @@ Route::group([ 'prefix' => '/v1'], function() {
     // Product Brand
     Route::post('/product-brands', 'Api\v1\ProductBrandController@store')
         ->middleware(['auth.jwt', 'permission:productbrand.create'])
-        ->name('api.product-brand.post');
+        ->name('api.product-product.store');
     Route::get('/product-brands/{id}', 'Api\v1\ProductBrandController@show')
-        ->name('api.brand.show');
+        ->name('api.product-brands.show');
     Route::get('/product-brands', 'Api\v1\ProductBrandController@all')
-        ->name('api.brand.all');
+        ->name('api.product-brands.all');
 
 
     // Product Category
     Route::post('/product-categories', 'Api\v1\ProductCategoryController@store')
         ->middleware(['auth.jwt', 'permission:productcategory.create'])
-        ->name('api.product-category.post');
+        ->name('api.product-categories.store');
     Route::get('/product-categories/{id}', 'Api\v1\ProductCategoryController@show')
-        ->name('api.product-category.show');
+        ->name('api.product-categories.show');
     Route::get('/product-categories', 'Api\v1\ProductCategoryController@all')
-        ->name('api.product-category.all');
+        ->name('api.product-categories.all');
+
+    // Product
+    Route::post('/products', 'Api\v1\ProductController@store')
+        ->middleware(['auth.jwt', 'permission:product.create'])
+        ->name('api.products.store');
+    Route::get('/products/{id}', 'Api\v1\ProductController@show')
+        ->name('api.products.show');
 });
 

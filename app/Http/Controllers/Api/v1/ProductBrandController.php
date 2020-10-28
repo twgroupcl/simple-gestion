@@ -46,6 +46,7 @@ class ProductBrandController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $brand,
+            'message' => 'Marca de producto creada exitosamente',
         ], 200);
 
     }
@@ -56,7 +57,7 @@ class ProductBrandController extends Controller
 
         if (!$productBrand) return response()->json([ 
             'status' => 'error', 
-            'message' => 'The product brand no exists'
+            'message' => 'La marca de producto no existe'
         ],  404);
 
         
