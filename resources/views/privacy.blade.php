@@ -22,8 +22,8 @@
 </div>
 <!-- Page Content-->
 <div class="container py-5 mt-md-2 mb-2">
-    <div class="row" style="margin-top: 15em !important;">
-        
+    <div class="row">
+        <embed src="{{ url('pdf/POLITICAS_DE_PRIVACIDAD_CONTIGOPYME_CRCP.pdf') }}" type="application/pdf" width="100%" height="600px" />
     </div>
 </div>
 @endsection
