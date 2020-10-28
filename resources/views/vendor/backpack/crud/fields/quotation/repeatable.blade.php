@@ -210,7 +210,7 @@
             initializeFieldsWithJavascript(container_holder);
             
             // Function to add custom listeners to the checkbox field
-            var repetibleContainer = $('div[data-repeatable-holder="quotation_items_json"]')    
+            var repetibleContainer = $('div[data-repeatable-holder="items_data"]')    
             repeatables(repetibleContainer)
 
             // Show and hide corresponding fields when the repeatabla is loading old data
@@ -220,12 +220,14 @@
     
     function repeatables(element) {
         let lastRepetibleItem = element.children('div[data-repeatable-identifier]').last()
-        let checkboxField = $(lastRepetibleItem).find(".checkbox-is-custom")
+        let checkboxCustomField = $(lastRepetibleItem).find(".checkbox-is-custom")
+        let checkboxDescriptionField = $(lastRepetibleItem).find(".checkbox-edit-description")
         
-        addListenerToCheckbox(checkboxField)
+        addListenerToCheckboxCustom(checkboxCustomField)
+        addListenerToCheckboxDescription(checkboxDescriptionField)
     }
 
-    function addListenerToCheckbox(element) {
+    function addListenerToCheckboxCustom(element) {
         // Add click listeners to hide/show related fields to the checkbox
         element.click(function () {
             if (element.prop('checked')) {
@@ -242,19 +244,33 @@
         })
     }
 
+    function addListenerToCheckboxDescription(element) {
+        // Add click listeners to hide/show related fields to the checkbox
+        element.click(function () {
+            if (element.prop('checked')) {
+                element.parent().parent().siblings('.custom-description').show()                
+            } else {
+                element.parent().parent().siblings('.custom-description').hide()  
+            }
+        })
+    }
+
     function initialize() {
-        let repetibleContainer = $('div[data-repeatable-holder="quotation_items_json"]')
+        let repetibleContainer = $('div[data-repeatable-holder="items_data"]')
         let repetibleItems = repetibleContainer.children('div[data-repeatable-identifier]')
 
         $(repetibleItems).each( function() {
-            let element = $(this).find(".checkbox-is-custom")
+            let isCustomCheckbox = $(this).find(".checkbox-is-custom")
+            let editDescriptionCheckbox = $(this).find('.checkbox-edit-description')
 
-            if (element.prop('checked')) {
-                element.parent().parent().siblings('.custom-product-name').show()
-                element.parent().parent().siblings('.product-select').hide()
+            editDescriptionCheckbox.prop('checked', false)
+            
+            if (isCustomCheckbox.prop('checked')) {
+                isCustomCheckbox.parent().parent().siblings('.custom-product-name').show()
+                isCustomCheckbox.parent().parent().siblings('.product-select').hide()
             } else {
-                element.parent().parent().siblings('.custom-product-name').hide()
-                element.parent().parent().siblings('.product-select').show()
+                isCustomCheckbox.parent().parent().siblings('.custom-product-name').hide()
+                isCustomCheckbox.parent().parent().siblings('.product-select').show()
             }
         })
     }

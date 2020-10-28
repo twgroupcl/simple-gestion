@@ -55,6 +55,7 @@ Route::group([
     Route::crud('shippingmethod', 'ShippingMethodCrudController');
     Route::crud('paymentmethod', 'PaymentMethodCrudController');
     Route::crud('quotation', 'QuotationCrudController');
+    Route::get('quotation/{id}/export', 'QuotationCrudController@exportPDF');
     Route::post('quotation/addresses', 'QuotationCrudController@addresses');
 
     //CHART routes
@@ -65,7 +66,9 @@ Route::group([
      // API routes
      Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
      Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
+     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
 }); // this should be the absolute last line of this file
+

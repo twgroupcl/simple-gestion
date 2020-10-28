@@ -71,7 +71,7 @@
                             <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">{{ $order->id }}</a></td>
                             <td class="py-3">{{ $order->created_at->format('d-m-Y') }}</td>
                             <td class="py-3"><span class="badge badge-{{ array_key_exists($order->order_status, $badge) ? $badge[$order->order_status]: 'secondary' }} m-0">{{ $order->order_status ?? 'Pendiente' }}</span></td>
-                            <td class="py-3">{{ currencyFormat($order->total, 'CLP', true) }}</td>
+                            <td class="py-3">{{ currencyFormat($order->total ?? 0, 'CLP', true) }}</td>
                         </tr>
                         @empty
                         <tr>

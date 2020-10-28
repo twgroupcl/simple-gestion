@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Customer;
 use App\Models\Quotation;
 use Illuminate\Http\Request;
+use App\Cruds\BaseCrudFields;
 use App\Models\CustomerAddress;
 use App\Http\Requests\QuotationRequest;
+use App\Http\Requests\QuotationCreateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -46,24 +49,20 @@ class QuotationCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        //CRUD::setFromDb(); // columns
+        // Export PDF option
+        $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+        CRUD::addColumn([
+            'label' => '#',
+            'name' => 'id',
+            'type' => 'number',
+        ]);
 
         CRUD::addColumn([
             'label' => 'Fecha cotización',
             'name' => 'quotation_date',
             'type' => 'date',
-        ]);
-
-        CRUD::addColumn([
-            'label' => '#',
-            'name' => 'code',
-            'type' => 'number',
+            'format' => 'L'
         ]);
 
         CRUD::addColumn([
@@ -106,6 +105,7 @@ class QuotationCrudController extends CrudController
             'label' => 'Fecha expiración',
             'name' => 'expiry_date',
             'type' => 'date',
+            'format' => 'L'
         ]);
     }
 
@@ -117,15 +117,11 @@ class QuotationCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(QuotationRequest::class);
+        CRUD::setValidation(QuotationCreateRequest::class);
 
-        //CRUD::setFromDb(); // fields
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+        $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'current_tab', 'save_action']);
 
         CRUD::addField([
             'label' => 'Cliente',
@@ -181,7 +177,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Fecha cotización',
-            'name' => 'creation_date',
+            'name' => 'quotation_date',
             'type' => 'date',
             'default' => date("Y-m-d"),
             'wrapper' => [
@@ -192,7 +188,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Fecha expiración',
-            'name' => 'due_date',
+            'name' => 'expiry_date',
             'type' => 'date',
             'wrapper' => [
                 'class' => 'form-group col-md-3',
@@ -241,21 +237,21 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Productos o servicios',
-            'name' => 'quotation_items_json',
+            'name' => 'items_data',
             'type' => 'quotation.repeatable',
             'new_item_label' => 'Agregar producto / servicio',
             'fields' => [
                 [
                     'label' => 'Producto / Servicio',
                     'name' => 'product_id',
-                    'type' => 'quotation.select2_from_ajax',
+                    'type' => 'quotation.select2_custom',
                     'model' => 'App\Models\Product',
                     'placeholder' => 'Selecciona un producto',
                     'attribute' => 'name',
-                    'data_source' => url('admin/api/products/getByBusiness'),
+                    'data_source' => url('admin/api/products/getBySeller'),
                     'minimum_input_length' => 0,
                     'include_all_form_fields'  => true,
-                    'dependencies'  => ['business_id'],
+                    'dependencies'  => ['seller_id'],
                     'wrapper' => [
                         'class' => 'form-group col-md-3 product-select',
                     ],
@@ -310,7 +306,7 @@ class QuotationCrudController extends CrudController
                 ],
                 [
                     'label' => 'Impuesto',
-                    'name' => 'tax_id',
+                    'name' => 'additional_tax_id',
                     'type' => 'select2_from_array',
                     'atributte' => 'name',
                     'options' => array_merge([0 => 'No aplica'] , Tax::all()->map( function($item) {
@@ -343,6 +339,7 @@ class QuotationCrudController extends CrudController
                     'type' => 'textarea',
                     'wrapper' => [
                         'class' => 'col-md-12 custom-description',
+                        'style' => 'display:none',
                     ],
                 ],
                 [
@@ -351,13 +348,27 @@ class QuotationCrudController extends CrudController
                     'type' => 'checkbox',
                     'attributes' => [
                         'class' => 'checkbox-is-custom',
-                    ]
+                    ],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-3',
+                    ],
+                ],
+                [
+                    'label' => 'Editar descripción',
+                    'name' => 'edit_description',
+                    'type' => 'checkbox',
+                    'attributes' => [
+                        'class' => 'checkbox-edit-description',
+                    ],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-2',
+                    ],
                 ],
 
                 // Hidden inputs
                 [
                     'label' => 'tax_amount',
-                    'name' => 'tax_amount',
+                    'name' => 'additional_tax_amount',
                     'type' => 'hidden',
                     'attributes' => [
                         'class' => 'tax_amount_item'
@@ -373,7 +384,7 @@ class QuotationCrudController extends CrudController
                 ],
                 [
                     'label' => 'tax_total',
-                    'name' => 'tax_total',
+                    'name' => 'additional_tax_total',
                     'type' => 'hidden',
                     'attributes' => [
                         'class' => 'tax_total_item'
@@ -510,5 +521,31 @@ class QuotationCrudController extends CrudController
         $customer = Customer::where('id', $form['customer_id'])->first();
 
         return $customer->addresses()->paginate(100);
+    }
+
+    public function exportPDF($id) {
+
+        $quotation = Quotation::findOrFail($id);
+
+         /* return view('templates.quotations.export_pdf', [
+            'quotation' => $quotation,
+            'due_date' => new Carbon($quotation->expiry_date),
+            'creation_date'=> new Carbon($quotation->quotation_date),
+            'title' => 'Cotizacion',
+            'now' => New Carbon(),
+        ]);   */
+
+        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('templates.quotations.export_pdf', [
+            'quotation' => $quotation,
+            'due_date' => new Carbon($quotation->expiry_date),
+            'creation_date'=> new Carbon($quotation->quotation_date),
+            'title' => $quotation->title,
+            'now' => New Carbon(),
+        ]);
+
+        //$pdf->getDomPDF()->set_option('enable_php', true);
+        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+
+        return $pdf->stream('invoice.pdf');
     }
 }
