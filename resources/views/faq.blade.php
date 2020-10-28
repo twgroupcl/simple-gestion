@@ -8,20 +8,20 @@
     <div class="bg-overlay-content container py-4 my-3">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <h1 class="text-light text-center">How can we help?</h1>
-                <p class="pb-3 text-light text-center">Ask Questions. Browse Topics. Find Answers.</p>
+                <h1 class="text-light text-center">¿Cómo te podemos ayudar?</h1>
+                <p class="pb-3 text-light text-center">Hacer preguntas. Explorar temas. Encontrar respuestas.</p>
                 <div class="input-group-overlay input-group-lg mb-3">
                     <div class="input-group-prepend-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
-                    <input class="form-control prepended-form-control" type="search" placeholder="Ask your question...">
+                    <input class="form-control prepended-form-control" type="search" placeholder="Haz tu pregunta...">
                 </div>
-                <div class="font-size-sm"><span class="text-light opacity-50 mr-1">Suggestions:</span><a class="nav-link-style nav-link-light mr-1 pb-1 border-bottom border-light" href="#"> Dashboard,</a><a class="nav-link-style nav-link-light mr-1 pb-1 border-bottom border-light" href="#">Payment,</a><a class="nav-link-style nav-link-light mr-1 pb-1 border-bottom border-light" href="#"> Refunds,</a><a class="nav-link-style nav-link-light mr-1 pb-1 border-bottom border-light" href="#"> Delivery</a></div>
+                <div class="font-size-sm"><span class="text-light opacity-50 mr-1">Sugerencias:</span><a class="nav-link-style nav-link-light mr-1 pb-1 border-bottom border-light" href="#"> Envíos</a></div>
             </div>
         </div>
     </div>
 </section>
 <!-- Topics grid-->
 <section class="container py-3">
-    <h2 class="h3 text-center">Select a topic</h2>
+    <h2 class="h3 text-center">Selecciona un tema</h2>
     <div class="row pt-4">
         <div class="col-lg-4 col-sm-6 mb-grid-gutter"><a class="card border-0 box-shadow" href="help-single-topic.html">
                 <div class="card-body text-center"><i class="czi-user-circle h2 mt-2 mb-4 text-primary"></i>
@@ -92,8 +92,10 @@
     </div>
 </section>
 <!-- Submit request-->
-<section class="container text-center pt-1 pb-5 mb-2">
-    <h2 class="h4 pb-3">Haven't found the answer? We can help.</h2><i class="czi-help h3 text-primary d-block mb-4"></i><a class="btn btn-primary" href="help-submit-request.html">Submit a request</a>
-    <p class="font-size-sm pt-4">Contact us and we’ll get back to you as soon as possible.</p>
-</section>
+<!--
+    <section class="container text-center pt-1 pb-5 mb-2">
+        <h2 class="h4 pb-3">Haven't found the answer? We can help.</h2><i class="czi-help h3 text-primary d-block mb-4"></i><a class="btn btn-primary" href="help-submit-request.html">Submit a request</a>
+        <p class="font-size-sm pt-4">Contact us and we’ll get back to you as soon as possible.</p>
+    </section>
+-->
 @endsection

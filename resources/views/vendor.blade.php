@@ -36,8 +36,6 @@
             <!-- Sidebar-->
             <aside class="col-lg-4">
                 <div class="cz-sidebar-static h-100 border-right">
-                    <h6>Compañía</h6>
-                    <p class="font-size-ms text-muted">{{$seller->company->name}}</p>
                     <h6>Categoría</h6>
                     <p class="font-size-ms text-muted">{{$seller->seller_category->name}}</p>
                     <h6>Acerca de la tienda</h6>
@@ -137,10 +135,10 @@
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" id="policy">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title title-policy">Políticas</h5>
+        <h5 class="modal-title title-policy"></h5>
       </div>
       <div class="modal-body">
         <div class="d-none privacy_policy policy-text">

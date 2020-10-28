@@ -33,7 +33,7 @@ $(function(){
             "return_policy": 'Políticas de Devolución',
         } 
         $('.'+element).removeClass('d-none')
-        //$('.title-policy').text(titleModal.shipping_policy)
+        $('.title-policy').text(titleModal[element])
     });
     $('body').on('click','.btn-close-modal', function(){
         $('.policy-text').addClass('d-none')
