@@ -245,6 +245,7 @@ class Checkout extends Component
             $orderitem->shipping_id = $item->shipping_id;
             $orderitem->shipping_total = $item->shipping_total;
             $orderitem->sub_total = $item->price * $item->qty;
+            $orderitem->total = ($item->price * $item->qty) + $item->shipping_total;
             $orderitem->save();
             $shippingtotal_order +=  $item->shipping_total * $item->qty;
             $subtotal_order += $item->price * $item->qty;
