@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ProductRequest;
 use Backpack\Settings\app\Models\Setting;
@@ -968,5 +969,37 @@ class ProductCrudController extends CrudController
             $formattedOptions[$option['option_name']] = $option['option_name'];
         }
         return $formattedOptions;
+    }
+
+    /**
+     * Get and filter a list of configurable attributes depending of the product class
+     * 
+     */
+    public function getProductBySeller(Request $request) {
+        $search_term = $request->input('q');
+        $form = collect($request->input('form'))->pluck('value', 'name');
+        $options = Product::query();
+
+        if ($request->has('keys')) { 
+            return Product::findMany($request->input('keys'));
+        }
+
+        // if there is not product class selected, return empty
+        if (! $form['seller_id']) {
+            return [];
+        }
+
+        // find attributes that are configurable and belong to the product class
+        if ($form['seller_id']) {
+            $options = $options->where('seller_id', $form['seller_id'])->where('price', '!=', 'null')->orderBy('name');
+        }
+
+        // filter by search term
+        if ($search_term) {
+            $results = $options->whereRaw('LOWER(name) like ?', '%'.strtolower($search_term).'%')->paginate(10);
+        } else {
+            $results = $options->paginate(10);
+        }
+        return $options->paginate(10);
     }
 }

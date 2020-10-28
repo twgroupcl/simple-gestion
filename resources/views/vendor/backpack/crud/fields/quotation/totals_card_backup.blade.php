@@ -10,10 +10,7 @@
                     <div>
                         <h6 class="my-0">Subtotal base</h6>
                     </div>
-                    <div>
-                        <span class="text-muted">$</span>
-                        <span id="subtotal-card" class="text-muted subtotal">0</span>
-                    </div>
+                    <span id="subtotal-card" class="text-muted subtotal">$0</span>
                     <input type="hidden" name="sub_total">
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -41,50 +38,41 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Descuento global</h6>
+                        <h6 class="my-0">Descuento acumulado</h6>
                     </div>
                     <div>
-                        <span class="text-muted">-$</span>
-                        <span id="total-discount-field" class="text-muted">0</span>
+                        <span class="text-muted">-</span>
+                        <span id="total-discount-field" class="text-muted">$0</span>
                     </div>
                 </li> 
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">Neto</h6>
                     </div>
-                    <div>
-                        <span class="text-muted">$</span>
-                        <span id="net-card" class="text-muted net">0</span>
-                    </div>
+                    <span id="net-card" class="text-muted net">$0</span>
                     <input type="hidden" name="net">
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">Impuestos adicionales</h6>
                     </div>
-                    <div>
-                        <span class="text-muted">$</span>
-                        <span id="total-tax-additional" class="text-muted">$0</span>
-                    </div>
+                    <span id="total-tax-additional" class="text-muted">$0</span>
                     <input type="hidden" name="tax_specific">
                 </li> 
-                <li id="iva-container" class="list-group-item d-flex justify-content-between lh-condensed">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">IVA (19%)</h6>
+                        <h6 class="my-0">Impuestos</h6>
                     </div>
-                    <div>
-                        <span class="text-muted">$</span>
-                        <span id="amount-tax-field" class="text-muted">$0</span>
-                    </div>
+                    <span id="amount-tax-field" class="text-muted">$0</span>
                     <input type="hidden" name="tax_amount">
                 </li> 
-                <li id="retencion-container" class="list-group-item d-flex justify-content-between lh-condensed">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0">Retención (10.75%)</h6>
+                        <h6 class="my-0">Retención</h6>
                     </div>
                     <div>
-                        <span class="text-muted">-$</span>
-                        <span id="retencion-field" class="text-muted retencion">0</span>
+                        <span class="text-muted">-</span>
+                        <span id="retencion-field" class="text-muted retencion">$0</span>
                     </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
@@ -181,10 +169,7 @@
             let globalDiscount = calculateGlobalDiscount(itemSubTotal - itemDiscount)
             totalDiscount = itemDiscount + globalDiscount
 
-            return {
-                itemDiscount,
-                globalDiscount,
-            }
+            return Number(totalDiscount)
         }
 
         function calculateGlobalDiscount(subtotal) {
@@ -202,63 +187,56 @@
             return discount
         }
 
-        function setDiscountFields(globalDiscount) {
+        function setDiscountFields(globalDiscount, totalDiscountItems) {
             let discountType = $('select[name="discount_type"]').val()
             let discountValue = parseDecimal($('input[name="discount_amount_field"]').val())
             let totalDiscount = 0
         
             if (discountType == 'percentage') {
                 $('input[name="discount_percent"]').val(discountValue)
-                $('input[name="discount_amount"]').val(globalDiscount)
+                $('input[name="discount_amount"]').val(0)
             } else {
                 $('input[name="discount_amount"]').val(globalDiscount)
                 $('input[name="discount_percent"]').val(0)
             }
 
-            globalDiscount 
-            document.querySelector('#total-discount-field').innerText = formatWithComma(globalDiscount)
-            //$('input[name="discount_amount"]').val(globalDiscount)
+            totalDiscount = globalDiscount + totalDiscountItems
+            document.querySelector('#total-discount-field').innerText = formatWithComma(totalDiscount)
+            $('input[name="discount_total"]').val(totalDiscount)
         }
 
         function calculateItemsData(items) {
             let subTotalGeneral = 0
             let totalDiscountItems = 0
-            let totalDiscountGlobal = 0
             let totalVaxItem = 0
             let totalVaxGeneral = 0
-            let acumTotalValue = 0
 
 
             $(items).each( function() {
                 let price = parseDecimal($(this).find('.price').val())
-                let discountItem = calculateItemDiscount($(this)).itemDiscount
-                let discountGlobal = calculateItemDiscount($(this)).globalDiscount
+                let discountAmount = calculateItemDiscount($(this))
                 let itemQty = Number($(this).find('.qty').val())
                 let subTotal = $(this).find('.subtotal')
 
-                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
-                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
+                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountAmount)
+                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountAmount)
                 
                 let subTotalValue = (price * itemQty) 
-                let totalValue = ( (price * itemQty) - discountItem)
+                let totalValue = ( (price * itemQty) - discountAmount) + taxAmount
                 
                 subTotal.val(formatWithComma(totalValue))
 
                 subTotalGeneral += subTotalValue
-                acumTotalValue += totalValue
-                totalDiscountItems+= discountItem
-                totalDiscountGlobal += discountGlobal
+                totalDiscountItems+= discountAmount
                 totalVaxItem += taxAmount
                 totalVaxGeneral += taxAmountGeneral
             })
 
             return {
-                totalValue: acumTotalValue,
                 subTotalGeneral,
                 totalDiscountItems,
                 totalVaxItem,
                 totalVaxGeneral,
-                totalDiscountGlobal,
             }
         }
 
@@ -268,40 +246,25 @@
             let items = $('div[data-repeatable-holder="items_data"]').children()
             let itemsData = calculateItemsData(items)
 
-            let subTotalGeneral = itemsData.totalValue
-            
-            let totalDiscountGlobal = itemsData.totalDiscountGlobal
+            let subTotalGeneral = itemsData.subTotalGeneral
+            let totalDiscountItems = itemsData.totalDiscountItems
             let totalVaxItems = itemsData.totalVaxItem
             let totalVaxGeneral = itemsData.totalVaxGeneral
 
             if ($('select[name="tax_type"]').val() === 'H') {
-                $('input[name="tax_amount"]').val( (-1) * totalVaxGeneral)
-                document.querySelector('#retencion-field').innerText = formatWithComma((-1) * totalVaxGeneral);
+                $('input[name="tax_amount"]').val( (-1) * totalVaxItems)
+                document.querySelector('#retencion-field').innerText = formatWithComma(totalVaxGeneral);
                 document.querySelector('#amount-tax-field').innerText = 0
-                $('#iva-container').removeClass('d-flex')
-                $('#iva-container').hide()
-                $('#retencion-container').addClass('d-flex')
-                $('#retencion-container').show()
-            } else if ($('select[name="tax_type"]').val() === 'A'){
-                $('input[name="tax_amount"]').val(totalVaxGeneral)
+            } else {
+                $('input[name="tax_amount"]').val(totalVaxItems)
                 document.querySelector('#amount-tax-field').innerText = formatWithComma(totalVaxGeneral);
                 document.querySelector('#retencion-field').innerText = 0
-                $('#retencion-container').removeClass('d-flex')
-                $('#retencion-container').hide()
-                $('#iva-container').addClass('d-flex')
-                $('#iva-container').show()
-            } else {
-                $('input[name="tax_amount"]').val(0)
-                $('#retencion-container').removeClass('d-flex')
-                $('#retencion-container').hide()
-                $('#iva-container').removeClass('d-flex')
-                $('#iva-container').hide()
             }
 
-            let net = subTotalGeneral - totalDiscountGlobal
-            let total = subTotalGeneral - totalDiscountGlobal + totalVaxItems + totalVaxGeneral
+            let net = subTotalGeneral - totalDiscountItems
+            let total = subTotalGeneral - totalDiscountItems + totalVaxItems + totalVaxGeneral
 
-            setDiscountFields(totalDiscountGlobal)
+            setDiscountFields(0, totalDiscountItems)
 
             $('input[name="tax_specific"]').val(totalVaxItems)
             document.querySelector('#total-tax-additional').innerText = formatWithComma(totalVaxItems);
@@ -316,6 +279,8 @@
             document.querySelector('#total-card').innerText = !isNaN(total) ? formatWithComma(total) : 0; 
         }
 
+
+
         /**********************************************
         *  
         * Functions to format and transform numbers
@@ -327,20 +292,16 @@
                 return 0
             }
             number = number.toString()
-            number = number.replaceAll('.', '')
             number = number.replace(',', '.')
             return parseFloat(number);
         }
 
-
-        // PENDING TEST THIS
         function formatWithComma(number) {
             if (typeof number == 'number') {
                 number = parseFloat(number).toFixed(2);
             }
             number = number.toString()
             number = number.replace('.', ',')
-            number = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             return number;
         }
 
@@ -367,19 +328,11 @@
             calculateTotals();
         });
 
-        $(document).on('click', 'button', function () {
-            calculateTotals();
-        });
-
         $(document).on('keyup', 'input[data-repeatable-input-name="discount"]', function () {
-            let removeDots = $(this).val().replace(/\./g, ',')
-            $(this).val(removeDots)
             calculateTotals();
         });
 
         $(document).on('keyup', 'input[name="discount_amount_field"]', function () {
-            let removeDots = $(this).val().replace(/\./g, ',')
-            $(this).val(removeDots)
             calculateTotals();
         });
 
@@ -406,8 +359,8 @@
         })
     
         $(document).on('change', 'select[data-repeatable-input-name="product_id"]', function () {
-            
-            if ($(this).select2('data')[0] == undefined) {
+
+        if ($(this).select2('data')[0] == undefined) {
                 return;
             }
 
@@ -419,7 +372,9 @@
                 return;
             }
 
-            var currentPrice = parseFloat($(this).select2('data')[0].price).toFixed(0);
+            // Format price of the product
+            var priceWithTwoDigits = parseFloat($(this).select2('data')[0].price).toFixed(2);
+            var currentPrice = formatWithComma(priceWithTwoDigits);
             
             // Set price and qty 
             $(this).parent().parent().find('.price').val(currentPrice);

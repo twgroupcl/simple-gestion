@@ -15,7 +15,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        data-init-function="bpFieldInitSelect2FromAjaxElement"
+        data-init-function="bpFieldInitSelect2FromAjaxElementProduct"
         data-column-nullable="{{ $entity_model::isColumnNullable($field['name'])?'true':'false' }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
         data-placeholder="{{ $field['placeholder'] }}"
@@ -97,7 +97,7 @@
 @push('crud_fields_scripts')
 <script>
 
-    function bpFieldInitSelect2FromAjaxElement(element) {
+    function bpFieldInitSelect2FromAjaxElementProduct(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
         var $minimumInputLength = element.attr('data-minimum-input-length');
