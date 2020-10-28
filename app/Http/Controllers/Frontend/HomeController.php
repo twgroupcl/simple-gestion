@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Frontend;
 use App\User;
 use App\Models\Seller;
 use App\Models\Product;
+use App\Models\FaqTopic;
+use App\Models\FaqAnswer;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
@@ -59,5 +61,11 @@ class HomeController extends Controller
         $products       = Product::where('seller_id','=',$request->id)->where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->get();
         $countProduct   = Product::where('seller_id','=',$request->id)->where('parent_id','=',null)->where('status','=','1')->where('is_approved','=','1')->get()->count();
         return view('vendor',compact('seller','products','countProduct'));
+    }
+
+    public function getFaq(){
+        $faqs = FaqAnswer::where('status','=','1')->with('faq_topic')->get();
+        $faqTopic = FaqTopic::get();
+        return view('faq',compact('faqs','faqTopic'));
     }
 }

@@ -49,14 +49,18 @@ Route::get('/shop-list/', function () {
 });
 Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
-Route::get('/faq', function () {
-    return view('faq');
-});
+Route::get('/faq', 'Frontend\HomeController@getFaq');
 Route::get('/faq-single', function () { 
     return view('faq-single');
 });
 Route::get('/faq-request', function () { 
     return view('faq-request');
+});
+Route::get('/privacy', function () { 
+    return view('privacy');
+});
+Route::get('/terms-conditions', function () { 
+    return view('terms-conditions');
 });
 
 //Auth::routes();

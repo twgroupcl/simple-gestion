@@ -22,9 +22,7 @@ class FaqTopicTableSeeder extends Seeder
                 'icon' => '<i class="czi-user-circle h2 mt-2 mb-4 text-primary"></i>',
                 'slug' => 'faq-topic-1',
                 'created_at' => '2020-10-09 18:57:20',
-                'deleted_at' => NULL,
                 'updated_at' => '2020-10-16 10:18:13',
-                'status' => 1,
             ),
             1 => 
             array (
@@ -34,9 +32,7 @@ class FaqTopicTableSeeder extends Seeder
                 'icon' => '<i class="czi-laptop h2 mt-2 mb-4 text-primary"></i>',
                 'slug' => 'faq-topic-2',
                 'created_at' => '2020-10-09 18:57:20',
-                'deleted_at' => NULL,
                 'updated_at' => '2020-10-16 10:18:13',
-                'status' => 1,
             ),
             2 => 
             array (
@@ -46,33 +42,27 @@ class FaqTopicTableSeeder extends Seeder
                 'icon' => '<i class="czi-card h2 mt-2 mb-4 text-primary"></i>',
                 'slug' => 'faq-topic-3',
                 'created_at' => '2020-10-09 18:57:20',
-                'deleted_at' => NULL,
                 'updated_at' => '2020-10-16 10:18:13',
-                'status' => 1,
             ),
             3 => 
             array (
-                'id' => 3,
+                'id' => 4,
                 'title' => 'Titulo de Faq 4',
                 'description' => 'Descripcion 4',
                 'icon' => '<i class="czi-delivery h2 mt-2 mb-4 text-primary"></i>',
                 'slug' => 'faq-topic-4',
                 'created_at' => '2020-10-09 18:57:20',
-                'deleted_at' => NULL,
                 'updated_at' => '2020-10-16 10:18:13',
-                'status' => 2,
             ),
             4 => 
             array (
-                'id' => 4,
+                'id' => 5,
                 'title' => 'Titulo de Faq 5',
                 'description' => 'Descripcion de faq 5',
                 'icon' => '<i class="czi-currency-exchange h2 mt-2 mb-4 text-primary"></i>',
                 'slug' => 'faq-topic-5',
                 'created_at' => '2020-10-09 18:57:20',
-                'deleted_at' => NULL,
                 'updated_at' => '2020-10-16 10:18:13',
-                'status' => 1,
             ),
         ));
     }
