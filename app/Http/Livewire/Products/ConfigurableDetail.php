@@ -19,24 +19,18 @@ class ConfigurableDetail extends Component
         return view('livewire.products.configurable-detail');
     }
 
-    public function testFunction() {
-        Debugbar::log($this->options);
-    }
-
     public function mount($product)
     {
         $this->parentProduct = $product;
         $this->currentProduct = $product;
-        
+
         $this->getPriceFrom();
         $this->getInitialOptions();
         $this->setCorrectOption();
-
-        Debugbar::log('Componente motando');
     }
 
 
-    public function getInitialOptions() 
+    public function getInitialOptions()
     {
         foreach($this->parentProduct->super_attributes as $key => $super_attribute) {
 
@@ -73,7 +67,7 @@ class ConfigurableDetail extends Component
     public function updatedOptions($value, $index)
     {
         $this->loadNextSelect(explode(".",$index)[0]);
-        
+
         $this->setCorrectOption();
 
         // Find the correct child product depending on the options selected
@@ -92,29 +86,26 @@ class ConfigurableDetail extends Component
             return true;
         })->first();
 
-        
+
         if( !empty($selectedChildren) ) {
             $this->selectedChildrenId = $selectedChildren->id;
             $this->currentProduct = $selectedChildren;
             //dd($this->currentProduct);
             $this->emit('addToCart.setProduct', $this->currentProduct);
-            
-            Debugbar::log($this->currentProduct);
-            
         } else {
             $this->selectedChildrenId = null;
             $this->currentProduct = $this->parentProduct;
         }
-        
+
     }
 
 
     /**
      * Load the options of the next select according to the opciones selected before
-     * 
-     * 
+     *
+     *
      */
-    public function loadNextSelect($index) 
+    public function loadNextSelect($index)
     {
 
         if($index + 1 < count($this->options)) {
@@ -127,25 +118,25 @@ class ConfigurableDetail extends Component
             $itemOptions = ['Selecciona una opción'];
             foreach($this->parentProduct->children as $children) {
                 $meetPreviusReq = true;
-                
+
                 // Check if the children product meet the previous requeriments
                 for($i = $index; $i >= 0; $i--) {
                     $result = $children->custom_attributes
                         ->where('product_class_attribute_id', $this->options[$i]['id'])
                         ->where('json_value', $this->options[$i]['selectedValue'])->first();
-                    
+
                     if(empty($result)) {
-                        $meetPreviusReq = false; 
+                        $meetPreviusReq = false;
                     }
                 }
-                
+
                 // Get available options for the product
                 if($meetPreviusReq) {
                     foreach($children->custom_attributes as $custom_attribute) {
                         if($custom_attribute->product_class_attribute_id == $this->options[$index + 1]['id']) {
                             array_push($itemOptions, $custom_attribute->json_value);
                         }
-                    }                                               
+                    }
                 }
             }
 
@@ -159,24 +150,24 @@ class ConfigurableDetail extends Component
             $this->options[$i]['selectedValue'] = '';
             $this->options[$i]['items'] = [];
         }
-        
-        
+
+
     }
 
 
     /**
      * This is necesary when there is only one option in the select because
      * livewire doesnt assing the by itself
-     * 
+     *
      */
-    public function setCorrectOption() 
+    public function setCorrectOption()
     {
         foreach($this->options as &$option) {
             if(count($option['items']) == 1) {
                 $option['selectedValue'] = $option['items'][0];
             }
         }
-        
+
     }
 
 
