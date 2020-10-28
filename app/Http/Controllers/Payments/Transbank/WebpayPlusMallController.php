@@ -23,7 +23,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\OrderUpdated;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentMethodBusiness;
-
+use Illuminate\Contracts\Session\Session;
 class WebpayPlusMallController extends Controller
 {
     const PAYMENT_CODE = 'tbkplusmall';
@@ -73,7 +73,7 @@ class WebpayPlusMallController extends Controller
         // Identificador único de orden de compra generada por el comercio mall:
         $buyOrder =  $order->id; // strval(rand(100000, 999999999));
         // Identificador que será retornado en el callback de resultado:
-        $sessionId =  $order->id;
+        $sessionId =   session()->getId();
 
 
         // Lista con detalles de cada una de las transacciones:
@@ -161,7 +161,6 @@ class WebpayPlusMallController extends Controller
         $orderlog->event = 'Inicio de pago';
         $orderlog->save();
 
-
         if (!isset($response->url)) {
             return redirect()->back()->with('error', 'Ocurrió un error al generar la url de pago');
         } else {
@@ -175,6 +174,9 @@ class WebpayPlusMallController extends Controller
 
 
         $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
+
+        session()->setId($result->sessionId);
+        session()->start();
 
         if (!isset($result->buyOrder)) {
             return redirect('/');
