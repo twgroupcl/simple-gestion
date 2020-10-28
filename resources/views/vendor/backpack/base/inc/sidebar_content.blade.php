@@ -43,6 +43,8 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('producttype') }}'><i class='nav-icon la la-book'></i> Tipos productos</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('paymentmethod') }}'><i class='nav-icon la la-cash-register'></i> Métodos pago</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('shippingmethod') }}'><i class='nav-icon la la-truck'></i> Métodos shipping</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqanswer') }}'><i class='nav-icon la la-question'></i> FaqAnswers</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqtopic') }}'><i class='nav-icon la la-question'></i> FaqTopics</a></li>
 	</ul>
 </li>
 
@@ -132,6 +134,3 @@
 	</ul>
 </li>
 @endcanany
-
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqanswer') }}'><i class='nav-icon la la-question'></i> FaqAnswers</a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqtopic') }}'><i class='nav-icon la la-question'></i> FaqTopics</a></li>
