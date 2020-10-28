@@ -111,6 +111,7 @@ class Seller extends Model
                 break;
         }
     }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -181,8 +182,23 @@ class Seller extends Model
     public function getUidAttribute()
     {
         $rutFormatter = Rut::parse($this->attributes['uid']);
-        
+
         return $rutFormatter->format();
+    }
+
+    public function getApprovedDescriptionAttribute()
+    {
+        switch ($this->is_approved) {
+            case $this::REVIEW_STATUS_APPROVED:
+                return 'Aprobado';
+                break;
+            case $this::REVIEW_STATUS_REJECTED:
+                return 'Rechazado';
+                break;
+            default:
+                return 'Pendiente'; //REVIEW_STATUS_PENDING
+                break;
+        }
     }
 
     /*

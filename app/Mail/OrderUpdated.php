@@ -110,6 +110,6 @@ class OrderUpdated extends Mailable
      */
     public function build()
     {
-        return $this->view('maileclipse::templates.orderEmailTemplate');
+        return $this->subject('Nueva Orden')->view('maileclipse::templates.orderEmailTemplate');
     }
 }
