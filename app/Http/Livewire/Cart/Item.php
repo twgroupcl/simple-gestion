@@ -37,12 +37,15 @@ class Item extends Component
     ];
 
     protected $rules = [
-        'qty' => 'required|numeric|gte:1|lte:16000000',
+        'qty' => 'required|integer|gte:1|lte:16000000',
+        'item.sub_total' => 'digits_between:1,16'
     ];
 
     protected $messages = [
         'gte' => 'La cantidad mayor o igual a 1.',
         'lte' => 'La cantidad supera el límite',
+        'qty.required' => 'Debe indicar una cantidad.',
+        'qty.integer' => 'Revise la cantidad.'
     ];
 
     public function mount(CartItem $item, $view = 'cart.item')
@@ -81,7 +84,16 @@ class Item extends Component
             return;
         }
         $this->item->qty = $qty;
+        
+        
+        $validationStatus = $this->validateQtys();
+
+        if (!$validationStatus) {
+            $this->emit('showToast', '¡Cuidado!', 'Supera los límites de cantidad total de items.', 3000, 'danger');
+            return;
+        }
         $this->item->sub_total = $this->item->product->price * $qty;
+        $this->validateOnly('item.sub_total');
         $this->total = $this->item->product->price * $qty;
         $this->item->update();
         $this->emit('showToast', 'Cambió la cantidad', 'Has agregado más cantidad de un item al carro.', 3000, 'info');
@@ -259,5 +271,26 @@ class Item extends Component
         }
     }
 
+    private function validateQtys() : bool
+    {
+        $itemToValidate = $this->item->toArray();
+        $validator = \Validator::make($itemToValidate, [
+            'qty' => [ function ($attribute, $value, $fail) use ($itemToValidate) {
+                $itemsQty = CartItem::whereCartId($itemToValidate['cart_id'])->get()->sum(function ($currentItem) use($itemToValidate, $value){
+                    if($currentItem->id != $itemToValidate['id']) {
+                        return $currentItem->qty;
+                    } else {
+
+                        return $value;
+                    }
+                });
+                if ($itemsQty > 16000000) {
+                    $fail('La cantidad supera los limites');
+                }
+            }]
+        ]);
+
+        return !$validator->fails();
+    }
 
 }

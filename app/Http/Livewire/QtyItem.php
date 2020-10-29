@@ -13,12 +13,14 @@ class QtyItem extends Component
     public $emitTo = [];
 
     protected $rules = [
-        'qty' => 'numeric|gte:1|lte:16000000',
+        'qty' => 'required|integer|gte:1|lte:16000000',
     ];
 
     protected $messages = [
         'gte' => 'La cantidad mayor o igual a 1.',
         'lte' => 'La cantidad supera el límite',
+        'qty.required' => 'Debe indicar una cantidad.',
+        'qty.integer' => 'Revise la cantidad.'
     ];
 
     public function render()

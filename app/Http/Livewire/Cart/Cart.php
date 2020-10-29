@@ -10,6 +10,7 @@ use Livewire\Component;
 use App\Models\Cart as CartModel;
 use App\Models\{Product, CartItem, Customer};
 use Backpack\Settings\app\Models\Setting;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class Cart extends Component
@@ -22,6 +23,15 @@ class Cart extends Component
     protected $listeners = [
         'cart:add' => 'add',
         'cart.updateSubtotal' => 'updateSubtotal'
+    ];
+
+    protected $rules = [
+        'cart.sub_total' => 'digits_between:1,16',
+        'subtotal' => 'digits_between:1,16',
+    ];
+
+    protected $messages = [
+        'digits_between' => 'Debe indicar una cantidad.',
     ];
 
     public function mount()
@@ -42,15 +52,35 @@ class Cart extends Component
 
         $qty = $qty == null ? 1 : $qty;
 
-        $this->addItem($product, $qty);
+        DB::beginTransaction();
+        try {
+            
+            $status = $this->addItem($product, $qty);
 
-        $this->updateSubtotal();
+            if (!$status) {
+                DB::rollBack();
+            }
+
+            $status = $this->updateSubtotal();
+
+            if (!$status) {
+                DB::rollBack();
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+        
     }
 
     public function updateSubtotal()
     {
         $this->cart->recalculateSubtotal();
         $this->cart->recalculateQtys();
+        $this->validateOnly('cart.sub_total');
+
         $this->cart->update();
         $this->subtotal = $this->cart->sub_total;
         $this->setCursor('not-allowed');
@@ -74,23 +104,26 @@ class Cart extends Component
     {
         if ( ! $product->haveSufficientQuantity( $qty )) {
             $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
-            return;
+            return false;
         }
 
         $item = $this->cart->cart_items->where('product_id', $product->id)->first();
+        
         if ($item !== null) {
             // @todo QtySelector display total in cart. 
             // in that case this is not necessary to repeat
             if ( ! $product->haveSufficientQuantity( $item->qty + $qty )) {
                 $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
-                return;
+                return false;
             }
     
             $item->qty = $item->qty + $qty;
             $item->sub_total = $item->price * $item->qty;
+            
             $item->update();
-
             $this->emit('showToast', 'Cambió la cantidad', 'Has agregado más cantidad de un item al carro.', 3000, 'info');
+
+            return true;
         } else {
             
             $data = [
@@ -133,6 +166,7 @@ class Cart extends Component
             
             $this->cart->items_count ++;
             $this->emit('showToast', '¡Añadido al carro!', 'Has añadido un producto al carro.', 3000, 'success');
+            return true;
         }
     }
 
