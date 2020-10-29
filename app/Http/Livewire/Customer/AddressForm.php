@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Customer;
 
+use Illuminate\Http\Request;
 use Livewire\Component;
 
 class AddressForm extends Component
@@ -33,5 +34,9 @@ class AddressForm extends Component
     {
         $this->dispatchBrowserEvent('modal-form');
         $this->address = $address;
+    }
+
+    public function save()
+    {
     }
 }

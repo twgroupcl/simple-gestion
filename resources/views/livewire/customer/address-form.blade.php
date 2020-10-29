@@ -1,4 +1,4 @@
-<form wire:ignore.self wire:target="updateAddress" class="needs-validation modal fade" method="POST" action="{{ route('address.update', ['customer' => $customer]) }}" id="update-address" tabindex="-1" novalidate>
+<form wire:ignore.self wire:target="updateAddress" wire:submit.prevent="save" class="needs-validation modal fade" id="update-address" tabindex="-1" novalidate>
     @method('PUT')
     @csrf
     <div class="modal-dialog modal-lg">
