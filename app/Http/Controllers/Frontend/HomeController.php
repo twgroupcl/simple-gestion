@@ -22,7 +22,10 @@ class HomeController extends Controller
     public function getAllProducts()
     {
         $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->get();
-        return view('shop-grid', compact('products'));
+        $render = ['view' => ''];
+        $data = ['category' => $products];
+
+        return view('shop-grid', compact('products','render','data'));
     }
 
     public function productDetail(Request $request)
@@ -34,26 +37,32 @@ class HomeController extends Controller
     public function searchProduct(Request $request)
     {
         $idCategory = $request->category;
+        $product = $request->product;
+        
         if($idCategory != 0){
             $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->where('name','LIKE','%'.$request->product.'%')->whereHas('categories', function ($query) use ($idCategory) {
                 return $query->where('product_category_id', '=', $idCategory);
-            })->paginate(12);
+            })->get();
         }else{
-            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->where('name','LIKE','%'.$request->product.'%')->with('categories')->paginate(12);
+            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->where('name','LIKE','%'.$request->product.'%')->with('categories')->get();
         }
-        return view('shop-grid', compact('products'));
+        $render = ['view' => 'searchProduct'];
+        $data = ['category' => $idCategory,'product' => $product];
+        return view('shop-grid', compact('products','render','data'));
     }
 
     public function getProductsByCategory(Request $request){
         if($request->category == 0){
             $category = false;
-            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('categories')->paginate(12);
+            $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('categories')->get();
         }else{
             $category = ProductCategory::where('id','=',$request->category)->with('products')->first();
         }
-        $products = ($category)?$category->products:$products;
-       
-        return view('shop-grid',compact('products'));
+        $products = ($category)?$category:$products;
+        $render = ['view' => 'searchCategory'];
+        $data = ['category' => $request->category];
+
+        return view('shop-grid',compact('products','render','data'));
     }
 
     public function getSeller(Request $request){

@@ -21,7 +21,7 @@
     <!-- Grid-->
     <div class="row pt-2 mx-n2">
         <!-- Product-->
-        @livewire('products.card-general',['columnLg' => 2,'showPaginate' => false,'paginateBy' => 8])      
+        @livewire('products.card-general',['columnLg' => 3,'showPaginate' => false,'paginateBy' => 8,'showFrom' => '', 'data' => ''])      
     </div>          
 </section>
 
