@@ -91,6 +91,9 @@ Route::group([ 'prefix' => '/v1'], function() {
 
 
     // Warehouse
+    Route::post('/warehouses', 'Api\v1\ProductInventorySourceController@store')
+        ->middleware(['auth.jwt', 'permission:productinventorysource.create'])
+        ->name('api.warehouses.store');
     Route::get('/warehouses/{id}', 'Api\v1\ProductInventorySourceController@show')
         ->name('api.warehouses.show');
 });
