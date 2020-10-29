@@ -35,6 +35,7 @@ class ProductInventorySourceRequest extends FormRequest
             'latitude' => 'required',
             'longitude' => 'required',
             'contact_name' => 'required',
+            'contact_number' => 'required',
             'contact_email' => 'required|email',
         ];
     }
