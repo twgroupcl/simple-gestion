@@ -57,14 +57,15 @@
             <!-- Products grid-->
             <div class=" mx-n2">
                 <!-- Product-->
-                
-                @if(empty($products[0]) && !isset($products->id) )
+
+                {{-- @if(empty($products[0]) && !isset($products->id) )
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <p class="text-center">No existen productos en esta búsqueda.</p>
                 </div>
                 @else
-                    @livewire('products.card-general',['columnLg'=>4,'showPaginate'=>true,'paginateBy'=>6,'showFrom'=>$render['view'],'valuesQuery'=>$data])      
-                @endif
+                @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                @endif --}}
+                @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
             </div>
             <!-- Banner-->
             <!--
