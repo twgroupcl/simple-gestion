@@ -175,6 +175,8 @@ class WebpayPlusMallController extends Controller
 
         $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
 
+      //  dd($result);
+
         session()->setId($result->sessionId);
         session()->start();
 
@@ -264,5 +266,13 @@ class WebpayPlusMallController extends Controller
         ];
         $pdf = PDF::loadView('order.pdf_order', $data);
         return $pdf->download('order_' . $orderId . '.pdf');
+    }
+
+    public function test($orderId)
+    {
+        # code...
+        $order = Order::where('id', $orderId)->first();
+        $result = null;
+        return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
     }
 }
