@@ -125,7 +125,7 @@ class WebpayPlusMallController extends Controller
             $transactions[] = array(
                 "storeCode" => $seller['storeCode'],
                 "amount" => $seller['amount'],
-                "buyOrder" => $buyOrder.'-'.($key+1)
+                "buyOrder" => $buyOrder.'t'.($key+1)
             );
             $amountTotal += $seller['amount'];
         }
@@ -176,14 +176,14 @@ class WebpayPlusMallController extends Controller
 
         $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
 
-      //  dd($result);
-
-        session()->setId($result->sessionId);
-        session()->start();
 
         if (!isset($result->buyOrder)) {
             return redirect('/');
         }
+
+        session()->setId($result->sessionId);
+        session()->start();
+
         $this->orderId = $result->buyOrder;
 
         //Register  order payment
