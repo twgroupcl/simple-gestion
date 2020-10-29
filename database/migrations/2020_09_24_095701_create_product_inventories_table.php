@@ -17,7 +17,7 @@ class CreateProductInventoriesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_inventory_source_id');
             $table->unsignedBigInteger('product_id');
-            $table->integer('qty')->default(0);
+            $table->unsignedMediumInteger('qty')->default(0);
             $table->timestamps();
         });
 
