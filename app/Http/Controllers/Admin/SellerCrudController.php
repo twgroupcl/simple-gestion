@@ -750,6 +750,12 @@ class SellerCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        if ($this->userSeller) {
+            if ($this->userSeller->id != $this->crud->getCurrentEntryId()) {
+                $this->crud->denyAccess('update');
+            }
+        }
+
         $this->setupCreateOperation();
         CRUD::setValidation(SellerUpdateRequest::class);
 
