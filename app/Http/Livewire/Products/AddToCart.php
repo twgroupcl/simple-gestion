@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Livewire\Products;
 
 use App\Models\Product;
