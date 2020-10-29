@@ -24,7 +24,7 @@ class ProductCategoryController extends Controller
             'code' => 'required',
             'slug' => new SlugRule(),
             'position' => 'numeric',
-            'parent_id' => 'numeric',
+            'parent_id' => 'exists:product_categories,id',
             'status' => 'boolean',
 
         ]);

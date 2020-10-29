@@ -30,7 +30,6 @@ class ProductBrandController extends Controller
               'message' => $validator->errors(),
           ], 400);
         }
-        
         try {
             $brand  = ProductBrand::create([
                 'name' => $request['name'],
