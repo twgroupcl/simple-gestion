@@ -10,7 +10,7 @@ class AddToCart extends Component
 {
     public $view = 'standard';
     public $product;
-    public $qty;
+    public $qty = 1;
 
     protected $listeners = [
         'addtocart.cant' => 'cant',
@@ -18,7 +18,7 @@ class AddToCart extends Component
     ];
 
     protected $rules = [
-        'qty' => 'required|integer|gte:1|lte:16000000',
+        'qty' => 'required|integer|gte:1|lte:9999',
     ];
 
     protected $messages = [

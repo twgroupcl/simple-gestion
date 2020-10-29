@@ -13,7 +13,7 @@ class QtyItem extends Component
     public $emitTo = [];
 
     protected $rules = [
-        'qty' => 'required|integer|gte:1|lte:16000000',
+        'qty' => 'required|integer|gte:1|lte:9999',
     ];
 
     protected $messages = [

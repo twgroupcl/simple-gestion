@@ -61,11 +61,11 @@ class Cart extends Component
                 DB::rollBack();
             }
 
-            $status = $this->updateSubtotal();
-
             if (!$status) {
                 DB::rollBack();
             }
+
+            $status = $this->updateSubtotal();
 
             DB::commit();
 
@@ -79,6 +79,7 @@ class Cart extends Component
     {
         $this->cart->recalculateSubtotal();
         $this->cart->recalculateQtys();
+        
         $this->validateOnly('cart.sub_total');
 
         $this->cart->update();
@@ -116,7 +117,20 @@ class Cart extends Component
                 $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
                 return false;
             }
-    
+            $validator = \Validator::make($item->toArray(), [
+                'qty' => [
+                    function ($attribute, $value, $fail) use ($qty) {
+                        if (($value + $qty) > 9999) {
+                            $fail('Supera el límite.');
+                        }
+                    }
+                ]
+            ]);
+            if($validator->fails()) {
+                $this->emit('showToast', '¡Cuidado!', 'No se puede superar el límite de cantidad.', 3000, 'danger');
+                return false;
+            }
+
             $item->qty = $item->qty + $qty;
             $item->sub_total = $item->price * $item->qty;
             

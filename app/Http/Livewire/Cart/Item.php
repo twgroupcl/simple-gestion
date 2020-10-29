@@ -37,7 +37,7 @@ class Item extends Component
     ];
 
     protected $rules = [
-        'qty' => 'required|integer|gte:1|lte:16000000',
+        'qty' => 'required|integer|gte:1|lte:9999',
         'item.sub_total' => 'digits_between:1,16'
     ];
 
@@ -284,7 +284,7 @@ class Item extends Component
                         return $value;
                     }
                 });
-                if ($itemsQty > 16000000) {
+                if ($itemsQty > 160000) {
                     $fail('La cantidad supera los limites');
                 }
             }]
