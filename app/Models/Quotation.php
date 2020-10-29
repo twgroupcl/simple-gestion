@@ -65,6 +65,7 @@ class Quotation extends Model
         'tax_percent',
         'tax_amount',
         'tax_total',
+        'tax_type',
         'tax_specific',
         'quotation_status',
         'items_data',
@@ -95,6 +96,13 @@ class Quotation extends Model
         parent::boot();
 
         static::addGlobalScope(new CompanyBranchScope);
+    }
+
+    public function updateWithoutEvents(array $options=[])
+    {
+        return static::withoutEvents(function() use ($options) {
+            return $this->update($options);
+        });
     }
 
     /*
@@ -148,6 +156,18 @@ class Quotation extends Model
     public function getIdAccesorAttribute()
     {
         return $this->id;
+    }
+
+    public function getQuotationStatusTextAttribute() 
+    {
+        switch ($this->quotation_status) {
+            case self::STATUS_DRAFT: 
+                return 'Borrador';
+                break;
+            default: 
+                return 'Otro';
+                break;
+        }
     }
 
     /*

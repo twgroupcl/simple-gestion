@@ -1,7 +1,6 @@
 @extends('layouts.base')
 
 @section('content')
-<!-- Add New Address-->
 <form class="needs-validation modal fade" method="POST" action="{{ route('address.update', ['customer' => $customer]) }}" id="add-address" tabindex="-1" novalidate>
     @method('PUT')
     @csrf
@@ -101,6 +100,8 @@
         </div>
     </div>
 </form>
+<!-- Update Address-->
+<livewire:customer.address-form :communes="$communes" :customer="$customer">
 <!-- Page Title-->
 <div class="page-title-overlap bg-dark pt-4 bg-cp-gradient">
     <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
@@ -137,43 +138,7 @@
                 </form>
             </div>
             <!-- Addresses list-->
-            <div class="table-responsive font-size-md">
-                <table class="table table-hover mb-0">
-                    <thead>
-                        <tr>
-                            <th>Direcciones</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $addresses_data = is_array($customer->addresses_data)
-                                ? $customer->addresses_data
-                                : json_decode($customer->addresses_data, true) ?? [];
-
-                            $paginator = paginate($addresses_data, 10, null, [
-                                'path'  => request()->url(),
-                                'query' => request()->query(),
-                            ]);
-                            @endphp
-                        @forelse ($paginator as $address)
-                            <tr>
-                                <td class="py-3 align-middle">{{ $address['street'] }} - {{ $address['number']}}</td>
-                                <td class="py-3 align-middle"><a class="nav-link-style mr-2" href="#" data-toggle="tooltip" title="Edit"><i class="czi-edit"></i></a><a class="nav-link-style text-danger" href="#" data-toggle="tooltip" title="Remove">
-                                        <div class="czi-trash"></div>
-                                    </a></td>
-                            </tr>
-                        @empty
-                        <tr>
-                            <td class="py-3 align-middle">No se encontraron direcciones</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            <hr class="pb-4">
-            <!-- Pagination-->
-            {{ $paginator->links() }}
+            <livewire:customer.address-list :communes="$communes" :customer="$customer">
             <div class="text-sm-right"><a class="btn btn-primary" href="#add-address" data-toggle="modal">Añadir nueva dirección</a></div>
         </section>
     </div>

@@ -219,18 +219,15 @@
 @push('scripts')
     <script src="{{ asset('js/rut-formatter.js') }}"></script>
     <script>
-
-        $(document).ready(function(){
-            var observer = new MutationObserver(function(mutations, observer) {
-                $('.rut-field').rut()
-            });
-            document.querySelectorAll('.details-form').forEach(fields => {
-                observer.observe(fields, {
-                    subtree: true,
-                    attributes: true,
-                });
-            })
+        const observer = new MutationObserver(mutation => {
             $('.rut-field').rut()
-        })
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            attributes: true,
+            subtree: true,
+            characterData: true
+        });
     </script>
 @endpush

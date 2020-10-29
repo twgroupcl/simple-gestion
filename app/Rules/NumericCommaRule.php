@@ -50,6 +50,11 @@ class NumericCommaRule implements Rule
 
             $number = sanitizeNumber($value);
 
+            if( ! is_numeric($number) ) {
+                $this->message = 'El campo :attribute debe ser un valor numerico y mayor a 0,01.';
+                return false;
+            }
+
             if($number <= 0.01) {
                 $this->message = 'El campo :attribute debe ser un valor numerico y mayor a 0,01.';
                 return false;

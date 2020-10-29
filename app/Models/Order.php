@@ -37,6 +37,22 @@ class Order extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getSellers()
+    {
+        $products_id = OrderItem::whereOrderId($this->id)->select('product_id')->with('product')->get();
+        foreach($products_id as $id){
+            $ids[] = $id['product_id'];
+        }
+
+        if (count($products_id)>0) {
+            $sellers_id = Product::whereIn('id', $ids)->select('seller_id')->groupBy('seller_id')->get();
+            return Seller::whereIn('id', $sellers_id)->select('id', 'name', 'email')->get();
+        }else{
+            return null;
+        }
+
+
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -101,21 +117,24 @@ class Order extends Model
 
     public function getOrderItemsAttribute()
     {
+       if (backpack_user()) {
+           if (backpack_user()->hasRole('Vendedor marketplace')) {
+               $items = [];
+               $userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+               $tmpitems = $this->order_items()->get();
 
-        if (backpack_user()->hasRole('Vendedor marketplace')) {
-            $items = [];
-            $userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-            $tmpitems = $this->order_items()->get();
-
-            foreach($tmpitems as $item){
-                if($item->product->seller_id == $userSeller->id){
-                    $items[] = $item;
-                }
-            }
-            return $items;
-        }else{
-            return $this->order_items()->get();
-        }
+               foreach ($tmpitems as $item) {
+                   if ($item->product->seller_id == $userSeller->id) {
+                       $items[] = $item;
+                   }
+               }
+               return $items;
+           } else {
+               return $this->order_items()->get();
+           }
+       }else{
+                return $this->order_items()->get();
+       }
 
 
     }
