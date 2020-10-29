@@ -21,8 +21,8 @@
     <!-- Grid-->
     <div class="row pt-2 mx-n2">
         <!-- Product-->
-        @livewire('products.card-general',['columnLg' => 3,'showPaginate' => false,'paginateBy' => 8,'showFrom' => '', 'data' => ''])      
-    </div>          
+        @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => false, 'paginateBy' => 8, 'showFrom' => '', 'data' => ''])
+    </div>
 </section>
 
 <section class="container mt-5 mb-grid-gutter">
@@ -78,8 +78,8 @@
         <!-- Bestsellers-->
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">Los más vendidos</h3>                
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
+                <h3 class="widget-title">Los más vendidos</h3>
+                @livewire('products.products-general', ['emitTo' => 'products.short-list'])
                 <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
@@ -87,7 +87,7 @@
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
                 <h3 class="widget-title">Nuevos productos</h3>
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])
+                @livewire('products.products-general', ['emitTo' => 'products.short-list'])
                 <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
@@ -95,7 +95,7 @@
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
                 <h3 class="widget-title">Los más valorados</h3>
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
+                @livewire('products.products-general', ['emitTo' => 'products.short-list'])
                 <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
