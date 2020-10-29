@@ -117,14 +117,13 @@ class WebpayPlusMallController extends Controller
         $amountTotal = 0;
 
         //Add transactions
-        foreach ($totalsBySeller  as $seller) {
+        foreach ($totalsBySeller  as $key=>$seller) {
 
             // Add transaction
             $transactions[] = array(
                 "storeCode" => $seller['storeCode'],
                 "amount" => $seller['amount'],
-                // Identificador único de orden de compra generada por tienda 1
-                "buyOrder" => $seller['id']
+                "buyOrder" => $buyOrder.'-'.($key+1)
             );
             $amountTotal += $seller['amount'];
         }
