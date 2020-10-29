@@ -92,7 +92,7 @@ class Cart extends Component
             $item->sub_total = $item->price * $item->qty;
             $item->update();
 
-            $this->emit('showToast', 'Cambió la cantidad', 'Has agregado más cantidad de un item al carro.', 3000, 'info');
+            $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado cantidad de un item del carro.', 3000, 'info');
         } else {
             
             $data = [
