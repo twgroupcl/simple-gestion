@@ -55,10 +55,10 @@
                     <!-- Toolbar-->
                     <div class="navbar-toolbar d-flex align-items-center">
                         <div class="navbar-tool dropdown ml-2">
-                            <a class="" href="dashboard-sales.html">
+                            <a class="" href="{{ route('customer.profile') }}" >
                                 <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-user"></i></div>
                             </a>
-                            <a class="" href="dashboard-sales.html">
+                            <a class="" href="#">
                                 <div class="navbar-tool-text ml-n3"><small>Hola, {{ explode(' ', trim(Auth::user()->name))[0] }}</small>Mi cuenta</div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" style="min-width: 14rem;">

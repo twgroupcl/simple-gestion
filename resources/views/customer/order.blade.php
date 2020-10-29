@@ -37,9 +37,6 @@
                     </select>
                 </div> --}}
                 <h6 class="font-size-base text-light mb-0">Lista de las órdenes que realizaste:</h6>
-                <a class="btn btn-primary btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="czi-sign-out mr-2"></i> Cerrar sesión
-                </a>
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
