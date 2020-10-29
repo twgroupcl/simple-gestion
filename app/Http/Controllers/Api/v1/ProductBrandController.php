@@ -17,14 +17,13 @@ class ProductBrandController extends Controller
 
         $user = Auth::user();
         
-
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
             'position' => 'required|numeric',
+            'slug' => new SlugRule(),
             'status' => 'boolean',
         ]);
       
-
         if ($validator->fails()) {
           return response()->json([ 'status' => 'error', 'message' => $validator->errors() ], 400);
         }

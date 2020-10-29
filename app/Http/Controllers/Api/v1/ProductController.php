@@ -47,7 +47,6 @@ class ProductController extends Controller
             ],  404); 
         }
 
-
         // Validate SKU
         $productsSku = Product::where([
             'seller_id' => $sellerId,

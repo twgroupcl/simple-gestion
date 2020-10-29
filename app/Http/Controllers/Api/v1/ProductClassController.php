@@ -38,11 +38,9 @@ class ProductClassController extends Controller
                 'status' => $request['status'] ?? 1,
                 'company_id' => $user->companies->first()->id,
             ]);
+
         } catch(\Illuminate\Database\QueryException $exception) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $exception,
-            ], 400);
+            return response()->json([ 'status' => 'error', 'message' => $exception ], 400);
         }
         
         return response()->json([
@@ -50,7 +48,6 @@ class ProductClassController extends Controller
             'data' => $productClass,
             'message' => 'Clase de producto creada exitosamente',
         ], 200);
-
     }
 
     public function show(Request $request)
