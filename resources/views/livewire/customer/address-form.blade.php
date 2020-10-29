@@ -7,10 +7,7 @@
                 <h5 class="modal-title">Añade una nueva dirección</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <div wire:loading>
-                <p class="h6 p-3">Cargando datos...</p>
-            </div>
-            <div wire:loading.remove class="modal-body">
+            <div class="modal-body">
                     <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -108,7 +105,7 @@
         window.addEventListener('modal-form', event => {
             $("#update-address").modal();
             let value = @this.address['commune_id']
-            $('#update-address').find(`option[value="${value}"]`).attr('selected', 'selected')
+            $('#update-address').find(`option[value="${value}"]`).attr('selected', true).change()
         })
     </script>
 @endpush
