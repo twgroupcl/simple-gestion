@@ -49,7 +49,7 @@ Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsBy
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });
-Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
+Route::get('/shop-grid/', 'Frontend\HomeController@getProductsByCategory');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
 Route::get('/faq', 'Frontend\HomeController@getFaq');
 Route::get('/faq-single', function () { 
