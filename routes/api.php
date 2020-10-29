@@ -32,15 +32,32 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/login', 'Api\v1\AuthController@authenticate');
     Route::get('/test', 'Api\v1\AuthController@test')->middleware('auth.jwt');;
 
+    // Product
+    Route::post('/products', 'Api\v1\ProductController@store')
+        ->middleware(['auth.jwt', 'permission:product.create'])
+        ->name('api.products.store');
+    Route::get('/products/{id}', 'Api\v1\ProductController@show')
+        ->name('api.products.show');
+
 
     // Product Brand
     Route::post('/product-brands', 'Api\v1\ProductBrandController@store')
         ->middleware(['auth.jwt', 'permission:productbrand.create'])
-        ->name('api.product-product.store');
+        ->name('api.product-brands.store');
     Route::get('/product-brands/{id}', 'Api\v1\ProductBrandController@show')
         ->name('api.product-brands.show');
     Route::get('/product-brands', 'Api\v1\ProductBrandController@all')
         ->name('api.product-brands.all');
+
+
+    // Brand
+    Route::post('/brands', 'Api\v1\ProductBrandController@store')
+        ->middleware(['auth.jwt', 'permission:productbrand.create'])
+        ->name('api.brands.store');
+    Route::get('/brands/{id}', 'Api\v1\ProductBrandController@show')
+        ->name('api.brands.show');
+    Route::get('/brands', 'Api\v1\ProductBrandController@all')
+        ->name('api.brands.all');
 
 
     // Product Category
@@ -52,13 +69,17 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::get('/product-categories', 'Api\v1\ProductCategoryController@all')
         ->name('api.product-categories.all');
 
-    // Product
-    Route::post('/products', 'Api\v1\ProductController@store')
-        ->middleware(['auth.jwt', 'permission:product.create'])
-        ->name('api.products.store');
-    Route::get('/products/{id}', 'Api\v1\ProductController@show')
-        ->name('api.products.show');
 
+    // Category
+    Route::post('/categories', 'Api\v1\ProductCategoryController@store')
+        ->middleware(['auth.jwt', 'permission:productcategory.create'])
+        ->name('api.categories.store');
+    Route::get('/categories/{id}', 'Api\v1\ProductCategoryController@show')
+        ->name('api.categories.show');
+    Route::get('/categories', 'Api\v1\ProductCategoryController@all')
+        ->name('api.categories.all');
+
+    
     // Product CLass
     Route::post('/product-classes', 'Api\v1\ProductClassController@store')
         ->middleware(['auth.jwt', 'permission:productclass.create'])

@@ -20,6 +20,7 @@ class ProductBrandController extends Controller
 
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
+            'position' => 'numeric',
             'status' => 'boolean',
         ]);
       
@@ -33,6 +34,7 @@ class ProductBrandController extends Controller
         try {
             $brand  = ProductBrand::create([
                 'name' => $request['name'],
+                'position' => $request['position'] ?? 0,
                 'slug' => $request['slug'] ?? Str::slug($request['name']),
                 'code' => $request['code'],
                 'status' => $request['status'] ?? 1,

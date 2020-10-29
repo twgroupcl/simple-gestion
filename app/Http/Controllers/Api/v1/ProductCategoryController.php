@@ -20,9 +20,10 @@ class ProductCategoryController extends Controller
 
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
-            'slug' => new SlugRule(),
+            'description' => 'required',
             'code' => 'required',
-            'icon' => 'required',
+            'slug' => new SlugRule(),
+            'position' => 'numeric',
             'parent_id' => 'numeric',
             'status' => 'boolean',
 
@@ -32,15 +33,19 @@ class ProductCategoryController extends Controller
           return response()->json([ 'status' => 'error', 'message' => $validator->errors() ], 400);
         }
 
-
-        $slug = isset($request['slug']) ? $request['slug'] : Str::slug($request['name']);
+        $slug = isset($request['slug']) 
+                    ? $request['slug'] 
+                    : Str::slug($request['name']);
         
         try {
             $productCategory  = ProductCategory::create([
                 'name' => $request['name'],
+                'description' => $request['description'],
                 'slug' => $slug,
                 'code' => $request['code'],
+                'position' => $request['position'] ?? 0,
                 'icon' => $request['icon'],
+                'custom_attributes' => $request['custom_attributes'],
                 'parent_id' => $request['parent_id'],
                 'status' => $request['status'] ?? 1,
                 'company_id' => $user->companies->first()->id,
