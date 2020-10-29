@@ -10,7 +10,7 @@ class AddToCart extends Component
 {
     public $view = 'standard';
     public $product;
-    public $qty = 1;
+    public $qty;
 
     protected $listeners = [
         'addtocart.cant' => 'cant',
@@ -18,12 +18,13 @@ class AddToCart extends Component
     ];
 
     protected $rules = [
-        'qty' => 'gte:1|lte:16000000',
+        'qty' => 'numeric|gte:1|lte:16000000',
     ];
 
     protected $messages = [
         'gte' => 'La cantidad mayor o igual a 1.',
         'lte' => 'La cantidad supera el límite',
+        'integer' => 'El campo debe ser un entero.'
     ];
 
     public function setProduct(Product $prod)

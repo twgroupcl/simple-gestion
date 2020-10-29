@@ -13,7 +13,7 @@ class QtyItem extends Component
     public $emitTo = [];
 
     protected $rules = [
-        'qty' => 'gte:1|lte:16000000',
+        'qty' => 'numeric|gte:1|lte:16000000',
     ];
 
     protected $messages = [
@@ -33,17 +33,16 @@ class QtyItem extends Component
 
     public function set()
     {
-        $this->validate();
-        
+        // first send, after check. 
+        //responsibility on the part of the client
         $this->emitUp($this->parentListener, $this->qty);
         if (count($this->emitTo) > 0) {
             foreach ($this->emitTo as $key) {
                 $this->emit($key, $this->qty);
             }
-        }        
-        
+        }   
 
-        
+        $this->validate();
     }
 
 }

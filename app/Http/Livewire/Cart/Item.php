@@ -36,6 +36,15 @@ class Item extends Component
         'select-shipping-item' => 'addShippingItem',
     ];
 
+    protected $rules = [
+        'qty' => 'required|numeric|gte:1|lte:16000000',
+    ];
+
+    protected $messages = [
+        'gte' => 'La cantidad mayor o igual a 1.',
+        'lte' => 'La cantidad supera el límite',
+    ];
+
     public function mount(CartItem $item, $view = 'cart.item')
     {
         $this->confirm = null;
@@ -63,11 +72,14 @@ class Item extends Component
 
     public function setQty($qty)
     {
+        $this->qty = $qty;
+
+        $this->validateOnly('qty');
+
         if (!$this->item->product->haveSufficientQuantity($qty)) {
             $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
             return;
         }
-        $this->qty = $qty;
         $this->item->qty = $qty;
         $this->item->sub_total = $this->item->product->price * $qty;
         $this->total = $this->item->product->price * $qty;
@@ -78,13 +90,11 @@ class Item extends Component
 
     public function updateQty()
     {
+        $this->validateOnly('qty');
+
         $this->qty = $this->item->qty;
     }
 
-
-    public function updateSelected(){
-        dd('aca');
-    }
     public function deleteConfirm($id)
     {
         $this->confirm = $id;
@@ -92,6 +102,9 @@ class Item extends Component
 
     public function delete()
     {
+        if (! CartItem::exists($this->item->id)) {
+            return;
+        }
         $this->emit('showToast', 'Se ha eliminado del carro.', 'Se ha eliminado el producto del carro.', 3000, 'info');
         $this->item->delete();
         $this->emitUp('deleteItem');
