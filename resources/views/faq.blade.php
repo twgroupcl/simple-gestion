@@ -9,12 +9,6 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <h1 class="text-light text-center">¿Cómo te podemos ayudar?</h1>
-                <p class="pb-3 text-light text-center">Hacer preguntas. Explorar temas. Encontrar respuestas.</p>
-                <div class="input-group-overlay input-group-lg mb-3">
-                    <div class="input-group-prepend-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
-                    <input class="form-control prepended-form-control" type="search" placeholder="Haz tu pregunta...">
-                </div>
-                <div class="font-size-sm"><span class="text-light opacity-50 mr-1">Sugerencias:</span><a class="nav-link-style nav-link-light mr-1 pb-1 border-bottom border-light" href="#"> Envíos</a></div>
             </div>
         </div>
     </div>

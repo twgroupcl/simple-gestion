@@ -23,9 +23,11 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-        {{-- @include('layouts.general.section-category') --}}
+        <aside class="col-lg-4">
+            @livewire('filters')
+        </aside>
         <!-- Content  -->
-        <section class="col-lg-12">
+        <section class="col-lg-8">
             <!-- Toolbar-->
             <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
                 <!--
@@ -53,19 +55,15 @@
                 </div>
             </div>
             <!-- Products grid-->
-            <div class="row mx-n2">
+            <div class=" mx-n2">
                 <!-- Product-->
-                @if(empty($products[0]))
-                    <p>No existen productos en esta busqueda</p>
+                
+                @if(empty($products[0]) && !isset($products->id) )
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <p class="text-center">No existen productos en esta búsqueda.</p>
+                </div>
                 @else
-                    @foreach ($products as $product)
-                    @php
-                        if ($product->parent()->count()) continue;
-                    @endphp
-                        <div class="col-lg-2 col-md-2 col-sm-6 px-2 mb-4">
-                            @livewire('products.product', ['product' => $product], key($product->id))
-                        </div>
-                    @endforeach
+                    @livewire('products.card-general',['columnLg'=>4,'showPaginate'=>true,'paginateBy'=>6,'showFrom'=>$render['view'],'valuesQuery'=>$data])      
                 @endif
             </div>
             <!-- Banner-->
