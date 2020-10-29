@@ -45,7 +45,7 @@ class ProductCategoryController extends Controller
                 'code' => $request['code'],
                 'position' => $request['position'] ?? 0,
                 'icon' => $request['icon'],
-                'custom_attributes' => $request['custom_attributes'],
+                'json_value' => $request['custom_attributes'],
                 'parent_id' => $request['parent_id'],
                 'status' => $request['status'] ?? 1,
                 'company_id' => $user->companies->first()->id,

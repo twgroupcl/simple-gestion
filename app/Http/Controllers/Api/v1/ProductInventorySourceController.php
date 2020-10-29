@@ -29,7 +29,7 @@ class ProductInventorySourceController extends Controller
                 'company_id' => auth()->user()->companies->first()->id,
 
                 //'region_id' => $request['region_id'], No existe en db
-                //'custom_attributes' => $request['custom_attributes'], No existe en db
+                'json_value' => $request['custom_attributes'],
             ]);
         } catch(\Illuminate\Database\QueryException $exception) {
             return response()->json([

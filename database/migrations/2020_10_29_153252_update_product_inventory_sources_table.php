@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateProductCategoriesTable extends Migration
+class UpdateProductInventorySourcesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,7 @@ class UpdateProductCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('product_categories', function (Blueprint $table) {
-            $table->string('description')->nullable();
+        Schema::table('product_inventory_sources', function (Blueprint $table) {
             $table->longText('json_value')->nullable();
         });
     }
