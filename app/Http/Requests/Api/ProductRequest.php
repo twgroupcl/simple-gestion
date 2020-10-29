@@ -28,6 +28,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
+            'sku' => 'required',
             'categories' => 'required',
             'is_service' => 'required|boolean',
             'product_class_id' => 'required|exists:product_classes,id',
@@ -40,26 +41,15 @@ class ProductRequest extends FormRequest
             'height' => 'required_if:is_service,0',
             'width' => 'required_if:is_service,0',
             'depth' => 'required_if:is_service,0',
-
-            'status' => 'boolean',
             
-            /* 'sku' => [
-                'required',
-                Rule::unique('products')->where( function($query) {
-                    if (auth()->user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
-                        $seller_id = request('seller_id');
-                    } else {
-                        $seller_id = Seller::where('user_id', auth()->user()->id);
-                    }
-                    return $query->where('seller_id', '=', $seller_id);
-                }),
-            ], */
+            'images.*' => 'image|mimes:jpeg,png,jpg',
+            'status' => 'boolean',
 
             'use_inventory_control' => [
                 'required',
                 'boolean',
                 function ($attribute, $value, $fail) {
-                    if($value) {
+                    if ($value) {
                         $sellerCompany = auth()->user()->companies->first();
                         if ($sellerCompany->inventory_sources->count() == 0) {
                             return $fail('Para activar el control de inventario debes crear por lo menos una bodega');

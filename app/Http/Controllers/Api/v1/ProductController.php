@@ -29,7 +29,6 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {   
-
         // Obtain seller id
         if ( ! $sellerId = $this->getSellerId($request) ) {
             return response()->json([ 
@@ -71,10 +70,7 @@ class ProductController extends Controller
         
         // Validate and save inventories
         
-        // Upload images
-        
         // Save the product
-
         try {
 
             $product  = Product::create([
@@ -113,7 +109,19 @@ class ProductController extends Controller
         }
 
         // Attach categories
+
+        // Convert images to base64 and save it in the images_json field of the product
+        // so the product observer can take care of the upload
+        if ($request->file('images')) {
+            $imagesArray = [];
+            foreach ($request->file('images') as $image) {
+                array_push($imagesArray, ['image' => 'data:image/jpeg;base64,' . base64_encode(file_get_contents($image))]);
+            }
+            $product->images_json = $imagesArray;
+        }
         
+        $product->update();
+
         return response()->json([
             'status' => 'success',
             'data' => $product,
