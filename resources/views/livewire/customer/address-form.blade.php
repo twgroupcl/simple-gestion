@@ -34,7 +34,7 @@
                             <label for="commune_id">Comuna <span class="text-danger">*</span></label>
                             <select class="custom-select" name="commune_id" id="commune_id" required>
                                 @foreach ($communes as $id => $commune)
-                                    <option value="{{ $id }}">{{ $commune }}</option>
+                                    <option wire:key="{{ $loop->index }}" value="{{ $id }}">{{ $commune }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">Seleccione la comuna</div>
@@ -105,7 +105,7 @@
         window.addEventListener('modal-form', event => {
             $("#update-address").modal();
             let value = @this.address['commune_id']
-            $('#update-address').find(`option[value="${value}"]`).attr('selected', true).change()
+            $('#update-address').find(`option[value="${value}"]`).prop('selected', 'selected').change();
         })
     </script>
 @endpush
