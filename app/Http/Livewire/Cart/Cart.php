@@ -59,7 +59,9 @@ class Cart extends Component
         }
         
         $this->emit('dropdown.update');
-        $this->emit('cart-counter.setCount', $this->cart->items_count);
+        $count = $this->cart->items_count;
+        $this->emit('cart-counter.setCount', $count);
+        $this->emit('cart-toolbar.update', $this->subtotal, $count);
     }
 
 

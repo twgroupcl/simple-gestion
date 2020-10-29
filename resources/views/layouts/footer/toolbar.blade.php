@@ -10,13 +10,7 @@
             <span class="cz-handheld-toolbar-icon"><i class="czi-menu"></i></span>
             <span class="cz-handheld-toolbar-label">Menú</span>
         </a>
-        <a class="d-table-cell cz-handheld-toolbar-item" href="shop-cart.html">
-            <span class="cz-handheld-toolbar-icon">
-                <i class="czi-cart"></i>
-                <span class="badge badge-primary badge-pill ml-1">0</span>
-            </span>
-            <span class="cz-handheld-toolbar-label">$0</span>
-        </a>
+        @stack('cart-toolbar')
     </div>
 </div>
 @endif
