@@ -75,5 +75,7 @@ class AddressForm extends Component
         ]);
 
         $this->dispatchBrowserEvent('close-modal-form');
+
+        return redirect()->route('customer.address');
     }
 }
