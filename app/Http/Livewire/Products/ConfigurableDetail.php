@@ -29,15 +29,14 @@ class ConfigurableDetail extends Component
         $this->setCorrectOption();
     }
 
-
     public function getInitialOptions()
     {
-        foreach($this->parentProduct->super_attributes as $key => $super_attribute) {
+        foreach ($this->parentProduct->super_attributes as $key => $super_attribute) {
 
             $options = [];
 
             // options items
-            foreach($this->parentProduct->children as $children) {
+            foreach ($this->parentProduct->children as $children) {
                 $attributeValue = $children->custom_attributes->where('product_class_attribute_id', $super_attribute->id)->first();
                 array_push($options, $attributeValue->json_value);
             }
@@ -63,31 +62,29 @@ class ConfigurableDetail extends Component
         $this->emit('cart:add', $this->currentProduct);
     }
 
-
     public function updatedOptions($value, $index)
     {
-        $this->loadNextSelect(explode(".",$index)[0]);
+        $this->loadNextSelect(explode(".", $index)[0]);
 
         $this->setCorrectOption();
 
         // Find the correct child product depending on the options selected
-        $selectedChildren = $this->parentProduct->children->filter( function($children) {
-            foreach($children->custom_attributes as $attribute) {
+        $selectedChildren = $this->parentProduct->children->filter(function ($children) {
+            foreach ($children->custom_attributes as $attribute) {
 
                 $options = collect($this->options);
                 $optionSelected = $options->where('id', $attribute->product_class_attribute_id)->first();
 
-                if(empty($optionSelected)) return false;
+                if (empty($optionSelected)) return false;
 
-                if($attribute->json_value != $optionSelected['selectedValue']) {
+                if ($attribute->json_value != $optionSelected['selectedValue']) {
                     return false;
                 }
             }
             return true;
         })->first();
 
-
-        if( !empty($selectedChildren) ) {
+        if (!empty($selectedChildren)) {
             $this->selectedChildrenId = $selectedChildren->id;
             $this->currentProduct = $selectedChildren;
             //dd($this->currentProduct);
@@ -96,9 +93,7 @@ class ConfigurableDetail extends Component
             $this->selectedChildrenId = null;
             $this->currentProduct = $this->parentProduct;
         }
-
     }
-
 
     /**
      * Load the options of the next select according to the opciones selected before
@@ -107,33 +102,31 @@ class ConfigurableDetail extends Component
      */
     public function loadNextSelect($index)
     {
-
-        if($index + 1 < count($this->options)) {
+        if ($index + 1 < count($this->options)) {
             // Enable the next select and clean the old selected value
-            $this->options[$index + 1 ]['enableOptions'] = true;
-            $this->options[$index + 1 ]['selectedValue'] = '';
-
+            $this->options[$index + 1]['enableOptions'] = true;
+            $this->options[$index + 1]['selectedValue'] = '';
 
             // Load next select options depending on the previous one
             $itemOptions = ['Selecciona una opción'];
-            foreach($this->parentProduct->children as $children) {
+            foreach ($this->parentProduct->children as $children) {
                 $meetPreviusReq = true;
 
                 // Check if the children product meet the previous requeriments
-                for($i = $index; $i >= 0; $i--) {
+                for ($i = $index; $i >= 0; $i--) {
                     $result = $children->custom_attributes
                         ->where('product_class_attribute_id', $this->options[$i]['id'])
                         ->where('json_value', $this->options[$i]['selectedValue'])->first();
 
-                    if(empty($result)) {
+                    if (empty($result)) {
                         $meetPreviusReq = false;
                     }
                 }
 
                 // Get available options for the product
-                if($meetPreviusReq) {
-                    foreach($children->custom_attributes as $custom_attribute) {
-                        if($custom_attribute->product_class_attribute_id == $this->options[$index + 1]['id']) {
+                if ($meetPreviusReq) {
+                    foreach ($children->custom_attributes as $custom_attribute) {
+                        if ($custom_attribute->product_class_attribute_id == $this->options[$index + 1]['id']) {
                             array_push($itemOptions, $custom_attribute->json_value);
                         }
                     }
@@ -145,15 +138,12 @@ class ConfigurableDetail extends Component
         }
 
         // Disabled and clear the other selects
-        for($i = $index + 2; $i < count($this->options); $i++) {
+        for ($i = $index + 2; $i < count($this->options); $i++) {
             $this->options[$i]['enableOptions'] = false;
             $this->options[$i]['selectedValue'] = '';
             $this->options[$i]['items'] = [];
         }
-
-
     }
-
 
     /**
      * This is necesary when there is only one option in the select because
@@ -162,14 +152,12 @@ class ConfigurableDetail extends Component
      */
     public function setCorrectOption()
     {
-        foreach($this->options as &$option) {
-            if(count($option['items']) == 1) {
+        foreach ($this->options as &$option) {
+            if (count($option['items']) == 1) {
                 $option['selectedValue'] = $option['items'][0];
             }
         }
-
     }
-
 
     public function getPriceFrom()
     {
