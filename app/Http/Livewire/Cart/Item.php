@@ -96,7 +96,7 @@ class Item extends Component
         $this->validateOnly('item.sub_total');
         $this->total = $this->item->product->price * $qty;
         $this->item->update();
-        $this->emit('showToast', 'Cambió la cantidad', 'Has agregado más cantidad de un item al carro.', 3000, 'info');
+        $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
         $this->emitUp('change');
     }
 

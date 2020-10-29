@@ -47,6 +47,7 @@ class CardGeneral extends Component
         return $this->baseQuery(false, $data['category'], $data['product']);
     }
 
+
     public function getProductsByCategory($data)
     {
         return $this->baseQuery(false, $data['category']);

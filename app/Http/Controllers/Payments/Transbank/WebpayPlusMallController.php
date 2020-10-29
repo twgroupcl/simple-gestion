@@ -49,6 +49,7 @@ class WebpayPlusMallController extends Controller
 
         $configuration  = new Configuration();
 
+        $configuration->setEnvironment('PRODUCCION');
         $configuration->setCommerceCode($wpmConfig[0]->variable_value);
         $configuration->setPublicCert($wpmConfig[1]->variable_value);
         $configuration->setPrivateKey($wpmConfig[2]->variable_value);
@@ -57,6 +58,7 @@ class WebpayPlusMallController extends Controller
 
         //$transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
         $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
+
     }
 
     public function redirect($orderId)
@@ -71,7 +73,7 @@ class WebpayPlusMallController extends Controller
 
 
         // Identificador único de orden de compra generada por el comercio mall:
-        $buyOrder =  $order->id; // strval(rand(100000, 999999999));
+        $buyOrder =  $order->id;
         // Identificador que será retornado en el callback de resultado:
         $sessionId =   session()->getId();
 
@@ -117,22 +119,19 @@ class WebpayPlusMallController extends Controller
         $amountTotal = 0;
 
         //Add transactions
-        foreach ($totalsBySeller  as $seller) {
+        foreach ($totalsBySeller  as $key=>$seller) {
 
             // Add transaction
             $transactions[] = array(
                 "storeCode" => $seller['storeCode'],
                 "amount" => $seller['amount'],
-                // Identificador único de orden de compra generada por tienda 1
-                "buyOrder" => $seller['id']
+                "buyOrder" => $buyOrder.'t'.($key+1)
             );
             $amountTotal += $seller['amount'];
         }
 
 
-        // $order->total = $amountTotal;
 
-        //$order->save();
 
 
         $response = $this->transaction->initTransaction($buyOrder, $sessionId, $this->returnUrl, $this->finalUrl, $transactions);
@@ -144,6 +143,8 @@ class WebpayPlusMallController extends Controller
         $data = [
             'event' => 'init transaction',
             'data' => $response,
+            'buyOrder'=> $buyOrder,
+            'sessionId'=> $sessionId,
             'transactions' => $transactions
         ];
 
@@ -175,12 +176,14 @@ class WebpayPlusMallController extends Controller
 
         $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
 
-        session()->setId($result->sessionId);
-        session()->start();
 
         if (!isset($result->buyOrder)) {
             return redirect('/');
         }
+
+        session()->setId($result->sessionId);
+        session()->start();
+
         $this->orderId = $result->buyOrder;
 
         //Register  order payment
@@ -264,5 +267,13 @@ class WebpayPlusMallController extends Controller
         ];
         $pdf = PDF::loadView('order.pdf_order', $data);
         return $pdf->download('order_' . $orderId . '.pdf');
+    }
+
+    public function test($orderId)
+    {
+        # code...
+        $order = Order::where('id', $orderId)->first();
+        $result = null;
+        return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
     }
 }
