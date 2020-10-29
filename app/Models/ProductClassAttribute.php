@@ -96,6 +96,10 @@ class ProductClassAttribute extends Model
         return $this->belongsTo(ProductClass::class, 'product_class_id');
     }
 
+    public function product_attributes() {
+        return $this->hasMany(ProductAttribute::class);
+    }
+
     public function child_super_attributes() {
         return $this->belongsToMany(Product::class, 'product_super_attributes');
     }

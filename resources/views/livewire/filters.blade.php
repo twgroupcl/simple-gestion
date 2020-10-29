@@ -6,69 +6,71 @@
         </div>
         <div class="cz-sidebar-body">
             <!-- Categories-->
-            <div class="widget widget-categories mb-4 pb-4 border-bottom">
-                <h3 class="widget-title">Categorías</h3>
-                <div class="accordion mt-n1" id="shop-categories">
-                    @foreach ($categories as $category)
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="accordion-heading"><a class="collapsed" href="#{{$category->code}}" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shoes">{{$category->name}}<span class="accordion-indicator"></span></a></h3>
-                            </div>
-                            <div class="collapse" id="{{$category->code}}" data-parent="#shop-categories">
-                                <div class="card-body">
-                                    <div class="widget widget-links cz-filter">
-                                        <div class="input-group-overlay input-group-sm mb-2">
-                                            <input class="cz-filter-search form-control form-control-sm appended-form-control" type="text" placeholder="Buscar">
-                                            <div class="input-group-append-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
+            {{--
+                <div class="widget widget-categories mb-4 pb-4 border-bottom">
+                    <h3 class="widget-title">Categorías</h3>
+                    <div class="accordion mt-n1" id="shop-categories">
+                        @foreach ($categories as $category)
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="accordion-heading"><a class="collapsed" href="#{{$category->code}}" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shoes">{{$category->name}}<span class="accordion-indicator"></span></a></h3>
+                                </div>
+                                <div class="collapse" id="{{$category->code}}" data-parent="#shop-categories">
+                                    <div class="card-body">
+                                        <div class="widget widget-links cz-filter">
+                                            <div class="input-group-overlay input-group-sm mb-2">
+                                                <input class="cz-filter-search form-control form-control-sm appended-form-control" type="text" placeholder="Buscar">
+                                                <div class="input-group-append-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
+                                            </div>
+                                            <ul class="widget-list cz-filter-list pt-1" style="height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="{{ url('search-products/'.$category->id) }}"><span class="cz-filter-item-text">Ver todos</span><span class="font-size-xs text-muted ml-3">{{$category->products->count()}}</span></a></li>
+                                                @if($category->product_class)
+                                                    @foreach($category->product_class as $product_class)
+                                                        <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">{{$product_class->name}}</span><span class="font-size-xs text-muted ml-3"></span></a></li>
+                                                    @endforeach
+                                                @endif
+                                            </ul>
                                         </div>
-                                        <ul class="widget-list cz-filter-list pt-1" style="height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="{{ url('search-products/'.$category->id) }}"><span class="cz-filter-item-text">Ver todos</span><span class="font-size-xs text-muted ml-3">{{$category->products->count()}}</span></a></li>
-                                            @if($category->product_class)
-                                                @foreach($category->product_class as $product_class)
-                                                    <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">{{$product_class->name}}</span><span class="font-size-xs text-muted ml-3"></span></a></li>
-                                                @endforeach
-                                            @endif
-                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
-                    <!--
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="accordion-heading"><a class="collapsed" href="#shoes" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shoes">Shoes<span class="accordion-indicator"></span></a></h3>
-                            </div>
-                            <div class="collapse" id="shoes" data-parent="#shop-categories">
-                                <div class="card-body">
-                                    <div class="widget widget-links cz-filter">
-                                        <div class="input-group-overlay input-group-sm mb-2">
-                                            <input class="cz-filter-search form-control form-control-sm appended-form-control" type="text" placeholder="Search">
-                                            <div class="input-group-append-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
+                        @endforeach
+                        <!--
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="accordion-heading"><a class="collapsed" href="#shoes" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shoes">Shoes<span class="accordion-indicator"></span></a></h3>
+                                </div>
+                                <div class="collapse" id="shoes" data-parent="#shop-categories">
+                                    <div class="card-body">
+                                        <div class="widget widget-links cz-filter">
+                                            <div class="input-group-overlay input-group-sm mb-2">
+                                                <input class="cz-filter-search form-control form-control-sm appended-form-control" type="text" placeholder="Search">
+                                                <div class="input-group-append-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
+                                            </div>
+                                            <ul class="widget-list cz-filter-list pt-1" style="height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">View all</span><span class="font-size-xs text-muted ml-3">1,953</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Pumps &amp; High Heels</span><span class="font-size-xs text-muted ml-3">247</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Ballerinas &amp; Flats</span><span class="font-size-xs text-muted ml-3">156</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Sandals</span><span class="font-size-xs text-muted ml-3">310</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Sneakers</span><span class="font-size-xs text-muted ml-3">402</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Boots</span><span class="font-size-xs text-muted ml-3">393</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Ankle Boots</span><span class="font-size-xs text-muted ml-3">50</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Loafers</span><span class="font-size-xs text-muted ml-3">93</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Slip-on</span><span class="font-size-xs text-muted ml-3">122</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Flip Flops</span><span class="font-size-xs text-muted ml-3">116</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Clogs &amp; Mules</span><span class="font-size-xs text-muted ml-3">24</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Athletic Shoes</span><span class="font-size-xs text-muted ml-3">31</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Oxfords</span><span class="font-size-xs text-muted ml-3">9</span></a></li>
+                                                <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Smart Shoes</span><span class="font-size-xs text-muted ml-3">18</span></a></li>
+                                            </ul>
                                         </div>
-                                        <ul class="widget-list cz-filter-list pt-1" style="height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">View all</span><span class="font-size-xs text-muted ml-3">1,953</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Pumps &amp; High Heels</span><span class="font-size-xs text-muted ml-3">247</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Ballerinas &amp; Flats</span><span class="font-size-xs text-muted ml-3">156</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Sandals</span><span class="font-size-xs text-muted ml-3">310</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Sneakers</span><span class="font-size-xs text-muted ml-3">402</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Boots</span><span class="font-size-xs text-muted ml-3">393</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Ankle Boots</span><span class="font-size-xs text-muted ml-3">50</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Loafers</span><span class="font-size-xs text-muted ml-3">93</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Slip-on</span><span class="font-size-xs text-muted ml-3">122</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Flip Flops</span><span class="font-size-xs text-muted ml-3">116</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Clogs &amp; Mules</span><span class="font-size-xs text-muted ml-3">24</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Athletic Shoes</span><span class="font-size-xs text-muted ml-3">31</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Oxfords</span><span class="font-size-xs text-muted ml-3">9</span></a></li>
-                                            <li class="widget-list-item cz-filter-item"><a class="widget-list-link d-flex justify-content-between align-items-center" href="#"><span class="cz-filter-item-text">Smart Shoes</span><span class="font-size-xs text-muted ml-3">18</span></a></li>
-                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    -->
+                        -->
+                    </div>
                 </div>
-            </div>
+            --}}
             <!-- Price range-->
             <div class="widget mb-4 pb-4 border-bottom">
                 <h3 class="widget-title">Precio</h3>
@@ -93,10 +95,6 @@
             <!-- Filter by Brand-->
             <div class="widget cz-filter mb-4 pb-4 border-bottom">
                 <h3 class="widget-title">Marca</h3>
-                <div class="input-group-overlay input-group-sm mb-2">
-                    <input class="cz-filter-search form-control form-control-sm appended-form-control" type="text" placeholder="Search">
-                    <div class="input-group-append-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
-                </div>
                 <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
                     @foreach($brands as $brand)                    
                         <li class="cz-filter-item d-flex justify-content-between align-items-center">
@@ -108,13 +106,10 @@
                     @endforeach
                 </ul>
             </div>
+          
             <!-- Filter by Size-->
             <div class="widget cz-filter mb-4 pb-4 border-bottom">
                 <h3 class="widget-title">Talla</h3>
-                <div class="input-group-overlay input-group-sm mb-2">
-                    <input class="cz-filter-search form-control form-control-sm appended-form-control" type="text" placeholder="Search">
-                    <div class="input-group-append-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
-                </div>
                 <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
                     <li class="cz-filter-item d-flex justify-content-between align-items-center mb-1">
                         <div class="custom-control custom-checkbox">
