@@ -22,4 +22,9 @@ class AddressItem extends Component
         $this->communes = $communes;
         $this->address = $address;
     }
+
+    public function updateAddress()
+    {
+        $this->emitTo('customer.address-form', 'loadUpdateForm', $this->address);
+    }
 }

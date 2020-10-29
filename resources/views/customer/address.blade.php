@@ -1,7 +1,6 @@
 @extends('layouts.base')
 
 @section('content')
-<!-- Add New Address-->
 <form class="needs-validation modal fade" method="POST" action="{{ route('address.update', ['customer' => $customer]) }}" id="add-address" tabindex="-1" novalidate>
     @method('PUT')
     @csrf
@@ -101,6 +100,8 @@
         </div>
     </div>
 </form>
+<!-- Update Address-->
+<livewire:customer.address-form :communes="$communes" :customer="$customer">
 <!-- Page Title-->
 <div class="page-title-overlap bg-dark pt-4 bg-cp-gradient">
     <div class="container d-lg-flex justify-content-between py-2 py-lg-3">

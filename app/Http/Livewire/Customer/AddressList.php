@@ -8,6 +8,7 @@ class AddressList extends Component
 {
     public $customer;
     public $communes;
+    public $address;
 
     public function render()
     {
@@ -21,5 +22,10 @@ class AddressList extends Component
     {
         $this->communes = $communes;
         $this->customer = $customer;
+    }
+
+    public function loadUpdateForm($address)
+    {
+        $this->address = $address;
     }
 }
