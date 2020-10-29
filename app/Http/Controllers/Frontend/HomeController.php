@@ -15,7 +15,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->limit(6)->get();
+        //return redirect('/seller/register');
+        $products = Product::where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->with('seller')->with('categories')->orderBy('id', 'DESC')->limit(6)->get();
         return view('marketplace', compact('products'));
     }
 
@@ -51,8 +52,9 @@ class HomeController extends Controller
         return view('shop-grid', compact('products','render','data'));
     }
 
-    public function getProductsByCategory(Request $request){
-        if($request->category == 0){
+    public function getProductsByCategory(Request $request)
+    {
+        if ($request->category == 0) {
             $category = false;
             $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('categories')->get();
         }else{
@@ -65,16 +67,18 @@ class HomeController extends Controller
         return view('shop-grid',compact('products','render','data'));
     }
 
-    public function getSeller(Request $request){
-        $seller         = Seller::where('id','=',$request->id)->with('seller_category')->with('company')->first();
-        $products       = Product::where('seller_id','=',$request->id)->where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->get();
-        $countProduct   = Product::where('seller_id','=',$request->id)->where('parent_id','=',null)->where('status','=','1')->where('is_approved','=','1')->get()->count();
-        return view('vendor',compact('seller','products','countProduct'));
+    public function getSeller(Request $request)
+    {
+        $seller         = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
+        $products       = Product::where('seller_id', '=', $request->id)->where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->get();
+        $countProduct   = Product::where('seller_id', '=', $request->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
+        return view('vendor', compact('seller', 'products', 'countProduct'));
     }
 
-    public function getFaq(){
-        $faqs = FaqAnswer::where('status','=','1')->with('faq_topic')->get();
+    public function getFaq()
+    {
+        $faqs = FaqAnswer::where('status', '=', '1')->with('faq_topic')->get();
         $faqTopic = FaqTopic::get();
-        return view('faq',compact('faqs','faqTopic'));
+        return view('faq', compact('faqs', 'faqTopic'));
     }
 }

@@ -83,6 +83,24 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
+            'name' => 'approved_description',
+            'type' => 'text',
+            'label' => 'Aprobado',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Aprobado') {
+                        return 'badge badge-success';
+                    } elseif($column['text'] == 'Rechazado') {
+                        return 'badge badge-danger';
+                    }
+
+                    return 'badge badge-default';
+                },
+            ],
+        ]);
+
+        CRUD::addColumn([
             'name' => 'status_description',
             'type' => 'text',
             'label' => 'Estado',

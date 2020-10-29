@@ -16,6 +16,7 @@ class Checkout extends Component
     public $total;
     public $cart;
     public $items;
+    public $loading;
 
 
 
@@ -117,6 +118,7 @@ class Checkout extends Component
         }
     }
     public function nextStep(){
+        $this->loading = true;
 
         //$currentStep  = array_search($this->activeStep, $this->steps);
 
@@ -183,6 +185,7 @@ class Checkout extends Component
         $currentStep  = array_search($this->activeStep, $this->steps);
         $this->steps[$currentStep + 1]['status'] = 'active';
         $this->activeStep = $this->steps[$currentStep + 1];
+        $this->loading = false;
     }
 
     public function pay()
@@ -242,6 +245,7 @@ class Checkout extends Component
             $orderitem->shipping_id = $item->shipping_id;
             $orderitem->shipping_total = $item->shipping_total;
             $orderitem->sub_total = $item->price * $item->qty;
+            $orderitem->total = ($item->price * $item->qty) + $item->shipping_total;
             $orderitem->save();
             $shippingtotal_order +=  $item->shipping_total * $item->qty;
             $subtotal_order += $item->price * $item->qty;

@@ -2,7 +2,7 @@
 use App\Models\Commune;
 use App\Models\Product;
 
-$addressData = json_decode($order->json_value);
+$addressData = $order->json_value;
 
 
 $addressShipping = null;
