@@ -20,22 +20,22 @@ class ProductBrandController extends Controller
 
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
-            'position' => 'numeric',
+            'position' => 'required|numeric',
             'status' => 'boolean',
         ]);
       
+
         if ($validator->fails()) {
-          return response()->json([
-              'status' => 'error',
-              'message' => $validator->errors(),
-          ], 400);
+          return response()->json([ 'status' => 'error', 'message' => $validator->errors() ], 400);
         }
+
         try {
             $brand  = ProductBrand::create([
                 'name' => $request['name'],
                 'position' => $request['position'] ?? 0,
                 'slug' => $request['slug'] ?? Str::slug($request['name']),
                 'code' => $request['code'],
+                'json_value' => $request['custom_attributes'],
                 'status' => $request['status'] ?? 1,
                 'company_id' => $user->companies->first()->id,
             ]);

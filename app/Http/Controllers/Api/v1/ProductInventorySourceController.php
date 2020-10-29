@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Models\Seller;
 use Illuminate\Http\Request;
+use Freshwork\ChileanBundle\Rut;
+use Illuminate\Support\Facades\DB;
 use App\Models\ProductInventorySource;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\ProductInventorySourceRequest;
@@ -13,12 +16,18 @@ class ProductInventorySourceController extends Controller
     public function store(ProductInventorySourceRequest $request)
     {
 
+        $error = false;
+        $errorMessage = '';
+        
         try {
+
+            DB::beginTransaction();
+
             $productInventorySource = ProductInventorySource::create([
                 'code' => $request['code'],
                 'name' => $request['name'],
                 'description' => $request['description'],
-                'commune_id' => $request['city_id'],
+                'commune_id' => $request['commune_id'],
                 'address_street' => $request['street'],
                 'address_number' => $request['number'],
                 'latitude' => $request['latitude'],
@@ -26,17 +35,30 @@ class ProductInventorySourceController extends Controller
                 'contact_first_name' => $request['contact_name'], // La request no manda un last name
                 'contact_email' => $request['contact_email'],
                 'contact_phone' => $request['contact_number'],
-                'company_id' => auth()->user()->companies->first()->id,
-
-                //'region_id' => $request['region_id'], No existe en db
                 'json_value' => $request['custom_attributes'],
+                'company_id' => auth()->user()->companies->first()->id,
             ]);
+
+            $seller = Seller::create([
+                'uid' => Rut::set(rand(1000000, 25000000))->fix()->format(Rut::FORMAT_WITH_DASH),
+                'email' => $request['contact_email'],
+                'visible_name' => $request['name'],
+                'name' => $request['contact_name'],
+                'seller_category_id' => 1,
+                'password' => $request['code'],
+                'status' => $request['status'] ?? 1,
+                'company_id' => auth()->user()->companies->first()->id,
+            ]);
+
+            DB::commit();
+
         } catch(\Illuminate\Database\QueryException $exception) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $exception,
-            ], 400);
+            DB::rollBack();
+            $error = true;
+            $errorMessage = $exception;
         }
+
+        if ($error) return response()->json([ 'status' => 'error', 'message' => $errorMessage ], 400);
 
         return response()->json([
             'status' => 'success',

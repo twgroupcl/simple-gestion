@@ -26,11 +26,10 @@ class ProductInventorySourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required',
+            'code' => 'required|unique:product_inventory_sources,code',
             'name' => 'required',
             'description' => 'required',
-            'region_id' => 'required|exists:regions,id',
-            'city_id' => 'required|exists:communes,id',
+            'commune_id' => 'required|exists:communes,id',
             'street' => 'required',
             'number' => 'required',
             'latitude' => 'required',
