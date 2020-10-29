@@ -14,6 +14,7 @@ use App\Http\Requests\Frontend\CustomerStoreRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
 use App\Models\Commune;
 use App\User;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -78,13 +79,46 @@ class CustomerController extends Controller
             ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
         );
 
-        // Mail::send('auth.password.verify', ['token' => $token], function ($message) use ($request) {
-        //     $message->from($request->email);
-        //     $message->to('codingdriver15@gmail.com');
-        //     $message->subject('Reset Password Notification');
-        // });
+        Mail::send('vendor.maileclipse.templates.resetPassword', ['token' => $token], function ($message) use ($request) {
+            $message->from('no-reply@twgroup.cl');
+            $message->to($request->email);
+            $message->subject('Notificación de cambio de contraseña');
+        });
 
         return view('customer.recovery')->with('success', '¡Hemos enviado un email con el enlace de restablecimiento de contraseña!');
+    }
+
+    public function reset(Request $request, $token)
+    {
+        return view('auth.passwords.reset', compact('token'));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email|exists:customers',
+            'password' => 'required|confirmed',
+        ]);
+
+        $passwordReset = DB::table('password_resets')
+            ->where('token', $request->token)
+            ->where('email', $request->email);
+
+        $isAllowed = $passwordReset
+            ->count() !== 0;
+
+        if (! $isAllowed) {
+            return redirect()->back()->withErrors(['email' => 'Email no válido']);
+        }
+
+        Customer::firstWhere('email', $request->email)->update([
+            'password' => $request->password,
+        ]);
+
+        $passwordReset->delete();
+
+        return redirect()->route('customer.sign');
     }
 
     public function profile()
