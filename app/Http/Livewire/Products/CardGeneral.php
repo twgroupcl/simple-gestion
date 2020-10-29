@@ -55,6 +55,7 @@ class CardGeneral extends Component
     }
 
     public function getProductsByCategory($data){
+
         if($data['category'] == 0){
             $category = false;
             return ModelsProduct::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('categories')->paginate($this->paginateBy);
