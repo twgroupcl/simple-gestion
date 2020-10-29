@@ -35,7 +35,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="commune_id">Comuna <span class="text-danger">*</span></label>
-                            <select class="custom-select" value="{{ $address['commune_id'] ?? '' }}" name="commune_id" id="commune_id" required>
+                            <select class="custom-select" name="commune_id" id="commune_id" required>
                                 @foreach ($communes as $id => $commune)
                                     <option value="{{ $id }}">{{ $commune }}</option>
                                 @endforeach
@@ -107,6 +107,8 @@
     <script>
         window.addEventListener('modal-form', event => {
             $("#update-address").modal();
+            let value = @this.address['commune_id']
+            $('#update-address').find(`option[value="${value}"]`).attr('selected', 'selected')
         })
     </script>
 @endpush
