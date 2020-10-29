@@ -23,7 +23,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\OrderUpdated;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentMethodBusiness;
-
+use Illuminate\Contracts\Session\Session;
 class WebpayPlusMallController extends Controller
 {
     const PAYMENT_CODE = 'tbkplusmall';
@@ -73,7 +73,7 @@ class WebpayPlusMallController extends Controller
         // Identificador único de orden de compra generada por el comercio mall:
         $buyOrder =  $order->id; // strval(rand(100000, 999999999));
         // Identificador que será retornado en el callback de resultado:
-        $sessionId =  $order->id;
+        $sessionId =   session()->getId();
 
 
         // Lista con detalles de cada una de las transacciones:
@@ -117,14 +117,13 @@ class WebpayPlusMallController extends Controller
         $amountTotal = 0;
 
         //Add transactions
-        foreach ($totalsBySeller  as $seller) {
+        foreach ($totalsBySeller  as $key=>$seller) {
 
             // Add transaction
             $transactions[] = array(
                 "storeCode" => $seller['storeCode'],
                 "amount" => $seller['amount'],
-                // Identificador único de orden de compra generada por tienda 1
-                "buyOrder" => $seller['id']
+                "buyOrder" => $buyOrder.'-'.($key+1)
             );
             $amountTotal += $seller['amount'];
         }
@@ -161,7 +160,6 @@ class WebpayPlusMallController extends Controller
         $orderlog->event = 'Inicio de pago';
         $orderlog->save();
 
-
         if (!isset($response->url)) {
             return redirect()->back()->with('error', 'Ocurrió un error al generar la url de pago');
         } else {
@@ -175,6 +173,11 @@ class WebpayPlusMallController extends Controller
 
 
         $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
+
+      //  dd($result);
+
+        session()->setId($result->sessionId);
+        session()->start();
 
         if (!isset($result->buyOrder)) {
             return redirect('/');
@@ -261,6 +264,14 @@ class WebpayPlusMallController extends Controller
             'order' => $order
         ];
         $pdf = PDF::loadView('order.pdf_order', $data);
-        //return $pdf->download('order_' . $orderId . '.pdf');
+        return $pdf->download('order_' . $orderId . '.pdf');
+    }
+
+    public function test($orderId)
+    {
+        # code...
+        $order = Order::where('id', $orderId)->first();
+        $result = null;
+        return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
     }
 }

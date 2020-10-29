@@ -55,10 +55,10 @@
                     <!-- Toolbar-->
                     <div class="navbar-toolbar d-flex align-items-center">
                         <div class="navbar-tool dropdown ml-2">
-                            <a class="" href="dashboard-sales.html">
+                            <a class="" href="{{ route('customer.profile') }}" >
                                 <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-user"></i></div>
                             </a>
-                            <a class="" href="dashboard-sales.html">
+                            <a class="" href="#">
                                 <div class="navbar-tool-text ml-n3"><small>Hola, {{ explode(' ', trim(Auth::user()->name))[0] }}</small>Mi cuenta</div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" style="min-width: 14rem;">
@@ -94,10 +94,14 @@
             <div class="container">
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <!-- Search-->
-                    <div class="input-group-overlay d-lg-none my-3">
-                        <div class="input-group-prepend-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
-                        <input class="form-control prepended-form-control" type="text" placeholder="Search for products">
-                    </div>
+                    @livewire('search-navbar-movile')
+                    <!--
+
+                        <div class="input-group-overlay d-lg-none my-3">
+                            <div class="input-group-prepend-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
+                            <input class="form-control prepended-form-control" type="text" placeholder="Search for products">
+                        </div>
+                    -->
                     <!-- Categories Menu-->
                     @livewire('categories-menu')
                     <!-- Primary menu-->

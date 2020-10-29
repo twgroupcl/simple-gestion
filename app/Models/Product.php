@@ -343,7 +343,7 @@ class Product extends Model
     {
         $productImage = DB::table('product_images')->where('product_id', $this->id)->first();
         if (!$productImage) {
-            return '/images/default/default-product-image.jpg';
+            return '/img/default/default-product-image.png';
         }
         return $productImage->path;
     }
