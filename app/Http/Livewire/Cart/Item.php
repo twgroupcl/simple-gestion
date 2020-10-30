@@ -84,8 +84,8 @@ class Item extends Component
             return;
         }
         $this->item->qty = $qty;
-        
-        
+
+
         $validationStatus = $this->validateQtys();
 
         if (!$validationStatus) {
@@ -248,7 +248,8 @@ class Item extends Component
 
     public function updatedSelected($value)
     {
-        if ($value>0) {
+
+        if ($value>-1 ) {
             $this->shippingSelected = $this->shippingMethods[$value];
         }
     }
