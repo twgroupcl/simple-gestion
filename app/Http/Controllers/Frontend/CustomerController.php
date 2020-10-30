@@ -27,6 +27,10 @@ class CustomerController extends Controller
     {
         $request['customer_segment_id'] = Setting::get('default_customer_segment');
         $request['company_id'] = Setting::get('default_company');
+        $request['uid'] = strtoupper(
+            str_replace('.', '', $request['uid'])
+        );
+
 
         Customer::create($request->all());
 
