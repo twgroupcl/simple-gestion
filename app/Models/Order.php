@@ -72,6 +72,22 @@ class Order extends Model
     |--------------------------------------------------------------------------
      */
 
+    public function scopeSearch($query, $q = null)
+    {
+        return $query->bySeller();
+    }
+
+    public function scopeBySeller($query)
+    {
+        if (!auth()->user() || auth()->user()->hasRole('Super admin')) {
+            return $query;
+        }
+
+        return $query->whereHas('order_items', function ($query) {
+            $query->where('seller_id', Seller::whereUserId(auth()->user()->id)->first()->id);
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
