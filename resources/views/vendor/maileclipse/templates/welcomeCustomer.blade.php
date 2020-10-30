@@ -118,7 +118,7 @@
 <table class="force-full-width" style="border-collapse: collapse; height: 470px; width: 611px;" cellspacing="0" cellpadding="0" align="center" bgcolor="#4dbfbf">
 <tbody>
 <tr style="height: 263px;">
-<td style="height: 263px; width: 600px; background-color: #e67e23;"><br /><img src="{{asset('logo-pyme.png')}}" alt="" width="" height="" /></td>
+<td style="height: 263px; width: 600px; background-color: #e67e23;"><br /><img src="{{asset($logo)}}" alt="" width="" height="" /></td>
 </tr>
 <tr style="height: 43px;">
 <td class="headline" style="height: 43px; width: 600px; background-color: #e67e23;">{{ $title }}</td>
