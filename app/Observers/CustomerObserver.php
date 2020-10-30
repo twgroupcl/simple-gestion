@@ -84,7 +84,7 @@ class CustomerObserver
             return new CustomerAddress($address);
         });
 
-        if ($addresses->isNotEmpty()) {
+        if (CustomerAddress::whereCustomerId($customer->id)->count() > 0) {
             $cart = Cart::whereCustomerId($customer->id)->first();
 
             if($cart && !$cart->issetAddress()) {
