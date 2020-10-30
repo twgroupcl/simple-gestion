@@ -121,7 +121,8 @@ class Product extends Model
                     'currency_id' => $this->currency_id,
                     'use_inventory_control' => $this->use_inventory_control,
                     'is_service' => $this->is_service,
-                    'status' => 1, // always 1?
+                    'is_approved' => $this->is_approved,
+                    'status' => $this->status, // always 1?
                 ]);
 
                 $childProduct->updateOrCreateAttributes($attributesArray);
@@ -150,7 +151,8 @@ class Product extends Model
                         'currency_id' => $this->currency_id,
                         'use_inventory_control' => $this->use_inventory_control,
                         'is_service' => $this->is_service,
-                        'status' => 1, // always 1?
+                        'is_approved' => $this->is_approved,
+                        'status' => $this->status, // always 1?
                     ]);
 
                 $childProduct = Product::where('id', $variation['product_id'])->firstOrFail();

@@ -17,8 +17,10 @@
         </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
             <h1 class="h3 text-light mb-2">{{$product->name}}</h1>
+            @if ($product->categories()->count())
             <a href="{{ url('search-products/'.$product->categories[0]->id) }}">
                 <span class="h5 text-light mb-2">{{ $product->showCategory() }}</span>
+            @endif
             </a> 
             {{-- <div>
                 <div class="star-rating"><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star"></i>

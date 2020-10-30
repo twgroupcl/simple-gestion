@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function getAllProducts()
     {
         $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->get();
-        $render = ['view' => ''];
+        $render = ['view' => 'shop-general'];
         $data = ['category' => $products];
 
         return view('shop-grid', compact('products','render','data'));
