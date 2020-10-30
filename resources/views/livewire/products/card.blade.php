@@ -16,7 +16,7 @@
         <span class="badge badge-danger badge-shadow">Variable</span>
     @endif
     <a class="card-img-top d-block overflow-hidden" href="{{route('product',['slug' => $product->url_key])}}">
-        <img src="{{ url($product->getFirstImagePath()) }}" class="w-100" alt="Product">
+        <img class="w-100 lazyload" data-src="{{ url($product->getFirstImagePath()) }}" alt="Product">
     </a>
     <div class="card-body py-2">
         <a class="product-meta d-block font-size-xs pb-1" href="{{ url('search-products/'.$product->categories[0]->id) }}">{{ $product->showCategory() }}</a>
