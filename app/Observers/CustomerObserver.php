@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\User;
 use App\Models\Customer;
 use App\Models\BranchUser;
+use App\Models\Cart;
 use App\Models\CompanyUser;
 use Illuminate\Support\Carbon;
 use App\Models\CustomerAddress;
@@ -79,6 +80,13 @@ class CustomerObserver
         $addresses = collect($addresses_data)->map(function ($address) {
             return new CustomerAddress($address);
         });
+
+        $cart = Cart::whereCustomerId($customer->id)->first();
+
+        if($cart && !$cart->issetAddress()) {
+            $cart->setAddress($addresses->first());
+            $cart->update();
+        }
 
         $customer->addresses()->saveMany(
             $addresses

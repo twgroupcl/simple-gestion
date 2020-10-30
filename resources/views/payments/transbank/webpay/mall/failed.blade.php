@@ -1,21 +1,18 @@
 @extends('layouts.base')
 @section('content')
-@php
-$response = json_decode($order->order_payments->first()->json_in);
-
-@endphp
 
     <div class="content">
         <div class="row mt-5 ">
             <div class="col-8 mx-auto">
                 <div class="row">
                     <div class="col-12">
-                        <div class="display-4">Recibimos un error al realizar su pago</div>
+
+                        <h1 class="woocommerce-thankyou-order-received h4 pb-3 text-center">Lo sentimos , tu operación no pudo ser realizada</h1>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div class="">Motivo
+                        {{-- <div class="">Motivo
 
                             @switch($response->data->VCI)
                                 @case('TSN'): 'Autenticación fallida'
@@ -37,6 +34,23 @@ $response = json_decode($order->order_payments->first()->json_in);
                                     @break
                                 @default : 'Error Operativo'
                             @endswitch
+                        </div> --}}
+
+                        <div class="pt-5">
+                            <div class="card py-3 mt-sm-3">
+                                <div class="card-body text-center">
+                                    {{-- <h2 class="h4 pb-3">Gracias por su pedido!</h2>
+                                    --}}
+                                    <p class="font-size-sm mb-2">Encontramos un error en la operación. por favor intenta nuevamente.
+                                    </p>
+                                    {{-- <p class="font-size-sm mb-2">Asegúrese de anotar su número de pedido,
+                                        que es <span class='font-weight-medium'>#{{ $order->id }}</span></p>
+                                    --}}
+                                    <a class="btn btn-secondary mt-3 mr-3" href="{{route('shopping-cart')}}">Volver al carro</a>
+                                    <a class="btn btn-primary mt-3"
+                                        href="{{ route('transbank.webpayplus.mall.redirect', ['order' => $order]) }}">Intenta nuevamente</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

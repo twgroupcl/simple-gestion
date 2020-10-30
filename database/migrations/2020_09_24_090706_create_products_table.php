@@ -34,9 +34,9 @@ class CreateProductsTable extends Migration
             $table->date('visible_from')->nullable();
             $table->date('visible_to')->nullable();
             $table->unsignedBigInteger('currency_id');
-            $table->decimal('price', 12, 4)->nullable();
-            $table->decimal('cost', 12, 4)->nullable();
-            $table->decimal('special_price', 12, 4)->nullable();
+            $table->decimal('price', 16, 4)->nullable();
+            $table->decimal('cost', 16, 4)->nullable();
+            $table->decimal('special_price', 16, 4)->nullable();
             $table->date('special_price_from')->nullable();
             $table->date('special_price_to')->nullable();
             $table->text('meta_title')->nullable();

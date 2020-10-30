@@ -19,6 +19,15 @@ class HomeController extends Controller
         return view('marketplace');
     }
 
+    public function getAllProducts()
+    {
+        $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->get();
+        $render = ['view' => ''];
+        $data = ['category' => $products];
+
+        return view('shop-grid', compact('products','render','data'));
+    }
+
     public function productDetail(Request $request)
     {
         $product = Product::where('url_key', $request->slug)->firstOrFail();

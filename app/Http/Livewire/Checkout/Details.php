@@ -24,6 +24,7 @@ class Details extends Component
         'data.address_number' => 'required|numeric',
         'data.address_commune_id' => 'required',
         'data.email' => 'required|email',
+        'data.cellphone' => 'required',
     ];
 
 
@@ -96,7 +97,7 @@ class Details extends Component
 
     public function updated($propertyName)
     {
-        //dd('aca');
+
 
         $dynamicRules = $this->getCustomRules();
         $this->rules = array_merge($this->rules, $dynamicRules);
@@ -128,15 +129,22 @@ class Details extends Component
                 'invoice.first_name' => 'required|min:3',
                 'invoice.last_name' => 'required|min:3',
                 'invoice.phone' => new PhoneRule('El número ingresado no es válido'),
-                'invoice.cellphone' => new PhoneRule('El número ingresado no es válido'),
+                'invoice.cellphone' => ['required',new PhoneRule('El número ingresado no es válido')],
                 'invoice.email' => 'required|email',
                 'invoice.address_street' => 'required',
                 'invoice.address_number' => 'required|numeric',
                 'invoice.address_street' => 'required',
                 'invoice.address_commune_id' => 'required|exists:communes,id',
-                'invoice.business_activity_id' => 'required|exists:business_activities,id',
-                'invoice.business_name' => 'required|min:3',
+                // 'invoice.business_activity_id' => 'required|exists:business_activities,id',
+                // 'invoice.business_name' => 'required|min:3',
             ]);
+
+            if($this->invoice['is_business']){
+                $dynamicRules = array_merge($dynamicRules, [
+                    'invoice.business_activity_id' => 'required|exists:business_activities,id',
+                    'invoice.business_name' => 'required|min:3',
+                ]);
+            }
         }
 
         return $dynamicRules;
@@ -159,18 +167,28 @@ class Details extends Component
         $dynamicRules = $this->getCustomRules();
 
         $this->rules = array_merge($this->rules,$dynamicRules);
+        try {
+            $validatedData = $this->validate();
+            $this->invoice['status'] = $this->anotherDataInvoice;
+            $this->data['invoice_value'] = json_encode($this->invoice);
 
-        $validatedData = $this->validate();
+            $this->data['is_company'] = $this->is_business;
+
+            $this->cart->update($this->data);
+
+            $this->emitUp('finishTask');
+
+        } catch (\Throwable $th){ // (\Throwable $th) {
+            $this->emitUp('notFinishTask');
+            throw $th;
 
 
 
-        $this->invoice['status'] = $this->anotherDataInvoice;
-        $this->data['invoice_value'] = json_encode($this->invoice);
+        }
 
-        $this->data['is_company'] = $this->is_business;
 
-        $this->cart->update($this->data);
 
-        $this->emitUp('finishTask');
+
+
     }
 }

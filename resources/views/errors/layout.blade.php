@@ -2,56 +2,75 @@
 {{-- show error using sidebar layout if looged in AND on an admin page; otherwise use a blank page --}}
 
 @php
-  $title = 'Error '.$error_number;
+$title = 'Error '.$error_number;
 @endphp
 
 @section('after_styles')
-  <style>
-    .error_number {
-      font-size: 156px;
-      font-weight: 600;
-      line-height: 100px;
+<style>
+    body {
+        background-color: #373f50 !important;
+        color: #ffffff !important;
     }
+
+    .error_number {
+        font-size: 156px;
+        font-weight: 600;
+        line-height: 100px;
+    }
+
     .error_number small {
-      font-size: 56px;
-      font-weight: 700;
+        font-size: 56px;
+        font-weight: 700;
     }
 
     .error_number hr {
-      margin-top: 60px;
-      margin-bottom: 0;
-      width: 50px;
+        margin-top: 60px;
+        margin-bottom: 0;
+        width: 50px;
     }
 
     .error_title {
-      margin-top: 40px;
-      font-size: 36px;
-      font-weight: 400;
+        margin-top: 40px;
+        font-size: 36px;
+        font-weight: 400;
+        color: #ffffff !important;
     }
 
     .error_description {
-      font-size: 24px;
-      font-weight: 400;
+        font-size: 24px;
+        font-weight: 400;
+        color: #ffffff !important;
     }
-  </style>
+
+    .text-muted {
+        color: #ffffff !important;
+    }
+
+    .text-muted a {
+        color: #fa3f3a !important;
+    }
+</style>
 @endsection
 
 @section('content')
 <div class="row">
-  <div class="col-md-12 text-center">
-    <div class="error_number">
-      <small>ERROR</small><br>
-      {{ $error_number }}
-      <hr>
+    <div class="col-md-12 text-center">
+        <div class="error_number">
+            <small>ERROR</small><br>
+            {{ $error_number }}
+            <hr>
+        </div>
+
+        <img src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" />
+
+        <div class="error_title text-muted">
+            @yield('title')
+        </div>
+        <div class="error_description text-muted">
+            <small>
+                @yield('description')
+            </small>
+        </div>
     </div>
-    <div class="error_title text-muted">
-      @yield('title')
-    </div>
-    <div class="error_description text-muted">
-      <small>
-        @yield('description')
-     </small>
-    </div>
-  </div>
 </div>
 @endsection
