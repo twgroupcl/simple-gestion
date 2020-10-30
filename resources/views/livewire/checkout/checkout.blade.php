@@ -13,11 +13,7 @@
                     @endforeach
                 </div>
 
-                @if($errors->has('error'))
-                <div class="alert alert-danger">
-                    {{dd($errors)}}
-                </div>
-                @endif
+
 
                 <div class="pt-2 px-4 pr-lg-0 pl-xl-5">
 
