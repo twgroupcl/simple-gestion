@@ -97,8 +97,13 @@ class CustomerController extends Controller
     {
         $request->validate([
             'token' => 'required',
-            'email' => 'required|email|exists:customers',
+            'email' => 'required|email',
             'password' => 'required|confirmed',
+        ],
+        [
+            'required' => 'Este campo es obligatorio',
+            'email' => 'El campo :attribute debe ser un email',
+            'confirmed' => 'Las contraseñas no coinciden',
         ]);
 
         $passwordReset = DB::table('password_resets')
