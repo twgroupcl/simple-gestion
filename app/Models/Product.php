@@ -607,6 +607,14 @@ class Product extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getRealPriceAttribute() {
+        if ( is_null($this->special_price) || $this->special_price === 0) {
+            return $this->price;
+        } else {
+            return $this->special_price;
+        }
+    }
+
     public function getIsApprovedTextAttribute()
     {
         $value = $this->is_approved;
