@@ -23,11 +23,9 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-        <aside class="col-lg-4">
-            @livewire('filters')
-        </aside>
+       
         <!-- Content  -->
-        <section class="col-lg-8">
+        <section class="col-lg-12">
             <!-- Toolbar-->
             <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5 mt-4">
                 <!--

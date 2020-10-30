@@ -6,6 +6,15 @@
             <i class="czi-heart"></i>
         </button>
     </div> --}}
+    @if($product->special_price)
+        <span class="badge badge-warning badge-shadow">Descto</span>
+    @endif
+    @if($product->new)
+        <span class="badge badge-info badge-shadow">Nuevo</span>
+    @endif
+    @if($product->product_type_id == 2)
+        <span class="badge badge-danger badge-shadow">Variable</span>
+    @endif
     <a class="card-img-top d-block overflow-hidden" href="{{route('product',['slug' => $product->url_key])}}">
         <img src="{{ url($product->getFirstImagePath()) }}" class="w-100" alt="Product">
     </a>
