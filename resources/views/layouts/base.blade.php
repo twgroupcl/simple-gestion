@@ -81,11 +81,11 @@
     <!-- Main theme script-->
     <script src="{{ asset('js/theme.min.js') }}"></script>
     {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
-    <script>
+    {{-- <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
-    </script>
+    </script> --}}
     @livewireScripts
     @stack('scripts')
 </body>

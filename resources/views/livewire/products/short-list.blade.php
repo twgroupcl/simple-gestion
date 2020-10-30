@@ -5,7 +5,8 @@
                 <img class="" width="64" src="{{ url($product->getFirstImagePath()) }}" alt="Product" />
             </a>
             <div class="media-body">
-                <h6 class="widget-product-title"><a href="{{ $product->url_key ? route('product',['slug' => $product->url_key]) : '#' }}" @if(strlen($product->name) > 80) data-toggle="tooltip" data-placement="top" title="{{ $product->name }}" @endif>{{ substr($product->name, 0, 80) }} @if(strlen($product->name) > 80) ... @endif</a></h6>
+                <h6 class="widget-product-title"><a href="{{ $product->url_key ? route('product',['slug' => $product->url_key]) : '#' }}">{{ $product->name }}</a></h6>
+                {{-- <h6 class="widget-product-title"><a href="{{ $product->url_key ? route('product',['slug' => $product->url_key]) : '#' }}" @if(strlen($product->name) > 80) data-toggle="tooltip" data-placement="top" title="{{ $product->name }}" @endif>{{ substr($product->name, 0, 80) }} @if(strlen($product->name) > 80) ... @endif</a></h6> --}}
                 <div class="widget-product-meta">
                     @if ($product->children()->count())
                     <div class="product-price">
