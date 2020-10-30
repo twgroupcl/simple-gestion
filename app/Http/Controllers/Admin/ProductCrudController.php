@@ -1078,6 +1078,18 @@ class ProductCrudController extends CrudController
             $this->crud->addClause('where', 'sku', 'LIKE', '%' . $value . '%');
         });
 
+        if ($this->admin) {
+            $this->crud->addFilter([
+                'name'  => 'category_id',
+                'type'  => 'select2',
+                'label' => 'Vendedor'
+            ], function() {
+                return Seller::all()->pluck('visible_name', 'id')->toArray();
+            }, function($value) {
+                $this->crud->addClause('where', 'seller_id', $value);
+            });
+      }
+
         CRUD::addFilter([
             'type'  => 'text',
             'name'  => 'name',
@@ -1110,6 +1122,8 @@ class ProductCrudController extends CrudController
             $this->crud->addClause('where', 'product_type_id', $value);
           });
 
-          // @todo filter for seller
+        
+          
+        
     }
 }
