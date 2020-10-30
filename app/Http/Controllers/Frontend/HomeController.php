@@ -15,20 +15,23 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = ProductCategory::where('status','=','1')
+        $categories = ProductCategory::where('status', '=' ,'1')
         ->whereHas('products', function ($query) {
-            $query->where('id','<>','');
+            $query->where('status', '=', '1')
+            ->where('is_approved', '=', '1')
+            ->where('parent_id', '=', null);
         })->limit(3)->inRandomOrder()->get();
+
         return view('marketplace', compact('categories'));
     }
 
     public function getAllProducts()
     {
-        $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->get();
+        $products = Product::where('status', '=', '1')->where('is_approved', '=', '1')->where('parent_id', '=', null)->with('seller')->with('categories')->orderBy('id', 'DESC')->get();
         $render = ['view' => 'shop-general'];
         $data = ['category' => $products];
 
-        return view('shop-grid', compact('products','render','data'));
+        return view('shop-grid', compact('products', 'render', 'data'));
     }
 
     public function productDetail(Request $request)
@@ -73,10 +76,7 @@ class HomeController extends Controller
 
     public function filterProducts(Request $request)
     {
-       // dd($request);
         $filterService = new ProductFilterService();
         $filterService->filterByParams($request);
-
     }
-    
 }
