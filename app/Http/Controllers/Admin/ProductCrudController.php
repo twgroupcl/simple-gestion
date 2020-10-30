@@ -128,6 +128,8 @@ class ProductCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->customFilters();
     }
 
     /**
@@ -1064,5 +1066,50 @@ class ProductCrudController extends CrudController
             $results = $options->paginate(10);
         }
         return $options->paginate(10);
+    }
+
+    private function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'sku',
+            'label' => 'SKU',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'sku', 'LIKE', '%' . $value . '%');
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'name',
+            'label' => 'Nombre',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'name', 'LIKE', '%' . $value . '%');
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'is_approved',
+            'type'  => 'dropdown',
+            'label' => 'Estado de aprobación'
+          ], [
+            //null => 'Pendiente',
+            0 => 'Rechazado',
+            1 => 'Aprobado',
+          ], function($value) { 
+            $this->crud->addClause('where', 'is_approved', $value);
+          });
+
+          $this->crud->addFilter([
+            'name'  => 'product_type',
+            'type'  => 'dropdown',
+            'label' => 'Tipo de producto'
+          ], [
+            //null => 'Pendiente',
+            1 => 'Simple',
+            2 => 'Configurable',
+          ], function($value) { 
+            $this->crud->addClause('where', 'product_type_id', $value);
+          });
+
+          // @todo filter for seller
     }
 }
