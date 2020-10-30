@@ -276,9 +276,7 @@ class Checkout extends Component
 
         $order->save();
 
-        //Save cartId
-        $this->cart->json_value = $order->id;
-        $this->cart->update();
+
 
         return redirect()->to(route('transbank.webpayplus.mall.redirect', ['order' => $order]));
     }
