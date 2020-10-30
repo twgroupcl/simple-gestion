@@ -15,8 +15,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        //return redirect('/seller/register');
-        return view('marketplace');
+        $categories = ProductCategory::where('status','=','1')
+        ->whereHas('products', function ($query) {
+            $query->where('id','<>','');
+        })->limit(3)->inRandomOrder()->get();
+        return view('marketplace', compact('categories'));
     }
 
     public function getAllProducts()
