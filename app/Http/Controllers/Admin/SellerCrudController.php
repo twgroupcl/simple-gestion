@@ -13,6 +13,7 @@ use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
 use App\Http\Traits\HasCustomAttributes;
+use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -39,6 +40,13 @@ class SellerCrudController extends CrudController
         $this->crud->denyAccess('show');
 
         $this->getExtras();
+
+        $this->userSeller = null;
+
+        if ( backpack_user()->hasAnyRole('Vendedor marketplace') ) {
+            $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        }
+
     }
 
     /**
@@ -50,6 +58,9 @@ class SellerCrudController extends CrudController
     protected function setupListOperation()
     {
         //CRUD::setFromDb(); // columns
+        if ($this->userSeller) {
+            $this->crud->addClause('where', 'id', '=', $this->userSeller->id);
+        }
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -739,6 +750,12 @@ class SellerCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        if ($this->userSeller) {
+            if ($this->userSeller->id != $this->crud->getCurrentEntryId()) {
+                $this->crud->denyAccess('update');
+            }
+        }
+
         $this->setupCreateOperation();
         CRUD::setValidation(SellerUpdateRequest::class);
 
