@@ -49,7 +49,11 @@
         @endif
         <div class="text-center">
             <a class="nav-link-style font-size-ms" href="{{ route('product',['slug' => $product->url_key]) }}">
-                <i class="czi-eye align-middle mr-1"></i>Ver producto
+                @if ($product->is_service)
+                    <i class="czi-eye align-middle mr-1"></i>Ver servicio
+                @else
+                    <i class="czi-eye align-middle mr-1"></i>Ver producto
+                @endif
             </a>
         </div>
     </div>

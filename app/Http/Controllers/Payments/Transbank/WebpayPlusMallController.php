@@ -51,7 +51,8 @@ class WebpayPlusMallController extends Controller
         $this->returnUrl = $wpmConfig[3]->variable_value;
         $this->finalUrl = $wpmConfig[4]->variable_value;
 
-        //$transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
+        //$this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
+
         $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
 
     }
@@ -147,9 +148,10 @@ class WebpayPlusMallController extends Controller
         $orderlog->event = 'Inicio de pago';
         $orderlog->save();
 
-
         if (!isset($response->url)) {
-            return redirect()->back()->with('error', 'Ocurrió un error al generar la url de pago');
+            $result = null;
+            // return redirect()->back()->with('error', 'Ocurrió un error al generar la url de pago');
+            return view('payments.transbank.webpay.mall.failed', compact('result', 'order'));
         } else {
             return view('payments.transbank.webpay.mall.redirect', compact('response'));
         }
@@ -160,7 +162,6 @@ class WebpayPlusMallController extends Controller
 
         $sessionId = null;
         $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
-
 
         if (!isset($result->buyOrder)) {
             return redirect('/');
@@ -219,7 +220,8 @@ class WebpayPlusMallController extends Controller
         }
         if ($finalresult) {
 
-            $cart = Cart::where('session_id',$sessionId)->first();
+            $cart = Cart::where('session_id', $sessionId)->first();
+
             //Destroy cart
             if ($cart) {
                 $cart->cart_items()->delete();

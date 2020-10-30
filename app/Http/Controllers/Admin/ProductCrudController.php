@@ -79,6 +79,17 @@ class ProductCrudController extends CrudController
             'type' => 'text',
             ]);
 
+        
+        if($this->admin) {
+            CRUD::addColumn([
+                'name' => 'seller',
+                'label' => 'Vendedor',
+                'type' => 'relationship',
+                'attribute' => 'visible_name',
+            ]);
+        }
+        
+
         CRUD::addColumn([
             'name' => 'name',
             'label' => 'Nombre',
@@ -117,6 +128,8 @@ class ProductCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->customFilters();
     }
 
     /**
@@ -244,6 +257,7 @@ class ProductCrudController extends CrudController
             'entity' => 'seller',
             'default' => $this->userSeller ?? '',
             'type' => 'relationship',
+            'attribute' => 'visible_name',
             'placeholder' => 'selecciona un vendedor',
             'wrapper' => [
                'style' => $this->admin ? '' : 'display:none',
@@ -387,6 +401,7 @@ class ProductCrudController extends CrudController
             'entity' => 'seller',
             'type' => 'relationship',
             'tab' => 'Información general',
+            'attribute' => 'visible_name',
             'wrapper' => [
                 'style' => $this->admin ? '' : 'display:none',
             ],
@@ -430,7 +445,30 @@ class ProductCrudController extends CrudController
             'tab' => 'Información general',
         ]);
 
+        CRUD::addField([
+            'name' => 'is_service',
+            'label' => 'Tipo de publicación',
+            'type' => 'select2_from_array',
+            'tab' => 'Información general',
+            'options' => [
+                0 => 'Producto',
+                1 => 'Servicio',
+            ],
+            'attributes' => [
+                'disabled' => true,
+            ]
+        ]);
 
+        CRUD::addField([
+            'name' => 'product_class',
+            'label' => 'Clase del producto',
+            'type' => 'relationship',
+            'tab' => 'Información general',
+            'attributes' => [
+                'disabled' => true,
+            ]
+        ]);
+  
         CRUD::addField([
             'name' => 'is_template',
             'label' => 'Es una plantilla',
@@ -447,6 +485,12 @@ class ProductCrudController extends CrudController
             'type' => 'checkbox',
             'default' => '1',
             'tab' => 'Información general'
+        ]);
+
+        CRUD::addField([
+            'name' => 'CustomShowHidedFields',
+            'type' => 'product.show_hide_fields',
+            'tab' => 'Información general',
         ]);
     }
 
@@ -523,7 +567,7 @@ class ProductCrudController extends CrudController
             'type' => 'date',
             'tab' => 'Precio y envío',
             'wrapper' => [
-                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group required',
+                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group',
                 'id' => 'special_price_from',
                 'style' => 'display:none',
             ]
@@ -535,7 +579,7 @@ class ProductCrudController extends CrudController
             'type' => 'date',
             'tab' => 'Precio y envío',
             'wrapper' => [
-                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group required',
+                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group',
                 'id' => 'special_price_to',
                 'style' => 'display:none',
             ]
@@ -686,11 +730,6 @@ class ProductCrudController extends CrudController
             ]
         ]);
 
-        CRUD::addField([
-            'name' => 'CustomShowHidedFields',
-            'type' => 'product.show_hide_fields',
-            'tab' => 'Administrador',
-        ]);
     }
 
     public function setSeoFields() {
@@ -822,33 +861,50 @@ class ProductCrudController extends CrudController
                 'label' => 'Imagen',
                 'crop' => false,
             ],
-            /* [
-                'label' => "SKU",
-                'name' => "sku",
-                'type' => 'text',
-                'wrapper' => [
-                    'class' => 'col-lg-6 col-md-12',
-                ],
-            ], */
-            /* [
-                'label' => "Nombre",
-                'name' => "name",
-                'type' => 'text',
-                'wrapper' => [
-                    'class' => 'col-lg-6 col-md-12',
-                ],
-            ], */
             [
                 'label' => "Precio",
                 'name' => "price",
                 'type' => 'product.number_format',
                 'wrapper' => [
-                    'class' => $product->is_service ? 'col-lg-12 col-md-12': 'col-lg-6 col-md-12',
+                    'class' => 'col-lg-3 col-md-12 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
                 ],
             ],
+            [
+                'name' => 'special_price',
+                'label' => 'Precio de oferta',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'wrapper' => [
+                    'class' => 'col-md-3 form-group'
+                ],
+                'attributes' => [
+                    'step' => 'any',
+                    'placeholder' => 'Opcional'
+                ],
+            ],
+            [
+                'name' => 'special_price_from',
+                'label' => 'Precio de oferta desde',
+                'type' => 'date',
+                'tab' => 'Precio y envío',
+                'wrapper' => [
+                    'class' => 'col-md-3 form-group',
+                    'id' => 'special_price_from',
+                ]
+            ],
+            [
+                'name' => 'special_price_to',
+                'label' => 'Precio de oferta hasta',
+                'type' => 'date',
+                'tab' => 'Precio y envío',
+                'wrapper' => [
+                    'class' => 'col-md-3 form-group',
+                    'id' => 'special_price_to',
+                ]
+            ]
         ];
 
         $isProductFields = $product->is_service ? [] : [
@@ -858,7 +914,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'kg',
                 'wrapper' => [
-                    'class' => 'col-lg-6 col-md-12',
+                    'class' => 'col-md-3 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
@@ -870,7 +926,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
                 'wrapper' => [
-                    'class' => 'col-lg col-md-12 col-sm-12',
+                    'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
@@ -882,7 +938,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
                 'wrapper' => [
-                    'class' => 'col-lg col-md-12 col-sm-12',
+                    'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
@@ -894,7 +950,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
                 'wrapper' => [
-                    'class' => 'col-lg col-md-12 col-sm-12',
+                    'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
@@ -956,6 +1012,9 @@ class ProductCrudController extends CrudController
                 'default' => 0,
                 'fake' => true,
                 'store_in' => 'inventories_json',
+                'wrapper' => [
+                    'class' => 'col-md-12 form-group required',
+                ],
             ]);
         }
 
@@ -1007,5 +1066,50 @@ class ProductCrudController extends CrudController
             $results = $options->paginate(10);
         }
         return $options->paginate(10);
+    }
+
+    private function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'sku',
+            'label' => 'SKU',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'sku', 'LIKE', '%' . $value . '%');
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'name',
+            'label' => 'Nombre',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'name', 'LIKE', '%' . $value . '%');
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'is_approved',
+            'type'  => 'dropdown',
+            'label' => 'Estado de aprobación'
+          ], [
+            //null => 'Pendiente',
+            0 => 'Rechazado',
+            1 => 'Aprobado',
+          ], function($value) { 
+            $this->crud->addClause('where', 'is_approved', $value);
+          });
+
+          $this->crud->addFilter([
+            'name'  => 'product_type',
+            'type'  => 'dropdown',
+            'label' => 'Tipo de producto'
+          ], [
+            //null => 'Pendiente',
+            1 => 'Simple',
+            2 => 'Configurable',
+          ], function($value) { 
+            $this->crud->addClause('where', 'product_type_id', $value);
+          });
+
+          // @todo filter for seller
     }
 }
