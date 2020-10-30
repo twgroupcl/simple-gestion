@@ -170,4 +170,11 @@ class Customer extends Model
 
         $this->attributes[$attribute_name] = Hash::make($value);
     }
+
+    public function setUidAttribute($value)
+    {
+        $this->attributes['uid'] = strtoupper(
+            str_replace('.', '', $value)
+        );
+    }
 }
