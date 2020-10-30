@@ -84,7 +84,6 @@ class CustomerController extends Controller
         );
 
         Mail::send('vendor.maileclipse.templates.resetPassword', ['token' => $token], function ($message) use ($request) {
-            $message->from('no-reply@twgroup.cl');
             $message->to($request->email);
             $message->subject('Notificación de cambio de contraseña');
         });
@@ -128,7 +127,6 @@ class CustomerController extends Controller
         $passwordReset->delete();
 
         Mail::send('vendor.maileclipse.templates.passwordChanged', [], function ($message) use ($request) {
-            $message->from('no-reply@twgroup.cl');
             $message->to($request->email);
             $message->subject('Se ha cambiado la contraseña');
         });
