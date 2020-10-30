@@ -49,6 +49,7 @@ class WebpayPlusMallController extends Controller
 
         $configuration  = new Configuration();
 
+        $configuration->setEnvironment('PRODUCCION');
         $configuration->setCommerceCode($wpmConfig[0]->variable_value);
         $configuration->setPublicCert($wpmConfig[1]->variable_value);
         $configuration->setPrivateKey($wpmConfig[2]->variable_value);
@@ -57,6 +58,7 @@ class WebpayPlusMallController extends Controller
 
         //$transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
         $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
+
     }
 
     public function redirect($orderId)
@@ -71,7 +73,7 @@ class WebpayPlusMallController extends Controller
 
 
         // Identificador único de orden de compra generada por el comercio mall:
-        $buyOrder =  $order->id; // strval(rand(100000, 999999999));
+        $buyOrder =  $order->id;
         // Identificador que será retornado en el callback de resultado:
         $sessionId =   session()->getId();
 
@@ -129,9 +131,7 @@ class WebpayPlusMallController extends Controller
         }
 
 
-        // $order->total = $amountTotal;
 
-        //$order->save();
 
 
         $response = $this->transaction->initTransaction($buyOrder, $sessionId, $this->returnUrl, $this->finalUrl, $transactions);
@@ -143,6 +143,8 @@ class WebpayPlusMallController extends Controller
         $data = [
             'event' => 'init transaction',
             'data' => $response,
+            'buyOrder'=> $buyOrder,
+            'sessionId'=> $sessionId,
             'transactions' => $transactions
         ];
 
