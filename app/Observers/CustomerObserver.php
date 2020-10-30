@@ -102,6 +102,7 @@ class CustomerObserver
     {
         try {
             $data = [
+                'logo' => asset('img/logo-pyme.png'),
                 'title' => 'Te damos la bienvenida '.$customer->first_name,
                 'text' => 'Explora la cantidad de productos que tenemos para ti.',
                 'rejectedText' => '',
