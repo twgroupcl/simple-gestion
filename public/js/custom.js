@@ -9,6 +9,7 @@ $(function(){
         } 
     });
 
+    console.log(elementURL,query)
     if(elementURL[3] == "search-products" && elementURL[4] != undefined){
         $('.input-search').val(query);
     }
