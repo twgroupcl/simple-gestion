@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Freshwork\ChileanBundle\Rut;
 
 class Customer extends Model
 {
@@ -156,6 +157,13 @@ class Customer extends Model
         }
 
         return $this->first_name;
+    }
+
+    public function getUidAttribute()
+    {
+        $rutFormatter = Rut::parse($this->attributes['uid']);
+
+        return $rutFormatter->format();
     }
 
     /*
