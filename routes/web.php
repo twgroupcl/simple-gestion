@@ -90,24 +90,3 @@ Route::group([
 // Route::get('complete', function(){
 //     return view('payments.transbank.webpay.mall.complete');
 // });
-
-/** Temporal routes */
-Route::get('reset-passwords', function () {
-    Seller::all()->each(function ($seller) {
-        try {
-            $rut = strtoupper(
-                str_replace('.', '', $seller->uid)
-            );
-
-            $seller->update([
-                'uid' => $rut,
-                'password' => $rut,
-            ]);
-
-        } catch (\Throwable $th) {
-            logger($th->getMessage(), ['seller' => $seller]);
-        }
-    });
-
-    dd('Sellers uid and password have been updated');
-});

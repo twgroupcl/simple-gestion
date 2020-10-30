@@ -220,6 +220,22 @@ class WebpayPlusMallController extends Controller
         }
         if ($finalresult) {
 
+            // Reducir invententario de product
+            // Por cada item
+            $orderItems = $order->order_items;
+
+            foreach($orderItems as $orderItem) {
+                if($orderItem->product->use_inventory_control) {
+                    // 1. obtener cantidad en stock (cual bodega)
+                    $qtyInStock = $orderItem->product->inventories->first()->pivot->qty;
+                    $inventorySourceId = $orderItem->product->inventories->first()->id;
+                    // 2. restar cantidad y verificar que no sea negativa
+                    $finalQtyStock = $qtyInStock - $orderItem->qty;
+                    // 3. guardar cantidad en inventario
+                    $orderItem->product->updateInventory($finalQtyStock, $inventorySourceId);
+                }
+            }
+
             $cart = Cart::where('session_id', $sessionId)->first();
 
             //Destroy cart
