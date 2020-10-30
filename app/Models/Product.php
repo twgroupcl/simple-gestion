@@ -421,10 +421,10 @@ class Product extends Model
         }
 
         // Qty in pending orders
-        $itemsInOrder = OrderItem::where(['shipping_status' => 1, 'product_id' => $this->id])->get();
+        /* $itemsInOrder = OrderItem::where(['shipping_status' => 1, 'product_id' => $this->id])->get();
         foreach ($itemsInOrder as $orderItem) {
             $total -= $orderItem->qty;
-        }
+        } */
 
         return $qty <= $total ? true : false;
     }
