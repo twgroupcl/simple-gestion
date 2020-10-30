@@ -23,13 +23,11 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-        <aside class="col-lg-4">
-            @livewire('filters')
-        </aside>
+       
         <!-- Content  -->
-        <section class="col-lg-8">
+        <section class="col-lg-12">
             <!-- Toolbar-->
-            <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5 mt-5">
+            <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5 mt-4">
                 <!--
                 <div class="d-flex flex-wrap">
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
@@ -58,15 +56,14 @@
             <div class=" mx-n2 mt-5">
                 <!-- Product-->
 
-
                 {{-- @if(empty($products[0]) && !isset($products->id) )
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <p class="text-center">No existen productos en esta búsqueda.</p>
                 </div>
                 @else
-                @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                    @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
                 @endif --}}
-                @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 8 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
             </div>
             <!-- Banner-->
             <!--
