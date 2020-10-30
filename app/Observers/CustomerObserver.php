@@ -110,7 +110,6 @@ class CustomerObserver
             ];
 
             Mail::send('vendor.maileclipse.templates.welcomeCustomer', $data, function ($message) use ($customer) {
-                $message->from('no-reply@twgroup.cl');
                 $message->to($customer->email);
                 $message->subject('Bienvenido a Contigo Pyme');
             });
