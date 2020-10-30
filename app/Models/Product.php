@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class Product extends Model
 {
@@ -345,6 +346,15 @@ class Product extends Model
     {
         $productImages = DB::table('product_images')->where('product_id', $this->id)->get();
 
+        if (!$productImages->count()) {
+            if ($this->parent()->count()) {
+                return $this->parent->getImages();
+            } else {
+                $defaultImage = (object) [ 'path' => '/img/default/default-product-image.png'];
+                return [ $defaultImage ];
+            }
+        }
+
         return $productImages;
     }
 
@@ -353,7 +363,11 @@ class Product extends Model
         $productImage = DB::table('product_images')->where('product_id', $this->id)->first();
 
         if (!$productImage) {
-            return '/img/default/default-product-image.png';
+            if($this->parent()->count()) {
+                return $this->parent->getFirstImagePath();
+            } else {
+                return '/img/default/default-product-image.png';
+            }
         }
 
         return $productImage->path;
