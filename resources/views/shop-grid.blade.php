@@ -66,7 +66,7 @@
                 @else
                 @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
                 @endif --}}
-                @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 12 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
             </div>
             <!-- Banner-->
             <!--

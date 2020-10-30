@@ -21,9 +21,27 @@ class CardGeneral extends Component
 
     public function render()
     {
-        $render = [
-            'products' => (!empty($this->showFrom)) ? (($this->showFrom == 'searchCategory') ? $this->getProductsByCategory($this->valuesQuery) : $this->searchProduct($this->valuesQuery)) : $this->getProducts()
-        ];
+
+        switch($this->showFrom) {
+            case 'shop-general': 
+                $render = [ 'products' => $this->getProductsNoRandom()];
+                break;
+            case 'searchCategory': 
+                $render = [ 'products' => $this->getProductsByCategory($this->valuesQuery)];
+                break;
+            default:
+                if ( empty($this->showFrom) ) {
+                    $render = [ 'products' => $this->getProducts()];
+                } else {
+                    $render = [ 'products' => $this->searchProduct($this->valuesQuery)];
+                }
+                break;
+        }
+
+        /* $render = [
+            'products' => (!empty($this->showFrom)) 
+                                ? (($this->showFrom == 'searchCategory') ? $this->getProductsByCategory($this->valuesQuery) : $this->searchProduct($this->valuesQuery)) : $this->getProducts()
+        ]; */
 
         return view('livewire.products.card-general', $render);
     }
@@ -40,6 +58,11 @@ class CardGeneral extends Component
     public function getProducts()
     {
         return $this->baseQuery(true);
+    }
+
+    public function getProductsNoRandom()
+    {
+        return $this->baseQuery(false);
     }
 
     public function searchProduct($data)
