@@ -70,7 +70,7 @@ Route::redirect('/login', '/customer/login')->name('login');
 
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
 Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
-
+Route::get('/filter-products', 'Frontend\HomeController@filterProducts');
 
 Route::group([
     'prefix' => '/transbank'

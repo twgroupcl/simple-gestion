@@ -63,7 +63,7 @@
                     <p class="text-center">No existen productos en esta búsqueda.</p>
                 </div>
                 @else
-                @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                    @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
                 @endif --}}
                 @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
             </div>

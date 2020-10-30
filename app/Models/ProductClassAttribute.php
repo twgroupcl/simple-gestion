@@ -97,7 +97,7 @@ class ProductClassAttribute extends Model
     }
 
     public function product_attributes() {
-        return $this->hasMany(ProductAttribute::class);
+        return $this->hasMany(ProductAttribute::class,'product_class_attribute_id');
     }
 
     public function child_super_attributes() {
