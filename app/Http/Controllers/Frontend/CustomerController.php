@@ -141,7 +141,16 @@ class CustomerController extends Controller
 
         $passwordReset->delete();
 
-        Mail::send('vendor.maileclipse.templates.passwordChanged', [], function ($message) use ($request) {
+        $data = [
+            'logo' => asset('img/logo-pyme.png'),
+            'title' => 'Tu contraseña ha sido exitosamente actualizada',
+            'text' => 'Si no fuiste tú, te aconsejamos que restablezcas tu contraseña para garantizar la seguridad de tu cuenta.',
+            'rejectedText' => '',
+            'buttonText' => 'Vamos a comprar',
+            'buttonLink' => route('index'),
+        ];
+
+        Mail::send('vendor.maileclipse.templates.passwordChanged', $data, function ($message) use ($request) {
             $message->to($request->email);
             $message->subject('Se ha cambiado la contraseña');
         });
