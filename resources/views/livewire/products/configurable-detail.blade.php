@@ -32,7 +32,15 @@
                     </div>
                     <div class="product-details ml-auto pb-3">
                         @if ($selectedChildrenId)
-                            <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price, 'CLP', true) }}</div>
+                            @if ($currentProduct->special_price)
+                            <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($currentProduct->special_price, defaultCurrency(), true) }}</span>
+                                <del class="text-muted font-size-lg mr-3">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</del>
+                                <br>
+                                <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                            </div>
+                            @else
+                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</div>
+                            @endif
                         @else
                             <div class="h3 font-weight-normal text-accent mb-3 mr-1">Desde {{ currencyFormat($priceFrom, 'CLP', true) }}</div>
                         @endif
