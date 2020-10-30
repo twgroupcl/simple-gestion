@@ -1080,7 +1080,7 @@ class ProductCrudController extends CrudController
 
         if ($this->admin) {
             $this->crud->addFilter([
-                'name'  => 'category_id',
+                'name'  => 'seller_id',
                 'type'  => 'select2',
                 'label' => 'Vendedor'
             ], function() {
