@@ -1,6 +1,6 @@
 @if ($paginator->hasPages())
-    <nav role="navigation" aria-label="Pagination Navigation" class="flex justify-between">
-        <ul class="pagination paginator-right">
+    <nav role="navigation" aria-label="Pagination Navigation" class="d-flex justify-content-end">
+        <ul class="pagination">
             @if ($paginator->onFirstPage())
                 <li class="page-item d-sm-none">
                     <span class="page-link page-link-static"></span>
@@ -32,7 +32,7 @@
                             @endif
                         @endforeach
                     @endif
-    
+
             @endforeach
             @if ($paginator->hasMorePages())
                 <li class="page-item">

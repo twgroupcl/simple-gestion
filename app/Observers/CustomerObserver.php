@@ -84,11 +84,13 @@ class CustomerObserver
             return new CustomerAddress($address);
         });
 
-        $cart = Cart::whereCustomerId($customer->id)->first();
+        if (CustomerAddress::whereCustomerId($customer->id)->count() > 0) {
+            $cart = Cart::whereCustomerId($customer->id)->first();
 
-        if($cart && !$cart->issetAddress()) {
-            $cart->setAddress($addresses->first());
-            $cart->update();
+            if($cart && !$cart->issetAddress()) {
+                $cart->setAddress($addresses->first());
+                $cart->update();
+            }
         }
 
         $customer->addresses()->saveMany(

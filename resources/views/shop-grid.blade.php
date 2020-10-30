@@ -23,7 +23,7 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-       
+
         <!-- Content  -->
         <section class="col-lg-12">
             <!-- Toolbar-->
@@ -40,10 +40,10 @@
                             <option data-direction="ASC" data-field="name" value="4">Ordenar A - Z</option>
                             <option data-direction="DESC" data-field="name" value="5">Ordenar Z - A</option>
                         </select>
-                        {{--  <span class="font-size-sm text-light opacity-75 text-nowrap ml-2 d-none d-md-block">of 287 products</span> --}}     
+                        {{--  <span class="font-size-sm text-light opacity-75 text-nowrap ml-2 d-none d-md-block">of 287 products</span> --}}
                </div>
                 </div>
-             {{--   <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div> --}}   
+             {{--   <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div> --}}
              <div class="d-none d-sm-flex pb-3">
                     <a class="btn btn-icon nav-link-style bg-light text-dark disabled opacity-100 mr-2" href="#"><i class="czi-view-grid"></i></a>
                     <!--
@@ -62,7 +62,7 @@
                 @else
                     @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
                 @endif --}}
-                @livewire('products.card-general', ['columnLg' => 4, 'showPaginate' => true, 'paginateBy' => 12 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 16, 'showFrom' => $render['view'], 'valuesQuery' => $data])
             </div>
             <!-- Banner-->
             <!--
@@ -123,7 +123,7 @@
                 $('#sorting').val('3')
                 break;
         }
-    
+
         var url = window.location.href.split('?')[0];
 
         $('#sorting').change(function(){
