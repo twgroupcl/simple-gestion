@@ -75,6 +75,11 @@ class CustomerController extends Controller
     {
         $request->validate([
             'email' => 'required|email|exists:users',
+        ],
+        [
+            'required' => 'Este campo es obligatorio',
+            'email' => 'El campo :attribute debe ser un email',
+            'exists' => 'El campo :attribute es inválido',
         ]);
 
         $token = Str::random(60);

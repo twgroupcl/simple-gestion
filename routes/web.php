@@ -25,7 +25,7 @@ Route::post('/customer/register', 'Frontend\CustomerController@store')->name('cu
 Route::post('/customer/login', 'Frontend\CustomerController@authenticate')->name('customer.frontend.login');
 Route::post('/customer/logout', 'Frontend\CustomerController@logout')->name('logout');
 Route::get('/customer/forget', 'Frontend\CustomerController@forget')->middleware(['guest'])->name('customer.forget');
-Route::post('/customer/recovery', 'Frontend\CustomerController@recovery')->name('customer.frontend.recovery');
+Route::post('/customer/forget', 'Frontend\CustomerController@recovery')->name('customer.frontend.recovery');
 Route::post('/customer/reset', 'Frontend\CustomerController@updatePassword')->name('password.update');
 Route::get('/customer/reset/{token}', 'Frontend\CustomerController@reset')->name('password.reset');
 Route::get('/customer/exit', 'Frontend\CustomerController@logout')->name('exit');
