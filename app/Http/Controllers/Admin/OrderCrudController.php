@@ -120,6 +120,9 @@ class OrderCrudController extends CrudController
                     if ($column['text'] == 'Completa') {
                         return 'badge badge-success';
                     }
+                    if ($column['text'] == 'Pagada') {
+                        return 'badge badge-success';
+                    }
                     return 'badge badge-default';
                 },
             ],
@@ -506,7 +509,7 @@ class OrderCrudController extends CrudController
         }
 
         CRUD::addField([
-            'name' => 'status_description',
+            'name' => 'status',
             'type' => 'select2_from_array',
             'options' => [
                 1 => 'Pendiente',

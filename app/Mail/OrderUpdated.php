@@ -25,6 +25,7 @@ class OrderUpdated extends Mailable
     public $communeInvoice;
     public $paymentData;
     public $title;
+    public $shippingMessage;
     /**
      * Create a new message instance.
      *
@@ -39,7 +40,7 @@ class OrderUpdated extends Mailable
         //
         if ($order) {
             $this->orderData['id'] = $order->id;
-            $this->orderData['fecha'] =  $order->created_at->format('d/m/Y H:i:s');
+            $this->orderData['fecha'] =  $order->created_at;
             $this->orderData['first_name'] =  $order->first_name;
             $this->orderData['last_name'] =  $order->last_name;
             $this->orderData['cellphone'] =  $order->cellphone;
@@ -90,6 +91,7 @@ class OrderUpdated extends Mailable
                     $this->paymentData['total'] =  currencyFormat($order->total ? $order->total : 0, 'CLP', true);
 
                     $this->title = '¡Tu orden está lista!';
+                    $this->shippingMessage = 'Próximamente estaremos notificando la fecha de envío';
                 }
                 // $this->orderItems = $order->order_items;
                 foreach ($order->order_items as $item) {
