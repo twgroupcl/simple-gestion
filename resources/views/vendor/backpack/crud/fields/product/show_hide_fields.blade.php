@@ -35,13 +35,13 @@
         let specialPriceFrom = $("#special_price_from");
         let specialPriceTo = $("#special_price_to");
         console.log(specialPrice.val(), 'precio especial')
-        if(specialPrice.val() > 0) {
+        if(specialPrice.val() != '') {
             specialPriceFrom.show()
             specialPriceTo.show()
         }
 
         specialPrice.keyup(function() {
-            if(specialPrice.val() > 0) {
+            if(specialPrice.val() != '') {
                 specialPriceFrom.show()
                 specialPriceTo.show()
             } else {
