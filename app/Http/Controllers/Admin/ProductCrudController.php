@@ -79,6 +79,17 @@ class ProductCrudController extends CrudController
             'type' => 'text',
             ]);
 
+        
+        if($this->admin) {
+            CRUD::addColumn([
+                'name' => 'seller',
+                'label' => 'Vendedor',
+                'type' => 'relationship',
+                'attribute' => 'visible_name',
+            ]);
+        }
+        
+
         CRUD::addColumn([
             'name' => 'name',
             'label' => 'Nombre',
@@ -244,6 +255,7 @@ class ProductCrudController extends CrudController
             'entity' => 'seller',
             'default' => $this->userSeller ?? '',
             'type' => 'relationship',
+            'attribute' => 'visible_name',
             'placeholder' => 'selecciona un vendedor',
             'wrapper' => [
                'style' => $this->admin ? '' : 'display:none',
@@ -387,6 +399,7 @@ class ProductCrudController extends CrudController
             'entity' => 'seller',
             'type' => 'relationship',
             'tab' => 'Información general',
+            'attribute' => 'visible_name',
             'wrapper' => [
                 'style' => $this->admin ? '' : 'display:none',
             ],
@@ -430,7 +443,30 @@ class ProductCrudController extends CrudController
             'tab' => 'Información general',
         ]);
 
+        CRUD::addField([
+            'name' => 'is_service',
+            'label' => 'Tipo de publicación',
+            'type' => 'select2_from_array',
+            'tab' => 'Información general',
+            'options' => [
+                0 => 'Producto',
+                1 => 'Servicio',
+            ],
+            'attributes' => [
+                'disabled' => true,
+            ]
+        ]);
 
+        CRUD::addField([
+            'name' => 'product_class',
+            'label' => 'Clase del producto',
+            'type' => 'relationship',
+            'tab' => 'Información general',
+            'attributes' => [
+                'disabled' => true,
+            ]
+        ]);
+  
         CRUD::addField([
             'name' => 'is_template',
             'label' => 'Es una plantilla',
