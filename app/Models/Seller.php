@@ -209,9 +209,9 @@ class Seller extends Model
 
     public function setPasswordAttribute($value)
     {
-        $attribute_name = 'password';
-
-        $this->attributes[$attribute_name] = Hash::make($value);
+        $this->attributes['password'] = Hash::make(strtoupper(
+            str_replace('.', '', $value)
+        ));
     }
 
     public function setLogoAttribute($value)
