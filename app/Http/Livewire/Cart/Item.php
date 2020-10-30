@@ -57,8 +57,8 @@ class Item extends Component
         $this->qty = $this->item->qty;
         $this->total = $this->item->product->price * $this->qty;
         $this->communeSelected =  $this->item->cart->address_commune_id;
-
-        if ($this->showShipping) {
+        $product = $this->item->product;
+        if ($this->showShipping && !$product->is_service) {
             if ($this->communeSelected) {
                 $this->shippingMethods =  $this->getShippingMethods();
                 // if ($this->shippingMethods) {
@@ -94,7 +94,7 @@ class Item extends Component
             $this->emit('showToast', '¡Cuidado!', $validationStatus->errors()->first(), 3000, 'danger');
             return;
         }
-        
+
         $this->item->update();
         $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
         $this->emitUp('change');
@@ -272,7 +272,7 @@ class Item extends Component
         }
     }
 
-    private function validateQtys() 
+    private function validateQtys()
     {
         $itemToValidate = $this->item->toArray();
         $validator = \Validator::make($itemToValidate, [
@@ -304,7 +304,7 @@ class Item extends Component
             }]
         ]);
 
-        
+
         return $validator;
     }
 
