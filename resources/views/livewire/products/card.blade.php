@@ -6,8 +6,17 @@
             <i class="czi-heart"></i>
         </button>
     </div> --}}
+    @if($product->special_price)
+        <span class="badge badge-warning badge-shadow">Descto</span>
+    @endif
+    @if($product->new)
+        <span class="badge badge-info badge-shadow">Nuevo</span>
+    @endif
+    @if($product->product_type_id == 2)
+        <span class="badge badge-danger badge-shadow">Variable</span>
+    @endif
     <a class="card-img-top d-block overflow-hidden" href="{{route('product',['slug' => $product->url_key])}}">
-        <img src="{{ url($product->getFirstImagePath()) }}" class="w-100" alt="Product">
+        <img class="w-100 lazyload" data-src="{{ url($product->getFirstImagePath()) }}" alt="Product">
     </a>
     <div class="card-body py-2">
         <a class="product-meta d-block font-size-xs pb-1" href="{{ url('search-products/'.$product->categories[0]->id) }}">{{ $product->showCategory() }}</a>
@@ -49,7 +58,11 @@
         @endif
         <div class="text-center">
             <a class="nav-link-style font-size-ms" href="{{ route('product',['slug' => $product->url_key]) }}">
-                <i class="czi-eye align-middle mr-1"></i>Ver producto
+                @if ($product->is_service)
+                    <i class="czi-eye align-middle mr-1"></i>Ver servicio
+                @else
+                    <i class="czi-eye align-middle mr-1"></i>Ver producto
+                @endif
             </a>
         </div>
     </div>

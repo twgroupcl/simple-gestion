@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class Product extends Model
 {
@@ -92,14 +93,21 @@ class Product extends Model
             $inventoriesArray = $this->getInventoriesArrayFromVariation($variation);
             $attributesArray = $this->getAttributesArrayFromVariation($variation);
 
+            if (empty($variation['special_price'])) {
+                $variation['special_price_from'] = null;
+                $variation['special_price_to'] = null;
+            }
+
             // Create if does not exists
             if ($variation['product_id'] == '') {
 
                 $childProduct = Product::create([
                     'sku' => Str::uuid()->toString(), // temporal sku
-                    //'name' => $variation['name'],
                     'name' => $this->name,
                     'price' => sanitizeNumber($variation['price']),
+                    'special_price' => $variation['special_price'] ? sanitizeNumber($variation['special_price']) : null,
+                    'special_price_from' => $variation['special_price_from'] ?: null,
+                    'special_price_to' => $variation['special_price_to'] ?: null,
                     'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
                     'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
                     'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
@@ -113,7 +121,8 @@ class Product extends Model
                     'currency_id' => $this->currency_id,
                     'use_inventory_control' => $this->use_inventory_control,
                     'is_service' => $this->is_service,
-                    'status' => 1, // always 1?
+                    'is_approved' => $this->is_approved,
+                    'status' => $this->status, // always 1?
                 ]);
 
                 $childProduct->updateOrCreateAttributes($attributesArray);
@@ -125,14 +134,15 @@ class Product extends Model
             } else {
                 Product::where('id', $variation['product_id'])
                     ->update([
-                        //'sku' => $variation['sku'],
-                        //'name' => $variation['name'],
                         'name' => $this->name,
                         'price' => sanitizeNumber($variation['price']),
                         'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
                         'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
                         'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
                         'depth' => $this->is_service ? 0 : sanitizeNumber($variation['depth']),
+                        'special_price' => $variation['special_price'] ? sanitizeNumber($variation['special_price']) : null,
+                        'special_price_from' => $variation['special_price_from'] ?: null,
+                        'special_price_to' => $variation['special_price_to']?: null,
                         'inventories_json' => $inventoriesArray,
                         'parent_id' => $this->id,
                         'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
@@ -141,14 +151,15 @@ class Product extends Model
                         'currency_id' => $this->currency_id,
                         'use_inventory_control' => $this->use_inventory_control,
                         'is_service' => $this->is_service,
-                        'status' => 1, // always 1?
+                        'is_approved' => $this->is_approved,
+                        'status' => $this->status, // always 1?
                     ]);
 
                 $childProduct = Product::where('id', $variation['product_id'])->firstOrFail();
                 $childProduct->updateOrCreateAttributes($attributesArray);
             }
 
-            // Upload child image
+            // Upload children image
             $imagesArray = [];
             $variation['image'] = $this->uploadChildImage($childProduct, $variation['image']);
             array_push($imagesArray, ['image' => $variation['image']]);
@@ -157,6 +168,10 @@ class Product extends Model
             $childProduct->images_json = $imagesArray;
             $childProduct->sku = $this->sku . '-' . $childProduct->id;
             $childProduct->url_key = $this->url_key . '-' . $childProduct->id;
+
+            // Update chidren categories
+            $childProduct->categories()->detach();
+            $childProduct->categories()->attach($this->categories->pluck('id'));
 
             $childProduct->update();
         }
@@ -333,6 +348,15 @@ class Product extends Model
     {
         $productImages = DB::table('product_images')->where('product_id', $this->id)->get();
 
+        if (!$productImages->count()) {
+            if ($this->parent()->count()) {
+                return $this->parent->getImages();
+            } else {
+                $defaultImage = (object) [ 'path' => '/img/default/default-product-image.png'];
+                return [ $defaultImage ];
+            }
+        }
+
         return $productImages;
     }
 
@@ -341,7 +365,11 @@ class Product extends Model
         $productImage = DB::table('product_images')->where('product_id', $this->id)->first();
 
         if (!$productImage) {
-            return '/img/default/default-product-image.png';
+            if($this->parent()->count()) {
+                return $this->parent->getFirstImagePath();
+            } else {
+                return '/img/default/default-product-image.png';
+            }
         }
 
         return $productImage->path;

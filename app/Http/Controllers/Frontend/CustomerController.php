@@ -27,6 +27,10 @@ class CustomerController extends Controller
     {
         $request['customer_segment_id'] = Setting::get('default_customer_segment');
         $request['company_id'] = Setting::get('default_company');
+        $request['uid'] = strtoupper(
+            str_replace('.', '', $request['uid'])
+        );
+
 
         Customer::create($request->all());
 
@@ -97,8 +101,13 @@ class CustomerController extends Controller
     {
         $request->validate([
             'token' => 'required',
-            'email' => 'required|email|exists:customers',
+            'email' => 'required|email',
             'password' => 'required|confirmed',
+        ],
+        [
+            'required' => 'Este campo es obligatorio',
+            'email' => 'El campo :attribute debe ser un email',
+            'confirmed' => 'Las contraseñas no coinciden',
         ]);
 
         $passwordReset = DB::table('password_resets')
@@ -124,7 +133,7 @@ class CustomerController extends Controller
             $message->subject('Se ha cambiado la contraseña');
         });
 
-        return redirect()->route('customer.sign');
+        return redirect('customer/sign')->with('success', '¡Su contraseña ha sido actualizada exitosamente!');
     }
 
     public function profile()

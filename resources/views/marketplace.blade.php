@@ -76,30 +76,15 @@
 <!-- Product widgets-->
 <section class="container pb-4 pb-md-5">
     <div class="row">
-        <!-- Bestsellers-->
+        @foreach($categories as $category)
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">Los más vendidos</h3>
-                @livewire('products.products-general', ['emitTo' => 'products.short-list'])
-                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <h3 class="widget-title">{{$category->name}}</h3>
+                @livewire('products.products-general',['idCategory'=>$category->id])
+                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('search-products/'.$category->id)}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
-        <!-- New arrivals-->
-        <div class="col-lg-4 col-md-6 mb-2 py-3">
-            <div class="widget">
-                <h3 class="widget-title">Nuevos productos</h3>
-                @livewire('products.products-general', ['emitTo' => 'products.short-list'])
-                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
-            </div>
-        </div>
-        <!-- Top rated-->
-        <div class="col-lg-4 col-md-6 mb-2 py-3">
-            <div class="widget">
-                <h3 class="widget-title">Los más valorados</h3>
-                @livewire('products.products-general', ['emitTo' => 'products.short-list'])
-                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
-            </div>
-        </div>
+        @endforeach
     </div>
 </section>
 

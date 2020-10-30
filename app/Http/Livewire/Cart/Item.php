@@ -84,17 +84,17 @@ class Item extends Component
             return;
         }
         $this->item->qty = $qty;
-
-
-        $validationStatus = $this->validateQtys();
-
-        if (!$validationStatus) {
-            $this->emit('showToast', '¡Cuidado!', 'Supera los límites de cantidad total de items.', 3000, 'danger');
-            return;
-        }
         $this->item->sub_total = $this->item->product->price * $qty;
         $this->validateOnly('item.sub_total');
         $this->total = $this->item->product->price * $qty;
+
+        $validationStatus = $this->validateQtys();
+
+        if ($validationStatus->fails()) {
+            $this->emit('showToast', '¡Cuidado!', $validationStatus->errors()->first(), 3000, 'danger');
+            return;
+        }
+        
         $this->item->update();
         $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
         $this->emitUp('change');
@@ -272,7 +272,7 @@ class Item extends Component
         }
     }
 
-    private function validateQtys() : bool
+    private function validateQtys() 
     {
         $itemToValidate = $this->item->toArray();
         $validator = \Validator::make($itemToValidate, [
@@ -285,13 +285,27 @@ class Item extends Component
                         return $value;
                     }
                 });
-                if ($itemsQty > 160000) {
-                    $fail('La cantidad supera los limites');
+                if ($itemsQty > 9999) {
+                    $fail('Supera los límites de cantidad total de items.');
+                }
+            }],
+            'sub_total' => [ function ($attribute, $value, $fail) use ($itemToValidate) {
+                $cartSubtotal = CartItem::whereCartId($itemToValidate['cart_id'])->get()->sum(function ($currentItem) use($itemToValidate, $value){
+                    if($currentItem->id != $itemToValidate['id']) {
+                        return $currentItem->sub_total;
+                    } else {
+
+                        return $value;
+                    }
+                });
+                if ($cartSubtotal > 800000000000) {
+                    $fail('Se ha superado la cantidad del monto total');
                 }
             }]
         ]);
 
-        return !$validator->fails();
+        
+        return $validator;
     }
 
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Freshwork\ChileanBundle\Rut;
 
 class Customer extends Model
 {
@@ -158,6 +159,13 @@ class Customer extends Model
         return $this->first_name;
     }
 
+    public function getUidAttribute()
+    {
+        $rutFormatter = Rut::parse($this->attributes['uid']);
+
+        return $rutFormatter->format();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
@@ -169,5 +177,12 @@ class Customer extends Model
         $attribute_name = 'password';
 
         $this->attributes[$attribute_name] = Hash::make($value);
+    }
+
+    public function setUidAttribute($value)
+    {
+        $this->attributes['uid'] = strtoupper(
+            str_replace('.', '', $value)
+        );
     }
 }
