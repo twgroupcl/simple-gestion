@@ -20,7 +20,7 @@
         <div class="pt-3"><a class="btn btn-outline-accent btn-sm" href="{{ url('shop-grid') }}">Más productos<i class="czi-arrow-right ml-1 mr-n1"></i></a></div>
     </div>
     <!-- Grid-->
-    <div class="row pt-2 mx-n2">
+    <div class="pt-2 mx-n2">
         <!-- Product-->
         @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => false, 'paginateBy' => 8, 'showFrom' => '', 'data' => ''])
     </div>
@@ -87,6 +87,14 @@
         @endforeach
     </div>
 </section>
+
+<!--
+    <section class="container pb-4 pb-md-5">
+        <div class="row">
+            @livewire('search-products')
+        </div>
+    </section>
+-->
 
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
