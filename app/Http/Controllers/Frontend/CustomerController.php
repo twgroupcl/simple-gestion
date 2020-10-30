@@ -124,7 +124,7 @@ class CustomerController extends Controller
             $message->subject('Se ha cambiado la contraseña');
         });
 
-        return redirect()->route('customer.sign');
+        return redirect('customer/sign')->with('success', '¡Su contraseña ha sido actualizada exitosamente!');
     }
 
     public function profile()
