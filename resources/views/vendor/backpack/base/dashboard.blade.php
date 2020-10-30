@@ -35,50 +35,87 @@
 		]),
 	]);
 
-	$widgets['before_content'][] = [
-	'type' => 'div',
-	'class' => 'row',
-	'content' => [
-			[
-				'type'    => 'script',
-				'wrapper' => ['class' => 'col-sm-12'],
-				'content' => 'Scripts',
-			],
-			[
-				'type'    => 'most-purchased-product-categories',
-				'wrapper' => ['class' => 'col-sm-12'],
-				'content' => 'Filtros de categorías',
-			],
-			[
-				'type' => 'chart',
-				'wrapperClass' => 'col-md-6 daily-sales',
-				'controller' => \App\Http\Controllers\Admin\Charts\DailySalesChartController::class,
-				'content' => [
-					'header' => 'Ventas por día',
+	$isAdmin = backpack_user()->hasRole('Super admin');
+
+	if ($isAdmin) {
+		$widgets['before_content'][] = [
+		'type' => 'div',
+		'class' => 'row',
+		'content' => [
+				[
+					'type'    => 'script',
+					'wrapper' => ['class' => 'col-sm-12'],
+					'content' => 'Scripts',
+				],
+				[
+					'type'    => 'most-purchased-product-categories',
+					'wrapper' => ['class' => 'col-sm-12'],
+					'content' => 'Filtros de categorías',
+				],
+				[
+					'type' => 'chart',
+					'wrapperClass' => 'col-md-6 daily-sales',
+					'controller' => \App\Http\Controllers\Admin\Charts\DailySalesChartController::class,
+					'content' => [
+						'header' => 'Ventas por día',
+					]
+				],
+				[
+					'type' => 'chart',
+					'wrapperClass' => 'col-md-6 most-purchased-product-categories',
+					'controller' => \App\Http\Controllers\Admin\Charts\MostPurchasedProductCategoriesChartController::class,
+					'content' => [
+						'header' => '10 Categorías más compradas',
+					]
+				],
+				[
+					'type'    => 'most-purchased-products',
+					'wrapper' => ['class' => 'col-sm-12'],
+					'content' => 'Filtros',
+				],
+				[
+					'type' => 'chart',
+					'wrapperClass' => 'col-md-12 most-purchased-products',
+					'controller' => \App\Http\Controllers\Admin\Charts\MostPurchasedProductsChartController::class,
+					'content' => [
+						'header' => '10 Productos más vendidos',
+					]
+				],
+			]
+		];
+	} else {
+		$widgets['before_content'][] = [
+			'type' => 'div',
+			'class' => 'row',
+			'content' => [
+					[
+						'type'    => 'script',
+						'wrapper' => ['class' => 'col-sm-12'],
+						'content' => 'Scripts',
+					],
+					[
+						'type'    => 'most-purchased-products',
+						'wrapper' => ['class' => 'col-sm-12'],
+						'content' => 'Filtros',
+					],
+					[
+						'type' => 'chart',
+						'wrapperClass' => 'col-md-6 daily-sales',
+						'controller' => \App\Http\Controllers\Admin\Charts\DailySalesChartController::class,
+						'content' => [
+							'header' => 'Ventas por día',
+						]
+					],
+					[
+						'type' => 'chart',
+						'wrapperClass' => 'col-md-6 most-purchased-products',
+						'controller' => \App\Http\Controllers\Admin\Charts\MostPurchasedProductsChartController::class,
+						'content' => [
+							'header' => '10 Productos más vendidos',
+						]
+					],
 				]
-			],
-	    	[
-		        'type' => 'chart',
-		        'wrapperClass' => 'col-md-6 most-purchased-product-categories',
-		        'controller' => \App\Http\Controllers\Admin\Charts\MostPurchasedProductCategoriesChartController::class,
-				'content' => [
-				    'header' => '10 Categorías más compradas',
-		    	]
-			],
-			[
-				'type'    => 'most-purchased-products',
-				'wrapper' => ['class' => 'col-sm-12'],
-				'content' => 'Filtros',
-			],
-			[
-		        'type' => 'chart',
-		        'wrapperClass' => 'col-md-12 most-purchased-products',
-		        'controller' => \App\Http\Controllers\Admin\Charts\MostPurchasedProductsChartController::class,
-				'content' => [
-				    'header' => '10 Productos más vendidos',
-		    	]
-			],
-		]
-	];
+			];
+	}
 
 @endphp
