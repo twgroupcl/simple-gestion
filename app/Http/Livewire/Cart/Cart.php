@@ -119,17 +119,30 @@ class Cart extends Component
                 $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
                 return false;
             }
-            $validator = \Validator::make($item->toArray(), [
+            $itemToValidate = $item->toArray();
+            $validator = \Validator::make($itemToValidate, [
                 'qty' => [
                     function ($attribute, $value, $fail) use ($qty) {
                         if (($value + $qty) > 9999) {
-                            $fail('Supera el límite.');
+                            $fail('No se puede superar el límite de cantidad.');
                         }
                     }
-                ]
+                ],
+                'sub_total' => [ function ($attribute, $value, $fail) use ($itemToValidate) {
+                    $cartSubtotal = CartItem::whereCartId($itemToValidate['cart_id'])->get()->sum(function ($currentItem) use($itemToValidate, $value){
+                        if($currentItem->id != $itemToValidate['id']) {
+                            return $currentItem->sub_total;
+                        } else {
+                            return $value;
+                        }
+                    });
+                    if ($cartSubtotal > 800000000000) {
+                        $fail('Se ha superado la cantidad del monto total');
+                    }
+                }]
             ]);
             if($validator->fails()) {
-                $this->emit('showToast', '¡Cuidado!', 'No se puede superar el límite de cantidad.', 3000, 'danger');
+                $this->emit('showToast', '¡Cuidado!', $validator->errors()->first(), 3000, 'danger');
                 return false;
             }
 
@@ -177,6 +190,31 @@ class Cart extends Component
                 }
 
                 $data = array_merge($data, ['product_attributes' => json_encode($attributes)]);
+            }
+
+            $validator = \Validator::make($data, [
+                'qty' => [
+                    function ($attribute, $value, $fail) {
+                        if (($value) > 9999) {
+                            $fail('No se puede superar el límite de cantidad.');
+                        }
+                    }
+                ],
+                'sub_total' => [ function ($attribute, $value, $fail) use ($data) {
+                    $cartSubtotal = CartItem::whereCartId($data['cart_id'])->get()->sum(function ($currentItem) use($data, $value){
+                        return $currentItem->sub_total;
+                    });
+                    $cartSubtotal += $value;
+
+                    if ($cartSubtotal > 800000000000) {
+                        $fail('Se ha superado la cantidad del monto total');
+                    }
+                }]
+            ]);
+
+            if($validator->fails()) {
+                $this->emit('showToast', '¡Cuidado!', $validator->errors()->first(), 3000, 'danger');
+                return false;
             }
 
             $item = CartItem::create($data);
