@@ -76,8 +76,8 @@ class ProductVariationsRule implements Rule
                 'depth'  => ['sometimes', 'required', new NumericCommaRule()],
                 'weight'  => ['sometimes', 'required', new NumericCommaRule()],
                 'special_price'  => new NumericCommaRule(),
-                'special_price_from' => RuleMethods::requiredIf($variant->special_price > 1),
-                'special_price_to' => [RuleMethods::requiredIf($variant->special_price > 1), 'after:special_price_from'],
+                /* 'special_price_from' => RuleMethods::requiredIf($variant->special_price > 1),
+                'special_price_to' => [RuleMethods::requiredIf($variant->special_price > 1), 'after:special_price_from'], */
 
             ], $this->messages, $this->attributes);
 

@@ -484,6 +484,12 @@ class ProductCrudController extends CrudController
             'default' => '1',
             'tab' => 'Información general'
         ]);
+
+        CRUD::addField([
+            'name' => 'CustomShowHidedFields',
+            'type' => 'product.show_hide_fields',
+            'tab' => 'Información general',
+        ]);
     }
 
     public function setImagesFields() {
@@ -559,7 +565,7 @@ class ProductCrudController extends CrudController
             'type' => 'date',
             'tab' => 'Precio y envío',
             'wrapper' => [
-                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group required',
+                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group',
                 'id' => 'special_price_from',
                 'style' => 'display:none',
             ]
@@ -571,7 +577,7 @@ class ProductCrudController extends CrudController
             'type' => 'date',
             'tab' => 'Precio y envío',
             'wrapper' => [
-                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group required',
+                'class' => 'col-lg-6 col-md-6 col-sm-12 mb-3 form-group',
                 'id' => 'special_price_to',
                 'style' => 'display:none',
             ]
@@ -722,11 +728,6 @@ class ProductCrudController extends CrudController
             ]
         ]);
 
-        CRUD::addField([
-            'name' => 'CustomShowHidedFields',
-            'type' => 'product.show_hide_fields',
-            'tab' => 'Administrador',
-        ]);
     }
 
     public function setSeoFields() {
