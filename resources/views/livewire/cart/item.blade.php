@@ -1,7 +1,7 @@
 @php
 $product = $item->product;
 @endphp
-
+@if($product)
 <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
     <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left"><a
             class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img
@@ -52,8 +52,7 @@ $product = $item->product;
                 type="button"><i class="czi-close-circle mr-2"></i><span class="font-size-sm">Eliminar</span></button>
         @endif
 
-
     </div>
 
-
 </div>
+@endif

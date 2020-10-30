@@ -16,6 +16,11 @@ class Preview extends Component
         'deleteItem' => 'deleteItem'
     ];
 
+
+    protected $messages = [
+        'digits_between' => 'Debe indicar una cantidad.',
+    ];
+
     public function mount()
     {
         $this->items = $this->getItems();
@@ -30,9 +35,16 @@ class Preview extends Component
     public function change()
     {
         $this->emit('cart.updateSubtotal',null);
-
+        $totalToValidate = $this->getTotal();
+        $validation = \Validator::make([
+            'total' => $totalToValidate
+        ] , [
+            'total' => 'digits_between:1,16',
+        ]);
         
-        $this->total = $this->getTotal();
+        $validation->validate();
+
+        $this->total = $totalToValidate;
     }
 
     public function deleteItem()
