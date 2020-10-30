@@ -28,6 +28,7 @@ class Checkout extends Component
         'select-shipping' => 'addShipping',
         'pay' => 'pay',
         'change' => 'updateTotals',
+        'updateTotals' => 'updateTotals',
         'cartpreview' => 'cartpreview',
     ];
 
@@ -297,5 +298,6 @@ class Checkout extends Component
     {
         return redirect('shopping-cart');
     }
+
 
 }
