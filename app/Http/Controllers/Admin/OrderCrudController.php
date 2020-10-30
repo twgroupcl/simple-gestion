@@ -24,6 +24,7 @@ class OrderCrudController extends CrudController
 
     private $admin;
     private $userSeller;
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
@@ -34,16 +35,20 @@ class OrderCrudController extends CrudController
         CRUD::setModel(\App\Models\Order::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/order');
         CRUD::setEntityNameStrings('orden', 'órdenes');
+
         $this->crud->denyAccess('create');
         $this->crud->denyAccess('show');
         $this->crud->denyAccess('delete');
 
+        $this->admin = false;
+        $this->userSeller = null;
+
+        if(backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+            $this->admin = true;
+        }
 
         if (backpack_user()->hasRole('Vendedor marketplace')) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-        }
-        if (backpack_user()->hasRole('Administrador negocio') || backpack_user()->hasRole('Super admin')) {
-            $this->admin = true;
         }
     }
 
@@ -55,11 +60,10 @@ class OrderCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-
         // If not admin, show only user products
         if (!$this->admin) {
-
             $value = $this->userSeller->id;
+
             $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
                 $query->where('seller_id', $value);
             });
@@ -99,7 +103,7 @@ class OrderCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'total',
             'type' => 'number',
-            'label'=> 'Total',
+            'label' => 'Total',
             'dec_point' => ',',
             'thousands_sep' => '.',
             'decimals' => 0,
@@ -114,6 +118,9 @@ class OrderCrudController extends CrudController
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
                     if ($column['text'] == 'Completa') {
+                        return 'badge badge-success';
+                    }
+                    if ($column['text'] == 'Pagada') {
                         return 'badge badge-success';
                     }
                     return 'badge badge-default';
@@ -250,7 +257,6 @@ class OrderCrudController extends CrudController
 
                 ]);
 
-
                 CRUD::addField([
                     'name' => 'f_address_street',
                     'type' => 'text',
@@ -266,7 +272,6 @@ class OrderCrudController extends CrudController
 
                 ]);
 
-
                 CRUD::addField([
                     'name' => 'f_address_number',
                     'type' => 'text',
@@ -280,7 +285,6 @@ class OrderCrudController extends CrudController
                     ],
                     'tab' => 'General',
                 ]);
-
 
                 CRUD::addField([
                     'name' => 'f_address_office',
@@ -296,7 +300,6 @@ class OrderCrudController extends CrudController
                     ],
 
                 ]);
-
 
                 CRUD::addField([
                     'name' => 'f_address_commune_id',
@@ -387,7 +390,6 @@ class OrderCrudController extends CrudController
                     ]);
                 }
 
-
                 if ($address->address_street) {
                     CRUD::addField([
                         'name' => 'i_address_street',
@@ -403,6 +405,7 @@ class OrderCrudController extends CrudController
                         ],
                     ]);
                 }
+
                 if ($address->address_number) {
                     CRUD::addField([
                         'name' => 'i_address_number',
@@ -418,21 +421,23 @@ class OrderCrudController extends CrudController
                         ],
                     ]);
                 }
-               // if ($address->address_office) {
-                    CRUD::addField([
-                        'name' => 'i_address_office',
-                        'type' => 'text',
-                        'value' => $address->address_office,
-                        'label' => 'Casa/Dpto/Oficina',
-                        'tab' => 'General',
-                        'wrapperAttributes' => [
-                            'class' => 'form-group col-md-2',
-                        ],
-                        'attributes' => [
-                            'readonly' => 'readonly',
-                        ],
-                    ]);
-               // }
+
+                // if ($address->address_office) {
+                CRUD::addField([
+                    'name' => 'i_address_office',
+                    'type' => 'text',
+                    'value' => $address->address_office,
+                    'label' => 'Casa/Dpto/Oficina',
+                    'tab' => 'General',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
+                    ],
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ],
+                ]);
+                // }
+
                 if ($address->address_commune_id) {
 
                     CRUD::addField([
@@ -468,6 +473,7 @@ class OrderCrudController extends CrudController
                         ],
                     ]);
                 }
+
                 if ($address->cellphone) {
                     CRUD::addField([
                         'name' => 'i_cellphone',
@@ -483,6 +489,7 @@ class OrderCrudController extends CrudController
                         ],
                     ]);
                 }
+
                 if ($address->phone) {
                     CRUD::addField([
                         'name' => 'i_phone',
@@ -502,7 +509,7 @@ class OrderCrudController extends CrudController
         }
 
         CRUD::addField([
-            'name' => 'status_description',
+            'name' => 'status',
             'type' => 'select2_from_array',
             'options' => [
                 1 => 'Pendiente',
@@ -515,7 +522,6 @@ class OrderCrudController extends CrudController
                 'readonly' => true,
                 'disabled' => true,
             ],
-
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
@@ -535,13 +541,11 @@ class OrderCrudController extends CrudController
                     'name' => 'id',
                     'type' => 'hidden',
                     'label' => 'id'
-
                 ],
                 [
                     'name' => 'order_id',
                     'type' => 'hidden',
                     'label' => 'order_id'
-
                 ],
                 [
                     'name' => 'name',
@@ -553,7 +557,6 @@ class OrderCrudController extends CrudController
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-2',
                     ],
-
                 ],
                 [
                     'name' => 'qty',
@@ -565,8 +568,6 @@ class OrderCrudController extends CrudController
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-2',
                     ],
-
-
                 ],
                 [
                     'name' => 'price',
@@ -582,8 +583,6 @@ class OrderCrudController extends CrudController
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-2',
                     ],
-
-
                 ],
                 [
                     'name' => 'shipping_total',
@@ -599,8 +598,6 @@ class OrderCrudController extends CrudController
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-2',
                     ],
-
-
                 ],
                 [
                     'name' => 'sub_total',
@@ -612,8 +609,6 @@ class OrderCrudController extends CrudController
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-2',
                     ],
-
-
                 ],
                 [
                     'name' => 'shipping_status',
@@ -627,8 +622,6 @@ class OrderCrudController extends CrudController
                         'class' => 'form-group col-md-2 shipping_status_select',
 
                     ],
-
-
                 ],
 
             ]
@@ -639,7 +632,5 @@ class OrderCrudController extends CrudController
             'type' => 'order.support_data_script',
             'tab' => 'Items'
         ]);
-
-
     }
 }

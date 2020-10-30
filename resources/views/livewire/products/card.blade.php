@@ -6,6 +6,15 @@
             <i class="czi-heart"></i>
         </button>
     </div> --}}
+    @if($product->special_price)
+        <span class="badge badge-warning badge-shadow">Descto</span>
+    @endif
+    @if($product->new)
+        <span class="badge badge-info badge-shadow">Nuevo</span>
+    @endif
+    @if($product->product_type_id == 2)
+        <span class="badge badge-danger badge-shadow">Variable</span>
+    @endif
     <a class="card-img-top d-block overflow-hidden" href="{{route('product',['slug' => $product->url_key])}}">
         <img src="{{ url($product->getFirstImagePath()) }}" class="w-100" alt="Product">
     </a>
@@ -17,8 +26,11 @@
             @if ($product->children()->count())
             <div class="product-price">
                 <span class="text-accent">
+                    @if ($product->getPriceRange()[0] == $product->getPriceRange()[1])
                     {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
-                    - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                    @else
+                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                    @endif
                 </span>
             </div>
             @else
@@ -29,7 +41,6 @@
                 @else
                 <span class="text-accent">{{ currencyFormat($product->price, defaultCurrency(), true) }}</span>
                 @endif
-
             </div>
             @endif
             {{-- <div class="star-rating">
@@ -47,7 +58,11 @@
         @endif
         <div class="text-center">
             <a class="nav-link-style font-size-ms" href="{{ route('product',['slug' => $product->url_key]) }}">
-                <i class="czi-eye align-middle mr-1"></i>Ver producto
+                @if ($product->is_service)
+                    <i class="czi-eye align-middle mr-1"></i>Ver servicio
+                @else
+                    <i class="czi-eye align-middle mr-1"></i>Ver producto
+                @endif
             </a>
         </div>
     </div>

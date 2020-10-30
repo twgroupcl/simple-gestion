@@ -50,19 +50,19 @@ Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsBy
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });
-Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
+Route::get('/shop-grid/', 'Frontend\HomeController@getProductsByCategory');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
 Route::get('/faq', 'Frontend\HomeController@getFaq');
-Route::get('/faq-single', function () { 
+Route::get('/faq-single', function () {
     return view('faq-single');
 });
-Route::get('/faq-request', function () { 
+Route::get('/faq-request', function () {
     return view('faq-request');
 });
-Route::get('/privacy', function () { 
+Route::get('/privacy', function () {
     return view('privacy');
 });
-Route::get('/terms-conditions', function () { 
+Route::get('/terms-conditions', function () {
     return view('terms-conditions');
 });
 
@@ -71,7 +71,7 @@ Route::redirect('/login', '/customer/login')->name('login');
 
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
 Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
-
+Route::get('/filter-products', 'Frontend\HomeController@filterProducts');
 
 Route::group([
     'prefix' => '/transbank'
@@ -83,7 +83,9 @@ Route::group([
     // WebPayPlus Mall
     Route::get('webpay/mall/{order}', 'Payments\Transbank\WebpayPlusMallController@redirect')->name('transbank.webpayplus.mall.redirect');
     Route::post('webpay/mall/response', 'Payments\Transbank\WebpayPlusMallController@response')->name('transbank.webpayplus.mall.response');
+    Route::post('final', 'Payments\Transbank\WebpayPlusMallController@final')->name('transbank.final');
     Route::get('webpay/mall/download/{order}', 'Payments\Transbank\WebpayPlusMallController@download')->name('transbank.webpayplus.mall.download');
+    Route::get('test/{order}', 'Payments\Transbank\WebpayPlusMallController@test')->name('transbank.test.view');
 });
 // Route::get('complete', function(){
 //     return view('payments.transbank.webpay.mall.complete');

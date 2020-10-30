@@ -9,13 +9,26 @@ use App\Models\FaqAnswer;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
+use App\Services\ProductFilterService;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        //return redirect('/seller/register');
-        return view('marketplace');
+        $categories = ProductCategory::where('status','=','1')
+        ->whereHas('products', function ($query) {
+            $query->where('id','<>','');
+        })->limit(3)->inRandomOrder()->get();
+        return view('marketplace', compact('categories'));
+    }
+
+    public function getAllProducts()
+    {
+        $products = Product::where('status','=','1')->where('is_approved','=','1')->where('parent_id','=', null)->with('seller')->with('categories')->orderBy('id','DESC')->get();
+        $render = ['view' => 'shop-general'];
+        $data = ['category' => $products];
+
+        return view('shop-grid', compact('products','render','data'));
     }
 
     public function productDetail(Request $request)
@@ -57,4 +70,13 @@ class HomeController extends Controller
 
         return view('faq', compact('faqs', 'faqTopic'));
     }
+
+    public function filterProducts(Request $request)
+    {
+       // dd($request);
+        $filterService = new ProductFilterService();
+        $filterService->filterByParams($request);
+
+    }
+    
 }

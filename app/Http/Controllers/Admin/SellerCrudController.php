@@ -26,6 +26,9 @@ class SellerCrudController extends CrudController
 {
     use HasCustomAttributes;
 
+    private $admin;
+    private $userSeller;
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
@@ -39,14 +42,21 @@ class SellerCrudController extends CrudController
 
         $this->crud->denyAccess('show');
 
-        $this->getExtras();
-
+        $this->admin = false;
         $this->userSeller = null;
 
-        if ( backpack_user()->hasAnyRole('Vendedor marketplace') ) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+            $this->admin = true;
+        }
+
+        if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
+            $this->crud->denyAccess('create');
+            $this->crud->denyAccess('delete');
+
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
         }
 
+        $this->getExtras();
     }
 
     /**
@@ -60,6 +70,12 @@ class SellerCrudController extends CrudController
         //CRUD::setFromDb(); // columns
         if ($this->userSeller) {
             $this->crud->addClause('where', 'id', '=', $this->userSeller->id);
+        }
+
+        if (!$this->admin) {
+            $value = $this->userSeller->id;
+
+            $this->crud->addClause('where', 'id', '=', $value);
         }
 
         /**
@@ -102,7 +118,7 @@ class SellerCrudController extends CrudController
                 'class' => function ($crud, $column, $entry, $related_key) {
                     if ($column['text'] == 'Aprobado') {
                         return 'badge badge-success';
-                    } elseif($column['text'] == 'Rechazado') {
+                    } elseif ($column['text'] == 'Rechazado') {
                         return 'badge badge-danger';
                     }
 
@@ -126,7 +142,9 @@ class SellerCrudController extends CrudController
             ],
         ]);
 
-        $this->customFilters();
+        if ($this->admin) {
+            $this->customFilters();
+        }
     }
 
     /**
@@ -632,7 +650,7 @@ class SellerCrudController extends CrudController
             'tab' => 'Venta',
         ]);
 
-        if(backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+        if ($this->admin) {
             CRUD::addField([
                 'name' => 'is_approved',
                 'label' => 'Aprobado',
@@ -759,7 +777,7 @@ class SellerCrudController extends CrudController
         $this->setupCreateOperation();
         CRUD::setValidation(SellerUpdateRequest::class);
 
-        if(backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+        if ($this->admin) {
             CRUD::addField([
                 'name' => 'source',
                 'type' => 'text',
@@ -775,14 +793,13 @@ class SellerCrudController extends CrudController
         }
     }
 
-     /**
+    /**
      * Add filters in list view
      *
      * @return void
      */
     private function customFilters()
     {
-
         CRUD::addFilter([
             'type'  => 'text',
             'name'  => 'rut',

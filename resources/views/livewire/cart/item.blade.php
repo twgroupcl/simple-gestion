@@ -21,7 +21,7 @@ $product = $item->product;
                 <div class="select-shipping mb-0 pt-2">
                     <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected"
                          wire:change="$emit('select-shipping-item')" wire:init="setSelected(0)">
-                        <option value="-1">Seleccione un metodo de pago</option>
+                        {{-- <option value="-1">Seleccione un metodo de envío</option> --}}
 
                         @foreach ($shippingMethods as $key => $shipping)
                             <option value="{{ $key }}">{{ $shipping['name'] }}

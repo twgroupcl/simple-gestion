@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class Product extends Model
 {
@@ -63,6 +64,7 @@ class Product extends Model
      * @param array $attributes
      * @return boolean
      */
+
     public function createUpdateVariations()
     {
         $variations = $this->variations_json;
@@ -86,21 +88,26 @@ class Product extends Model
             }
         }
 
-
         // Create or update variants
         foreach ($variations as &$variation) {
-
             $inventoriesArray = $this->getInventoriesArrayFromVariation($variation);
             $attributesArray = $this->getAttributesArrayFromVariation($variation);
+
+            if (empty($variation['special_price'])) {
+                $variation['special_price_from'] = null;
+                $variation['special_price_to'] = null;
+            }
 
             // Create if does not exists
             if ($variation['product_id'] == '') {
 
                 $childProduct = Product::create([
                     'sku' => Str::uuid()->toString(), // temporal sku
-                    //'name' => $variation['name'],
                     'name' => $this->name,
                     'price' => sanitizeNumber($variation['price']),
+                    'special_price' => $variation['special_price'] ? sanitizeNumber($variation['special_price']) : null,
+                    'special_price_from' => $variation['special_price_from'] ?: null,
+                    'special_price_to' => $variation['special_price_to'] ?: null,
                     'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
                     'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
                     'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
@@ -114,7 +121,8 @@ class Product extends Model
                     'currency_id' => $this->currency_id,
                     'use_inventory_control' => $this->use_inventory_control,
                     'is_service' => $this->is_service,
-                    'status' => 1, // always 1?
+                    'is_approved' => $this->is_approved,
+                    'status' => $this->status, // always 1?
                 ]);
 
                 $childProduct->updateOrCreateAttributes($attributesArray);
@@ -122,19 +130,19 @@ class Product extends Model
                 // Store reference to the product in the table
                 $variation['product_id'] = $childProduct->id;
 
-
                 // Otherwise, update
             } else {
                 Product::where('id', $variation['product_id'])
                     ->update([
-                        //'sku' => $variation['sku'],
-                        //'name' => $variation['name'],
                         'name' => $this->name,
                         'price' => sanitizeNumber($variation['price']),
                         'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
                         'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
                         'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
                         'depth' => $this->is_service ? 0 : sanitizeNumber($variation['depth']),
+                        'special_price' => $variation['special_price'] ? sanitizeNumber($variation['special_price']) : null,
+                        'special_price_from' => $variation['special_price_from'] ?: null,
+                        'special_price_to' => $variation['special_price_to']?: null,
                         'inventories_json' => $inventoriesArray,
                         'parent_id' => $this->id,
                         'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
@@ -143,14 +151,15 @@ class Product extends Model
                         'currency_id' => $this->currency_id,
                         'use_inventory_control' => $this->use_inventory_control,
                         'is_service' => $this->is_service,
-                        'status' => 1, // always 1?
+                        'is_approved' => $this->is_approved,
+                        'status' => $this->status, // always 1?
                     ]);
 
                 $childProduct = Product::where('id', $variation['product_id'])->firstOrFail();
                 $childProduct->updateOrCreateAttributes($attributesArray);
             }
 
-            // Upload child image
+            // Upload children image
             $imagesArray = [];
             $variation['image'] = $this->uploadChildImage($childProduct, $variation['image']);
             array_push($imagesArray, ['image' => $variation['image']]);
@@ -160,25 +169,29 @@ class Product extends Model
             $childProduct->sku = $this->sku . '-' . $childProduct->id;
             $childProduct->url_key = $this->url_key . '-' . $childProduct->id;
 
+            // Update chidren categories
+            $childProduct->categories()->detach();
+            $childProduct->categories()->attach($this->categories->pluck('id'));
+
             $childProduct->update();
         }
 
         $this->variations_json = $variations;
     }
 
-
     public function getInventoriesArrayFromVariation($variation)
     {
         $inventories = [];
+
         foreach ($variation as $param => $value) {
             $isAnInventory = substr($param, 0, 16) == 'inventory-source';
             if ($isAnInventory) {
                 $inventories[$param] = $value;
             }
         }
+
         return $inventories;
     }
-
 
     public function getAttributesArrayFromVariation($variation)
     {
@@ -197,7 +210,6 @@ class Product extends Model
         return $attributes;
     }
 
-
     public function createUpdateInventories()
     {
         $inventories = $this->inventories_json;
@@ -212,7 +224,6 @@ class Product extends Model
         }
 
         foreach ($sourceInventories as $sourceInventory) {
-
             if (DB::table('product_inventories')->where([
                 'product_inventory_source_id' => $sourceInventory['id'],
                 'product_id' => $this->id,
@@ -230,13 +241,12 @@ class Product extends Model
      * @param array $attributes
      * @return boolean
      */
+
     public function updateOrCreateAttributes($attributes)
     {
-
         if (empty($attributes)) return false;
 
         foreach ($attributes as $attribute) {
-
             $productAttribute = ProductAttribute::where([
                 'product_class_attribute_id' => $attribute['id'],
                 'product_id' => $this->id,
@@ -266,9 +276,9 @@ class Product extends Model
      *
      *
      */
+
     public function deleteImages()
     {
-
         //data
         $disk = 'public';
         $attribute_name = 'images_json';
@@ -297,6 +307,7 @@ class Product extends Model
      *
      *
      */
+
     public function uploadChildImage($product, $imgData)
     {
         $attribute_name = 'image';
@@ -336,21 +347,38 @@ class Product extends Model
     public function getImages()
     {
         $productImages = DB::table('product_images')->where('product_id', $this->id)->get();
+
+        if (!$productImages->count()) {
+            if ($this->parent()->count()) {
+                return $this->parent->getImages();
+            } else {
+                $defaultImage = (object) [ 'path' => '/img/default/default-product-image.png'];
+                return [ $defaultImage ];
+            }
+        }
+
         return $productImages;
     }
 
     public function getFirstImagePath()
     {
         $productImage = DB::table('product_images')->where('product_id', $this->id)->first();
+
         if (!$productImage) {
-            return '/img/default/default-product-image.png';
+            if($this->parent()->count()) {
+                return $this->parent->getFirstImagePath();
+            } else {
+                return '/img/default/default-product-image.png';
+            }
         }
+
         return $productImage->path;
     }
 
     public function getAttributesWithNames()
     {
         $attributes = [];
+
         foreach ($this->custom_attributes as $custom_attribute) {
             $attribute = ProductClassAttribute::where('id', $custom_attribute->product_class_attribute_id)->first();
 
@@ -403,7 +431,6 @@ class Product extends Model
 
     public function updateInventory($qty, $inventorySourceId)
     {
-
         // Because we also need to store the inventories in an JSON field in order to work with Backpack,
         // and the JSON field update the inventories tables through the Product Oserver we just need
         // to update the JSON field on the Product and the Observer will automatically update the qty
@@ -419,7 +446,6 @@ class Product extends Model
         $qty = intval($qty);
 
         if ($this->parent_id) {
-
             $parent = Product::find($this->parent_id);
             $variations = $parent->variations_json;
             $position = null;
@@ -439,7 +465,6 @@ class Product extends Model
             $parent->variations_json = $variations;
             $parent->update();
         } else {
-
             $inventories = $this->inventories_json;
 
             if (!isset($inventories['inventory-source-' . $inventorySourceId])) {
@@ -480,6 +505,7 @@ class Product extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -584,6 +610,7 @@ class Product extends Model
     public function getIsApprovedTextAttribute()
     {
         $value = $this->is_approved;
+
         if (is_null($value)) {
             return 'Pendiente';
         } else if ($value == 1) {
@@ -615,8 +642,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['price'] = $value;
+
             return true;
         }
+
         $this->attributes['price'] = sanitizeNumber($value);
     }
 
@@ -624,8 +653,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['special_price'] = null;
+
             return true;
         }
+
         $this->attributes['special_price'] = sanitizeNumber($value);
     }
 
@@ -633,8 +664,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['cost'] = null;
+
             return true;
         }
+
         $this->attributes['cost'] = sanitizeNumber($value);
     }
 
@@ -642,8 +675,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['width'] = null;
+
             return true;
         }
+
         $this->attributes['width'] = sanitizeNumber($value);
     }
 
@@ -651,8 +686,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['height'] = null;
+
             return true;
         }
+
         $this->attributes['height'] = sanitizeNumber($value);
     }
 
@@ -660,8 +697,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['depth'] = null;
+
             return true;
         }
+
         $this->attributes['depth'] = sanitizeNumber($value);
     }
 
@@ -669,8 +708,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['weight'] = null;
+
             return true;
         }
+
         $this->attributes['weight'] = sanitizeNumber($value);
     }
 }

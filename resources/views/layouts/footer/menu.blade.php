@@ -207,7 +207,7 @@
                     <div class="mb-3">
                         {{-- <a class="social-btn sb-light sb-twitter ml-2 mb-2" href="#"><i class="czi-twitter"></i></a> --}}
                         <a class="social-btn sb-light sb-facebook ml-2 mb-2" href="https://www.facebook.com/Contigopymecl-100648024754209" target="_blank"><i class="czi-facebook"></i></a>
-                        <a class="social-btn sb-light sb-instagram ml-2 mb-2" href="https://www.instagram.com/contigopymecl/"><i class="czi-instagram" target="_blank"></i></a>
+                        <a class="social-btn sb-light sb-instagram ml-2 mb-2" href="https://www.instagram.com/contigopymecl/" target="_blank"><i class="czi-instagram" target="_blank"></i></a>
                         {{-- <a class="social-btn sb-light sb-pinterest ml-2 mb-2" href="#"><i class="czi-pinterest"></i></a>
                         <a class="social-btn sb-light sb-youtube ml-2 mb-2" href="#"><i class="czi-youtube"></i></a> --}}
                     </div>

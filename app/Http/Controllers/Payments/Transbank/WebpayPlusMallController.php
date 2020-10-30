@@ -2,28 +2,26 @@
 
 namespace App\Http\Controllers\Payments\Transbank;
 
-use Carbon\Carbon;
-use App\Models\Cart;
-use App\Models\Order;
-use App\Models\Seller;
-use App\Models\Product;
-use App\Models\Business;
-// use Barryvdh\DomPDF\PDF;
-use App\Models\OrderLog;
-
-use App\Models\OrderItem;
-use App\Models\OrderPayment;
-use Illuminate\Http\Request;
-use Transbank\Webpay\Webpay;
-use App\Models\PaymentMethod;
-use Barryvdh\DomPDF\Facade as PDF;
-use App\Models\PaymentMethodSeller;
-use Transbank\Webpay\Configuration;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderUpdated;
-use Illuminate\Support\Facades\Mail;
-use App\Models\PaymentMethodBusiness;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
+// use Barryvdh\DomPDF\PDF;
+use App\Models\OrderLog;
+use App\Models\OrderPayment;
+use App\Models\PaymentMethod;
+use App\Models\PaymentMethodSeller;
+use App\Models\Product;
+use App\Models\Seller;
+use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Transbank\Webpay\Configuration;
+use Transbank\Webpay\Webpay;
+
 class WebpayPlusMallController extends Controller
 {
     const PAYMENT_CODE = 'tbkplusmall';
@@ -33,8 +31,7 @@ class WebpayPlusMallController extends Controller
     private $finalUrl;
     private $orderId;
 
-
-    function __construct()
+    public function __construct()
     {
 
         $paymentMethodId = null;
@@ -45,9 +42,7 @@ class WebpayPlusMallController extends Controller
             $wpmConfig = json_decode($this->paymentMethod->json_value);
         }
 
-
-
-        $configuration  = new Configuration();
+        $configuration = new Configuration();
 
         $configuration->setEnvironment('PRODUCCION');
         $configuration->setCommerceCode($wpmConfig[0]->variable_value);
@@ -56,7 +51,8 @@ class WebpayPlusMallController extends Controller
         $this->returnUrl = $wpmConfig[3]->variable_value;
         $this->finalUrl = $wpmConfig[4]->variable_value;
 
-        //$transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
+        //$this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
+
         $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
 
     }
@@ -71,12 +67,10 @@ class WebpayPlusMallController extends Controller
         //Get current Order
         $order = Order::where('id', $orderId)->first();
 
-
         // Identificador único de orden de compra generada por el comercio mall:
-        $buyOrder =  $order->id;
+        $buyOrder = $order->id;
         // Identificador que será retornado en el callback de resultado:
-        $sessionId =   session()->getId();
-
+        $sessionId = session()->getId();
 
         // Lista con detalles de cada una de las transacciones:
         $transactions = array();
@@ -86,12 +80,9 @@ class WebpayPlusMallController extends Controller
             $ids[] = $id['product_id'];
         }
 
-
-
         $sellers_id = Product::whereIn('id', $ids)->select('seller_id')->groupBy('seller_id')->get();
 
         $sellers = Seller::whereIn('id', $sellers_id)->select('id', 'name')->get();
-
 
         // Group by items by businness
 
@@ -119,23 +110,18 @@ class WebpayPlusMallController extends Controller
         $amountTotal = 0;
 
         //Add transactions
-        foreach ($totalsBySeller  as $key=>$seller) {
+        foreach ($totalsBySeller as $key => $seller) {
 
             // Add transaction
             $transactions[] = array(
                 "storeCode" => $seller['storeCode'],
                 "amount" => $seller['amount'],
-                "buyOrder" => $buyOrder.'t'.($key+1)
+                "buyOrder" => $buyOrder . 't' . ($key + 1),
             );
             $amountTotal += $seller['amount'];
         }
 
-
-
-
-
         $response = $this->transaction->initTransaction($buyOrder, $sessionId, $this->returnUrl, $this->finalUrl, $transactions);
-
 
         //Register  order payment
 
@@ -143,9 +129,9 @@ class WebpayPlusMallController extends Controller
         $data = [
             'event' => 'init transaction',
             'data' => $response,
-            'buyOrder'=> $buyOrder,
-            'sessionId'=> $sessionId,
-            'transactions' => $transactions
+            'buyOrder' => $buyOrder,
+            'sessionId' => $sessionId,
+            'transactions' => $transactions,
         ];
 
         $orderpayment->order_id = $order->id;
@@ -163,7 +149,9 @@ class WebpayPlusMallController extends Controller
         $orderlog->save();
 
         if (!isset($response->url)) {
-            return redirect()->back()->with('error', 'Ocurrió un error al generar la url de pago');
+            $result = null;
+            // return redirect()->back()->with('error', 'Ocurrió un error al generar la url de pago');
+            return view('payments.transbank.webpay.mall.failed', compact('result', 'order'));
         } else {
             return view('payments.transbank.webpay.mall.redirect', compact('response'));
         }
@@ -172,16 +160,14 @@ class WebpayPlusMallController extends Controller
     public function response()
     {
 
-
-
+        $sessionId = null;
         $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
-
 
         if (!isset($result->buyOrder)) {
             return redirect('/');
         }
-
-        session()->setId($result->sessionId);
+        $sessionId = $result->sessionId;
+        session()->setId($sessionId);
         session()->start();
 
         $this->orderId = $result->buyOrder;
@@ -198,7 +184,6 @@ class WebpayPlusMallController extends Controller
         $orderpayment->date_in = Carbon::now();
         $orderpayment->save();
 
-
         //Register  order log
 
         $orderlog = new OrderLog();
@@ -206,7 +191,6 @@ class WebpayPlusMallController extends Controller
         $orderlog->order_id = $this->orderId;
         $orderlog->event = 'Resultado pago';
         $orderlog->save();
-
 
         $order = Order::where('id', $this->orderId)->first();
         $order->status = 2; //paid
@@ -235,6 +219,14 @@ class WebpayPlusMallController extends Controller
             }
         }
         if ($finalresult) {
+
+            $cart = Cart::where('session_id', $sessionId)->first();
+
+            //Destroy cart
+            if ($cart) {
+                $cart->cart_items()->delete();
+                $cart->delete();
+            }
             // $order = Order::where('id', $orderId)->first();
             $sellers = $order->getSellers();
             //Order to customer
@@ -263,7 +255,7 @@ class WebpayPlusMallController extends Controller
         // }
         // //Order to admin
         $data = [
-            'order' => $order
+            'order' => $order,
         ];
         $pdf = PDF::loadView('order.pdf_order', $data);
         return $pdf->download('order_' . $orderId . '.pdf');
@@ -275,5 +267,15 @@ class WebpayPlusMallController extends Controller
         $order = Order::where('id', $orderId)->first();
         $result = null;
         return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
+    }
+
+    function final () {
+        $sessionId = request()->input("TBK_ID_SESION");
+        session()->setId($sessionId);
+        session()->start();
+        $result = $this->transaction->getTransactionResult(request()->input("TBK_TOKEN"));
+        $orderId = request()->input('TBK_ORDEN_COMPRA');
+        $order = Order::where('id', $orderId)->first();
+        return view('payments.transbank.webpay.mall.failed', compact('result', 'order'));
     }
 }
