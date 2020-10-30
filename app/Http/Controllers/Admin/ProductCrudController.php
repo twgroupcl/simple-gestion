@@ -28,6 +28,9 @@ class ProductCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    private $admin;
+    private $userSeller;
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
@@ -40,6 +43,7 @@ class ProductCrudController extends CrudController
         CRUD::setEntityNameStrings('producto', 'productos');
 
         $this->crud->denyAccess('show');
+
         $this->admin = false;
         $this->userSeller = null;
 
@@ -47,8 +51,10 @@ class ProductCrudController extends CrudController
             $this->admin = true;
         }
 
-        if ( backpack_user()->hasAnyRole('Vendedor marketplace') ) {
+        if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+
+            $this->crud->denyAccess('delete');
         }
     }
 
@@ -284,7 +290,7 @@ class ProductCrudController extends CrudController
             'name' => 'customShowHideSuperAttributes',
             'type' => 'product.show_hide_variants',
         ]);
-        
+
         CRUD::addField([
             'name' => 'customJs',
             'type' => 'product.custom_js',
@@ -993,14 +999,14 @@ class ProductCrudController extends CrudController
 
     /**
      * Get and filter a list of configurable attributes depending of the product class
-     * 
+     *
      */
     public function getProductBySeller(Request $request) {
         $search_term = $request->input('q');
         $form = collect($request->input('form'))->pluck('value', 'name');
         $options = Product::query();
 
-        if ($request->has('keys')) { 
+        if ($request->has('keys')) {
             return Product::findMany($request->input('keys'));
         }
 

@@ -63,6 +63,7 @@ class Product extends Model
      * @param array $attributes
      * @return boolean
      */
+
     public function createUpdateVariations()
     {
         $variations = $this->variations_json;
@@ -85,7 +86,6 @@ class Product extends Model
                 }
             }
         }
-
 
         // Create or update variants
         foreach ($variations as &$variation) {
@@ -127,7 +127,6 @@ class Product extends Model
 
                 // Store reference to the product in the table
                 $variation['product_id'] = $childProduct->id;
-
 
                 // Otherwise, update
             } else {
@@ -177,19 +176,19 @@ class Product extends Model
         $this->variations_json = $variations;
     }
 
-
     public function getInventoriesArrayFromVariation($variation)
     {
         $inventories = [];
+
         foreach ($variation as $param => $value) {
             $isAnInventory = substr($param, 0, 16) == 'inventory-source';
             if ($isAnInventory) {
                 $inventories[$param] = $value;
             }
         }
+
         return $inventories;
     }
-
 
     public function getAttributesArrayFromVariation($variation)
     {
@@ -208,7 +207,6 @@ class Product extends Model
         return $attributes;
     }
 
-
     public function createUpdateInventories()
     {
         $inventories = $this->inventories_json;
@@ -223,7 +221,6 @@ class Product extends Model
         }
 
         foreach ($sourceInventories as $sourceInventory) {
-
             if (DB::table('product_inventories')->where([
                 'product_inventory_source_id' => $sourceInventory['id'],
                 'product_id' => $this->id,
@@ -241,13 +238,12 @@ class Product extends Model
      * @param array $attributes
      * @return boolean
      */
+
     public function updateOrCreateAttributes($attributes)
     {
-
         if (empty($attributes)) return false;
 
         foreach ($attributes as $attribute) {
-
             $productAttribute = ProductAttribute::where([
                 'product_class_attribute_id' => $attribute['id'],
                 'product_id' => $this->id,
@@ -277,9 +273,9 @@ class Product extends Model
      *
      *
      */
+
     public function deleteImages()
     {
-
         //data
         $disk = 'public';
         $attribute_name = 'images_json';
@@ -308,6 +304,7 @@ class Product extends Model
      *
      *
      */
+
     public function uploadChildImage($product, $imgData)
     {
         $attribute_name = 'image';
@@ -347,21 +344,25 @@ class Product extends Model
     public function getImages()
     {
         $productImages = DB::table('product_images')->where('product_id', $this->id)->get();
+
         return $productImages;
     }
 
     public function getFirstImagePath()
     {
         $productImage = DB::table('product_images')->where('product_id', $this->id)->first();
+
         if (!$productImage) {
             return '/img/default/default-product-image.png';
         }
+
         return $productImage->path;
     }
 
     public function getAttributesWithNames()
     {
         $attributes = [];
+
         foreach ($this->custom_attributes as $custom_attribute) {
             $attribute = ProductClassAttribute::where('id', $custom_attribute->product_class_attribute_id)->first();
 
@@ -414,7 +415,6 @@ class Product extends Model
 
     public function updateInventory($qty, $inventorySourceId)
     {
-
         // Because we also need to store the inventories in an JSON field in order to work with Backpack,
         // and the JSON field update the inventories tables through the Product Oserver we just need
         // to update the JSON field on the Product and the Observer will automatically update the qty
@@ -430,7 +430,6 @@ class Product extends Model
         $qty = intval($qty);
 
         if ($this->parent_id) {
-
             $parent = Product::find($this->parent_id);
             $variations = $parent->variations_json;
             $position = null;
@@ -450,7 +449,6 @@ class Product extends Model
             $parent->variations_json = $variations;
             $parent->update();
         } else {
-
             $inventories = $this->inventories_json;
 
             if (!isset($inventories['inventory-source-' . $inventorySourceId])) {
@@ -491,6 +489,7 @@ class Product extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -595,6 +594,7 @@ class Product extends Model
     public function getIsApprovedTextAttribute()
     {
         $value = $this->is_approved;
+
         if (is_null($value)) {
             return 'Pendiente';
         } else if ($value == 1) {
@@ -626,8 +626,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['price'] = $value;
+
             return true;
         }
+
         $this->attributes['price'] = sanitizeNumber($value);
     }
 
@@ -635,8 +637,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['special_price'] = null;
+
             return true;
         }
+
         $this->attributes['special_price'] = sanitizeNumber($value);
     }
 
@@ -644,8 +648,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['cost'] = null;
+
             return true;
         }
+
         $this->attributes['cost'] = sanitizeNumber($value);
     }
 
@@ -653,8 +659,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['width'] = null;
+
             return true;
         }
+
         $this->attributes['width'] = sanitizeNumber($value);
     }
 
@@ -662,8 +670,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['height'] = null;
+
             return true;
         }
+
         $this->attributes['height'] = sanitizeNumber($value);
     }
 
@@ -671,8 +681,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['depth'] = null;
+
             return true;
         }
+
         $this->attributes['depth'] = sanitizeNumber($value);
     }
 
@@ -680,8 +692,10 @@ class Product extends Model
     {
         if (is_null($value) || $value == '') {
             $this->attributes['weight'] = null;
+
             return true;
         }
+
         $this->attributes['weight'] = sanitizeNumber($value);
     }
 }

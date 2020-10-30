@@ -17,8 +17,11 @@
             @if ($product->children()->count())
             <div class="product-price">
                 <span class="text-accent">
+                    @if ($product->getPriceRange()[0] == $product->getPriceRange()[1])
                     {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
-                    - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                    @else
+                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                    @endif
                 </span>
             </div>
             @else
@@ -29,7 +32,6 @@
                 @else
                 <span class="text-accent">{{ currencyFormat($product->price, defaultCurrency(), true) }}</span>
                 @endif
-
             </div>
             @endif
             {{-- <div class="star-rating">
