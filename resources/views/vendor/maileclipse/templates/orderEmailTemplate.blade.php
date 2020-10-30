@@ -473,20 +473,21 @@ use App\Models\Product;
                                                                 </tbody>
                                                             </table>
                                                             @endif
-                                                            {{-- <table class="force-width-80" style="margin: 0 auto;"
+                                                            @if($shippingMessage)
+                                                            <table class="force-width-80" style="margin: 0 auto;"
                                                                 cellspacing="0" cellpadding="0">
                                                                 <tbody>
                                                                     <tr>
                                                                         <td style="text-align: left; color: #933f24;">
-                                                                            <br />Thank you for your business. Please <a
-                                                                                style="color: #ffffff;" href="#">contact
-                                                                                us</a> with any questions regarding this
-                                                                            invoice. <br /><br />Awesome Inc
+
+                                                                            <br /><br /><br />
+                                                                            {{$shippingMessage}}
                                                                             <br /><br /><br />
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
-                                                            </table> --}}
+                                                            </table>
+                                                            @endif
                                                         </center>
                                                     </td>
                                                 </tr>

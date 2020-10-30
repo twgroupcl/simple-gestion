@@ -50,7 +50,7 @@ Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsBy
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });
-Route::get('/shop-grid/', 'Frontend\HomeController@getAllProducts');
+Route::get('/shop-grid/', 'Frontend\HomeController@getProductsByCategory');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
 Route::get('/faq', 'Frontend\HomeController@getFaq');
 Route::get('/faq-single', function () {
@@ -71,7 +71,7 @@ Route::redirect('/login', '/customer/login')->name('login');
 
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
 Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
-
+Route::get('/filter-products', 'Frontend\HomeController@filterProducts');
 
 Route::group([
     'prefix' => '/transbank'

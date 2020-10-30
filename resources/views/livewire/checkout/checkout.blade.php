@@ -14,6 +14,7 @@
                 </div>
 
 
+
                 <div class="pt-2 px-4 pr-lg-0 pl-xl-5">
 
                     @switch($activeStep['number'])
@@ -135,18 +136,18 @@
     <div class="row d-lg-none">
         <div class="col-lg-8">
             <div class="d-flex pt-4 mt-3">
-                <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
+                <div class="w-50 pr-3"><button class="btn btn-secondary btn-block" wire:click="prevStep()"><i
                             class="czi-arrow-left mt-sm-0 mr-1"></i><span
                             class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
-                            class="d-inline d-sm-none">Anterior</span></a></div>
+                            class="d-inline d-sm-none">Anterior</span></button></div>
                 @if (!empty($activeStep['next-button']))
-                    <div class="w-50 pl-2"><a class="btn btn-primary btn-block" @if ($loading || !$canContinue) disabled
+                    <div class="w-50 pl-2"><button class="btn btn-primary btn-block" @if ($loading || !$canContinue) disabled
                 @endif wire:click.prevent="nextStep()" >
                 @if ($loading)
                     <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
                 @endif
                 <span class="d-none d-sm-inline">{{ $activeStep['next-button'] }}</span><span
-                    class="d-inline d-sm-none">Siguiente</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></a>
+                    class="d-inline d-sm-none">Siguiente</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></button>
             </div>
             @endif
         </div>

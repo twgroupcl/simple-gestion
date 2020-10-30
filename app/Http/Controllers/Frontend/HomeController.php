@@ -9,6 +9,7 @@ use App\Models\FaqAnswer;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
+use App\Services\ProductFilterService;
 
 class HomeController extends Controller
 {
@@ -66,4 +67,13 @@ class HomeController extends Controller
 
         return view('faq', compact('faqs', 'faqTopic'));
     }
+
+    public function filterProducts(Request $request)
+    {
+       // dd($request);
+        $filterService = new ProductFilterService();
+        $filterService->filterByParams($request);
+
+    }
+    
 }

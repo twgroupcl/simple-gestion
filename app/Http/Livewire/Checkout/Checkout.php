@@ -100,6 +100,7 @@ class Checkout extends Component
 
         $this->subtotal = $this->getSubTotal();
         $this->total = $this->getTotal();
+//dd($this->cart);
     }
 
     public function render()
@@ -145,7 +146,7 @@ class Checkout extends Component
     public function addShipping($selected, $item)
     {
 
-        logger('checkout shipping');
+
 
         $cartItem = CartItem::find($item);
 
@@ -274,6 +275,8 @@ class Checkout extends Component
         $order->total = $total_order;
 
         $order->save();
+
+
 
         return redirect()->to(route('transbank.webpayplus.mall.redirect', ['order' => $order]));
     }
