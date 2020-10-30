@@ -146,8 +146,6 @@ class Checkout extends Component
     public function addShipping($selected, $item)
     {
 
-
-
         $cartItem = CartItem::find($item);
 
         $shippingId = $selected['id'];
@@ -212,73 +210,86 @@ class Checkout extends Component
     public function pay()
     {
 
-        //get cart addresses ;
-        $addressShipping = [
-            'address_street' => $this->cart->address_street,
-            'address_number' => $this->cart->address_number,
-            'address_office' => $this->cart->address_office,
-            'address_commune_id' => $this->cart->address_commune_id,
-        ];
-        $addressShipping = json_encode($addressShipping);
-        $addressInvoiceCart = null;
-        if ($this->cart->invoice_value) {
-            $addressInvoiceCart = $this->cart->invoice_value;
-        }
-
-        $addressData = [
-            'addressShipping' => $addressShipping,
-            'addressInvoice' => $addressInvoiceCart,
-        ];
-
-        $order = new Order();
-        $order->company_id = $this->cart->company_id;
-        $order->uid = $this->cart->uid;
-        $order->first_name = $this->cart->first_name;
-        $order->last_name = $this->cart->last_name;
-        $order->email = $this->cart->email;
-        $order->phone = $this->cart->phone;
-        $order->cellphone = $this->cart->cellphone;
-        $order->currency_id = $this->cart->currency_id;
-        $order->customer_id = $this->cart->customer_id;
-        $order->json_value = json_encode($addressData);
-        $order->status = 1; //initiated
-        $order->save();
-
-        $shippingtotal_order = 0;
-        $subtotal_order = 0;
-        $total_order = 0;
-
+        //Check if Sufficient Products
+        $sufficienQuantity = true;
         //Add Order Item
         foreach ($this->getItems() as $item) {
-            $orderitem = new OrderItem();
-            $orderitem->order_id = $order->id;
-            $orderitem->seller_id = $item->product->seller->id;
-            $orderitem->currency_id = 63;
-            $orderitem->product_id = $item->product->id;
-            $orderitem->name = $item->product->name;
-            $orderitem->sku = $item->product->sku;
-            $orderitem->price = $item->product->price;
-            $orderitem->qty = $item->qty;
-            $orderitem->shipping_id = $item->shipping_id;
-            $orderitem->shipping_total = $item->shipping_total;
-            $orderitem->sub_total = $item->price * $item->qty;
-            $orderitem->total = ($item->price * $item->qty) + $item->shipping_total;
-            $orderitem->save();
-            $shippingtotal_order += $item->shipping_total * $item->qty;
-            $subtotal_order += $item->price * $item->qty;
-            $total_order += ($item->price + $item->shipping_total) * $item->qty;
-
+            $product = $item->product;
+            if (!$product->haveSufficientQuantity($item->qty)) {
+                $sufficienQuantity = false;
+            }
         }
 
-        $order->shipping_total = $shippingtotal_order;
-        $order->sub_total = $subtotal_order;
-        $order->total = $total_order;
+        if ($sufficienQuantity) {
 
-        $order->save();
+            //get cart addresses ;
+            $addressShipping = [
+                'address_street' => $this->cart->address_street,
+                'address_number' => $this->cart->address_number,
+                'address_office' => $this->cart->address_office,
+                'address_commune_id' => $this->cart->address_commune_id,
+            ];
+            $addressShipping = json_encode($addressShipping);
+            $addressInvoiceCart = null;
+            if ($this->cart->invoice_value) {
+                $addressInvoiceCart = $this->cart->invoice_value;
+            }
 
+            $addressData = [
+                'addressShipping' => $addressShipping,
+                'addressInvoice' => $addressInvoiceCart,
+            ];
 
+            $order = new Order();
+            $order->company_id = $this->cart->company_id;
+            $order->uid = $this->cart->uid;
+            $order->first_name = $this->cart->first_name;
+            $order->last_name = $this->cart->last_name;
+            $order->email = $this->cart->email;
+            $order->phone = $this->cart->phone;
+            $order->cellphone = $this->cart->cellphone;
+            $order->currency_id = $this->cart->currency_id;
+            $order->customer_id = $this->cart->customer_id;
+            $order->json_value = json_encode($addressData);
+            $order->status = 1; //initiated
+            $order->save();
 
-        return redirect()->to(route('transbank.webpayplus.mall.redirect', ['order' => $order]));
+            $shippingtotal_order = 0;
+            $subtotal_order = 0;
+            $total_order = 0;
+
+            //Add Order Item
+            foreach ($this->getItems() as $item) {
+                $orderitem = new OrderItem();
+                $orderitem->order_id = $order->id;
+                $orderitem->seller_id = $item->product->seller->id;
+                $orderitem->currency_id = 63;
+                $orderitem->product_id = $item->product->id;
+                $orderitem->name = $item->product->name;
+                $orderitem->sku = $item->product->sku;
+                $orderitem->price = $item->product->price;
+                $orderitem->qty = $item->qty;
+                $orderitem->shipping_id = $item->shipping_id;
+                $orderitem->shipping_total = $item->shipping_total;
+                $orderitem->sub_total = $item->price * $item->qty;
+                $orderitem->total = ($item->price * $item->qty) + $item->shipping_total;
+                $orderitem->save();
+                $shippingtotal_order += $item->shipping_total * $item->qty;
+                $subtotal_order += $item->price * $item->qty;
+                $total_order += ($item->price + $item->shipping_total) * $item->qty;
+
+            }
+
+            $order->shipping_total = $shippingtotal_order;
+            $order->sub_total = $subtotal_order;
+            $order->total = $total_order;
+
+            $order->save();
+
+            return redirect()->to(route('transbank.webpayplus.mall.redirect', ['order' => $order]));
+        } else {
+            $this->emit('showToast', '¡Stock insuficiente!', 'Verifique la cantidad de sus productos.', 3000, 'warning');
+        }
     }
 
     public function updateTotals()
