@@ -89,18 +89,24 @@ class Product extends Model
 
         // Create or update variants
         foreach ($variations as &$variation) {
-
             $inventoriesArray = $this->getInventoriesArrayFromVariation($variation);
             $attributesArray = $this->getAttributesArrayFromVariation($variation);
+
+            if (empty($variation['special_price'])) {
+                $variation['special_price_from'] = null;
+                $variation['special_price_to'] = null;
+            }
 
             // Create if does not exists
             if ($variation['product_id'] == '') {
 
                 $childProduct = Product::create([
                     'sku' => Str::uuid()->toString(), // temporal sku
-                    //'name' => $variation['name'],
                     'name' => $this->name,
                     'price' => sanitizeNumber($variation['price']),
+                    'special_price' => $variation['special_price'] ? sanitizeNumber($variation['special_price']) : null,
+                    'special_price_from' => $variation['special_price_from'] ?: null,
+                    'special_price_to' => $variation['special_price_to'] ?: null,
                     'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
                     'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
                     'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
@@ -127,14 +133,15 @@ class Product extends Model
             } else {
                 Product::where('id', $variation['product_id'])
                     ->update([
-                        //'sku' => $variation['sku'],
-                        //'name' => $variation['name'],
                         'name' => $this->name,
                         'price' => sanitizeNumber($variation['price']),
                         'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
                         'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
                         'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
                         'depth' => $this->is_service ? 0 : sanitizeNumber($variation['depth']),
+                        'special_price' => $variation['special_price'] ? sanitizeNumber($variation['special_price']) : null,
+                        'special_price_from' => $variation['special_price_from'] ?: null,
+                        'special_price_to' => $variation['special_price_to']?: null,
                         'inventories_json' => $inventoriesArray,
                         'parent_id' => $this->id,
                         'product_type_id' => self::PRODUCT_TYPE_SIMPLE,
@@ -150,7 +157,7 @@ class Product extends Model
                 $childProduct->updateOrCreateAttributes($attributesArray);
             }
 
-            // Upload child image
+            // Upload children image
             $imagesArray = [];
             $variation['image'] = $this->uploadChildImage($childProduct, $variation['image']);
             array_push($imagesArray, ['image' => $variation['image']]);
@@ -159,6 +166,10 @@ class Product extends Model
             $childProduct->images_json = $imagesArray;
             $childProduct->sku = $this->sku . '-' . $childProduct->id;
             $childProduct->url_key = $this->url_key . '-' . $childProduct->id;
+
+            // Update chidren categories
+            $childProduct->categories()->detach();
+            $childProduct->categories()->attach($this->categories->pluck('id'));
 
             $childProduct->update();
         }

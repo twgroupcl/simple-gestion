@@ -8,11 +8,16 @@ use App\Rules\NumericCommaRule;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule as RuleFacade;
+use Illuminate\Validation\Rule as RuleMethods;
 
 class ProductVariationsRule implements Rule
 {
 
     private $message = '';
+    private $attributes;
+    private $messageErrors;
+
+
     /**
      * Create a new rule instance.
      *
@@ -20,7 +25,21 @@ class ProductVariationsRule implements Rule
      */
     public function __construct()
     {
-        //
+        $this->attributes = [
+            'price' => 'precio',
+            'width' => 'ancho',
+            'height' => 'alto',
+            'depth' =>  'largo',
+            'weight' => 'peso',
+            'special_price'  => 'precio de oferta',
+            'special_price_from' => 'fecha de inicio de oferta',
+            'special_price_to' => 'fecha de fin de oferta',
+        ];
+
+        $this->messages = [
+            '*.required*' => 'Es necesario completar el campo :attribute.',
+            '*.after' => 'El campo :attribute debe ser una fecha posterior a :date.',
+        ];
     }
 
     /**
@@ -48,23 +67,24 @@ class ProductVariationsRule implements Rule
 
         // Validate base fields
         foreach ($variations as $key => $variant) {
-            $fieldGroupValidator = Validator::make((array) $variant, [
-                //'name' => 'required',
-                //'sku' => 'required',
+
+            $fieldGroupValidator = Validator::make((array) $variant, 
+            [
                 'price'  => ['required', new NumericCommaRule()],
                 'width'  => ['sometimes', 'required', new NumericCommaRule()],
                 'height'  => ['sometimes', 'required', new NumericCommaRule()],
                 'depth'  => ['sometimes', 'required', new NumericCommaRule()],
                 'weight'  => ['sometimes', 'required', new NumericCommaRule()],
-            ]);
+                'special_price'  => new NumericCommaRule(),
+                'special_price_from' => RuleMethods::requiredIf($variant->special_price > 1),
+                'special_price_to' => [RuleMethods::requiredIf($variant->special_price > 1), 'after:special_price_from'],
+
+            ], $this->messages, $this->attributes);
+
 
             if ($fieldGroupValidator->fails()) {
                 $this->message = 'Hay un error en tu variacion. '  . $fieldGroupValidator->errors()->first();
                 return false;
-                // alternatively, you could just output the first error
-                //return $fail($fieldGroupValidator->errors()->first());
-                // or you could use this to debug the errors
-                // dd($fieldGroupValidator->errors());
             }
 
             // Validate unique SKU on DB

@@ -816,33 +816,50 @@ class ProductCrudController extends CrudController
                 'label' => 'Imagen',
                 'crop' => false,
             ],
-            /* [
-                'label' => "SKU",
-                'name' => "sku",
-                'type' => 'text',
-                'wrapper' => [
-                    'class' => 'col-lg-6 col-md-12',
-                ],
-            ], */
-            /* [
-                'label' => "Nombre",
-                'name' => "name",
-                'type' => 'text',
-                'wrapper' => [
-                    'class' => 'col-lg-6 col-md-12',
-                ],
-            ], */
             [
                 'label' => "Precio",
                 'name' => "price",
                 'type' => 'product.number_format',
                 'wrapper' => [
-                    'class' => $product->is_service ? 'col-lg-12 col-md-12': 'col-lg-6 col-md-12',
+                    'class' => 'col-lg-3 col-md-12 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
                 ],
             ],
+            [
+                'name' => 'special_price',
+                'label' => 'Precio de oferta',
+                'type' => 'product.number_format',
+                'tab' => 'Precio y envío',
+                'wrapper' => [
+                    'class' => 'col-md-3 form-group'
+                ],
+                'attributes' => [
+                    'step' => 'any',
+                    'placeholder' => 'Opcional'
+                ],
+            ],
+            [
+                'name' => 'special_price_from',
+                'label' => 'Precio de oferta desde',
+                'type' => 'date',
+                'tab' => 'Precio y envío',
+                'wrapper' => [
+                    'class' => 'col-md-3 form-group',
+                    'id' => 'special_price_from',
+                ]
+            ],
+            [
+                'name' => 'special_price_to',
+                'label' => 'Precio de oferta hasta',
+                'type' => 'date',
+                'tab' => 'Precio y envío',
+                'wrapper' => [
+                    'class' => 'col-md-3 form-group',
+                    'id' => 'special_price_to',
+                ]
+            ]
         ];
 
         $isProductFields = $product->is_service ? [] : [
@@ -852,7 +869,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'kg',
                 'wrapper' => [
-                    'class' => 'col-lg-6 col-md-12',
+                    'class' => 'col-md-3 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
@@ -864,7 +881,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
                 'wrapper' => [
-                    'class' => 'col-lg col-md-12 col-sm-12',
+                    'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
@@ -876,7 +893,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
                 'wrapper' => [
-                    'class' => 'col-lg col-md-12 col-sm-12',
+                    'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
@@ -888,7 +905,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
                 'wrapper' => [
-                    'class' => 'col-lg col-md-12 col-sm-12',
+                    'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
                 'attributes' => [
                     'step' => 'any',
@@ -950,6 +967,9 @@ class ProductCrudController extends CrudController
                 'default' => 0,
                 'fake' => true,
                 'store_in' => 'inventories_json',
+                'wrapper' => [
+                    'class' => 'col-md-12 form-group required',
+                ],
             ]);
         }
 
