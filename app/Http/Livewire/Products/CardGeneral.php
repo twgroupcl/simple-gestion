@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Product as ModelsProduct;
 use App\Models\ProductCategory;
-use Barryvdh\Debugbar\Facade as Debugbar;
 
 class CardGeneral extends Component
 {
