@@ -33,15 +33,35 @@
         <div class="d-flex justify-content-between">
             <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->
             @if ($product->children()->count())
-            <div class="product-price">
-                <span class="text-accent">
-                    @if ($product->getPriceRange()[0] == $product->getPriceRange()[1])
-                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
-                    @else
-                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
-                    @endif
-                </span>
-            </div>
+                @if ($product->has_special_price)
+                    <div class="product-price">
+                        @if ($product->getRealPriceRange()[0] == $product->getRealPriceRange()[1])
+                            <span class="text-accent">
+                                {{ currencyFormat($product->getRealPriceRange()[0], defaultCurrency(), true) }}
+                            </span>
+                            <del class="font-size-sm text-muted"><small>
+                                {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
+                            </small></del>
+                        @else
+                            <span class="text-accent">  
+                                {{ currencyFormat($product->getRealPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getRealPriceRange()[1], defaultCurrency(), true) }}
+                            </span>
+                            <del class="font-size-sm text-muted"><small>
+                                {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                            </small></del>
+                         @endif
+                    </div>
+                @else
+                    <div class="product-price">
+                        <span class="text-accent">
+                            @if ($product->getPriceRange()[0] == $product->getPriceRange()[1])
+                            {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
+                            @else
+                            {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                            @endif
+                        </span>
+                    </div> 
+                @endif  
             @else
             <div class="product-price">
                 @if($product->has_special_price)

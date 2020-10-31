@@ -160,6 +160,6 @@ class ConfigurableDetail extends Component
 
     public function getPriceFrom()
     {
-        $this->priceFrom = $this->parentProduct->children->pluck('price')->sort()->first();
+        $this->priceFrom = $this->parentProduct->children->pluck('real_price')->sort()->first();
     }
 }
