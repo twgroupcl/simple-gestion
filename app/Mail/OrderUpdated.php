@@ -85,13 +85,22 @@ class OrderUpdated extends Mailable
                     }
                 }
             } else {
-                if ($receiver == 1) {
+
+                if(count($order->order_payments)>0){
                     $this->paymentData['title'] = $order->order_payments->first()->method_title;
                     $this->paymentData['date'] = Carbon::createFromFormat('Y-m-d H:i:s', $order->order_payments->first()->created_at)->format('d/m/Y H:i:s');
-                    $this->paymentData['total'] =  currencyFormat($order->total ? $order->total : 0, 'CLP', true);
-
+                }else{
+                    $this->paymentData['title'] = 'Sin información';
+                    $this->paymentData['date'] = '';
+                }
+                $this->paymentData['total'] =  currencyFormat($order->total ? $order->total : 0, 'CLP', true);
+                if ($receiver == 1) {
                     $this->title = '¡Tu orden está lista!';
                     $this->shippingMessage = 'Próximamente estaremos notificando la fecha de envío';
+                }else{
+                    $this->title = '¡Nueva orden generada!';
+
+
                 }
                 // $this->orderItems = $order->order_items;
                 foreach ($order->order_items as $item) {
