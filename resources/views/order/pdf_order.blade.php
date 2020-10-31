@@ -214,19 +214,19 @@ if($addressInvoice){
 <table width="100%" class="border-table">
     <tr>
         <td width="100%">
-            <p><strong> Método de pago seleccionado:</strong> {{ $order->order_payments->first()->method_title }}</p>
+            <p><strong> Método de pago seleccionado: </strong> {{ $order->order_payments->first()->method_title }}</p>
         </td>
     </tr>
     <tr>
         <td width="100%">
             <p><strong>Fecha de
-                    pago:</strong>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order->order_payments->first()->created_at)->format('d/m/Y H:i:s') }}
+                    pago: </strong>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order->order_payments->first()->created_at)->format('d/m/Y H:i:s') }}
             </p>
         </td>
     </tr>
     <tr>
         <td width="100%">
-            <p><strong>Importe Total:</strong> {{ currencyFormat($order->total ? $order->total : 0, 'CLP', true) }}</p>
+            <p><strong>Importe Total: </strong> {{ currencyFormat($order->total ? $order->total : 0, 'CLP', true) }}</p>
         </td>
     </tr>
 </table>

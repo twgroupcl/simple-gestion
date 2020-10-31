@@ -216,11 +216,11 @@ use App\Models\Product;
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $orderData['first_name'] . ', ' . $orderData['last_name'] }}
+                                                                                {{ $orderData['first_name'] . ' ' . $orderData['last_name'] }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}
+                                                                                {{ $addressShipping->address_street . ' ' . $addressShipping->address_number .' ' . $addressShipping->address_office }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
@@ -240,13 +240,17 @@ use App\Models\Product;
                                                                                     </strong></p>
                                                                             </div>
                                                                             <p>
-                                                                            <p
+                                                                                <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $addressInvoice->first_name . ', ' . $addressInvoice->last_name }}
+                                                                                RUT:  {{ $addressInvoice->uid}}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $addressInvoice->address_street . ', ' . $addressInvoice->address_number }}
+                                                                                {{ $addressInvoice->first_name . ' ' . $addressInvoice->last_name }}
+                                                                            </p>
+                                                                            <p
+                                                                                style="margin-left: 10px;text-align: left">
+                                                                                {{ $addressInvoice->address_street . ' ' . $addressInvoice->address_number.' ' . $addressInvoice->address_office }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
