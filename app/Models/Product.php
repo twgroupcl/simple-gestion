@@ -9,10 +9,8 @@ use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
-use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Barryvdh\Debugbar\Facade as Debugbar;
 
 class Product extends Model
 {
