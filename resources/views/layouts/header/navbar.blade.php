@@ -38,7 +38,11 @@
             <div class="container"><a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;"><img width="100" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a><a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
                 <!-- Search-->
                 @if($header)
-                @livewire('search-navbar')
+                @php
+                    $category = isset($data) ? $data['category'] : 0;
+                    $product = isset($data) ? $data['product'] : '';
+                @endphp
+                @livewire('search-navbar', [ 'query' => $product ?? '' , 'selected' => $category ?? 0])
                 <!-- Toolbar-->
                 <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>

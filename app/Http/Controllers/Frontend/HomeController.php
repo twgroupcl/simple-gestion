@@ -45,7 +45,7 @@ class HomeController extends Controller
     {
         $render = ['view' => 'searchProduct'];
         $data = ['category' => $request->category, 'product' => $request->product];
-
+        
         return view('shop-grid', compact('render', 'data'));
     }
 

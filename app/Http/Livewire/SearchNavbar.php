@@ -13,6 +13,7 @@ class SearchNavbar extends Component
     public $selected = 0;
 
     public function search(){
+
         return redirect()->to('/search-products/'.$this->selected.'/'.$this->query);
     }
 
