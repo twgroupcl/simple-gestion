@@ -92,15 +92,17 @@ class SellerObserver
             ) {
                 Mail::to($seller->email)->send(new SellerChangeStatus($seller));
             }
+            if (array_key_exists('password', $dirtyModel)) {
+                if(!empty($seller->user())) {
+                    $seller->user()->update([
+                        'name' => $seller->name,
+                        'email' => $seller->email,
+                        'password' => $seller->password,
+                    ]);
+                }
+            }
         }
-
-        if(!empty($seller->user())) {
-            $seller->user()->update([
-                'name' => $seller->name,
-                'email' => $seller->email,
-                'password' => $seller->password,
-            ]);
-        }
+        
     }
 
     public function syncAddresses(Seller $seller)
