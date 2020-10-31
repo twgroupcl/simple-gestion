@@ -161,13 +161,13 @@ class Cart extends Component
                 'product_id' => $product->id,
                 'sku' => $product->sku,
                 'name' => $product->name,
-                'price' => $product->price,
+                'price' => $product->real_price,
                 'qty' => $qty,
                 'width' => $product->width,
                 'height' => $product->height,
                 'depth' => $product->depth,
                 'weight' => $product->weight,
-                'sub_total' => $product->price * $qty,
+                'sub_total' => $product->real_price * $qty,
                 /*'sub_total' => ,
                 'shipping_total' => ,
                 'discount_total' => ,
@@ -178,7 +178,7 @@ class Cart extends Component
                 'coupon_code' => ,
                 'custom_price' => ,*/
                 'total_weight' => $product->weight * $qty,
-                'total' => $product->price * $qty,
+                'total' => $product->real_price * $qty,
                 'currency_id' => $product->currency_id,
             ];
             if ($product->parent_id) {

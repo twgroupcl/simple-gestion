@@ -13,7 +13,7 @@ $product = $item->product;
                     <div class="font-size-sm"><span class="text-muted mr-2">{{ $attribute['name'] }}:</span>{{ $attribute['value'] }}</div>
                 @endforeach
             @endif
-            <div class="d-inline-block font-size-lg text-accent pt-2">{{ currencyFormat($product->price, 'CLP', true) }}
+            <div class="d-inline-block font-size-lg text-accent pt-2">{{ currencyFormat($product->real_price, 'CLP', true) }}
                 <!--$154.<small>00</small>-->
             </div>
             <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="{{'seller-shop/'.$product->seller->id}}">por {{$product->seller->name}}</a>

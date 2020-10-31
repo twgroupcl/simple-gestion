@@ -21,6 +21,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Transbank\Webpay\Configuration;
 use Transbank\Webpay\Webpay;
+use Backpack\Settings\app\Models\Setting;
+
+
 
 class WebpayPlusMallController extends Controller
 {
@@ -251,7 +254,13 @@ class WebpayPlusMallController extends Controller
             foreach ($sellers as $seller) {
                 Mail::to($seller->email)->send(new OrderUpdated($order, 2, $seller));
             }
-            //Order to admin
+            //Order to admins
+            $administrators = Setting::get('administrator_email');
+            $recipients = explode(';', $administrators);
+            foreach ($recipients as $key => $recipient) {
+                Mail::to($recipient)->send(new OrderUpdated($order, 3, null));
+            }
+
 
             return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
         } else {

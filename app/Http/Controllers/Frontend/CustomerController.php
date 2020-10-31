@@ -75,6 +75,11 @@ class CustomerController extends Controller
     {
         $request->validate([
             'email' => 'required|email|exists:users',
+        ],
+        [
+            'required' => 'Este campo es obligatorio',
+            'email' => 'El campo :attribute debe ser un email',
+            'exists' => 'El campo :attribute es inválido',
         ]);
 
         $token = Str::random(60);
@@ -83,7 +88,17 @@ class CustomerController extends Controller
             ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
         );
 
-        Mail::send('vendor.maileclipse.templates.resetPassword', ['token' => $token], function ($message) use ($request) {
+        $data = [
+            'logo' => asset('img/logo-pyme.png'),
+            'title' => 'Cambio de contraseña',
+            'text' => 'Recibes este email porque se solicitó un cambio de contraseña para tu cuenta.',
+            'rejectedText' => 'Si no realizaste esta petición, puedes ignorar este correo y nada habrá cambiado.',
+            'buttonText' => 'Ir a cambiar contraseña',
+            'buttonLink' => route('password.reset', ['token' => $token]),
+            'token' => $token,
+        ];
+
+        Mail::send('vendor.maileclipse.templates.resetPassword', $data, function ($message) use ($request) {
             $message->to($request->email);
             $message->subject('Notificación de cambio de contraseña');
         });
@@ -126,7 +141,16 @@ class CustomerController extends Controller
 
         $passwordReset->delete();
 
-        Mail::send('vendor.maileclipse.templates.passwordChanged', [], function ($message) use ($request) {
+        $data = [
+            'logo' => asset('img/logo-pyme.png'),
+            'title' => 'Tu contraseña ha sido exitosamente actualizada',
+            'text' => 'Si no fuiste tú, te aconsejamos que restablezcas tu contraseña para garantizar la seguridad de tu cuenta.',
+            'rejectedText' => '',
+            'buttonText' => 'Vamos a comprar',
+            'buttonLink' => route('index'),
+        ];
+
+        Mail::send('vendor.maileclipse.templates.passwordChanged', $data, function ($message) use ($request) {
             $message->to($request->email);
             $message->subject('Se ha cambiado la contraseña');
         });

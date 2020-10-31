@@ -55,7 +55,7 @@ class Item extends Component
         $this->product = $item->product;
         $this->view = $view;
         $this->qty = $this->item->qty;
-        $this->total = $this->item->product->price * $this->qty;
+        $this->total = $this->item->product->real_price * $this->qty;
         $this->communeSelected =  $this->item->cart->address_commune_id;
         $product = $this->item->product;
         if ($this->showShipping && !$product->is_service) {
@@ -84,9 +84,10 @@ class Item extends Component
             return;
         }
         $this->item->qty = $qty;
-        $this->item->sub_total = $this->item->product->price * $qty;
+
+        $this->item->sub_total = $this->item->product->real_price * $qty;
         $this->validateOnly('item.sub_total');
-        $this->total = $this->item->product->price * $qty;
+        $this->total = $this->item->product->real_price * $qty;
 
         $validationStatus = $this->validateQtys();
 

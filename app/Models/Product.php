@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use DateTime;
 use Exception;
 use Illuminate\Support\Str;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -606,6 +608,25 @@ class Product extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    public function getRealPriceAttribute() {
+        if ( is_null($this->special_price) || $this->special_price === 0) {
+            return $this->price;
+        } else {
+            if ( !is_null($this->special_price_from) && !is_null($this->special_price_to) ) {
+                $date_now = new DateTime();
+                $from  = new DateTime($this->special_price_from);
+                $to = new DateTime($this->special_price_to);
+
+                if( ($date_now < $to) && ($date_now > $from) ) {
+                    return $this->special_price;
+                } else {
+                    return $this->price;
+                }
+            }
+            return $this->special_price;
+        }
+    }
 
     public function getIsApprovedTextAttribute()
     {
