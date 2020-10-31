@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Frontend\HomeController@index')->name('index');
 
-Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer.sign');
+Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer.sign')->middleware(['guest']);
 Route::post('/customer/register', 'Frontend\CustomerController@store')->name('customer.frontend.store');
 Route::post('/customer/login', 'Frontend\CustomerController@authenticate')->name('customer.frontend.login');
 Route::post('/customer/logout', 'Frontend\CustomerController@logout')->name('logout');

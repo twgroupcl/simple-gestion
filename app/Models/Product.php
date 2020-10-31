@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class Product extends Model
 {
