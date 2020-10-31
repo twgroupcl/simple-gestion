@@ -4,7 +4,7 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero section with search-->
-<section class="bg-dark bg-size-cover bg-position-center-x position-relative py-5 mb-5" style="background-image: url(img/pages/help-hero-bg.jpg);"><span class="bg-overlay bg-darker" style="opacity: .65;"></span>
+<section class="bg-dark bg-size-cover bg-cp-gradient bg-position-center-x position-relative py-5 mb-5"><span class="bg-overlay bg-darker" style="opacity: .0;"></span>
     <div class="bg-overlay-content container py-4 my-3">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -14,22 +14,24 @@
     </div>
 </section>
 <!-- Topics grid-->
-<section class="container py-3">
-    <h2 class="h3 text-center">Selecciona un tema</h2>
-    <div class="row pt-4">
-        @foreach($faqTopic as $topic)
-            <div class="col-lg-4 col-sm-6 mb-grid-gutter">
-                <a class="card border-0 box-shadow" href="#">
-                    <div class="card-body text-center">{!!$topic->icon!!}</i>
-                        <h6>{{$topic->title}}</h6>
-                        <p class="font-size-sm text-muted pb-2">{{$topic->description}}</p>
-                        <div class="btn btn-outline-primary btn-sm mb-2">Aprende más</div>
-                    </div>
-                </a>
-            </div>
-        @endforeach
-    </div>
-</section>
+<!--
+    <section class="container py-3">
+        <h2 class="h3 text-center">Selecciona un tema</h2>
+        <div class="row pt-4 m-auto">
+            @foreach($faqTopic as $topic)
+                <div class="col-lg-4 col-sm-6 mb-grid-gutter">
+                    <a class="card border-0 box-shadow" href="#">
+                        <div class="card-body text-center">{!!$topic->icon!!}</i>
+                            <h6>{{$topic->title}}</h6>
+                            <p class="font-size-sm text-muted pb-2">{{$topic->description}}</p>
+                            <div class="btn btn-outline-primary btn-sm mb-2">Aprende más</div>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </section>
+-->
 <!-- FAQ-->
 <section class="container pt-4 pb-5">
     <h2 class="h3 text-center">Preguntas Frecuentes</h2>
@@ -39,7 +41,7 @@
                 <div class="accordion" id="methods">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="accordion-heading"><a href="#method{{$faq->id}}" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="methodOne">{{$faq->question}}<span class="accordion-indicator"></span></a></h3>
+                            <h3 class="accordion-heading"><a href="#method{{$faq->id}}" class="text-capitalize collapsed" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="methodOne">{{$faq->question}}<span class="accordion-indicator"></span></a></h3>
                         </div>
                         <div class="collapse" id="method{{$faq->id}}" data-parent="#methods">
                             <div class="card-body font-size-md">
