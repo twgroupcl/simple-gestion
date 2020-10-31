@@ -76,7 +76,7 @@
                                 <a href="{{ url('seller-shop/'.$product->seller->id) }}" class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</a>
                             </div>
                             <div class="product-details ml-auto pb-3">
-                                @if ($product->special_price)
+                                @if ($product->special_price === $product->real_price)
                                 <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
                                     <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, defaultCurrency(), true) }}</del>
                                     <br>

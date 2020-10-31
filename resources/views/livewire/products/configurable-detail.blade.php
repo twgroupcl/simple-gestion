@@ -32,7 +32,7 @@
                     </div>
                     <div class="product-details ml-auto pb-3">
                         @if ($selectedChildrenId)
-                            @if ($currentProduct->special_price)
+                            @if ($currentProduct->special_price === $currentProduct->real_price)
                             <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($currentProduct->special_price, defaultCurrency(), true) }}</span>
                                 <del class="text-muted font-size-lg mr-3">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</del>
                                 <br>
