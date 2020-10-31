@@ -68,10 +68,6 @@ class SellerCrudController extends CrudController
     protected function setupListOperation()
     {
         //CRUD::setFromDb(); // columns
-        if ($this->userSeller) {
-            $this->crud->addClause('where', 'id', '=', $this->userSeller->id);
-        }
-
         if (!$this->admin) {
             $value = $this->userSeller->id;
 
