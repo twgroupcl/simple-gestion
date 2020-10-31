@@ -1,39 +1,62 @@
 @extends(backpack_view('blank'))
 
 @php
-	$productCount = \App\Models\Product::count();
-	$selletCount = \App\Models\Seller::count();
-	$userCount = \App\User::count();
+use App\Models\Product;
+use App\Models\Seller;
+use App\User;
 
-	Widget::add()->to('before_content')->type('div')->class('row')->content([
-		// notice we use Widget::make() to add widgets as content (not in a group)
-		Widget::make([
-			'type' => 'progress',
-			'class' => 'card border-0 text-white bg-primary',
-			'progressClass' => 'progress-bar',
-			'value' => $userCount,
-			'description' => 'Usuarios.',
-			'progress' => 100*(int)$userCount/1000,
-		]),
+	$user = backpack_user();
+	if ($user->hasRole('Vendedor marketplace')) {
+		$seller = Seller::firstWhere('user_id', $user->id);
+		$productCount = Product::where('seller_id', $seller->id)->count();
+		$selletCount = \App\Models\Seller::count();
 
-		Widget::make([
-			'type' => 'progress',
-			'class'=> 'card border-0 text-white bg-dark',
-			'progressClass' => 'progress-bar',
-			'value' => $productCount,
-			'description' => 'Productos.',
-			'progress' => (int)$productCount/75*100,
-		]),
+		Widget::add()->to('before_content')->type('div')->class('row')->content([
+			Widget::make([
+				'type' => 'progress',
+				'class'=> 'card border-0 text-white bg-dark',
+				'progressClass' => 'progress-bar',
+				'value' => $productCount,
+				'description' => 'Productos.',
+				'progress' => (int)$productCount/75*100,
+			]),
+		]);
+	}
+	else {
+		$productCount = \App\Models\Product::count();
+		$selletCount = \App\Models\Seller::count();
+		$userCount = \App\User::count();
 
-		Widget::make([
-			'type' => 'progress',
-			'class'=> 'card border-0 text-white bg-success',
-			'progressClass' => 'progress-bar',
-			'value' => $selletCount,
-			'description' => 'Negocios.',
-			'progress' => (int)$selletCount/75*100,
-		]),
-	]);
+		Widget::add()->to('before_content')->type('div')->class('row')->content([
+			// notice we use Widget::make() to add widgets as content (not in a group)
+			Widget::make([
+				'type' => 'progress',
+				'class' => 'card border-0 text-white bg-primary',
+				'progressClass' => 'progress-bar',
+				'value' => $userCount,
+				'description' => 'Usuarios.',
+				'progress' => 100*(int)$userCount/1000,
+			]),
+
+			Widget::make([
+				'type' => 'progress',
+				'class'=> 'card border-0 text-white bg-dark',
+				'progressClass' => 'progress-bar',
+				'value' => $productCount,
+				'description' => 'Productos.',
+				'progress' => (int)$productCount/75*100,
+			]),
+
+			Widget::make([
+				'type' => 'progress',
+				'class'=> 'card border-0 text-white bg-success',
+				'progressClass' => 'progress-bar',
+				'value' => $selletCount,
+				'description' => 'Negocios.',
+				'progress' => (int)$selletCount/75*100,
+			]),
+		]);
+	}
 
 	$isAdmin = backpack_user()->hasRole('Super admin');
 
