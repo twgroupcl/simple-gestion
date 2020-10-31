@@ -500,6 +500,18 @@ class Product extends Model
         }
     }
 
+    public function getRealPriceRange()
+    {
+        if ($this->product_type->id == self::PRODUCT_TYPE_CONFIGURABLE) {
+            return [
+                $this->children->pluck('real_price')->sort()->first(),
+                $this->children->pluck('real_price')->sort()->last(),
+            ];
+        } else {
+            return [0, 0];
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -622,7 +634,37 @@ class Product extends Model
                     return $this->price;
                 }
             }
+
             return $this->special_price;
+        }
+    }
+
+    public function getHasSpecialPriceAttribute() {
+
+        if ($this->product_type->id == self::PRODUCT_TYPE_CONFIGURABLE && $this->children()->count()) {
+            $hasSpecialPrice = false;
+            foreach ($this->children as $children) {
+                if ($children->has_special_price) $hasSpecialPrice = true;
+            }
+            return $hasSpecialPrice;
+        }
+
+        if ( is_null($this->special_price) || $this->special_price === 0) {
+            return false;
+        } else {
+            if ( !is_null($this->special_price_from) && !is_null($this->special_price_to) ) {
+                $date_now = new DateTime();
+                $from  = new DateTime($this->special_price_from);
+                $to = new DateTime($this->special_price_to);
+
+                if( ($date_now < $to) && ($date_now > $from) ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 

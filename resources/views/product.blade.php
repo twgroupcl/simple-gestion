@@ -21,7 +21,7 @@
             <a href="{{ url('search-products/'.$product->categories[0]->id) }}">
                 <span class="h5 text-light mb-2">{{ $product->showCategory() }}</span>
             @endif
-            </a> 
+            </a>
             {{-- <div>
                 <div class="star-rating"><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star"></i>
                 </div><span class="d-inline-block font-size-sm text-white opacity-70 align-middle mt-1 ml-1">74 Reviews</span>
@@ -76,7 +76,7 @@
                                 <a href="{{ url('seller-shop/'.$product->seller->id) }}" class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</a>
                             </div>
                             <div class="product-details ml-auto pb-3">
-                                @if ($product->special_price === $product->real_price)
+                                @if ($product->has_special_price)
                                 <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
                                     <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, defaultCurrency(), true) }}</del>
                                     <br>
@@ -216,10 +216,10 @@
                             <div class="mdeia-body pl-3">
                                 <h6 class="font-size-base mb-2">{{$product->name}}</h6>
                                 @if ($product->product_type->id == 1)
-                                    @if ($product->special_price)
+                                    @if ($product->has_special_price)
                                         <div class="mb-3">
                                             <span class="h4 font-weight-normal text-accent mr-1">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
-                                            <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, defaultCurrency(), true) }}</del><span class="badge badge-danger badge-shadow align-middle mt-n2">Promo</span>
+                                            <del class="text-muted font-size-lg mr-3">{{ currencyFormat($product->price, defaultCurrency(), true) }}</del><span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
                                         </div>
                                     @else
                                         <div class="h4 font-weight-normal text-accent">{{ currencyFormat($product->price, 'CLP', true) }}</div>
