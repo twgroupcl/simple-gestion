@@ -268,7 +268,7 @@ class Checkout extends Component
                 $orderitem->product_id = $item->product->id;
                 $orderitem->name = $item->product->name;
                 $orderitem->sku = $item->product->sku;
-                $orderitem->price = $item->product->price;
+                $orderitem->price = $item->price;
                 $orderitem->qty = $item->qty;
                 $orderitem->shipping_id = $item->shipping_id;
                 $orderitem->shipping_total = $item->shipping_total;
