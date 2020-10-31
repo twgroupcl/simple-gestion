@@ -77,6 +77,11 @@ class Order extends Model
         return $query->bySeller();
     }
 
+    public function scopeSold($query)
+    {
+        return $query->where('order_status', self::STATUS_PAID);
+    }
+
     public function scopeBySeller($query)
     {
         if (!auth()->user() || auth()->user()->hasRole('Super admin')) {
