@@ -84,6 +84,7 @@ class Item extends Component
             return;
         }
         $this->item->qty = $qty;
+
         $this->item->sub_total = $this->item->product->real_price * $qty;
         $this->validateOnly('item.sub_total');
         $this->total = $this->item->product->real_price * $qty;
