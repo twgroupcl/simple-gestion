@@ -23,12 +23,12 @@
             </div>
         @endif
     </div>
-    <a class="card-img-top d-block overflow-hidden" href="{{route('product',['slug' => $product->url_key])}}">
+    <a class="card-img-top d-block overflow-hidden" href="{{ route('product',['slug' => $product->url_key]) }}">
         <img class="w-100" src="{{ url($product->getFirstImagePath()) }}" alt="Product">
     </a>
     <div class="card-body py-2">
         <a class="product-meta d-block font-size-xs pb-1" href="{{ url('search-products/'.$product->categories[0]->id) }}">{{ $product->showCategory() }}</a>
-        <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}">{{ $product->name }}</a></h3>
+        <h3 class="product-title font-size-sm"><a href="{{ route('product',['slug' => $product->url_key]) }}">{{ $product->name }}</a></h3>
         {{-- <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}" @if(strlen($product->name) > 80) data-toggle="tooltip" data-placement="top" title="{{ $product->name }}" @endif>{{ substr($product->name, 0, 80) }} @if(strlen($product->name) > 80) ... @endif</a></h3> --}}
         <div class="d-flex justify-content-between">
             <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->
@@ -44,11 +44,11 @@
             </div>
             @else
             <div class="product-price">
-                @if($product->special_price)
+                @if($product->has_special_price)
                 <span class="text-accent">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
                 <del class="font-size-sm text-muted"><small>{{ currencyFormat($product->price, defaultCurrency(), true) }}</small></del>
                 @else
-                <span class="text-accent">{{ currencyFormat($product->price, defaultCurrency(), true) }}</span>
+                <span class="text-accent">{{ currencyFormat($product->real_price, defaultCurrency(), true) }}</span>
                 @endif
             </div>
             @endif

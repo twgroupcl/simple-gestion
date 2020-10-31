@@ -622,7 +622,28 @@ class Product extends Model
                     return $this->price;
                 }
             }
+
             return $this->special_price;
+        }
+    }
+
+    public function getHasSpecialPriceAttribute() {
+        if ( is_null($this->special_price) || $this->special_price === 0) {
+            return false;
+        } else {
+            if ( !is_null($this->special_price_from) && !is_null($this->special_price_to) ) {
+                $date_now = new DateTime();
+                $from  = new DateTime($this->special_price_from);
+                $to = new DateTime($this->special_price_to);
+
+                if( ($date_now < $to) && ($date_now > $from) ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
