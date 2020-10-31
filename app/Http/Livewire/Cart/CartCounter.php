@@ -12,6 +12,7 @@ class CartCounter extends Component
     use Cursor;
 
     public $count = 0;
+    public $view = 'counter';
 
     protected $listeners = [
         'cart-counter.setCount' => 'setCount',
@@ -38,7 +39,7 @@ class CartCounter extends Component
 
     public function render()
     {
-        return view('livewire.cart.counter');
+        return view('livewire.cart.'. $this->view);
     }
 
 }

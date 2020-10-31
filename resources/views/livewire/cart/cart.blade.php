@@ -11,3 +11,6 @@
         @livewire('cart.dropdown', ['cart' => $cart])
     @endif
 </div>
+@push('cart-toolbar')
+    @livewire('cart.toolbar', ['subtotal' => $subtotal, 'count' => $cart->items_count])
+@endpush

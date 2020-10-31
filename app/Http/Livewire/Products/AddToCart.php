@@ -4,17 +4,27 @@ namespace App\Http\Livewire\Products;
 
 use App\Models\Product;
 use Livewire\Component;
-use Barryvdh\Debugbar\Facade as Debugbar;
 
 class AddToCart extends Component
 {
     public $view = 'standard';
     public $product;
-    public $qty;
+    public $qty = 1;
 
     protected $listeners = [
         'addtocart.cant' => 'cant',
         'addToCart.setProduct' => 'setProduct',
+    ];
+
+    protected $rules = [
+        'qty' => 'required|integer|gte:1|lte:9999',
+    ];
+
+    protected $messages = [
+        'gte' => 'La cantidad mayor o igual a 1.',
+        'lte' => 'La cantidad supera el límite',
+        'qty.required' => 'Debe indicar una cantidad.',
+        'qty.integer' => 'Revise la cantidad.'
     ];
 
     public function setProduct(Product $prod)
@@ -29,6 +39,9 @@ class AddToCart extends Component
 
     public function addToCart()
     {
+
+        $this->validate();
+
         $this->emit('cart:add', $this->product, $this->qty);
     }
 

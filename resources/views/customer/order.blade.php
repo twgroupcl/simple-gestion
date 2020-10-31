@@ -37,9 +37,6 @@
                     </select>
                 </div> --}}
                 <h6 class="font-size-base text-light mb-0">Lista de las órdenes que realizaste:</h6>
-                <a class="btn btn-primary btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="czi-sign-out mr-2"></i> Cerrar sesión
-                </a>
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
@@ -70,7 +67,7 @@
                         <tr>
                             <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">{{ $order->id }}</a></td>
                             <td class="py-3">{{ $order->created_at->format('d-m-Y') }}</td>
-                            <td class="py-3"><span class="badge badge-{{ array_key_exists($order->order_status, $badge) ? $badge[$order->order_status]: 'secondary' }} m-0">{{ $order->order_status ?? 'Pendiente' }}</span></td>
+                            <td class="py-3"><span class="badge badge-{{ array_key_exists($order->status_description, $badge) ? $badge[$order->status_description]: 'secondary' }} m-0">{{ $order->status_description ?? 'Pendiente' }}</span></td>
                             <td class="py-3">{{ currencyFormat($order->total ?? 0, 'CLP', true) }}</td>
                         </tr>
                         @empty

@@ -4,11 +4,12 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\ProductCategory;
+use Illuminate\Http\Request;
 
 class SearchNavbar extends Component
 {
     public $categories;
-    public $query    = '';
+    public $query;
     public $selected = 0;
 
     public function search(){

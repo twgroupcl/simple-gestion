@@ -185,7 +185,7 @@ use App\Models\Product;
                                                                     <td class="headline">Orden #{{ $orderData['id'] }}
                                                                     </td>
                                                                     <td style="text-align: right">
-                                                                        <strong>Fecha  </strong>{{ $orderData['fecha'] }}
+                                                                        <strong>Fecha </strong>{{ $orderData['fecha'] }}
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -212,15 +212,20 @@ use App\Models\Product;
                                                                             <p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $orderData['first_name'] . ', ' . $orderData['last_name'] }}
+                                                                                RUT: {{ $orderData['uid']  }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}
+                                                                                {{ $orderData['first_name'] . ' ' . $orderData['last_name'] }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $communeShipping->name }}</p>
+                                                                                {{ $addressShipping->address_street . ' ' . $addressShipping->address_number .' ' . $addressShipping->address_office }}
+                                                                            </p>
+                                                                            <p
+                                                                                style="margin-left: 10px;text-align: left">
+                                                                                {{ $communeShipping->name }}
+                                                                            </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
                                                                                 Teléfono: {{ $orderData['cellphone'] }}
@@ -235,13 +240,17 @@ use App\Models\Product;
                                                                                     </strong></p>
                                                                             </div>
                                                                             <p>
-                                                                            <p
+                                                                                <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $addressInvoice->first_name . ', ' . $addressInvoice->last_name }}
+                                                                                RUT:  {{ $addressInvoice->uid}}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $addressInvoice->address_street . ', ' . $addressInvoice->address_number }}
+                                                                                {{ $addressInvoice->first_name . ' ' . $addressInvoice->last_name }}
+                                                                            </p>
+                                                                            <p
+                                                                                style="margin-left: 10px;text-align: left">
+                                                                                {{ $addressInvoice->address_street . ' ' . $addressInvoice->address_number.' ' . $addressInvoice->address_office }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
@@ -252,7 +261,8 @@ use App\Models\Product;
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
                                                                                 Teléfono:
-                                                                                {{ $addressInvoice->cellphone }}</p>
+                                                                                {{ $addressInvoice->cellphone }}
+                                                                            </p>
                                                                             </p>
                                                                         @endif
                                                                     </td>
@@ -369,14 +379,14 @@ use App\Models\Product;
                                                                                 style="text-align: right">
                                                                                 {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}
                                                                                 <br>
-                                                                                @if($item->shipping_method)
-                                                                                ({{$item->shipping_method->title}})
+                                                                                @if ($item->shipping_method)
+                                                                                    ({{ $item->shipping_method->title }})
                                                                                 @endif
 
                                                                             </td>
                                                                             <td class="mobile-block"
                                                                                 style="text-align: right">
-                                                                                {{ currencyFormat(($item->sub_total + $item->shipping_total) ? ($item->sub_total + $item->shipping_total) : 0, 'CLP', true) }}
+                                                                                {{ currencyFormat($item->sub_total + $item->shipping_total ? $item->sub_total + $item->shipping_total : 0, 'CLP', true) }}
                                                                             </td>
                                                                         </tr>
 
@@ -423,70 +433,71 @@ use App\Models\Product;
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                            @if($paymentData)
-                                                            <table
-                                                                class="force-width-80" style="margin: 0 auto;"
-                                                                cellspacing="0" cellpadding="0">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td
-                                                                            style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
-                                                                            <br /><br />
-                                                                            Método de pago seleccionado:
-                                                                            <br /><br />
-                                                                        </td>
-                                                                        <td
-                                                                            style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
-                                                                            <br /><br />
-                                                                            {{$paymentData['title']}}
-                                                                            <br /><br />
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td
-                                                                            style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
-                                                                            <br /><br />
-                                                                            Fecha de pago:
-                                                                            <br /><br />
-                                                                        </td>
-                                                                        <td
-                                                                            style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
-                                                                            <br /><br />
-                                                                            {{$paymentData['date']}}
-                                                                            <br /><br />
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td
-                                                                            style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
-                                                                            <br /><br />
-                                                                            Importe Total:
-                                                                            <br /><br />
-                                                                        </td>
-                                                                        <td
-                                                                            style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
-                                                                            <br /><br />
-                                                                            {{$paymentData['total']}}
-                                                                            <br /><br />
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
+                                                            @if ($paymentData)
+                                                                <table class="force-width-80" style="margin: 0 auto;"
+                                                                    cellspacing="0" cellpadding="0">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
+                                                                                <br /><br />
+                                                                                Método de pago seleccionado:
+                                                                                <br /><br />
+                                                                            </td>
+                                                                            <td
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
+                                                                                <br /><br />
+                                                                                {{ $paymentData['title'] }}
+                                                                                <br /><br />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
+                                                                                <br /><br />
+                                                                                Fecha de pago:
+                                                                                <br /><br />
+                                                                            </td>
+                                                                            <td
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
+                                                                                <br /><br />
+                                                                                {{ $paymentData['date'] }}
+                                                                                <br /><br />
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
+                                                                                <br /><br />
+                                                                                Importe Total:
+                                                                                <br /><br />
+                                                                            </td>
+                                                                            <td
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
+                                                                                <br /><br />
+                                                                                {{ $paymentData['total'] }}
+                                                                                <br /><br />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
                                                             @endif
-                                                            {{-- <table class="force-width-80" style="margin: 0 auto;"
-                                                                cellspacing="0" cellpadding="0">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td style="text-align: left; color: #933f24;">
-                                                                            <br />Thank you for your business. Please <a
-                                                                                style="color: #ffffff;" href="#">contact
-                                                                                us</a> with any questions regarding this
-                                                                            invoice. <br /><br />Awesome Inc
-                                                                            <br /><br /><br />
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table> --}}
+                                                            @if ($shippingMessage)
+                                                                <table class="force-width-80" style="margin: 0 auto;"
+                                                                    cellspacing="0" cellpadding="0">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td
+                                                                                style="text-align: left; color: #933f24;">
+
+                                                                                <br /><br /><br />
+                                                                                {{ $shippingMessage }}
+                                                                                <br /><br /><br />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            @endif
                                                         </center>
                                                     </td>
                                                 </tr>
@@ -502,13 +513,15 @@ use App\Models\Product;
                                                 {{-- <tr style="height: 28px;">
                                                     <td
                                                         style="color: #bbbbbb; font-size: 12px; height: 28px; width: 600px;">
-                                                        <a href="#">Ver en navegador</a><br /><br /></td>
+                                                        <a href="#">Ver en navegador</a><br /><br />
+                                                    </td>
                                                 </tr> --}}
                                                 <tr style="height: 28px;">
                                                     <td
                                                         style="color: #bbbbbb; font-size: 12px; height: 28px; width: 600px;">
                                                         &copy; 2020 Todos los derechos reservados -
-                                                        {{ config('app.name') }}<br /><br /></td>
+                                                        {{ config('app.name') }}<br /><br />
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

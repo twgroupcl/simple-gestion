@@ -25,6 +25,7 @@ class OrderUpdated extends Mailable
     public $communeInvoice;
     public $paymentData;
     public $title;
+    public $shippingMessage;
     /**
      * Create a new message instance.
      *
@@ -39,7 +40,8 @@ class OrderUpdated extends Mailable
         //
         if ($order) {
             $this->orderData['id'] = $order->id;
-            $this->orderData['fecha'] =  $order->created_at->format('d/m/Y H:i:s');
+            $this->orderData['fecha'] =  $order->created_at;
+            $this->orderData['uid'] =  $order->uid;
             $this->orderData['first_name'] =  $order->first_name;
             $this->orderData['last_name'] =  $order->last_name;
             $this->orderData['cellphone'] =  $order->cellphone;
@@ -84,12 +86,23 @@ class OrderUpdated extends Mailable
                     }
                 }
             } else {
-                if ($receiver == 1) {
+
+                if(count($order->order_payments)>0){
                     $this->paymentData['title'] = $order->order_payments->first()->method_title;
                     $this->paymentData['date'] = Carbon::createFromFormat('Y-m-d H:i:s', $order->order_payments->first()->created_at)->format('d/m/Y H:i:s');
-                    $this->paymentData['total'] =  currencyFormat($order->total ? $order->total : 0, 'CLP', true);
+                }else{
+                    $this->paymentData['title'] = 'Sin información';
+                    $this->paymentData['date'] = '';
+                }
+                $this->paymentData['total'] =  currencyFormat($order->total ? $order->total : 0, 'CLP', true);
+                if ($receiver == 1) {
+                    $this->title = '¡Tu orden está pagada!';
+                    // “Próximamente estaremos notificando la fecha de envío” cambiar por
+                    $this->shippingMessage = '“*Por evento Cyber las fechas de envío podrían variar, estaremos notificando la fecha de envío”';
+                }else{
+                    $this->title = '¡Nueva orden generada!';
 
-                    $this->title = '¡Tu orden está lista!';
+
                 }
                 // $this->orderItems = $order->order_items;
                 foreach ($order->order_items as $item) {

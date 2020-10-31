@@ -201,6 +201,19 @@ class Seller extends Model
         }
     }
 
+    public function getTransbankCodeAttribute()
+    {
+        if (!empty($this->payments_data)) {
+            $payment = json_decode($this->payments_data);
+
+            if(!empty($payment[0]->key)) {
+                return $payment[0]->key;
+            }
+        }
+
+        return '';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
@@ -209,9 +222,11 @@ class Seller extends Model
 
     public function setPasswordAttribute($value)
     {
-        $attribute_name = 'password';
-
-        $this->attributes[$attribute_name] = Hash::make($value);
+        if ($value && $value != "") {
+            $this->attributes['password'] = Hash::make(strtoupper(
+                str_replace('.', '', $value)
+            ));
+        }
     }
 
     public function setLogoAttribute($value)

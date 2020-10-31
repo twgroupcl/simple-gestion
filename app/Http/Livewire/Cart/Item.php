@@ -36,6 +36,18 @@ class Item extends Component
         'select-shipping-item' => 'addShippingItem',
     ];
 
+    protected $rules = [
+        'qty' => 'required|integer|gte:1|lte:9999',
+        'item.sub_total' => 'digits_between:1,16'
+    ];
+
+    protected $messages = [
+        'gte' => 'La cantidad mayor o igual a 1.',
+        'lte' => 'La cantidad supera el límite',
+        'qty.required' => 'Debe indicar una cantidad.',
+        'qty.integer' => 'Revise la cantidad.'
+    ];
+
     public function mount(CartItem $item, $view = 'cart.item')
     {
         $this->confirm = null;
@@ -43,10 +55,10 @@ class Item extends Component
         $this->product = $item->product;
         $this->view = $view;
         $this->qty = $this->item->qty;
-        $this->total = $this->item->product->price * $this->qty;
+        $this->total = $this->item->product->real_price * $this->qty;
         $this->communeSelected =  $this->item->cart->address_commune_id;
-
-        if ($this->showShipping) {
+        $product = $this->item->product;
+        if ($this->showShipping && !$product->is_service) {
             if ($this->communeSelected) {
                 $this->shippingMethods =  $this->getShippingMethods();
                 // if ($this->shippingMethods) {
@@ -63,28 +75,39 @@ class Item extends Component
 
     public function setQty($qty)
     {
+        $this->qty = $qty;
+
+        $this->validateOnly('qty');
+
         if (!$this->item->product->haveSufficientQuantity($qty)) {
             $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
             return;
         }
-        $this->qty = $qty;
         $this->item->qty = $qty;
-        $this->item->sub_total = $this->item->product->price * $qty;
-        $this->total = $this->item->product->price * $qty;
+
+        $this->item->sub_total = $this->item->product->real_price * $qty;
+        $this->validateOnly('item.sub_total');
+        $this->total = $this->item->product->real_price * $qty;
+
+        $validationStatus = $this->validateQtys();
+
+        if ($validationStatus->fails()) {
+            $this->emit('showToast', '¡Cuidado!', $validationStatus->errors()->first(), 3000, 'danger');
+            return;
+        }
+
         $this->item->update();
-        $this->emit('showToast', 'Cambió la cantidad', 'Has agregado más cantidad de un item al carro.', 3000, 'info');
+        $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
         $this->emitUp('change');
     }
 
     public function updateQty()
     {
+        $this->validateOnly('qty');
+
         $this->qty = $this->item->qty;
     }
 
-
-    public function updateSelected(){
-        dd('aca');
-    }
     public function deleteConfirm($id)
     {
         $this->confirm = $id;
@@ -92,6 +115,9 @@ class Item extends Component
 
     public function delete()
     {
+        if (! CartItem::exists($this->item->id)) {
+            return;
+        }
         $this->emit('showToast', 'Se ha eliminado del carro.', 'Se ha eliminado el producto del carro.', 3000, 'info');
         $this->item->delete();
         $this->emitUp('deleteItem');
@@ -223,7 +249,8 @@ class Item extends Component
 
     public function updatedSelected($value)
     {
-        if ($value>0) {
+
+        if ($value>-1 ) {
             $this->shippingSelected = $this->shippingMethods[$value];
         }
     }
@@ -246,5 +273,40 @@ class Item extends Component
         }
     }
 
+    private function validateQtys()
+    {
+        $itemToValidate = $this->item->toArray();
+        $validator = \Validator::make($itemToValidate, [
+            'qty' => [ function ($attribute, $value, $fail) use ($itemToValidate) {
+                $itemsQty = CartItem::whereCartId($itemToValidate['cart_id'])->get()->sum(function ($currentItem) use($itemToValidate, $value){
+                    if($currentItem->id != $itemToValidate['id']) {
+                        return $currentItem->qty;
+                    } else {
+
+                        return $value;
+                    }
+                });
+                if ($itemsQty > 9999) {
+                    $fail('Supera los límites de cantidad total de items.');
+                }
+            }],
+            'sub_total' => [ function ($attribute, $value, $fail) use ($itemToValidate) {
+                $cartSubtotal = CartItem::whereCartId($itemToValidate['cart_id'])->get()->sum(function ($currentItem) use($itemToValidate, $value){
+                    if($currentItem->id != $itemToValidate['id']) {
+                        return $currentItem->sub_total;
+                    } else {
+
+                        return $value;
+                    }
+                });
+                if ($cartSubtotal > 800000000000) {
+                    $fail('Se ha superado la cantidad del monto total');
+                }
+            }]
+        ]);
+
+
+        return $validator;
+    }
 
 }

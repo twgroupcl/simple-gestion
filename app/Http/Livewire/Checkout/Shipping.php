@@ -13,7 +13,9 @@ class Shipping extends Component
     public $cart;
     public $items;
     public $sellers;
-
+    protected $listeners = [
+        'deleteItem' => 'deleteItem'
+    ];
 
 
     public function mount()
@@ -42,6 +44,20 @@ class Shipping extends Component
             return null;
         }
 
+
+    }
+
+    public function deleteItem()
+    {
+        $this->change();
+
+    }
+
+
+    public function change()
+    {
+        $this->emit('cart.updateSubtotal',null);
+        $this->emitUp('updateTotals');
 
     }
 }
