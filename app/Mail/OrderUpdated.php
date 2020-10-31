@@ -41,6 +41,7 @@ class OrderUpdated extends Mailable
         if ($order) {
             $this->orderData['id'] = $order->id;
             $this->orderData['fecha'] =  $order->created_at;
+            $this->orderData['uid'] =  $order->uid;
             $this->orderData['first_name'] =  $order->first_name;
             $this->orderData['last_name'] =  $order->last_name;
             $this->orderData['cellphone'] =  $order->cellphone;
@@ -95,8 +96,8 @@ class OrderUpdated extends Mailable
                 }
                 $this->paymentData['total'] =  currencyFormat($order->total ? $order->total : 0, 'CLP', true);
                 if ($receiver == 1) {
-                    $this->title = '¡Tu orden está lista!';
-                    $this->shippingMessage = 'Próximamente estaremos notificando la fecha de envío';
+                    $this->title = '¡Tu orden está pagada!';
+                    $this->shippingMessage = '“Próximamente estaremos notificando la fecha de envío” cambiar por “*Por evento Cyber las fechas de envío podrían variar, estaremos notificando la fecha de envío”';
                 }else{
                     $this->title = '¡Nueva orden generada!';
 

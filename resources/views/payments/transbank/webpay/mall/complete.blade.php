@@ -134,7 +134,7 @@ if($addressInvoice){
                                                     <div class="media align-items-center">
 
                                                             <img width="15%"
-                                                                src="{{ asset( $product->getFirstImagePath()) }}"
+                                                                src="{{ asset( $product->getFirstImagePath()) }}" class="pr-3"
                                                                 >
                                                         <div class="media-body">
                                                             <h6 class="widget-product-title">
@@ -292,6 +292,10 @@ if($addressInvoice){
                                             @if(isset($addressInvoice) && !empty($addressInvoice->address_street) )
 
                                             <li class="woocommerce-customer-details--address d-flex">
+                                                <i class="czi-card opacity-60 mr-2 mt-1"></i>
+                                                  <div>RUT: {{$addressInvoice->uid }}
+                                            </li>
+                                            <li class="woocommerce-customer-details--address d-flex">
                                                 <i class="czi-user opacity-60 mr-2 mt-1"></i>
                                                   <div>{{$addressInvoice->first_name . ', ' . $addressInvoice->last_name }}
                                             </li>
@@ -308,6 +312,10 @@ if($addressInvoice){
                                                 <div>{{$addressInvoice->email}}</div>
                                             </li>
                                             @else
+                                            <li class="woocommerce-customer-details--address d-flex">
+                                                <i class="czi-card opacity-60 mr-2 mt-1"></i>
+                                                  <div>{{$order->uid }}
+                                            </li>
                                             <li class="woocommerce-customer-details--address d-flex">
                                                 <i class="czi-user opacity-60 mr-2 mt-1"></i>
                                                   <div>{{$order->first_name . ', ' . $order->last_name }}
@@ -333,6 +341,14 @@ if($addressInvoice){
                                         <h2 class="woocommerce-column__title h6">Dirección de envío</h2>
                                         @if(isset($addressShipping))
                                         <ul class="font-size-sm list-unstyled">
+                                            <li class="woocommerce-customer-details--address d-flex">
+                                                <i class="czi-card opacity-60 mr-2 mt-1"></i>
+                                                  <div>{{$order->uid }}
+                                            </li>
+                                            <li class="woocommerce-customer-details--address d-flex">
+                                                <i class="czi-user opacity-60 mr-2 mt-1"></i>
+                                                  <div>{{$order->first_name . ', ' . $order->last_name }}
+                                            </li>
                                             <li class="woocommerce-customer-details--address d-flex">
                                                 <i class="czi-location opacity-60 mr-2 mt-1"></i>
                                                 <div>{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }} @if($communeShipping){{ $communeShipping->name }}@endif</div>

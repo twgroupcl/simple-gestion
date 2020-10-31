@@ -167,9 +167,9 @@ if($addressInvoice){
     @foreach ($order->order_items as $item)
         @php
         $product = Product::where('id',$item->product_id)->first();
-        $subtotal += ($product->price * $item->qty);
+        $subtotal += ($item->price * $item->qty);
         $subtotalshipping += ($item->shipping_total  * $item->qty) ;
-        $total += ($product->price * $item->qty) + ($item->shipping_total  * $item->qty);
+        $total += ($item->price * $item->qty) + ($item->shipping_total  * $item->qty);
         @endphp
         <tr class="product-item">
             <td width="30%" class="product-item">
@@ -177,14 +177,14 @@ if($addressInvoice){
                 <img class="width-5" src="{{ public_path() . '/' . $product->getFirstImagePath() }}" width="15%">
             </td>
             <td width="40%" class="product-item">
-                <p><strong>Precio : </strong>{{ currencyFormat($product->price ? $product->price : 0, 'CLP', true) }}
+                <p><strong>Precio : </strong>{{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}
                 </p>
                 <p><strong>Cantidad : </strong>{{ $item->qty }}</p>
                 <p><strong>Costo de envío :</strong>
                     {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}</p>
             </td>
             <td width="30%" align="right" class="product-item">
-                <p> {{ currencyFormat((($product->price * $item->qty) + ($item->shipping_total  * $item->qty ))? (($product->price * $item->qty) + ($item->shipping_total   * $item->qty) ) : 0, 'CLP', true) }}
+                <p> {{ currencyFormat((($item->price * $item->qty) + ($item->shipping_total  * $item->qty ))? (($item->price * $item->qty) + ($item->shipping_total   * $item->qty) ) : 0, 'CLP', true) }}
                 </p>
             </td>
         </tr>

@@ -252,7 +252,7 @@ class WebpayPlusMallController extends Controller
             Mail::to($order->email)->send(new OrderUpdated($order, 1, null));
             //Order to seller
             foreach ($sellers as $seller) {
-                Mail::to($seller->email)->send(new OrderUpdated($order, 2, $seller));
+                Mail::to($seller->email)->cc('jorge.castro@twgroup.cl')->send(new OrderUpdated($order, 2, $seller));
             }
             //Order to admins
             $administrators = Setting::get('administrator_email');
