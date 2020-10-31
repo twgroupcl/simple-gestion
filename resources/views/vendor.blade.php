@@ -8,10 +8,10 @@
     <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
         <div class="media media-ie-fix align-items-center pb-3">
             @if($seller->logo)
-                <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{url($seller->logo)}}" alt="Createx Studio"></div>
+                <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{ url($seller->logo) }}" alt="Logo {{ $seller->visible_name }}"></div>
             @endif
             <div class="media-body pl-3">
-                <h3 class="text-light font-size-lg mb-0">{{$seller->visible_name}}</h3>
+                <h3 class="text-light font-size-lg mb-0">{{ $seller->visible_name }}</h3>
                 {{-- <span class="d-block text-light font-size-ms opacity-60 py-1">Member since November 2017</span>
                 <span class="badge badge-success"><i class="czi-check mr-1"></i>Available for freelance</span> --}}
             </div>
@@ -37,7 +37,7 @@
             <aside class="col-lg-4">
                 <div class="cz-sidebar-static h-100 border-right">
                     <h6>Categoría</h6>
-                    <p class="font-size-ms text-muted">{{$seller->seller_category->name}}</p>
+                    <p class="font-size-ms text-muted">{{ $seller->seller_category->name }}</p>
                     <h6>Acerca de la tienda</h6>
                     @if($seller->return_policy)
                         <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
@@ -72,10 +72,10 @@
             <!-- Content-->
             <section class="col-lg-8 pt-lg-4 pb-md-4">
                 <!-- Banner-->
-                @if($seller->logo)
+                @if($seller->banner)
                 <div class="py-sm-2">
                     <div class="d-sm-flex justify-content-between align-items-center overflow-hidden mb-4 rounded-lg">
-                        <img class="mw-75" src="{{url($seller->banner)}}" alt="Banner Tienda">
+                        <img class="mw-75" src="{{ url($seller->banner) }}" alt="Banner {{ $seller->visible_name }}">
                     </div>
                 </div>
                 @endif
@@ -89,8 +89,8 @@
                         </div>
                     </div>
                 -->
-                <div class="pt-2 px-4 pl-lg-0 pr-xl-5">                   
-                    <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-left border-bottom">Productos<span class="badge badge-secondary font-size-sm text-body align-middle ml-2">{{$countProduct}}</span></h2>
+                <div class="pt-2 px-4 pl-lg-0 pr-xl-5">
+                    <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-left border-bottom">Productos<span class="badge badge-secondary font-size-sm text-body align-middle ml-2">{{ $countProduct }}</span></h2>
                     <!-- Toolbar-->
                     <!--
                         <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">

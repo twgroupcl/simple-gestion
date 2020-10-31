@@ -134,7 +134,7 @@ class CustomerController extends Controller
         if (! $isAllowed) {
             return redirect()->back()->withErrors(['email' => 'Email no válido']);
         }
-
+//@todo: validar esto en los casos que falle o que no sea cliente
         Customer::firstWhere('email', $request->email)->update([
             'password' => $request->password,
         ]);
