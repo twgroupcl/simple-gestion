@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Products;
 
 use App\Models\Product;
 use Livewire\Component;
-use Barryvdh\Debugbar\Facade as Debugbar;
 
 class AddToCart extends Component
 {
