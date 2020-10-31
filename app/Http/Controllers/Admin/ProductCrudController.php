@@ -49,6 +49,8 @@ class ProductCrudController extends CrudController
 
         if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
             $this->admin = true;
+
+            $this->crud->enableExportButtons();
         }
 
         if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
@@ -79,7 +81,7 @@ class ProductCrudController extends CrudController
             'type' => 'text',
             ]);
 
-        
+
         if($this->admin) {
             CRUD::addColumn([
                 'name' => 'seller',
@@ -88,7 +90,7 @@ class ProductCrudController extends CrudController
                 'attribute' => 'visible_name',
             ]);
         }
-        
+
 
         CRUD::addColumn([
             'name' => 'name',
@@ -468,7 +470,7 @@ class ProductCrudController extends CrudController
                 'disabled' => true,
             ]
         ]);
-  
+
         CRUD::addField([
             'name' => 'is_template',
             'label' => 'Es una plantilla',
@@ -1106,7 +1108,7 @@ class ProductCrudController extends CrudController
             //null => 'Pendiente',
             0 => 'Rechazado',
             1 => 'Aprobado',
-          ], function($value) { 
+          ], function($value) {
             $this->crud->addClause('where', 'is_approved', $value);
           });
 
@@ -1118,12 +1120,12 @@ class ProductCrudController extends CrudController
             //null => 'Pendiente',
             1 => 'Simple',
             2 => 'Configurable',
-          ], function($value) { 
+          ], function($value) {
             $this->crud->addClause('where', 'product_type_id', $value);
           });
 
-        
-          
-        
+
+
+
     }
 }
