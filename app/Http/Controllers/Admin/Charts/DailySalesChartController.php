@@ -35,13 +35,13 @@ class DailySalesChartController extends ChartController
      */
     public function data()
     {
-        $sales['today'] = Order::search()->whereDate('created_at', today()->subDays(6))->count();
-        $sales['yesterday'] = Order::search()->whereDate('created_at', today()->subDays(5))->count();
-        $sales['2_days_ago'] = Order::search()->whereDate('created_at', today()->subDays(4))->count();
-        $sales['3_days_ago'] = Order::search()->whereDate('created_at', today()->subDays(3))->count();
-        $sales['4_days_ago'] = Order::search()->whereDate('created_at', today()->subDays(2))->count();
-        $sales['5_days_ago'] = Order::search()->whereDate('created_at', today()->subDays(1))->count();
-        $sales['6_days_ago'] = Order::search()->whereDate('created_at', today())->count();
+        $sales['today'] = Order::search()->sold()->whereDate('created_at', today()->subDays(6))->count();
+        $sales['yesterday'] = Order::search()->sold()->whereDate('created_at', today()->subDays(5))->count();
+        $sales['2_days_ago'] = Order::search()->sold()->whereDate('created_at', today()->subDays(4))->count();
+        $sales['3_days_ago'] = Order::search()->sold()->whereDate('created_at', today()->subDays(3))->count();
+        $sales['4_days_ago'] = Order::search()->sold()->whereDate('created_at', today()->subDays(2))->count();
+        $sales['5_days_ago'] = Order::search()->sold()->whereDate('created_at', today()->subDays(1))->count();
+        $sales['6_days_ago'] = Order::search()->sold()->whereDate('created_at', today())->count();
 
         $this->chart->dataset('Ventas por día', 'bar',
             array_values($sales)
