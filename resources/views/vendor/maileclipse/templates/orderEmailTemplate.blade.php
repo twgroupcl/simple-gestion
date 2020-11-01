@@ -205,14 +205,14 @@ use App\Models\Product;
                                                                 <tr>
                                                                     <td width="50%">
                                                                         @if ($addressShipping)
-                                                                            <div class="direccion-facturacion-titulo">
+                                                                            <div class="direccion-envio-titulo">
                                                                                 <p><strong>Dirección de envío</strong>
                                                                                 </p>
                                                                             </div>
                                                                             <p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                RUT: {{ $orderData['uid']  }}
+                                                                                RUT: {{ $orderData['uid'] }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
@@ -220,7 +220,7 @@ use App\Models\Product;
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $addressShipping->address_street . ' ' . $addressShipping->address_number .' ' . $addressShipping->address_office }}
+                                                                                {{ $addressShipping->address_street . ' ' . $addressShipping->address_number . ' ' . $addressShipping->address_office }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
@@ -229,6 +229,10 @@ use App\Models\Product;
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
                                                                                 Teléfono: {{ $orderData['cellphone'] }}
+                                                                            </p>
+                                                                            <p
+                                                                                style="margin-left: 10px;text-align: left">
+                                                                                {{ $orderData['email'] }}
                                                                             </p>
                                                                             </p>
                                                                         @endif
@@ -240,9 +244,9 @@ use App\Models\Product;
                                                                                     </strong></p>
                                                                             </div>
                                                                             <p>
-                                                                                <p
+                                                                            <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                RUT:  {{ $addressInvoice->uid}}
+                                                                                RUT: {{ $addressInvoice->uid }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
@@ -250,7 +254,7 @@ use App\Models\Product;
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
-                                                                                {{ $addressInvoice->address_street . ' ' . $addressInvoice->address_number.' ' . $addressInvoice->address_office }}
+                                                                                {{ $addressInvoice->address_street . ' ' . $addressInvoice->address_number . ' ' . $addressInvoice->address_office }}
                                                                             </p>
                                                                             <p
                                                                                 style="margin-left: 10px;text-align: left">
@@ -262,6 +266,11 @@ use App\Models\Product;
                                                                                 style="margin-left: 10px;text-align: left">
                                                                                 Teléfono:
                                                                                 {{ $addressInvoice->cellphone }}
+                                                                            </p>
+                                                                            <p
+                                                                                style="margin-left: 10px;text-align: left">
+
+                                                                                {{ $addressInvoice->email }}
                                                                             </p>
                                                                             </p>
                                                                         @endif
@@ -362,6 +371,10 @@ use App\Models\Product;
                                                                         <tr>
                                                                             <td class="mobile-block"
                                                                                 style="word-wrap: break-word;">
+                                                                                <span
+                                                                                style="font-size: 12px; word-wrap: break-word;">
+                                                                                {{ $product->seller->name }}</span>
+                                                                                <br>
                                                                                 <img src="{{ asset($product->getFirstImagePath()) }}"
                                                                                     width="15%"> <br />
                                                                                 <span
@@ -376,11 +389,18 @@ use App\Models\Product;
                                                                                 {{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}
                                                                             </td>
                                                                             <td class="mobile-block"
-                                                                                style="text-align: right">
-                                                                                {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}
-                                                                                <br>
-                                                                                @if ($item->shipping_method)
-                                                                                    ({{ $item->shipping_method->title }})
+                                                                                style="text-align: center; font-size: 0.8em">
+                                                                                @if ($item->shipping_total == 0)
+                                                                                    <br>
+                                                                                    @if ($item->shipping_method)
+                                                                                        ({{ $item->shipping_method->title }})
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if ($item->shipping_method)
+                                                                                        ({{ $item->shipping_method->title }})
+                                                                                    @endif
+                                                                                    {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}
                                                                                 @endif
 
                                                                             </td>
@@ -415,6 +435,7 @@ use App\Models\Product;
                                                                             {{ currencyFormat($subtotal ? $subtotal : 0, 'CLP', true) }}
                                                                         </td>
                                                                     </tr>
+                                                                    @if($totalshipping > 0)
                                                                     <tr>
                                                                         <td colspan="4" style="text-align: right">
                                                                             <strong>Envío</strong>
@@ -423,6 +444,7 @@ use App\Models\Product;
                                                                             {{ currencyFormat($totalshipping ? $totalshipping : 0, 'CLP', true) }}
                                                                         </td>
                                                                     </tr>
+                                                                    @endif
                                                                     <tr>
                                                                         <td colspan="4" style="text-align: right">
                                                                             <strong>Total</strong>
