@@ -9,13 +9,45 @@
                 {{-- <h6 class="widget-product-title"><a href="{{ $product->url_key ? route('product',['slug' => $product->url_key]) : '#' }}" @if(strlen($product->name) > 80) data-toggle="tooltip" data-placement="top" title="{{ $product->name }}" @endif>{{ substr($product->name, 0, 80) }} @if(strlen($product->name) > 80) ... @endif</a></h6> --}}
                 <div class="widget-product-meta">
                     @if ($product->children()->count())
-                    <div class="product-price">
-                        <span class="text-accent">
-                            {{currencyFormat($product->getPriceRange()[0], defaultCurrency(), true)}} - {{currencyFormat($product->getPriceRange()[1], defaultCurrency(), true)}}
-                        </span>
-                    </div>
+                        @if ($product->has_special_price)
+                        <div class="product-price">
+                            @if ($product->getRealPriceRange()[0] == $product->getRealPriceRange()[1])
+                                <span class="text-accent">
+                                    {{ currencyFormat($product->getRealPriceRange()[0], defaultCurrency(), true) }}
+                                </span>
+                                <del class="font-size-xs text-muted"><small>
+                                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
+                                </small></del>
+                            @else
+                                <span class="text-accent">  
+                                    {{ currencyFormat($product->getRealPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getRealPriceRange()[1], defaultCurrency(), true) }}
+                                </span>
+                                <del class="font-size-xs text-muted"><small>
+                                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                                </small></del>
+                             @endif
+                        </div>
+                        @else 
+                            <div class="product-price">
+                                <span class="text-accent">
+                                    @if ($product->getPriceRange()[0] == $product->getPriceRange()[1])
+                                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
+                                    @else
+                                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                                    @endif
+                                </span>
+                            </div> 
+                        @endif
+                    
                     @else
-                    <div class="product-price"><span class="text-accent">{{ currencyFormat($product->price, defaultCurrency(), true) }}</span></div>
+                        @if ($product->has_special_price)
+                            <div class="product-price">
+                                <span class="text-accent">{{ currencyFormat($product->real_price, defaultCurrency(), true) }}</span>
+                                <del class="text-muted font-size-xs">{{currencyFormat($product->price, defaultCurrency(), true) }}</del>
+                            </div>
+                        @else
+                            <div class="product-price"><span class="text-accent">{{ currencyFormat($product->price, defaultCurrency(), true) }}</span></div>
+                        @endif
                     @endif
                 </div>
             </div>
