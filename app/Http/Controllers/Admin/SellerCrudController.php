@@ -558,13 +558,6 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'description',
-            'type'  => 'textarea',
-            'label' => 'Descripción de la Tienda',
-            'tab' => 'SEO',
-        ]);
-
-        CRUD::addField([
             'name' => 'logo',
             'type' => 'image',
             'label' => 'Logo',
@@ -583,6 +576,13 @@ class SellerCrudController extends CrudController
             'wrapper' => [
                 'class' => 'form-group col-md-12'
             ],
+            'tab' => 'SEO',
+        ]);
+
+        CRUD::addField([
+            'name' => 'description',
+            'type'  => 'textarea',
+            'label' => 'Información de la tienda',
             'tab' => 'SEO',
         ]);
 

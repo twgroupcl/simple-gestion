@@ -39,7 +39,7 @@
                     <h6>Categoría</h6>
                     <p class="font-size-ms text-muted">{{ $seller->seller_category->name }}</p>
                     @if($seller->description)
-                        <h6>Acerca de la tienda</h6>
+                        <h6>Información</h6>
                         <p>{{$seller->description}}</p>
                     @endif
                     @if($seller->privacy_policy)
