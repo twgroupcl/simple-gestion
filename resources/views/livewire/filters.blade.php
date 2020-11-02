@@ -80,17 +80,17 @@
                         <div class="w-50 pr-2 mr-2">
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                                <input class="form-control cz-range-slider-value-min" wire:model.defer="min_price" type="text" placeholder="Mínimo">
+                                <input class="form-control cz-range-slider-value-min" wire:model="filterOptions.price.min" type="text" placeholder="Mínimo">
                             </div>
                         </div>
                         <div class="w-50 pl-2">
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                                <input class="form-control cz-range-slider-value-max" wire:model.defer="max_price" type="text" placeholder="Máximo">
+                                <input class="form-control cz-range-slider-value-max" wire:model="filterOptions.price.max" type="text" placeholder="Máximo">
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-shadow" wire:click="search">Buscar</button>
+                    <button class="btn btn-primary btn-shadow" wire:click="filter">Buscar</button>
                 </div>
             </div>
             <!-- Filter by Brand-->
@@ -119,22 +119,24 @@
                 <h3 class="widget-title">{{$attribute->getNameAttribute()}}</h3>
                 <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
                     
-                    @foreach($product_attributes as $value)           
+                    @foreach($product_attributes as $key => $value)           
                     
                         <li class="cz-filter-item d-flex justify-content-between align-items-center">
                             <div class="custom-control custom-checkbox">
                                 <input 
-                                    onChange="this.form.submit()" 
+                                    {{-- onChange="this.form.submit()" --}} 
+                                    wire:change="filter"
                                     class="custom-control-input" 
-                                    name="ca-{{ $value->product_class_attribute_id }}" 
+                                    name="ca-{{ $value->product_class_attribute_id }}[]" 
                                     type="checkbox" 
                                     id="${{ $value->id }}"
                                     value="{{$value->json_value}}"
-                                    @php
+                                    wire:model="filterOptions.attributes.{{ $value->product_class_attribute_id }}.{{ $key }}"
+                                    {{-- @php
                                         if ( request('ca-' . $value->product_class_attribute_id) == $value->json_value) {
                                             echo 'checked';
                                         }
-                                    @endphp>
+                                    @endphp --}}>
                                 <label class="custom-control-label cz-filter-item-text" for="${{ $value->id }}">{{$value->json_value}}</label>
                             {{-- </div><span class="font-size-xs text-muted">0</span> --}}
                         </li>

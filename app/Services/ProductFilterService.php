@@ -5,21 +5,24 @@ namespace App\Services;
 use App\Models\Product;
 
 class ProductFilterService {
-    
+
     public function filterByParams($baseQuery, $data) 
     {
+
+        if (!$data) return $baseQuery;
+
         $query = $baseQuery;
-        $customAttributes = [];
+        
 
         // Extract attributes of the request
-        foreach($data->all() as $param => $value) {
+        /* foreach($data->all() as $param => $value) {
             // If the param start with "ca-" then is an attribute
             $isAttr = substr($param, 0, 3) == 'ca-';
             if ($isAttr) {
                 // The attribute is store as ID => attribute_values
                 $customAttributes[str_replace('ca-', '', $param)] = $value;
             }
-        }
+        } */
 
     
         // Brand Filter
@@ -41,63 +44,79 @@ class ProductFilterService {
 
          // Price filter
          if ( isset($data['price']) ) {
-            $priceRange = explode(',', $data['price']);
+            $priceRange = $data['price'];
 
-            $queryForSimple = $queryForSimple->where('price', '<', $priceRange[1]);
-            $queryForSimple = $queryForSimple->where('price', '>', $priceRange[0]);
+            if ($priceRange['max']) $queryForSimple->where('price', '<=', $priceRange['max']);
+            if ($priceRange['min']) $queryForSimple->where('price', '>=', $priceRange['min']);
+            //dd($priceRange, $queryForSimple->get());
         }
 
+        if (isset($data['attributes'])) {
+            $customAttributes = $this->sanitizeAttributesOptions($data['attributes']);
+            //dd($customAttributes);
+        } else {
+            $customAttributes = [];
+        }
 
-        // Attributes filter for Simple products
-        foreach($customAttributes as $id => $values) {
-            $values_array = explode('|', $values);
-            $queryForSimple = $queryForSimple->whereHas('custom_attributes', function($q) use ($id, $values_array) {
+            // Attributes filter for Simple products
+            foreach ($customAttributes as $id => $values) {
+                $values_array = $values;
+                $queryForSimple = $queryForSimple->whereHas('custom_attributes', function ($q) use ($id, $values_array) {
 
                 // Main where
-                $q->where(function ($q2) use ($id, $values_array) {  
+                    $q->where(function ($q2) use ($id, $values_array) {
  
                     // Add an orWhere for every value of an attribute
-                    foreach($values_array as $value) {
-                        $q2->orWhere(function ($q3) use ($id, $value) {
-                            $q3->where([ 
-                                'product_class_attribute_id' => $id,
-                                'json_value' => $value,
-                            ]);
-                        });
-                    }
-                });
-            });
-        }
-
-
-        // Attributes filter for Configurable products
-        $queryForConfigurable->whereHas('children', function($query) use ($customAttributes) {
-            foreach ($customAttributes as $id => $values) {
-                $values_array = explode('|', $values);
-                $query->whereHas('custom_attributes', function ($q) use ($id, $values_array) {
-
-                    // Main where
-                    $q->where(function ($q2) use ($id, $values_array) {
-
-                        // Add an orWhere for every value of an attribute
                         foreach ($values_array as $value) {
                             $q2->orWhere(function ($q3) use ($id, $value) {
                                 $q3->where([
-                                            'product_class_attribute_id' => $id,
-                                            'json_value' => $value,
-                                ]);
+                                'product_class_attribute_id' => $id,
+                                'json_value' => $value,
+                            ]);
                             });
                         }
                     });
                 });
             }
-        });     
 
+
+            // Attributes filter for Configurable products
+            $queryForConfigurable->whereHas('children', function ($query) use ($customAttributes) {
+                foreach ($customAttributes as $id => $values) {
+                    $values_array = $values;
+                    $query->whereHas('custom_attributes', function ($q) use ($id, $values_array) {
+
+                    // Main where
+                        $q->where(function ($q2) use ($id, $values_array) {
+
+                        // Add an orWhere for every value of an attribute
+                            foreach ($values_array as $value) {
+                                $q2->orWhere(function ($q3) use ($id, $value) {
+                                    $q3->where([
+                                            'product_class_attribute_id' => $id,
+                                            'json_value' => $value,
+                                ]);
+                                });
+                            }
+                        });
+                    });
+                }
+            });
 
         // Combine results of configurable and simple products
+       // dd($queryForSimple->get(), $queryForConfigurable->get());
         $queryForSimple->union($queryForConfigurable);
-
         return $queryForSimple;
+    }
+
+    public function sanitizeAttributesOptions($attributes)
+    {
+        foreach($attributes as $key => &$attribute) {
+            $attribute = array_filter($attribute);
+            if ( empty($attribute) ) unset($attributes[$key]);
+        }
+
+        return $attributes;
     }
 }
 

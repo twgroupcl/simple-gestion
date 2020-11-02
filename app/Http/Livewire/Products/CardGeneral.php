@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use App\Models\ProductCategory;
 use App\Services\ProductFilterService;
 use App\Models\Product as ModelsProduct;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 class CardGeneral extends Component
 {
@@ -21,6 +22,13 @@ class CardGeneral extends Component
     public $showFrom = '';
     public $sortingField = null;
     public $sortingDirection = null;
+    public $render = null;
+
+    public $filters = null;
+
+    protected $listeners = [
+        'shop-grid.filter' => 'filterProducts'
+    ];
 
     public function render()
     {
@@ -55,6 +63,14 @@ class CardGeneral extends Component
         $this->showPaginate = $showPaginate;
         $this->showFrom = $showFrom;
         $this->valuesQuery = $valuesQuery;
+    }
+
+    public function filterProducts($data)
+    {
+        Debugbar::log('working', $data);
+        //$this->render['products'] = $this->getProductsFilter();
+        $this->filters = $data;
+        $this->render();
     }
 
     public function getProducts()
@@ -125,7 +141,7 @@ class CardGeneral extends Component
             });
 
         $filterService = new ProductFilterService();
-        $filterQuery = $filterService->filterByParams($baseQuery, request());
+        $filterQuery = $filterService->filterByParams($baseQuery, $this->filters);
 
         return $filterQuery->paginate($this->paginateBy);
     }

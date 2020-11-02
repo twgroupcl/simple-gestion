@@ -16,6 +16,7 @@ class Filters extends Component
     public $attributes;
     public $min_price;
     public $max_price;
+    public $filterOptions = []; 
     
     public function render()
     {
@@ -29,12 +30,8 @@ class Filters extends Component
         $this->loadAttributes();
     }
 
-    public function search(){
-        //$client = new Client();
-        //$response = $client ->request('GET',url('filter-products'));
-
-        $price = $this->min_price . ',' . $this->max_price;
-        //return redirect()->to('/filter-products?price='.$price);
+    public function filter() {
+        $this->emit('shop-grid.filter', $this->filterOptions);
     }
 
     public function loadBrands() 
