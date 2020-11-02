@@ -58,10 +58,15 @@ Route::group([
     Route::get('quotation/{id}/export', 'QuotationCrudController@exportPDF');
     Route::post('quotation/addresses', 'QuotationCrudController@addresses');
 
+
+    Route::get('reports', 'ReportController@dashboard');
+
     //CHART routes
     Route::get('charts/daily-sales', 'Charts\DailySalesChartController@response')->name('charts.daily-sales.index');
     Route::get('charts/most-purchased-product-categories', 'Charts\MostPurchasedProductCategoriesChartController@response')->name('charts.most-purchased-product-categories.index');
     Route::get('charts/most-purchased-products', 'Charts\MostPurchasedProductsChartController@response')->name('charts.most-purchased-products.index');
+    //report charts
+    Route::get('charts/number-sellers-approved', 'Charts\NumberSellersApprovedChartController@response')->name('charts.number-sellers-approved.index');
 
      // API routes
      Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
@@ -70,5 +75,5 @@ Route::group([
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::get('charts/number-seller-approved', 'Charts\NumberSellerApprovedChartController@response')->name('charts.number-seller-approved.index');
 }); // this should be the absolute last line of this file
-
