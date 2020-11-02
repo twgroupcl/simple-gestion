@@ -107,28 +107,43 @@
                     @endforeach
                 </ul>
             </div>
+            <!-- Filter by attributes -->
+            <form action="">
             @foreach($attributes as $attribute)
-                <b>{{$attribute->getNameAttribute()}}</b>
-                <br>
-                @php
-                    $product_attributes = $attribute->product_attributes->unique("json_value");
-                    $product_attributes = $product_attributes->where('json_value','<>', '* No aplica');
-                   // dd($product_attributes);
-                @endphp
+            @php
+                $product_attributes = $attribute->product_attributes->unique("json_value");
+                $product_attributes = $product_attributes->where('json_value','<>', '* No aplica');
+            @endphp
+
+            <div class="widget cz-filter mb-4 pb-4 border-bottom">
+                <h3 class="widget-title">{{$attribute->getNameAttribute()}}</h3>
                 <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
-                    @foreach($product_attributes as $value)
-                        <li class="cz-filter-item d-flex justify-content-between align-items-center mb-1">
+                    
+                    @foreach($product_attributes as $value)           
+                    
+                        <li class="cz-filter-item d-flex justify-content-between align-items-center">
                             <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="size-xs">
-                                <label class="custom-control-label cz-filter-item-text" for="size-xs">{{$value->json_value}}</label>
-                            </div>
-                            <!--
-                                <span class="font-size-xs text-muted">34</span>
-                            -->
+                                <input 
+                                    onChange="this.form.submit()" 
+                                    class="custom-control-input" 
+                                    name="ca-{{ $value->product_class_attribute_id }}" 
+                                    type="checkbox" 
+                                    id="${{ $value->id }}"
+                                    value="{{$value->json_value}}"
+                                    @php
+                                        if ( request('ca-' . $value->product_class_attribute_id) == $value->json_value) {
+                                            echo 'checked';
+                                        }
+                                    @endphp>
+                                <label class="custom-control-label cz-filter-item-text" for="${{ $value->id }}">{{$value->json_value}}</label>
+                            {{-- </div><span class="font-size-xs text-muted">0</span> --}}
                         </li>
                     @endforeach
-                </ul>    
+                
+                </ul>
+            </div>
             @endforeach
+            </form>
             <!-- Filter by Size-->
             <!--
                 <div class="widget cz-filter mb-4 pb-4 border-bottom">

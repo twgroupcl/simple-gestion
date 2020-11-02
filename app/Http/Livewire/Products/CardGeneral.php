@@ -4,8 +4,9 @@ namespace App\Http\Livewire\Products;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Product as ModelsProduct;
 use App\Models\ProductCategory;
+use App\Services\ProductFilterService;
+use App\Models\Product as ModelsProduct;
 
 class CardGeneral extends Component
 {
@@ -87,7 +88,7 @@ class CardGeneral extends Component
         $this->sortingField = request('field') ?? $this->sortingField ?? 'created_at';
         $this->sortingDirection = request('direction') ?? $this->sortingDirection ?? 'DESC';
 
-        return ModelsProduct::where('status', '=', '1')
+        $baseQuery =  ModelsProduct::where('status', '=', '1')
             ->where('parent_id', '=', null)
             ->where('is_approved', '=', '1')
             ->with('categories')
@@ -121,7 +122,11 @@ class CardGeneral extends Component
                 }
 
                 return $query;
-            })
-            ->paginate($this->paginateBy);
+            });
+
+        $filterService = new ProductFilterService();
+        $filterQuery = $filterService->filterByParams($baseQuery, request());
+
+        return $filterQuery->paginate($this->paginateBy);
     }
 }
