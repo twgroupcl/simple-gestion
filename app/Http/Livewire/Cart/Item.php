@@ -149,7 +149,9 @@ class Item extends Component
             $itemshipping = null;
             if ($shippingmethod->code == 'chilexpress') {
                 $chilexpress = new Chilexpress();
+
                 $result = $chilexpress->calculateItem($this->item, $this->communeSelected);
+
                 $itemshipping['id'] = $shippingmethod->id;
                 $itemshipping['name'] = $shippingmethod->title;
                 if ($result['is_available']) {

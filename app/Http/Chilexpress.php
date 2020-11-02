@@ -360,7 +360,7 @@ class Chilexpress
 
 
             $result['is_available'] = false;
-            $result['message'] =  'El metodo de envio Chilexpress no esta disponible desde la comuna del vendedor';
+            $result['message'] =  'El método de envio Chilexpress no esta disponible desde la comuna del vendedor';
             return $result;
         }
 
@@ -442,7 +442,7 @@ class Chilexpress
             } else {
                 return [
                     'is_available' => false,
-                    'message' => 'El metodo de envio Chilexpress no tiene opciones de envio para la comuna de destino'
+                    'message' => 'El método de envio Chilexpress no tiene opciones de envio para la comuna de destino'
                 ];
             }
         }
