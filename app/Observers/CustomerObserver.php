@@ -12,6 +12,8 @@ use App\Models\CustomerAddress;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Backpack\Settings\app\Models\Setting;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class CustomerObserver
 {
@@ -54,6 +56,7 @@ class CustomerObserver
     public function created(Customer $customer)
     {
         $this->syncAddresses($customer);
+        $this->sendWelcomeMail($customer);
     }
 
     public function updated(Customer $customer)
@@ -81,15 +84,39 @@ class CustomerObserver
             return new CustomerAddress($address);
         });
 
-        $cart = Cart::whereCustomerId($customer->id)->first();
+        if (CustomerAddress::whereCustomerId($customer->id)->count() > 0) {
+            $cart = Cart::whereCustomerId($customer->id)->first();
 
-        if($cart && !$cart->issetAddress()) {
-            $cart->setAddress($addresses->first());
-            $cart->update();
+            if($cart && !$cart->issetAddress()) {
+                $cart->setAddress($addresses->first());
+                $cart->update();
+            }
         }
 
         $customer->addresses()->saveMany(
             $addresses
         );
+    }
+
+    public function sendWelcomeMail(Customer $customer)
+    {
+        try {
+            $data = [
+                'logo' => asset('img/logo-pyme.png'),
+                'title' => 'Te damos la bienvenida '.$customer->first_name,
+                'text' => 'Explora la cantidad de productos que tenemos para ti.',
+                'rejectedText' => '',
+                'buttonText' => 'Quiero comprar',
+                'buttonLink' => route('index')
+            ];
+
+            Mail::send('vendor.maileclipse.templates.welcomeCustomer', $data, function ($message) use ($customer) {
+                $message->to($customer->email);
+                $message->subject('Bienvenido a Contigo Pyme');
+            });
+
+        } catch (Throwable $th) {
+            logger($th->getMessage());
+        }
     }
 }

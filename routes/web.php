@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Frontend\HomeController@index')->name('index');
 
-Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer.sign');
+Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer.sign')->middleware(['guest']);
 Route::post('/customer/register', 'Frontend\CustomerController@store')->name('customer.frontend.store');
 Route::post('/customer/login', 'Frontend\CustomerController@authenticate')->name('customer.frontend.login');
 Route::post('/customer/logout', 'Frontend\CustomerController@logout')->name('logout');
 Route::get('/customer/forget', 'Frontend\CustomerController@forget')->middleware(['guest'])->name('customer.forget');
-Route::post('/customer/recovery', 'Frontend\CustomerController@recovery')->name('customer.frontend.recovery');
+Route::post('/customer/forget', 'Frontend\CustomerController@recovery')->name('customer.frontend.recovery');
 Route::post('/customer/reset', 'Frontend\CustomerController@updatePassword')->name('password.update');
 Route::get('/customer/reset/{token}', 'Frontend\CustomerController@reset')->name('password.reset');
 Route::get('/customer/exit', 'Frontend\CustomerController@logout')->name('exit');
@@ -90,24 +90,3 @@ Route::group([
 // Route::get('complete', function(){
 //     return view('payments.transbank.webpay.mall.complete');
 // });
-
-/** Temporal routes */
-Route::get('reset-passwords', function () {
-    Seller::all()->each(function ($seller) {
-        try {
-            $rut = strtoupper(
-                str_replace('.', '', $seller->uid)
-            );
-
-            $seller->update([
-                'uid' => $rut,
-                'password' => $rut,
-            ]);
-
-        } catch (\Throwable $th) {
-            logger($th->getMessage(), ['seller' => $seller]);
-        }
-    });
-
-    dd('Sellers uid and password have been updated');
-});

@@ -25,6 +25,8 @@ class Details extends Component
         'data.address_commune_id' => 'required',
         'data.email' => 'required|email',
         'data.cellphone' => 'required',
+        'data.receiver_name' => 'max:255',
+        'data.shipping_details' => 'max:500'
     ];
 
 
@@ -33,6 +35,8 @@ class Details extends Component
         'email' => 'Revise la dirección de email',
         'exists' => 'Cuidado, ha ingresado un valor no válido',
         'min' => 'El mínimo es de 3 caracteres.',
+        'numeric' => 'El valor ingresado no es numérico.',
+        'max' => 'El máximo es de :max caracteres.',
 
     ];
 

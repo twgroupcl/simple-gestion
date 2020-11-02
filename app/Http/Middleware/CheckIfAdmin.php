@@ -23,6 +23,11 @@ class CheckIfAdmin
     private function checkIfUserIsAdmin($user)
     {
         // return ($user->is_admin == 1);
+
+        if($user->hasRole('Cliente Marketplace')) {
+            return false;
+        }
+
         return true;
     }
 

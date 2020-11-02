@@ -47,6 +47,8 @@ class SellerCrudController extends CrudController
 
         if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
             $this->admin = true;
+
+            $this->crud->enableExportButtons();
         }
 
         if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
@@ -68,10 +70,6 @@ class SellerCrudController extends CrudController
     protected function setupListOperation()
     {
         //CRUD::setFromDb(); // columns
-        if ($this->userSeller) {
-            $this->crud->addClause('where', 'id', '=', $this->userSeller->id);
-        }
-
         if (!$this->admin) {
             $value = $this->userSeller->id;
 
@@ -125,6 +123,12 @@ class SellerCrudController extends CrudController
                     return 'badge badge-default';
                 },
             ],
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'transbank_code',
+            'type' => 'text',
+            'label' => 'Webpay',
         ]);
 
         CRUD::addColumn([

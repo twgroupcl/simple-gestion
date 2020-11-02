@@ -12,12 +12,12 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('settings')->delete();
-        
+
         \DB::table('settings')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'key' => 'default_company',
@@ -29,7 +29,7 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'key' => 'default_branch',
@@ -41,7 +41,7 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'key' => 'customer_create_user',
@@ -53,7 +53,7 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => '2020-10-21 12:25:59',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'key' => 'seller_create_user',
@@ -65,7 +65,7 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'key' => 'default_currency',
@@ -77,7 +77,7 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'key' => 'default_seller_role',
@@ -89,7 +89,7 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'key' => 'default_customer_segment',
@@ -101,7 +101,7 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
                 'key' => 'default_customer_role',
@@ -113,8 +113,20 @@ class SettingsTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
+            8 =>
+            array (
+                'id' => 9,
+                'key' => 'administrator_email',
+                'name' => 'Email administración',
+                'description' => NULL,
+                'value' => 'agrado@crcpvalpo.cl;jorge.castro@twgroup.cl;ccarrasco@crcpvalpo.cl',
+                'field' => '{"label" : "Valor", "name" : "value", "type" : "text"}',
+                'active' => 1,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
         ));
-        
-        
+
+
     }
 }

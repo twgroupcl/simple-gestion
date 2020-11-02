@@ -13,7 +13,14 @@
             {{ $error }}
         </div>
         @endif
-
+        @if (session('success'))
+        <div class="alert alert-success alert-with-icon" role="alert">
+            <div class="alert-icon-box">
+                <i class="alert-icon czi-check-circle"></i>
+            </div>
+            {{ session('success') }}
+        </div>
+        @endif
         @if (isset($success))
         <div class="alert alert-success alert-with-icon" role="alert">
             <div class="alert-icon-box">

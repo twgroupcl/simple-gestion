@@ -23,29 +23,28 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-       
+
         <!-- Content  -->
         <section class="col-lg-12">
             <!-- Toolbar-->
-            <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5 mt-4">
-                <!--
+            <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
                 <div class="d-flex flex-wrap">
                     <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
                         <label class="text-light opacity-75 text-nowrap mr-2 d-none d-sm-block" for="sorting">Ordenar por:</label>
                         <select class="form-control custom-select" id="sorting">
-                            <option>Popularity</option>
-                            <option>Low - Hight Price</option>
-                            <option>High - Low Price</option>
-                            <option>Average Rating</option>
-                            <option>A - Z Order</option>
-                            <option>Z - A Order</option>
+                            {{-- <option>Popularity</option> --}}
+                            {{-- <option>Average Rating</option> --}}
+                            <option data-direction="DESC" data-field="created_at" value="1">Más nuevo</option>
+                            {{-- <option data-direction="ASC" data-field="price" value="2">Precio Menor - Mayor</option> --}}
+                            {{-- <option data-direction="DESC" data-field="price" value="3">Precio Mayor - Menor</option> --}}
+                            <option data-direction="ASC" data-field="name" value="4">Ordenar A - Z</option>
+                            <option data-direction="DESC" data-field="name" value="5">Ordenar Z - A</option>
                         </select>
-                        <span class="font-size-sm text-light opacity-75 text-nowrap ml-2 d-none d-md-block">of 287 products</span>
-                    </div>
+                        {{--  <span class="font-size-sm text-light opacity-75 text-nowrap ml-2 d-none d-md-block">of 287 products</span> --}}
+               </div>
                 </div>
-                <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div>
-            -->
-                <div class="d-none d-sm-flex pb-3">
+             {{--   <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div> --}}
+             <div class="d-none d-sm-flex pb-3">
                     <a class="btn btn-icon nav-link-style bg-light text-dark disabled opacity-100 mr-2" href="#"><i class="czi-view-grid"></i></a>
                     <!--
                         <a class="btn btn-icon nav-link-style nav-link-light" href="shop-list-ls.html"><i class="czi-view-list"></i></a>
@@ -63,7 +62,7 @@
                 @else
                     @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
                 @endif --}}
-                @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 8 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 16, 'showFrom' => $render['view'], 'valuesQuery' => $data])
             </div>
             <!-- Banner-->
             <!--
@@ -100,3 +99,36 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        let field = urlParams.get('field')
+        let direction = urlParams.get('direction');
+        let value = field + '-' + direction
+
+        // Set option selected
+        switch (value) {
+            case 'name-ASC':
+                $('#sorting').val('4')
+                break;
+            case 'name-DESC':
+                $('#sorting').val('5')
+                break;
+            case 'price-ASC':
+                $('#sorting').val('2')
+                break;
+            case 'price-DESC':
+                $('#sorting').val('3')
+                break;
+        }
+
+        var url = window.location.href.split('?')[0];
+
+        $('#sorting').change(function(){
+            window.location.href = url + '?field=' + $(this).find(':selected').data('field') + '&direction=' + $(this).find(':selected').data('direction');
+        });
+});
+</script>
+@endpush

@@ -66,18 +66,18 @@ class ProductUpdateRequest extends FormRequest
                     if(empty($value)) return $fail('Debes indicar una razon de rechazo');
                 }
             },
-            'special_price_from' => function ($attribute, $value, $fail) {
+            /* 'special_price_from' => function ($attribute, $value, $fail) {
                 $specialPrice = RequestHelper::input('special_price');
                 if( !($specialPrice == 0 || is_null($specialPrice)) ) {
                     if(is_null($value)) return $fail('Debes indicar una fecha de inicio para el precio de promoción');
                 }
-            },
-            'special_price_to' => function ($attribute, $value, $fail) {
+            }, */
+            /* 'special_price_to' => function ($attribute, $value, $fail) {
                 $specialPrice = RequestHelper::input('special_price');
                 if( !($specialPrice == 0 || is_null($specialPrice)) ) {
                     if(is_null($value)) return $fail('Debes indicar una fecha de fin para el precio de promoción');
                 }
-            },
+            }, */
             'inventories_val' => function ($attribute, $value, $fail) {
                 $fields = RequestHelper::all();
                 foreach($fields as $param => $qty) {

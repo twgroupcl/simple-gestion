@@ -21,6 +21,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Transbank\Webpay\Configuration;
 use Transbank\Webpay\Webpay;
+use Backpack\Settings\app\Models\Setting;
+
+
 
 class WebpayPlusMallController extends Controller
 {
@@ -220,6 +223,22 @@ class WebpayPlusMallController extends Controller
         }
         if ($finalresult) {
 
+            // Reducir invententario de product
+            // Por cada item
+            $orderItems = $order->order_items;
+
+            foreach($orderItems as $orderItem) {
+                if($orderItem->product->use_inventory_control) {
+                    // 1. obtener cantidad en stock (cual bodega)
+                    $qtyInStock = $orderItem->product->inventories->first()->pivot->qty;
+                    $inventorySourceId = $orderItem->product->inventories->first()->id;
+                    // 2. restar cantidad y verificar que no sea negativa
+                    $finalQtyStock = $qtyInStock - $orderItem->qty;
+                    // 3. guardar cantidad en inventario
+                    $orderItem->product->updateInventory($finalQtyStock, $inventorySourceId);
+                }
+            }
+
             $cart = Cart::where('session_id', $sessionId)->first();
 
             //Destroy cart
@@ -233,9 +252,15 @@ class WebpayPlusMallController extends Controller
             Mail::to($order->email)->send(new OrderUpdated($order, 1, null));
             //Order to seller
             foreach ($sellers as $seller) {
-                Mail::to($seller->email)->send(new OrderUpdated($order, 2, $seller));
+                Mail::to($seller->email)->cc('jorge.castro@twgroup.cl')->send(new OrderUpdated($order, 2, $seller));
             }
-            //Order to admin
+            //Order to admins
+            $administrators = Setting::get('administrator_email');
+            $recipients = explode(';', $administrators);
+            foreach ($recipients as $key => $recipient) {
+                Mail::to($recipient)->send(new OrderUpdated($order, 3, null));
+            }
+
 
             return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
         } else {

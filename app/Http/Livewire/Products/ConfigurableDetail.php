@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Products;
 
 use App\Models\Product;
 use Livewire\Component;
-use Barryvdh\Debugbar\Facade as Debugbar;
 
 class ConfigurableDetail extends Component
 {
@@ -161,6 +160,6 @@ class ConfigurableDetail extends Component
 
     public function getPriceFrom()
     {
-        $this->priceFrom = $this->parentProduct->children->pluck('price')->sort()->first();
+        $this->priceFrom = $this->parentProduct->children->pluck('real_price')->sort()->first();
     }
 }

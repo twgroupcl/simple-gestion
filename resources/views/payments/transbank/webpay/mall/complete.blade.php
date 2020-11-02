@@ -1,12 +1,12 @@
 @php
 use App\Models\Commune;
 use App\Models\Product;
- $transactionData = null;
+$transactionData = null;
 try {
-    $transactionData =    json_decode($order->order_payments->first()->json_in)->data;
+$transactionData = json_decode($order->order_payments->first()->json_in)->data;
 
 } catch (\Throwable $th) {
-    //throw $th;
+//throw $th;
 }
 
 $addressData = $order->json_value;
@@ -15,25 +15,25 @@ $addressData = $order->json_value;
 
 $addressShipping = null;
 if(isset($addressData['addressShipping'])){
-    $addressShipping = $addressData['addressShipping'];
+$addressShipping = $addressData['addressShipping'];
 
 }
 
 
 $addressInvoice = null;
 if(isset($addressData['addressInvoice'])){
-    $addressInvoice = $addressData['addressInvoice'];
+$addressInvoice = $addressData['addressInvoice'];
 }
 
 $communeShipping = null;
 $communeInvoice = null;
 
 if($addressShipping){
-    $communeShipping = Commune::where('id', $addressShipping->address_commune_id)->first();
+$communeShipping = Commune::where('id', $addressShipping->address_commune_id)->first();
 }
 
 if($addressInvoice){
-    $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->first();
+$communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->first();
 }
 
 
@@ -79,7 +79,8 @@ if($addressInvoice){
                             </div>
                             <div class="woocommerce-order-overview__email email col-sm-6 mb-3 px-2">
                                 <div class="bg-secondary rounded-lg p-3 text-center font-size-md">
-                                    Nombre: <span class="font-weight-medium">{{ $order->first_name }}</span>
+                                    Nombre y Apellido: <span
+                                        class="font-weight-medium">{{ $order->first_name . ' ' . $order->last_name }}</span>
                                 </div>
                             </div>
                             <div class="woocommerce-order-overview__email email col-sm-6 mb-3 px-2">
@@ -94,21 +95,21 @@ if($addressInvoice){
                                         class="font-weight-medium">{{ $order->order_payments->first()->method_title }}</span>
                                 </div>
                             </div>
-                            @if($transactionData)
-                            <div class="woocommerce-order-overview__payment-method method col-sm-6 mb-3 px-2">
-                                <div class="bg-secondary rounded-lg p-3 text-center font-size-md">
-                                    Fecha de pago : <span
-                                        class="font-weight-medium">{{ $transactionData->transactionDate}}</span>
+                            @if ($transactionData)
+                                <div class="woocommerce-order-overview__payment-method method col-sm-6 mb-3 px-2">
+                                    <div class="bg-secondary rounded-lg p-3 text-center font-size-md">
+                                        Fecha de pago : <span
+                                            class="font-weight-medium">{{ $transactionData->transactionDate }}</span>
+                                    </div>
                                 </div>
-                            </div>
                             @endif
-                            @if($transactionData)
-                            <div class="woocommerce-order-overview__payment-method method col-sm-6 mb-3 px-2">
-                                <div class="bg-secondary rounded-lg p-3 text-center font-size-md">
-                                    Tarjeta bancaria : <span
-                                        class="font-weight-medium">xxxx-xxxx-xxxx-{{ $transactionData->cardDetail->cardNumber}}</span>
+                            @if ($transactionData)
+                                <div class="woocommerce-order-overview__payment-method method col-sm-6 mb-3 px-2">
+                                    <div class="bg-secondary rounded-lg p-3 text-center font-size-md">
+                                        Tarjeta bancaria : <span
+                                            class="font-weight-medium">xxxx-xxxx-xxxx-{{ $transactionData->cardDetail->cardNumber }}</span>
+                                    </div>
                                 </div>
-                            </div>
                             @endif
                         </div>
 
@@ -124,34 +125,48 @@ if($addressInvoice){
                                         <div class="widget widget_products">
                                             <ul class="product_list_widget">
                                                 @foreach ($order->order_items as $item)
-                                                @php
-                                                $product = Product::where('id',$item->product_id)->first();
-                                                // $subtotal += ($product->price * $item->qty);
-                                                // $subtotalshipping += ($item->shipping_total  * $item->qty) ;
-                                                // $total += ($product->price * $item->qty) + ($item->shipping_total  * $item->qty);
-                                                @endphp
-                                                <li class="woocommerce-table__line-item order_item">
-                                                    <div class="media align-items-center">
+                                                    @php
+                                                    $product = Product::where('id',$item->product_id)->first();
+                                                    // $subtotal += ($product->price * $item->qty);
+                                                    // $subtotalshipping += ($item->shipping_total * $item->qty) ;
+                                                    // $total += ($product->price * $item->qty) + ($item->shipping_total *  $item->qty);
+                                                    @endphp
+                                                    <li class="woocommerce-table__line-item order_item">
+                                                        <div class="media align-items-center">
 
                                                             <img width="15%"
-                                                                src="{{ asset( $product->getFirstImagePath()) }}"
-                                                                >
-                                                        <div class="media-body">
-                                                            <h6 class="widget-product-title">
-                                                                                                                                    {{$product->name}}
-                                                            </h6>
-                                                            <div class="widget-product-meta">
-                                                                <span class="text-accent mr-1"><span
-                                                                        class="woocommerce-Price-amount amount"><span
-                                                                            class="woocommerce-Price-currencySymbol">{{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}</span></span>
-                                                                <span class="text-muted">× {{$item->qty}}</span>
+                                                                src="{{ asset($product->getFirstImagePath()) }}"
+                                                                class="pr-3">
+                                                            <div class="media-body">
+                                                                <h5> {{ $product->seller->name }} </h5>
+                                                                <h6 class="widget-product-title">
+                                                                    {{ $product->name }}
+                                                                </h6>
+                                                                <div class="widget-product-meta">
+                                                                    <span class="text-accent mr-1"><span
+                                                                            class="woocommerce-Price-amount amount"><span
+                                                                                class="woocommerce-Price-currencySymbol">{{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}</span></span>
+                                                                        <span class="text-muted">× {{ $item->qty }}</span>
+                                                                        <br>
+                                                                        <span class=" mr-1"><span
+                                                                                class="text-muted">Envío
+                                                                            </span>
+                                                                            @if ($item->shipping_total == 0)
+                                                                            <span class="text-center"> {{ $item->shipping->title }}
+                                                                            </span>
+                                                                            @else
+                                                                                <span
+                                                                                    class="woocommerce-Price-currencySymbol">{{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}</span>
+                                                                            @endif
+                                                                        </span>
+
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                    </li>
                                                 @endforeach
 
-                                                {{-- <li class="woocommerce-table__line-item order_item">
+                                                {{-- <li
+                                                    class="woocommerce-table__line-item order_item">
                                                     <div class="media align-items-center">
                                                         <a href="https://demo2.madrasthemes.com/cartzilla/marketplace/product/project-devices-showcase-psd/"
                                                             class="widget-product-thumb">
@@ -258,18 +273,24 @@ if($addressInvoice){
                                                 <span class="text-right"><span class="woocommerce-Price-amount amount"><span
                                                             class="woocommerce-Price-currencySymbol">{{ currencyFormat($order->sub_total ? $order->sub_total : 0, 'CLP', true) }}</span></span>
                                             </div>
-                                            <div
-                                                class="d-flex justify-content-between align-items-center font-size-md mb-2 pb-1">
-                                                <span class="mr-2">Envío:</span>
-                                                <span class="text-right"><span class="woocommerce-Price-amount amount"><span
-                                                            class="woocommerce-Price-currencySymbol">{{ currencyFormat($order->shipping_total ? $order->shipping_total : 0, 'CLP', true) }}
-                                                            {{-- <small                                                       class="shipped_via">via Flat rate</small> --}}
-                                                        </span>
-                                            </div>
+                                            @if ($order->shipping_total > 0)
+                                                <div
+                                                    class="d-flex justify-content-between align-items-center font-size-md mb-2 pb-1">
+                                                    <span class="mr-2">Envío:</span>
+                                                    <span class="text-right"><span
+                                                            class="woocommerce-Price-amount amount"><span
+                                                                class="woocommerce-Price-currencySymbol">{{ currencyFormat($order->shipping_total ? $order->shipping_total : 0, 'CLP', true) }}
+                                                                {{-- <small
+                                                                    class="shipped_via">via Flat rate</small>
+                                                                --}}
+                                                            </span>
+                                                </div>
+                                            @endif
                                             <div
                                                 class="d-flex justify-content-between align-items-center font-size-md mb-2 pb-1">
                                                 <span class="mr-2"> Método de pago :</span>
-                                                <span class="text-right">{{ $order->order_payments->first()->method_title }}</span>
+                                                <span
+                                                    class="text-right">{{ $order->order_payments->first()->method_title }}</span>
                                             </div>
                                             <div
                                                 class="d-flex justify-content-between align-items-center font-size-md mb-2 pb-1">
@@ -289,41 +310,60 @@ if($addressInvoice){
                                     <div class="border rounded-lg p-4 h-100">
                                         <h2 class="woocommerce-column__title h6">Dirección de facturación</h2>
                                         <ul class="font-size-sm list-unstyled">
-                                            @if(isset($addressInvoice) && !empty($addressInvoice->address_street) )
+                                            @if (isset($addressInvoice) && !empty($addressInvoice->address_street))
 
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-user opacity-60 mr-2 mt-1"></i>
-                                                  <div>{{$addressInvoice->first_name . ', ' . $addressInvoice->last_name }}
-                                            </li>
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-location opacity-60 mr-2 mt-1"></i>
-                                                  <div>{{$addressInvoice->address_street . ', ' . $addressInvoice->address_number }} @if($communeInvoice){{ $communeInvoice->name }}@endif</div>
-                                            </li>
-                                            <li class="woocommerce-customer-details--phone d-flex">
-                                                <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
-                                                <div>{{$addressInvoice->cellphone}}</div>
-                                            </li>
-                                            <li class="woocommerce-customer-details--email d-flex">
-                                                <i class="czi-mail opacity-60 mr-2 mt-1"></i>
-                                                <div>{{$addressInvoice->email}}</div>
-                                            </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-card opacity-60 mr-2 mt-1"></i>
+                                                    <div>RUT: {{ $addressInvoice->uid }}
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-user opacity-60 mr-2 mt-1"></i>
+                                                    <div>
+                                                        {{ $addressInvoice->first_name . '  ' . $addressInvoice->last_name }}
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-location opacity-60 mr-2 mt-1"></i>
+                                                    <div>
+                                                        {{ $addressInvoice->address_street . ' ' . $addressInvoice->address_number . ' ' . $addressInvoice->address_office }}
+                                                        @if ($communeInvoice)
+                                                            {{ $communeInvoice->name }}
+                                                        @endif
+                                                    </div>
+                                                </li>
+                                                <li class="woocommerce-customer-details--phone d-flex">
+                                                    <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $addressInvoice->cellphone }}</div>
+                                                </li>
+                                                <li class="woocommerce-customer-details--email d-flex">
+                                                    <i class="czi-mail opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $addressInvoice->email }}</div>
+                                                </li>
                                             @else
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-user opacity-60 mr-2 mt-1"></i>
-                                                  <div>{{$order->first_name . ', ' . $order->last_name }}
-                                            </li>
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-location opacity-60 mr-2 mt-1"></i>
-                                                <div>{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }} @if($communeShipping){{ $communeShipping->name }}@endif</div>
-                                            </li>
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
-                                                <div>{{ $order->cellphone }}</div>
-                                            </li>
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-mail opacity-60 mr-2 mt-1"></i>
-                                                <div>{{ $order->email }}</div>
-                                            </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-card opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $order->uid }}
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-user opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $order->first_name . ' ' . $order->last_name }}
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-location opacity-60 mr-2 mt-1"></i>
+                                                    <div>
+                                                        {{ $addressShipping->address_street . '  ' . $addressShipping->address_number . ' ' . $addressShipping->address_office }}
+                                                        @if ($communeShipping)
+                                                            {{ $communeShipping->name }}
+                                                        @endif
+                                                    </div>
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $order->cellphone }}</div>
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-mail opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $order->email }}</div>
+                                                </li>
                                             @endif
                                         </ul>
                                     </div>
@@ -331,21 +371,34 @@ if($addressInvoice){
                                 <div class="col-sm-6">
                                     <div class="border rounded-lg p-4 h-100">
                                         <h2 class="woocommerce-column__title h6">Dirección de envío</h2>
-                                        @if(isset($addressShipping))
-                                        <ul class="font-size-sm list-unstyled">
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-location opacity-60 mr-2 mt-1"></i>
-                                                <div>{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }} @if($communeShipping){{ $communeShipping->name }}@endif</div>
-                                            </li>
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
-                                                <div>{{ $order->cellphone }}</div>
-                                            </li>
-                                            <li class="woocommerce-customer-details--address d-flex">
-                                                <i class="czi-mail opacity-60 mr-2 mt-1"></i>
-                                                <div>{{ $order->email }}</div>
-                                            </li>
-                                        </ul>
+                                        @if (isset($addressShipping))
+                                            <ul class="font-size-sm list-unstyled">
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-card opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $order->uid }}
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-user opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $order->first_name . ' ' . $order->last_name }}
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-location opacity-60 mr-2 mt-1"></i>
+                                                    <div>
+                                                        {{ $addressShipping->address_street . ' ' . $addressShipping->address_number . ' ' . $addressShipping->address_office }}
+                                                        @if ($communeShipping)
+                                                            {{ $communeShipping->name }}
+                                                        @endif
+                                                    </div>
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $order->cellphone }}</div>
+                                                </li>
+                                                <li class="woocommerce-customer-details--address d-flex">
+                                                    <i class="czi-mail opacity-60 mr-2 mt-1"></i>
+                                                    <div>{{ $order->email }}</div>
+                                                </li>
+                                            </ul>
                                         @endif
                                     </div>
                                 </div>
@@ -370,7 +423,8 @@ if($addressInvoice){
                         que es <span class='font-weight-medium'>#{{ $order->id }}</span></p>
                     --}}
                     <p class="font-size-sm">Recibirá un correo electrónico en breve con la confirmación de su pedido.
-                        <u>Ahora puedes:</u></p><a class="btn btn-secondary mt-3 mr-3" href="/">Volver a comprar</a>
+                        <u>Ahora puedes:</u>
+                    </p><a class="btn btn-secondary mt-3 mr-3" href="/">Volver a comprar</a>
                     <a class="btn btn-primary mt-3"
                         href="{{ route('transbank.webpayplus.mall.download', ['order' => $order->id]) }}">&nbsp;Descargar
                         orden</a>

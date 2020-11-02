@@ -32,9 +32,20 @@
                     </div>
                     <div class="product-details ml-auto pb-3">
                         @if ($selectedChildrenId)
-                            <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price, 'CLP', true) }}</div>
+                            @if ($currentProduct->special_price === $currentProduct->real_price)
+                            <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($currentProduct->special_price, defaultCurrency(), true) }}</span>
+                                <del class="text-muted font-size-lg mr-3">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</del>
+                                <br>
+                                <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                            </div>
+                            @else
+                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</div>
+                            @endif
                         @else
-                            <div class="h3 font-weight-normal text-accent mb-3 mr-1">Desde {{ currencyFormat($priceFrom, 'CLP', true) }}</div>
+                            <div class="h3 font-weight-normal text-accent mb-1 mr-1">Desde {{ currencyFormat($priceFrom, 'CLP', true) }}</div>
+                            @if ($parentProduct->has_special_price)
+                                <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                            @endif  
                         @endif
                     <!--
                             <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Dark blue/Orange</span></div>
@@ -176,8 +187,21 @@
                 <div class="media align-items-center mr-md-3"><img src="{{ url($currentProduct->getFirstImagePath()) }}" width="90" alt="Product thumb">
                     <div class="mdeia-body pl-3">
                         <h6 class="font-size-base mb-2">{{$currentProduct->name}}</h6>
-                        @if ($selectedChildrenId)
+                        {{-- @if ($selectedChildrenId)
                         <div class="h4 font-weight-normal text-accent">{{ currencyFormat($currentProduct->price, 'CLP', true) }}</div>
+                        @endif --}}
+                        @if ($selectedChildrenId)
+                            @if ($currentProduct->special_price === $currentProduct->real_price)
+                            <div class="mb-3"><span class="h4 font-weight-normal text-accent">{{ currencyFormat($currentProduct->special_price, defaultCurrency(), true) }}</span>
+                                <del class="text-muted font-size-lg mr-3">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</del>
+                                <br>
+                                <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                            </div>
+                            @else
+                                <div class="h4 font-weight-normal text-accent">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</div>
+                            @endif
+                        @else
+                            <div class="h4 font-weight-normal text-accent">Desde {{ currencyFormat($priceFrom, 'CLP', true) }}</div>
                         @endif
                     </div>
                 </div>
