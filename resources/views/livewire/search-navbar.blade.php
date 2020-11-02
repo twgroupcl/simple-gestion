@@ -3,7 +3,7 @@
         //echo $query = Request::segment(3);
     @endphp
     <div class="input-group-prepend-overlay"><span class="input-group-text"><btn wire:click="search" class="btn-search"><i class="czi-search"></i></btn></span></div>
-    <input class="form-control prepended-form-control appended-form-control input-search" wire:model="query" type="text" placeholder="Buscar productos">
+    <input wire:keydown.enter="search" class="form-control prepended-form-control appended-form-control input-search" wire:model="query" type="text" placeholder="Buscar productos">
     <div class="input-group-append-overlay">
         <select class="custom-select select-search" wire:model="selected">
             <option value="0" selected>Todas las categorías</option>
