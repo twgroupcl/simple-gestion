@@ -162,4 +162,10 @@ class ConfigurableDetail extends Component
     {
         $this->priceFrom = $this->parentProduct->children->pluck('real_price')->sort()->first();
     }
+
+    public function dehydrate()
+    {
+        $this->dispatchBrowserEvent('initialize-gallery');
+
+    }
 }
