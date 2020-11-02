@@ -79,7 +79,7 @@ class Order extends Model
 
     public function scopeSold($query)
     {
-        return $query->where('status', self::STATUS_PAID);
+        return $query->whereIn('status', [self::STATUS_PAID, self::STATUS_COMPLETED]);
     }
 
     public function scopeBySeller($query)
