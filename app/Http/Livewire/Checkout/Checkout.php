@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Checkout;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\ShippingMethod;
 use Livewire\Component;
 
 class Checkout extends Component
@@ -12,12 +13,15 @@ class Checkout extends Component
     public $steps;
     public $activeStep;
     public $subtotal;
-    public $shippingtotal;
+    // public $shippingtotal;
+    // public $chilexpresstotal;
     public $total;
     public $cart;
     public $items;
     public $loading;
     public $canContinue;
+    public $chilexpress;
+    public $shippings;
 
     protected $listeners = [
         'prev-step' => 'prevStep',
@@ -96,12 +100,15 @@ class Checkout extends Component
         //Initialize active step
         $this->activeStep = $this->steps[1];
 
+        //Get chilexpress
+        $this->chilexpress = ShippingMethod::where('code', 'chilexpress')->first();
         //Get items
         $this->items = $this->getItems();
 
         $this->subtotal = $this->getSubTotal();
         $this->total = $this->getTotal();
-//dd($this->cart);
+        $this->shippings= [];
+
     }
 
     public function render()
@@ -147,6 +154,28 @@ class Checkout extends Component
     public function addShipping($selected, $item)
     {
 
+
+
+        $shippingSelected = array(
+            'id' => $selected['id'],
+            'name' => $selected['name'],
+            'total' => 0,
+            'qty' => 0,
+
+        );
+
+
+        $existShipping = array_filter( $this->shippings, function( $shipping) use($shippingSelected) {
+            return $shipping['id'] == $shippingSelected['id'];
+        });
+
+        if(!$existShipping){
+
+                array_push($this->shippings, $shippingSelected);
+        }
+
+
+
         $cartItem = CartItem::find($item);
 
         $shippingId = $selected['id'];
@@ -159,8 +188,9 @@ class Checkout extends Component
 
         $this->total = $this->getTotal();
         $this->cart->total = $this->total;
-        $this->cart->shipping_total = $this->shippingtotal; // //$shippingTotal;// *  $cartItem->qty);
+        //                 $this->cart->shipping_total = $this->shippingtotal; // //$shippingTotal;// *  $cartItem->qty);
         $this->cart->update();
+
     }
 
     private function getSubTotal(): float
@@ -173,22 +203,56 @@ class Checkout extends Component
     }
     private function getTotal(): float
     {
-        $this->shippingtotal = 0;
+        if ($this->shippings) {
+            foreach ($this->shippings as $key => $shipping) {
+                $this->shippings[$key]['total'] = 0;
+                $this->shippings[$key]['qty'] = 0;
+            }
+        }
+
         $total = 0;
+        $totalshipping = 0;
         foreach ($this->getItems() as $item) {
 
             $total += $item->price * $item->qty;
-            $this->shippingtotal += ($item->shipping_total * $item->qty);
+            if ($this->shippings) {
+                //  $shipping = array_search($item->shipping_id, array_column($this->shippings,'id'));
+                //  dd( $this->shippings[0]);
+
+                //  if ($shipping) {
+                    foreach ($this->shippings as $keyt => $shipping) {
+                        if (intval($shipping['id']) == $item->shipping_id) {
+
+                            if (!is_null($item->shipping_total)) {
+                                $this->shippings[$keyt]['total']   += $item->shipping_total;
+                            }else{
+                                $this->shippings[$keyt]['total']   = null;
+                            }
+                            $this->shippings[$keyt]['qty'] += $item->qty;
+                            $totalshipping += $item->shipping_total;
+                        }
+                    }
+
+                //  }
+
+
+
+
+
+            }
+
+
         }
-        $total += $this->shippingtotal;
+        $total += $totalshipping;
         if ($total <= 0) {
-            $subtotal = 0;
             $total = 0;
-            $shippingtotal;
+            $subtotal = 0;
+            $shippingtotal = 0;
             $this->canContinue = false;
         } else {
             $this->canContinue = true;
         }
+
         return $total;
     }
 
@@ -309,6 +373,5 @@ class Checkout extends Component
     {
         return redirect('shopping-cart');
     }
-
 
 }

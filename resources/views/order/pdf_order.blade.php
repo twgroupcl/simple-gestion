@@ -187,7 +187,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                 <p><strong>Cantidad : </strong>{{ $item->qty }}</p>
                 <p><strong>Envío :</strong>
                     @if ($item->shipping_total == 0)
-                        {{ $item->shipping->title }}
+                        {{ $item->shipping->title ?? '' }}
                     @else
                         {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}
                     @endif

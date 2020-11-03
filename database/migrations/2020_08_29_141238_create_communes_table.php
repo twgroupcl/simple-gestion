@@ -19,7 +19,6 @@ class CreateCommunesTable extends Migration
             $table->string('name');
             $table->timestamps();
             $table->integer('order')->default(0);
-
             $table->softDeletes();
         });
 

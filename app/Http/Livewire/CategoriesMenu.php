@@ -21,6 +21,8 @@ class CategoriesMenu extends Component
 
     public function loadCategories() 
     {
-        $this->categories = ProductCategory::orderBy('name','ASC')->get();
+        $this->categories = ProductCategory::whereHas('products', function ($query) {
+            return $query->where('id', '<>', '');
+        })->orderBy('name','ASC')->get();
     }
 }

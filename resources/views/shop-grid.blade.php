@@ -23,7 +23,9 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-
+        {{-- <aside class="col-lg-4">
+            @livewire('filters')
+        </aside> --}}
         <!-- Content  -->
         <section class="col-lg-12">
             <!-- Toolbar-->
