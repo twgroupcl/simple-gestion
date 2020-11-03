@@ -59,6 +59,8 @@ class ProductInventorySourceController extends Controller
                 'unique_hash' => uniqid(),
             ]);
 
+            $branch->companies()->attach(auth()->user()->companies->first()->id);
+
             // Asign user to branch
             User::where('email', $request['contact_email'])->first()->branches()->attach($branch->id);
 
