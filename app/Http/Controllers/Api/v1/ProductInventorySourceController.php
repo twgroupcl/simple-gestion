@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\User;
+use App\Models\Branch;
 use App\Models\Seller;
 use Illuminate\Http\Request;
 use Freshwork\ChileanBundle\Rut;
@@ -50,7 +52,21 @@ class ProductInventorySourceController extends Controller
                 'company_id' => auth()->user()->companies->first()->id,
             ]);
 
-            DB::commit();
+            // Create branch
+            $branch = Branch::create([
+                'name' => $request['name'],
+                'address' => $request['street'] . ' ' . $request['number'],
+                'unique_hash' => uniqid(),
+            ]);
+
+            // Asign user to branch
+            User::where('email', $request['contact_email'])->first()->branches()->attach($branch->id);
+
+            // Asing branch to warehouse
+            $productInventorySource->branch_id = $branch->id;
+            $productInventorySource->update();
+
+           DB::commit();
 
         } catch(\Illuminate\Database\QueryException $exception) {
             DB::rollBack();
