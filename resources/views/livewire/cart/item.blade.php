@@ -18,7 +18,7 @@ $product = $item->product;
             <div class="d-inline-block font-size-lg text-accent pt-2">{{ currencyFormat($product->real_price, 'CLP', true) }}
                 <!--$154.<small>00</small>-->
             </div>
-            <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="{{'seller-shop/'.$product->seller->id}}">por {{$product->seller->name}}</a>
+            <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="{{'seller-shop/'.$product->seller->id}}">por {{$product->seller->visible_name}}</a>
             @if ($shippingMethods)
                 <div class="select-shipping mb-0 pt-2">
                     <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected"
