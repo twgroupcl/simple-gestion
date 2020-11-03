@@ -8,107 +8,89 @@ class ProductFilterService {
 
     public function filterByParams($baseQuery, $data) 
     {
-
         if (!$data) return $baseQuery;
 
         $query = $baseQuery;
-        
+        $customAttributes = [];
 
-        // Extract attributes of the request
-        /* foreach($data->all() as $param => $value) {
-            // If the param start with "ca-" then is an attribute
-            $isAttr = substr($param, 0, 3) == 'ca-';
-            if ($isAttr) {
-                // The attribute is store as ID => attribute_values
-                $customAttributes[str_replace('ca-', '', $param)] = $value;
-            }
-        } */
-
-    
         // Brand Filter
         if ( isset($data['brand']) ) {
-            $brands = explode(',', $data['brand']);
-            $query = $query->where(function ($q) use ($brands) {
+            $brands = $data['brand'];
+            $query->where(function ($q) use ($brands) {
                 foreach ($brands as $brandId) {
+                    if (!$brandId) continue;
                     $q->orWhere('product_brand_id', $brandId);
                 }
             });
         }
 
-        // Filtro ubicacion
-        // @todo
-
-
         $queryForSimple = clone $query;
         $queryForConfigurable = clone $query;
 
-         // Price filter
+         // Price range filter
          if ( isset($data['price']) ) {
             $priceRange = $data['price'];
-
-            if ($priceRange['max']) $queryForSimple->where('price', '<=', $priceRange['max']);
-            if ($priceRange['min']) $queryForSimple->where('price', '>=', $priceRange['min']);
-            //dd($priceRange, $queryForSimple->get());
+            if ( isset($priceRange['min']) && $priceRange['min']) $queryForSimple->where('price', '>=', $priceRange['min']);
+            if ( isset($priceRange['max']) && $priceRange['max']) $queryForSimple->where('price', '<=', $priceRange['max']);
         }
 
         if (isset($data['attributes'])) {
             $customAttributes = $this->sanitizeAttributesOptions($data['attributes']);
-            //dd($customAttributes);
-        } else {
-            $customAttributes = [];
+        } 
+
+        // Attributes filter for Simple products
+        foreach ($customAttributes as $id => $values_array) {
+            $queryForSimple = $queryForSimple->whereHas('custom_attributes', function ($q) use ($id, $values_array) {
+            // Main where
+                $q->where(function ($q2) use ($id, $values_array) {
+                // Add an orWhere for every value of an attribute
+                    foreach ($values_array as $value) {
+                        $q2->orWhere(function ($q3) use ($id, $value) {
+                            $q3->where([
+                            'product_class_attribute_id' => $id,
+                            'json_value' => $value,
+                        ]);
+                        });
+                    }
+                });
+            });
         }
 
-            // Attributes filter for Simple products
-            foreach ($customAttributes as $id => $values) {
-                $values_array = $values;
-                $queryForSimple = $queryForSimple->whereHas('custom_attributes', function ($q) use ($id, $values_array) {
+
+        // Attributes filter for Configurable products
+        $queryForConfigurable->whereHas('children', function ($query) use ($customAttributes) {
+            foreach ($customAttributes as $id => $values_array) {
+                $query->whereHas('custom_attributes', function ($q) use ($id, $values_array) {
 
                 // Main where
                     $q->where(function ($q2) use ($id, $values_array) {
- 
+
                     // Add an orWhere for every value of an attribute
                         foreach ($values_array as $value) {
                             $q2->orWhere(function ($q3) use ($id, $value) {
                                 $q3->where([
-                                'product_class_attribute_id' => $id,
-                                'json_value' => $value,
-                            ]);
+                                        'product_class_attribute_id' => $id,
+                                        'json_value' => $value,
+                                ]);
                             });
                         }
                     });
                 });
             }
-
-
-            // Attributes filter for Configurable products
-            $queryForConfigurable->whereHas('children', function ($query) use ($customAttributes) {
-                foreach ($customAttributes as $id => $values) {
-                    $values_array = $values;
-                    $query->whereHas('custom_attributes', function ($q) use ($id, $values_array) {
-
-                    // Main where
-                        $q->where(function ($q2) use ($id, $values_array) {
-
-                        // Add an orWhere for every value of an attribute
-                            foreach ($values_array as $value) {
-                                $q2->orWhere(function ($q3) use ($id, $value) {
-                                    $q3->where([
-                                            'product_class_attribute_id' => $id,
-                                            'json_value' => $value,
-                                ]);
-                                });
-                            }
-                        });
-                    });
-                }
-            });
+        });
 
         // Combine results of configurable and simple products
-       // dd($queryForSimple->get(), $queryForConfigurable->get());
         $queryForSimple->union($queryForConfigurable);
+
         return $queryForSimple;
     }
 
+
+    /**
+     * Check for false values on every attribute array. Remove false values and if
+     * every value of the attribute array if false, remove the attribute
+     * 
+     */
     public function sanitizeAttributesOptions($attributes)
     {
         foreach($attributes as $key => &$attribute) {

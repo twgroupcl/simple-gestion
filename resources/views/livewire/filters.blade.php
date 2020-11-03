@@ -1,5 +1,4 @@
 <div>
-    <!-- Sidebar-->
     <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
         <div class="cz-sidebar-header box-shadow-sm">
             <button class="close ml-auto" type="button" data-dismiss="sidebar" aria-label="Close"><span class="d-inline-block font-size-xs font-weight-normal align-middle">Close sidebar</span><span class="d-inline-block align-middle ml-2" aria-hidden="true">&times;</span></button>
@@ -74,8 +73,15 @@
             <!-- Price range-->
             <div class="widget mb-4 pb-4 border-bottom">
                 <h3 class="widget-title">Precio</h3>
-                <div class="cz-range-slider" data-start-min="250" data-start-max="680" data-min="0" data-max="1000" data-step="1">
-                    <div class="cz-range-slider-ui"></div>
+                {{-- <div class="cz-range-slider" 
+                    data-start-min="100000" 
+                    data-start-max="800000" 
+                    data-min="100" 
+                    data-max="1000000" 
+                    data-step="1000"
+                > --}}
+                    {{-- <div class="cz-range-slider-ui"></div> --}}
+                    <div>
                     <div class="d-flex pb-1">
                         <div class="w-50 pr-2 mr-2">
                             <div class="input-group input-group-sm">
@@ -90,18 +96,24 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-shadow" wire:click="filter">Buscar</button>
+                    <button class="btn btn-block mt-3 btn-primary btn-shadow" wire:click="filter">Buscar</button>
                 </div>
             </div>
             <!-- Filter by Brand-->
             <div class="widget cz-filter mb-4 pb-4 border-bottom">
                 <h3 class="widget-title">Marca</h3>
                 <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
-                    @foreach($brands as $brand)                    
+                    @foreach($brands as $key => $brand)                    
                         <li class="cz-filter-item d-flex justify-content-between align-items-center">
                             <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="{{$brand->id}}">
-                                <label class="custom-control-label cz-filter-item-text" for="wrangler">{{$brand->name}}</label>
+                                <input
+                                    wire:change="filter"
+                                    class="custom-control-input" 
+                                    wire:model="filterOptions.brand.{{ $key }}" 
+                                    type="checkbox" 
+                                    value="{{$brand->id}}" 
+                                    id="{{$brand->id}}">
+                                <label class="custom-control-label cz-filter-item-text"  for="{{$brand->id}}">{{$brand->name}}</label>
                             </div><span class="font-size-xs text-muted">{{$brand->products->count()}}</span>
                         </li>
                     @endforeach
@@ -127,7 +139,7 @@
                                     {{-- onChange="this.form.submit()" --}} 
                                     wire:change="filter"
                                     class="custom-control-input" 
-                                    name="ca-{{ $value->product_class_attribute_id }}[]" 
+                                    name="ca-{{ $value->product_class_attribute_id }}" 
                                     type="checkbox" 
                                     id="${{ $value->id }}"
                                     value="{{$value->json_value}}"
@@ -306,4 +318,9 @@
             -->
         </div>
     </div>
+    
+    <button type="button" wire:loading wire:target="filter" class="btn btn-primary loader">
+        <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+        Cargando...
+    </button>
 </div>

@@ -2,11 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use App\Models\ProductCategory;
-use App\Models\ProductBrand;
-use App\Models\ProductClassAttribute;
 use GuzzleHttp\Client;
+use App\Models\Product;
+use Livewire\Component;
+use App\Models\ProductBrand;
+use App\Models\ProductCategory;
+use App\Models\ProductClassAttribute;
 
 class Filters extends Component
 {
@@ -46,9 +47,6 @@ class Filters extends Component
         ->whereHas('product_attributes', function ($query) {
             return $query->where('json_value', '<>', '')->where('json_value', 'NOT LIKE', "%*%")->groupBy('json_value');
         })->get();
-
-     
-        //dd($this->attributes);
     }
 
     public function loadCategories() 
