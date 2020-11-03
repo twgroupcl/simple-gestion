@@ -41,6 +41,7 @@ class Seller extends Model
         'uid',
         'name',
         'visible_name',
+        'description',
         'email',
         'phone',
         'cellphone',
