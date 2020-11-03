@@ -1,5 +1,4 @@
 <div>
-    <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
         <div class="cz-sidebar-header box-shadow-sm">
             <button class="close ml-auto" type="button" data-dismiss="sidebar" aria-label="Close"><span class="d-inline-block font-size-xs font-weight-normal align-middle">Close sidebar</span><span class="d-inline-block align-middle ml-2" aria-hidden="true">&times;</span></button>
         </div>
@@ -144,11 +143,7 @@
                                     id="${{ $value->id }}"
                                     value="{{$value->json_value}}"
                                     wire:model="filterOptions.attributes.{{ $value->product_class_attribute_id }}.{{ $key }}"
-                                    {{-- @php
-                                        if ( request('ca-' . $value->product_class_attribute_id) == $value->json_value) {
-                                            echo 'checked';
-                                        }
-                                    @endphp --}}>
+                                >
                                 <label class="custom-control-label cz-filter-item-text" for="${{ $value->id }}">{{$value->json_value}}</label>
                             {{-- </div><span class="font-size-xs text-muted">0</span> --}}
                         </li>
@@ -317,7 +312,6 @@
                 </div>
             -->
         </div>
-    </div>
     
     <button type="button" wire:loading wire:target="filter" class="btn btn-primary loader">
         <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>

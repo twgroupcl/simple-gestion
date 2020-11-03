@@ -24,7 +24,9 @@
     <div class="row">
         <!-- Sidebar-->
         <aside class="col-lg-4">
-            @livewire('filters')
+            <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
+                @livewire('filters')
+            </div>
         </aside>
         <!-- Content  -->
         <section class="col-lg-8">
