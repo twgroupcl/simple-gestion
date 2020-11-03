@@ -114,7 +114,7 @@
                                     value="{{$brand->id}}" 
                                     id="{{$brand->id}}">
                                 <label class="custom-control-label cz-filter-item-text"  for="{{$brand->id}}">{{$brand->name}}</label>
-                            </div><span class="font-size-xs text-muted">{{$brand->products->count()}}</span>
+                            </div>{{-- <span class="font-size-xs text-muted">{{$brand->products->count()}}</span> --}}
                         </li>
                     @endforeach
                 </ul>
