@@ -75,7 +75,6 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
         'type' => 'div',
         'class'   => 'w-100 d-none d-md-block',
     ]),
-    
     Widget::add([
         'name'        => 'top10',    
         'type'        => 'top',
@@ -87,7 +86,8 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
             'seller' => [
                 'attribute' => 'name',
                 'column' => 'Tienda'
-            ]
+            ],
+            'count' => 'Vendidos',
         ],
         'collection'  => $data['products']['top_10']
     ]),

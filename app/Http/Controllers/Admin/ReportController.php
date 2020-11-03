@@ -34,6 +34,7 @@ class ReportController extends CrudController
         $sellers = Seller::all();
         $orders = Order::all();
         $products = Product::all();
+        $ordersTop = Order::whereIn('status', [2, 3])->with('order_items')->get()->pluck('order_items')->flatten()->pluck('product')->countBy('id')->sortDesc();
 
         $this->data = array_merge($this->data, [
             'sellers' => [
@@ -53,9 +54,11 @@ class ReportController extends CrudController
                 'total' => $products->count(),
                 'approved' => $products->where('is_approved', 1)->count(),
                 'rejected' => $products->whereNotNull('is_approved')->where('is_approved', 0)->count(),
-                'top_10' => Order::whereIn('status', [2, 3])->with('order_items')->get()->pluck('order_items')->flatten()->pluck('product')->countBy('id')->sortDesc()->take(10)->map(function ($value,$key) {
-                    return Product::find($key);
-                })->take(10)
+                'top_10' => $ordersTop->map(function ($value,$key) use ($ordersTop) {
+                        $product = Product::find($key);
+                        $product->count = $ordersTop[$product->id];
+                        return $product;
+                    })->take(10)
             ],
         ]);
         return view('backpack::reports.index', ['data' => $this->data]);
