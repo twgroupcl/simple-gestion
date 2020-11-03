@@ -111,18 +111,38 @@
                                 class="mr-2">Subtotal:</span><span class="text-right">
                                 {{ currencyFormat($subtotal ? $subtotal : 0, 'CLP', true) }}</span>
                         </li>
-                        <li class="d-flex justify-content-between align-items-center"><span
-                                class="mr-2">Envío:</span><span
-                                class="text-right">{{ currencyFormat($shippingtotal ? $shippingtotal : 0, 'CLP', true) }}</span>
-                        </li>
+                        {{-- @if ($chilexpresstotal['qty'] > 0)
+                            <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Chilexpress
+                                    x {{ $chilexpresstotal['qty'] }}</span><span
+                                    class="text-right">{{ currencyFormat($chilexpresstotal['total'] ? $chilexpresstotal['total'] : 0, 'CLP', true) }}</span>
+                            </li>
+                        @endif
+                        @if ($shippingtotal['qty'] > 0)
+                            <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Envío x
+                                    {{ $shippingtotal['qty'] }}</span><span
+                                    class="text-right">{{ currencyFormat($shippingtotal['total'] ? $shippingtotal['total'] : 0, 'CLP', true) }}</span>
+                            </li>
+                        @endif --}}
+                        @if ($shippings && $activeStep['number'] > 2)
+                                @foreach ($shippings as $shipping)
+                                <li class="d-flex justify-content-between align-items-center"><span
+                                        class="mr-2">{{ $shipping['name'] }} x {{ $shipping['qty'] }}</span><span
+                                        class="text-right">
+                                        @if($shipping['total'])
+                                        {{ currencyFormat($shipping['total'] ? $shipping['total'] : 0, 'CLP', true) }}
+                                        @endif
+                                    </span>
+                                </li>
+                            @endforeach
+                        @endif
                     </ul>
                     <h3 class="font-weight-normal text-center my-4">
                         {{ currencyFormat($total ? $total : 0, 'CLP', true) }}
                     </h3>
-                    @if(!$canContinue)
-                    <div class="alert alert-primary">
-                        Verifique los productos seleccionados para continuar con su compra.
-                    </div>
+                    @if (!$canContinue)
+                        <div class="alert alert-primary">
+                            Verifique los productos seleccionados para continuar con su compra.
+                        </div>
                     @endif
                     <div class="col-12 text-center">
                         <img class="d-inline-block img-fluid mx" width="120" src="{{ asset('img/logo-webpay.png') }}"
