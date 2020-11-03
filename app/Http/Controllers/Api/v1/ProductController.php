@@ -7,11 +7,13 @@ use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Services\ProductService;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\ProductRequest;
 
 class ProductController extends Controller
 {
+    private $productService;
     
     public function show(Request $request)
     {
@@ -21,7 +23,7 @@ class ProductController extends Controller
             'status' => 'error', 
             'message' => 'El producto indicado no existe'
         ],  404);
-
+        
         return response()->json([
             'status' => 'success',
             'data' => $product,
@@ -31,6 +33,8 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {   
+        $this->productService = new ProductService();
+        
         // Obtain seller id
         if ( ! $sellerId = $this->getSellerId($request) ) {
             return response()->json([ 
@@ -38,7 +42,7 @@ class ProductController extends Controller
                 'message' => 'Debes indicar un campo seller_id'
             ],  400); 
         }
-
+        
         // Validate seller id
         $seller = Seller::find($sellerId);
         if (! $seller) {
@@ -49,12 +53,7 @@ class ProductController extends Controller
         }
 
         // Validate SKU
-        $productsSku = Product::where([
-            'seller_id' => $sellerId,
-            'company_id' => auth()->user()->companies->first()->id,
-        ])->pluck('sku')->toArray();
-
-        if (in_array($request['sku'], $productsSku)) {
+        if ( ! $this->productService->validateUniqueSku($request['sku'], $sellerId, auth()->user()->companies->first()->id) ) {
             return response()->json([ 
                 'status' => 'error', 
                 'message' => 'Ya tienes un producto con el SKU indicado'
@@ -64,20 +63,13 @@ class ProductController extends Controller
         // Validate Url key
         $url_key = $request['url_key'] ?? Str::slug($request['name']);
 
-        $urlKeysArray = Product::where([
-            'company_id' => auth()->user()->companies->first()->id,
-        ])->pluck('url_key')->toArray();
-
-        if (in_array($url_key, $urlKeysArray)) {
+        if ( ! $this->productService->validateUniqueSlug($url_key, auth()->user()->companies->first()->id) ) {
             return response()->json([ 
                 'status' => 'error', 
                 'message' => 'Ya existe un producto con el url_key indicado'
             ],  400); 
         }
-
-
-        // Validate Shipping dimmensions ??
-
+        
         // Set default currency
         $currencyId = 63;
 
