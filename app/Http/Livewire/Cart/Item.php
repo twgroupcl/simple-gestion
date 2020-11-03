@@ -97,6 +97,9 @@ class Item extends Component
         }
 
         $this->item->update();
+        //Update shipping methods
+        $this->shippingMethods =  $this->getShippingMethods();
+        $this->addShippingItem();
         $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
         $this->emitUp('change');
     }
@@ -168,27 +171,32 @@ class Item extends Component
 
             } else {
                 $json_value = json_decode($shippingmethod->json_value);
+
                 $itemshipping['id'] = $shippingmethod->id;
                 $itemshipping['name'] = $shippingmethod->title;
+                $itemshipping['message'] = '';
                 if ($json_value) {
 
-                    if ($json_value[0]->variable_name == 'price') {
-                        $itemshipping['price'] = $json_value[0]->variable_value;
-                    }
-                    if ($json_value[0]->variable_name == 'message') {
-                        $itemshipping['message'] = $json_value[0]->variable_value;
-                    } else {
-                        $itemshipping['message'] = '';
-                    }
+                    $itemshipping['price'] = $json_value->price;
+
+                    // if ($json_value->variable_name == 'price') {
+                    //     $itemshipping['price'] = $json_value[0]->variable_value;
+                    // }
+                    // if ($json_value[0]->variable_name == 'message') {
+                    //     $itemshipping['message'] = $json_value[0]->variable_value;
+                    // } else {
+                    //     $itemshipping['message'] = '';
+                    // }
                 } else {
-                    $itemshipping['message'] = '';
-                    $itemshipping['price'] = 0;
+                    $itemshipping['price'] = null;
                 }
                 $itemshipping['is_available'] = true;
             }
             $tmpshippings[] = $itemshipping;
         }
-
+// if($seller->id == 46){
+//     dd($tmpshippings);
+// }
         return $tmpshippings;
     }
 

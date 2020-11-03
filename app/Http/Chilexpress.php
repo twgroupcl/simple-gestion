@@ -346,10 +346,13 @@ class Chilexpress
 
         $originCoverages = $this->service->coverage($this->states[$originState]);
 
-        $sellerCity = strtoupper($originCommune->name);
-        $sellerCity = $this->replaceSpecialCharacters($sellerCity);
 
-        $originCommuneCoverage = collect($originCoverages->coverageAreas)->where('coverageName', $sellerCity)->first();
+
+        //$sellerCity = strtoupper($originCommune->name);
+        //$sellerCity = $this->replaceSpecialCharacters($sellerCity);
+        $sellerCity = json_decode($originCommune->shipping_code);
+
+        $originCommuneCoverage = collect($originCoverages->coverageAreas)->where('coverageName', $sellerCity[0]->value)->first();
 
         if (empty($originCommuneCoverage)) {
 
@@ -375,12 +378,14 @@ class Chilexpress
 
         $destineCoverages = $this->service->coverage($this->states[$destineState]);
 
-        $customerCity = strtoupper($destineCommune->name);
-        $customerCity = $this->replaceSpecialCharacters($customerCity);
+        //$customerCity = strtoupper($destineCommune->name);
+        //$customerCity = $this->replaceSpecialCharacters($customerCity);
+
+        $customerCity = json_decode($destineCommune->shipping_code);
 
         // If there is no coverage for the selected destine, we mark it so we can return it later
 
-        $destineCommuneCoverage = collect($destineCoverages->coverageAreas)->where('coverageName', $customerCity)->first();
+        $destineCommuneCoverage = collect($destineCoverages->coverageAreas)->where('coverageName', $customerCity[0]->value)->first();
 
         if (empty($destineCommuneCoverage)) {
             // return [
@@ -396,16 +401,18 @@ class Chilexpress
             'originCountyCode' => $originCommuneCoverage->countyCode,
             'destinationCountyCode' => $destineCommuneCoverage->countyCode,
             'package' => [
-                'weight' => $product->weight ? number_format($product->weight, 2) : '0',
-                'height' => $product->height ? number_format($product->height, 2) : '0',
-                'width' =>  $product->width ? number_format($product->width, 2) : '0',
-                'length' => $product->length ? number_format($product->length, 2) : '0',
+                'weight' => $product->weight  * $item->qty ? number_format($product->weight * $item->qty , 2) : '0',
+                'height' => $product->height * $item->qty  ? number_format($product->height * $item->qty , 2) : '0',
+                'width' =>  $product->width * $item->qty  ? number_format($product->width * $item->qty , 2) : '0',
+                'length' => $product->depth * $item->qty  ? number_format($product->depth * $item->qty , 2) : '0',
             ],
             'productType' => self::PRODUCT_TYPE_ENCOMIENDA,
             'contentType' => '1',
             'declaredWorth' => $product->price,
             'deliveryTime' => 0,
         ];
+
+
 
         $calculation = $this->service->calculate($tmpitem);
 

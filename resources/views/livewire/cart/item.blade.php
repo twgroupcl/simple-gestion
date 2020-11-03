@@ -7,10 +7,12 @@ $product = $item->product;
             class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img
                 src="{{ url($product->getFirstImagePath()) }}" alt="Product"></a>
         <div class="media-body pt-2">
-            <h3 class="product-title font-size-base mb-2"><a>{{ $product->name }}</a></h3>
+        <h3 class="product-title font-size-base mb-2"><a href="{{ route('product',['slug' => $product->url_key]) }}" target="_blank">{{ $product->name }}</a></h3>
             @if($showAttributes && filled($product->getAttributesWithNames()))
                 @foreach ($product->getAttributesWithNames() as $attribute)
-                    <div class="font-size-sm"><span class="text-muted mr-2">{{ $attribute['name'] }}:</span>{{ $attribute['value'] }}</div>
+                    @if($attribute['value'] != '* No aplica')
+                        <div class="font-size-sm"><span class="text-muted mr-2">{{ $attribute['name'] }}:</span>{{ $attribute['value'] }}</div>
+                    @endif
                 @endforeach
             @endif
             <div class="d-inline-block font-size-lg text-accent pt-2">{{ currencyFormat($product->real_price, 'CLP', true) }}
@@ -22,12 +24,18 @@ $product = $item->product;
                     <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected"
                          wire:change="$emit('select-shipping-item')" wire:init="setSelected(0)">
                         {{-- <option value="-1">Seleccione un metodo de envío</option> --}}
-
                         @foreach ($shippingMethods as $key => $shipping)
+                            @if ($shipping['is_available'] == true)
                             <option value="{{ $key }}">{{ $shipping['name'] }}
                                 @if($shipping['price'] && $shipping['price'] > 0) ({{ currencyFormat($shipping['price'] ? $shipping['price'] : 0, 'CLP', true) }})@endif
                                 @if(!empty($shipping['message'])) ({{ $shipping['message'] }}) @endif
                             </option>
+                            @else
+                            <option value="{{ $key }}">
+                                {{$shipping['message']}}
+                            </option>
+                            @endif
+
                         @endforeach
                         {{-- <option>ChileExpress ($3.500)</option>
                         <option>Envio Gratis</option> --}}
