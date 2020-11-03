@@ -13,7 +13,7 @@
 
                     @foreach ($items as $item)
                         @if($seller->id == $item->product->seller_id)
-                            @livewire('cart.item', ['item' => $item, 'showShipping'=>true , 'showAttributes' => true])
+                            @livewire('cart.item', ['item' => $item, 'showShipping'=>true , 'showAttributes' => true], key($item->id))
                         @endif
                     @endforeach
                     <!-- Product-->
