@@ -6,8 +6,12 @@
     <table class="table {{ $widget['class'] ?? '' }}">
         <thead>
             <tr>
-            @foreach ($attributes as $column => $value)
-                <th scope="col">{{$value}}</th>
+            @foreach (collect($attributes) as $column => $value)
+                @if (is_array($value))
+                    <th scope="col">{{$value['column']}}</th>
+                @else
+                    <th scope="col">{{$value}}</th>
+                @endif
             @endforeach
             </tr>
         </thead>
@@ -16,7 +20,14 @@
             @foreach ($collection as $item )
             <tr>
                 @foreach ($attributes as $attribute => $value)
-                        <td>{{ $item->$attribute }}</td>
+                @if (is_array($value))
+                    @php
+                        $name = $value['attribute'];
+                    @endphp
+                    <td>{{ $item->$attribute->$name }}</td>
+                @else
+                    <td>{{ $item->$attribute }}</td>
+                @endif
                 @endforeach
             </tr>    
             @endforeach

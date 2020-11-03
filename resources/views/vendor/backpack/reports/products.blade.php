@@ -83,7 +83,11 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
         'columns'     => [
             'name' => 'Nombre',
             'sku' => 'SKU',
-            'price' => 'Precio'
+            'price' => 'Precio',
+            'seller' => [
+                'attribute' => 'name',
+                'column' => 'Tienda'
+            ]
         ],
         'collection'  => $data['products']['top_10']
     ]),
