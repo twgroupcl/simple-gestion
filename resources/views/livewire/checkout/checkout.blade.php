@@ -124,9 +124,8 @@
                             </li>
                         @endif --}}
                         @if ($shippings && $activeStep['number'] > 2)
-
                                 @foreach ($shippings as $shipping)
-                                @if($shipping['qty']>=0)
+                                @if($shipping['qty'])
                                 <li class="d-flex justify-content-between align-items-center"><span
                                         class="mr-2">{{ $shipping['name'] }} x {{ $shipping['qty'] }}</span><span
                                         class="text-right">

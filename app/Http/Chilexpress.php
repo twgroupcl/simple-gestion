@@ -350,6 +350,11 @@ class Chilexpress
 
         //$sellerCity = strtoupper($originCommune->name);
         //$sellerCity = $this->replaceSpecialCharacters($sellerCity);
+        if(!isset($originCommune->shipping_code)){
+            $result['is_available'] = false;
+            $result['message'] =  'Comuna del vendedor no configurada';
+            return $result;
+        }
         $sellerCity = json_decode($originCommune->shipping_code);
 
         $originCommuneCoverage = collect($originCoverages->coverageAreas)->where('coverageName', $sellerCity[0]->value)->first();

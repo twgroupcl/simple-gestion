@@ -223,7 +223,7 @@ class Checkout extends Component
                     foreach ($this->shippings as $keyt => $shipping) {
                         if (intval($shipping['id']) == $item->shipping_id) {
 
-                            if (!is_null($item->shipping_total)) {
+                            if ($item->shipping_total) {
                                 $this->shippings[$keyt]['total']   += $item->shipping_total;
                             }else{
                                 $this->shippings[$keyt]['total']   = null;
