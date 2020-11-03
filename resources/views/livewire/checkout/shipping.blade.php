@@ -1,6 +1,7 @@
 <div>
     <!-- Sellers  accordion-->
     <div class="accordion mb-2" id="seller" role="tablist">
+        @if($sellers)
         @foreach ($sellers as $seller)
         <div class="card">
             <div class="card-header" role="tab">
@@ -41,6 +42,7 @@
             </div>
         </div>
         @endforeach
+        @endif
 
         {{-- <div class="card">
             <div class="card-header" role="tab">

@@ -99,7 +99,6 @@ class Item extends Component
         $this->item->update();
         //Update shipping methods
         $this->shippingMethods =  $this->getShippingMethods();
-        $this->updatedSelected(0);
         $this->addShippingItem();
         $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
         $this->emitUp('change');

@@ -163,6 +163,8 @@ class Checkout extends Component
             'qty' => 0,
 
         );
+
+
         $existShipping = array_filter( $this->shippings, function( $shipping) use($shippingSelected) {
             return $shipping['id'] == $shippingSelected['id'];
         });
@@ -214,19 +216,19 @@ class Checkout extends Component
 
             $total += $item->price * $item->qty;
             if ($this->shippings) {
-
-
-                 // $shipping = array_search($item->shipping_id, array_column($this->shippings,'id'));
+                //  $shipping = array_search($item->shipping_id, array_column($this->shippings,'id'));
+                //  dd( $this->shippings[0]);
 
                 //  if ($shipping) {
-                    foreach ($this->shippings as $key => $shipping) {
+                    foreach ($this->shippings as $keyt => $shipping) {
                         if (intval($shipping['id']) == $item->shipping_id) {
-                            if ($item->shipping_total) {
-                                $this->shippings[$key]['total']   += $item->shipping_total;
+
+                            if (!is_null($item->shipping_total)) {
+                                $this->shippings[$keyt]['total']   += $item->shipping_total;
                             }else{
-                                $this->shippings[$key]['total']   = $item->shipping_total;
+                                $this->shippings[$keyt]['total']   = null;
                             }
-                            $this->shippings[$key]['qty'] += 1;
+                            $this->shippings[$keyt]['qty'] += $item->qty;
                             $totalshipping += $item->shipping_total;
                         }
                     }
