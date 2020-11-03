@@ -15,6 +15,9 @@ class UpdateProductInventorySourcesTable extends Migration
     {
         Schema::table('product_inventory_sources', function (Blueprint $table) {
             $table->longText('json_value')->nullable();
+            $table->unsignedBigInteger('branch_id')->nullable();
+
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 

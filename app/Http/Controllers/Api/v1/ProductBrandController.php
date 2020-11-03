@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\v1;
 
 use Exception;
+use App\Rules\SlugRule;
 use Illuminate\Support\Str;
 use App\Models\ProductBrand;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Api\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class ProductBrandController extends Controller
