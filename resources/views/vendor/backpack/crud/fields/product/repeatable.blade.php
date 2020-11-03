@@ -220,7 +220,6 @@
          */
          function newCloneRepeatableElement(container, field_group, values) {
 
-             console.log('testbefores');
 
             var field_name = container.data('repeatable-identifier');
             var new_field_group = field_group.clone();
