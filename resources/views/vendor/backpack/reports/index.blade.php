@@ -36,6 +36,13 @@
 @endphp
 
 @php
+  Widget::add([
+    'type'        => 'view',
+    'view'        => 'backpack::reports.products',
+  ]);
+@endphp
+
+@php
   // Widget::add([ 
   //   'type'       => 'chart',
   //   'controller' => \App\Http\Controllers\Admin\Charts\NumberSellersApprovedChartController::class,
