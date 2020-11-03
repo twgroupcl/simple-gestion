@@ -39,7 +39,7 @@ class Shipping extends Component
 
         if (count($products_id)>0) {
             $sellers_id = Product::whereIn('id', $ids)->select('seller_id')->groupBy('seller_id')->get();
-            return Seller::whereIn('id', $sellers_id)->select('id', 'name')->get();
+            return Seller::whereIn('id', $sellers_id)->select('id', 'name', 'visible_name')->get();
         }else{
             return null;
         }

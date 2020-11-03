@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header" role="tab">
                 <h3 class="accordion-heading"><a href="#card" data-toggle="collapse"><i
-                            class="czi-store font-size-lg mr-2 mt-n1 align-middle"></i>{{$seller->name}}<span
+                            class="czi-store font-size-lg mr-2 mt-n1 align-middle"></i>{{ $seller->visible_name }}<span
                             class="accordion-indicator"></span></a></h3>
             </div>
             <div class="collapse show" id="card" data-parent="#seller" role="tabpanel">
