@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Models\Seller;
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\ProductRequest;
@@ -13,7 +14,7 @@ class ProductController extends Controller
     
     public function show(Request $request)
     {
-        $product = Product::find($request['id']);
+        $product = Product::with('categories')->find($request['id']);
 
         if (!$product) return response()->json([ 
             'status' => 'error', 
@@ -60,6 +61,18 @@ class ProductController extends Controller
         }
 
         // Validate Url key
+        $url_key = $request['url_key'] ?? Str::slug($request['name']);
+
+        $urlKeysArray = Product::where([
+            'company_id' => auth()->user()->companies->first()->id,
+        ])->pluck('url_key')->toArray();
+
+        if (in_array($url_key, $urlKeysArray)) {
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'Ya existe un producto con el url_key indicado'
+            ],  400); 
+        }
 
         // Validate Shipping dimmensions
 
@@ -76,6 +89,7 @@ class ProductController extends Controller
             $product  = Product::create([
                 'name' => $request['name'],
                 'sku' => $request['sku'],
+                'url_key' => $url_key,
                 'is_service' => $request['is_service'],
                 'use_inventory_control' => $request['use_inventory_control'],
                 'short_description' => $request['short_description'],

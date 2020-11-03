@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Rules\SlugRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -29,6 +30,7 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'sku' => 'required',
+            'url_key' => new SlugRule(),
             'categories' => 'required',
             'is_service' => 'required|boolean',
             'product_class_id' => 'required|exists:product_classes,id',
