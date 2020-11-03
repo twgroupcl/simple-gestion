@@ -25,7 +25,7 @@
                     <div class="text-center mb-4 pb-3 border-bottom">
                         <h2 class="h6 mb-3 pb-1">Total en Carro</h2>
                         <!--<h3 class="font-weight-normal">$56.<small>00</small></h3>-->
-                        <h3 class="font-weight-normal">{{ currencyFormat($total, 'CLP', true) }}</h3>
+                        <h3 class="font-weight-normal" >{{ currencyFormat($subtotal, 'CLP', true) }}</h3>
                     </div>
                     {{-- <div class="text-center mb-4 pb-3 border-bottom">
                         <h2 class="h6 mb-3 pb-1">Cupón de descuento</h2>
@@ -48,3 +48,10 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:load', function () {
+            @this.set('subtotalx',$subtotal);
+        })
+    </script>
+@endpush

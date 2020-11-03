@@ -2,14 +2,15 @@
 
 namespace App\Http\Livewire\Cart;
 
+use App\Http\Livewire\Traits\CartTrait;
 use App\Models\CartItem;
 use Livewire\Component;
 
 class Preview extends Component
 {
-    public $cart;
+    use CartTrait;
+
     public $items;
-    // public $total;
 
     protected $listeners = [
         'change' => 'change',
@@ -34,17 +35,12 @@ class Preview extends Component
 
     public function change()
     {
-        $this->emit('cart.updateSubtotal',null);
-        // $totalToValidate = $this->getTotal();
-        // $validation = \Validator::make([
-        //     'total' => $totalToValidate
-        // ] , [
-        //     'total' => 'digits_between:1,16',
-        // ]);
-        
-        // $validation->validate();
+        $this->emit('cart.updateSubtotal', null);
 
-        // $this->total = $totalToValidate;
+        if ($this->updatedCartTrait()) {
+            return;
+        }
+
     }
 
     public function deleteItem()

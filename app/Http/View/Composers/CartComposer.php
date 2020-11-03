@@ -31,15 +31,11 @@ class CartComposer
     public function compose(View $view)
     {
         $this->service = new CartService($view->getData()['cart']);
-        if ($view->getName() == 'livewire.cart.preview') {
-            
-            $view->with('total', $this->service->getSubTotal());
-        }
-
+        
         if ($view->getName() == 'livewire.checkout.checkout') {
             $view->with([
                 'subtotal' => $this->service->getSubTotal(),
-                'shippingTotal' => $this->service->getShipping()
+                'shippingTotal' => $this->service->getShipping(),
             ]);
 
         }

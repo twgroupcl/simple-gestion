@@ -19,27 +19,5 @@ class CartService
         return 2 * $this->cart->items_qty;
     }
 
-    public function getSubTotal ()
-    {
-        return  $this->getTotal();
-    }
-
-    private function getTotal(): float
-    {
-        $total = 0;
-        foreach ($this->getItems() as $item) {
-            $total += $item->price * $item->qty;
-        }
-        return $total;
-    }
-
-    /**
-     * replace for getItemsProperty???
-     *
-     * @return void
-     */
-    private function getItems()
-    {
-        return CartItem::whereCartId($this->cart->id)->get();
-    }
+    
 }

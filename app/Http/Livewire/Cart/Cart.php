@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Cart;
 
+use App\Http\Livewire\Traits\CartTrait;
 use App\Http\Livewire\Traits\Cursor;
 use \Illuminate\Session\SessionManager;
 use Illuminate\Support\Facades\Request;
@@ -17,8 +18,7 @@ class Cart extends Component
 {
     use Cursor;
 
-    public $subtotal;
-    public $cart;
+    use CartTrait;
 
     protected $listeners = [
         'cart:add' => 'add',
@@ -27,7 +27,6 @@ class Cart extends Component
 
     protected $rules = [
         'cart.sub_total' => 'digits_between:1,16',
-        'subtotal' => 'digits_between:1,16',
     ];
 
     protected $messages = [
@@ -77,12 +76,8 @@ class Cart extends Component
 
     public function updateSubtotal()
     {
-        $this->cart->recalculateSubtotal();
-        $this->cart->recalculateQtys();
+        $this->updatedCartTrait();
         
-        $this->validateOnly('cart.sub_total');
-
-        $this->cart->update();
         $this->subtotal = $this->cart->sub_total;
         $this->setCursor('not-allowed');
         if ($this->cart->cart_items->count() > 0) {
