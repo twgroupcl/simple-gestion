@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use DateTime;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
@@ -74,7 +75,8 @@ class ProductController extends Controller
             ],  400); 
         }
 
-        // Validate Shipping dimmensions
+
+        // Validate Shipping dimmensions ??
 
         // Set default currency
         $currencyId = 63;
@@ -99,6 +101,11 @@ class ProductController extends Controller
                 'prduct_brand_id' => $request['product_brand_id'],
                 'price' => $request['price'],
                 'cost' => $request['cost'],
+                
+                'special_price' => $request['special_price'],
+                'special_price_from' => isset($request['special_price_from']) ? new DateTime($request['special_price_from']) : null,
+                'special_price_to' => isset($request['special_price_to']) ? new DateTime($request['special_price_to']) : null,
+
                 'currency_id' => $currencyId,
 
                 'weight' => $request['is_service'] ? null : $request['weight'],
@@ -123,10 +130,11 @@ class ProductController extends Controller
         }
 
         // Attach categories
+        $product->categories()->attach($request['categories']);
 
         // Convert images to base64 and save it in the images_json field of the product
         // so the product observer can take care of the upload
-        if ($request->file('images')) {
+        if ( $request->file('images') ) {
             $imagesArray = [];
             foreach ($request->file('images') as $image) {
                 array_push($imagesArray, ['image' => 'data:image/jpeg;base64,' . base64_encode(file_get_contents($image))]);

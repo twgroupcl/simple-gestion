@@ -39,6 +39,13 @@ class ProductRequest extends FormRequest
             'short_description' => 'required|max:255',
             'price' => 'required|numeric|min:1',
 
+            'special_price' => 'numeric|min:1',
+            'special_price_from' => 'date_format:d-m-Y|before:special_price_to',
+            'special_price_to' => 'date_format:d-m-Y|after:special_price_from',
+
+            'categories' => 'array',
+            'categories.*' => 'numeric|exists:product_categories,id',
+
             'weight' => 'required_if:is_service,0',
             'height' => 'required_if:is_service,0',
             'width' => 'required_if:is_service,0',
@@ -80,6 +87,8 @@ class ProductRequest extends FormRequest
     {
         return [
             '*.required*' => 'Es necesario completar el campo :attribute.',
+            '*.exists' => 'El id del atributo :attribute es invalido o no existe',
+            '*.*.exists' => 'El id del atributo :attribute es invalido o no existe',
         ];
     }
 
