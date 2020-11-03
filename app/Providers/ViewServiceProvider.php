@@ -25,11 +25,11 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer([
+        /*View::composer([
             'livewire.cart.preview',
             'livewire.checkout.checkout'
         ], 
             CartComposer::class
-        );
+        );*/
     }
 }
