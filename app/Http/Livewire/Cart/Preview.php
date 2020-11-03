@@ -9,7 +9,7 @@ class Preview extends Component
 {
     public $cart;
     public $items;
-    // public $total;
+    public $total;
 
     protected $listeners = [
         'change' => 'change',
@@ -36,13 +36,13 @@ class Preview extends Component
     {
         $this->emit('cart.updateSubtotal',null);
         // $totalToValidate = $this->getTotal();
-        // $validation = \Validator::make([
-        //     'total' => $totalToValidate
-        // ] , [
-        //     'total' => 'digits_between:1,16',
-        // ]);
+        $validation = \Validator::make([
+            'total' => $this->total
+        ] , [
+            'total' => 'digits_between:1,16',
+        ]);
         
-        // $validation->validate();
+        $validation->validate();
 
         // $this->total = $totalToValidate;
     }
