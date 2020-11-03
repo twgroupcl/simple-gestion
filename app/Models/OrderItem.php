@@ -62,11 +62,11 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Payment::class);
     }
-
+*/
     public function shipping()
     {
-        return $this->belongsTo(Shipping::class);
-    }*/
+        return $this->belongsTo(ShippingMethod::class);
+    }
 
 
     /*
@@ -77,7 +77,9 @@ class OrderItem extends Model
 
     public function scopeSearch($query, $q = null)
     {
-        return $query->bySeller();
+        return $query
+            ->sold()
+            ->bySeller();
     }
 
     public function scopeBetweenDates($query, $from = null, $to = null)
@@ -97,6 +99,13 @@ class OrderItem extends Model
     public function scopeMostPurchased($query)
     {
         return $query->orderByDesc('qty')->limit(3);
+    }
+
+    public function scopeSold($query)
+    {
+        return $query->whereHas('order', function ($q) {
+            return $q->sold();
+        });
     }
 
 

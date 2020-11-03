@@ -23,7 +23,6 @@ class SearchNavbar extends Component
     
     public function render()
     {
-        //$selected = $this->selected;
         return view('livewire.search-navbar');
     }
 
@@ -34,6 +33,8 @@ class SearchNavbar extends Component
 
     public function loadCategories() 
     {
-        $this->categories = ProductCategory::orderBy('name','ASC')->get();
+        $this->categories = ProductCategory::whereHas('products', function ($query) {
+            return $query->where('id', '<>', '');
+        })->orderBy('name','ASC')->get();
     }
 }

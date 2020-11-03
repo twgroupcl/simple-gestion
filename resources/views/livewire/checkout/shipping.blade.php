@@ -1,6 +1,7 @@
 <div>
     <!-- Sellers  accordion-->
     <div class="accordion mb-2" id="seller" role="tablist">
+        @if($sellers)
         @foreach ($sellers as $seller)
         <div class="card">
             <div class="card-header" role="tab">
@@ -13,7 +14,7 @@
 
                     @foreach ($items as $item)
                         @if($seller->id == $item->product->seller_id)
-                            @livewire('cart.item', ['item' => $item, 'showShipping'=>true , 'showAttributes' => true])
+                            @livewire('cart.item', ['item' => $item, 'showShipping'=>true , 'showAttributes' => true], key($item->id))
                         @endif
                     @endforeach
                     <!-- Product-->
@@ -41,6 +42,7 @@
             </div>
         </div>
         @endforeach
+        @endif
 
         {{-- <div class="card">
             <div class="card-header" role="tab">

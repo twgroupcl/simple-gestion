@@ -50,7 +50,11 @@ class CustomerController extends Controller
 
         if (Auth::attempt($credentials)) {
             if(!Auth::user()->hasRole('Cliente Marketplace')) {
-                Auth::logout();
+                if(Auth::user()->hasRole(['Super admin', 'Administrador negocio', 'Vendedor marketplace', 'Supervisor Marketplace'])) {
+                    return redirect('admin');
+                } else {
+                    Auth::logout();
+                }
             }
 
             return redirect('home');

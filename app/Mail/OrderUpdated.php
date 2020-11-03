@@ -45,10 +45,12 @@ class OrderUpdated extends Mailable
             $this->orderData['first_name'] =  $order->first_name;
             $this->orderData['last_name'] =  $order->last_name;
             $this->orderData['cellphone'] =  $order->cellphone;
+            $this->orderData['email'] =  $order->email;
 
 
 
             $addressData = $order->json_value;
+
 
 
             $this->addressShipping = null;
