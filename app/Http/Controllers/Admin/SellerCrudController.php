@@ -580,6 +580,13 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'description',
+            'type'  => 'textarea',
+            'label' => 'Información de la tienda',
+            'tab' => 'SEO',
+        ]);
+
+        CRUD::addField([
             'name' => 'payments_data',
             'type' => 'repeatable',
             'label' => 'Métodos de pago',

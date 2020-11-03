@@ -38,8 +38,11 @@
                 <div class="cz-sidebar-static h-100 border-right">
                     <h6>Categoría</h6>
                     <p class="font-size-ms text-muted">{{ $seller->seller_category->name }}</p>
-                    <h6>Acerca de la tienda</h6>
-                    @if($seller->return_policy)
+                    @if($seller->description)
+                        <h6>Información</h6>
+                        <p>{{$seller->description}}</p>
+                    @endif
+                    @if($seller->privacy_policy)
                         <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
                         <br>
                     @endif
@@ -47,7 +50,7 @@
                         <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
                         <br>
                     @endif
-                    @if($seller->privacy_policy)
+                    @if($seller->return_policy)
                         <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
                     @endif
                     <hr class="my-4">
@@ -114,19 +117,7 @@
                     <!-- Products grid-->
                     <div class="row mx-n2">
                         <!-- Product-->
-                        @if(empty($products[0]))
-                            <p>Esta tienda no posee productos</p>
-                        @else
-                            @foreach ($products as $product)
-                            @php
-                                if ($product->parent()->count()) continue;
-                            @endphp
-                                <div class="col-md-4 col-sm-6 px-2 mb-4">
-                                    @livewire('products.product', ['product' => $product], key($product->id))
-                                    <hr class="d-sm-none">
-                                </div>
-                            @endforeach
-                        @endif
+                        @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 8, 'showFrom' => $render['view'], 'valuesQuery' => $data])
                     </div>
                 </div>
             </section>

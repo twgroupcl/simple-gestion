@@ -31,6 +31,9 @@ class CardGeneral extends Component
             case 'searchCategory': 
                 $render = [ 'products' => $this->getProductsByCategory($this->valuesQuery)];
                 break;
+            case 'seller': 
+                $render = [ 'products' => $this->searchSeller($this->valuesQuery)];
+                break;
             default:
                 if ( empty($this->showFrom) ) {
                     $render = [ 'products' => $this->getProducts()];
@@ -39,7 +42,6 @@ class CardGeneral extends Component
                 }
                 break;
         } 
-
        /*  $render = [
             'products' => (!empty($this->showFrom)) ? (($this->showFrom == 'searchCategory') ? $this->getProductsByCategory($this->valuesQuery) : $this->searchProduct($this->valuesQuery)) : $this->getProducts()
         ]; 
@@ -74,6 +76,11 @@ class CardGeneral extends Component
     public function getProductsByCategory($data)
     {
         return $this->baseQuery(false, $data['category']);
+    }
+
+    public function searchSeller($data)
+    {
+        return $this->baseQuery(false, null, null, $data);
     }
 
     public function paginationView()
@@ -115,11 +122,10 @@ class CardGeneral extends Component
             })
             ->when($seller_id, function ($query) use ($seller_id) {
                 if ($seller_id != 0) {
-                    return $query->whereHas('sellers', function ($q) use ($seller_id) {
+                    return $query->whereHas('seller', function ($q) use ($seller_id) {
                         $q->where('id', '=', $seller_id);
                     });
                 }
-
                 return $query;
             })
             ->paginate($this->paginateBy);
