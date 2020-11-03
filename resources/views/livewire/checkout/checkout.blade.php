@@ -124,15 +124,18 @@
                             </li>
                         @endif --}}
                         @if ($shippings && $activeStep['number'] > 2)
+
                                 @foreach ($shippings as $shipping)
+                                @if($shipping['qty']>=0)
                                 <li class="d-flex justify-content-between align-items-center"><span
                                         class="mr-2">{{ $shipping['name'] }} x {{ $shipping['qty'] }}</span><span
                                         class="text-right">
-                                        @if($shipping['total'])
+                                        @if(!is_null($shipping['total']))
                                         {{ currencyFormat($shipping['total'] ? $shipping['total'] : 0, 'CLP', true) }}
                                         @endif
                                     </span>
                                 </li>
+                                @endif
                             @endforeach
                         @endif
                     </ul>

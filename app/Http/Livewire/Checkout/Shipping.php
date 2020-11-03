@@ -56,6 +56,7 @@ class Shipping extends Component
 
     public function change()
     {
+        $this->sellers = $this->getSellers();
         $this->emit('cart.updateSubtotal',null);
         $this->emitUp('updateTotals');
 
