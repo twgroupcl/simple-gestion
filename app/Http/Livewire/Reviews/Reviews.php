@@ -34,11 +34,11 @@ class Reviews extends Component
         $stars['two'] = $this->getRatedReview(2);
         $stars['one'] = $this->getRatedReview(1);
 
-        $stars['five_percentage'] = $this->percentage(5);
-        $stars['four_percentage'] = $this->percentage(4);
-        $stars['three_percentage'] = $this->percentage(3);
-        $stars['two_percentage'] = $this->percentage(2);
-        $stars['one_percentage'] = $this->percentage(1);
+        $stars['five_percentage'] = $this->percentage($stars['five']);
+        $stars['four_percentage'] = $this->percentage($stars['four']);
+        $stars['three_percentage'] = $this->percentage($stars['three']);
+        $stars['two_percentage'] = $this->percentage($stars['two']);
+        $stars['one_percentage'] = $this->percentage($stars['one']);
 
         $this->stars = $stars;
     }
