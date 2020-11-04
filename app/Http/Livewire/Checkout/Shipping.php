@@ -95,47 +95,51 @@ class Shipping extends Component
                 $itemShipping['shipping']['totalPrice'] = 0;
                 $itemShipping['shipping']['totalShippingPackage'] = 0;
                 foreach ($shippingValue as $item) {
+
                     $itemShipping['shipping']['totalShippingPackage'] += 1;
+                    $itemShipping['shipping']['isService'] = $item->product->is_service;
                     $itemShipping['shipping']['totalWidth'] += $item->width * $item->qty;
                     $itemShipping['shipping']['totalHeight'] += $item->height * $item->qty;
                     $itemShipping['shipping']['totalDepth'] += $item->depth * $item->qty;
                     $itemShipping['shipping']['totalWeight'] += $item->weight * $item->qty;
                     $itemShipping['shipping']['totalPrice'] += $item->price * $item->qty;
                 }
-                if ($shippingMethod->code == 'chilexpress') {
-                    $chilexpress = new Chilexpress();
-                    $communeOrigin = $seller->addresses_data[0]['commune_id'];
-                    $communeDestine = $this->cart->address_commune_id;
-                    $chilexpressResult = $chilexpress->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);
-                    $resultitem = json_decode(json_encode($chilexpressResult['item']), false);
-                    $itemShipping['shipping']['totalPrice'] = $resultitem->service->serviceValue;
+                if ($itemShipping['shipping']['isService'] == 0) {
+                    if ($shippingMethod->code == 'chilexpress') {
+                        $chilexpress = new Chilexpress();
+                        $communeOrigin = $seller->addresses_data[0]['commune_id'];
+                        $communeDestine = $this->cart->address_commune_id;
 
-                } else {
-                    if (is_null($itemShipping['shipping']['pricePackpage'])) {
-                        $itemShipping['shipping']['totalPrice'] = null;
+                        $chilexpressResult = $chilexpress->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);
+
+                        $resultitem = json_decode(json_encode($chilexpressResult['item']), false);
+
+                        $itemShipping['shipping']['totalPrice'] = $resultitem->service->serviceValue;
                     } else {
-                        $itemShipping['shipping']['totalPrice'] = $itemShipping['shipping']['pricePackpage'] * $itemShipping['shipping']['totalShippingPackage'];
+                        if (is_null($itemShipping['shipping']['pricePackpage'])) {
+                            $itemShipping['shipping']['totalPrice'] = null;
+                        } else {
+                            $itemShipping['shipping']['totalPrice'] = $itemShipping['shipping']['pricePackpage'] * $itemShipping['shipping']['totalShippingPackage'];
+                        }
                     }
+
+                    if ($itemShipping['shipping']['totalPrice']) {
+                        $firstItemSeller = CartItem::whereCartId($this->cart->id)->with('product')->get();
+                        $itemsSeller = $firstItemSeller->where('product.seller_id', $sellerKey);
+                        CartItem::whereIn('id', $itemsSeller->pluck('id')->toArray())->update(['shipping_total' => null]);
+
+                        CartItem::where('id', $itemsSeller->pluck('id')->first())->update(['shipping_total' => $itemShipping['shipping']['totalPrice']]);
+
+                        //$itemsSeller->shipping_total= null;
+                        // $itemsSeller = $itemsSeller->map(function($item) {
+                        //       $item->shipping_total = null;
+                        //       return $item;
+                        // });
+                        // dd($itemsSeller);
+                        //$itemsSeller->update();
+                    }
+                    array_push($itemShippingSeller, $itemShipping);
                 }
-
-                if ($itemShipping['shipping']['totalPrice']) {
-                    $firstItemSeller = CartItem::whereCartId($this->cart->id)->with('product')->get();
-                    $itemsSeller = $firstItemSeller->where('product.seller_id', $sellerKey);
-                    CartItem::whereIn('id', $itemsSeller->pluck('id')->toArray())->update(['shipping_total' => null]);
-
-                    CartItem::where('id', $itemsSeller->pluck('id')->first())->update(['shipping_total' => $itemShipping['shipping']['totalPrice']]);
-
-                    //$itemsSeller->shipping_total= null;
-                    // $itemsSeller = $itemsSeller->map(function($item) {
-                    //       $item->shipping_total = null;
-                    //       return $item;
-                    // });
-                    // dd($itemsSeller);
-                    //$itemsSeller->update();
-
-
-                }
-                array_push($itemShippingSeller, $itemShipping);
 
             }
 

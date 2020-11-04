@@ -185,6 +185,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                 <p><strong>Precio : </strong>{{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}
                 </p>
                 <p><strong>Cantidad : </strong>{{ $item->qty }}</p>
+                @if($product->is_service == 0)
                 <p><strong>Envío :</strong>
                     {{ $item->shipping->title ?? '' }}
                     {{-- @if ($item->shipping_total == 0)
@@ -193,6 +194,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                         {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}
                     @endif --}}
                 </p>
+                @endif
             </td>
             <td width="30%" align="right" class="product-item">
                 <p> {{ currencyFormat($item->price * $item->qty + $item->shipping_total * $item->qty ? $item->price * $item->qty + $item->shipping_total * $item->qty : 0, 'CLP', true) }}

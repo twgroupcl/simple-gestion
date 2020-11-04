@@ -148,6 +148,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                                                 class="woocommerce-Price-currencySymbol">{{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}</span></span>
                                                                         <span class="text-muted">× {{ $item->qty }}</span>
                                                                         <br>
+                                                                        @if($product->is_service == 0)
                                                                         <span class=" mr-1"><span
                                                                                 class="text-muted">Envío
                                                                             </span>
@@ -161,6 +162,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                                                     class="woocommerce-Price-currencySymbol">{{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}</span>
                                                                             @endif --}}
                                                                         </span>
+                                                                        @endif
 
                                                                 </div>
                                                             </div>

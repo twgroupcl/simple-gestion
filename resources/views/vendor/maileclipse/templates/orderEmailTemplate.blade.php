@@ -390,17 +390,19 @@ use App\Models\Product;
                                                                             </td>
                                                                             <td class="mobile-block"
                                                                                 style="text-align: center; font-size: 0.8em">
-                                                                                @if ($item->shipping_total == 0)
-                                                                                    <br>
-                                                                                    @if ($item->shipping_method)
-                                                                                        ({{ $item->shipping_method->title }})
-                                                                                    @endif
+                                                                                @if($product->is_service == 0)
+                                                                                    @if ($item->shipping_total == 0)
+                                                                                        <br>
+                                                                                        @if ($item->shipping_method)
+                                                                                            ({{ $item->shipping_method->title }})
+                                                                                        @endif
 
-                                                                                @else
-                                                                                    @if ($item->shipping_method)
-                                                                                        ({{ $item->shipping_method->title }})
+                                                                                    @else
+                                                                                        @if ($item->shipping_method)
+                                                                                            ({{ $item->shipping_method->title }})
+                                                                                        @endif
+                                                                                        {{-- {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }} --}}
                                                                                     @endif
-                                                                                    {{-- {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }} --}}
                                                                                 @endif
 
                                                                             </td>
