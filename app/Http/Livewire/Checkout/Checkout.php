@@ -240,7 +240,16 @@ class Checkout extends Component
             }
 
         }
-        $total += $totalshipping;
+
+        if ($this->shippingtotals) {
+            foreach ($this->shippingtotals as $shippingtotal) {
+                if (!is_null($shippingtotal['totalPrice'])) {
+                    $total += $shippingtotal['totalPrice'];
+                }
+            }
+        }
+
+//        $total += $totalshipping;
         if ($total <= 0) {
             $total = 0;
             $subtotal = 0;
@@ -408,6 +417,7 @@ class Checkout extends Component
         }
 
         $this->shippingtotals = $itemShippingTotal;
+        $this->emit('change');
 
     }
 
