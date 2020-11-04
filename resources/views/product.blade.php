@@ -618,8 +618,10 @@
         <div class="row">
             <!-- Reviews list-->
             <livewire:reviews.review-list>
-            <!-- Leave review form-->
-            <livewire:reviews.form :product="$product">
+            @auth
+                <!-- Leave review form-->
+                <livewire:reviews.form :product="$product">
+            @endauth
         </div>
     </div>
 </div>
