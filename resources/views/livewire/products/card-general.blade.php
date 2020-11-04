@@ -1,9 +1,9 @@
 <div>
     @if(count($products))
     <div class="row">
-        @foreach($products as $product)
-            <div class="col-lg-{{$columnLg}} col-md-4 col-sm-6 px-2 mb-4">
-                @livewire('products.product', ['product' => $product], key($product->id))
+        @foreach($products as $key => $product)
+            <div class="col-lg-{{$columnLg}} col-md-4 col-sm-6 px-2 mb-4" wire:key="{{ $key }}">
+                @livewire('products.product', ['product' => $product], key($product->id . $key))
             </div>
             <hr class="d-sm-none">
             @endforeach
