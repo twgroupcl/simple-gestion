@@ -38,10 +38,10 @@ class Cart extends Component
     {
         $this->cart = $this->getCart();
         $this->subtotal = $this->cart->sub_total ?? 0;
-        
+
         if (!isset($this->cart->cart_items) || $this->cart->cart_items->count() == 0) {
             $this->setCursor('not-allowed');
-        } 
+        }
     }
 
     public function add(Request $request, Product $product, $qty = 1)
@@ -54,7 +54,7 @@ class Cart extends Component
 
         DB::beginTransaction();
         try {
-            
+
             $status = $this->addItem($product, $qty);
 
             if (!$status) {
@@ -72,14 +72,14 @@ class Cart extends Component
         } catch (Exception $e) {
             DB::rollBack();
         }
-        
+
     }
 
     public function updateSubtotal()
     {
         $this->cart->recalculateSubtotal();
         $this->cart->recalculateQtys();
-        
+
         $this->validateOnly('cart.sub_total');
 
         $this->cart->update();
@@ -88,7 +88,7 @@ class Cart extends Component
         if ($this->cart->cart_items->count() > 0) {
             $this->setCursor('auto');
         }
-        
+
         $this->emit('dropdown.update');
         $count = $this->cart->items_count;
         $this->emit('cart-counter.setCount', $count);
@@ -111,9 +111,9 @@ class Cart extends Component
         }
 
         $item = $this->cart->cart_items->where('product_id', $product->id)->first();
-        
+
         if ($item !== null) {
-            // @todo QtySelector display total in cart. 
+            // @todo QtySelector display total in cart.
             // in that case this is not necessary to repeat
             if ( ! $product->haveSufficientQuantity( $item->qty + $qty )) {
                 $this->emit('showToast', '¡Stock insuficiente!', 'No se ha podido añadir al carro.', 3000, 'warning');
@@ -148,14 +148,14 @@ class Cart extends Component
 
             $item->qty = $item->qty + $qty;
             $item->sub_total = $item->price * $item->qty;
-            
+
             $item->update();
             $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
 
             return true;
 
         } else {
-            
+
             $data = [
                 'cart_id' => $this->cart->id,
                 'product_id' => $product->id,
@@ -168,6 +168,7 @@ class Cart extends Component
                 'depth' => $product->depth,
                 'weight' => $product->weight,
                 'sub_total' => $product->real_price * $qty,
+                'shipping_id' => $product->seller->shippingmethods->first()->id,
                 /*'sub_total' => ,
                 'shipping_total' => ,
                 'discount_total' => ,
@@ -218,7 +219,7 @@ class Cart extends Component
             }
 
             $item = CartItem::create($data);
-            
+
             $this->cart->items_count ++;
             $this->emit('showToast', '¡Añadido al carro!', 'Has añadido un producto al carro.', 3000, 'success');
             return true;

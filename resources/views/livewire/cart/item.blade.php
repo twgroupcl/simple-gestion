@@ -19,11 +19,11 @@ $product = $item->product;
                 <!--$154.<small>00</small>-->
             </div>
             <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="{{'seller-shop/'.$product->seller->id}}">por {{$product->seller->visible_name}}</a>
-            @if ($shippingMethods)
+            {{-- @if ($shippingMethods)
                 <div class="select-shipping mb-0 pt-2">
                     <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected"
                          wire:change="$emit('select-shipping-item')" wire:init="setSelected(0)">
-                        {{-- <option value="-1">Seleccione un metodo de envío</option> --}}
+
                         @foreach ($shippingMethods as $key => $shipping)
                             @if ($shipping['is_available'] == true)
                             <option value="{{ $key }}">{{ $shipping['name'] }}
@@ -37,12 +37,24 @@ $product = $item->product;
                             @endif
 
                         @endforeach
-                        {{-- <option>ChileExpress ($3.500)</option>
-                        <option>Envio Gratis</option> --}}
                     </select>
                 </div>
-            @endif
+            @endif --}}
 
+            @if ($showShipping &&  $sellerShippingMethods)
+
+
+            <div class="select-shipping mb-0 pt-2">
+                <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected"
+
+                     wire:init="setSelected({{ $item->shipping_id ? $item->shipping_id: 0}})">
+
+                    @foreach ($sellerShippingMethods as $key => $shipping)
+                        <option value="{{ $shipping->id }}">{{ $shipping->title }}  </option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
         </div>
 
     </div>

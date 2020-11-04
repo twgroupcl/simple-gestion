@@ -12,6 +12,7 @@ class ConfigurableDetail extends Component
     public $options = [];
     public $selectedChildrenId;
     public $priceFrom;
+    public $currentProductChange = false;
 
     public function render()
     {
@@ -63,6 +64,8 @@ class ConfigurableDetail extends Component
 
     public function updatedOptions($value, $index)
     {
+        $tempCurrent = $this->currentProduct;
+
         $this->loadNextSelect(explode(".", $index)[0]);
 
         $this->setCorrectOption();
@@ -86,11 +89,16 @@ class ConfigurableDetail extends Component
         if (!empty($selectedChildren)) {
             $this->selectedChildrenId = $selectedChildren->id;
             $this->currentProduct = $selectedChildren;
-            //dd($this->currentProduct);
             $this->emit('addToCart.setProduct', $this->currentProduct);
         } else {
             $this->selectedChildrenId = null;
             $this->currentProduct = $this->parentProduct;
+        }
+
+        if ($tempCurrent->id == $this->currentProduct->id) {
+            $this->currentProductChange = false;
+        } else {
+            $this->currentProductChange = true;
         }
     }
 
@@ -161,5 +169,18 @@ class ConfigurableDetail extends Component
     public function getPriceFrom()
     {
         $this->priceFrom = $this->parentProduct->children->pluck('real_price')->sort()->first();
+    }
+
+    public function initializeGallery()
+    {
+        $this->dispatchBrowserEvent('initialize-gallery');
+    }
+
+    public function dehydrate()
+    {
+        if ($this->currentProductChange) {
+            $this->initializeGallery();
+        }
+        $this->currentProductChange = false;
     }
 }

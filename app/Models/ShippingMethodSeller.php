@@ -34,10 +34,10 @@ class ShippingMethodSeller extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function shipping_method()
-    {
-        return $this->belongsTo(ShippingMethod::class);
-    }
+    // public function shipping_method()
+    // {
+    //     return $this->belongsTo(ShippingMethod::class);
+    // }
 
     /*
     |--------------------------------------------------------------------------
