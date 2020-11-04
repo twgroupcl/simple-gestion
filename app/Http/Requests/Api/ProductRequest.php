@@ -13,7 +13,7 @@ class ProductRequest extends FormRequest
 
     private $prepareData = [
         'warehouse',
-        'custom_attributes',
+        'extra_attributes',
     ];
 
     /**
@@ -38,12 +38,13 @@ class ProductRequest extends FormRequest
             'sku' => 'required',
             'url_key' => new SlugRule(),
             'categories' => 'required',
-            'is_service' => 'required|boolean',
             'product_class_id' => 'required|exists:product_classes,id',
-            'product_type_id' => 'required|exists:product_types,id',
+            'type' => 'in:simple,configurable',
             'product_brand_id' => 'numeric|exists:product_brands,id',
             'short_description' => 'required|max:255',
+            //'product_type_id' => 'required|exists:product_types,id',
             //'price' => 'required|numeric|min:1',
+            //'is_service' => 'required|boolean',
 
             'special_price' => 'numeric|min:1',
             'special_price_from' => 'date_format:d-m-Y|before:special_price_to',
@@ -52,16 +53,16 @@ class ProductRequest extends FormRequest
             'categories' => 'array',
             'categories.*' => 'numeric|exists:product_categories,id',
 
-            'warehouse' => 'required_if:use_inventory_control,1',
-            'warehouse_array' => 'required_if:use_inventory_control,1|array',
-            'warehouse_validation.*.code' => 'required_if:use_inventory_control,1|exists:product_inventory_sources,code',
-            'warehouse_validation.*.stock' => 'required_if:use_inventory_control,1|numeric',
-            'warehouse_validation.*.price' => 'required_if:use_inventory_control,1|numeric',
-            'warehouse_validation.*.shipping_type' => 'required_if:use_inventory_control,1|exists:shipping_methods,id',
+            'warehouse' => 'required',
+            'warehouse_array' => 'required|array',
+            'warehouse_validation.*.code' => 'required|exists:product_inventory_sources,code',
+            'warehouse_validation.*.stock' => 'required|numeric',
+            'warehouse_validation.*.price' => 'required|numeric',
+            'warehouse_validation.*.shipping_type' => 'required|exists:shipping_methods,id',
 
-            'custom_attributes_array' => 'array',
-            'custom_attributes_validation.*.code' => 'required_with:custom_attributes',
-            'custom_attributes_validation.*.value' => 'required_with:custom_attributes',
+            'extra_attributes_array' => 'array',
+            'extra_attributes_validation.*.code' => 'required_with:extra_attributes',
+            'extra_attributes_validation.*.value' => 'required_with:extra_attributes',
 
             'new' => 'boolean',
             'featured' => 'boolean',
@@ -69,15 +70,15 @@ class ProductRequest extends FormRequest
             'visible_from' => 'date',
             'visible_to' => 'date',
 
-            'weight' => 'required_if:is_service,0',
-            'height' => 'required_if:is_service,0',
-            'width' => 'required_if:is_service,0',
-            'depth' => 'required_if:is_service,0',
+            'weight' => 'required',
+            'height' => 'required',
+            'width' => 'required',
+            'depth' => 'required',
             
             'images.*' => 'image|mimes:jpeg,png,jpg',
             'status' => 'boolean',
 
-            'use_inventory_control' => [
+            /* 'use_inventory_control' => [
                 'required',
                 'boolean',
                 function ($attribute, $value, $fail) {
@@ -88,7 +89,7 @@ class ProductRequest extends FormRequest
                         }
                     }
                 }
-            ],
+            ], */
         ];
     }
 

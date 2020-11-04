@@ -11,6 +11,8 @@ use Illuminate\Database\QueryException;
 class ProductService
 {
 
+    const USE_INVENTORY_CONTROL_BY_DEFAULT = true;
+
     public function validateUniqueSku($sku, $sellerId, $companyId)
     {
         $productsSku = Product::where([
@@ -35,12 +37,26 @@ class ProductService
     }
 
     public function createSimpleProduct($request)
-    {   
+    {
+        
+        if (self::USE_INVENTORY_CONTROL_BY_DEFAULT) {
+            $use_inventory_control = 1;
+            $is_service = 0;
+        }
 
         $warehouses = json_decode($request['warehouse']);
         $companyId = auth()->user()->companies->first()->id;
-        $products = []; 
+        $products = [];
 
+        $type = ( $request['type'] == 'simple') ? Product::PRODUCT_TYPE_SIMPLE : Product::PRODUCT_TYPE_CONFIGURABLE;
+
+        // Validate unique warehouses
+        $warehousCodes = collect($warehouses)->pluck('code');
+
+        if ( $warehousCodes->duplicates()->count() ) {
+            return [ 'status' => false, 'message' =>  'El codigo de cada bodega debe ser unico', 'status_response' => 'error']; 
+        }
+    
         // Crear un producto por cada bodega
         foreach ($warehouses as $warehouse) {
     
@@ -80,9 +96,9 @@ class ProductService
             $currencyId = 63;
 
             // Custom attributes
-            if ($request['custom_attributes']) {
+            if ($request['extra_attributes']) {
 
-                $attributes_json = json_decode($request['custom_attributes']);
+                $attributes_json = json_decode($request['extra_attributes']);
                 $attributes = [];
 
                 foreach ($attributes_json as $attributeData) {
@@ -90,6 +106,8 @@ class ProductService
                         'json_attributes->code' => $attributeData->code,
                         'product_class_id' => $request['product_class_id'],
                     ])->first();
+                    
+                    // @todo si el atributo es de tipo select, verificar que el value existe entre las opciones
 
                     if (!$attribute) {
                         return [ 'status' => false, 'message' =>  'El atributo ' . $attributeData->code . ' no existe o es invalido', 'status_response' => 'error'];
@@ -110,13 +128,13 @@ class ProductService
                     'name' => $request['name'],
                     'sku' => $request['sku'],
                     'url_key' => $finalUrlKey,
-                    'is_service' => $request['is_service'],
-                    'use_inventory_control' => $request['use_inventory_control'],
+                    'is_service' => $is_service,
+                    'use_inventory_control' => $use_inventory_control,
                     'short_description' => $request['short_description'],
                     'description' =>  $request['description'],
                     'price' => $warehouse->price,
                     
-                    'product_type_id' => $request['product_type_id'],
+                    'product_type_id' => $type,
                     'product_class_id' => $request['product_class_id'],
                     'prduct_brand_id' => $request['product_brand_id'],
                     
@@ -126,10 +144,10 @@ class ProductService
 
                     'currency_id' => $currencyId,
 
-                    'weight' => $request['is_service'] ? null : $request['weight'],
-                    'height' => $request['is_service'] ? null : $request['height'],
-                    'width' => $request['is_service'] ? null : $request['width'],
-                    'depth' => $request['is_service'] ? null : $request['depth'],
+                    'weight' => $is_service ? null : $request['weight'],
+                    'height' => $is_service ? null : $request['height'],
+                    'width' => $is_service ? null : $request['width'],
+                    'depth' => $is_service ? null : $request['depth'],
 
                     'new' => $request['new'],
                     'featured' => $request['featured'],
@@ -152,6 +170,9 @@ class ProductService
 
             // Save categories
             $product->categories()->attach($request['categories']);
+            
+            // Save Shipping Methods
+            $product->shipping_methods()->attach($warehouse->shipping_type);
 
             if ( $request->file('images') ) {
                 $imagesArray = [];
@@ -164,7 +185,7 @@ class ProductService
             }
 
             // Save attributes and inventories
-            $product->attributes_json = isset($request['custom_attributes']) ? $attributes : null; 
+            $product->attributes_json = isset($request['extra_attributes']) ? $attributes : null; 
             $product->inventories_json = $inventories;
 
             // Update product
