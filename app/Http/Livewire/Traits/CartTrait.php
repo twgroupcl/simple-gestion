@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire\Traits;
 
-use App\Services\CartService;
-
 trait CartTrait
 {
     public $cart;

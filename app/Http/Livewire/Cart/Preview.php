@@ -37,9 +37,7 @@ class Preview extends Component
     {
         $this->emit('cart.updateSubtotal', null);
 
-        if ($this->updatedCartTrait()) {
-            return;
-        }
+        $this->updatedCartTrait();
 
     }
 

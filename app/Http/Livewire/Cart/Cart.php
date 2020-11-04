@@ -60,10 +60,6 @@ class Cart extends Component
                 DB::rollBack();
             }
 
-            if (!$status) {
-                DB::rollBack();
-            }
-
             $status = $this->updateSubtotal();
 
             DB::commit();
@@ -120,6 +116,17 @@ class Cart extends Component
                     function ($attribute, $value, $fail) use ($qty) {
                         if (($value + $qty) > 9999) {
                             $fail('No se puede superar el límite de cantidad.');
+                        }
+                    },
+                    function ($attribute, $value, $fail) use ($itemToValidate, $qty) {
+                        $itemsQty = CartItem::whereCartId($itemToValidate['cart_id'])->get()->sum(function ($currentItem) use($itemToValidate, $qty){
+                            if($currentItem->id != $itemToValidate['id']) {
+                                return $currentItem->qty;
+                            }
+                        });
+                        $itemsQty += $qty;
+                        if ($itemsQty > 9999) {
+                            $fail('Supera los límites de cantidad total de items.');
                         }
                     }
                 ],
@@ -192,6 +199,15 @@ class Cart extends Component
                     function ($attribute, $value, $fail) {
                         if (($value) > 9999) {
                             $fail('No se puede superar el límite de cantidad.');
+                        }
+                    },
+                    function ($attribute, $value, $fail) use ($data) {
+                        $itemsQty = CartItem::whereCartId($data['cart_id'])->get()->sum(function ($currentItem) use($data, $value){
+                                return $currentItem->qty;
+                        });
+                        $itemsQty += $value;
+                        if ($itemsQty > 9999) {
+                            $fail('Supera los límites de cantidad total de items.');
                         }
                     }
                 ],
