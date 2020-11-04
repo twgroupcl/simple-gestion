@@ -619,7 +619,7 @@
             <!-- Reviews list-->
             <livewire:reviews.review-list>
             <!-- Leave review form-->
-            <livewire:reviews.form>
+            <livewire:reviews.form :product="$product">
         </div>
     </div>
 </div>
