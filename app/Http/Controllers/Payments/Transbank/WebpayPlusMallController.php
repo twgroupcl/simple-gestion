@@ -47,7 +47,7 @@ class WebpayPlusMallController extends Controller
 
         $configuration = new Configuration();
 
-        $configuration->setEnvironment('PRODUCCION');
+      //  $configuration->setEnvironment('PRODUCCION');
         $configuration->setCommerceCode($wpmConfig[0]->variable_value);
         $configuration->setPublicCert($wpmConfig[1]->variable_value);
         $configuration->setPrivateKey($wpmConfig[2]->variable_value);
@@ -104,7 +104,7 @@ class WebpayPlusMallController extends Controller
 
                 $product = Product::find($item->product_id);
                 if ($seller->id === $product->seller->id) {
-                    $totalsBySeller[$key]['amount'] += ($item->price * $item->qty) + ($item->shipping_total * $item->qty);
+                    $totalsBySeller[$key]['amount'] += ($item->price * $item->qty) + ($item->shipping_total);
                 }
             }
         }
