@@ -117,12 +117,29 @@ class Shipping extends Component
                         $itemShipping['shipping']['totalPrice'] = $itemShipping['shipping']['pricePackpage'] * $itemShipping['shipping']['totalShippingPackage'];
                     }
                 }
+
+                if ($itemShipping['shipping']['totalPrice']) {
+                    $firstItemSeller = CartItem::whereCartId($this->cart->id)->with('product')->get();
+                    $itemsSeller = $firstItemSeller->where('product.seller_id', $sellerKey);
+                    CartItem::whereIn('id', $itemsSeller->pluck('id')->toArray())->update(['shipping_total' => null]);
+
+                    CartItem::where('id', $itemsSeller->pluck('id')->first())->update(['shipping_total' => $itemShipping['shipping']['totalPrice']]);
+
+                    //$itemsSeller->shipping_total= null;
+                    // $itemsSeller = $itemsSeller->map(function($item) {
+                    //       $item->shipping_total = null;
+                    //       return $item;
+                    // });
+                    // dd($itemsSeller);
+                    //$itemsSeller->update();
+
+
+                }
                 array_push($itemShippingSeller, $itemShipping);
 
             }
 
             array_push($this->sellersShippings, $itemShippingSeller);
-
 
         }
         $this->emitUp('update-shipping-totals', $this->sellersShippings);

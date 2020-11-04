@@ -400,7 +400,7 @@ use App\Models\Product;
                                                                                     @if ($item->shipping_method)
                                                                                         ({{ $item->shipping_method->title }})
                                                                                     @endif
-                                                                                    {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}
+                                                                                    {{-- {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }} --}}
                                                                                 @endif
 
                                                                             </td>
