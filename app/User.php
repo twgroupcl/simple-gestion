@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Branch;
+use App\Models\Seller;
 use App\Models\Company;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -148,5 +149,10 @@ class User extends Authenticatable implements JWTSubject
     public function branches()
     {
         return $this->belongsToMany(Branch::class, 'branch_users')->withPivot(['is_default', 'branch_id']);
+    }
+
+    public function seller()
+    {
+        return $this->hasOne(Seller::class);
     }
 }
