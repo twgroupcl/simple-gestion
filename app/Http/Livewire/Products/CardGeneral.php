@@ -20,10 +20,10 @@ class CardGeneral extends Component
     public $showFrom = '';
     public $sortingField = null;
     public $sortingDirection = null;
+    public $renderIn = null;
 
     public function render()
     {
-
         switch($this->showFrom) {
             case 'shop-general': 
                 $render = [ 'products' => $this->getProductsNoRandom()];
@@ -42,20 +42,18 @@ class CardGeneral extends Component
                 }
                 break;
         } 
-       /*  $render = [
-            'products' => (!empty($this->showFrom)) ? (($this->showFrom == 'searchCategory') ? $this->getProductsByCategory($this->valuesQuery) : $this->searchProduct($this->valuesQuery)) : $this->getProducts()
-        ]; 
- */
+      
         return view('livewire.products.card-general', $render);
     }
 
-    public function mount($paginateBy, $showPaginate, $columnLg = null, $showFrom, $valuesQuery = null)
+    public function mount($paginateBy, $showPaginate, $columnLg = null, $showFrom, $valuesQuery = null, $renderIn = null)
     {
         $this->paginateBy = $paginateBy;
         $this->columnLg = $columnLg;
         $this->showPaginate = $showPaginate;
         $this->showFrom = $showFrom;
         $this->valuesQuery = $valuesQuery;
+        $this->renderIn = $renderIn;
     }
 
     public function getProducts()
@@ -93,7 +91,6 @@ class CardGeneral extends Component
 
         $this->sortingField = request('field') ?? $this->sortingField ?? 'created_at';
         $this->sortingDirection = request('direction') ?? $this->sortingDirection ?? 'DESC';
-
         return ModelsProduct::where('status', '=', '1')
             ->where('parent_id', '=', null)
             ->where('is_approved', '=', '1')
