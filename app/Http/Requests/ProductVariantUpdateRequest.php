@@ -7,6 +7,7 @@ use App\Rules\SlugRule;
 use Illuminate\Support\Str;
 use App\Http\Requests\Request;
 use Illuminate\Validation\Rule;
+use App\Rules\ImagesProductRule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\Products\ProductVariationsRule;
@@ -14,6 +15,11 @@ use Illuminate\Http\Request as RequestHelper;
 
 class ProductVariantUpdateRequest extends FormRequest
 {
+
+    private $prepareData = [
+        'images_json',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -51,6 +57,7 @@ class ProductVariantUpdateRequest extends FormRequest
             'seller_id' => 'required',
             'status' => 'required',
             'categories' => 'required',
+            'images_json_validation.*.image' => new ImagesProductRule(1024, 1024, 700000),
             'date_of_rejected' => function ($attribute, $value, $fail) {
                 $approvedStatus = RequestHelper::input('is_approved');
                 if($approvedStatus === '0') {
@@ -109,5 +116,25 @@ class ProductVariantUpdateRequest extends FormRequest
         return [
             '*.required*' => 'Es necesario completar el campo :attribute.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        foreach ($this->prepareData as $attrName) {
+            if (empty($this->$attrName)) {
+                return;
+            }
+
+            $validation = json_decode($this->$attrName);
+            $forValidation = [];
+
+            foreach ($validation as $attrs) {
+                $forValidation[] = (array) $attrs;
+            }
+
+            $this->merge([
+                $attrName.'_validation' => $forValidation,
+            ]);
+        }
     }
 }
