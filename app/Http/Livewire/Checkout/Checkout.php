@@ -22,6 +22,7 @@ class Checkout extends Component
     public $canContinue;
     public $chilexpress;
     public $shippings;
+    public $shippingtotals;
 
     protected $listeners = [
         'prev-step' => 'prevStep',
@@ -34,6 +35,7 @@ class Checkout extends Component
         'change' => 'updateTotals',
         'updateTotals' => 'updateTotals',
         'cartpreview' => 'cartpreview',
+        'update-shipping-totals' => 'updateShippingTotals',
     ];
 
     public function mount()
@@ -107,7 +109,7 @@ class Checkout extends Component
 
         $this->subtotal = $this->getSubTotal();
         $this->total = $this->getTotal();
-        $this->shippings= [];
+        $this->shippings = [];
 
     }
 
@@ -148,41 +150,41 @@ class Checkout extends Component
     public function getItems()
     {
         return CartItem::whereCartId($this->cart->id)->with('product')->get();
+        //    $items =  CartItem::whereCartId($this->cart->id)->with(['product' => function ($query) {
+        //         $query->select('products.seller_id');
+        //         $query->groupBy('seller_id');
+        //     }])->get();
 
+        //     dd($items);
     }
 
     public function addShipping($selected, $item)
     {
 
+        // $shippingSelected = array(
+        //     'id' => $selected['id'],
+        //     'name' => $selected['name'],
+        //     'total' => 0,
+        //     'qty' => 0,
 
+        // );
 
-        $shippingSelected = array(
-            'id' => $selected['id'],
-            'name' => $selected['name'],
-            'total' => 0,
-            'qty' => 0,
+        // $existShipping = array_filter($this->shippings, function ($shipping) use ($shippingSelected) {
+        //     return $shipping['id'] == $shippingSelected['id'];
+        // });
 
-        );
+        // if (!$existShipping) {
 
-
-        $existShipping = array_filter( $this->shippings, function( $shipping) use($shippingSelected) {
-            return $shipping['id'] == $shippingSelected['id'];
-        });
-
-        if(!$existShipping){
-
-                array_push($this->shippings, $shippingSelected);
-        }
-
-
+        //     array_push($this->shippings, $shippingSelected);
+        // }
 
         $cartItem = CartItem::find($item);
 
-        $shippingId = $selected['id'];
-        $shippingTotal = $selected['price']; // * $cartItem->qty;
+        // $shippingId = $selected['id'];
+        // $shippingTotal = $selected['price']; // * $cartItem->qty;
 
-        $cartItem->shipping_id = $shippingId;
-        $cartItem->shipping_total = $shippingTotal; // * $cartItem->qty; ;
+        $cartItem->shipping_id = $selected['id'];
+        // $cartItem->shipping_total = $shippingTotal; // * $cartItem->qty; ;
         $cartItem->update();
         //$this->shippingtotal += $shippingTotal;
 
@@ -220,27 +222,22 @@ class Checkout extends Component
                 //  dd( $this->shippings[0]);
 
                 //  if ($shipping) {
-                    foreach ($this->shippings as $keyt => $shipping) {
-                        if (intval($shipping['id']) == $item->shipping_id) {
+                foreach ($this->shippings as $keyt => $shipping) {
+                    if (intval($shipping['id']) == $item->shipping_id) {
 
-                            if ($item->shipping_total) {
-                                $this->shippings[$keyt]['total']   += $item->shipping_total;
-                            }else{
-                                $this->shippings[$keyt]['total']   = null;
-                            }
-                            $this->shippings[$keyt]['qty'] += $item->qty;
-                            $totalshipping += $item->shipping_total;
+                        if ($item->shipping_total) {
+                            $this->shippings[$keyt]['total'] += $item->shipping_total;
+                        } else {
+                            $this->shippings[$keyt]['total'] = null;
                         }
+                        $this->shippings[$keyt]['qty'] += $item->qty;
+                        $totalshipping += $item->shipping_total;
                     }
+                }
 
                 //  }
 
-
-
-
-
             }
-
 
         }
         $total += $totalshipping;
@@ -372,6 +369,46 @@ class Checkout extends Component
     public function cartpreview()
     {
         return redirect('shopping-cart');
+    }
+
+    public function updateShippingTotals($shippingsSellers)
+    {
+        //   dd($shippingsSellers);
+        //     $shippings = array_column($shippingsSellers,'shipping');
+        //     dd($shippings);
+
+        $itemShippingTotal = [];
+
+        foreach ($shippingsSellers as $sellerKey => $sellerValue) {
+
+            foreach ($sellerValue as $shippingKey => $shippingValue) {
+
+                //$existsKey = false;
+                // if (isset($itemShippingTotal)) {
+                //     $existsKey = array_key_exists(strval($shippingValue['shipping']['id']), $itemShippingTotal);
+                // }
+                if (isset($shippingValue) && isset($shippingValue['shipping'])) {
+                    $indice = strval($shippingValue['shipping']['id']);
+
+                    if (array_key_exists($indice, $itemShippingTotal)) {
+                        if (!is_null($shippingValue['shipping']['totalPrice'])) {
+                            $itemShippingTotal[$indice]['totalPrice'] += $shippingValue['shipping']['totalPrice'];
+                            $itemShippingTotal[$indice]['totalShippingPackage'] += $shippingValue['shipping']['totalShippingPackage'];
+                        }
+                    } else {
+                        $itemShippingTotal[$indice] = [];
+                        $itemShippingTotal[$indice]['title'] = $shippingValue['shipping']['title'];
+                        $itemShippingTotal[$indice]['totalPrice'] = $shippingValue['shipping']['totalPrice'];
+                        $itemShippingTotal[$indice]['totalShippingPackage'] = $shippingValue['shipping']['totalShippingPackage'];
+                    }
+                    // dd($itemShippingTotal, $shippingsSellers);
+                }
+
+            }
+        }
+
+        $this->shippingtotals = $itemShippingTotal;
+
     }
 
 }

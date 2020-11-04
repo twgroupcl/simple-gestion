@@ -325,8 +325,6 @@ class Chilexpress
     public function calculateItem(CartItem $item, $iddestineCommune)
     {
 
-
-
         $result = null;
         $product =  $item->product;
         // if(!isset($cart->address_commune_id)){
@@ -460,6 +458,149 @@ class Chilexpress
         }
     }
 
+
+
+     /**
+     * Returns rate for Chilexpress
+     *
+     * @return CartShippingRate|false
+     */
+    public function calculateItemBySeller($itemShipping,$sellerId, $communeOrigin, $communeDestine)
+    {
+
+        $result = null;
+        //$product =  $item->product;
+        // if(!isset($cart->address_commune_id)){
+        //     dd('no hay comuna seleccionada');
+        //     return null;
+        // }
+        //Get Origin Commune
+        //$sellerAddress = $product->seller->addresses_data;
+
+
+        $originCommune = Commune::find($communeOrigin);
+        $originProvince = $originCommune->attribute_province;
+
+        $originState = $originProvince->attribute_region->name;
+        // $originState = strtoupper($originState);
+        // $originState = $this->replaceSpecialCharacters($originState);
+
+        $originCoverages = $this->service->coverage($this->states[$originState]);
+
+
+
+        //$sellerCity = strtoupper($originCommune->name);
+        //$sellerCity = $this->replaceSpecialCharacters($sellerCity);
+        if(!isset($originCommune->shipping_code)){
+            $result['is_available'] = false;
+            $result['message'] =  'Comuna del vendedor no configurada';
+            return $result;
+        }
+        $sellerCity = json_decode($originCommune->shipping_code);
+
+        $originCommuneCoverage = collect($originCoverages->coverageAreas)->where('coverageName', $sellerCity[0]->value)->first();
+
+        if (empty($originCommuneCoverage)) {
+
+            // return [
+            //     'is_available' => false,
+            //     'message' => 'El metodo de envio Chilexpress no esta disponible desde la comuna del vendedor'
+            // ];
+
+
+            $result['is_available'] = false;
+            $result['message'] =  'El método de envio Chilexpress no esta disponible desde la comuna del vendedor';
+            return $result;
+        }
+
+        //Get Destine Commune
+        $destineCommune = Commune::find($communeDestine);
+
+        $destineProvince = $destineCommune->attribute_province;
+
+        $destineState = $destineProvince->attribute_region->name;
+        // $destineState = strtoupper($destineState);
+        // $destineState = $this->replaceSpecialCharacters($destineState);
+
+        $destineCoverages = $this->service->coverage($this->states[$destineState]);
+
+        //$customerCity = strtoupper($destineCommune->name);
+        //$customerCity = $this->replaceSpecialCharacters($customerCity);
+
+        $customerCity = json_decode($destineCommune->shipping_code);
+
+        // If there is no coverage for the selected destine, we mark it so we can return it later
+
+        $destineCommuneCoverage = collect($destineCoverages->coverageAreas)->where('coverageName', $customerCity[0]->value)->first();
+
+        if (empty($destineCommuneCoverage)) {
+            // return [
+            //     'is_available' => false,
+            //     'message' => 'El metodo de envio Chilexpress no esta disponible para la comuna de destino seleccionada'
+            // ];
+            $result['is_available'] = false;
+            $result['message'] =  'El metodo de envio Chilexpress no esta disponible para la comuna de destino seleccionada';
+            return $result;
+        }
+
+        $tmpitem =  [
+            'item_id' => $sellerId,//$itemShipping['sellerId'],
+            'originCountyCode' => $originCommuneCoverage->countyCode,
+            'destinationCountyCode' => $destineCommuneCoverage->countyCode,
+            'package' => [
+                'weight' => $itemShipping['shipping']['totalWeight'] ? number_format($itemShipping['shipping']['totalWeight'] , 2) : '0',
+                'height' => $itemShipping['shipping']['totalHeight'] ? number_format($itemShipping['shipping']['totalHeight'] , 2) : '0',
+                'width' =>  $itemShipping['shipping']['totalWidth']  ? number_format($itemShipping['shipping']['totalWidth']  , 2) : '0',
+                'length' => $itemShipping['shipping']['totalDepth']  ? number_format($itemShipping['shipping']['totalDepth'] , 2) : '0',
+            ],
+            'productType' => self::PRODUCT_TYPE_ENCOMIENDA,
+            'contentType' => '1',
+            'declaredWorth' => $itemShipping['shipping']['totalPrice'],
+            'deliveryTime' => 0,
+        ];
+
+
+
+        $calculation = $this->service->calculate($tmpitem);
+
+        if (isset($calculation->data->courierServiceOptions)) {
+            $servicesOptions = collect($calculation->data->courierServiceOptions);
+
+            $service = $servicesOptions->where('serviceTypeCode', self::SERVICE_TYPE_DIA_HABIL_SIGUIENTE)->first();
+
+            if (empty($service)) {
+                $service = $servicesOptions->where('serviceTypeCode', self::SERVICE_TYPE_DIA_HABIL_SUBSIGUIENTE)->first();
+            }
+
+            if (empty($service)) {
+                $service = $servicesOptions->where('serviceTypeCode', self::SERVICE_TYPE_TERCER_DIA_HABIL)->first();
+            }
+
+            // TO DO:
+            // Save the type of service so we can show it later to the client and to the seller so they can
+            // know that type of service shipping they have to do
+
+            if (isset($service)) {
+                // $service->cart_item_id = $item['item_id'];
+
+                // $calculations[$sellerId][] = $service;
+                $tmpitem['service'] = $service;
+
+                $result['is_available'] = true;
+                $result['message'] =  'ok';
+                $result['item'] =  $tmpitem;
+                return $result;
+
+                return $tmpitem;
+                // If there is no serviceType for the shipping, return "Chilexpress not available"
+            } else {
+                return [
+                    'is_available' => false,
+                    'message' => 'El método de envio Chilexpress no tiene opciones de envio para la comuna de destino'
+                ];
+            }
+        }
+    }
 
     /**
      * replace special characters in a string
