@@ -559,6 +559,21 @@
                     $generalRating = $count > 0
                         ? round($product->reviews->sum('rating') / $count, 1)
                         : 0;
+
+                    $reviews = $product->reviews->groupBy('rating');
+
+                    $stars['five'] = optional($reviews->pull(5))->count() ?? 0;
+                    $stars['four'] = optional($reviews->pull(4))->count() ?? 0;
+                    $stars['three'] = optional($reviews->pull(3))->count() ?? 0;
+                    $stars['two'] = optional($reviews->pull(2))->count() ?? 0;
+                    $stars['one'] = optional($reviews->pull(1))->count() ?? 0;
+
+                    $stars['five_percentage'] = $stars['five'] != 0 ? (100 * ($stars['five'])) / $count : 0;
+                    $stars['four_percentage'] = $stars['four'] != 0 ? (100 * ($stars['four'])) / $count : 0;
+                    $stars['three_percentage'] = $stars['three'] != 0 ? (100 * ($stars['three'])) / $count : 0;
+                    $stars['two_percentage'] = $stars['two'] != 0 ? (100 * ($stars['two'])) / $count : 0;
+                    $stars['one_percentage'] = $stars['one'] != 0 ? (100 * ($stars['one'])) / $count : 0;
+
                 @endphp
 
                 <span class="d-inline-block align-middle">{{ $generalRating }} Calificación general</span>
@@ -570,55 +585,55 @@
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 60%;"
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $stars['five_percentage'] }}%;"
                                  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
-                    <span class="text-muted ml-3">43</span>
+                    <span class="text-muted ml-3">{{ $stars['five'] }}</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
                     <div class="text-nowrap mr-3"><span class="d-inline-block align-middle text-muted">4</span><i
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: 27%; background-color: #a7e453;"
+                            <div class="progress-bar" role="progressbar" style="width: {{ $stars['four_percentage'] }}%; background-color: #a7e453;"
                                  aria-valuenow="27" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
-                    <span class="text-muted ml-3">16</span>
+                    <span class="text-muted ml-3">{{ $stars['four'] }}</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
                     <div class="text-nowrap mr-3"><span class="d-inline-block align-middle text-muted">3</span><i
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: 17%; background-color: #ffda75;"
+                            <div class="progress-bar" role="progressbar" style="width: {{ $stars['three_percentage'] }}%; background-color: #ffda75;"
                                  aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
-                    <span class="text-muted ml-3">9</span>
+                    <span class="text-muted ml-3">{{ $stars['three'] }}</span>
                 </div>
                 <div class="d-flex align-items-center mb-2">
                     <div class="text-nowrap mr-3"><span class="d-inline-block align-middle text-muted">2</span><i
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: 9%; background-color: #fea569;"
+                            <div class="progress-bar" role="progressbar" style="width:{{ $stars['two_percentage'] }}%; background-color: #fea569;"
                                  aria-valuenow="9" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
-                    <span class="text-muted ml-3">4</span>
+                    <span class="text-muted ml-3">{{ $stars['two'] }}</span>
                 </div>
                 <div class="d-flex align-items-center">
                     <div class="text-nowrap mr-3"><span class="d-inline-block align-middle text-muted">1</span><i
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 4%;" aria-valuenow="4"
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:{{ $stars['one_percentage'] }}%;" aria-valuenow="4"
                                  aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
-                    <span class="text-muted ml-3">2</span>
+                    <span class="text-muted ml-3">{{ $stars['one'] }}</span>
                 </div>
             </div>
         </div>
