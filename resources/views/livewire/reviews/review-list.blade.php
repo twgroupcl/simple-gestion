@@ -40,10 +40,10 @@
                 <li class="mb-1"><span class="font-weight-medium">Pros:&nbsp;</span>{{ $review->pros }}</li>
                 <li class="mb-1"><span class="font-weight-medium">Contras:&nbsp;</span>{{ $review->cons }}</li>
             </ul>
-            <div class="text-nowrap">
+            {{-- <div class="text-nowrap">
                 <button class="btn-like" type="button">15</button>
                 <button class="btn-dislike" type="button">3</button>
-            </div>
+            </div> --}}
         </div>
     @empty
         <h6>No hay opiniones</h6>
