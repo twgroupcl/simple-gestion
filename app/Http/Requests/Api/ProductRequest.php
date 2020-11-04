@@ -42,7 +42,7 @@ class ProductRequest extends FormRequest
             'product_type_id' => 'required|exists:product_types,id',
             'product_brand_id' => 'numeric|exists:product_brands,id',
             'short_description' => 'required|max:255',
-            'price' => 'required|numeric|min:1',
+            //'price' => 'required|numeric|min:1',
 
             'special_price' => 'numeric|min:1',
             'special_price_from' => 'date_format:d-m-Y|before:special_price_to',
@@ -53,7 +53,7 @@ class ProductRequest extends FormRequest
 
             'warehouse' => 'required_if:use_inventory_control,1',
             'warehouse_array' => 'required_if:use_inventory_control,1|array',
-            'warehouse_validation.*.code' => 'required_if:use_inventory_control,1',
+            'warehouse_validation.*.code' => 'required_if:use_inventory_control,1|exists:product_inventory_sources,code',
             'warehouse_validation.*.stock' => 'required_if:use_inventory_control,1|numeric',
             'warehouse_validation.*.price' => 'required_if:use_inventory_control,1|numeric',
             'warehouse_validation.*.shipping_type' => 'required_if:use_inventory_control,1|exists:shipping_methods,id',
