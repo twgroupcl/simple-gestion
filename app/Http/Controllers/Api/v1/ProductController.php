@@ -9,7 +9,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProductClassAttribute;
 use App\Models\ProductInventorySource;
+use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\ProductRequest;
 
@@ -37,14 +39,11 @@ class ProductController extends Controller
     {   
         $this->productService = new ProductService();
 
-        // Obtener bodegas
         $warehouses = json_decode($request['warehouse']);
-
         $companyId = auth()->user()->companies->first()->id;
-
         $products = []; 
 
-       DB::beginTransaction();
+        DB::beginTransaction();
 
         // Crear un producto por cada bodega
         foreach ($warehouses as $warehouse) {
@@ -95,15 +94,38 @@ class ProductController extends Controller
             // Set default currency
             $currencyId = 63;
 
-            // Validate and save custom attributes
-            
-            // Validate and save inventories
+            // Custom attributes
+            if ($request['custom_attributes']) {
+
+                $attributes_json = json_decode($request['custom_attributes']);
+                $attributes = [];
+
+                foreach ($attributes_json as $attributeData) {
+
+                    $attribute = ProductClassAttribute::where([
+                        'json_attributes->code' => $attributeData->code,
+                        'product_class_id' => $request['product_class_id'],
+                    ])->first();
+
+                    if (!$attribute) {
+                        DB::rollBack();
+                        return response()->json([ 
+                            'status' => 'error', 
+                            'message' => 'El atributo ' . $attributeData->code . ' no existe o es invalido',
+                        ],  400); 
+                    }
+
+                    $attributes['attribute-' . $attribute->id] = $attributeData->value;
+                }
+            }
+
+            // Save inventories
             $inventories = [];
             $inventories['inventory-source-'.$warehouseData->id] = $warehouse->stock;
             
-            // Save the product
             try {
 
+                // Base Propierties
                 $product  = Product::create([
                     'name' => $request['name'],
                     'sku' => $request['sku'],
@@ -144,7 +166,7 @@ class ProductController extends Controller
                     'company_id' => $companyId,
                 ]);
 
-            } catch(\Illuminate\Database\QueryException $exception) {
+            } catch(QueryException $exception) {
                 DB::rollBack();
                 return response()->json([
                     'status' => 'error',
@@ -152,21 +174,25 @@ class ProductController extends Controller
                 ], 400);
             }
 
-            // Attach categories
+            // Save categories
             $product->categories()->attach($request['categories']);
 
-            // Convert images to base64 and save it in the images_json field of the product
-            // so the product observer can take care of the upload
+
             if ( $request->file('images') ) {
                 $imagesArray = [];
+
+                // Convert image to base64. Product observer will upload to the server
                 foreach ($request->file('images') as $image) {
                     array_push($imagesArray, ['image' => 'data:image/jpeg;base64,' . base64_encode(file_get_contents($image))]);
                 }
                 $product->images_json = $imagesArray;
             }
 
-            // Update inventories and save product
+            // Save attributes and inventories
+            $product->attributes_json = isset($request['custom_attributes']) ? $attributes : null; 
             $product->inventories_json = $inventories;
+
+            // Update product
             $product->update();
             $products[] = $product;
         }
@@ -178,7 +204,6 @@ class ProductController extends Controller
             'message' => 'Productos creados correctamente',
             'data' => $products,
         ], 200);
-
     }
 
     private function getSellerIdFromWarehouse($warehouseCode)
