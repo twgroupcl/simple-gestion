@@ -15,6 +15,11 @@
                 <small class="form-text text-muted">Solo autenticación - no le enviaremos spam.</small>
             </div> --}}
             <div class="form-group">
+                <label for="review-title">Título<span class="text-danger">*</span></label>
+                <input class="form-control" wire:model="form.title" type="text" required id="review-title">
+                @error('form.title') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            <div class="form-group">
                 <label for="review-rating">Clasificación<span class="text-danger">*</span></label>
                 <select class="custom-select" wire:model.lazy="form.rating" required id="review-rating">
                     <option value="">Escoge un clasificación</option>
