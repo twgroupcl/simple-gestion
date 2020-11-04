@@ -2,12 +2,12 @@
     <div class="d-flex justify-content-end pb-4">
         <div class="form-inline flex-nowrap">
             <label class="text-muted text-nowrap mr-2 d-none d-sm-block" for="sort-reviews">Ordenar por:</label>
-            <select class="custom-select custom-select-sm" id="sort-reviews">
-                <option>Más recientes</option>
-                <option>Más antiguos</option>
-                <option>Más populares</option>
-                <option>Calificación alta</option>
-                <option>Calificación baja</option>
+            <select wire:model="order" class="custom-select custom-select-sm" id="sort-reviews">
+                <option value="desc">Más recientes</option>
+                <option value="asc">Más antiguos</option>
+                <option value="popular">Más populares</option>
+                <option value="high-rating">Calificación alta</option>
+                <option value="low-rating">Calificación baja</option>
             </select>
         </div>
     </div>
