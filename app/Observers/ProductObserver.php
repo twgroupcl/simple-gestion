@@ -4,7 +4,10 @@ namespace App\Observers;
 
 use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Mail\ProductCreated;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Backpack\Settings\app\Models\Setting;
 
 class ProductObserver
 {
@@ -16,7 +19,14 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-
+        //Order to admins
+        if ( !$product->parent_id ) {
+            $administrators = Setting::get('administrator_email');
+            $recipients = explode(';', $administrators);
+            foreach ($recipients as $key => $recipient) {
+                Mail::to($recipient)->send(new ProductCreated($product));
+            }
+        }
     }
 
     /**
