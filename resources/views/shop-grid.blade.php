@@ -53,7 +53,7 @@
             </div>
             <!-- Products grid-->
             <div class=" mx-n2 mt-5">
-                @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 4, 'showFrom' => $render['view'], 'valuesQuery' => $data, 'renderIn' => (Request::get('render'))?:'shop-grid'])
+                @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 16, 'showFrom' => $render['view'], 'valuesQuery' => $data, 'renderIn' => (Request::get('render'))?:'shop-grid'])
             </div>
             <hr class="my-3">
         </section>
