@@ -3,11 +3,13 @@
         <div class="row pb-3">
             <div class="col-lg-4 col-md-5">
                 <h2 class="h3 mb-4">{{ $product->reviews->count() }} Evaluaciones</h2>
-                <div class="star-rating mr-2"><i class="czi-star-filled font-size-sm text-accent mr-1"></i><i
-                        class="czi-star-filled font-size-sm text-accent mr-1"></i><i
-                        class="czi-star-filled font-size-sm text-accent mr-1"></i><i
-                        class="czi-star-filled font-size-sm text-accent mr-1"></i><i
-                        class="czi-star font-size-sm text-muted mr-1"></i></div>
+                <div class="star-rating mr-2">
+                        <i class="{{ round($generalRating) >= 1 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
+                        <i class="{{ round($generalRating) >= 2 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
+                        <i class="{{ round($generalRating) >= 3 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
+                        <i class="{{ round($generalRating) >= 4 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
+                        <i class="{{ round($generalRating) >= 5 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
+                </div>
 
                 @php
 
