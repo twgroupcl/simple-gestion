@@ -25,10 +25,12 @@
                     </div>
                 </div>
                 <div>
-                    <div class="star-rating"><i class="sr-star czi-star-filled active"></i><i
-                            class="sr-star czi-star-filled active"></i><i
-                            class="sr-star czi-star-filled active"></i><i
-                            class="sr-star czi-star-filled active"></i><i class="sr-star czi-star"></i>
+                    <div class="star-rating">
+                        <i class="sr-star {{ $review->rating >= 1 ? 'czi-star-filled active' : 'czi-star' }}"></i>
+                        <i class="sr-star {{ $review->rating >= 2 ? 'czi-star-filled active' : 'czi-star' }}"></i>
+                        <i class="sr-star {{ $review->rating >= 3 ? 'czi-star-filled active' : 'czi-star' }}"></i>
+                        <i class="sr-star {{ $review->rating >= 4 ? 'czi-star-filled active' : 'czi-star' }}"></i>
+                        <i class="sr-star {{ $review->rating >= 5 ? 'czi-star-filled active' : 'czi-star' }}"></i>
                     </div>
                     <div class="font-size-ms text-muted">83% de los usuarios consideraron útil esta revisión</div>
                 </div>
