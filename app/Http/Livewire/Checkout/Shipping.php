@@ -85,6 +85,8 @@ class Shipping extends Component
                 $itemShipping['shipping']['title'] = $shippingMethod->title;
                 if (!empty($shippingMethod->json_value)) {
                     $itemShipping['shipping']['pricePackpage'] = json_decode($shippingMethod->json_value)->price;
+                } else {
+                    $itemShipping['shipping']['pricePackpage'] = null;
                 }
                 $itemShipping['shipping']['totalWidth'] = 0;
                 $itemShipping['shipping']['totalHeight'] = 0;
