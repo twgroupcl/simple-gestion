@@ -10,6 +10,11 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProductRequest extends FormRequest
 {
+
+    private $prepareData = [
+        'warehouse',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -45,6 +50,13 @@ class ProductRequest extends FormRequest
 
             'categories' => 'array',
             'categories.*' => 'numeric|exists:product_categories,id',
+
+            'warehouse' => 'required_if:use_inventory_control,1',
+            'warehouse_array' => 'required_if:use_inventory_control,1|array',
+            'warehouse_validation.*.code' => 'required_if:use_inventory_control,1',
+            'warehouse_validation.*.stock' => 'required_if:use_inventory_control,1|numeric',
+            'warehouse_validation.*.price' => 'required_if:use_inventory_control,1|numeric',
+            'warehouse_validation.*.shipping_type' => 'required_if:use_inventory_control,1|exists:shipping_methods,id',
 
             'weight' => 'required_if:is_service,0',
             'height' => 'required_if:is_service,0',
@@ -99,4 +111,33 @@ class ProductRequest extends FormRequest
             'message' => $validator->errors(),
         ], 422)); 
     } 
+
+    protected function prepareForValidation()
+    {
+        foreach ($this->prepareData as $attrName) {
+            if (empty($this->$attrName)) {
+                return;
+            }
+
+            $validation = json_decode($this->$attrName);
+
+            $this->merge([
+                $attrName.'_array' => $validation,
+            ]);
+
+            $forValidation = [];
+
+            if (!$validation) {
+                return;
+            }
+
+            foreach ($validation as $attrs) {
+                $forValidation[] = (array) $attrs;
+            }
+
+            $this->merge([
+                $attrName.'_validation' => $forValidation,
+            ]);
+        }
+    }
 }
