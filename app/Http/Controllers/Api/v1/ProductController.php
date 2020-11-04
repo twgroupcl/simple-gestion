@@ -112,10 +112,11 @@ class ProductController extends Controller
                     'use_inventory_control' => $request['use_inventory_control'],
                     'short_description' => $request['short_description'],
                     'description' =>  $request['description'],
+                    'price' => $warehouse->price,
+                    
                     'product_type_id' => $request['product_type_id'],
                     'product_class_id' => $request['product_class_id'],
                     'prduct_brand_id' => $request['product_brand_id'],
-                    'price' => $warehouse->price,
                     
                     //'special_price' => $request['special_price'],
                     //'special_price_from' => isset($request['special_price_from']) ? new DateTime($request['special_price_from']) : null,
@@ -127,6 +128,12 @@ class ProductController extends Controller
                     'height' => $request['is_service'] ? null : $request['height'],
                     'width' => $request['is_service'] ? null : $request['width'],
                     'depth' => $request['is_service'] ? null : $request['depth'],
+
+                    'new' => $request['new'],
+                    'featured' => $request['featured'],
+                    'visible' => $request['visible'],
+                    'visible_from' => $request['visible_from'],
+                    'visible_to' => $request['visible_to'],
 
                     'meta_title' => $request['meta_title'],
                     'meta_keywords' => $request['meta_keywords'],

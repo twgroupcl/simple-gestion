@@ -58,6 +58,12 @@ class ProductRequest extends FormRequest
             'warehouse_validation.*.price' => 'required_if:use_inventory_control,1|numeric',
             'warehouse_validation.*.shipping_type' => 'required_if:use_inventory_control,1|exists:shipping_methods,id',
 
+            'new' => 'boolean',
+            'featured' => 'boolean',
+            'visible' => 'boolean',
+            'visible_from' => 'date',
+            'visible_to' => 'date',
+
             'weight' => 'required_if:is_service,0',
             'height' => 'required_if:is_service,0',
             'width' => 'required_if:is_service,0',
