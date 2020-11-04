@@ -4,8 +4,11 @@ namespace App\Http\Livewire\Products;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Product as ModelsProduct;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\DB;
+use App\Services\ProductFilterService;
+use App\Models\Product as ModelsProduct;
+//use Barryvdh\Debugbar\Facade as Debugbar;
 
 class CardGeneral extends Component
 {
@@ -21,6 +24,13 @@ class CardGeneral extends Component
     public $sortingField = null;
     public $sortingDirection = null;
     public $renderIn = null;
+    public $render = null;
+    public $filters = null;
+
+    protected $listeners = [
+        'shop-grid.filter' => 'filterProducts',
+        'shop-grid.sort' => 'sortProducts',
+    ];
 
     public function render()
     {
@@ -46,7 +56,7 @@ class CardGeneral extends Component
         return view('livewire.products.card-general', $render);
     }
 
-    public function mount($paginateBy, $showPaginate, $columnLg = null, $showFrom, $valuesQuery = null, $renderIn = null)
+    public function mount($paginateBy, $showPaginate, $columnLg = null, $showFrom, $valuesQuery = null, $renderIn = 'shop-grid')
     {
         $this->paginateBy = $paginateBy;
         $this->columnLg = $columnLg;
@@ -54,6 +64,19 @@ class CardGeneral extends Component
         $this->showFrom = $showFrom;
         $this->valuesQuery = $valuesQuery;
         $this->renderIn = $renderIn;
+    }
+
+    public function filterProducts($data)
+    {
+        $this->filters = $data;
+        $this->render();
+    }
+
+    public function sortProducts($data)
+    {
+        $this->sortingField = $data['field'];
+        $this->sortingDirection = $data['direction'];
+        $this->render();
     }
 
     public function getProducts()
@@ -88,22 +111,15 @@ class CardGeneral extends Component
 
     private function baseQuery($random = false, $category_id = null, $product_search = null, $seller_id = null)
     {
+        $this->sortingField = $this->sortingField ?? 'created_at';
+        $this->sortingDirection = $this->sortingDirection ?? 'DESC';
 
-        $this->sortingField = request('field') ?? $this->sortingField ?? 'created_at';
-        $this->sortingDirection = request('direction') ?? $this->sortingDirection ?? 'DESC';
-        return ModelsProduct::where('status', '=', '1')
+        $baseQuery =  ModelsProduct::where('status', '=', '1')
             ->where('parent_id', '=', null)
             ->where('is_approved', '=', '1')
             ->with('categories')
             ->whereHas('seller', function ($query) {
                 return $query->where('is_approved', '=', '1');
-            })
-            ->when(!is_null($random), function ($query) use ($random) {
-                if ($random) {
-                    return $query->inRandomOrder();
-                } else {
-                    $query->orderBy($this->sortingField, $this->sortingDirection);
-                }
             })
             ->when($category_id, function ($query) use ($category_id) {
                 if ($category_id != 0) {
@@ -111,7 +127,6 @@ class CardGeneral extends Component
                         $q->where('id', '=', $category_id);
                     });
                 }
-
                 return $query;
             })
             ->when($product_search, function ($query) use ($product_search) {
@@ -124,7 +139,19 @@ class CardGeneral extends Component
                     });
                 }
                 return $query;
-            })
-            ->paginate($this->paginateBy);
+            });
+        
+        // Filter and sorting
+        $filterService = new ProductFilterService();
+        $filterQuery = $filterService->filterByParams($baseQuery, $this->filters);
+        $filterQuery->when(!is_null($random), function ($query) use ($random) {
+                if ($random) {
+                    return $query->inRandomOrder();
+                } else {
+                    $query->orderBy($this->sortingField, $this->sortingDirection);
+                }
+            });
+
+        return $filterQuery->paginate($this->paginateBy);
     }
 }

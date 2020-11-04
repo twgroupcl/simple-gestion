@@ -23,28 +23,16 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-        {{-- <aside class="col-lg-4">
-            @livewire('filters')
-        </aside> --}}
+        <aside class="col-lg-4">
+            <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
+                @livewire('filters')
+            </div>
+        </aside>
         <!-- Content  -->
-        <section class="col-lg-12">
+        <section class="col-lg-8">
             <!-- Toolbar-->
             <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
-                <div class="d-flex flex-wrap">
-                    <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
-                        <label class="text-light opacity-75 text-nowrap mr-2 d-none d-sm-block" for="sorting">Ordenar por:</label>
-                        <select class="form-control custom-select" id="sorting">
-                            {{-- <option>Popularity</option> --}}
-                            {{-- <option>Average Rating</option> --}}
-                            <option data-direction="DESC" data-field="created_at" value="1">Más nuevo</option>
-                            {{-- <option data-direction="ASC" data-field="price" value="2">Precio Menor - Mayor</option> --}}
-                            {{-- <option data-direction="DESC" data-field="price" value="3">Precio Mayor - Menor</option> --}}
-                            <option data-direction="ASC" data-field="name" value="4">Ordenar A - Z</option>
-                            <option data-direction="DESC" data-field="name" value="5">Ordenar Z - A</option>
-                        </select>
-                        {{--  <span class="font-size-sm text-light opacity-75 text-nowrap ml-2 d-none d-md-block">of 287 products</span> --}}
-               </div>
-                </div>
+                @livewire('sorting-products')
              {{--   <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div> --}}
              <div class="d-none d-sm-flex pb-3">
                     <a class="btn btn-icon nav-link-style bg-light text-dark disabled opacity-100 mr-2 btn-shop-grid" href="{{ url()->current().'?render=shop-grid' }}"><i class="czi-view-grid"></i></a>
@@ -63,7 +51,7 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function(){
+    /* $(document).ready(function(){
         const urlParams = new URLSearchParams(window.location.search);
         let field = urlParams.get('field')
         let render = urlParams.get('render')
@@ -103,6 +91,6 @@
         $('#sorting').change(function(){
             window.location.href = url + '?field=' + $(this).find(':selected').data('field') + '&direction=' + $(this).find(':selected').data('direction')+'&render='+render;
         });
-});
+}); */
 </script>
 @endpush

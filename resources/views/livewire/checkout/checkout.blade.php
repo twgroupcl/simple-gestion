@@ -16,7 +16,6 @@
 
 
                 <div class="pt-2 px-4 pr-lg-0 pl-xl-5">
-
                     @switch($activeStep['number'])
                         @case(1)
                         @break
@@ -24,7 +23,7 @@
                         @livewire('checkout.details',['cart'=>$cart] ,key($activeStep['number']))
                         @break
                         @case(3)
-                        @livewire('checkout.shipping', ['cart'=>$cart, 'items'=>$items])
+                        @livewire('checkout.shipping', ['cart'=>$cart ])
                         @break
                         @case(4)
                         @livewire('checkout.payments', ['cart'=>$cart])
@@ -123,18 +122,19 @@
                                     class="text-right">{{ currencyFormat($shippingtotal['total'] ? $shippingtotal['total'] : 0, 'CLP', true) }}</span>
                             </li>
                         @endif --}}
-                        @if ($shippings && $activeStep['number'] > 2)
-                                @foreach ($shippings as $shipping)
-                                @if($shipping['qty'])
-                                <li class="d-flex justify-content-between align-items-center"><span
-                                        class="mr-2">{{ $shipping['name'] }} x {{ $shipping['qty'] }}</span><span
-                                        class="text-right">
-                                        @if(!is_null($shipping['total']))
-                                        {{ currencyFormat($shipping['total'] ? $shipping['total'] : 0, 'CLP', true) }}
-                                        @endif
-                                    </span>
-                                </li>
-                                @endif
+                        @if ($shippingtotals && $activeStep['number'] > 2)
+                            @foreach ($shippingtotals as $shipping)
+                                {{-- @if ($shipping['qty']) --}}
+                                    <li class="d-flex justify-content-between align-items-center">
+                                    <span class="mr-2">{{ $shipping['title'] }} x {{$shipping['totalShippingPackage']}}</span>
+                                        <span class="text-right">
+                                            @if (!is_null($shipping['totalPrice']))
+                                                {{ currencyFormat($shipping['totalPrice'] ? $shipping['totalPrice'] : 0, 'CLP', true) }}
+                                            @endif
+                                        </span>
+                                    </li>
+                                    {{--
+                                @endif --}}
                             @endforeach
                         @endif
                     </ul>
