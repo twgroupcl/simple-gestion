@@ -151,13 +151,15 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                                         <span class=" mr-1"><span
                                                                                 class="text-muted">Envío
                                                                             </span>
-                                                                            @if ($item->shipping_total == 0)
+                                                                            <span class="text-center"> {{ $item->shipping->title }}
+                                                                            </span>
+                                                                            {{-- @if ($item->shipping_total == 0)
                                                                             <span class="text-center"> {{ $item->shipping->title }}
                                                                             </span>
                                                                             @else
                                                                                 <span
                                                                                     class="woocommerce-Price-currencySymbol">{{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}</span>
-                                                                            @endif
+                                                                            @endif --}}
                                                                         </span>
 
                                                                 </div>

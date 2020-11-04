@@ -23,6 +23,7 @@ class Checkout extends Component
     public $chilexpress;
     public $shippings;
     public $shippingtotals;
+    public $shippingTotal;
 
     protected $listeners = [
         'prev-step' => 'prevStep',
@@ -205,6 +206,7 @@ class Checkout extends Component
     }
     private function getTotal(): float
     {
+        $this->shippingTotal = 0;
         if ($this->shippings) {
             foreach ($this->shippings as $key => $shipping) {
                 $this->shippings[$key]['total'] = 0;
@@ -244,10 +246,11 @@ class Checkout extends Component
         if ($this->shippingtotals) {
             foreach ($this->shippingtotals as $shippingtotal) {
                 if (!is_null($shippingtotal['totalPrice'])) {
-                    $total += $shippingtotal['totalPrice'];
+                    $this->shippingTotal += $shippingtotal['totalPrice'];
                 }
             }
         }
+        $total += $this->shippingTotal;
 
 //        $total += $totalshipping;
         if ($total <= 0) {
@@ -345,15 +348,15 @@ class Checkout extends Component
                 $orderitem->sub_total = $item->price * $item->qty;
                 $orderitem->total = ($item->price * $item->qty) + $item->shipping_total;
                 $orderitem->save();
-                $shippingtotal_order += $item->shipping_total * $item->qty;
-                $subtotal_order += $item->price * $item->qty;
-                $total_order += ($item->price + $item->shipping_total) * $item->qty;
+                //$shippingtotal_order += $item->shipping_total * $item->qty;
+                //$subtotal_order += $item->price * $item->qty;
+               // $total_order += ($item->price + $item->shipping_total) * $item->qty;
 
             }
 
-            $order->shipping_total = $shippingtotal_order;
-            $order->sub_total = $subtotal_order;
-            $order->total = $total_order;
+            $order->shipping_total = $this->shippingTotal ;//$shippingtotal_order;
+            $order->sub_total = $this->subtotal ;//$subtotal_order;
+            $order->total = $this->total ; //$total_order;
 
             $order->save();
 
