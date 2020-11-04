@@ -590,6 +590,11 @@ class Product extends Model
         return $this->belongsToMany(ProductInventorySource::class, 'product_inventories', 'product_id', 'product_inventory_source_id')->withPivot('qty');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
