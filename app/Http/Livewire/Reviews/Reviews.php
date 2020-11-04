@@ -10,6 +10,7 @@ class Reviews extends Component
     public $count;
     public $ratedReviews;
     public $stars;
+    public $starPercentages;
     public $generalRating;
 
     public function render()
@@ -20,27 +21,34 @@ class Reviews extends Component
     public function mount($product)
     {
         $this->product = $product;
+        $this->loadData();
+    }
+
+    public function loadData()
+    {
         $this->count = $this->product->reviews->count();
 
         $this->generalRating = $this->count > 0
             ? round($this->product->reviews->sum('rating') / $this->count, 1)
             : 0;
 
-        $this->ratedReviews = $product->reviews->groupBy('rating');
+        $this->ratedReviews = $this->product->reviews->groupBy('rating');
 
-        $stars['five'] = $this->getRatedReview(5);
-        $stars['four'] = $this->getRatedReview(4);
-        $stars['three'] = $this->getRatedReview(3);
-        $stars['two'] = $this->getRatedReview(2);
-        $stars['one'] = $this->getRatedReview(1);
+        $this->stars = [
+            'five' => $this->getRatedReview(5),
+            'four' => $this->getRatedReview(4),
+            'three' => $this->getRatedReview(3),
+            'two' => $this->getRatedReview(2),
+            'one' => $this->getRatedReview(1),
+        ];
 
-        $stars['five_percentage'] = $this->percentage($stars['five']);
-        $stars['four_percentage'] = $this->percentage($stars['four']);
-        $stars['three_percentage'] = $this->percentage($stars['three']);
-        $stars['two_percentage'] = $this->percentage($stars['two']);
-        $stars['one_percentage'] = $this->percentage($stars['one']);
-
-        $this->stars = $stars;
+        $this->starPercentages = [
+            'five' => $this->percentage($this->stars['five']),
+            'four' => $this->percentage($this->stars['four']),
+            'three' => $this->percentage($this->stars['three']),
+            'two' => $this->percentage($this->stars['two']),
+            'one' => $this->percentage($this->stars['one']),
+        ];
     }
 
     public function percentage($value)

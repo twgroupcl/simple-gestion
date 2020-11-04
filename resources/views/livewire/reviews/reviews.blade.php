@@ -10,11 +10,6 @@
                         <i class="{{ round($generalRating) >= 4 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
                         <i class="{{ round($generalRating) >= 5 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
                 </div>
-
-                @php
-
-                @endphp
-
                 <span class="d-inline-block align-middle">{{ $generalRating }} Calificación general</span>
                 <p class="pt-3 font-size-sm text-muted">58 de 74 (77%)<br>clientes recomendaron este producto</p>
             </div>
@@ -24,7 +19,7 @@
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $stars['five_percentage'] }}%;"
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $starPercentages['five'] }}%;"
                                  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
@@ -35,7 +30,7 @@
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: {{ $stars['four_percentage'] }}%; background-color: #a7e453;"
+                            <div class="progress-bar" role="progressbar" style="width: {{ $starPercentages['four'] }}%; background-color: #a7e453;"
                                  aria-valuenow="27" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
@@ -46,7 +41,7 @@
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width: {{ $stars['three_percentage'] }}%; background-color: #ffda75;"
+                            <div class="progress-bar" role="progressbar" style="width: {{ $starPercentages['three'] }}%; background-color: #ffda75;"
                                  aria-valuenow="17" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
@@ -57,7 +52,7 @@
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar" role="progressbar" style="width:{{ $stars['two_percentage'] }}%; background-color: #fea569;"
+                            <div class="progress-bar" role="progressbar" style="width:{{ $starPercentages['two'] }}%; background-color: #fea569;"
                                  aria-valuenow="9" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
@@ -68,7 +63,7 @@
                             class="czi-star-filled font-size-xs ml-1"></i></div>
                     <div class="w-100">
                         <div class="progress" style="height: 4px;">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width:{{ $stars['one_percentage'] }}%;" aria-valuenow="4"
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:{{ $starPercentages['one'] }}%;" aria-valuenow="4"
                                  aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
