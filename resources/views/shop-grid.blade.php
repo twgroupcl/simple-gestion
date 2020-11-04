@@ -101,7 +101,7 @@
         var url = window.location.href.split('?')[0];
 
         $('#sorting').change(function(){
-            window.location.href = url + '?field=' + $(this).find(':selected').data('field') + '&direction=' + $(this).find(':selected').data('direction');
+            window.location.href = url + '?field=' + $(this).find(':selected').data('field') + '&direction=' + $(this).find(':selected').data('direction')+'&render='+render;
         });
 });
 </script>
