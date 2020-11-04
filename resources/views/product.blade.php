@@ -547,13 +547,21 @@
     <div class="container pt-md-2" id="reviews">
         <div class="row pb-3">
             <div class="col-lg-4 col-md-5">
-                <h2 class="h3 mb-4">0 Evaluaciones</h2>
+                <h2 class="h3 mb-4">{{ $product->reviews->count() }} Evaluaciones</h2>
                 <div class="star-rating mr-2"><i class="czi-star-filled font-size-sm text-accent mr-1"></i><i
                         class="czi-star-filled font-size-sm text-accent mr-1"></i><i
                         class="czi-star-filled font-size-sm text-accent mr-1"></i><i
                         class="czi-star-filled font-size-sm text-accent mr-1"></i><i
                         class="czi-star font-size-sm text-muted mr-1"></i></div>
-                <span class="d-inline-block align-middle">4.1 Calificación general</span>
+
+                @php
+                    $count = $product->reviews->count();
+                    $generalRating = $count > 0
+                        ? round($product->reviews->sum('rating') / $count, 1)
+                        : 0;
+                @endphp
+
+                <span class="d-inline-block align-middle">{{ $generalRating }} Calificación general</span>
                 <p class="pt-3 font-size-sm text-muted">58 de 74 (77%)<br>clientes recomendaron este producto</p>
             </div>
             <div class="col-lg-8 col-md-7">
