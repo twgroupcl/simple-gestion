@@ -13,6 +13,7 @@ class ProductRequest extends FormRequest
 
     private $prepareData = [
         'warehouse',
+        'custom_attributes',
     ];
 
     /**
@@ -57,6 +58,10 @@ class ProductRequest extends FormRequest
             'warehouse_validation.*.stock' => 'required_if:use_inventory_control,1|numeric',
             'warehouse_validation.*.price' => 'required_if:use_inventory_control,1|numeric',
             'warehouse_validation.*.shipping_type' => 'required_if:use_inventory_control,1|exists:shipping_methods,id',
+
+            'custom_attributes_array' => 'array',
+            'custom_attributes_validation.*.code' => 'required_with:custom_attributes',
+            'custom_attributes_validation.*.value' => 'required_with:custom_attributes',
 
             'new' => 'boolean',
             'featured' => 'boolean',
