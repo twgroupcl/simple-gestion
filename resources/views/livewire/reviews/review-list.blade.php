@@ -16,10 +16,10 @@
         <div class="product-review pb-4 mb-4 border-bottom">
             <div class="d-flex mb-3">
                 <div class="media media-ie-fix align-items-center mr-4 pr-2">
-                    {{-- <img class="rounded-circle"
-                                                                                width="50"
-                                                                                src="img/shop/reviews/01.jpg"
-                                                                                alt="Rafael Marquez"/> --}}
+                    <img class="rounded-circle"
+                        width="50"
+                        src="{{ asset('img/team/01.jpg') }}"
+                        alt="{{ $review->customer->first_name }}"/>
                     <div class="media-body pl-3">
                         <h6 class="font-size-sm mb-0">{{ $review->customer->first_name }}</h6><span class="font-size-ms text-muted">{{ $review->created_at->diffForHumans() }}</span>
                     </div>
