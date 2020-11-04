@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Reviews;
 
+use App\Models\Customer;
 use Livewire\Component;
 
 class Form extends Component
@@ -24,13 +25,15 @@ class Form extends Component
         [$rules, $attributes, $messages] = $this->validation();
         $this->validate($rules, $attributes, $messages);
 
-        // dd(
-        //     $this->product,
-        //     $this->form['rating'],
-        //     $this->form['comment'],
-        //     explode(',', $this->form['pros']),
-        //     explode(',', $this->form['cons'])
-        // );
+        $current_user = Customer::firstWhere('user_id', backpack_user()->id);
+        $current_user->reviews()->create([
+            'product_id' => $this->product->id,
+            'title' => $this->form['title'],
+            'rating' => $this->form['rating'],
+            'comment' => $this->form['comment'],
+            'pros' => $this->form['pros'],
+            'cons' => $this->form['cons'],
+        ]);
     }
 
     public function validation()
