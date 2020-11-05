@@ -49,9 +49,10 @@
         <h6>No hay opiniones</h6> --}}
     @endforeach
     <div class="text-center">
-        {{ $reviews->links() }}
-        {{-- <button class="btn btn-outline-accent" type="button"><i class="czi-reload mr-2"></i>Cargar más
-            opiniones
-        </button> --}}
+        @if($reviews->hasMorePages())
+            <button wire:click="loadMore" class="btn btn-outline-accent" type="button"><i class="czi-reload mr-2"></i>Cargar más
+                opiniones
+            </button>
+        @endif
     </div>
 </div>
