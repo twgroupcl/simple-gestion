@@ -7,10 +7,6 @@ use Livewire\Component;
 class SellerReviews extends Component
 {
     public $seller;
-    public $count;
-    public $generalRating;
-    public $stars;
-    public $starPercentages;
 
     protected $listeners = ['refreshCard' => 'updateCard'];
 
