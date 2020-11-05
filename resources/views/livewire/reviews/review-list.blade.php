@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-end pb-4">
         <div class="form-inline flex-nowrap">
             <label class="text-muted text-nowrap mr-2 d-none d-sm-block" for="sort-reviews">Ordenar por:</label>
-            <select wire:model="order" class="custom-select custom-select-sm" id="sort-reviews">
+            <select wire:model="sort_review" class="custom-select custom-select-sm" id="sort-reviews">
                 <option value="desc">Más recientes</option>
                 <option value="asc">Más antiguos</option>
                 <option value="popular">Más populares</option>
@@ -12,8 +12,8 @@
         </div>
     </div>
     <!-- Review-->
-    @forelse ($reviews as $review)
-        <div class="product-review pb-4 mb-4 border-bottom">
+    @foreach ($reviews as $review)
+        <div wire:key="{{ $loop->index }}" class="product-review pb-4 mb-4 border-bottom">
             <div class="d-flex mb-3">
                 <div class="media media-ie-fix align-items-center mr-4 pr-2">
                     <img class="rounded-circle"
@@ -45,12 +45,13 @@
                 <button class="btn-dislike" type="button">3</button>
             </div> --}}
         </div>
-    @empty
-        <h6>No hay opiniones</h6>
-    @endforelse
+    {{-- @empty
+        <h6>No hay opiniones</h6> --}}
+    @endforeach
     <div class="text-center">
-        <button class="btn btn-outline-accent" type="button"><i class="czi-reload mr-2"></i>Cargar más
+        {{ $reviews->links() }}
+        {{-- <button class="btn btn-outline-accent" type="button"><i class="czi-reload mr-2"></i>Cargar más
             opiniones
-        </button>
+        </button> --}}
     </div>
 </div>
