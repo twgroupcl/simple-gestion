@@ -50,6 +50,8 @@ class Customer extends Model
         'status',
         'customer_segment_id',
         'user_id',
+        'json_value',
+        'default_address_id',
         'company_id',
     ];
     // protected $hidden = [];
@@ -59,6 +61,7 @@ class Customer extends Model
         'activities_data' => 'array',
         'banks_data' => 'array',
         'contacts_data' => 'array',
+        'json_value' => 'array',
     ];
 
     /*
