@@ -52,6 +52,8 @@
             <button class="btn btn-primary btn-shadow btn-block" type="submit">Enviar mi opinión</button>
         </form>
         @endauth
-        <a href="{{ route('customer.sign') }}" class="btn btn-primary btn-shadow btn-block" type="submit">Iniciar sesión para escribir mi opinión</a>
+        @guest
+            <a href="{{ route('customer.sign') }}" class="btn btn-primary btn-shadow btn-block" type="submit">Iniciar sesión para escribir mi opinión</a>
+        @endguest
     </div>
 </div>
