@@ -11,20 +11,20 @@ class ReviewList extends Component
 
     protected $queryString = ['sort_review'];
     protected $listeners = ['refreshList' => 'resetList'];
-    public $product;
+    public $model;
     public $sort_review;
     public $perPage = 5;
 
     public function render()
     {
         return view('livewire.reviews.review-list', [
-            'reviews' => $this->product->reviews()->customSort($this->sort_review)->simplePaginate($this->perPage)
+            'reviews' => $this->model->reviews()->customSort($this->sort_review)->simplePaginate($this->perPage)
         ]);
     }
 
-    public function mount($product)
+    public function mount($model)
     {
-        $this->product = $product;
+        $this->model = $model;
     }
 
     public function loadMore()
