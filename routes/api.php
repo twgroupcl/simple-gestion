@@ -34,6 +34,9 @@ Route::group([ 'prefix' => '/v1'], function() {
 
 
     // Customer
+    Route::post('/customers', 'Api\v1\CustomerController@store')
+        ->middleware(['auth.jwt', 'permission:customer.create'])
+        ->name('api.customers.store');
     Route::get('/customers/{id}', 'Api\v1\CustomerController@show')
         ->name('api.customers.show');
 
