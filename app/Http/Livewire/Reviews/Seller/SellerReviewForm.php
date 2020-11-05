@@ -34,7 +34,7 @@ class SellerReviewForm extends Component
         [$rules, $attributes, $messages] = $this->validation();
         $this->validate($rules, $attributes, $messages);
 
-        $this->current_user->reviews()->create([
+        $this->current_user->seller_reviews()->create([
             'seller_id' => $this->seller->id,
             'title' => $this->form['title'],
             'rating' => $this->form['rating'],
@@ -45,8 +45,8 @@ class SellerReviewForm extends Component
 
         $this->form = null;
 
-        $this->emitTo('reviews.review-list', 'refreshList');
-        $this->emitTo('reviews.reviews', 'refreshCard');
+        $this->emitTo('reviews.seller.seller-review-list', 'refreshList');
+        $this->emitTo('reviews.seller.seller-reviews', 'refreshCard');
     }
 
     public function userFilters()
