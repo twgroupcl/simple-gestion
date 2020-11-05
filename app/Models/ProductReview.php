@@ -58,6 +58,32 @@ class ProductReview extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function scopeCustomSort($query, $order)
+    {
+        switch ($order) {
+            case 'asc':
+                return $query->orderBy('created_at', 'asc');
+                break;
+
+            case 'popular':
+                return $query->orderBy('rating', 'asc');
+                break;
+
+            case 'high-rating':
+                return $query->orderBy('rating', 'desc');
+                break;
+
+            case 'low-rating':
+                return $query->orderBy('rating', 'asc');
+                break;
+
+            default:
+                return $query->latest();
+                break;
+        }
+
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
