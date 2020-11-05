@@ -5,7 +5,7 @@
             <select wire:model="sort_review" class="custom-select custom-select-sm" id="sort-reviews">
                 <option value="desc">Más recientes</option>
                 <option value="asc">Más antiguos</option>
-                <option value="popular">Más populares</option>
+                {{-- <option value="popular">Más populares</option> --}}
                 <option value="high-rating">Calificación alta</option>
                 <option value="low-rating">Calificación baja</option>
             </select>
