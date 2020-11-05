@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Reviews;
 
 use App\Models\Customer;
+use App\Models\OrderItem;
 use App\Models\ProductReview;
 use Livewire\Component;
 
@@ -12,6 +13,7 @@ class Form extends Component
     public $product;
     public $userHasCommented;
     public $current_user;
+    public $hasOrderedThisProduct;
 
     public function render()
     {
@@ -21,10 +23,10 @@ class Form extends Component
     public function mount($product)
     {
         $this->product = $product;
-        $this->current_user = Customer::firstWhere('user_id', backpack_user()->id);
-        $this->userHasCommented = ProductReview::where('customer_id', $this->current_user->id)
-                                                ->where('product_id', $product->id)
-                                                ->exists();
+
+        if (auth()->check()) {
+            $this->userFilters();
+        }
     }
 
     public function saveReview()
@@ -45,6 +47,20 @@ class Form extends Component
 
         $this->emitTo('reviews.review-list', 'refreshList');
         $this->emitTo('reviews.reviews', 'refreshCard');
+    }
+
+    public function userFilters()
+    {
+        $this->current_user = Customer::firstWhere('user_id', backpack_user()->id);
+
+        $this->hasOrderedThisProduct = OrderItem::whereProductId($this->product->id)
+                                                ->whereHas('order', function ($query) {
+                                                    $query->whereCustomerId($this->current_user->id);
+                                                })->exists();
+
+        $this->userHasCommented = ProductReview::where('customer_id', $this->current_user->id)
+                                                ->where('product_id', $this->product->id)
+                                                ->exists();
     }
 
     public function validation()
