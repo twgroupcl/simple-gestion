@@ -34,6 +34,8 @@ class Form extends Component
             'pros' => $this->form['pros'],
             'cons' => $this->form['cons'],
         ]);
+
+        $this->emitTo('reviews.review-list', 'refreshList');
     }
 
     public function validation()
@@ -42,8 +44,8 @@ class Form extends Component
             [
                 'form.rating' => 'required',
                 'form.comment' => 'required',
-                'form.pros' => 'required',
-                'form.cons' => 'required',
+                // 'form.pros' => 'required',
+                // 'form.cons' => 'required',
             ],
             [
                 'required' => 'Por favor complete el campo :attribute'

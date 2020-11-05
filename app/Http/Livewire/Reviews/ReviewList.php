@@ -10,6 +10,7 @@ class ReviewList extends Component
     use WithPagination;
 
     protected $queryString = ['sort_review'];
+    protected $listeners = ['refreshList' => 'resetList'];
     public $product;
     public $sort_review;
     public $perPage = 5;
@@ -29,5 +30,10 @@ class ReviewList extends Component
     public function loadMore()
     {
         $this->perPage = $this->perPage + 5;
+    }
+
+    public function resetList()
+    {
+        $this->reset(['sort_review', 'page']);
     }
 }
