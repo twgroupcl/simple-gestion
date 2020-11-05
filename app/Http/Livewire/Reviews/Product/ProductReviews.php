@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Livewire\Reviews;
+namespace App\Http\Livewire\Reviews\Product;
 
 use Livewire\Component;
 
-class Reviews extends Component
+class ProductReviews extends Component
 {
     public $product;
     public $count;
@@ -17,7 +17,7 @@ class Reviews extends Component
 
     public function render()
     {
-        return view('livewire.reviews.reviews');
+        return view('livewire.reviews.product.product-reviews');
     }
 
     public function mount($product)

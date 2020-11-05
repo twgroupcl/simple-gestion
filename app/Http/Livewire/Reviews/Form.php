@@ -46,7 +46,7 @@ class Form extends Component
         $this->form = null;
 
         $this->emitTo('reviews.review-list', 'refreshList');
-        $this->emitTo('reviews.reviews', 'refreshCard');
+        $this->emitTo('reviews.product.product-reviews', 'refreshCard');
     }
 
     public function userFilters()
