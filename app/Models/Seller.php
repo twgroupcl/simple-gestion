@@ -159,6 +159,11 @@ class Seller extends Model
         return $this->hasMany(PaymentMethodSeller::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(SellerReview::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

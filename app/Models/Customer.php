@@ -110,9 +110,14 @@ class Customer extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function reviews()
+    public function product_reviews()
     {
         return $this->hasMany(ProductReview::class);
+    }
+
+    public function seller_reviews()
+    {
+        return $this->hasMany(SellerReview::class);
     }
 
     /*

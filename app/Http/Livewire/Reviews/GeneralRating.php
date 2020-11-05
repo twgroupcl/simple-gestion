@@ -4,37 +4,38 @@ namespace App\Http\Livewire\Reviews;
 
 use Livewire\Component;
 
-class Reviews extends Component
+class GeneralRating extends Component
 {
-    public $product;
+    public $model;
     public $count;
-    public $ratedReviews;
+    public $generalRating;
     public $stars;
     public $starPercentages;
-    public $generalRating;
 
-    protected $listeners = ['refreshCard' => 'updateCard'];
+    protected $listeners = [
+        'rerenderGeneralRating' => '$refresh',
+    ];
 
     public function render()
     {
-        return view('livewire.reviews.reviews');
+        $this->loadData();
+        return view('livewire.reviews.general-rating');
     }
 
-    public function mount($product)
+    public function mount($model)
     {
-        $this->product = $product;
-        $this->loadData();
+        $this->model = $model;
     }
 
     public function loadData()
     {
-        $this->count = $this->product->reviews->count();
+        $this->count = $this->model->reviews->count();
 
         $this->generalRating = $this->count > 0
-            ? round($this->product->reviews->sum('rating') / $this->count, 1)
+            ? round($this->model->reviews->sum('rating') / $this->count, 1)
             : 0;
 
-        $this->ratedReviews = $this->product->reviews->groupBy('rating');
+        $this->ratedReviews = $this->model->reviews->groupBy('rating');
 
         $this->stars = [
             'five' => $this->getRatedReview(5),
@@ -65,10 +66,5 @@ class Reviews extends Component
         return optional(
             $this->ratedReviews->pull($starCount)
         )->count() ?? 0;
-    }
-
-    public function updateCard()
-    {
-        $this->loadData();
     }
 }
