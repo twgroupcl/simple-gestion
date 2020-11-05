@@ -149,4 +149,5 @@
   </div>
 </div>
 
+<livewire:reviews.seller.seller-reviews :seller="$seller">
 @endsection
