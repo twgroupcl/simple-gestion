@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\Reviews;
+namespace App\Http\Livewire\Reviews\Product;
 
 use App\Models\Customer;
 use App\Models\OrderItem;
 use App\Models\ProductReview;
 use Livewire\Component;
 
-class Form extends Component
+class ProductReviewForm extends Component
 {
     public $form;
     public $product;
@@ -17,7 +17,7 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.reviews.form');
+        return view('livewire.reviews.product.product-review-form');
     }
 
     public function mount($product)
