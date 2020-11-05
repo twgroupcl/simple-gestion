@@ -36,14 +36,14 @@ class CustomerRequest extends FormRequest
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required',
-            'cellphone' => 'required',
+            //'phone' => 'required',
+            //'cellphone' => 'required',
 
             'sii_activity' => 'required_if:taxable,1',
 
             'taxable' => 'required',
             'birthday' => 'required|date_format:d-m-Y',
-            'gender' => 'in:female,male,other',
+            //'gender' => 'in:female,male,other',
 
             'addresses' => 'required|json',
             'addresses_array' => 'required|array',
@@ -52,8 +52,8 @@ class CustomerRequest extends FormRequest
             'addresses_validation.*.last_name' => 'required',
             'addresses_validation.*.street' => 'required',
             'addresses_validation.*.number' => 'required',
-            'addresses_validation.*.phone' => 'required',
-            'addresses_validation.*.cellphone' => 'required',
+            //'addresses_validation.*.phone' => 'required',
+            //'addresses_validation.*.cellphone' => 'required',
 
             'custom_attributes' => 'json',
 
