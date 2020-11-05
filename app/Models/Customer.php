@@ -54,8 +54,11 @@ class Customer extends Model
         'default_address_id',
         'company_id',
     ];
-    // protected $hidden = [];
-    // protected $dates = [];
+
+    protected $hidden = [
+        'password',
+    ];
+
     protected $casts = [
         'addresses_data' => 'array',
         'activities_data' => 'array',
