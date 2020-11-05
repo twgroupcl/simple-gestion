@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use DateTime;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Models\ProductClassAttribute;
@@ -138,9 +139,9 @@ class ProductService
                     'product_class_id' => $request['product_class_id'],
                     'prduct_brand_id' => $request['product_brand_id'],
                     
-                    //'special_price' => $request['special_price'],
-                    //'special_price_from' => isset($request['special_price_from']) ? new DateTime($request['special_price_from']) : null,
-                    //'special_price_to' => isset($request['special_price_to']) ? new DateTime($request['special_price_to']) : null,
+                    'special_price' => $warehouse->special_price ?? null,
+                    'special_price_from' => isset($warehouse->special_price_from) ? new DateTime($warehouse->special_price_from) : null,
+                    'special_price_to' => isset($warehouse->special_price_to) ? new DateTime($warehouse->special_price_to) : null,
 
                     'currency_id' => $currencyId,
 

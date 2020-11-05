@@ -46,12 +46,12 @@ class ProductRequest extends FormRequest
             //'price' => 'required|numeric|min:1',
             //'is_service' => 'required|boolean',
 
-            'special_price' => 'numeric|min:1',
-            'special_price_from' => 'date_format:d-m-Y|before:special_price_to',
-            'special_price_to' => 'date_format:d-m-Y|after:special_price_from',
-
             'categories' => 'array',
             'categories.*' => 'numeric|exists:product_categories,id',
+            
+            'warehouse_validation.*.special_price' => 'numeric|min:1',
+            'warehouse_validation.*.special_price_from' => 'date_format:d-m-Y|before:special_price_to',
+            'warehouse_validation.*.special_price_to' => 'date_format:d-m-Y|after:special_price_from',
 
             'warehouse' => 'required',
             'warehouse_array' => 'required|array',
