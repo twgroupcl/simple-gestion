@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Rules\RutRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
@@ -31,7 +32,7 @@ class CustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'uid' => 'required',
+            'uid' => ['required', new RutRule()],
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -40,11 +41,11 @@ class CustomerRequest extends FormRequest
 
             'sii_activity' => 'required_if:taxable,1',
 
-            'taxable' => 'required', // is_company?
+            'taxable' => 'required',
             'birthday' => 'required|date_format:d-m-Y',
-            'gender' => 'required',
+            'gender' => 'in:female,male,other',
 
-            'addresses' => 'required',
+            'addresses' => 'required|json',
             'addresses_array' => 'required|array',
             'addresses_validation.*.uid' => 'required',
             'addresses_validation.*.first_name' => 'required',

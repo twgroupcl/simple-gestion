@@ -43,13 +43,11 @@ class CustomerController extends Controller
             $json_value= array_merge($json_value, json_decode($request['custom_attributes'], true));
         }
 
-
         if ($request['sii_activity']) {
             $activitiesData = [
                 [ 'activity_name' => $request['sii_activity'] ],
             ];
         }
-        
 
         DB::beginTransaction();
         
@@ -61,12 +59,12 @@ class CustomerController extends Controller
                 'email' => $request['email'],
                 'phone' => $request['phone'],
                 'cellphone' => $request['cellphone'],
-                'password' => '123456', // ?????
+                'password' => $request['uid'],
                 'is_company' => $request['taxable'],
                 'notes' => $request['notes'],
                 'extra' => $request['extra'],
                 'status' => $request['status'] ?? 1,
-                'customer_segment_id' => 1, // ????
+                'customer_segment_id' => 1,
                 'addresses_data' => $request['addresses'],
                 'activities_data' => $activitiesData ?? null,
                 'json_value' => $json_value,
