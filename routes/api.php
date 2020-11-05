@@ -32,6 +32,11 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/login', 'Api\v1\AuthController@authenticate');
     Route::get('/test', 'Api\v1\AuthController@test')->middleware('auth.jwt');;
 
+
+    // Customer
+    Route::get('/customers/{id}', 'Api\v1\CustomerController@show')
+        ->name('api.customers.show');
+
     // Product
     Route::post('/products', 'Api\v1\ProductController@store')
         ->middleware(['auth.jwt', 'permission:product.create'])
