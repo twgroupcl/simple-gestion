@@ -44,6 +44,7 @@ class Form extends Component
         $this->form = null;
 
         $this->emitTo('reviews.review-list', 'refreshList');
+        $this->emitTo('reviews.reviews', 'refreshCard');
     }
 
     public function validation()

@@ -13,6 +13,8 @@ class Reviews extends Component
     public $starPercentages;
     public $generalRating;
 
+    protected $listeners = ['refreshCard' => 'updateCard'];
+
     public function render()
     {
         return view('livewire.reviews.reviews');
@@ -63,5 +65,10 @@ class Reviews extends Component
         return optional(
             $this->ratedReviews->pull($starCount)
         )->count() ?? 0;
+    }
+
+    public function updateCard()
+    {
+        $this->loadData();
     }
 }
