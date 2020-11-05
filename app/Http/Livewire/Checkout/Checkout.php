@@ -113,6 +113,8 @@ class Checkout extends Component
         $this->total = $this->getTotal();
         $this->shippings = [];
 
+        //$this->loading = false;
+
     }
 
     public function render()
@@ -389,9 +391,10 @@ class Checkout extends Component
 
     public function updateShippingTotals($shippingsSellers)
     {
-        //   dd($shippingsSellers);
+       //    dd($shippingsSellers);
         //     $shippings = array_column($shippingsSellers,'shipping');
         //     dd($shippings);
+
 
         $itemShippingTotal = [];
 
@@ -410,7 +413,10 @@ class Checkout extends Component
                         if (!is_null($shippingValue['shipping']['totalPrice'])) {
                             $itemShippingTotal[$indice]['totalPrice'] += $shippingValue['shipping']['totalPrice'];
                             $itemShippingTotal[$indice]['totalShippingPackage'] += $shippingValue['shipping']['totalShippingPackage'];
+                        }else{
+                            $itemShippingTotal[$indice]['totalShippingPackage'] += $shippingValue['shipping']['totalShippingPackage'];
                         }
+
                     } else {
                         $itemShippingTotal[$indice] = [];
                         $itemShippingTotal[$indice]['title'] = $shippingValue['shipping']['title'];

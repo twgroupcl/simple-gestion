@@ -1,5 +1,5 @@
 <div>
-
+    {{-- <div   class="loading" wire:loading >Loading&#8230;</div> --}}
 
 
     <div class="container pb-5 mb-2 mb-md-4">
@@ -18,7 +18,7 @@
 
 
 
-                {{ $loading }}
+
                 <div class="pt-2 px-4 pr-lg-0 pl-xl-5">
                     @switch($activeStep['number'])
                         @case(1)
@@ -132,6 +132,7 @@
                             </li>
                         @endif --}}
                         @if ($shippingtotals && $activeStep['number'] > 2)
+
                             @foreach ($shippingtotals as $shipping)
                                 {{-- @if ($shipping['qty']) --}}
                                     <li class="d-flex justify-content-between align-items-center">

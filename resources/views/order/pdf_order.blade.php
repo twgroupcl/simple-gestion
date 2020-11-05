@@ -177,7 +177,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
         @endphp
         <tr class="product-item">
             <td width="30%" class="product-item">
-                <p> {{$product->seller->name}}</p>
+                <p> {{$product->seller->visible_name}}</p>
                 <p><strong>{{ $product->name }}</strong></p>
                 <img class="width-5" src="{{ public_path() . '/' . $product->getFirstImagePath() }}" width="15%">
             </td>
