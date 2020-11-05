@@ -21,6 +21,6 @@ class GeneralRating extends Component
         $this->count = $count;
         $this->generalRating = $generalRating;
         $this->stars = $stars;
-        $this->stars = $starPercentages;
+        $this->starPercentages = $starPercentages;
     }
 }
