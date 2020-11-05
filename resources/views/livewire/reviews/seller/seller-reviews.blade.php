@@ -4,6 +4,7 @@
         <hr class="mt-4 pb-4 mb-3">
         <div class="row">
             <!-- Reviews list-->
+            <livewire:reviews.seller.seller-review-list :seller="$seller">
             <!-- Leave review form-->
             <livewire:reviews.seller.seller-review-form :seller="$seller">
         </div>
