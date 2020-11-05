@@ -4,18 +4,6 @@
         @auth
             @if ($hasOrderedThisProduct)
                 <form class="needs-validation" wire:submit.prevent="saveReview" novalidate>
-                    {{-- <div class="form-group">
-                        <label for="review-name">Tu nombre<span class="text-danger">*</span></label>
-                        <input class="form-control" type="text" required id="review-name">
-                        <div class="invalid-feedback">Por favor escribe tu nombre!</div>
-                        <small class="form-text text-muted">Se mostrará en el comentario.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="review-email">Tu email<span class="text-danger">*</span></label>
-                        <input class="form-control" type="email" required id="review-email">
-                        <div class="invalid-feedback">Por favor escribe un email válido!</div>
-                        <small class="form-text text-muted">Solo autenticación - no le enviaremos spam.</small>
-                    </div> --}}
                     <div class="form-group">
                         <label for="review-title">Título<span class="text-danger">*</span></label>
                         <input class="form-control" wire:model="form.title" type="text" required id="review-title">
@@ -57,7 +45,7 @@
                     @endif
                 </form>
             @else
-            <h6>Adquiérelo ahora y danos tu opinión.</h6>
+            <h6>Adquiere un producto ahora y danos tu opinión.</h6>
         @endif
         @endauth
         @guest
