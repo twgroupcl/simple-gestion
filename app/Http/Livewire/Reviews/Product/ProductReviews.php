@@ -23,5 +23,6 @@ class ProductReviews extends Component
     public function updateCard()
     {
         $this->emit('rerenderGeneralRating');
+        $this->emit('refreshList');
     }
 }
