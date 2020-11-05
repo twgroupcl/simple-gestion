@@ -32,7 +32,7 @@
                         <i class="sr-star {{ $review->rating >= 4 ? 'czi-star-filled active' : 'czi-star' }}"></i>
                         <i class="sr-star {{ $review->rating >= 5 ? 'czi-star-filled active' : 'czi-star' }}"></i>
                     </div>
-                    <div class="font-size-ms text-muted">83% de los usuarios consideraron útil esta revisión</div>
+                    {{-- <div class="font-size-ms text-muted">83% de los usuarios consideraron útil esta revisión</div> --}}
                 </div>
             </div>
             <p class="font-size-md mb-2">{{ $review->comment }}</p>

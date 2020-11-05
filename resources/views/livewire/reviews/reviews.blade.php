@@ -11,7 +11,7 @@
                         <i class="{{ round($generalRating) >= 5 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
                 </div>
                 <span class="d-inline-block align-middle">{{ $generalRating }} Calificación general</span>
-                <p class="pt-3 font-size-sm text-muted">58 de 74 (77%)<br>clientes recomendaron este producto</p>
+                {{-- <p class="pt-3 font-size-sm text-muted">58 de 74 (77%)<br>clientes recomendaron este producto</p> --}}
             </div>
             <div class="col-lg-8 col-md-7">
                 <div class="d-flex align-items-center mb-2">
