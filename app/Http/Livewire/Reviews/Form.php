@@ -31,9 +31,11 @@ class Form extends Component
             'title' => $this->form['title'],
             'rating' => $this->form['rating'],
             'comment' => $this->form['comment'],
-            'pros' => $this->form['pros'],
-            'cons' => $this->form['cons'],
+            'pros' => $this->form['pros'] ?? '',
+            'cons' => $this->form['cons'] ?? '',
         ]);
+
+        $this->form = null;
 
         $this->emitTo('reviews.review-list', 'refreshList');
     }
@@ -44,8 +46,6 @@ class Form extends Component
             [
                 'form.rating' => 'required',
                 'form.comment' => 'required',
-                // 'form.pros' => 'required',
-                // 'form.cons' => 'required',
             ],
             [
                 'required' => 'Por favor complete el campo :attribute'
