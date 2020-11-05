@@ -45,7 +45,7 @@ class CustomerController extends Controller
 
         if ($request['sii_activity']) {
             $activitiesData = [
-                [ 'activity_name' => $request['sii_activity'] ],
+                [ 'business_activity_id' => $request['sii_activity'] ],
             ];
         }
 

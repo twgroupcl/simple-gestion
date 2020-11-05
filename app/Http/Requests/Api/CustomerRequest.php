@@ -39,7 +39,7 @@ class CustomerRequest extends FormRequest
             //'phone' => 'required',
             //'cellphone' => 'required',
 
-            'sii_activity' => 'required_if:taxable,1',
+            'sii_activity' => 'required_if:taxable,1|exists:business_activities,id',
 
             'taxable' => 'required',
             'birthday' => 'required|date_format:d-m-Y',
