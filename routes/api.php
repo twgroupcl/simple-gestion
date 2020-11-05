@@ -94,6 +94,10 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::get('/product-classes', 'Api\v1\ProductClassController@all')
         ->name('api.product-classes.all');
 
+    // Orders
+    Route::get('/orders/{id}', 'Api\v1\OrderController@show')
+        ->name('api.orders.show');
+
 
     // Warehouse
     Route::post('/warehouses', 'Api\v1\ProductInventorySourceController@store')
