@@ -34,19 +34,27 @@ class CustomerRequest extends FormRequest
             'uid' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
-            'telephone' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required',
             'cellphone' => 'required',
+
+            'sii_activity' => 'required_if:taxable,1',
+
+            'taxable' => 'required', // is_company?
+            'birthday' => 'required|date_format:d-m-Y',
+            'gender' => 'required',
 
             'addresses' => 'required',
             'addresses_array' => 'required|array',
             'addresses_validation.*.uid' => 'required',
-            'addresses_validation.*.firstname' => 'required',
-            'addresses_validation.*.lastname' => 'required',
+            'addresses_validation.*.first_name' => 'required',
+            'addresses_validation.*.last_name' => 'required',
             'addresses_validation.*.street' => 'required',
             'addresses_validation.*.number' => 'required',
-            'addresses_validation.*.telephone' => 'required',
+            'addresses_validation.*.phone' => 'required',
             'addresses_validation.*.cellphone' => 'required',
+
+            'custom_attributes' => 'json',
 
         ];
     }
