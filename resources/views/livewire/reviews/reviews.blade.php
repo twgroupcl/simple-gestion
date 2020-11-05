@@ -2,7 +2,7 @@
     <div class="container pt-md-2" id="reviews">
         <div class="row pb-3">
             <div class="col-lg-4 col-md-5">
-                <h2 class="h3 mb-4">{{ $product->reviews->count() }} Evaluaciones</h2>
+                <h2 class="h3 mb-4">{{ $count }} Evaluaciones</h2>
                 <div class="star-rating mr-2">
                         <i class="{{ round($generalRating) >= 1 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
                         <i class="{{ round($generalRating) >= 2 ? 'czi-star-filled font-size-sm text-accent' : 'czi-star font-size-sm text-muted mr-1' }} mr-1"></i>
