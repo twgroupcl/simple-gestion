@@ -35,6 +35,7 @@
                     {{-- <div class="font-size-ms text-muted">83% de los usuarios consideraron útil esta revisión</div> --}}
                 </div>
             </div>
+            <h6 class="font-size-md mb-2">{{ $review->title }}</h6>
             <p class="font-size-md mb-2">{{ $review->comment }}</p>
             <ul class="list-unstyled font-size-ms pt-1">
                 <li class="mb-1"><span class="font-weight-medium">Pros:&nbsp;</span>{{ $review->pros }}</li>
