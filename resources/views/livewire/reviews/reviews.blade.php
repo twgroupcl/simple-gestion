@@ -75,10 +75,8 @@
         <div class="row">
             <!-- Reviews list-->
             <livewire:reviews.review-list :product="$product">
-            @auth
-                <!-- Leave review form-->
-                <livewire:reviews.form :product="$product">
-            @endauth
+            <!-- Leave review form-->
+            <livewire:reviews.form :product="$product">
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 <div class="col-md-5 mt-2 pt-4 mt-md-0 pt-md-0">
     <div class="bg-secondary py-grid-gutter px-grid-gutter rounded-lg">
         <h3 class="h4 pb-2">Escribir mi opinión</h3>
+        @auth
         <form class="needs-validation" wire:submit.prevent="saveReview" novalidate>
             {{-- <div class="form-group">
                 <label for="review-name">Tu nombre<span class="text-danger">*</span></label>
@@ -50,5 +51,7 @@
             </div>
             <button class="btn btn-primary btn-shadow btn-block" type="submit">Enviar mi opinión</button>
         </form>
+        @endauth
+        <a href="{{ route('customer.sign') }}" class="btn btn-primary btn-shadow btn-block" type="submit">Iniciar sesión para escribir mi opinión</a>
     </div>
 </div>
