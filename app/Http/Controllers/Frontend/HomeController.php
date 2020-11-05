@@ -15,14 +15,16 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = ProductCategory::where('status', '=' ,'1')
-        ->whereHas('products', function ($query) {
-            $query->where('status', '=', '1')
-            ->where('is_approved', '=', '1')
-            ->where('parent_id', '=', null);
-        })->limit(3)->inRandomOrder()->get();
+        return redirect('admin');
 
-        return view('marketplace', compact('categories'));
+        // $categories = ProductCategory::where('status', '=' ,'1')
+        // ->whereHas('products', function ($query) {
+        //     $query->where('status', '=', '1')
+        //     ->where('is_approved', '=', '1')
+        //     ->where('parent_id', '=', null);
+        // })->limit(3)->inRandomOrder()->get();
+
+        // return view('marketplace', compact('categories'));
     }
 
     public function getAllProducts()
