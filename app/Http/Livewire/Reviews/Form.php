@@ -3,12 +3,15 @@
 namespace App\Http\Livewire\Reviews;
 
 use App\Models\Customer;
+use App\Models\ProductReview;
 use Livewire\Component;
 
 class Form extends Component
 {
     public $form;
     public $product;
+    public $userHasCommented;
+    public $current_user;
 
     public function render()
     {
@@ -18,6 +21,10 @@ class Form extends Component
     public function mount($product)
     {
         $this->product = $product;
+        $this->current_user = Customer::firstWhere('user_id', backpack_user()->id);
+        $this->userHasCommented = ProductReview::where('customer_id', $this->current_user->id)
+                                                ->where('product_id', $product->id)
+                                                ->exists();
     }
 
     public function saveReview()
@@ -25,8 +32,7 @@ class Form extends Component
         [$rules, $attributes, $messages] = $this->validation();
         $this->validate($rules, $attributes, $messages);
 
-        $current_user = Customer::firstWhere('user_id', backpack_user()->id);
-        $current_user->reviews()->create([
+        $this->current_user->reviews()->create([
             'product_id' => $this->product->id,
             'title' => $this->form['title'],
             'rating' => $this->form['rating'],

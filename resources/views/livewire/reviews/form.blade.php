@@ -49,7 +49,11 @@
                             id="review-cons"></textarea>
                 @error('form.cons') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
-            <button class="btn btn-primary btn-shadow btn-block" type="submit">Enviar mi opinión</button>
+            @if ($userHasCommented)
+                <h6>Ya has comentado, gracias por tu opinión.</h6>
+            @else
+                <button class="btn btn-primary btn-shadow btn-block" type="submit">Enviar mi opinión</button>
+            @endif
         </form>
         @endauth
         @guest
