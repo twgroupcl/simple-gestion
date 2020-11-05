@@ -5,6 +5,7 @@
         <div class="row">
             <!-- Reviews list-->
             <!-- Leave review form-->
+            <livewire:reviews.seller.seller-review-form :seller="$seller">
         </div>
     </div>
 </div>
