@@ -156,18 +156,22 @@
                     <td style="text-align: left">Fecha de cotización:</td>
                     <td style="text-align: right">{{ $creation_date->format('d/m/Y') }}</td>
                 </tr>
+                @if ($quotation->expiry_date)
                 <tr>
                     <td style="text-align: left">Fecha de vencimiento:</td>
                     <td style="text-align: right">{{ $due_date->format('d/m/Y') }}</td>
-                </tr>
+                </tr> 
+                @endif
                 <tr>
                     <td style="text-align: left">Numero de cotización:</td>
                     <td style="text-align: right">#{{ $quotation->id }}</td>
                 </tr>
+                @if ($quotation->code)
                 <tr>
                     <td style="text-align: left">Referencia de cotización:</td>
                     <td style="text-align: right">{{$quotation->code }}</td>
                 </tr>
+                @endif
             </table>
         </td>
     </tr>
