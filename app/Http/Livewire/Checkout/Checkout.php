@@ -22,6 +22,8 @@ class Checkout extends Component
     public $canContinue;
     public $chilexpress;
     public $shippings;
+    public $shippingtotals;
+    public $shippingTotal;
 
     protected $listeners = [
         'prev-step' => 'prevStep',
@@ -34,6 +36,8 @@ class Checkout extends Component
         'change' => 'updateTotals',
         'updateTotals' => 'updateTotals',
         'cartpreview' => 'cartpreview',
+        'update-shipping-totals' => 'updateShippingTotals',
+       // 'updateLoading' => 'updateLoading'
     ];
 
     public function mount()
@@ -107,7 +111,9 @@ class Checkout extends Component
 
         $this->subtotal = $this->getSubTotal();
         $this->total = $this->getTotal();
-        $this->shippings= [];
+        $this->shippings = [];
+
+        //$this->loading = false;
 
     }
 
@@ -131,7 +137,8 @@ class Checkout extends Component
     }
     public function nextStep()
     {
-        $this->loading = true;
+        //$this->loading = true;
+       // $this->updateLoading(true);
 
         //$currentStep  = array_search($this->activeStep, $this->steps);
 
@@ -148,41 +155,41 @@ class Checkout extends Component
     public function getItems()
     {
         return CartItem::whereCartId($this->cart->id)->with('product')->get();
+        //    $items =  CartItem::whereCartId($this->cart->id)->with(['product' => function ($query) {
+        //         $query->select('products.seller_id');
+        //         $query->groupBy('seller_id');
+        //     }])->get();
 
+        //     dd($items);
     }
 
     public function addShipping($selected, $item)
     {
 
+        // $shippingSelected = array(
+        //     'id' => $selected['id'],
+        //     'name' => $selected['name'],
+        //     'total' => 0,
+        //     'qty' => 0,
 
+        // );
 
-        $shippingSelected = array(
-            'id' => $selected['id'],
-            'name' => $selected['name'],
-            'total' => 0,
-            'qty' => 0,
+        // $existShipping = array_filter($this->shippings, function ($shipping) use ($shippingSelected) {
+        //     return $shipping['id'] == $shippingSelected['id'];
+        // });
 
-        );
+        // if (!$existShipping) {
 
-
-        $existShipping = array_filter( $this->shippings, function( $shipping) use($shippingSelected) {
-            return $shipping['id'] == $shippingSelected['id'];
-        });
-
-        if(!$existShipping){
-
-                array_push($this->shippings, $shippingSelected);
-        }
-
-
+        //     array_push($this->shippings, $shippingSelected);
+        // }
 
         $cartItem = CartItem::find($item);
 
-        $shippingId = $selected['id'];
-        $shippingTotal = $selected['price']; // * $cartItem->qty;
+        // $shippingId = $selected['id'];
+        // $shippingTotal = $selected['price']; // * $cartItem->qty;
 
-        $cartItem->shipping_id = $shippingId;
-        $cartItem->shipping_total = $shippingTotal; // * $cartItem->qty; ;
+        $cartItem->shipping_id = $selected['id'];
+        // $cartItem->shipping_total = $shippingTotal; // * $cartItem->qty; ;
         $cartItem->update();
         //$this->shippingtotal += $shippingTotal;
 
@@ -203,6 +210,7 @@ class Checkout extends Component
     }
     private function getTotal(): float
     {
+        $this->shippingTotal = 0;
         if ($this->shippings) {
             foreach ($this->shippings as $key => $shipping) {
                 $this->shippings[$key]['total'] = 0;
@@ -220,30 +228,35 @@ class Checkout extends Component
                 //  dd( $this->shippings[0]);
 
                 //  if ($shipping) {
-                    foreach ($this->shippings as $keyt => $shipping) {
-                        if (intval($shipping['id']) == $item->shipping_id) {
+                foreach ($this->shippings as $keyt => $shipping) {
+                    if (intval($shipping['id']) == $item->shipping_id) {
 
-                            if (!is_null($item->shipping_total)) {
-                                $this->shippings[$keyt]['total']   += $item->shipping_total;
-                            }else{
-                                $this->shippings[$keyt]['total']   = null;
-                            }
-                            $this->shippings[$keyt]['qty'] += $item->qty;
-                            $totalshipping += $item->shipping_total;
+                        if ($item->shipping_total) {
+                            $this->shippings[$keyt]['total'] += $item->shipping_total;
+                        } else {
+                            $this->shippings[$keyt]['total'] = null;
                         }
+                        $this->shippings[$keyt]['qty'] += $item->qty;
+                        $totalshipping += $item->shipping_total;
                     }
+                }
 
                 //  }
 
-
-
-
-
             }
 
-
         }
-        $total += $totalshipping;
+
+        if ($this->shippingtotals) {
+            foreach ($this->shippingtotals as $shippingtotal) {
+                if (!is_null($shippingtotal['totalPrice'])) {
+                    $this->shippingTotal += $shippingtotal['totalPrice'];
+                }
+            }
+        }
+        $total += $this->shippingTotal;
+
+//        $total += $totalshipping;
         if ($total <= 0) {
             $total = 0;
             $subtotal = 0;
@@ -263,13 +276,15 @@ class Checkout extends Component
         $this->steps[$currentStep + 1]['status'] = 'active';
         $this->activeStep = $this->steps[$currentStep + 1];
 
-        $this->loading = false;
+       // $this->loading = false;
+      // $this->updateLoading(false);
     }
 
     public function notFinishTask()
     {
 
-        $this->loading = false;
+        //$this->loading = false;
+       // $this->updateLoading(false);
     }
 
     public function pay()
@@ -339,15 +354,15 @@ class Checkout extends Component
                 $orderitem->sub_total = $item->price * $item->qty;
                 $orderitem->total = ($item->price * $item->qty) + $item->shipping_total;
                 $orderitem->save();
-                $shippingtotal_order += $item->shipping_total * $item->qty;
-                $subtotal_order += $item->price * $item->qty;
-                $total_order += ($item->price + $item->shipping_total) * $item->qty;
+                //$shippingtotal_order += $item->shipping_total * $item->qty;
+                //$subtotal_order += $item->price * $item->qty;
+               // $total_order += ($item->price + $item->shipping_total) * $item->qty;
 
             }
 
-            $order->shipping_total = $shippingtotal_order;
-            $order->sub_total = $subtotal_order;
-            $order->total = $total_order;
+            $order->shipping_total = $this->shippingTotal ;//$shippingtotal_order;
+            $order->sub_total = $this->subtotal ;//$subtotal_order;
+            $order->total = $this->total ; //$total_order;
 
             $order->save();
 
@@ -372,6 +387,60 @@ class Checkout extends Component
     public function cartpreview()
     {
         return redirect('shopping-cart');
+    }
+
+    public function updateShippingTotals($shippingsSellers)
+    {
+       //    dd($shippingsSellers);
+        //     $shippings = array_column($shippingsSellers,'shipping');
+        //     dd($shippings);
+
+
+        $itemShippingTotal = [];
+
+        foreach ($shippingsSellers as $sellerKey => $sellerValue) {
+
+            foreach ($sellerValue as $shippingKey => $shippingValue) {
+
+                //$existsKey = false;
+                // if (isset($itemShippingTotal)) {
+                //     $existsKey = array_key_exists(strval($shippingValue['shipping']['id']), $itemShippingTotal);
+                // }
+                if (isset($shippingValue) && isset($shippingValue['shipping'])) {
+                    $indice = strval($shippingValue['shipping']['id']);
+
+                    if (array_key_exists($indice, $itemShippingTotal)) {
+                        if (!is_null($shippingValue['shipping']['totalPrice'])) {
+                            $itemShippingTotal[$indice]['totalPrice'] += $shippingValue['shipping']['totalPrice'];
+                            $itemShippingTotal[$indice]['totalShippingPackage'] += $shippingValue['shipping']['totalShippingPackage'];
+                        }else{
+                            $itemShippingTotal[$indice]['totalShippingPackage'] += $shippingValue['shipping']['totalShippingPackage'];
+                        }
+
+                    } else {
+                        $itemShippingTotal[$indice] = [];
+                        $itemShippingTotal[$indice]['title'] = $shippingValue['shipping']['title'];
+                        $itemShippingTotal[$indice]['totalPrice'] = $shippingValue['shipping']['totalPrice'];
+                        $itemShippingTotal[$indice]['totalShippingPackage'] = $shippingValue['shipping']['totalShippingPackage'];
+                    }
+                    // dd($itemShippingTotal, $shippingsSellers);
+                }
+
+            }
+        }
+
+        $this->shippingtotals = $itemShippingTotal;
+        $this->emit('change');
+
+        //$this->updateLoading(false);
+
+
+    }
+
+    public function updateLoading($value)
+    {
+
+        $this->loading = $value;
     }
 
 }

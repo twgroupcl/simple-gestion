@@ -138,7 +138,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                                 src="{{ asset($product->getFirstImagePath()) }}"
                                                                 class="pr-3">
                                                             <div class="media-body">
-                                                                <h5> {{ $product->seller->name }} </h5>
+                                                                <h5> {{ $product->seller->visible_name }} </h5>
                                                                 <h6 class="widget-product-title">
                                                                     {{ $product->name }}
                                                                 </h6>
@@ -148,17 +148,21 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                                                 class="woocommerce-Price-currencySymbol">{{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}</span></span>
                                                                         <span class="text-muted">× {{ $item->qty }}</span>
                                                                         <br>
+                                                                        @if($product->is_service == 0)
                                                                         <span class=" mr-1"><span
                                                                                 class="text-muted">Envío
                                                                             </span>
-                                                                            @if ($item->shipping_total == 0)
+                                                                            <span class="text-center"> {{ $item->shipping->title }}
+                                                                            </span>
+                                                                            {{-- @if ($item->shipping_total == 0)
                                                                             <span class="text-center"> {{ $item->shipping->title }}
                                                                             </span>
                                                                             @else
                                                                                 <span
                                                                                     class="woocommerce-Price-currencySymbol">{{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}</span>
-                                                                            @endif
+                                                                            @endif --}}
                                                                         </span>
+                                                                        @endif
 
                                                                 </div>
                                                             </div>

@@ -818,8 +818,7 @@ class ProductCrudController extends CrudController
                 $formattedOptions = $this->formatOptions($options);
 
                 // Add default empty option
-                $formattedOptions = array_merge(['* No aplica' => '* No aplica'], $formattedOptions);
-
+                $formattedOptions = array_replace(['* No aplica' => '* No aplica'], $formattedOptions);
                 $this->crud->addField([
                     'type' => 'select2_from_array',
                     'label' => $json_attributes['name'],

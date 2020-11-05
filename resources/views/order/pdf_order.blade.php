@@ -171,13 +171,13 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
     @foreach ($order->order_items as $item)
         @php
         $product = Product::where('id',$item->product_id)->first();
-        $subtotal += ($item->price * $item->qty);
-        $subtotalshipping += ($item->shipping_total * $item->qty) ;
-        $total += ($item->price * $item->qty) + ($item->shipping_total * $item->qty);
+        // $subtotal += ($item->price * $item->qty);
+        // $subtotalshipping += ($item->shipping_total * $item->qty) ;
+        // $total += ($item->price * $item->qty) + ($item->shipping_total * $item->qty);
         @endphp
         <tr class="product-item">
             <td width="30%" class="product-item">
-                <p> {{$product->seller->name}}</p>
+                <p> {{$product->seller->visible_name}}</p>
                 <p><strong>{{ $product->name }}</strong></p>
                 <img class="width-5" src="{{ public_path() . '/' . $product->getFirstImagePath() }}" width="15%">
             </td>
@@ -185,13 +185,16 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                 <p><strong>Precio : </strong>{{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}
                 </p>
                 <p><strong>Cantidad : </strong>{{ $item->qty }}</p>
+                @if($product->is_service == 0)
                 <p><strong>Envío :</strong>
-                    @if ($item->shipping_total == 0)
+                    {{ $item->shipping->title ?? '' }}
+                    {{-- @if ($item->shipping_total == 0)
                         {{ $item->shipping->title ?? '' }}
                     @else
                         {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}
-                    @endif
+                    @endif --}}
                 </p>
+                @endif
             </td>
             <td width="30%" align="right" class="product-item">
                 <p> {{ currencyFormat($item->price * $item->qty + $item->shipping_total * $item->qty ? $item->price * $item->qty + $item->shipping_total * $item->qty : 0, 'CLP', true) }}
@@ -201,15 +204,15 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
     @endforeach
     <tr>
         <td colspan="3" width="100%" class="product-item" align="right">
-            <p><strong>Subtotal</strong> {{ currencyFormat($subtotal ? $subtotal : 0, 'CLP', true) }}</p>
+            <p><strong>Subtotal</strong> {{ currencyFormat($order->sub_total ? $order->sub_total : 0, 'CLP', true) }}</p>
         </td>
     </tr>
-    @if ($subtotalshipping != 0)
+    @if ($order->shipping_total != 0)
         <tr>
             <td colspan="3" width="100%" align="right">
 
                 <p><strong>Envío</strong>
-                    {{ currencyFormat($subtotalshipping ? $subtotalshipping : 0, 'CLP', true) }}
+                    {{ currencyFormat($order->shipping_total ? $order->shipping_total : 0, 'CLP', true) }}
                 </p>
 
 
@@ -218,7 +221,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
     @endif
     <tr>
         <td colspan="3" width="100%" align="right">
-            <p><strong>Total</strong> {{ currencyFormat($total ? $total : 0, 'CLP', true) }}</p>
+            <p><strong>Total</strong> {{ currencyFormat($order->total ? $order->total : 0, 'CLP', true) }}</p>
         </td>
     </tr>
 </table>

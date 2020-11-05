@@ -12,7 +12,6 @@
         let rejectedReason = $("#rejected_reason");
         let rejectedDate = $("#date_of_rejected");
 
-        console.log(isApproved.val())
         if(isApproved.val() === '0') {
             rejectedReason.show()
             rejectedDate.show()
@@ -34,7 +33,6 @@
         let specialPrice = $("input[name=special_price]");
         let specialPriceFrom = $("#special_price_from");
         let specialPriceTo = $("#special_price_to");
-        console.log(specialPrice.val(), 'precio especial')
         if(specialPrice.val() != '') {
             specialPriceFrom.show()
             specialPriceTo.show()

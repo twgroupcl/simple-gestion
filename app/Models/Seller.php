@@ -146,6 +146,11 @@ class Seller extends Model
 
     public function shippingmethods()
     {
+        return $this->belongsToMany(ShippingMethod::class,'shipping_method_seller_mapping');
+    }
+
+    public function shipping_method_seller()
+    {
         return $this->hasMany(ShippingMethodSeller::class);
     }
 
