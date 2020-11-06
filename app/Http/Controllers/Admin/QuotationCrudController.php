@@ -54,7 +54,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addColumn([
             'label' => '#',
-            'name' => 'id',
+            'name' => 'code',
             'type' => 'number',
         ]);
 
@@ -211,10 +211,12 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Número cotización',
-            'name' => 'id_accesor',
+            'name' => 'code_accesor',
             'type' => 'text',
             'prefix' => '#',
-            'default' => Quotation::all()->last() ? Quotation::all()->last()->id + 1 : 1,
+            'default' => Quotation::withTrashed()->orderBy('created_at')->get()->last() 
+                ? Quotation::withTrashed()->orderBy('created_at')->get()->last()->code + 1 
+                : 1,
             'attributes' => [
                 'readonly' => true,
             ],
@@ -226,7 +228,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Número referencia',
-            'name' => 'code',
+            'name' => 'reference',
             'type' => 'text',
             'prefix' => '#',
             'wrapper' => [
