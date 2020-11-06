@@ -6,15 +6,18 @@ use App\Models\Branch;
 use App\Models\Company;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Rinvex\Subscriptions\Traits\HasSubscriptions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 
 class User extends Authenticatable
 {
     use Notifiable;
     use CrudTrait;
     use HasRoles;
+    use HasSubscriptions;
 
     /**
      * The attributes that are mass assignable.

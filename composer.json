@@ -25,6 +25,7 @@
         "livewire/livewire": "^2.3",
         "orangehill/iseed": "^2.6",
         "qoraiche/laravel-mail-editor": "^2.2",
+        "rinvex/laravel-subscriptions": "^4.1",
         "transbank/transbank-sdk": "^1.8"
     },
     "require-dev": {
