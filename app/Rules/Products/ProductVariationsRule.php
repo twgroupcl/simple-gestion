@@ -5,6 +5,7 @@ namespace App\Rules\Products;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Rules\NumericCommaRule;
+use App\Rules\ImagesProductRule;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule as RuleFacade;
@@ -70,6 +71,7 @@ class ProductVariationsRule implements Rule
 
             $fieldGroupValidator = Validator::make((array) $variant, 
             [
+                'image' => new ImagesProductRule(1024, 1024, 700000),
                 'price'  => ['required', new NumericCommaRule()],
                 'width'  => ['sometimes', 'required', new NumericCommaRule()],
                 'height'  => ['sometimes', 'required', new NumericCommaRule()],
