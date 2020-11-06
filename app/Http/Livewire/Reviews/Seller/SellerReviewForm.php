@@ -5,7 +5,9 @@ namespace App\Http\Livewire\Reviews\Seller;
 use App\Models\Customer;
 use App\Models\OrderItem;
 use App\Models\SellerReview;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
+use Throwable;
 
 class SellerReviewForm extends Component
 {
@@ -43,6 +45,8 @@ class SellerReviewForm extends Component
             'cons' => $this->form['cons'] ?? '',
         ]);
 
+        $this->sendMail($this->form);
+
         $this->form = null;
 
         $this->emitTo('reviews.seller.seller-review-list', 'refreshList');
@@ -67,6 +71,7 @@ class SellerReviewForm extends Component
     {
         return [
             [
+                'form.title' => 'required',
                 'form.rating' => 'required',
                 'form.comment' => 'required',
             ],
@@ -80,5 +85,30 @@ class SellerReviewForm extends Component
                 'form.cons' => 'contras',
             ],
         ];
+    }
+
+    public function sendMail($form)
+    {
+        try {
+
+            $data = [
+                'logo' => asset('img/logo-pyme.png'),
+                'header' => 'Nueva opinión de un cliente',
+                'title' => $form['title'],
+                'text' => $form['comment'],
+                'pros' => $form['pros'] ?? '',
+                'cons' => $form['cons'] ?? '',
+                'buttonText' => 'Ir a tu tienda',
+                'buttonLink' => url('/seller-shop', ['id' => $this->seller->id]),
+            ];
+
+            Mail::send('vendor.maileclipse.templates.newComment', $data, function ($message) {
+                $message->to($this->seller->email);
+                $message->subject('Tu tienda ha recibido una nueva opinión!');
+            });
+
+        } catch (Throwable $th) {
+            logger($th->getMessage());
+        }
     }
 }
