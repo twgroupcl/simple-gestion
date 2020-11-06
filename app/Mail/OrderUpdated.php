@@ -39,6 +39,14 @@ class OrderUpdated extends Mailable
 
         //
         if ($order) {
+
+            if($order->status == 3 ){
+                $this->subject = 'Orden completa';
+            }else{
+                $this->subject = 'Nueva Orden';
+            }
+
+
             $this->orderData['id'] = $order->id;
             $this->orderData['fecha'] =  $order->created_at;
             $this->orderData['uid'] =  $order->uid;
@@ -98,7 +106,12 @@ class OrderUpdated extends Mailable
                 }
                 $this->paymentData['total'] =  currencyFormat($order->total ? $order->total : 0, 'CLP', true);
                 if ($receiver == 1) {
-                    $this->title = '¡Tu orden está pagada!';
+                    if($order->status == 3){
+                        $this->title = '¡Tu orden está completa!';
+                    }else{
+                        $this->title = '¡Tu orden está pagada!';
+                    }
+
                     // “Próximamente estaremos notificando la fecha de envío” cambiar por
                     $this->shippingMessage = '“*Por evento Cyber las fechas de envío podrían variar, estaremos notificando la fecha de envío”';
                 }else{
@@ -125,6 +138,6 @@ class OrderUpdated extends Mailable
      */
     public function build()
     {
-        return $this->subject('Nueva Orden')->view('maileclipse::templates.orderEmailTemplate');
+        return $this->subject($this->subject)->view('maileclipse::templates.orderEmailTemplate');
     }
 }
