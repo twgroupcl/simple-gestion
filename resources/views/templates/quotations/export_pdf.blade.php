@@ -96,7 +96,7 @@
 <body>
 <header>
         <div style="float: left;">{{ $now->format('d/m/Y h:m A')  }}</div>
-        <div style="float: right;">{{ $title }} | N/P {{ $quotation->id }}</div>
+        <div style="float: right;">{{ $title }} | N/P {{ $quotation->code }}</div>
 </header> 
 
 <div class="container">
@@ -122,12 +122,12 @@
         {{-- <img style="max-height: 70px" src="https://twgroup.cl/app/uploads/2020/08/LOGO_PRINCIPAL.png" /> --}}
         <img style="max-height: 70px" src="{{ asset($quotation->branch->companies->first()->logo) }}" />
         @else 
-        <h2 style="margin-top:45px">{{ $quotation->seller->visible_name }}</h3>
+        <h2 style="margin-top:45px">{{ $quotation->branch->companies->first()->name }}</h3>
         @endif
     </div>
 
     <div class="company-info">
-        <p class="p-estrecho">{{ $quotation->branch->name }}</p>
+        <p class="p-estrecho">{{ $quotation->branch->companies->first()->name }}</p>
         <p class="p-estrecho">{{ $quotation->branch->address }}</p>
         <p class="p-estrecho">RUT {{ $quotation->branch->companies->first()->uid }}</p>
     </div>
@@ -164,12 +164,12 @@
                 @endif
                 <tr>
                     <td style="text-align: left">Numero de cotización:</td>
-                    <td style="text-align: right">#{{ $quotation->id }}</td>
+                    <td style="text-align: right">#{{ $quotation->code }}</td>
                 </tr>
-                @if ($quotation->code)
+                @if ($quotation->reference)
                 <tr>
                     <td style="text-align: left">Referencia de cotización:</td>
-                    <td style="text-align: right">{{$quotation->code }}</td>
+                    <td style="text-align: right">{{$quotation->reference }}</td>
                 </tr>
                 @endif
             </table>
