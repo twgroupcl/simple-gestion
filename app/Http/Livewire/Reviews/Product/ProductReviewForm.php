@@ -5,7 +5,9 @@ namespace App\Http\Livewire\Reviews\Product;
 use App\Models\Customer;
 use App\Models\OrderItem;
 use App\Models\ProductReview;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
+use Throwable;
 
 class ProductReviewForm extends Component
 {
@@ -14,15 +16,17 @@ class ProductReviewForm extends Component
     public $userHasCommented;
     public $current_user;
     public $hasOrderedThisProduct;
+    public $slug;
 
     public function render()
     {
         return view('livewire.reviews.product.product-review-form');
     }
 
-    public function mount($product)
+    public function mount($product, $slug)
     {
         $this->product = $product;
+        $this->slug = $slug;
 
         if (auth()->check()) {
             $this->userFilters();
@@ -34,7 +38,7 @@ class ProductReviewForm extends Component
         [$rules, $attributes, $messages] = $this->validation();
         $this->validate($rules, $attributes, $messages);
 
-        $this->current_user->reviews()->create([
+        $this->current_user->product_reviews()->create([
             'product_id' => $this->product->id,
             'title' => $this->form['title'],
             'rating' => $this->form['rating'],
@@ -42,6 +46,8 @@ class ProductReviewForm extends Component
             'pros' => $this->form['pros'] ?? '',
             'cons' => $this->form['cons'] ?? '',
         ]);
+
+        $this->sendMail($this->form);
 
         $this->form = null;
 
@@ -80,5 +86,30 @@ class ProductReviewForm extends Component
                 'form.cons' => 'contras',
             ],
         ];
+    }
+
+    public function sendMail($form)
+    {
+        try {
+
+            $data = [
+                'logo' => asset('img/logo-pyme.png'),
+                'header' => 'Nueva opinión de un cliente',
+                'title' => $form['title'],
+                'text' => $form['comment'],
+                'pros' => $form['pros'] ?? '',
+                'cons' => $form['cons'] ?? '',
+                'buttonText' => 'Ir al producto',
+                'buttonLink' => url('/product', ['slug' => $this->slug]),
+            ];
+
+            Mail::send('vendor.maileclipse.templates.newComment', $data, function ($message) {
+                $message->to($this->product->seller->email);
+                $message->subject('Tu producto ha recibido una nueva opinión!');
+            });
+
+        } catch (Throwable $th) {
+            logger($th->getMessage());
+        }
     }
 }

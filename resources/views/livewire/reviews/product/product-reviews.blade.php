@@ -6,7 +6,7 @@
             <!-- Reviews list-->
             <livewire:reviews.review-list :model="$product">
             <!-- Leave review form-->
-            <livewire:reviews.product.product-review-form :product="$product">
+            <livewire:reviews.product.product-review-form :product="$product" :slug="$slug">
         </div>
     </div>
 </div>

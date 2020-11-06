@@ -7,6 +7,7 @@ use Livewire\Component;
 class ProductReviews extends Component
 {
     public $product;
+    public $slug;
 
     protected $listeners = ['refreshCard' => 'updateCard'];
 
@@ -15,9 +16,10 @@ class ProductReviews extends Component
         return view('livewire.reviews.product.product-reviews');
     }
 
-    public function mount($product)
+    public function mount($product, $slug)
     {
         $this->product = $product;
+        $this->slug = $slug;
     }
 
     public function updateCard()

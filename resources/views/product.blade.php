@@ -543,7 +543,7 @@
 </div>
 {{-- <hr class="pb-5"> --}}
 <!-- Reviews-->
-<livewire:reviews.product.product-reviews :product="$product">
+<livewire:reviews.product.product-reviews :product="$product" :slug="request()->slug">
 <!-- Product carousel (You may also like)-->
 {{-- <div class="container pt-lg-2 pb-5 mb-md-3">
     <h2 class="h3 text-center pb-4">You may also like</h2>
