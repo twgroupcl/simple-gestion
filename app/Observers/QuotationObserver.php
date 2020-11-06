@@ -210,13 +210,13 @@ class QuotationObserver
     {
         $lastQuotation = Quotation::withTrashed()->where('branch_id', $quotation->branch_id)->orderBy('created_at')->get()->last();
 
-        $lastCode = $lastQuotation ? $lastQuotation->code + 1 : 1;
+        $lastCode = $lastQuotation ? intval($lastQuotation->code) + 1 : 1;
 
         $verification = Quotation::withTrashed()->where([ 'code' => $lastCode, 'branch_id' => $quotation->branch_id ])->get();
 
         while ( $verification->count() ) {
             $lastCode++;
-            $verification = Quotation::withTrashed()->where([ 'code' => $lastCode, 'company_id' => $quotation->company_id ])->get();
+            $verification = Quotation::withTrashed()->where([ 'code' => $lastCode, 'branch_id' => $quotation->branch_id ])->get();
         }
 
         return $lastCode;

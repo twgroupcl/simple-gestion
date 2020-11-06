@@ -55,7 +55,7 @@ class QuotationCrudController extends CrudController
         CRUD::addColumn([
             'label' => '#',
             'name' => 'code',
-            'type' => 'number',
+            'type' => 'text',
         ]);
 
         CRUD::addColumn([
@@ -215,7 +215,7 @@ class QuotationCrudController extends CrudController
             'type' => 'text',
             'prefix' => '#',
             'default' => Quotation::withTrashed()->orderBy('created_at')->get()->last() 
-                ? Quotation::withTrashed()->orderBy('created_at')->get()->last()->code + 1 
+                ? intval(Quotation::withTrashed()->orderBy('created_at')->get()->last()->code) + 1 
                 : 1,
             'attributes' => [
                 'readonly' => true,
