@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Commune_shipping_methodRequest;
+use App\Http\Requests\CommuneShippingMethodRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class Commune_shipping_methodCrudController
+ * Class CommuneShippingMethodCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class Commune_shipping_methodCrudController extends CrudController
+class CommuneShippingMethodCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class Commune_shipping_methodCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Commune_shipping_method::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/commune_shipping_method');
-        CRUD::setEntityNameStrings('commune_shipping_method', 'commune_shipping_methods');
+        CRUD::setModel(\App\Models\CommuneShippingMethod::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/communeshippingmethod');
+        CRUD::setEntityNameStrings('communeshippingmethod', 'commune_shipping_methods');
     }
 
     /**
@@ -56,7 +56,7 @@ class Commune_shipping_methodCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(Commune_shipping_methodRequest::class);
+        CRUD::setValidation(CommuneShippingMethodRequest::class);
 
         CRUD::setFromDb(); // fields
 

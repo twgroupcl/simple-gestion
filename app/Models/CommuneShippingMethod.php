@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Commune_shipping_method extends Model
+class CommuneShippingMethod extends Model
 {
     use CrudTrait;
 
