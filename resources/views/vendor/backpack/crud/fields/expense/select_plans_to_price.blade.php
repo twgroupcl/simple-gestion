@@ -33,14 +33,8 @@
                     currentYear = date.getFullYear();
                     var currentDate = currentDay + '/' + currentMonth + '/' + currentYear;
 
-<<<<<<< HEAD
                     $('.subscription_starts_at').val(currentDate)
 
-=======
-                    $('.suscription_starts_at').val(currentDate)
-                    $("input[name*='starts_at']").val(currentDate)
-                    
->>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
 
                     switch(response.invoice_interval){
                         case 'week':
@@ -50,13 +44,7 @@
                             year = date.getFullYear();
 
                             var dateEnd = day + '/' + month + '/' + year;
-<<<<<<< HEAD
                             $('.subscription_ends_at').val(dateEnd)
-=======
-                            $('.suscription_ends_at').val(dateEnd)
-                            $("input[name*='ends_at']").val(dateEnd)
-
->>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
                         break;
                         case 'month':
                             date.setMonth(date.getMonth() + 1);
@@ -65,13 +53,7 @@
                             year = date.getFullYear();
 
                             var dateEnd = day + '/' + month + '/' + year;
-<<<<<<< HEAD
                             $('.subscription_ends_at').val(dateEnd)
-=======
-                            $('.suscription_ends_at').val(dateEnd)
-                            $("input[name*='ends_at']").val(dateEnd)
-
->>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
                         break;
                     }
                     $('.input-price').val(response.price)
