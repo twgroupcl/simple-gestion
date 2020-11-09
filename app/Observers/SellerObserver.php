@@ -6,9 +6,9 @@ use App\Mail\SellerChangeStatus;
 use App\Models\BranchUser;
 use App\Models\CompanyUser;
 use App\Models\PaymentMethodSeller;
+use App\Models\Plans;
 use App\Models\Seller;
 use App\Models\SellerAddress;
-use App\Models\PlanSuscription;
 use App\Models\ShippingMethodSeller;
 use App\User;
 use Backpack\Settings\app\Models\Setting;
@@ -72,7 +72,7 @@ class SellerObserver
     {
 
         if ($seller->isDirty()) {
-            
+
             $dirtyModel = $seller->getDirty();
             if (array_key_exists('shippings_data', $dirtyModel)) {
                 $this->syncShippingMethods($seller);
@@ -89,11 +89,11 @@ class SellerObserver
             if (array_key_exists('suscription_data', $dirtyModel)) {
                 $this->syncSuscription($seller);
             }
-            
+
             if (
                 array_key_exists('is_approved', $dirtyModel) &&
                 ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado')
-                ) {
+            ) {
                 Mail::to($seller->email)->send(new SellerChangeStatus($seller));
             }
             if (array_key_exists('password', $dirtyModel)) {
@@ -129,14 +129,18 @@ class SellerObserver
 
     public function syncSuscription(Seller $seller)
     {
-        $suscription_data = is_array($seller->suscription_data)
+        $subscription_data = is_array($seller->suscription_data)
         ? $seller->suscription_data
         : json_decode($seller->suscription_data, true);
-     
+
         $user = User::find($seller->user->id);
-       // $user->subscription('main')->usage()->delete();
-        $plan = app('rinvex.subscriptions.plan')->find($suscription_data['id_plan']);
-        $newSuscription = $user->newSubscription('plan', $plan);
+        // $user->subscription('main')->usage()->delete();
+        $plan = app('rinvex.subscriptions.plan')->find($subscription_data['id_plan']);
+        $newSubscription = $user->newSubscription('plan', $plan);
+        $plan = Plans::where('id', $newSubscription->plan_id)->first();
+        if ($plan->price > 0) {
+            return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
+        }
 
     }
 
