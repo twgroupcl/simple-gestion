@@ -9,16 +9,23 @@
         }
 
         function checkItemStatus() {
-
+            statusdescription = $( "#order_status option:selected" ).text();
             $('.shipping_status_select').each((index, el) => {
-                if ($(el).find('option:selected').val() == 2) {
+
+                if (statusdescription != 'Pagada') {
                     $(el).find('select').attr('disabled', 'disabled');
+                } else {
+                    if ($(el).find('option:selected').val() == 2) {
+                        $(el).find('select').attr('disabled', 'disabled');
+                    }
                 }
             });
         }
 
         function orderStatus() {
-           statusdescription = $('input[name="status_description"]');
+            statusdescription =  $('input[name="status_description"]');
+
+            console.log(statusdescription);
 
             if (statusdescription.val() == 'Completa') {
                 statusdescription.after('<span class="badge badge-success">' + statusdescription.val() + '</span>');
