@@ -810,6 +810,7 @@ class SellerCrudController extends CrudController
                 'fake'     => true,
                 'store_in' => 'subscription_data'
             ]);
+<<<<<<< HEAD
             CRUD::addField([
                 'name' => 'user_id',
                 'type' => 'hidden',
@@ -817,6 +818,8 @@ class SellerCrudController extends CrudController
                 'fake'     => true,
                 'store_in' => 'subscription_data'
             ]);
+=======
+>>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
 
         }
 

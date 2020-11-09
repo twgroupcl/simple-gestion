@@ -4,22 +4,31 @@ use Illuminate\Database\Seeder;
 
 class PlansTableSeeder extends Seeder
 {
+<<<<<<< HEAD
 
     /**
      * Auto generated seed file
+=======
+    /**
+     * Run the database seeds.
+>>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
      *
      * @return void
      */
     public function run()
     {
+<<<<<<< HEAD
         
 
+=======
+>>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
         \DB::table('plans')->delete();
         
         \DB::table('plans')->insert(array (
             0 => 
             array (
                 'id' => 1,
+<<<<<<< HEAD
                 'slug' => 'socios-crcp',
                 'name' => 'SOCIOS CRCP',
                 'description' => NULL,
@@ -40,11 +49,21 @@ class PlansTableSeeder extends Seeder
                 'sort_order' => 0,
                 'created_at' => '2020-11-09 16:58:03',
                 'updated_at' => '2020-11-09 16:58:03',
+=======
+                'slug' => 'plan-semanal',
+                'name' => 'Plan Semanal',
+                'price' => 50,
+                'currency' => 'USD',
+                'invoice_interval' => 'week',
+                'created_at' => '2020-10-14 17:22:07',
+                'updated_at' => '2020-10-14 17:22:07',
+>>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
                 'deleted_at' => NULL,
             ),
             1 => 
             array (
                 'id' => 2,
+<<<<<<< HEAD
                 'slug' => 'no-socios',
                 'name' => 'NO SOCIOS',
                 'description' => NULL,
@@ -65,11 +84,21 @@ class PlansTableSeeder extends Seeder
                 'sort_order' => 0,
                 'created_at' => '2020-11-09 16:58:16',
                 'updated_at' => '2020-11-09 16:58:16',
+=======
+                'slug' => 'plan-mensual',
+                'name' => 'Plan Mensual',
+                'price' => 100,
+                'currency' => 'USD',
+                'invoice_interval' => 'month',
+                'created_at' => '2020-10-14 17:22:07',
+                'updated_at' => '2020-10-14 17:22:07',
+>>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
                 'deleted_at' => NULL,
             ),
             2 => 
             array (
                 'id' => 3,
+<<<<<<< HEAD
                 'slug' => 'emprendedores',
                 'name' => 'EMPRENDEDORES',
                 'description' => NULL,
@@ -97,3 +126,17 @@ class PlansTableSeeder extends Seeder
         
     }
 }
+=======
+                'slug' => 'plan-mensual-especial',
+                'name' => 'Plan Mensual Especial',
+                'price' => 150,
+                'currency' => 'USD',
+                'invoice_interval' => 'month',
+                'created_at' => '2020-10-14 17:22:07',
+                'updated_at' => '2020-10-14 17:22:07',
+                'deleted_at' => NULL,
+            ),
+        ));
+    }
+}
+>>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364

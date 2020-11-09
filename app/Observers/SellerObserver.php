@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Mail\NotificationSuscription;
 use App\Mail\SellerChangeStatus;
 use App\Models\BranchUser;
 use App\Models\CompanyUser;
@@ -10,6 +11,7 @@ use App\Models\Plans;
 use App\Models\Seller;
 use App\Models\SellerAddress;
 use App\Models\ShippingMethodSeller;
+use App\Models\Plans;
 use App\User;
 use Backpack\Settings\app\Models\Setting;
 use Illuminate\Support\Facades\Mail;
@@ -128,6 +130,7 @@ class SellerObserver
 
     public function syncSubscription(Seller $seller)
     {
+<<<<<<< HEAD
         // $seller->subscriptions()->delete();
 
         $subscription_data = is_array($seller->subscription_data)
@@ -148,6 +151,30 @@ class SellerObserver
                 return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
             }
         }
+=======
+        $suscription_data = is_array($seller->suscription_data)
+        ? $seller->suscription_data
+        : json_decode($seller->suscription_data, true);
+     
+        $user = User::find($seller->user->id);
+        $planName = Plans::find($suscription_data['id_plan']);
+        $plan = app('rinvex.subscriptions.plan')->find($suscription_data['id_plan']);
+        $newSuscription = $user->newSubscription('plan', $plan);
+>>>>>>> 138c23422cbc0064424faee7a64cda09e0f10364
+
+        $dataEmail = [
+            'seller' => $seller->name,
+            'plan' => $planName->name,
+            'price' => $plan->price,
+            'currency' => $plan->currency,
+            'start_date' => $suscription_data['starts_at'],
+            'end_date' => $suscription_data['ends_at']
+        ];
+
+        $emailsAdministrator = explode(';', Setting::get('administrator_email'));
+        array_push($emailsAdministrator, $seller->email);
+
+        $this->sendMailSuscription($dataEmail,$emailsAdministrator);
 
     }
 
@@ -221,6 +248,13 @@ class SellerObserver
             $seller->paymentmethods()->saveMany(
                 $paymentmethods
             );
+        }
+    }
+
+    public function sendMailSuscription($dataEmail,$emailsAdministrator)
+    {
+        foreach($emailsAdministrator as $email){
+            Mail::to($email)->send(new NotificationSuscription($dataEmail));
         }
     }
 }
