@@ -67,6 +67,7 @@ class Shipping extends Component
     public function updateSellersShippings()
     {
 
+        //$this->emit('updateLoading',true);
         //  if ($this->sellers) {
 
         $items = $this->items->groupBy(['product.seller_id', 'shipping_id']);

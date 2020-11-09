@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Seller;
 use App\Models\Commune;
-use App\Cruds\BaseCrudFields;
+use App\Models\OrderItem;
+use App\Models\ShippingMethod;
 use App\Http\Requests\OrderRequest;
+use Barryvdh\Debugbar\Facade as Debugbar;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
 /**
  * Class OrderCrudController
  * @package App\Http\Controllers\Admin
@@ -43,12 +44,26 @@ class OrderCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if(backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
             $this->admin = true;
         }
 
         if (backpack_user()->hasRole('Vendedor marketplace')) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+         //   if (!$this->admin) {
+                $sellerId = $this->userSeller->id;
+
+
+                //  $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
+                //      $query->where('seller_id', $value);
+                //  });
+                $this->crud->addClause('whereHas', 'order_items', function($query) use ($sellerId) {
+                    $query->where('seller_id', $sellerId);
+                });
+
+
+
+          //  }
         }
     }
 
@@ -61,13 +76,20 @@ class OrderCrudController extends CrudController
     protected function setupListOperation()
     {
         // If not admin, show only user products
-        if (!$this->admin) {
-            $value = $this->userSeller->id;
+        // if (!$this->admin) {
+        //     $sellerId = $this->userSeller->id;
 
-            $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
-                $query->where('seller_id', $value);
-            });
-        }
+
+        //     //  $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
+        //     //      $query->where('seller_id', $value);
+        //     //  });
+        //     $this->crud->addClause('whereHas', 'order_items', function($query) use ($sellerId) {
+        //         $query->where('seller_id', $sellerId);
+        //     });
+
+
+
+        // }
 
         CRUD::addColumn([
             'name' => 'id',
@@ -79,7 +101,7 @@ class OrderCrudController extends CrudController
             'name' => 'created_at',
             'type' => 'date',
             'label' => 'Fecha',
-            'format' => 'L'
+            'format' => 'L',
         ]);
 
         CRUD::addColumn([
@@ -107,7 +129,7 @@ class OrderCrudController extends CrudController
             'dec_point' => ',',
             'thousands_sep' => '.',
             'decimals' => 0,
-            'prefix' => '$'
+            'prefix' => '$',
         ]);
 
         CRUD::addColumn([
@@ -242,7 +264,6 @@ class OrderCrudController extends CrudController
         ]);
 
         $addresses = $this->crud->getCurrentEntry()->json_value;
-
 
         foreach ($addresses as $key => $address) {
 
@@ -528,6 +549,144 @@ class OrderCrudController extends CrudController
         ]);
 
 
+
+
+
+       //Debugbar::log( $this->crud->getCurrentEntry()->orderItems) ;
+       //Debugbar::log( $this->crud->getCurrentEntry()->orderItems->groupBy('shipping_id')) ;
+      // $shippingOrderItems = $this->crud->getCurrentEntry()->orderItems->groupBy('shipping_id');
+
+        $orderId = $this->crud->getCurrentEntry()->id;
+        if (!is_null($this->userSeller)) {
+            $shippingOrderItems = OrderItem::where('order_id', $orderId)->where('seller_id', $this->userSeller->id)->get()->groupBy('shipping_id');
+        }else{
+            $shippingOrderItems = OrderItem::where('order_id', $orderId)->get()->groupBy('shipping_id');
+        }
+
+        foreach ($shippingOrderItems as $shippingKey => $orderItems) {
+
+
+            $shippingMethod = ShippingMethod::where('id', $shippingKey)->first();
+            $totalShipping = $orderItems[0]->shipping_total;
+            $valueHtml = '<h5>Metodo de envío: ' . $shippingMethod->title;
+            if (!is_null($totalShipping)) {
+                $valueHtml .= ' (' . currencyFormat($totalShipping ? $totalShipping : 0, 'CLP', true) . ')';
+            }
+            $valueHtml .= '</h5>';
+
+            CRUD::addField([
+                'name' => 'shipping-' . $shippingKey,
+                'type' => 'custom_html',
+                'value' => $valueHtml,
+                'tab' => 'Items',
+            ]);
+
+
+            CRUD::addField([
+                'name' => 'order_items-'.$shippingKey,
+                'type' => 'repeatable',
+                'value'=> $orderItems,
+                'label' => '',
+                'fake'=>true,
+                'store_in'=>'order_items',
+                'tab' => 'Items',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-md-12',
+                ],
+                   'fields' => [
+                [
+                    'name' => 'id',
+                    'type' => 'hidden',
+                    'label' => 'id'
+                ],
+                [
+                    'name' => 'order_id',
+                    'type' => 'hidden',
+                    'label' => 'order_id'
+                ],
+                [
+                    'name' => 'name',
+                    'type' => 'text',
+                    'label' => 'Nombre',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ],
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
+                    ],
+                ],
+                [
+                    'name' => 'qty',
+                    'type' => 'text',
+                    'label' => 'Cantidad',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ],
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
+                    ],
+                ],
+                [
+                    'name' => 'price',
+                    'type' => 'number',
+                    'label' => 'Precio',
+                    'dec_point' => ',',
+                    'thousands_sep' => '.',
+                    'decimals' => 0,
+                    'prefix' => '$',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ],
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
+                    ],
+                ],
+                // [
+                //     'name' => 'shipping_total',
+                //     'type' => 'number',
+                //     'label' => 'Costo envío',
+                //     'dec_point' => ',',
+                //     'thousands_sep' => '.',
+                //     'decimals' => 0,
+                //     'prefix' => '$',
+                //     'attributes' => [
+                //         'readonly' => 'readonly',
+                //     ],
+                //     'wrapperAttributes' => [
+                //         'class' => 'form-group col-md-2',
+                //     ],
+                // ],
+                [
+                    'name' => 'sub_total',
+                    'type' => 'number',
+                    'label' => 'Subtotal',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ],
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
+                    ],
+                ],
+                [
+                    'name' => 'shipping_status',
+                    'type' => 'select2_from_array',
+                    'options' => [
+                        1 => 'Pendiente',
+                        2 => 'Enviado',
+                    ],
+                    'label' => 'Estado',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2 shipping_status_select',
+
+                    ],
+                ],
+
+            ]
+            ]);
+        }
+
+
+        /*
         CRUD::addField([
             'name' => 'order_items',
             'type' => 'repeatable',
@@ -626,11 +785,16 @@ class OrderCrudController extends CrudController
 
             ]
         ]);
+        */
+
+
+
+
 
         CRUD::addField([
             'name' => 'support_data_script',
             'type' => 'order.support_data_script',
-            'tab' => 'Items'
+            'tab' => 'Items',
         ]);
     }
 }
