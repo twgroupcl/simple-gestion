@@ -19,6 +19,7 @@ class CreateCommuneShippingMethodsTable extends Migration
             $table->unsignedBigInteger('seller_id');
             $table->unsignedBigInteger('company_id');
             $table->boolean('is_global')->default(false);
+            $table->longText('active_methods')->nullable();
             $table->longText('shipping_methods')->nullable();
             $table->longText('json_value')->nullable();
 
