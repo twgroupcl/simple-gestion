@@ -1,11 +1,13 @@
 <?php
 namespace App\Http\Controllers\Admin\Payments;
 
-use session;
-use Transbank\Webpay\Webpay;
-use App\Models\PlanSuscription;
-use Transbank\Webpay\Configuration;
 use App\Http\Controllers\Controller;
+use App\Models\PlanSubscription;
+use App\Models\PlanSubscriptionPayment;
+use Carbon\Carbon;
+use session;
+use Transbank\Webpay\Configuration;
+use Transbank\Webpay\Webpay;
 
 class WebPayPlusController extends Controller
 {
@@ -38,17 +40,33 @@ class WebPayPlusController extends Controller
     public function subscriptionPayment($subscriptionId)
     {
 
-        $subscription = PlanSuscription::where('id', $subscriptionId)->first();
+        $subscription = PlanSubscription::where('id', $subscriptionId)->first();
         $plan = $subscription->plan;
         $amount = $plan->price;
 
         $sessionId = session()->getId();
 
-        $buyOrder = strval(rand(100000, 999999999));
+        $buyOrder = $subscription->id;
         $returnUrl = "https://simplegestion.test/admin/payment/subscription/result";
         $finalUrl = "https://simplegestion.test/admin/payment/subscription/detail/";
         $response = $this->transaction->initTransaction(
             $amount, $buyOrder, $sessionId, $returnUrl, $finalUrl);
+        //Register payment
+        $subscriptionPayment = new PlanSubscriptionPayment();
+        $data = [
+            'event' => 'init transaction',
+            'data' => $response,
+            'buyOrder' => $buyOrder,
+            'sessionId' => $sessionId,
+            'amount' => $amount,
+        ];
+
+        $subscriptionPayment->plan_subscription_id = $subscription->id;
+        $subscriptionPayment->method = 1;
+        $subscriptionPayment->method_title = 'WebPayPlus Normal';
+        $subscriptionPayment->json_out = json_encode($data);
+        $subscriptionPayment->date_out = Carbon::now();
+        $subscriptionPayment->save();
 
         if (!isset($response->url)) {
             $result = null;
@@ -61,11 +79,37 @@ class WebPayPlusController extends Controller
 
     public function subscriptionResultPayment()
     {
-        $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
+        $tokenWs = request()->input("token_ws");
+        $result = $this->transaction->getTransactionResult($tokenWs);
 
+        if (!isset($result->buyOrder)) {
+            return redirect('/admin');
+        }
         $sessionId = $result->sessionId;
         session()->setId($sessionId);
         session()->start();
+
+        $planSubscriptionId = $result->buyOrder;
+
+        $orderpayment = PlanSubscriptionPayment::where('plan_subscription_id', $planSubscriptionId)->first();
+        $data = [
+            'event' => 'result transaction',
+            'token' => $tokenWs,
+            'data' => $result,
+
+        ];
+        $orderpayment->json_in = json_encode($data);
+        $orderpayment->date_in = Carbon::now();
+        $orderpayment->save();
+
+        $output = $result->detailOutput;
+        if ($output->responseCode == 0) {
+            $subscription = PlanSubscription::where('id', $planSubscriptionId)->first();
+            return view('vendor.backpack.base.payment.result', compact('subscription'));
+        } else {
+
+            return view('vendor.backpack.base.payment.failed', compact('result'));
+        }
 
     }
 
@@ -73,4 +117,11 @@ class WebPayPlusController extends Controller
     {
 
     }
+
+    // public function subscriptionTestPayment($subscriptionId)
+    // {
+    //     $subscription = PlanSubscription::where('id', $subscriptionId)->first();
+    //     return view('vendor.backpack.base.payment.result', compact('subscription'));
+
+    // }
 }

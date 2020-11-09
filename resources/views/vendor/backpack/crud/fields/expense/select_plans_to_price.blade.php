@@ -1,11 +1,11 @@
 @include('crud::fields.inc.wrapper_start')
-        <div class="form-group col-12" element="div">    
+        <div class="form-group col-12" element="div">
             <label>Precio</label>
-            <input 
-                type="text" 
-                name="price" 
-                value="" 
-                readonly="readonly" 
+            <input
+                type="text"
+                name="price"
+                value=""
+                readonly="readonly"
                 class="form-control input-price"
                 data-init-function="bpFieldInitTextAreaDependsSelect2"
                 >
@@ -18,7 +18,7 @@
         $('.select-plan').on('change', function() {
             let idPlan = this.value
             url = "{{ url('admin/api/getPlanById') }}",
-        
+
             $.ajax({
                 url: url,
                 type: "POST",
@@ -33,9 +33,9 @@
                     currentYear = date.getFullYear();
                     var currentDate = currentDay + '/' + currentMonth + '/' + currentYear;
 
-                    $('.suscription_starts_at').val(currentDate)
+                    $('.subscription_starts_at').val(currentDate)
 
-                  
+
                     switch(response.invoice_interval){
                         case 'week':
                             date.setDate(date.getDate() + 7);
@@ -44,7 +44,7 @@
                             year = date.getFullYear();
 
                             var dateEnd = day + '/' + month + '/' + year;
-                            $('.suscription_ends_at').val(dateEnd)
+                            $('.subscription_ends_at').val(dateEnd)
                         break;
                         case 'month':
                             date.setMonth(date.getMonth() + 1);
@@ -53,7 +53,7 @@
                             year = date.getFullYear();
 
                             var dateEnd = day + '/' + month + '/' + year;
-                            $('.suscription_ends_at').val(dateEnd)
+                            $('.subscription_ends_at').val(dateEnd)
                         break;
                     }
                     $('.input-price').val(response.price)
@@ -62,6 +62,6 @@
             });
         });
     });
-  
+
 </script>
 @endpush

@@ -2,15 +2,25 @@
 
 namespace App\Models;
 
-use App\Models\Plans;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class PlanSuscription extends Model
+class PlanSubscriptionSeller extends Model
 {
-    protected $table = 'plan_subscriptions';
-    protected $primaryKey = 'slug';
+    use CrudTrait;
+    /*
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
 
-
+    protected $table = 'plan_subscription_seller_mapping';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
+    protected $guarded = ['id'];
+    // protected $fillable = [];
+    // protected $hidden = [];
+    // protected $dates = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -23,10 +33,6 @@ class PlanSuscription extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function plan()
-    {
-        return $this->belongsTo(Plans::class);
-    }
 
     /*
     |--------------------------------------------------------------------------

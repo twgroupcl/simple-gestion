@@ -60,7 +60,7 @@ class SellerObserver
         $this->syncAddresses($seller);
         $this->syncPaymentMethods($seller);
         $this->syncShippingMethods($seller);
-        $this->syncSuscription($seller);
+        $this->syncSubscription($seller);
 
         if ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado') {
             Mail::to($seller)->send(new SellerChangeStatus($seller));
@@ -85,9 +85,8 @@ class SellerObserver
             if (array_key_exists('addresses_data', $dirtyModel)) {
                 $this->syncAddresses($seller);
             }
-
-            if (array_key_exists('suscription_data', $dirtyModel)) {
-                $this->syncSuscription($seller);
+            if (array_key_exists('subscription_data', $dirtyModel)) {
+                $this->syncSubscription($seller);
             }
 
             if (
@@ -127,19 +126,27 @@ class SellerObserver
         );
     }
 
-    public function syncSuscription(Seller $seller)
+    public function syncSubscription(Seller $seller)
     {
-        $subscription_data = is_array($seller->suscription_data)
-        ? $seller->suscription_data
-        : json_decode($seller->suscription_data, true);
+        // $seller->subscriptions()->delete();
 
-        $user = User::find($seller->user->id);
-        // $user->subscription('main')->usage()->delete();
-        $plan = app('rinvex.subscriptions.plan')->find($subscription_data['id_plan']);
-        $newSubscription = $user->newSubscription('plan', $plan);
-        $plan = Plans::where('id', $newSubscription->plan_id)->first();
-        if ($plan->price > 0) {
-            return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
+        $subscription_data = is_array($seller->subscription_data)
+        ? $seller->subscription_data
+        : json_decode($seller->subscription_data, true);
+
+        // if (!empty($subscription_data['plan_subscription_id'])) {
+        //     $newplansubscription = new PlanSubscriptionSeller($subscription_data);
+        //     $seller->subscriptions()->save($newplansubscription);
+        // }
+        if (!empty($subscription_data['plan_subscription_id'])) {
+            $user = User::find($seller->user->id);
+            // $user->subscription('main')->usage()->delete();
+            $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
+            $newSubscription = $user->newSubscription('plan', $plan);
+            $plan = Plans::where('id', $newSubscription->plan_id)->first();
+            if ($plan->price > 0) {
+                return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
+            }
         }
 
     }
