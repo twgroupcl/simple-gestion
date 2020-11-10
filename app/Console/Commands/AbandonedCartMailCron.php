@@ -47,7 +47,7 @@ class AbandonedCartMailCron extends Command
                             ->where('key', 'cart_abandoned_mail_time')
                             ->first();
 
-        $carts = Cart::where('updated_at', '>', now()->subHours((int) $hour_interval->value))
+        $carts = Cart::where('updated_at', '<', now()->subHours((int) $hour_interval->value))
                     ->with(['cart_items.product', 'customer'])
                     ->get();
 
