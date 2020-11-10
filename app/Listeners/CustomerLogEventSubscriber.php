@@ -21,14 +21,8 @@ class CustomerLogEventSubscriber
         //
     }
 
-    /**
-     * Handle user login events.
-     */
     public function handleCartGenerated($event) {}
 
-    /**
-     * Handle user logout events.
-     */
     public function handleProductAddedToCart($event) {
         $event->cart->customer->logs()->create([
             'event' => 'Producto añadido al carrito',
@@ -36,14 +30,8 @@ class CustomerLogEventSubscriber
         ]);
     }
 
-    /**
-     * Handle user login events.
-     */
     public function handleOrderGenerated($event) {}
 
-    /**
-     * Handle user logout events.
-     */
     public function handleOrderPaid($event) {}
 
     /**
