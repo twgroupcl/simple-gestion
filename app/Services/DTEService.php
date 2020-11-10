@@ -8,8 +8,13 @@ class DTEServices
 {
     protected $url;
 
-    public function generateTemporalDocument(Invoice $invoice)
+    public function __construct()
     {
-         
+        //$this->url = 'http://libredte.
+    }
+
+    public function tempDocument(Invoice $invoice)
+    {
+        
     }
 }

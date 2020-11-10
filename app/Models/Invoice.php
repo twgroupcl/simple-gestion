@@ -4,6 +4,14 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\{
+    Customer, 
+    CustomerAddress, 
+    Seller, 
+    Branch, 
+    InvoiceItem, 
+    Tax
+};
 
 class Invoice extends Model
 {
@@ -34,7 +42,30 @@ class Invoice extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
+
+    public function invoice_items()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function tax()
+    {
+        return $this->belongsTo(Tax::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
