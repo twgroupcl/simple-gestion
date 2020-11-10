@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Cart;
 
+use App\Events\CartGenerated;
+use App\Events\ProductAddedToCart;
 use App\Http\Livewire\Traits\Cursor;
 use \Illuminate\Session\SessionManager;
 use Illuminate\Support\Facades\Request;
@@ -68,6 +70,8 @@ class Cart extends Component
             $status = $this->updateSubtotal();
 
             DB::commit();
+
+            event(new ProductAddedToCart($this->cart, $product));
 
         } catch (Exception $e) {
             DB::rollBack();
