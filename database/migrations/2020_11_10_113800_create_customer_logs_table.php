@@ -15,7 +15,7 @@ class CreateCustomerLogsTable extends Migration
     {
         Schema::create('customer_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('customer_id')->nullable();
             $table->string('event');
             $table->longText('json_value')->nullable();
             $table->timestamps();
