@@ -29,7 +29,12 @@ class CustomerLogEventSubscriber
     /**
      * Handle user logout events.
      */
-    public function handleProductAddedToCart($event) {}
+    public function handleProductAddedToCart($event) {
+        $event->cart->customer->logs()->create([
+            'event' => 'Producto añadido al carrito',
+            'json_value' => $event->cart->toJson(),
+        ]);
+    }
 
     /**
      * Handle user login events.
