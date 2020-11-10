@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Seller;
+use App\Http\Requests\OrderRequest;
 use App\Models\Commune;
 use App\Models\OrderItem;
+use App\Models\Seller;
 use App\Models\ShippingMethod;
-use App\Http\Requests\OrderRequest;
-use Barryvdh\Debugbar\Facade as Debugbar;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+
 /**
  * Class OrderCrudController
  * @package App\Http\Controllers\Admin
@@ -50,20 +50,17 @@ class OrderCrudController extends CrudController
 
         if (backpack_user()->hasRole('Vendedor marketplace')) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-         //   if (!$this->admin) {
-                $sellerId = $this->userSeller->id;
+            //   if (!$this->admin) {
+            $sellerId = $this->userSeller->id;
 
+            //  $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
+            //      $query->where('seller_id', $value);
+            //  });
+            $this->crud->addClause('whereHas', 'order_items', function ($query) use ($sellerId) {
+                $query->where('seller_id', $sellerId);
+            });
 
-                //  $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
-                //      $query->where('seller_id', $value);
-                //  });
-                $this->crud->addClause('whereHas', 'order_items', function($query) use ($sellerId) {
-                    $query->where('seller_id', $sellerId);
-                });
-
-
-
-          //  }
+            //  }
         }
     }
 
@@ -79,7 +76,6 @@ class OrderCrudController extends CrudController
         // if (!$this->admin) {
         //     $sellerId = $this->userSeller->id;
 
-
         //     //  $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
         //     //      $query->where('seller_id', $value);
         //     //  });
@@ -87,9 +83,8 @@ class OrderCrudController extends CrudController
         //         $query->where('seller_id', $sellerId);
         //     });
 
-
-
         // }
+        dd($this->crud->getCurrent());
 
         CRUD::addColumn([
             'name' => 'id',
@@ -549,23 +544,18 @@ class OrderCrudController extends CrudController
             ],
         ]);
 
-
-
-
-
-       //Debugbar::log( $this->crud->getCurrentEntry()->orderItems) ;
-       //Debugbar::log( $this->crud->getCurrentEntry()->orderItems->groupBy('shipping_id')) ;
-      // $shippingOrderItems = $this->crud->getCurrentEntry()->orderItems->groupBy('shipping_id');
+        //Debugbar::log( $this->crud->getCurrentEntry()->orderItems) ;
+        //Debugbar::log( $this->crud->getCurrentEntry()->orderItems->groupBy('shipping_id')) ;
+        // $shippingOrderItems = $this->crud->getCurrentEntry()->orderItems->groupBy('shipping_id');
 
         $orderId = $this->crud->getCurrentEntry()->id;
         if (!is_null($this->userSeller)) {
             $shippingOrderItems = OrderItem::where('order_id', $orderId)->where('seller_id', $this->userSeller->id)->get()->groupBy('shipping_id');
-        }else{
+        } else {
             $shippingOrderItems = OrderItem::where('order_id', $orderId)->get()->groupBy('shipping_id');
         }
 
         foreach ($shippingOrderItems as $shippingKey => $orderItems) {
-
 
             $shippingMethod = ShippingMethod::where('id', $shippingKey)->first();
             $totalShipping = $orderItems[0]->shipping_total;
@@ -575,6 +565,11 @@ class OrderCrudController extends CrudController
             }
             $valueHtml .= '</h5>';
 
+            foreach ($orderItems as $key => $orderItem) {
+                $orderItems[$key]->price = currencyFormat($orderItem->price ? $orderItem->price : 0, 'CLP', true);
+                $orderItems[$key]->sub_total = currencyFormat($orderItem->sub_total ? $orderItem->price : 0, 'CLP', true);
+
+            }
             CRUD::addField([
                 'name' => 'shipping-' . $shippingKey,
                 'type' => 'custom_html',
@@ -582,215 +577,213 @@ class OrderCrudController extends CrudController
                 'tab' => 'Items',
             ]);
 
-
             CRUD::addField([
-                'name' => 'order_items-'.$shippingKey,
+                'name' => 'order_items-' . $shippingKey,
                 'type' => 'repeatable',
-                'value'=> $orderItems,
+                'value' => $orderItems,
                 'label' => '',
-                'fake'=>true,
-                'store_in'=>'order_items',
+                'fake' => true,
+                'store_in' => 'order_items',
                 'tab' => 'Items',
                 'wrapperAttributes' => [
                     'class' => 'form-group col-md-12',
                 ],
-                   'fields' => [
-                [
-                    'name' => 'id',
-                    'type' => 'hidden',
-                    'label' => 'id'
-                ],
-                [
-                    'name' => 'order_id',
-                    'type' => 'hidden',
-                    'label' => 'order_id'
-                ],
-                [
-                    'name' => 'name',
-                    'type' => 'text',
-                    'label' => 'Nombre',
-                    'attributes' => [
-                        'readonly' => 'readonly',
+                'fields' => [
+                    [
+                        'name' => 'id',
+                        'type' => 'hidden',
+                        'label' => 'id',
                     ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
+                    [
+                        'name' => 'order_id',
+                        'type' => 'hidden',
+                        'label' => 'order_id',
                     ],
-                ],
-                [
-                    'name' => 'qty',
-                    'type' => 'text',
-                    'label' => 'Cantidad',
-                    'attributes' => [
-                        'readonly' => 'readonly',
+                    [
+                        'name' => 'name',
+                        'type' => 'text',
+                        'label' => 'Nombre',
+                        'attributes' => [
+                            'readonly' => 'readonly',
+                        ],
+                        'wrapperAttributes' => [
+                            'class' => 'form-group col-md-2',
+                        ],
                     ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
+                    [
+                        'name' => 'qty',
+                        'type' => 'text',
+                        'label' => 'Cantidad',
+                        'attributes' => [
+                            'readonly' => 'readonly',
+                        ],
+                        'wrapperAttributes' => [
+                            'class' => 'form-group col-md-2',
+                        ],
                     ],
-                ],
-                [
-                    'name' => 'price',
-                    'type' => 'number',
-                    'label' => 'Precio',
-                    'dec_point' => ',',
-                    'thousands_sep' => '.',
-                    'decimals' => 0,
-                    'prefix' => '$',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
-                    ],
-                ],
-                // [
-                //     'name' => 'shipping_total',
-                //     'type' => 'number',
-                //     'label' => 'Costo envío',
-                //     'dec_point' => ',',
-                //     'thousands_sep' => '.',
-                //     'decimals' => 0,
-                //     'prefix' => '$',
-                //     'attributes' => [
-                //         'readonly' => 'readonly',
-                //     ],
-                //     'wrapperAttributes' => [
-                //         'class' => 'form-group col-md-2',
-                //     ],
-                // ],
-                [
-                    'name' => 'sub_total',
-                    'type' => 'number',
-                    'label' => 'Subtotal',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
-                    ],
-                ],
-                [
-                    'name' => 'shipping_status',
-                    'type' => 'select2_from_array',
-                    'options' => [
-                        1 => 'Pendiente',
-                        2 => 'Enviado',
-                    ],
-                    'label' => 'Estado',
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2 shipping_status_select',
+                    [
+                        'name' => 'price',
+                        'type' => 'order.number_format',
+                        'label' => 'Precio',
+                        // 'dec_point' => ',',
+                        // 'thousands_sep' => '.',
+                        // 'decimals' => null,
+                        // 'prefix' => '$',
+                        'attributes' => [
+                            'readonly' => 'readonly',
+                            'step' => 'any',
 
+                        ],
+                        'wrapperAttributes' => [
+                            'class' => 'form-group col-md-2',
+                        ],
                     ],
-                ],
+                    // [
+                    //     'name' => 'shipping_total',
+                    //     'type' => 'number',
+                    //     'label' => 'Costo envío',
+                    //     'dec_point' => ',',
+                    //     'thousands_sep' => '.',
+                    //     'decimals' => 0,
+                    //     'prefix' => '$',
+                    //     'attributes' => [
+                    //         'readonly' => 'readonly',
+                    //     ],
+                    //     'wrapperAttributes' => [
+                    //         'class' => 'form-group col-md-2',
+                    //     ],
+                    // ],
+                    [
+                        'name' => 'sub_total',
+                        'type' => 'order.number_format',
+                        'label' => 'Subtotal',
+                        'attributes' => [
+                            'readonly' => 'readonly',
+                            'step' => 'any',
 
-            ]
+                        ],
+                        'wrapperAttributes' => [
+                            'class' => 'form-group col-md-2',
+                        ],
+                    ],
+                    [
+                        'name' => 'shipping_status',
+                        'type' => 'select2_from_array',
+                        'options' => [
+                            1 => 'Pendiente',
+                            2 => 'Enviado',
+                        ],
+                        'label' => 'Estado',
+                        'wrapperAttributes' => [
+                            'class' => 'form-group col-md-2 shipping_status_select',
+
+                        ],
+                    ],
+
+                ],
             ]);
         }
 
-
         /*
         CRUD::addField([
-            'name' => 'order_items',
-            'type' => 'repeatable',
-            'label' => ' ',
-            'tab' => 'Items',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-md-12',
-            ],
-            'fields' => [
-                [
-                    'name' => 'id',
-                    'type' => 'hidden',
-                    'label' => 'id'
-                ],
-                [
-                    'name' => 'order_id',
-                    'type' => 'hidden',
-                    'label' => 'order_id'
-                ],
-                [
-                    'name' => 'name',
-                    'type' => 'text',
-                    'label' => 'Nombre',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
-                    ],
-                ],
-                [
-                    'name' => 'qty',
-                    'type' => 'text',
-                    'label' => 'Cantidad',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
-                    ],
-                ],
-                [
-                    'name' => 'price',
-                    'type' => 'number',
-                    'label' => 'Precio',
-                    'dec_point' => ',',
-                    'thousands_sep' => '.',
-                    'decimals' => 0,
-                    'prefix' => '$',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
-                    ],
-                ],
-                [
-                    'name' => 'shipping_total',
-                    'type' => 'number',
-                    'label' => 'Costo envío',
-                    'dec_point' => ',',
-                    'thousands_sep' => '.',
-                    'decimals' => 0,
-                    'prefix' => '$',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
-                    ],
-                ],
-                [
-                    'name' => 'sub_total',
-                    'type' => 'number',
-                    'label' => 'Subtotal',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
-                    ],
-                ],
-                [
-                    'name' => 'shipping_status',
-                    'type' => 'select2_from_array',
-                    'options' => [
-                        1 => 'Pendiente',
-                        2 => 'Enviado',
-                    ],
-                    'label' => 'Estado',
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2 shipping_status_select',
+        'name' => 'order_items',
+        'type' => 'repeatable',
+        'label' => ' ',
+        'tab' => 'Items',
+        'wrapperAttributes' => [
+        'class' => 'form-group col-md-12',
+        ],
+        'fields' => [
+        [
+        'name' => 'id',
+        'type' => 'hidden',
+        'label' => 'id'
+        ],
+        [
+        'name' => 'order_id',
+        'type' => 'hidden',
+        'label' => 'order_id'
+        ],
+        [
+        'name' => 'name',
+        'type' => 'text',
+        'label' => 'Nombre',
+        'attributes' => [
+        'readonly' => 'readonly',
+        ],
+        'wrapperAttributes' => [
+        'class' => 'form-group col-md-2',
+        ],
+        ],
+        [
+        'name' => 'qty',
+        'type' => 'text',
+        'label' => 'Cantidad',
+        'attributes' => [
+        'readonly' => 'readonly',
+        ],
+        'wrapperAttributes' => [
+        'class' => 'form-group col-md-2',
+        ],
+        ],
+        [
+        'name' => 'price',
+        'type' => 'number',
+        'label' => 'Precio',
+        'dec_point' => ',',
+        'thousands_sep' => '.',
+        'decimals' => 0,
+        'prefix' => '$',
+        'attributes' => [
+        'readonly' => 'readonly',
+        ],
+        'wrapperAttributes' => [
+        'class' => 'form-group col-md-2',
+        ],
+        ],
+        [
+        'name' => 'shipping_total',
+        'type' => 'number',
+        'label' => 'Costo envío',
+        'dec_point' => ',',
+        'thousands_sep' => '.',
+        'decimals' => 0,
+        'prefix' => '$',
+        'attributes' => [
+        'readonly' => 'readonly',
+        ],
+        'wrapperAttributes' => [
+        'class' => 'form-group col-md-2',
+        ],
+        ],
+        [
+        'name' => 'sub_total',
+        'type' => 'number',
+        'label' => 'Subtotal',
+        'attributes' => [
+        'readonly' => 'readonly',
+        ],
+        'wrapperAttributes' => [
+        'class' => 'form-group col-md-2',
+        ],
+        ],
+        [
+        'name' => 'shipping_status',
+        'type' => 'select2_from_array',
+        'options' => [
+        1 => 'Pendiente',
+        2 => 'Enviado',
+        ],
+        'label' => 'Estado',
+        'wrapperAttributes' => [
+        'class' => 'form-group col-md-2 shipping_status_select',
 
-                    ],
-                ],
+        ],
+        ],
 
-            ]
+        ]
         ]);
-        */
-
-
-
-
+         */
 
         CRUD::addField([
             'name' => 'support_data_script',
