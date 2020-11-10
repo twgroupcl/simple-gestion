@@ -147,8 +147,6 @@ use App\Models\Product;
                                                 </tr>
                                                 <tr style="padding-top:15px;">
                                                 </tr>
-                                              
-                                               
                                             </tbody>
                                         </table>
                                       
@@ -169,13 +167,13 @@ use App\Models\Product;
                                                                         <th width="20%"
                                                                             style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Plan </th>
-                                                                        <th width="10%"
+                                                                        <th width="15%"
                                                                             style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Precio </th>
                                                                         <th width="25%"
                                                                             style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Fecha de Inicio </th>
-                                                                        <th width="25%"
+                                                                        <th width="20%"
                                                                             style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Fecha de Fin </th>
                                                                     </tr>

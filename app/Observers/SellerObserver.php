@@ -6,12 +6,12 @@ use App\Mail\NotificationSuscription;
 use App\Mail\SellerChangeStatus;
 use App\Models\BranchUser;
 use App\Models\CompanyUser;
+use App\Models\Currency;
 use App\Models\PaymentMethodSeller;
 use App\Models\Plans;
 use App\Models\Seller;
 use App\Models\SellerAddress;
 use App\Models\ShippingMethodSeller;
-use App\Models\Plans;
 use App\User;
 use Backpack\Settings\app\Models\Setting;
 use Illuminate\Support\Facades\Mail;
@@ -140,7 +140,7 @@ class SellerObserver
         //     $newplansubscription = new PlanSubscriptionSeller($subscription_data);
         //     $seller->subscriptions()->save($newplansubscription);
         // }
-        if (!empty($subscription_data['plan_subscription_id'])) {
+       // if (!empty($subscription_data['plan_subscription_id'])) {
             $user = User::find($seller->user->id);
             // $user->subscription('main')->usage()->delete();
             $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
@@ -149,16 +149,20 @@ class SellerObserver
             if ($plan->price > 0) {
                 return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
             }
-        }
+       // }else{
+            $plan = Plans::where('id', $subscription_data['plan_id'])->first();
+      //  }
+        $currency = Currency::where('id',$plan->currency)->first();
 
         $dataEmail = [
             'seller' => $seller->name,
-            'plan' => $planName->name,
+            'plan' => $plan->name,
             'price' => $plan->price,
-            'currency' => $plan->currency,
-            'start_date' => $suscription_data['starts_at'],
-            'end_date' => $suscription_data['ends_at']
+            'currency' => $currency->code,
+            'start_date' => $subscription_data['starts_at'],
+            'end_date' => $subscription_data['ends_at']
         ];
+
 
         $emailsAdministrator = explode(';', Setting::get('administrator_email'));
         array_push($emailsAdministrator, $seller->email);
