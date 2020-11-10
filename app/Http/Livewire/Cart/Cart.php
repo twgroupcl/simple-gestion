@@ -71,11 +71,11 @@ class Cart extends Component
 
             DB::commit();
 
-            event(new ProductAddedToCart($this->cart, $product));
-
         } catch (Exception $e) {
             DB::rollBack();
         }
+
+        event(new ProductAddedToCart($this->cart, $product));
 
     }
 
