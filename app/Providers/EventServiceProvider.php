@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use App\Listeners\AddToSessionAfterLogin;
 use App\Listeners\AddToSessionBeforeLogin;
+use App\Listeners\CustomerLogEventSubscriber;
 use Illuminate\Auth\Events\Attempting;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -30,6 +31,15 @@ class EventServiceProvider extends ServiceProvider
         Login::class => [
             AddToSessionAfterLogin::class,
         ],
+    ];
+
+    /**
+     * The subscriber classes to register.
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        CustomerLogEventSubscriber::class,
     ];
 
     /**
