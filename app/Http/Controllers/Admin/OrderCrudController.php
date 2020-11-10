@@ -72,20 +72,14 @@ class OrderCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        // If not admin, show only user products
+        // If not admin, show only seller Orders
         // if (!$this->admin) {
         //     $sellerId = $this->userSeller->id;
 
-        //     //  $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
-        //     //      $query->where('seller_id', $value);
-        //     //  });
-        //     $this->crud->addClause('whereHas', 'order_items', function($query) use ($sellerId) {
+        //     $this->crud->addClause('whereHas', 'order_items', function ($query) use ($sellerId) {
         //         $query->where('seller_id', $sellerId);
-        //     });
-
+        //     })->groupBy('orders.id');
         // }
-        dd($this->crud->getCurrent());
-
         CRUD::addColumn([
             'name' => 'id',
             'type' => 'text',
@@ -119,12 +113,16 @@ class OrderCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'total',
-            'type' => 'number',
+            // 'type' => 'number',
             'label' => 'Total',
-            'dec_point' => ',',
-            'thousands_sep' => '.',
-            'decimals' => 0,
-            'prefix' => '$',
+            // 'value' => 4343,
+            // 'dec_point' => ',',
+            // 'thousands_sep' => '.',
+            // 'decimals' => 0,
+            // 'prefix' => '$',
+            'type'  => 'model_function',
+            'function_name' => 'getTotal',
+            'function_parameters'=> [$this->admin, $this->userSeller]
         ]);
 
         CRUD::addColumn([
@@ -567,7 +565,7 @@ class OrderCrudController extends CrudController
 
             foreach ($orderItems as $key => $orderItem) {
                 $orderItems[$key]->price = currencyFormat($orderItem->price ? $orderItem->price : 0, 'CLP', true);
-                $orderItems[$key]->sub_total = currencyFormat($orderItem->sub_total ? $orderItem->price : 0, 'CLP', true);
+                $orderItems[$key]->sub_total = currencyFormat($orderItem->sub_total ? $orderItem->sub_total : 0, 'CLP', true);
 
             }
             CRUD::addField([
@@ -623,7 +621,7 @@ class OrderCrudController extends CrudController
                     ],
                     [
                         'name' => 'price',
-                        'type' => 'order.number_format',
+                        'type' => 'product.number_format',
                         'label' => 'Precio',
                         // 'dec_point' => ',',
                         // 'thousands_sep' => '.',
@@ -655,7 +653,7 @@ class OrderCrudController extends CrudController
                     // ],
                     [
                         'name' => 'sub_total',
-                        'type' => 'order.number_format',
+                        'type' => 'product.number_format',
                         'label' => 'Subtotal',
                         'attributes' => [
                             'readonly' => 'readonly',
@@ -791,4 +789,6 @@ class OrderCrudController extends CrudController
             'tab' => 'Items',
         ]);
     }
+
+
 }
