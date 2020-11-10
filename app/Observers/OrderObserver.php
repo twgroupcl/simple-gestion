@@ -4,13 +4,21 @@ namespace App\Observers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Mail\OrderUpdated;
+use Illuminate\Support\Facades\Mail;
 
 class OrderObserver
 {
-
+    public function updated(Order $order)
+    {
+        if ($order->isDirty()) {
+            if ($order->status == 3) {
+                Mail::to($order->email)->send(new OrderUpdated($order, 1, null));
+            }
+        }
+    }
     public function updating(Order $order)
     {
-
 
         if ($order->isDirty()) {
 
@@ -47,7 +55,6 @@ class OrderObserver
                     }
 
                 }
-
 
                 //If the order is paid and all items were shipped from update the order to Complete
                 if ($completed) {

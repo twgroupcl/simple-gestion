@@ -23,11 +23,11 @@ class ProductCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(Product $product)
+    public function __construct(Product $product, $seller)
     {
         $this->rejectedText = '';
         $this->title= 'Un nuevo producto ha sido creado';
-        $this->text = 'La tienda <strong>' . $product->seller->visible_name . '</strong> ha publicado el siguiente producto: <strong>' . $product->name . '</strong>.<br><br> Puedes acceder al panel de administrador para aprobarlo o rechazarlo.'; 
+        $this->text = 'La tienda <strong>' . $seller . '</strong> ha publicado el siguiente producto: <strong>' . $product->name . '</strong>.<br><br> Puedes acceder al panel de administrador para aprobarlo o rechazarlo.';
         $this->buttonText = 'Ir al panel';
         $this->buttonLink = config('app.url') . '/admin';
         $this->logo = 'img/logo-pyme.png';

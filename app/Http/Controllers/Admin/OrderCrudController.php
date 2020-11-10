@@ -540,6 +540,7 @@ class OrderCrudController extends CrudController
             'label' => 'Estado',
             'tab' => 'General',
             'attributes' => [
+                'id' => 'order_status',
                 'readonly' => true,
                 'disabled' => true,
             ],

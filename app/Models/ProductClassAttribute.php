@@ -122,6 +122,9 @@ class ProductClassAttribute extends Model
 
     public function getCodeAttribute() {
         $data = $this->json_attributes;
+        if (empty($data['code'])) {
+            return null;
+        }
         return $data['code'];
     }
 
