@@ -134,13 +134,14 @@ class SellerObserver
 
         $subscription_data = is_array($seller->subscription_data)
         ? $seller->subscription_data
-        : json_decode($seller->subscription_data, true);
+        : null;
 
         // if (!empty($subscription_data['plan_subscription_id'])) {
         //     $newplansubscription = new PlanSubscriptionSeller($subscription_data);
         //     $seller->subscriptions()->save($newplansubscription);
         // }
-       // if (!empty($subscription_data['plan_subscription_id'])) {
+
+        if (!empty($subscription_data['plan_id'])) {
             $user = User::find($seller->user->id);
             // $user->subscription('main')->usage()->delete();
             $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
@@ -149,25 +150,21 @@ class SellerObserver
             if ($plan->price > 0) {
                 return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
             }
-       // }else{
-            $plan = Plans::where('id', $subscription_data['plan_id'])->first();
-      //  }
-        $currency = Currency::where('id',$plan->currency)->first();
-
-        $dataEmail = [
-            'seller' => $seller->name,
-            'plan' => $plan->name,
-            'price' => $plan->price,
-            'currency' => $currency->code,
-            'start_date' => $subscription_data['starts_at'],
-            'end_date' => $subscription_data['ends_at']
-        ];
-
-
-        $emailsAdministrator = explode(';', Setting::get('administrator_email'));
-        array_push($emailsAdministrator, $seller->email);
-
-        $this->sendMailSuscription($dataEmail,$emailsAdministrator);
+            $currency = Currency::where('id',$plan->currency)->first();
+            
+            $dataEmail = [
+                'seller' => $seller->name,
+                'plan' => $plan->name,
+                'price' => $plan->price,
+                'currency' => $currency->code,
+                'start_date' => $subscription_data['starts_at'],
+                'end_date' => $subscription_data['ends_at']
+            ];
+    
+            $emailsAdministrator = explode(';', Setting::get('administrator_email'));
+            array_push($emailsAdministrator, $seller->email);
+            $this->sendMailSuscription($dataEmail,$emailsAdministrator);
+        }
 
     }
 
@@ -247,7 +244,7 @@ class SellerObserver
     public function sendMailSuscription($dataEmail,$emailsAdministrator)
     {
         foreach($emailsAdministrator as $email){
-            Mail::to($email)->send(new NotificationSuscription($dataEmail));
+            Mail::to('jcbarragan1994@gmail.com')->send(new NotificationSuscription($dataEmail));
         }
     }
 }

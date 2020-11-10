@@ -794,7 +794,7 @@ class SellerCrudController extends CrudController
                     'type' => 'text',
                     'tab' => 'Subscripción',
                     'wrapper' => ['class' => 'form-group col-6'],
-                    'attributes' => ['readonly' => 'readonly', 'class' => ' subscription_starts_at form-control col-11'],
+                    'attributes' => ['readonly' => 'readonly', 'class' => ' subscription_starts_at form-control col-12'],
                     'fake'     => true,
                     'store_in' => 'subscription_data'
                 ]);
@@ -807,7 +807,7 @@ class SellerCrudController extends CrudController
                     'wrapper' => [
                         'class' => 'form-group col-6',
                     ],
-                    'attributes' => ['readonly' => 'readonly','class' => 'subscription_ends_at form-control col-11'],
+                    'attributes' => ['readonly' => 'readonly','class' => 'subscription_ends_at form-control col-12'],
                     'fake'     => true,
                     'store_in' => 'subscription_data'
                 ]);

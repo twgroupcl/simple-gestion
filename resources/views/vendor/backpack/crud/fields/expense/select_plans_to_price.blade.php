@@ -1,5 +1,5 @@
 @include('crud::fields.inc.wrapper_start')
-        <div class="form-group col-12" element="div">
+        <div element="div">
             <label>Precio</label>
             <input
                 type="text"

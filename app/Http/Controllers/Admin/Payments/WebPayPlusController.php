@@ -47,8 +47,8 @@ class WebPayPlusController extends Controller
         $sessionId = session()->getId();
 
         $buyOrder = $subscription->id;
-        $returnUrl = "https://simplegestion.test/admin/payment/subscription/result";
-        $finalUrl = "https://simplegestion.test/admin/payment/subscription/detail/";
+        $returnUrl = url('admin/payment/subscription/result');
+        $finalUrl =  url('admin/payment/subscription/detail/');
         $response = $this->transaction->initTransaction(
             $amount, $buyOrder, $sessionId, $returnUrl, $finalUrl);
         //Register payment
