@@ -110,6 +110,11 @@ class Customer extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function logs()
+    {
+        return $this->hasMany(CustomerLog::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
