@@ -26,7 +26,8 @@ class CommuneShippingMethodRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'commune_id' => 'required_if:is_global,0',
+            'is_global' => 'required_without:commune_id',
         ];
     }
 
