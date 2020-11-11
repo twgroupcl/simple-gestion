@@ -28,6 +28,8 @@ class CommuneShippingMethodRequest extends FormRequest
         return [
             'commune_id' => 'required_if:is_global,0',
             'is_global' => 'required_without:commune_id',
+            'shipping_methods_validation' => 'required',
+
         ];
     }
 
@@ -53,5 +55,24 @@ class CommuneShippingMethodRequest extends FormRequest
         return [
             //
         ];
+    }
+
+    protected function prepareForValidation()
+    {   
+        
+        $shippingMethods = [
+            $this->free_shipping_status,
+            $this->flat_rate_status,
+            $this->variable_status,
+            $this->chilexpress_status,
+        ];
+
+        $shippingMethods = in_array(1, $shippingMethods);
+        
+        if  ($shippingMethods) {
+            $this->merge([
+                'shipping_methods_validation' => $shippingMethods,
+            ]); 
+        }
     }
 }
