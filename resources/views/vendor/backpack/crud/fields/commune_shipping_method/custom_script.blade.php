@@ -15,6 +15,7 @@
 
             if (isGlobalValue.val() == 1) {
                 communeField.prop('disabled', true)
+                communeField.val(null).trigger('change');
             } else {
                 communeField.prop('disabled', false)
             }
@@ -22,6 +23,7 @@
             isGlobalField.change(function() {
                 if (isGlobalValue.val() == 1) {
                     communeField.prop('disabled', true)
+                    communeField.val(null).trigger('change');
                 } else {
                     communeField.prop('disabled', false)
                 }
