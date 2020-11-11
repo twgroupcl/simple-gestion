@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CommuneShippingMethodRequest extends FormRequest
@@ -26,7 +27,12 @@ class CommuneShippingMethodRequest extends FormRequest
     public function rules()
     {
         return [
-            'commune_id' => 'required_if:is_global,0',
+            'commune_id' => [
+                'required_if:is_global,0',
+                Rule::unique('commune_shipping_methods')->where( function($query) {
+                    return $query->where('seller_id', '=', request('seller_id'))->where('id', '!=', request('id'));
+                }),
+            ],
             'is_global' => 'required_without:commune_id',
             'shipping_methods_validation' => 'required',
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Commune;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\CommuneShippingMethodRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -29,7 +30,7 @@ class CommuneShippingMethodCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\CommuneShippingMethod::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/communeshippingmethod');
-        CRUD::setEntityNameStrings('metodo de envio', 'metodos de envio');
+        CRUD::setEntityNameStrings('configuracion de envio', 'metodos de envio');
     }
 
     /**
@@ -55,8 +56,13 @@ class CommuneShippingMethodCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
+            'name' => 'is_global',
+            'label' => 'Aplica a todas las comunas',
+        ]);
+
+        CRUD::addColumn([
             'name' => 'shipping_methods_accesor',
-            'label' => 'Metodos de envio',
+            'label' => 'Metodos de envio habilitados',
         ]);
     }
 
@@ -79,16 +85,36 @@ class CommuneShippingMethodCrudController extends CrudController
             'label' => 'Vendedor',
             'type' => 'relationship',
             'placeholder' => 'Selecciona un vendedor',
-            'tab' => 'Configuración general'
+            'tab' => 'Configuración general',
         ]);
 
         CRUD::addField([
             'name' => 'commune_id',
+            'type' => 'select2_from_array',
             'label' => 'Comuna',
-            'type' => 'relationship',
+            'options' => Commune::orderBy('name', 'asc')->pluck('name', 'id')->toArray(),
             'placeholder' => 'Selecciona una comuna',
-            'tab' => 'Configuración general'
+            'tab' => 'Configuración general',
+            'attributes' => [
+                'id' => 'commune_id_selector'
+            ]
         ]);
+        
+        CRUD::addField(
+            [
+                'label'     => 'Establecer para todas las comunas',
+                'type'      => 'checkbox',
+                'name'      => 'is_global',
+                'hint' => 'Al activar este check se establecera esta configuracion de envío para todas las comunas que no tengan una configuracion individual',
+                'tab' => 'Configuración general',
+                'wrapper' => [
+                    'class' => 'mb-5 form-group col-lg-12',
+                ],
+                'attributes' => [
+                    'class' => 'is_global_checker'
+                ]
+            ]
+        );
 
         CRUD::addField(
             [
@@ -98,6 +124,9 @@ class CommuneShippingMethodCrudController extends CrudController
                 'fake' => true,
                 'store_in' => 'active_methods',
                 'tab' => 'Configuración general',
+                'attributes' => [
+                    'class' => 'free_shipping_checker'
+                ]
             ]);
 
         CRUD::addField(
@@ -108,6 +137,9 @@ class CommuneShippingMethodCrudController extends CrudController
                 'fake' => true,
                 'store_in' => 'active_methods',
                 'tab' => 'Configuración general',
+                'attributes' => [
+                    'class' => 'flat_rate_checker'
+                ]
             ]
         );
 
@@ -119,6 +151,9 @@ class CommuneShippingMethodCrudController extends CrudController
                 'fake' => true,
                 'store_in' => 'active_methods',
                 'tab' => 'Configuración general',
+                'attributes' => [
+                    'class' => 'variable_checker'
+                ]
             ]
         );
 
@@ -130,22 +165,14 @@ class CommuneShippingMethodCrudController extends CrudController
                 'fake' => true,
                 'store_in' => 'active_methods',
                 'tab' => 'Configuración general',
-            ]
-        );
-
-
-        CRUD::addField(
-            [
-                'label'     => 'Establecer esta configuración por defecto',
-                'type'      => 'checkbox',
-                'name'      => 'is_global',
-                'hint' => 'Al activar este check se establecera esta configuracion de envío para todas las comunas que no tengan una configuracion individual',
-                'tab' => 'Configuración general',
-                'wrapper' => [
-                    'class' => 'mt-3 form-group col-lg-12',
+                'attributes' => [
+                    'class' => 'chilexpress_checker'
                 ]
             ]
         );
+
+
+        
 
 
         CRUD::addField([
@@ -180,6 +207,7 @@ class CommuneShippingMethodCrudController extends CrudController
                 [
                     'name' => 'price',
                     'label' => 'Precio de envio',
+                    'default' => 0,
                     'type' => 'number',
                 ],
             ]
@@ -198,19 +226,25 @@ class CommuneShippingMethodCrudController extends CrudController
                     'label' => 'Configuracion de precios',
                     'type' => 'table',
                     'columns' => [
-                        'weight_range' => 'Rango de peso (kg)',
-                        'price_range' => 'Rango de precio',
-                        'final_price' => 'Precio final',
+                        'min_weight' => 'Peso minimo (kg) *',
+                        'max_weight' => 'Peso maximo (kg) *',
+                        'min_price' => 'Precio minimo ($)',
+                        'max_price' => 'Precio maximo ($)',
+                        'final_price' => 'Costo final de envio ($) *',
                     ]
                 ],
+                [
+                    'name' => 'help_text',
+                    'type' => 'commune_shipping_method.help_text',
+                ]
             ]
         ]);
 
-        CRUD::addField([
+        /* CRUD::addField([
             'name' => 'help_text',
             'type' => 'commune_shipping_method.help_text',
             'tab' => 'Variable',
-        ]);
+        ]); */
 
         CRUD::addField([
             'name' => 'chilexpress',
@@ -239,11 +273,6 @@ class CommuneShippingMethodCrudController extends CrudController
             'tab' => 'Configuración general'
         ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
     }
 
     /**
