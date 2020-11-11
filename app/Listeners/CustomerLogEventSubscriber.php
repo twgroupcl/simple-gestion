@@ -57,7 +57,7 @@ class CustomerLogEventSubscriber
 
         CustomerLog::create([
             'customer_id' => $customerId,
-            'event' => 'Nueva orden generada',
+            'event' => 'Orden pagada',
             'json_value' => $event->order->toJson(),
         ]);
     }
