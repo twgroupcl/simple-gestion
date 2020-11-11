@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
@@ -46,6 +47,25 @@ class CommuneShippingMethod extends Model
         parent::boot();
 
         static::addGlobalScope(new CompanyBranchScope);
+    }
+
+    public function getAvailableShippingMethods()
+    {
+        $activeMethodsCode = [];
+        
+        if (empty($this->active_methods)) {
+            return [];
+        }
+
+        $activeMethods = collect($this->active_methods)->filter(function ($value, $key) {
+            return $value == 1;
+        });
+
+        foreach ($activeMethods as $code => $status) {
+            array_push($activeMethodsCode, Str::replaceFirst('_status', '', $code));
+        }
+
+        return $activeMethodsCode;
     }
 
     /*
