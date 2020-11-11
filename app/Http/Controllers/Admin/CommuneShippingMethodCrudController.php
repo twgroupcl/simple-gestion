@@ -90,16 +90,18 @@ class CommuneShippingMethodCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'commune_id',
-            'type' => 'select2_from_array',
+            'type' => 'relationship',
             'label' => 'Comuna',
-            'options' => Commune::orderBy('name', 'asc')->pluck('name', 'id')->toArray(),
             'placeholder' => 'Selecciona una comuna',
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
             'tab' => 'Configuración general',
             'attributes' => [
                 'id' => 'commune_id_selector'
             ]
         ]);
-        
+
         CRUD::addField(
             [
                 'label'     => 'Establecer para todas las comunas',

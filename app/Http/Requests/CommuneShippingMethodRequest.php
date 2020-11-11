@@ -33,7 +33,12 @@ class CommuneShippingMethodRequest extends FormRequest
                     return $query->where('seller_id', '=', request('seller_id'))->where('id', '!=', request('id'));
                 }),
             ],
-            'is_global' => 'required_without:commune_id',
+            'is_global' => [
+                'required_without:commune_id',
+                Rule::unique('commune_shipping_methods')->where( function($query) {
+                    return $query->where('seller_id', '=', request('seller_id'))->where('id', '!=', request('id'))->where('is_global', 1);
+                }),
+            ],
             'shipping_methods_validation' => 'required',
 
         ];
@@ -59,7 +64,10 @@ class CommuneShippingMethodRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'shipping_methods_validation.required' => 'Debes seleccionar por lo menos un metodo de envío',
+            'commune_id.unique' => 'Ya tienes otra configuracíon de envío para la comuna seleccionada',
+            'commune_id.required_if' => 'Debes seleccionar una comuna',
+            'is_global.unique' => 'Solo puedes tener una configuracion global de envíos',
         ];
     }
 
