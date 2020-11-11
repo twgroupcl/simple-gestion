@@ -22,7 +22,15 @@ class CustomerLogEventSubscriber
         //
     }
 
-    public function handleCartGenerated($event) {}
+    public function handleCartGenerated($event) {
+        $customerId = optional($event->cart->customer)->id;
+
+        CustomerLog::create([
+            'customer_id' => $customerId,
+            'event' => 'Nuevo carrito generado',
+            'json_value' => $event->cart,
+        ]);
+    }
 
     public function handleProductAddedToCart($event) {
         $customerId = optional($event->cart->customer)->id;
