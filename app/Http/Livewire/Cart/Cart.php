@@ -75,8 +75,6 @@ class Cart extends Component
             DB::rollBack();
         }
 
-        event(new ProductAddedToCart($this->cart, $product));
-
     }
 
     public function updateSubtotal()
@@ -226,6 +224,7 @@ class Cart extends Component
 
             $this->cart->items_count ++;
             $this->emit('showToast', '¡Añadido al carro!', 'Has añadido un producto al carro.', 3000, 'success');
+            event(new ProductAddedToCart($this->cart, $product));
             return true;
         }
     }

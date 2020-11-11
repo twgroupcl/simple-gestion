@@ -6,6 +6,7 @@ use App\Events\CartGenerated;
 use App\Events\OrderGenerated;
 use App\Events\OrderPaid;
 use App\Events\ProductAddedToCart;
+use App\Models\CustomerLog;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -24,7 +25,10 @@ class CustomerLogEventSubscriber
     public function handleCartGenerated($event) {}
 
     public function handleProductAddedToCart($event) {
-        $event->cart->customer->logs()->create([
+        $customerId = optional($event->cart->customer)->id;
+
+        CustomerLog::create([
+            'customer_id' => $customerId,
             'event' => 'Producto añadido al carrito',
             'json_value' => $event->cart->toJson(),
         ]);
