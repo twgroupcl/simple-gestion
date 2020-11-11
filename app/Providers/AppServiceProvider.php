@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Cart;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Customer;
@@ -15,6 +16,7 @@ use App\Observers\OrderObserver;
 use App\Observers\SellerObserver;
 use App\Observers\OrderItemObserver;
 use App\Models\ProductClassAttribute;
+use App\Observers\CartObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\ProductClassAttributeObserver;
 
@@ -47,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
         Quotation::observe(QuotationObserver::class);
         Order::observe(OrderObserver::class);
         OrderItem::observe(OrderItemObserver::class);
+        Cart::observe(CartObserver::class);
 
     }
 }
