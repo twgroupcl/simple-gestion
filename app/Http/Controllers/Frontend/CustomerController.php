@@ -13,6 +13,7 @@ use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
 use App\Models\Commune;
+use App\Models\Plans;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -182,6 +183,16 @@ class CustomerController extends Controller
     {
         $customer = Customer::firstWhere('user_id', auth()->user()->id);
         return view('customer.order', ['customer' => $customer]);
+    }
+
+    public function subscription()
+    {
+        $customer = Customer::firstWhere('user_id', auth()->user()->id);
+        $plans = Plans::orderBy('name','asc')->get();
+        return view('customer.subscription', [
+            'customer' => $customer,
+            'plans' => $plans
+        ]);
     }
 
     public function update(CustomerUpdateRequest $request, Customer $customer)

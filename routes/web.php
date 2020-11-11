@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/customer/profile', 'Frontend\CustomerController@profile')->name('customer.profile');
     Route::get('/customer/address', 'Frontend\CustomerController@address')->name('customer.address');
     Route::get('/customer/order', 'Frontend\CustomerController@order')->name('customer.order');
+    Route::get('/customer/subscription', 'Frontend\CustomerController@subscription')->name('customer.subscription');
 
     Route::put('/address/{customer}', 'Frontend\AddressController@store')->name('address.update');
 });
