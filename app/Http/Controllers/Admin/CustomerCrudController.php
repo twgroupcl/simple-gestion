@@ -489,5 +489,26 @@ class CustomerCrudController extends CrudController
         CRUD::field('email')->attributes([
             'readonly' => 'readonly'
         ]);
+
+        CRUD::addField([
+            'name' => 'notifications_data',
+            'type' => 'repeatable',
+            'label' => 'Notificaciones',
+            'default' => '{}',
+            'fields' => [
+                [
+                    'name' => 'subject',
+                    'type' => 'text',
+                    'label' => 'Asunto',
+                ],
+                [
+                    'name' => 'message',
+                    'type' => 'textarea',
+                    'label' => 'Mensaje',
+                ],
+            ],
+            'new_item_label' => 'Nueva Notificación',
+            'tab' => 'Notificaciones',
+        ]);
     }
 }
