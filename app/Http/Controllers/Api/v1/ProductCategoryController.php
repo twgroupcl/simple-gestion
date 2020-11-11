@@ -21,7 +21,7 @@ class ProductCategoryController extends Controller
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
             'description' => 'required',
-            'code' => 'required',
+            'code' => 'required|unique:product_categories,code',
             'slug' => new SlugRule(),
             'position' => 'numeric',
             'parent_id' => 'exists:product_categories,id',
