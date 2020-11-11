@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\OrderGenerated;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Mail\OrderUpdated;
@@ -9,6 +10,11 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderObserver
 {
+    public function created(Order $order)
+    {
+        event(new OrderGenerated($order));
+    }
+
     public function updated(Order $order)
     {
         if ($order->isDirty()) {

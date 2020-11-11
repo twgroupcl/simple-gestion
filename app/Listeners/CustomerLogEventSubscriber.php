@@ -42,7 +42,15 @@ class CustomerLogEventSubscriber
         ]);
     }
 
-    public function handleOrderGenerated($event) {}
+    public function handleOrderGenerated($event) {
+        $customerId = optional($event->order->customer)->id;
+
+        CustomerLog::create([
+            'customer_id' => $customerId,
+            'event' => 'Nueva orden generada',
+            'json_value' => $event->order->toJson(),
+        ]);
+    }
 
     public function handleOrderPaid($event) {}
 
