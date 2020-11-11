@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Seller;
 use App\Models\Commune;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\CommuneShippingMethodRequest;
@@ -31,6 +32,20 @@ class CommuneShippingMethodCrudController extends CrudController
         CRUD::setModel(\App\Models\CommuneShippingMethod::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/communeshippingmethod');
         CRUD::setEntityNameStrings('configuracion de envio', 'metodos de envio');
+
+        $this->crud->denyAccess('show');
+        $this->admin = false;
+        $this->userSeller = null;
+
+        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
+            $this->admin = true;
+
+            $this->crud->enableExportButtons();
+        }
+
+        if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
+            $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        }
     }
 
     /**
@@ -41,14 +56,17 @@ class CommuneShippingMethodCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        //CRUD::setFromDb(); // columns
+        // If not admin, show only seller config
+        if (!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
         
-        CRUD::addColumn([
-            'name' => 'seller',
-            'label' => 'Vendedor',
-            'type' => 'relationship',
-        ]);
-
+        if ($this->admin) {
+            CRUD::addColumn([
+                'name' => 'seller',
+                'label' => 'Vendedor',
+                'type' => 'relationship',
+            ]);
+        }
+        
         CRUD::addColumn([
             'name' => 'commune',
             'label' => 'Comuna',
@@ -84,8 +102,12 @@ class CommuneShippingMethodCrudController extends CrudController
             'name' => 'seller_id',
             'label' => 'Vendedor',
             'type' => 'relationship',
+            'default' => $this->userSeller ?? '',
             'placeholder' => 'Selecciona un vendedor',
             'tab' => 'Configuración general',
+            'wrapper' => [
+                'style' => $this->admin ? '' : 'display:none',
+             ],
         ]);
 
         CRUD::addField([
