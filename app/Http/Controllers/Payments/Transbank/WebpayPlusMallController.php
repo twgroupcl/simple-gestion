@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payments\Transbank;
 
+use App\Events\OrderPaid;
 use App\Http\Controllers\Controller;
 use App\Mail\OrderUpdated;
 use App\Models\Cart;
@@ -198,6 +199,7 @@ class WebpayPlusMallController extends Controller
         $order = Order::where('id', $this->orderId)->first();
         $order->status = 2; //paid
         $order->update();
+        event(new OrderPaid($order));
         $finalresult = false;
         if (is_array($result->detailOutput)) {
             foreach ($result->detailOutput as $output) {
