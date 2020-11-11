@@ -68,6 +68,7 @@ class Cart extends Component
             }
 
             $status = $this->updateSubtotal();
+            event(new ProductAddedToCart($this->cart, $product));
 
             DB::commit();
 
@@ -224,7 +225,6 @@ class Cart extends Component
 
             $this->cart->items_count ++;
             $this->emit('showToast', '¡Añadido al carro!', 'Has añadido un producto al carro.', 3000, 'success');
-            event(new ProductAddedToCart($this->cart, $product));
             return true;
         }
     }
