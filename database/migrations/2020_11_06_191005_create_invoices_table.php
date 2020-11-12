@@ -15,12 +15,13 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code')->nullable();
+            $table->string('dte_code')->nullable();
             $table->string('title')->nullable();
             $table->date('invoice_date')->nullable();
             $table->date('expiry_date')->nullable();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('seller_id')->nullable();
+            $table->unsignedBigInteger('invoice_types')->nullable();
             $table->string('uid');
             $table->string('first_name');
             $table->string('last_name')->nullable();
@@ -71,6 +72,7 @@ class CreateInvoicesTable extends Migration
             $table->foreign('seller_business_activity_id')->references('id')->on('business_activities');
             $table->foreign('customer_business_activity_id')->references('id')->on('business_activities');
             $table->foreign('address_id')->references('id')->on('customer_addresses');
+            $table->foreign('invoice_type')->references('id')->on('invoice_types');
             $table->foreign('branch_id')->references('id')->on('branches');
             $table->unique(['branch_id', 'code']);
         });
