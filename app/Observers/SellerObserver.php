@@ -244,7 +244,7 @@ class SellerObserver
     public function sendMailSuscription($dataEmail,$emailsAdministrator)
     {
         foreach($emailsAdministrator as $email){
-            Mail::to('jcbarragan1994@gmail.com')->send(new NotificationSuscription($dataEmail));
+            Mail::to($email)->send(new NotificationSuscription($dataEmail));
         }
     }
 }

@@ -453,6 +453,75 @@ class CustomerCrudController extends CrudController
             'tab' => 'Contactos',
         ]);
 
+        if($this->crud->getCurrentEntry()->subscription_data){
+        
+            CRUD::addField([
+                'name' => 'plan_id',
+                'label' => 'Plan',
+                'placeholder' => 'Seleccionar un plan',
+                'minimum_input_length' => 0,
+                'attribute'   => "name",
+                'type' => 'select2_from_ajax',
+                'data_source' => url('admin/api/getPlans'),
+                'model' => 'App\Models\Plans',
+                'method' => 'POST',
+                'tab' => 'Datos de la Subscripción',
+                'include_all_form_fields' => true,
+                'wrapper' => [
+                    'class' => 'form-group col-6',
+                ],
+                'attributes' => ['class'    => 'select-plan','disabled'    => 'disabled'],
+                'fake'     => true,
+                'store_in' => 'subscription_data'
+            ]);
+    
+            CRUD::addField([
+                'name' => 'price',
+                'label' => 'Precio',
+                'type' => 'text',
+                'dependencies' => ['id_plan'],
+                'tab' => 'Datos de la Subscripción',
+                'wrapper' => ['class' => 'form-group col-6'],
+                'attributes' => ['readonly'    => 'readonly'],
+                'fake'     => true,
+                'store_in' => 'subscription_data'
+            ]);
+    
+            CRUD::addField([
+                'name' => 'start_date',
+                'label' => 'Fecha de Inicio',
+                'type' => 'text',
+                'tab' => 'Datos de la Subscripción',
+                'wrapper' => ['class' => 'form-group col-6'],
+                'attributes' => ['readonly' => 'readonly', 'class' => 'form-control col-12'],
+                'fake'     => true,
+                'store_in' => 'subscription_data'
+            ]);
+    
+            CRUD::addField([
+                'name' => 'end_date',
+                'label' => 'Fecha de Fin',
+                'type' => 'text',
+                'tab' => 'Datos de la Subscripción',
+                'wrapper' => [
+                    'class' => 'form-group col-6',
+                ],
+                'attributes' => ['readonly' => 'readonly','class' => 'form-control col-12'],
+                'fake'     => true,
+                'store_in' => 'subscription_data'
+            ]);
+        }else{
+            CRUD::addField([  
+                'name'  => 'no_susbscription',
+                'type'  => 'custom_html',
+                'value' => '<h4 class="text-center mt-3">No posee subscripción a un plan.</h4>',
+                'tab' => 'Datos de la Subscripción',
+
+            ]);
+        }
+
+
+
         CRUD::addField([
             'name' => 'rut_formatter',
             'type' => 'rut_formatter',

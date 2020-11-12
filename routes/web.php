@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/customer/address', 'Frontend\CustomerController@address')->name('customer.address');
     Route::get('/customer/order', 'Frontend\CustomerController@order')->name('customer.order');
     Route::get('/customer/subscription', 'Frontend\CustomerController@subscription')->name('customer.subscription');
+    Route::post('/customer/subscription/add', 'Frontend\CustomerController@addSubscription')->name('customer.subscription.add');
+    Route::post('/customer/subscription/plans', 'Frontend\CustomerController@getPlans')->name('customer.subscription.plans');
 
     Route::put('/address/{customer}', 'Frontend\AddressController@store')->name('address.update');
 });

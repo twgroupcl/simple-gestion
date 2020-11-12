@@ -163,7 +163,7 @@ use App\Models\Product;
                                                                     <tr>
                                                                         <th width="20%"
                                                                             style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
-                                                                            Vendedor asociado </th>
+                                                                            Asociado </th>
                                                                         <th width="20%"
                                                                             style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Plan </th>
@@ -182,7 +182,7 @@ use App\Models\Product;
                                                                     <tr>
                                                                         <td class="mobile-block">
                                                                             <span style="font-size: 14px; word-wrap: break-word; color: #ffffff; padding: 10px 0px;">
-                                                                                {{ $data['seller'] }}
+                                                                                {{ $data['name'] }}
                                                                             </span>
                                                                         </td>
                                                                         <td class="mobile-block">

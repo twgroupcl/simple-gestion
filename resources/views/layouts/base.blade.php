@@ -68,6 +68,7 @@
 
     <!-- Vendor scrits: js libraries and plugins-->
     <script src="{{ asset('vendor/jquery/dist/jquery.slim.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     {{-- <script src="{{ asset('js/lazyload.js') }}"></script>
     <script>

@@ -21,7 +21,5 @@ $(function(){
         $('.policy-text').addClass('d-none')
     });
 
-    $('body').on('change','.select-plan', function(){
-        let value = $(this).val()    
-    });
+    
 });

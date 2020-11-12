@@ -21,7 +21,11 @@ class NotificationSuscription extends Mailable
 
     public function __construct($data)
     {
-        $this->data['seller'] = $data['seller'];
+        if(isset($data['seller'])){
+            $this->data['name'] = $data['seller'];
+        }else{
+            $this->data['name'] = $data['customer'];
+        }
         $this->data['plan'] = $data['plan'];
         $this->data['price'] = $data['price'];
         $this->data['currency'] = $data['currency'];

@@ -67,9 +67,10 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" style="min-width: 14rem;">
                                 <h6 class="dropdown-header">Cuenta</h6>
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.profile') }}"><i class="czi-settings opacity-60 mr-2"></i>Perfil</a>
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.address') }}"><i class="czi-settings opacity-60 mr-2"></i>Direcciones</a>
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.order') }}"><i class="czi-settings opacity-60 mr-2"></i>Órdenes</a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.profile') }}"><i class="czi-user opacity-60 mr-2"></i>Perfil</a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.address') }}"><i class="czi-location opacity-60 mr-2"></i>Direcciones</a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.order') }}"><i class="czi-bag opacity-60 mr-2"></i>Órdenes</a>
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.subscription') }}"><i class="czi-edit opacity-60 mr-2"></i>Subscripción</a>
                                 {{-- <div class="dropdown-divider"></div>
                                 <h6 class="dropdown-header">Seller Dashboard</h6>
                                 <a class="dropdown-item d-flex align-items-center" href="dashboard-sales.html"><i class="czi-dollar opacity-60 mr-2"></i>Sales<span class="font-size-xs text-muted ml-auto">$1,375.00</span></a>
