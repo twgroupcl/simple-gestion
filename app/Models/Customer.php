@@ -47,6 +47,7 @@ class Customer extends Model
         'activities_data',
         'banks_data',
         'contacts_data',
+        'notifications_data',
         'status',
         'customer_segment_id',
         'user_id',
@@ -59,6 +60,7 @@ class Customer extends Model
         'activities_data' => 'array',
         'banks_data' => 'array',
         'contacts_data' => 'array',
+        'notifications_data' => 'array',
     ];
 
     /*
@@ -113,6 +115,11 @@ class Customer extends Model
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(CustomerNotification::class);
     }
 
     /*

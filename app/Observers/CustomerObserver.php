@@ -9,6 +9,7 @@ use App\Models\Cart;
 use App\Models\CompanyUser;
 use Illuminate\Support\Carbon;
 use App\Models\CustomerAddress;
+use App\Models\CustomerNotification;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Backpack\Settings\app\Models\Setting;
@@ -74,6 +75,11 @@ class CustomerObserver
         }
     }
 
+    public function updating(Customer $customer)
+    {
+        $this->handleNotifications($customer);
+    }
+
     public function syncAddresses(Customer $customer)
     {
         $addresses_data = is_array($customer->addresses_data)
@@ -118,5 +124,18 @@ class CustomerObserver
         } catch (Throwable $th) {
             logger($th->getMessage());
         }
+    }
+
+    public function handleNotifications(Customer $customer)
+    {
+        $notifications = collect($customer->notifications_data)->map(function ($value) use ($customer) {
+            return new CustomerNotification([
+                'event' => 'Nueva Notificación',
+                'json_value' => collect(['subject' => $value['subject'], 'message' => $value['message'],])->toJson(),
+            ]);
+        });
+
+        $customer->notifications()->saveMany($notifications);
+        $customer->notifications_data = null;
     }
 }
