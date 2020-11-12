@@ -134,7 +134,7 @@ class SellerObserver
 
         $subscription_data = is_array($seller->subscription_data)
         ? $seller->subscription_data
-        : null;
+        : json_decode($seller->subscription_data, true);
 
         // if (!empty($subscription_data['plan_subscription_id'])) {
         //     $newplansubscription = new PlanSubscriptionSeller($subscription_data);
