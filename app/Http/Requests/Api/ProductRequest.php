@@ -107,6 +107,16 @@ class ProductRequest extends FormRequest
             'product_class_code' => 'product_class_code',
             'super_attributes' => 'super_attributes',
             'categories' => 'categories',
+
+            'warehouse' => 'warehouse',
+            'warehouse_array' => 'warehouse',
+            'warehouse_validation.*.code' => 'warehouse.*.code',
+            'warehouse_validation.*.stock' => 'warehouse.*.stock',
+            'warehouse_validation.*.price' => 'warehouse.*.price',
+            'warehouse_validation.*.shipping_type' => 'warehouse.*.shipping_type',
+            'warehouse_validation.*.special_price' => 'warehouse.*.special_price',
+            'warehouse_validation.*.special_price_from' => 'warehouse.*.special_price_from',
+            'warehouse_validation.*.special_price_to' => 'warehouse.*.special_price_to',
         ];
     }
 
@@ -116,6 +126,7 @@ class ProductRequest extends FormRequest
             'product_class_code.required_without' => 'Si el campo product_class_id no esta presente, debe indicar el campo product_class_id',
             'product_class_id.required_without' => 'Si el campo product_class_code no esta presente, debe indicar el campo product_class_code',
             '*.required' => 'Es necesario completar el campo :attribute.',
+            '*.*.*.required' => 'Es necesario completar el campo :attribute.',
             '*.exists' => 'El id del atributo :attribute es invalido o no existe',
             '*.*.exists' => 'El id del atributo :attribute es invalido o no existe',
         ];
