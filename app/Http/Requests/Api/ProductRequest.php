@@ -38,12 +38,12 @@ class ProductRequest extends FormRequest
             'sku' => 'required',
             'url_key' => new SlugRule(),
             'categories' => 'required',
-            'product_class_id' => 'required|exists:product_classes,id',
             'type' => 'in:simple,configurable',
+            'product_class_id' => 'required_without:product_class_code|exists:product_classes,id',
+            'product_class_code' => 'required_without:product_class_id|exists:product_classes,code',
             'product_brand_id' => 'numeric|exists:product_brands,id',
+            'product_brand_code' => 'exists:product_brands,code',
             'short_description' => 'required|max:255',
-            //'product_type_id' => 'required|exists:product_types,id',
-            //'price' => 'required|numeric|min:1',
             //'is_service' => 'required|boolean',
 
             'categories' => 'array',
@@ -96,21 +96,24 @@ class ProductRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => 'nombre',
+            'name' => 'name',
             'sku' => 'SKU',
-            'url_key' => 'Url Key',
-            'currency_id' => 'moneda',
-            'company_id' => 'negocio',
-            'product_class_id' => 'clase de producto',
-            'super_attributes' => 'super atributos',
-            'categories' => 'categoria',
+            'url_key' => 'url_key',
+            'currency_id' => 'currency_id',
+            'company_id' => 'company_id',
+            'product_class_id' => 'product_class_id',
+            'product_class_code' => 'product_class_code',
+            'super_attributes' => 'super_attributes',
+            'categories' => 'categories',
         ];
     }
 
     public function messages()
     {
         return [
-            '*.required*' => 'Es necesario completar el campo :attribute.',
+            'product_class_code.required_without' => 'Si el campo product_class_id no esta presente, debe indicar el campo product_class_id',
+            'product_class_id.required_without' => 'Si el campo product_class_code no esta presente, debe indicar el campo product_class_code',
+            '*.required' => 'Es necesario completar el campo :attribute.',
             '*.exists' => 'El id del atributo :attribute es invalido o no existe',
             '*.*.exists' => 'El id del atributo :attribute es invalido o no existe',
         ];
