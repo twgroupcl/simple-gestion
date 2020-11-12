@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use \App\Models\Invoice;
+use \GuzzleHttp\{
+    Psr7\Response as GuzzleResponse,
+    Client
+};
 
 class DTEService
 {
@@ -32,11 +36,11 @@ class DTEService
         
 
         $headers = $this->headers;
-        self::exec($url, $data, $headers, $method);
+        return self::exec($url, $data, $headers, $method);
         
     }
 
-    public static function exec($url, $data = [], array $headers =[], $method = null)
+    public static function exec($url, $data = [], array $headers =[], $method = null) : GuzzleResponse
     {
         try {
             $client = new \GuzzleHttp\Client();
@@ -51,12 +55,13 @@ class DTEService
 
             $response = $client->request($method, $url, $request);
 
-            ddd($response);
+            return ($response);
 
         } catch (\GuzzleHttp\Exception\ServerException $e) {
-            ddd($e->getResponse());
+            ddd ($e->getResponse());
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            ddd($e->getResponse(), $e, $request);
+            return $e->getResponse();
+            //ddd($e->getResponse(), $e, $request);
         } catch (Exception $e) {
             ddd($e);
         }

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\InvoiceRequest;
+use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Models\{Tax};
+use App\Models\{Tax, Invoice};
 use App\Services\DTEService;
 /**
  * Class InvoiceCrudController
@@ -41,12 +42,21 @@ class InvoiceCrudController extends CrudController
     protected function setupListOperation()
     {
         //CRUD::setFromDb(); // columns
+        
+        // create temporary document
+        $this->crud->addButtonFromView(
+            'line', 'create_temporary_document', 
+            'dte.create_temporary_document', 'beginning'
+        );
+
         CRUD::addColumn([
             'name' => 'first_name',
         ]);
+
         CRUD::addColumn([
             'name' => 'uid'
         ]);
+
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -397,8 +407,20 @@ class InvoiceCrudController extends CrudController
     {
         $this->setupCreateOperation();
 
+    }
+
+    public function sendTemporaryDocument(Request $request, Invoice $invoice)
+    {
         $service = new DTEService();
 
-        $service->tempDocument($this->crud->getCurrentEntry());
+        $response = $service->tempDocument($invoice);
+
+        if ($response->getStatusCode() === 200) {
+            \Alert::add('success', 'Se ha enviado el documento con éxito')->flash();
+        } else {
+            \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
+        }
+
+        return redirect($this->crud->route);
     }
 }
