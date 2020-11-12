@@ -40,6 +40,24 @@ class DTEService
         
     }
 
+    public function generateDTE(Invoice $invoice)
+    {
+        $method = 'POST';
+
+        $url = $this->url . '/dte/documentos/generar?getXML=0&links=0&email=0&retry=10&gzip=0';
+
+        $data = [
+            'emisor' => $invoice->seller->uid,
+            'receptor' => $invoice->uid, // without DV
+            'dte' => 33, // required type
+            'codigo' => '???'
+        ];
+
+        $headers = $this->headers;
+
+        return self::exec($url, $data, $headers, $method);
+    }
+
     public static function exec($url, $data = [], array $headers =[], $method = null) : GuzzleResponse
     {
         try {
