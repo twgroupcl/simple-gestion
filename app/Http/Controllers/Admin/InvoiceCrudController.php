@@ -423,4 +423,9 @@ class InvoiceCrudController extends CrudController
 
         return redirect($this->crud->route);
     }
+
+    public function generateDTE(Request $request, Invoice $invoice)
+    {
+        ddd("Sent");
+    }
 }
