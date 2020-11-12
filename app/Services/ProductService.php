@@ -16,7 +16,7 @@ class ProductService
 
     const USE_INVENTORY_CONTROL_BY_DEFAULT = true;
     const MAX_ATTEMPTS_FOR_URL_SLUG = 20;
-    CONST DEFAULT_CURRENCY_ID = 63;
+    const DEFAULT_CURRENCY_ID = 63;
 
     public function validateUniqueSku($sku, $sellerId, $companyId)
     {
@@ -100,17 +100,17 @@ class ProductService
             $counter = 0;
 
             // If the Url key already exits, we added a suffix
-            while ( !$this->validateUniqueSlug($finalUrlKey, $companyId) && $counter < MAX_ATTEMPTS_FOR_URL_SLUG) {
+            while ( !$this->validateUniqueSlug($finalUrlKey, $companyId) && $counter < self::MAX_ATTEMPTS_FOR_URL_SLUG) {
                 $counter++;
                 $finalUrlKey = $baseUrlKey . '-' . $counter;
             }
 
-            if ($counter == MAX_ATTEMPTS_FOR_URL_SLUG) {
+            if ($counter == self::MAX_ATTEMPTS_FOR_URL_SLUG) {
                 return [ 'status' => false, 'message' =>  'Ha ocurrido un error con el url_key', 'status_response' => 'error'];
             }
             
             // Set default currency
-            $currencyId = DEFAULT_CURRENCY_ID;
+            $currencyId = self::DEFAULT_CURRENCY_ID;
 
             // Custom attributes
             if ($request['extra_attributes']) {
