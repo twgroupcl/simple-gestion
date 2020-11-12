@@ -74,7 +74,7 @@ class CreateInvoicesTable extends Migration
             $table->foreign('address_id')->references('id')->on('customer_addresses');
             $table->foreign('invoice_type')->references('id')->on('invoice_types');
             $table->foreign('branch_id')->references('id')->on('branches');
-            $table->unique(['branch_id', 'code']);
+            $table->unique(['branch_id', 'dte_code']);
         });
     }
 
