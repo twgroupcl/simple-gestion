@@ -62,6 +62,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceItem::class);
     }
 
+    public function address()
+    {
+        return $this->belongsTo(CustomerAddress::class);
+    }
+
     public function tax()
     {
         return $this->belongsTo(Tax::class);

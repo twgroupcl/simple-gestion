@@ -6,6 +6,7 @@ use App\Http\Requests\InvoiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Tax};
+use App\Services\DTEService;
 /**
  * Class InvoiceCrudController
  * @package App\Http\Controllers\Admin
@@ -39,8 +40,13 @@ class InvoiceCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
-
+        //CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'first_name',
+        ]);
+        CRUD::addColumn([
+            'name' => 'uid'
+        ]);
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -390,5 +396,9 @@ class InvoiceCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        $service = new DTEService();
+
+        $service->tempDocument($this->crud->getCurrentEntry());
     }
 }
