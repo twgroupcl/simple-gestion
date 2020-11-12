@@ -21,7 +21,7 @@ class CreateInvoicesTable extends Migration
             $table->date('expiry_date')->nullable();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('seller_id')->nullable();
-            $table->unsignedBigInteger('invoice_types')->nullable();
+            $table->unsignedBigInteger('invoice_type')->nullable();
             $table->string('uid');
             $table->string('first_name');
             $table->string('last_name')->nullable();
