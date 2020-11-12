@@ -72,4 +72,5 @@ Route::group([
      /** invoice **/
      Route::crud('invoice', 'InvoiceCrudController');
      Route::get('quotation/{quotation}/to-invoice', 'QuotationCrudController@toInvoice');
+     Route::get('invoice/{invoice}/send-temporary-document', 'InvoiceCrudController@sendTemporaryDocument');
 }); // this should be the absolute last line of this file
