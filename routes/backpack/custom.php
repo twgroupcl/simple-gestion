@@ -64,11 +64,14 @@ Route::group([
     Route::get('charts/most-purchased-products', 'Charts\MostPurchasedProductsChartController@response')->name('charts.most-purchased-products.index');
 
      // API routes
-     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
-     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
-     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
+    Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
+    Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
+    Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
+
+    Route::get('product/bulk-upload', 'ProductCrudController@bulkUploadView')->name('products.bulk-upload');
+    Route::get('product/bulk-upload-preview', 'ProductCrudController@bulkUploadPreview')->name('products.bulk-upload-preview');
 }); // this should be the absolute last line of this file
 
