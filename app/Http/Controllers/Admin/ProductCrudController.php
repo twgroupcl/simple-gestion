@@ -1127,4 +1127,14 @@ class ProductCrudController extends CrudController
 
 
     }
+
+    public function bulkUploadView(Request $request)
+    {
+        return view('admin.products.bulk-upload');
+    }
+
+    public function bulkUploadPreview(Request $request)
+    {
+        return view('admin.products.bulk-upload-preview');
+    }
 }
