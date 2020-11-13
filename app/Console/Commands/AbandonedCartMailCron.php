@@ -47,14 +47,19 @@ class AbandonedCartMailCron extends Command
                             ->where('key', 'cart_abandoned_mail_time')
                             ->first();
 
-        $carts = Cart::where('updated_at', '<', now()->subHours((int) $hour_interval->value))
-                    ->with(['cart_items.product', 'customer'])
+        $carts = Cart::whereHas('customer')
+                    ->where('updated_at', '<', now()->subHours((int) $hour_interval->value))
+                    ->with(['cart_items.product', 'customer.notifications'])
                     ->get();
+
+        $filteredCarts = $carts->filter(function ($cart) {
+            return $cart->customer->notifications->where('event_custom_id', $cart->id)->count() < 2;
+        });
 
         try {
             $customer_notifications = collect([]);
 
-            foreach ($carts as $cart) {
+            foreach ($filteredCarts as $cart) {
                 Mail::to($cart->email)->send(new CartAbandoned($cart));
 
                 $json_value = $cart->cart_items->map(function ($item, $key) {
@@ -63,6 +68,7 @@ class AbandonedCartMailCron extends Command
 
                 $customer_notifications->push([
                     'customer_id' => $cart->customer->id,
+                    'event_custom_id' => $cart->id,
                     'event' => 'Carrito Muerto',
                     'json_value' => $json_value,
                     'created_at' => now(),
