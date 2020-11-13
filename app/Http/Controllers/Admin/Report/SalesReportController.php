@@ -15,14 +15,15 @@ use Carbon\Carbon;
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class SalesReportController extends CrudController
+class SalesReportController extends BaseController
 {
+
+
 
     public function __construct()
     {
         $this->middleware(backpack_middleware());
     }
-
 
 
     public function index()

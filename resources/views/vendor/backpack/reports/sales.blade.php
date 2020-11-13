@@ -66,16 +66,17 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
         ]
 
     ]),
-    // Widget::add([
-    //     'name' => 'export_buttons',
-    //     'type' => 'export_buttons',
 
-    // ]),
     Widget::add([
         'name' => 'sales-script',
         'type' => 'sales-script',
 
     ]),
+    // Widget::add([
+    //     'name' => 'export_buttons',
+    //     'type' => 'export_buttons',
+
+    // ]),
 ]);
 
 @endphp
