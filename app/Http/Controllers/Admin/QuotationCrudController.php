@@ -569,6 +569,7 @@ class QuotationCrudController extends CrudController
             
             return redirect('admin/invoice/' . $invoice->id . '/edit');
         } catch (Exception $e) {
+            // @todo Alert and redirect to crud->route
             \DB::rollback();
         }
 

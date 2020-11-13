@@ -6,7 +6,7 @@ use App\Http\Requests\InvoiceRequest;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Models\{Tax, Invoice};
+use App\Models\{Tax, Invoice, InvoiceType, CustomerAddress};
 use App\Services\DTEService;
 /**
  * Class InvoiceCrudController
@@ -57,6 +57,10 @@ class InvoiceCrudController extends CrudController
             'name' => 'uid'
         ]);
 
+        CRUD::addColumn([
+            'name' => 'invoice_type_id',
+             
+        ]);
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -107,10 +111,28 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
+        CRUD::addField([
+            'label' => 'Dirección',
+            'type' => 'select2_from_ajax',
+            'name' => 'address_id',
+            'entity' => 'address',
+            'attribute' => 'addressDescription',
+            'data_source' => url('admin/quotation/addresses'),
+            'placeholder' => 'Selecciona una dirección',
+            'minimum_input_length' => 0,
+            'model' => CustomerAddress::class,
+            'dependencies' => ['customer_id'],
+            'method' => 'POST',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'include_all_form_fields' => true,
+            'tab' => 'General',
+        ]);
         
         CRUD::addField([
             'label' => 'Fecha cotización',
-            'name' => 'quotation_date',
+            'name' => 'invoice_date',
             'type' => 'date',
             'default' => date("Y-m-d"),
             'wrapper' => [
@@ -128,7 +150,7 @@ class InvoiceCrudController extends CrudController
             ],
             'tab' => 'General',
         ]);
-
+        
         CRUD::addField([
             'label' => 'Vendedor',
             'name' => 'seller_id',
@@ -145,16 +167,30 @@ class InvoiceCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Número referencia',
-            'name' => 'code',
+            'name' => 'dte_code',
             'type' => 'text',
             'prefix' => '#',
+            'attributes' => [
+                'disabled' => 'disabled',
+                'readonly' => 'readonly',
+            ],
             'wrapper' => [
                 'class' => 'form-group col-md-3',
             ],
             'tab' => 'General',
         ]);
 
-
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => InvoiceType::all()->pluck('name','id'),
+            'attribute' => 'name',
+            'name' => 'invoice_type_id',
+            'label' => 'Tipo de documento',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ]
+        ]);
 
         CRUD::addField([
             'label' => 'Productos o servicios',
