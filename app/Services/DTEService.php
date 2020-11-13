@@ -57,6 +57,23 @@ class DTEService
         return self::exec($url, $data, $headers, $method);
     }
 
+    public function deleteTemporalDocument(Invoice $invoice)
+    {
+        $method = 'GET';
+        $customerUid = self::rutWithoutDV($invoice->uid);
+        $sellerUid = self::rutWithoutDV($invoice->seller->uid);
+
+        $url = $this->url . '/dte/dte_tmps/eliminar/' .
+            $customerUid . '/' .
+            $invoice->invoice_type->code . '/' . 
+            $invoice->dte_code . '/' .
+            $sellerUid;
+
+        $headers = $this->headers;
+
+        return self::exec($url, [], $headers, $method);
+    }
+
     public function getPDF(Invoice $invoice)
     {
         $method = 'GET';

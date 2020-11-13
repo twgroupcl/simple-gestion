@@ -26,6 +26,10 @@ class Invoice extends Model
     |--------------------------------------------------------------------------
     */
 
+    const STATUS_DRAFT = 'draft';
+    const STATUS_TEMPORAL = 'temporal';
+    const STATUS_SEND = 'send';
+
     protected $table = 'invoices';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
@@ -55,6 +59,12 @@ class Invoice extends Model
         return static::withoutEvents(function() use ($options) {
             return $this->update($options);
         });
+    }
+
+    public function toDraft()
+    {
+        $this->invoice_status = self::STATUS_DRAFT;
+        $this->dte_code = null;
     }
 
     /*

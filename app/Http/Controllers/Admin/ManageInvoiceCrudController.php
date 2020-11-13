@@ -28,11 +28,29 @@ class ManageInvoiceCrudController extends CrudController
         if ($response->getStatusCode() === 200) {
             $content = json_decode($response->getBody()->getContents(), true);
             $code = array_key_exists('codigo', $content) ? $content['codigo'] : null;
+            $invoice->invoice_status = Invoice::STATUS_TEMPORAL;
             $invoice->dte_code = $code;
             $invoice->updateWithoutEvents();
             \Alert::add('success', 'Se ha enviado el documento con éxito')->flash();
         } else {
             \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
+        }
+
+        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+    }
+
+    public function deleteTemporaryDocument(Request $request, Invoice $invoice)
+    {
+        $service = new DTEService();
+        $response = $service->deleteTemporalDocument($invoice);
+
+        if ($response->getStatusCode() === 200) {
+            //@todo update status
+            $invoice->toDraft();
+            $invoice->updateWithoutEvents();
+            \Alert::add('success', 'Se ha eliminado el documento temporal con éxito')->flash();
+        } else {
+            \Alert::add('warning', 'Hubo un problema al eliminar el documento')->flash();
         }
 
         return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
