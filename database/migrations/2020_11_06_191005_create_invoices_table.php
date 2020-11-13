@@ -58,7 +58,9 @@ class CreateInvoicesTable extends Migration
             $table->unsignedBigInteger('seller_business_activity_id')->nullable();
             $table->unsignedBigInteger('customer_business_activity_id')->nullable();
             $table->unsignedBigInteger('address_id')->nullable();
-            $table->unsignedBigInteger('branch_id');
+            
+            //@todo branch
+            //$table->unsignedBigInteger('branch_id');
             $table->timestamps();
 
             $table->softDeletes();
@@ -73,8 +75,9 @@ class CreateInvoicesTable extends Migration
             $table->foreign('customer_business_activity_id')->references('id')->on('business_activities');
             $table->foreign('address_id')->references('id')->on('customer_addresses');
             $table->foreign('invoice_type_id')->references('id')->on('invoice_types');
-            $table->foreign('branch_id')->references('id')->on('branches');
-            $table->unique(['branch_id', 'dte_code']);
+            
+            //$table->foreign('branch_id')->references('id')->on('branches');
+            //$table->unique(['branch_id', 'dte_code']);
         });
     }
 

@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\CompanyBranchScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\{
     Customer, 
+    InvoiceType,
     CustomerAddress, 
     Seller, 
     Branch, 
@@ -16,7 +19,7 @@ use App\Models\{
 class Invoice extends Model
 {
     use CrudTrait;
-
+    use SoftDeletes;
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -36,6 +39,20 @@ class Invoice extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new CompanyBranchScope);
+    }
+
+    public function updateWithoutEvents(array $options=[])
+    {
+        return static::withoutEvents(function() use ($options) {
+            return $this->update($options);
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -60,6 +77,11 @@ class Invoice extends Model
     public function invoice_items()
     {
         return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function invoice_type()
+    {
+        return $this->belongsTo(InvoiceType::class);
     }
 
     public function address()
