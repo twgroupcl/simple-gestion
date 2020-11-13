@@ -34,6 +34,9 @@ class Invoice extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $casts = [
+        'items_data' => 'array',
+    ];
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

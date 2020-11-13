@@ -34,7 +34,6 @@ class DTEService
 
         $data = $this->processInvoice(33, $invoice);
         
-
         $headers = $this->headers;
         return self::exec($url, $data, $headers, $method);
         
@@ -58,6 +57,42 @@ class DTEService
         return self::exec($url, $data, $headers, $method);
     }
 
+    public function getPDF(Invoice $invoice)
+    {
+        $method = 'GET';
+        $customerUid = self::rutWithoutDV($invoice->uid); 
+        $sellerUid = self::rutWithoutDV($invoice->seller->uid);
+        $url = $this->url . '/dte/dte_tmps/pdf/' . 
+            $customerUid . '/' .
+            $invoice->invoice_type->code . '/' . 
+            $invoice->dte_code . '/' .
+            $sellerUid . '?cotizacion=0&papelContinuo=0&compress=0';
+
+        $headers = $this->headers;
+
+        return self::exec($url, [], $headers, $method);
+    }
+
+    public static function sanitizeRUT($uid)
+    {
+        return str_replace('.', '', $uid);
+    }
+
+    public static function rutWithoutDV($uid)
+    {
+        $uid = self::sanitizeRUT($uid);
+
+        $pos = strpos($uid, '-');
+
+        if(!$pos) {
+            return $uid;
+        }
+    
+        $uid = substr($uid, 0, $pos);
+
+        return $uid;
+    }
+
     public static function exec($url, $data = [], array $headers =[], $method = null) : GuzzleResponse
     {
         try {
@@ -76,7 +111,7 @@ class DTEService
             return ($response);
 
         } catch (\GuzzleHttp\Exception\ServerException $e) {
-            ddd ($e->getResponse());
+            ddd ($e->getResponse(), $e->getResponse()->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             return $e->getResponse();
             //ddd($e->getResponse(), $e, $request);
@@ -108,10 +143,10 @@ class DTEService
                     'TipoDTE' => $typeDTE,
                 ],
                 'Emisor' => [
-                    'RUTEmisor' => $seller->uid,
+                    'RUTEmisor' => self::sanitizeRUT($seller->uid),
                 ],
                 'Receptor' => [
-                    'RUTRecep' => $invoice->uid,
+                    'RUTRecep' => self::sanitizeRUT($invoice->uid),
                     'RznSocRecep' => $invoice->first_name . ' ' . $invoice->last_name,
                     'GiroRecep' => 'Informática', // this is required in 33
                     'DirRecep' => $customerAddress->street . ' ' . $customerAddress->number . 
