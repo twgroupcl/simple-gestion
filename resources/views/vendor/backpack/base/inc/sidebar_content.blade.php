@@ -134,3 +134,5 @@
 	</ul>
 </li>
 @endcanany
+ {{-- POS --}}
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('pos') }}"><i class="la la-home nav-icon"></i>POS</a></li>
