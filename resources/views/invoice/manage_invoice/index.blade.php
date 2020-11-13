@@ -16,14 +16,14 @@
     ]);
 @endphp
 
-@if (Gate::inspect('doShowTempDocument', $invoice))
+@can('canCreateTempDocument', $invoice)
 @php
     Widget::add([
         'type' => 'view',
         'view' => 'invoice.manage_invoice.create_temporary_document'
     ]);
 @endphp
-@endif
+@endcan
 
 @php
     Widget::add([
@@ -32,13 +32,14 @@
     ]);
 @endphp
 
+@can('doShowTempDocument', $invoice)
 @php
     Widget::add([
         'type' => 'view',
         'view' => 'invoice.manage_invoice.get_pdf',
     ]);
 @endphp
-
+@endcan
 
 {{-- status invoice --}}
 @php
