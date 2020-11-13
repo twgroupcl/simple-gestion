@@ -48,15 +48,17 @@ class InvoiceObserver
      */
     public function updating(Invoice $invoice)
     {
-        $service = new DTEservice();
-        $response = $service->deleteTemporalDocument($invoice);
-        if ($response->getStatusCode() !== 200) {
-            \Alert::add('danger', 'No es pudo cambiar el documento')->flash();
-            return false;
+        if ($invoice->invoice_status == Invoice::STATUS_TEMPORAL) {
+            $service = new DTEservice();
+            $response = $service->deleteTemporalDocument($invoice);
+            if ($response->getStatusCode() !== 200) {
+                \Alert::add('danger', 'No es pudo cambiar el documento')->flash();
+                return false;
+            }
+            
+            \Alert::add('sucess', 'El documento temporal se ha eliminado, deberá enviarlo nuevamente.')->flash();
+            $invoice->toDraft();
         }
-        
-        \Alert::add('sucess', 'El documento temporal se ha eliminado, deberá enviarlo nuevamente.')->flash();
-        $invoice->toDraft();
     }
 
     /**
