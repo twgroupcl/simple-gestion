@@ -16,6 +16,48 @@
           <th>
             Campo 2
           </th>
+          <th>
+            Campo 1
+          </th>
+          <th>
+            Campo 2
+          </th>
+          <th>
+            Campo 1
+          </th>
+          <th>
+            Campo 2
+          </th>
+          <th>
+            Campo 1
+          </th>
+          <th>
+            Campo 2
+          </th>
+          <th>
+            Campo 1
+          </th>
+          <th>
+            Campo 2
+          </th>
+          <th>
+            Campo 1
+          </th>
+          <th>
+            Campo 3
+          </th>
+          <th>
+            Campo 1
+          </th>
+          <th>
+            Campo 2
+          </th>
+          <th>
+            Campo 1
+          </th>
+          <th>
+            Campo 2
+          </th>
         </tr>
       </thead>
 
@@ -33,7 +75,6 @@
           </td>
 		</tr>
 	  </tbody>
-
     </table>
 
     <div class="btn-group" role="group">
@@ -42,4 +83,6 @@
             <span data-value="save_and_back">Cargar productos</span>
         </button>
     </div>
+
+    <a href="{{ url()->previous() }}" class="btn btn-default"><span class="la la-ban"></span> &nbsp;Cancelar</a>
 @endsection

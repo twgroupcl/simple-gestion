@@ -7,7 +7,8 @@
         </div>
     </div>
 
-    <form method="POST" action="{{ route('products.bulk-upload-preview') }}">
+    <form method="POST" action="{{ route('products.bulk-upload-preview') }}" enctype="multipart/form-data">
+        @csrf
         <div class="card">
             <div class="card-body row">
                 <div class="form-group col-md-12 required">

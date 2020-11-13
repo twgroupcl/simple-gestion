@@ -72,6 +72,6 @@ Route::group([
     Route::crud('faqtopic', 'FaqTopicCrudController');
 
     Route::get('product/bulk-upload', 'ProductCrudController@bulkUploadView')->name('products.bulk-upload');
-    Route::get('product/bulk-upload-preview', 'ProductCrudController@bulkUploadPreview')->name('products.bulk-upload-preview');
+    Route::post('product/bulk-upload-preview', 'ProductCrudController@bulkUploadPreview')->name('products.bulk-upload-preview');
 }); // this should be the absolute last line of this file
 

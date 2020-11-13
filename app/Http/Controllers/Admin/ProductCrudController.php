@@ -7,11 +7,14 @@ use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\ProductRequest;
+use App\Imports\ProductsCollectionImport;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Requests\ProductVariantUpdateRequest;
+use App\Services\BulkUpload\BulkUploadBooksService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -1135,6 +1138,10 @@ class ProductCrudController extends CrudController
 
     public function bulkUploadPreview(Request $request)
     {
+        $file = $request->file('product-csv');
+        $data = Excel::toArray(new ProductsCollectionImport(), $file);
+        $bulkUploadService = new BulkUploadBooksService();
+        dd($bulkUploadService->convertExcelToArray($file));
         return view('admin.products.bulk-upload-preview');
     }
 }
