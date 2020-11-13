@@ -14,6 +14,7 @@ use App\Http\Requests\Frontend\CustomerStoreRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
 use App\Models\Commune;
 use App\User;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -26,6 +27,10 @@ class CustomerController extends Controller
     {
         $request['customer_segment_id'] = Setting::get('default_customer_segment');
         $request['company_id'] = Setting::get('default_company');
+        $request['uid'] = strtoupper(
+            str_replace('.', '', $request['uid'])
+        );
+
 
         Customer::create($request->all());
 
@@ -45,7 +50,11 @@ class CustomerController extends Controller
 
         if (Auth::attempt($credentials)) {
             if(!Auth::user()->hasRole('Cliente Marketplace')) {
-                Auth::logout();
+                if(Auth::user()->hasRole(['Super admin', 'Administrador negocio', 'Vendedor marketplace', 'Supervisor Marketplace'])) {
+                    return redirect('admin');
+                } else {
+                    Auth::logout();
+                }
             }
 
             return redirect('home');
@@ -70,6 +79,11 @@ class CustomerController extends Controller
     {
         $request->validate([
             'email' => 'required|email|exists:users',
+        ],
+        [
+            'required' => 'Este campo es obligatorio',
+            'email' => 'El campo :attribute debe ser un email',
+            'exists' => 'El campo :attribute es inválido',
         ]);
 
         $token = Str::random(60);
@@ -78,13 +92,74 @@ class CustomerController extends Controller
             ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
         );
 
-        // Mail::send('auth.password.verify', ['token' => $token], function ($message) use ($request) {
-        //     $message->from($request->email);
-        //     $message->to('codingdriver15@gmail.com');
-        //     $message->subject('Reset Password Notification');
-        // });
+        $data = [
+            'logo' => asset('img/logo-pyme.png'),
+            'title' => 'Cambio de contraseña',
+            'text' => 'Recibes este email porque se solicitó un cambio de contraseña para tu cuenta.',
+            'rejectedText' => 'Si no realizaste esta petición, puedes ignorar este correo y nada habrá cambiado.',
+            'buttonText' => 'Ir a cambiar contraseña',
+            'buttonLink' => route('password.reset', ['token' => $token]),
+            'token' => $token,
+        ];
+
+        Mail::send('vendor.maileclipse.templates.resetPassword', $data, function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('Notificación de cambio de contraseña');
+        });
 
         return view('customer.recovery')->with('success', '¡Hemos enviado un email con el enlace de restablecimiento de contraseña!');
+    }
+
+    public function reset(Request $request, $token)
+    {
+        return view('auth.passwords.reset', compact('token'));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed',
+        ],
+        [
+            'required' => 'Este campo es obligatorio',
+            'email' => 'El campo :attribute debe ser un email',
+            'confirmed' => 'Las contraseñas no coinciden',
+        ]);
+
+        $passwordReset = DB::table('password_resets')
+            ->where('token', $request->token)
+            ->where('email', $request->email);
+
+        $isAllowed = $passwordReset
+            ->count() !== 0;
+
+        if (! $isAllowed) {
+            return redirect()->back()->withErrors(['email' => 'Email no válido']);
+        }
+//@todo: validar esto en los casos que falle o que no sea cliente
+        Customer::firstWhere('email', $request->email)->update([
+            'password' => $request->password,
+        ]);
+
+        $passwordReset->delete();
+
+        $data = [
+            'logo' => asset('img/logo-pyme.png'),
+            'title' => 'Tu contraseña ha sido exitosamente actualizada',
+            'text' => 'Si no fuiste tú, te aconsejamos que restablezcas tu contraseña para garantizar la seguridad de tu cuenta.',
+            'rejectedText' => '',
+            'buttonText' => 'Vamos a comprar',
+            'buttonLink' => route('index'),
+        ];
+
+        Mail::send('vendor.maileclipse.templates.passwordChanged', $data, function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('Se ha cambiado la contraseña');
+        });
+
+        return redirect('customer/sign')->with('success', '¡Su contraseña ha sido actualizada exitosamente!');
     }
 
     public function profile()

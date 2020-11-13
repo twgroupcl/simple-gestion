@@ -38,7 +38,11 @@
             <div class="container"><a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;"><img width="100" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a><a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
                 <!-- Search-->
                 @if($header)
-                @livewire('search-navbar')
+                @php
+                    $category = isset($data['category']) ? $data['category'] : 0;
+                    $product = isset($data['product']) ? $data['product'] : '';
+                @endphp
+                @livewire('search-navbar', [ 'query' => $product ?? '' , 'selected' => $category ?? 0])
                 <!-- Toolbar-->
                 <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
@@ -55,10 +59,10 @@
                     <!-- Toolbar-->
                     <div class="navbar-toolbar d-flex align-items-center">
                         <div class="navbar-tool dropdown ml-2">
-                            <a class="" href="dashboard-sales.html">
+                            <a class="" href="{{ route('customer.profile') }}" >
                                 <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-user"></i></div>
                             </a>
-                            <a class="" href="dashboard-sales.html">
+                            <a class="" href="#">
                                 <div class="navbar-tool-text ml-n3"><small>Hola, {{ explode(' ', trim(Auth::user()->name))[0] }}</small>Mi cuenta</div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" style="min-width: 14rem;">
@@ -94,15 +98,21 @@
             <div class="container">
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <!-- Search-->
-                    <div class="input-group-overlay d-lg-none my-3">
-                        <div class="input-group-prepend-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
-                        <input class="form-control prepended-form-control" type="text" placeholder="Search for products">
-                    </div>
+                    @livewire('search-navbar-movile')
+                    <!--
+
+                        <div class="input-group-overlay d-lg-none my-3">
+                            <div class="input-group-prepend-overlay"><span class="input-group-text"><i class="czi-search"></i></span></div>
+                            <input class="form-control prepended-form-control" type="text" placeholder="Search for products">
+                        </div>
+                    -->
                     <!-- Categories Menu-->
                     @livewire('categories-menu')
                     <!-- Primary menu-->
                     <ul class="navbar-nav">
-                        <li class="nav-item active"><a class="nav-link" href="#">Inicio</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{{ route('seller.sign') }}">Quiero vender</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{{ route('customer.sign') }}">Quiero comprar</a></li>
                         {{-- <li class="nav-item dropdown active"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Inicio</a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown position-static mb-0"><a class="dropdown-item py-2 border-bottom" href="home-fashion-store-v1.html"><span class="d-block text-heading">Fashion

@@ -2,29 +2,29 @@
 use App\Models\Commune;
 use App\Models\Product;
 
-$addressData = json_decode($order->json_value);
+$addressData = $order->json_value;
 
 
 $addressShipping = null;
 if(isset($addressData->addressInvoice)){
-    $addressShipping = json_decode($addressData->addressShipping);
+$addressShipping = json_decode($addressData->addressShipping);
 }
 
 
 $addressInvoice = null;
 if(isset($addressData->addressInvoice)){
-    $addressInvoice = json_decode($addressData->addressInvoice);
+$addressInvoice = json_decode($addressData->addressInvoice);
 }
 
 $communeShipping = null;
 $communeInvoice = null;
 
 if($addressShipping){
-    $communeShipping = Commune::where('id', $addressShipping->address_commune_id)->first();
+$communeShipping = Commune::where('id', $addressShipping->address_commune_id)->first();
 }
 
 if($addressInvoice){
-    $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->first();
+$communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->first();
 }
 
 
@@ -129,29 +129,33 @@ if($addressInvoice){
 <table width="100%">
     <tr>
         <td width="50%">
-            @if($addressShipping)
-            <div class="direccion-facturacion-titulo">
-                <p><strong>Dirección de envío</strong></p>
-            </div>
-            <p>
-            <p class="p-estrecho">{{ $order->first_name . ', ' . $order->last_name }}</p>
-            <p class="p-estrecho">{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}</p>
-            <p class="p-estrecho">{{ $communeShipping->name }}</p>
-            <p class="p-estrecho">Teléfono: {{ $order->cellphone }}</p>
-            </p>
+            @if ($addressShipping)
+                <div class="direccion-facturacion-titulo">
+                    <p><strong>Dirección de envío</strong></p>
+                </div>
+                <p>
+                <p class="p-estrecho">{{ $order->first_name . ', ' . $order->last_name }}</p>
+                <p class="p-estrecho">{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}
+                </p>
+                <p class="p-estrecho">{{ $communeShipping->name }}</p>
+                <p class="p-estrecho">Teléfono: {{ $order->cellphone }}</p>
+                </p>
             @endif
         </td>
         <td width="50%">
-            @if($addressInvoice)
-            <div class="direccion-facturacion-titulo">
-                <p><strong>Direccion de facturación </strong></p>
-            </div>
-            <p>
-            <p class="p-estrecho">{{ $addressInvoice->first_name . ', ' . $addressInvoice->last_name }}</p>
-            <p class="p-estrecho">{{ $addressInvoice->address_street . ', ' . $addressInvoice->address_number }}</p>
-            <p class="p-estrecho">@if($communeInvoice) {{ $communeInvoice->name }}@endif</p>
-            <p class="p-estrecho">Teléfono: {{ $addressInvoice->cellphone }}</p>
-            </p>
+            @if ($addressInvoice)
+                <div class="direccion-facturacion-titulo">
+                    <p><strong>Direccion de facturación </strong></p>
+                </div>
+                <p>
+                <p class="p-estrecho">{{ $addressInvoice->first_name . ', ' . $addressInvoice->last_name }}</p>
+                <p class="p-estrecho">{{ $addressInvoice->address_street . ', ' . $addressInvoice->address_number }}</p>
+                <p class="p-estrecho">
+                    @if ($communeInvoice) {{ $communeInvoice->name }}</beautify
+                        end=" @endif">
+                </p>
+                <p class="p-estrecho">Teléfono: {{ $addressInvoice->cellphone }}</p>
+                </p>
             @endif
         </td>
     </tr>
@@ -167,42 +171,57 @@ if($addressInvoice){
     @foreach ($order->order_items as $item)
         @php
         $product = Product::where('id',$item->product_id)->first();
-        $subtotal += ($product->price * $item->qty);
-        $subtotalshipping += ($item->shipping_total  * $item->qty) ;
-        $total += ($product->price * $item->qty) + ($item->shipping_total  * $item->qty);
+        // $subtotal += ($item->price * $item->qty);
+        // $subtotalshipping += ($item->shipping_total * $item->qty) ;
+        // $total += ($item->price * $item->qty) + ($item->shipping_total * $item->qty);
         @endphp
         <tr class="product-item">
             <td width="30%" class="product-item">
+                <p> {{$product->seller->visible_name}}</p>
                 <p><strong>{{ $product->name }}</strong></p>
                 <img class="width-5" src="{{ public_path() . '/' . $product->getFirstImagePath() }}" width="15%">
             </td>
             <td width="40%" class="product-item">
-                <p><strong>Precio : </strong>{{ currencyFormat($product->price ? $product->price : 0, 'CLP', true) }}
+                <p><strong>Precio : </strong>{{ currencyFormat($item->price ? $item->price : 0, 'CLP', true) }}
                 </p>
                 <p><strong>Cantidad : </strong>{{ $item->qty }}</p>
-                <p><strong>Costo de envío :</strong>
-                    {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}</p>
+                @if($product->is_service == 0)
+                <p><strong>Envío :</strong>
+                    {{ $item->shipping->title ?? '' }}
+                    {{-- @if ($item->shipping_total == 0)
+                        {{ $item->shipping->title ?? '' }}
+                    @else
+                        {{ currencyFormat($item->shipping_total ? $item->shipping_total : 0, 'CLP', true) }}
+                    @endif --}}
+                </p>
+                @endif
             </td>
             <td width="30%" align="right" class="product-item">
-                <p> {{ currencyFormat((($product->price * $item->qty) + ($item->shipping_total  * $item->qty ))? (($product->price * $item->qty) + ($item->shipping_total   * $item->qty) ) : 0, 'CLP', true) }}
+                <p> {{ currencyFormat($item->price * $item->qty + $item->shipping_total * $item->qty ? $item->price * $item->qty + $item->shipping_total * $item->qty : 0, 'CLP', true) }}
                 </p>
             </td>
         </tr>
     @endforeach
     <tr>
         <td colspan="3" width="100%" class="product-item" align="right">
-            <p><strong>Subtotal</strong> {{ currencyFormat($subtotal ? $subtotal : 0, 'CLP', true) }}</p>
+            <p><strong>Subtotal</strong> {{ currencyFormat($order->sub_total ? $order->sub_total : 0, 'CLP', true) }}</p>
         </td>
     </tr>
+    @if ($order->shipping_total != 0)
+        <tr>
+            <td colspan="3" width="100%" align="right">
+
+                <p><strong>Envío</strong>
+                    {{ currencyFormat($order->shipping_total ? $order->shipping_total : 0, 'CLP', true) }}
+                </p>
+
+
+            </td>
+        </tr>
+    @endif
     <tr>
         <td colspan="3" width="100%" align="right">
-            <p><strong>Costos de envio</strong>
-                {{ currencyFormat($subtotalshipping ? $subtotalshipping : 0, 'CLP', true) }}</p>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3" width="100%" align="right">
-            <p><strong>Total</strong> {{ currencyFormat($total ? $total : 0, 'CLP', true) }}</p>
+            <p><strong>Total</strong> {{ currencyFormat($order->total ? $order->total : 0, 'CLP', true) }}</p>
         </td>
     </tr>
 </table>
@@ -214,19 +233,20 @@ if($addressInvoice){
 <table width="100%" class="border-table">
     <tr>
         <td width="100%">
-            <p><strong> Método de pago seleccionado:</strong> {{ $order->order_payments->first()->method_title }}</p>
+            <p><strong> Método de pago seleccionado: </strong> {{ $order->order_payments->first()->method_title }}</p>
         </td>
     </tr>
     <tr>
         <td width="100%">
             <p><strong>Fecha de
-                    pago:</strong>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order->order_payments->first()->created_at)->format('d/m/Y H:i:s') }}
+                    pago:
+                </strong>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $order->order_payments->first()->created_at)->format('d/m/Y H:i:s') }}
             </p>
         </td>
     </tr>
     <tr>
         <td width="100%">
-            <p><strong>Importe Total:</strong> {{ currencyFormat($order->total ? $order->total : 0, 'CLP', true) }}</p>
+            <p><strong>Importe Total: </strong> {{ currencyFormat($order->total ? $order->total : 0, 'CLP', true) }}</p>
         </td>
     </tr>
 </table>

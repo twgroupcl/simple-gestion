@@ -32,6 +32,9 @@ class SellerController extends Controller
         $request['addresses_data'] = $sellerAddresses;
         $request['company_id'] = Setting::get('default_company');
 
+        $request['uid'] = strtoupper(
+            str_replace('.', '', $request['uid'])
+        );
         $request['password'] = $request['uid'];
 
         Seller::create($request->all());

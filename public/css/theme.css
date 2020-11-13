@@ -17327,3 +17327,14 @@ html:not([dir=rtl]) .cz-range-slider-ui.noUi-horizontal .noUi-handle {
 .select-shipping{
     width: 250px;
 }
+
+.paginator-right {
+  justify-content: end !important;
+}
+
+.loader {
+  position: fixed;
+  top: 88%;
+  left: 46%;
+  z-index: 1000;
+}

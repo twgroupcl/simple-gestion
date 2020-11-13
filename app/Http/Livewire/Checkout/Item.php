@@ -101,8 +101,5 @@ class Item extends Component
         }
     }
 
-    public function loadShipping()
-    {
-        dd('aqqui');
-    }
+
 }

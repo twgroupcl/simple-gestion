@@ -6,7 +6,8 @@
 <!-- Hero One item + Dots + Loop (defaults)-->
 <div class="cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-        <a href=""><img src="{{ asset('img/seller-register.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
+        <img src="{{ asset('img/home/hero-slider/banner-cyber.png') }}" alt="Contigo Pyme Banner Cyber">
+        <a href="{{ route('seller.sign') }}"><img src="{{ asset('img/seller-register.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
         <img src="{{ asset('img/home/hero-slider/banner-02.png') }}" alt="Contigo Pyme Banner 2">
         <img src="{{ asset('img/home/hero-slider/banner-03.png') }}" alt="Contigo Pyme Banner 3">
     </div>
@@ -19,16 +20,10 @@
         <div class="pt-3"><a class="btn btn-outline-accent btn-sm" href="{{ url('shop-grid') }}">Más productos<i class="czi-arrow-right ml-1 mr-n1"></i></a></div>
     </div>
     <!-- Grid-->
-    <div class="row pt-2 mx-n2">
+    <div class="pt-2 mx-n2">
         <!-- Product-->
-        @foreach ($products as $product)
-            @if (! $product->parent_id)
-            <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
-                @livewire('products.product', ['product' => $product], key($product->id))
-            </div>
-            @endif
-        @endforeach
-    </div>          
+        @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => false, 'paginateBy' => 8, 'showFrom' => '', 'data' => ''])
+    </div>
 </section>
 
 <section class="container mt-5 mb-grid-gutter">
@@ -81,32 +76,25 @@
 <!-- Product widgets-->
 <section class="container pb-4 pb-md-5">
     <div class="row">
-        <!-- Bestsellers-->
+        @foreach($categories as $category)
         <div class="col-lg-4 col-md-6 mb-2 py-3">
             <div class="widget">
-                <h3 class="widget-title">Los más vendidos</h3>                
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
-                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <h3 class="widget-title">{{$category->name}}</h3>
+                @livewire('products.products-general',['idCategory'=>$category->id])
+                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('search-products/'.$category->id)}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
-        <!-- New arrivals-->
-        <div class="col-lg-4 col-md-6 mb-2 py-3">
-            <div class="widget">
-                <h3 class="widget-title">Nuevos productos</h3>
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])
-                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
-            </div>
-        </div>
-        <!-- Top rated-->
-        <div class="col-lg-4 col-md-6 mb-2 py-3">
-            <div class="widget">
-                <h3 class="widget-title">Los más valorados</h3>
-                @livewire('products.products-general',['emitTo' => 'products.short-list'])                
-                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('shop-grid')}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
-            </div>
-        </div>
+        @endforeach
     </div>
 </section>
+
+<!--
+    <section class="container pb-4 pb-md-5">
+        <div class="row">
+            @livewire('search-products')
+        </div>
+    </section>
+-->
 
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">

@@ -6,11 +6,17 @@ use App\Rules\SlugRule;
 use App\Http\Requests\Request;
 use App\Rules\NumericCommaRule;
 use Illuminate\Validation\Rule;
+use App\Rules\ImagesProductRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request as RequestHelper;
 
 class ProductUpdateRequest extends FormRequest
 {
+
+    private $prepareData = [
+        'images_json',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -54,6 +60,7 @@ class ProductUpdateRequest extends FormRequest
             'seller_id' => 'required',
             'status' => 'required',
             'categories' => 'required',
+            'images_json_validation.*.image' => new ImagesProductRule(1024, 1024, 700000),
             'date_of_rejected' => function ($attribute, $value, $fail) {
                 $approvedStatus = RequestHelper::input('is_approved');
                 if($approvedStatus === '0') {
@@ -66,18 +73,18 @@ class ProductUpdateRequest extends FormRequest
                     if(empty($value)) return $fail('Debes indicar una razon de rechazo');
                 }
             },
-            'special_price_from' => function ($attribute, $value, $fail) {
+            /* 'special_price_from' => function ($attribute, $value, $fail) {
                 $specialPrice = RequestHelper::input('special_price');
                 if( !($specialPrice == 0 || is_null($specialPrice)) ) {
                     if(is_null($value)) return $fail('Debes indicar una fecha de inicio para el precio de promoción');
                 }
-            },
-            'special_price_to' => function ($attribute, $value, $fail) {
+            }, */
+            /* 'special_price_to' => function ($attribute, $value, $fail) {
                 $specialPrice = RequestHelper::input('special_price');
                 if( !($specialPrice == 0 || is_null($specialPrice)) ) {
                     if(is_null($value)) return $fail('Debes indicar una fecha de fin para el precio de promoción');
                 }
-            },
+            }, */
             'inventories_val' => function ($attribute, $value, $fail) {
                 $fields = RequestHelper::all();
                 foreach($fields as $param => $qty) {
@@ -117,6 +124,7 @@ class ProductUpdateRequest extends FormRequest
             'seller_id' => 'vendedor',
             'status' => 'estado',
             'categories' => 'categorias',
+            
         ];
     }
 
@@ -130,5 +138,25 @@ class ProductUpdateRequest extends FormRequest
         return [
             '*.required*' => 'Es necesario completar el campo :attribute.',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        foreach ($this->prepareData as $attrName) {
+            if (empty($this->$attrName)) {
+                return;
+            }
+
+            $validation = json_decode($this->$attrName);
+            $forValidation = [];
+
+            foreach ($validation as $attrs) {
+                $forValidation[] = (array) $attrs;
+            }
+
+            $this->merge([
+                $attrName.'_validation' => $forValidation,
+            ]);
+        }
     }
 }

@@ -226,6 +226,25 @@ class Cart extends Model
         }
         return true;
     }
+
+    public function issetAddress() : bool
+    {
+        return isset($this->addresss_street) && isset($this->address_number) && isset($this->address_commune_id);
+    }
+
+    public function setAddress(CustomerAddress $address) : void
+    {
+        $this->address_street = $address->street;
+        $this->address_number = $address->number;
+        $this->address_office = $address->subnumber;
+        $this->address_commune_id = $address->commune_id;
+        $this->first_name = $address->first_name;
+        $this->last_name = $address->last_name;
+        $this->phone = $address->phone;
+        $this->cellphone = $address->cellphone;
+        $this->email = $address->email;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

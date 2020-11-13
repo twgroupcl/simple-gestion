@@ -32,9 +32,20 @@
                     </div>
                     <div class="product-details ml-auto pb-3">
                         @if ($selectedChildrenId)
-                            <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price, 'CLP', true) }}</div>
+                            @if ($currentProduct->special_price === $currentProduct->real_price)
+                            <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($currentProduct->special_price, defaultCurrency(), true) }}</span>
+                                <del class="text-muted font-size-lg mr-3">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</del>
+                                <br>
+                                <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                            </div>
+                            @else
+                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</div>
+                            @endif
                         @else
-                            <div class="h3 font-weight-normal text-accent mb-3 mr-1">Desde {{ currencyFormat($priceFrom, 'CLP', true) }}</div>
+                            <div class="h3 font-weight-normal text-accent mb-1 mr-1">Desde {{ currencyFormat($priceFrom, 'CLP', true) }}</div>
+                            @if ($parentProduct->has_special_price)
+                                <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                            @endif  
                         @endif
                     <!--
                             <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Dark blue/Orange</span></div>
@@ -176,8 +187,21 @@
                 <div class="media align-items-center mr-md-3"><img src="{{ url($currentProduct->getFirstImagePath()) }}" width="90" alt="Product thumb">
                     <div class="mdeia-body pl-3">
                         <h6 class="font-size-base mb-2">{{$currentProduct->name}}</h6>
-                        @if ($selectedChildrenId)
+                        {{-- @if ($selectedChildrenId)
                         <div class="h4 font-weight-normal text-accent">{{ currencyFormat($currentProduct->price, 'CLP', true) }}</div>
+                        @endif --}}
+                        @if ($selectedChildrenId)
+                            @if ($currentProduct->special_price === $currentProduct->real_price)
+                            <div class="mb-3"><span class="h4 font-weight-normal text-accent">{{ currencyFormat($currentProduct->special_price, defaultCurrency(), true) }}</span>
+                                <del class="text-muted font-size-lg mr-3">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</del>
+                                <br>
+                                <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                            </div>
+                            @else
+                                <div class="h4 font-weight-normal text-accent">{{ currencyFormat($currentProduct->price, defaultCurrency(), true) }}</div>
+                            @endif
+                        @else
+                            <div class="h4 font-weight-normal text-accent">Desde {{ currencyFormat($priceFrom, 'CLP', true) }}</div>
                         @endif
                     </div>
                 </div>
@@ -274,3 +298,62 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+    
+<script>
+
+    window.addEventListener('initialize-gallery', event => {
+        intializeGallery()
+    })
+
+    function intializeGallery() {      
+        
+        // @todo ver como destruir la instancia previa de lightgallery
+        gallery()
+        productGallery()
+        imageZoom()   
+    }
+
+    function gallery() {
+        var e = document.querySelectorAll(".cz-gallery");
+            if (e.length)
+                for (var t = 0; t < e.length; t++)
+                    lightGallery(e[t], { selector: ".gallery-item", download: !1, videojs: !0, youtubePlayerParams: { modestbranding: 1, showinfo: 0, rel: 0, controls: 0 }, vimeoPlayerParams: { byline: 0, portrait: 0, color: "fe696a" } });
+    }
+
+    function productGallery() {
+        var s = document.querySelectorAll(".cz-product-gallery");
+            if (s.length)
+                for (
+                    var e = function (r) {
+                            for (var n = s[r].querySelectorAll(".cz-thumblist-item:not(.video-item)"), o = s[r].querySelectorAll(".cz-preview-item"), e = s[r].querySelectorAll(".cz-thumblist-item.video-item"), t = 0; t < n.length; t++)
+                                n[t].addEventListener("click", a);
+                            function a(e) {
+                                e.preventDefault();
+                                for (var t = 0; t < n.length; t++) o[t].classList.remove("active"), n[t].classList.remove("active");
+                                this.classList.add("active"), s[r].querySelector(this.getAttribute("href")).classList.add("active");
+                            }
+                            for (var i = 0; i < e.length; i++)
+                                lightGallery(e[i], {
+                                    selector: "this",
+                                    download: !1,
+                                    videojs: !0,
+                                    youtubePlayerParams: { modestbranding: 1, showinfo: 0, rel: 0, controls: 0 },
+                                    vimeoPlayerParams: { byline: 0, portrait: 0, color: "fe696a" },
+                                });
+                        },
+                        t = 0;
+                    t < s.length;
+                    t++
+                )
+                    e(t);
+    }
+
+    function imageZoom() {
+        for (var e = document.querySelectorAll(".cz-image-zoom"), t = 0; t < e.length; t++) new Drift(e[t], { paneContainer: e[t].parentElement.querySelector(".cz-image-zoom-pane") });
+    }
+
+</script>
+
+@endpush

@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Livewire\Customer;
+
+use Livewire\Component;
+
+class AddressList extends Component
+{
+    public $customer;
+    public $communes;
+    public $address;
+
+    public function render()
+    {
+        return view('livewire.customer.address-list', [
+            'customer' => $this->customer,
+            'communes' => $this->communes,
+        ]);
+    }
+
+    public function mount($communes, $customer)
+    {
+        $this->communes = $communes;
+        $this->customer = $customer;
+    }
+
+    public function loadUpdateForm($address)
+    {
+        $this->address = $address;
+    }
+}

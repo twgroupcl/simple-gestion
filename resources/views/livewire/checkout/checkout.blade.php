@@ -1,4 +1,7 @@
 <div>
+    {{-- <div   class="loading" wire:loading >Loading&#8230;</div> --}}
+
+
     <div class="container pb-5 mb-2 mb-md-4">
 
         <div class="row">
@@ -14,8 +17,9 @@
                 </div>
 
 
-                <div class="pt-2 px-4 pr-lg-0 pl-xl-5">
 
+
+                <div class="pt-2 px-4 pr-lg-0 pl-xl-5">
                     @switch($activeStep['number'])
                         @case(1)
                         @break
@@ -23,7 +27,7 @@
                         @livewire('checkout.details',['cart'=>$cart] ,key($activeStep['number']))
                         @break
                         @case(3)
-                        @livewire('checkout.shipping', ['cart'=>$cart, 'items'=>$items])
+                        @livewire('checkout.shipping', ['cart'=>$cart ])
                         @break
                         @case(4)
                         @livewire('checkout.payments', ['cart'=>$cart])
@@ -81,77 +85,118 @@
                 </div>
                 <!-- Navigation (desktop)-->
                 <div class="d-none d-lg-flex pt-4 mt-3">
-                    <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
+                    <div class="w-50 pr-3"><button class="btn btn-secondary btn-block" wire:click="prevStep()"><i
                                 class="czi-arrow-left mt-sm-0 mr-1"></i><span
                                 class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
-                                class="d-inline d-sm-none">Anterior</span></a></div>
+                                class="d-inline d-sm-none">Anterior</span></button></div>
                     @if (!empty($activeStep['next-button']))
-                        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click="nextStep()"><span
-                                    class="d-none d-sm-inline">
+                        <div class="w-50 pl-2">
+                            {{-- @if ($loading || !$canContinue) disabled  @endif --}}
+                            <button class="btn btn-primary btn-block"
 
-                                        <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"  wire:loading></span>
-                                                                       {{ $activeStep['next-button'] }}</span><span
-                                    class="d-inline d-sm-none">Siguiente</span><i
-                                    class="czi-arrow-right mt-sm-0 ml-1"></i></a>
+                             wire:click="nextStep()" >
+                    <span class="d-none d-sm-inline">
+                        {{-- @if ($loading) --}}
+                            {{-- <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" ></span> --}}
+                        {{-- @endif --}}
+                        {{ $activeStep['next-button'] }}
+                    </span>
+                    <span class="d-inline d-sm-none">Siguiente</span><i class="czi-arrow-right mt-sm-0 ml-1"></i>
+                    </button>
+                </div>
+                @endif
+        </div>
+        </section>
+        <!-- Sidebar-->
+        <!-- Order preview on desktop (screens larger than 991px)-->
+        <aside class="col-lg-4 d-none d-lg-block">
+            <hr class="d-lg-none">
+            <div class="cz-sidebar-static h-100 ml-auto border-left">
+                <div class="widget mb-3">
+                    <h2 class="widget-title text-center">Resumen del pedido</h2>
+                    <ul class="list-unstyled font-size-sm pt-3 pb-2 border-bottom">
+                        <li class="d-flex justify-content-between align-items-center"><span
+                                class="mr-2">Subtotal:</span><span class="text-right">
+                                {{ currencyFormat($subtotal ? $subtotal : 0, 'CLP', true) }}</span>
+                        </li>
+                        {{-- @if ($chilexpresstotal['qty'] > 0)
+                            <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Chilexpress
+                                    x {{ $chilexpresstotal['qty'] }}</span><span
+                                    class="text-right">{{ currencyFormat($chilexpresstotal['total'] ? $chilexpresstotal['total'] : 0, 'CLP', true) }}</span>
+                            </li>
+                        @endif
+                        @if ($shippingtotal['qty'] > 0)
+                            <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Envío x
+                                    {{ $shippingtotal['qty'] }}</span><span
+                                    class="text-right">{{ currencyFormat($shippingtotal['total'] ? $shippingtotal['total'] : 0, 'CLP', true) }}</span>
+                            </li>
+                        @endif --}}
+                        @if ($shippingtotals && $activeStep['number'] > 2)
+
+                            @foreach ($shippingtotals as $shipping)
+                                {{-- @if ($shipping['qty']) --}}
+                                    <li class="d-flex justify-content-between align-items-center">
+                                        <span class="mr-2">{{ $shipping['title'] }} x
+                                            {{ $shipping['totalShippingPackage'] }}</span>
+                                        <span class="text-right">
+                                            @if (!is_null($shipping['totalPrice']))
+                                                {{ currencyFormat($shipping['totalPrice'] ? $shipping['totalPrice'] : 0, 'CLP', true) }}
+                                            @endif
+                                        </span>
+                                    </li>
+                                    {{--
+                                @endif --}}
+                            @endforeach
+                        @endif
+                    </ul>
+                    <h3 class="font-weight-normal text-center my-4">
+                        {{ currencyFormat($total ? $total : 0, 'CLP', true) }}
+                    </h3>
+                    @if (!$canContinue)
+                        <div class="alert alert-primary">
+                            Verifique los productos seleccionados para continuar con su compra.
                         </div>
                     @endif
-                </div>
-            </section>
-            <!-- Sidebar-->
-            <!-- Order preview on desktop (screens larger than 991px)-->
-            <aside class="col-lg-4 d-none d-lg-block">
-                <hr class="d-lg-none">
-                <div class="cz-sidebar-static h-100 ml-auto border-left">
-                    <div class="widget mb-3">
-                        <h2 class="widget-title text-center">Resúmen del pedido</h2>
-                        <ul class="list-unstyled font-size-sm pt-3 pb-2 border-bottom">
-                            <li class="d-flex justify-content-between align-items-center"><span
-                                    class="mr-2">Subtotal:</span><span class="text-right">
-                                    {{ currencyFormat($subtotal ? $subtotal : 0, 'CLP', true) }}</span>
-                            </li>
-                            <li class="d-flex justify-content-between align-items-center"><span
-                                    class="mr-2">Envío:</span><span
-                                    class="text-right">{{ currencyFormat($shippingtotal ? $shippingtotal : 0, 'CLP', true) }}</span>
-                            </li>
-                        </ul>
-                        <h3 class="font-weight-normal text-center my-4">
-                            {{ currencyFormat($total ? $total : 0, 'CLP', true) }}
-                        </h3>
-                        <div class="col-12 text-center">
-                            <img class="d-inline-block img-fluid mx" width="120"
-                                src="{{ asset('img/logo-webpay.png') }}" alt="Métodos de pago" />
-                        </div>
+                    <div class="col-12 text-center">
+                        <img class="d-inline-block img-fluid mx" width="120" src="{{ asset('img/logo-webpay.png') }}"
+                            alt="Métodos de pago" />
                     </div>
                 </div>
-            </aside>
-        </div>
-        <!-- Navigation (mobile)-->
-        <div class="row d-lg-none">
-            <div class="col-lg-8">
-                <div class="d-flex pt-4 mt-3">
-                    <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
-                                class="czi-arrow-left mt-sm-0 mr-1"></i><span
-                                class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
-                                class="d-inline d-sm-none">Anterior</span></a></div>
-                    @if (!empty($activeStep['next-button']))
-                        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click.prevent="nextStep()" ><span
-                                    class="d-none d-sm-inline">{{ $activeStep['next-button'] }}</span><span
-                                    class="d-inline d-sm-none">Siguiente</span><i
-                                    class="czi-arrow-right mt-sm-0 ml-1"></i></a>
-                        </div>
-                    @endif
-                </div>
             </div>
+        </aside>
+    </div>
+    <!-- Navigation (mobile)-->
+    <div class="row d-lg-none">
+        <div class="col-lg-8">
+            <div class="d-flex pt-4 mt-3">
+                <div class="w-50 pr-3"><button class="btn btn-secondary btn-block" wire:click="prevStep()"><i
+                            class="czi-arrow-left mt-sm-0 mr-1"></i><span
+                            class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
+                            class="d-inline d-sm-none">Anterior</span></button></div>
+                @if (!empty($activeStep['next-button']))
+                {{-- @if ($loading || !$canContinue) disabled  @endif  --}}
+                    <div class="w-50 pl-2"><button class="btn btn-primary btn-block"
+
+                         wire:click.prevent="nextStep()" >
+                {{-- @if ($loading) --}}
+                    {{-- <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> --}}
+                {{-- @endif --}}
+                <span class="d-none d-sm-inline">{{ $activeStep['next-button'] }}</span><span
+                    class="d-inline d-sm-none">Siguiente</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></button>
+            </div>
+            @endif
         </div>
     </div>
 </div>
-@push('scripts')
+</div>
+</div>
+{{-- @push('scripts')
 
-<script>
+    <script>
+        Livewire.on('select-shipping', (title, message, delay, type) => {
+            alert('ok');
 
-    Livewire.on('select-shipping', (title, message, delay, type) => {
-        alert('ok');
+        })
 
-    })
-</script>
-@endpush
+    </script>
+@endpush --}}

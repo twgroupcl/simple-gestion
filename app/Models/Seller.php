@@ -41,6 +41,7 @@ class Seller extends Model
         'uid',
         'name',
         'visible_name',
+        'description',
         'email',
         'phone',
         'cellphone',
@@ -111,6 +112,7 @@ class Seller extends Model
                 break;
         }
     }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -143,6 +145,11 @@ class Seller extends Model
     }
 
     public function shippingmethods()
+    {
+        return $this->belongsToMany(ShippingMethod::class,'shipping_method_seller_mapping');
+    }
+
+    public function shipping_method_seller()
     {
         return $this->hasMany(ShippingMethodSeller::class);
     }
@@ -181,8 +188,36 @@ class Seller extends Model
     public function getUidAttribute()
     {
         $rutFormatter = Rut::parse($this->attributes['uid']);
-        
+
         return $rutFormatter->format();
+    }
+
+    public function getApprovedDescriptionAttribute()
+    {
+        switch ($this->is_approved) {
+            case $this::REVIEW_STATUS_APPROVED:
+                return 'Aprobado';
+                break;
+            case $this::REVIEW_STATUS_REJECTED:
+                return 'Rechazado';
+                break;
+            default:
+                return 'Pendiente'; //REVIEW_STATUS_PENDING
+                break;
+        }
+    }
+
+    public function getTransbankCodeAttribute()
+    {
+        if (!empty($this->payments_data)) {
+            $payment = json_decode($this->payments_data);
+
+            if(!empty($payment[0]->key)) {
+                return $payment[0]->key;
+            }
+        }
+
+        return '';
     }
 
     /*
@@ -193,9 +228,11 @@ class Seller extends Model
 
     public function setPasswordAttribute($value)
     {
-        $attribute_name = 'password';
-
-        $this->attributes[$attribute_name] = Hash::make($value);
+        if ($value && $value != "") {
+            $this->attributes['password'] = Hash::make(strtoupper(
+                str_replace('.', '', $value)
+            ));
+        }
     }
 
     public function setLogoAttribute($value)

@@ -1,46 +1,77 @@
-<div>
+<div wire:init="updateSellersShippings()">
+    <div class="loading" wire:loading>Loading&#8230;</div>
     <!-- Sellers  accordion-->
     <div class="accordion mb-2" id="seller" role="tablist">
-        @foreach ($sellers as $seller)
-        <div class="card">
-            <div class="card-header" role="tab">
-                <h3 class="accordion-heading"><a href="#card" data-toggle="collapse"><i
-                            class="czi-store font-size-lg mr-2 mt-n1 align-middle"></i>{{$seller->name}}<span
-                            class="accordion-indicator"></span></a></h3>
-            </div>
-            <div class="collapse show" id="card" data-parent="#seller" role="tabpanel">
-                <div class="card-body">
+        {{-- {{ dd($sellersShippings) }} --}}
+        @if ($sellers)
+            @foreach ($sellers as $seller)
+                @php
+                $shippings  = null;
+                if(!empty($sellersShippings)){
+                $indexSeller = array_search($seller->id, array_column($sellersShippings,'sellerId'), true);
+                $shippings = $sellersShippings[$indexSeller];
+                }
 
-                    @foreach ($items as $item)
-                        @if($seller->id == $item->product->seller_id)
-                            @livewire('cart.item', ['item' => $item, 'showShipping'=>true])
-                        @endif
-                    @endforeach
-                    <!-- Product-->
-                    {{-- <div
-                        class="media d-block d-sm-flex align-items-center pt-4 pb-2"><a
-                            class="d-block position-relative mb-3 mb-sm-0 mr-sm-4 mx-auto"
-                            href="marketplace-single.html" style="width: 12.5rem;"><img class="rounded-lg"
-                                src="img/marketplace/products/th07.jpg" alt="Product"><span class="close-floating"
-                                data-toggle="tooltip" title="Remove from Cart"><i class="czi-close"></i></span></a>
-                        <div class="media-body text-center text-sm-left">
-                            <h3 class="h6 product-title mb-2"><a href="marketplace-single.html">Gravity
-                                    Devices UI Mockup (PSD)</a></h3>
-                            <div class="d-inline-block text-accent">$15.<small>00</small></div><a
-                                class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2" href="#">by Tienda
-                                Uno</a>
-                            <div class="form-inline pt-2">
-                                <select class="custom-select custom-select-sm my-1 mr-2">
-                                    <option>ChileExpress ($3.500)</option>
-                                    <option>Envio Gratis</option>
-                                </select>
-                            </div>
+                @endphp
+                <div class="card">
+                    <div class="card-header" role="tab">
+                        <h3 class="accordion-heading"><a href="#card" data-toggle="collapse"><i
+                                    class="czi-store font-size-lg mr-2 mt-n1 align-middle"></i>{{ $seller->visible_name }}<span
+                                    class="accordion-indicator"></span></a></h3>
+                    </div>
+                    <div class="collapse show" id="card" data-parent="#seller" role="tabpanel">
+                        <div class="card-body">
+                            @php
+
+                            $shippingMethods = $seller->shippingmethods;
+
+                            @endphp
+                            @foreach ($items as $item)
+                                @if ($seller->id == $item->product->seller_id)
+                                    @livewire('cart.item', ['item' => $item, 'sellerShippingMethods'=>$shippingMethods,
+                                    'showShipping'=>true , 'showAttributes' => true], key($item->id))
+                                @endif
+                            @endforeach
+                            <!-- Product-->
+                            {{-- <div
+                                class="media d-block d-sm-flex align-items-center pt-4 pb-2"><a
+                                    class="d-block position-relative mb-3 mb-sm-0 mr-sm-4 mx-auto"
+                                    href="marketplace-single.html" style="width: 12.5rem;"><img class="rounded-lg"
+                                        src="img/marketplace/products/th07.jpg" alt="Product"><span
+                                        class="close-floating" data-toggle="tooltip" title="Remove from Cart"><i
+                                            class="czi-close"></i></span></a>
+                                <div class="media-body text-center text-sm-left">
+                                    <h3 class="h6 product-title mb-2"><a href="marketplace-single.html">Gravity
+                                            Devices UI Mockup (PSD)</a></h3>
+                                    <div class="d-inline-block text-accent">$15.<small>00</small></div><a
+                                        class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2"
+                                        href="#">by Tienda
+                                        Uno</a>
+                                    <div class="form-inline pt-2">
+                                        <select class="custom-select custom-select-sm my-1 mr-2">
+                                            <option>ChileExpress ($3.500)</option>
+                                            <option>Envio Gratis</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> --}}
+
+                            @if ($shippings)
+                                @foreach ($shippings as $item)
+                                    @if (!empty($item['shipping']))
+                                        <div class="row">
+                                            <div class="col-6">{{ $item['shipping']['title'] }}</div>
+                                            <div class="col-6">   @if(!is_null($item['shipping']['totalPrice'])) {{  currencyFormat($item['shipping']['totalPrice'] ? $item['shipping']['totalPrice'] : 0, 'CLP', true) }}  @endif</div>
+                                        </div>
+                                    @endif
+
+                                @endforeach
+                            @endif
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
-            </div>
-        </div>
-        @endforeach
+            @endforeach
+        @endif
 
         {{-- <div class="card">
             <div class="card-header" role="tab">

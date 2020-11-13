@@ -70,7 +70,7 @@ class ProductCategory extends Model
     }
     public function product_class()
     {
-        return $this->hasMany(ProductClass::class);
+        return $this->hasMany('App\Models\ProductClass', 'category_id');
     }
 
     public function products() 

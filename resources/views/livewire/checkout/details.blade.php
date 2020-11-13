@@ -1,4 +1,5 @@
 <div class="details-form">
+    <div class="loading" wire:loading  wire:target="save">Loading&#8230;</div>
     <!-- Title-->
     <h2 class="h6 border-bottom pb-3 mb-3">Información de envío</h2>
     <!-- Shipping detail-->
@@ -219,18 +220,15 @@
 @push('scripts')
     <script src="{{ asset('js/rut-formatter.js') }}"></script>
     <script>
-
-        $(document).ready(function(){
-            var observer = new MutationObserver(function(mutations, observer) {
-                $('.rut-field').rut()
-            });
-            document.querySelectorAll('.details-form').forEach(fields => {
-                observer.observe(fields, {
-                    subtree: true,
-                    attributes: true,
-                });
-            })
+        const observer = new MutationObserver(mutation => {
             $('.rut-field').rut()
-        })
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            attributes: true,
+            subtree: true,
+            characterData: true
+        });
     </script>
 @endpush

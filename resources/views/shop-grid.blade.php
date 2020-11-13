@@ -23,29 +23,18 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-        {{-- @include('layouts.general.section-category') --}}
+        <aside class="col-lg-4">
+            <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
+                @livewire('filters')
+            </div>
+        </aside>
         <!-- Content  -->
-        <section class="col-lg-12">
+        <section class="col-lg-8">
             <!-- Toolbar-->
             <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
-                <!--
-                <div class="d-flex flex-wrap">
-                    <div class="form-inline flex-nowrap mr-3 mr-sm-4 pb-3">
-                        <label class="text-light opacity-75 text-nowrap mr-2 d-none d-sm-block" for="sorting">Ordenar por:</label>
-                        <select class="form-control custom-select" id="sorting">
-                            <option>Popularity</option>
-                            <option>Low - Hight Price</option>
-                            <option>High - Low Price</option>
-                            <option>Average Rating</option>
-                            <option>A - Z Order</option>
-                            <option>Z - A Order</option>
-                        </select>
-                        <span class="font-size-sm text-light opacity-75 text-nowrap ml-2 d-none d-md-block">of 287 products</span>
-                    </div>
-                </div>
-                <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div>
-            -->
-                <div class="d-none d-sm-flex pb-3">
+                @livewire('sorting-products')
+             {{--   <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div> --}}
+             <div class="d-none d-sm-flex pb-3">
                     <a class="btn btn-icon nav-link-style bg-light text-dark disabled opacity-100 mr-2" href="#"><i class="czi-view-grid"></i></a>
                     <!--
                         <a class="btn btn-icon nav-link-style nav-link-light" href="shop-list-ls.html"><i class="czi-view-list"></i></a>
@@ -53,20 +42,17 @@
                 </div>
             </div>
             <!-- Products grid-->
-            <div class="row mx-n2">
+            <div class=" mx-n2 mt-5">
                 <!-- Product-->
-                @if(empty($products[0]))
-                    <p>No existen productos en esta busqueda</p>
+
+                {{-- @if(empty($products[0]) && !isset($products->id) )
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <p class="text-center">No existen productos en esta búsqueda.</p>
+                </div>
                 @else
-                    @foreach ($products as $product)
-                    @php
-                        if ($product->parent()->count()) continue;
-                    @endphp
-                        <div class="col-lg-2 col-md-2 col-sm-6 px-2 mb-4">
-                            @livewire('products.product', ['product' => $product], key($product->id))
-                        </div>
-                    @endforeach
-                @endif
+                    @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                @endif --}}
+                @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 16, 'showFrom' => $render['view'], 'valuesQuery' => $data])
             </div>
             <!-- Banner-->
             <!--
@@ -103,3 +89,36 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    /* $(document).ready(function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        let field = urlParams.get('field')
+        let direction = urlParams.get('direction');
+        let value = field + '-' + direction
+
+        // Set option selected
+        switch (value) {
+            case 'name-ASC':
+                $('#sorting').val('4')
+                break;
+            case 'name-DESC':
+                $('#sorting').val('5')
+                break;
+            case 'price-ASC':
+                $('#sorting').val('2')
+                break;
+            case 'price-DESC':
+                $('#sorting').val('3')
+                break;
+        }
+
+        var url = window.location.href.split('?')[0];
+
+        $('#sorting').change(function(){
+            window.location.href = url + '?field=' + $(this).find(':selected').data('field') + '&direction=' + $(this).find(':selected').data('direction');
+        });
+}); */
+</script>
+@endpush

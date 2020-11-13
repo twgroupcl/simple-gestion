@@ -8,10 +8,10 @@
     <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
         <div class="media media-ie-fix align-items-center pb-3">
             @if($seller->logo)
-                <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{url($seller->logo)}}" alt="Createx Studio"></div>
+                <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{ url($seller->logo) }}" alt="Logo {{ $seller->visible_name }}"></div>
             @endif
             <div class="media-body pl-3">
-                <h3 class="text-light font-size-lg mb-0">{{$seller->visible_name}}</h3>
+                <h3 class="text-light font-size-lg mb-0">{{ $seller->visible_name }}</h3>
                 {{-- <span class="d-block text-light font-size-ms opacity-60 py-1">Member since November 2017</span>
                 <span class="badge badge-success"><i class="czi-check mr-1"></i>Available for freelance</span> --}}
             </div>
@@ -36,18 +36,23 @@
             <!-- Sidebar-->
             <aside class="col-lg-4">
                 <div class="cz-sidebar-static h-100 border-right">
-                    <h6>Compañía</h6>
-                    <p class="font-size-ms text-muted">{{$seller->company->name}}</p>
                     <h6>Categoría</h6>
-                    <p class="font-size-ms text-muted">{{$seller->seller_category->name}}</p>
-                    @if($seller->legal_representative_name)
-                        <h6>Administrador</h6>
-                        <p class="font-size-ms text-muted">{{$seller->legal_representative_name}}</p>
+                    <p class="font-size-ms text-muted">{{ $seller->seller_category->name }}</p>
+                    @if($seller->description)
+                        <h6>Información</h6>
+                        <p>{{$seller->description}}</p>
                     @endif
-                    <h6>Acerca de la tienda</h6>
-                    <a href="#" class="font-size-ms text-muted">Políticas de envío</a>
-                    <br>
-                    <a href="#" class="font-size-ms text-muted">Políticas de privacidad</a>
+                    @if($seller->privacy_policy)
+                        <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
+                        <br>
+                    @endif
+                    @if($seller->shipping_policy)
+                        <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
+                        <br>
+                    @endif
+                    @if($seller->return_policy)
+                        <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
+                    @endif
                     <hr class="my-4">
                     <!--
                         <h6>Contacts</h6>
@@ -70,10 +75,10 @@
             <!-- Content-->
             <section class="col-lg-8 pt-lg-4 pb-md-4">
                 <!-- Banner-->
-                @if($seller->logo)
+                @if($seller->banner)
                 <div class="py-sm-2">
                     <div class="d-sm-flex justify-content-between align-items-center overflow-hidden mb-4 rounded-lg">
-                        <img class="mw-75" src="{{url($seller->banner)}}" alt="Banner Tienda">
+                        <img class="mw-75" src="{{ url($seller->banner) }}" alt="Banner {{ $seller->visible_name }}">
                     </div>
                 </div>
                 @endif
@@ -87,8 +92,8 @@
                         </div>
                     </div>
                 -->
-                <div class="pt-2 px-4 pl-lg-0 pr-xl-5">                   
-                    <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-left border-bottom">Productos<span class="badge badge-secondary font-size-sm text-body align-middle ml-2">{{$countProduct}}</span></h2>
+                <div class="pt-2 px-4 pl-lg-0 pr-xl-5">
+                    <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-left border-bottom">Productos<span class="badge badge-secondary font-size-sm text-body align-middle ml-2">{{ $countProduct }}</span></h2>
                     <!-- Toolbar-->
                     <!--
                         <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
@@ -112,23 +117,36 @@
                     <!-- Products grid-->
                     <div class="row mx-n2">
                         <!-- Product-->
-                        @if(empty($products[0]))
-                            <p>Esta tienda no posee productos</p>
-                        @else
-                            @foreach ($products as $product)
-                            @php
-                                if ($product->parent()->count()) continue;
-                            @endphp
-                                <div class="col-md-4 col-sm-6 px-2 mb-4">
-                                    @livewire('products.product', ['product' => $product], key($product->id))
-                                    <hr class="d-sm-none">
-                                </div>
-                            @endforeach
-                        @endif
+                        @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 8, 'showFrom' => $render['view'], 'valuesQuery' => $data])
                     </div>
                 </div>
             </section>
         </div>
     </div>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="policy">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title title-policy"></h5>
+      </div>
+      <div class="modal-body">
+        <div class="d-none privacy_policy policy-text">
+            <p class="font-size-sm">{!!$seller->privacy_policy!!}</p>
+        </div>
+        <div class="d-none shipping_policy policy-text">
+            <p class="font-size-sm">{!!$seller->shipping_policy!!}</p>
+        </div>
+        <div class="d-none return_policy policy-text">
+            <p class="font-size-sm">{!!$seller->return_policy!!}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm btn-close-modal" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection

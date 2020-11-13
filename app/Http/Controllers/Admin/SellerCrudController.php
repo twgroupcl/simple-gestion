@@ -13,6 +13,7 @@ use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
 use App\Http\Traits\HasCustomAttributes;
+use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -24,6 +25,9 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 class SellerCrudController extends CrudController
 {
     use HasCustomAttributes;
+
+    private $admin;
+    private $userSeller;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -38,6 +42,22 @@ class SellerCrudController extends CrudController
 
         $this->crud->denyAccess('show');
 
+        $this->admin = false;
+        $this->userSeller = null;
+
+        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+            $this->admin = true;
+
+            $this->crud->enableExportButtons();
+        }
+
+        if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
+            $this->crud->denyAccess('create');
+            $this->crud->denyAccess('delete');
+
+            $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        }
+
         $this->getExtras();
     }
 
@@ -50,6 +70,11 @@ class SellerCrudController extends CrudController
     protected function setupListOperation()
     {
         //CRUD::setFromDb(); // columns
+        if (!$this->admin) {
+            $value = $this->userSeller->id;
+
+            $this->crud->addClause('where', 'id', '=', $value);
+        }
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -83,6 +108,30 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
+            'name' => 'approved_description',
+            'type' => 'text',
+            'label' => 'Aprobado',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Aprobado') {
+                        return 'badge badge-success';
+                    } elseif ($column['text'] == 'Rechazado') {
+                        return 'badge badge-danger';
+                    }
+
+                    return 'badge badge-default';
+                },
+            ],
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'transbank_code',
+            'type' => 'text',
+            'label' => 'Webpay',
+        ]);
+
+        CRUD::addColumn([
             'name' => 'status_description',
             'type' => 'text',
             'label' => 'Estado',
@@ -97,7 +146,9 @@ class SellerCrudController extends CrudController
             ],
         ]);
 
-        $this->customFilters();
+        if ($this->admin) {
+            $this->customFilters();
+        }
     }
 
     /**
@@ -529,6 +580,13 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'description',
+            'type'  => 'textarea',
+            'label' => 'Información de la tienda',
+            'tab' => 'SEO',
+        ]);
+
+        CRUD::addField([
             'name' => 'payments_data',
             'type' => 'repeatable',
             'label' => 'Métodos de pago',
@@ -603,7 +661,7 @@ class SellerCrudController extends CrudController
             'tab' => 'Venta',
         ]);
 
-        if(backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+        if ($this->admin) {
             CRUD::addField([
                 'name' => 'is_approved',
                 'label' => 'Aprobado',
@@ -721,10 +779,16 @@ class SellerCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        if ($this->userSeller) {
+            if ($this->userSeller->id != $this->crud->getCurrentEntryId()) {
+                $this->crud->denyAccess('update');
+            }
+        }
+
         $this->setupCreateOperation();
         CRUD::setValidation(SellerUpdateRequest::class);
 
-        if(backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+        if ($this->admin) {
             CRUD::addField([
                 'name' => 'source',
                 'type' => 'text',
@@ -740,14 +804,13 @@ class SellerCrudController extends CrudController
         }
     }
 
-     /**
+    /**
      * Add filters in list view
      *
      * @return void
      */
     private function customFilters()
     {
-
         CRUD::addFilter([
             'type'  => 'text',
             'name'  => 'rut',

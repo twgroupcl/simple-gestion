@@ -21,7 +21,7 @@ class CommuneCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -33,7 +33,7 @@ class CommuneCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -44,13 +44,13 @@ class CommuneCrudController extends CrudController
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -58,18 +58,73 @@ class CommuneCrudController extends CrudController
     {
         CRUD::setValidation(CommuneRequest::class);
 
-        CRUD::setFromDb(); // fields
+        //CRUD::setFromDb(); // fields
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
+        CRUD::addField([
+            'name' => 'attribute_province',
+            'label' => 'Provincia',
+            'type' => 'relationship',
+            'tab' => 'General',
+
+        ]);
+
+
+        CRUD::addField([
+            'name' => 'name',
+            'type' => 'text',
+            'label' => 'Nombre',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'order',
+            'type' => 'number',
+            'label' => 'Orden',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
+            ],
+        ]);
+
+        CRUD::addField([
+        'name' => 'shipping_code',
+            'type' => 'repeatable',
+            'label' => 'Código Envío',
+            'new_item_label'  => 'Agregar código de envío',
+            'fields' => [
+                [
+                    'name' => 'key',
+                    'type'  => 'text',
+                    'label' => 'Llave',
+                    'wrapper' => [
+                        'class' => 'form-group col-12'
+                    ],
+                ],
+                [
+                    'name' => 'value',
+                    'type' => 'text',
+                    'label' => 'Valor',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-12',
+                    ]
+
+                ]
+                ],
+                'tab' => 'Códigos',
+        ]);
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

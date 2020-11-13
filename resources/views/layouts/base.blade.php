@@ -35,11 +35,22 @@
     <link rel="stylesheet" media="screen" href="{{ asset('vendor/tiny-slider/dist/tiny-slider.css') }}" />
     <link rel="stylesheet" media="screen" href="{{ asset('vendor/drift-zoom/dist/drift-basic.min.css') }}" />
     <link rel="stylesheet" media="screen" href="{{ asset('vendor/lightgallery.js/dist/css/lightgallery.min.css') }}" />
+    <link rel="stylesheet" media="screen" href="{{ asset('vendor/nouislider/distribute/nouislider.min.css') }}"/>
     <!-- Main Theme Styles + Bootstrap-->
     <link rel="stylesheet" media="screen" href="{{ asset('css/theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">    
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @livewireStyles
     @stack('styles')
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138777725-6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-138777725-6');
+    </script>
 </head>
 <!-- Body-->
 
@@ -56,6 +67,10 @@
     <!-- Vendor scrits: js libraries and plugins-->
     <script src="{{ asset('vendor/jquery/dist/jquery.slim.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/lazyload.js') }}"></script>
+    <script>
+        $('img.lazyload').lazyload();
+    </script> --}}
     <script src="{{ asset('vendor/bs-custom-file-input/dist/bs-custom-file-input.min.js') }}"></script>
     <script src="{{ asset('vendor/simplebar/dist/simplebar.min.js') }}"></script>
     <script src="{{ asset('vendor/tiny-slider/dist/min/tiny-slider.js') }}"></script>
@@ -63,10 +78,16 @@
     <script src="{{ asset('vendor/drift-zoom/dist/Drift.min.js') }}"></script>
     <script src="{{ asset('vendor/lightgallery.js/dist/js/lightgallery.min.js') }}"></script>
     <script src="{{ asset('vendor/lg-video.js/dist/lg-video.min.js') }}"></script>
+    <script src="{{ asset('vendor/nouislider/distribute/nouislider.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
     <!-- Main theme script-->
     <script src="{{ asset('js/theme.min.js') }}"></script>
     {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+    {{-- <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script> --}}
     @livewireScripts
     @stack('scripts')
 </body>
