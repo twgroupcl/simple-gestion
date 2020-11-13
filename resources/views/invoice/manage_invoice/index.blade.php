@@ -16,7 +16,7 @@
     ]);
 @endphp
 
-@if ($invoice->invoice_status == Invoice::STATUS_DRAFT)
+@if (Gate::inspect('doShowTempDocument', $invoice))
 @php
     Widget::add([
         'type' => 'view',
