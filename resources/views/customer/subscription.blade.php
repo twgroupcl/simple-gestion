@@ -41,18 +41,18 @@
                 @method('POST')
                 @csrf
                 @php
-                    $subscription_data = (!empty($customer->subscription_data))?$customer->subscription_data:null;
+                    $subscription_data = (!empty($customer->subscription_data))?json_decode($customer->subscription_data):null;
                 @endphp
                 <input type="hidden" name="customer_id" value="{{ $customer->id }}">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Plan <span class="text-danger">*</span></label>
-                            <select name="plan_id" class="form-control select-plan" @if(isset($subscription_data['plan_id'])) disabled @endif >
+                            <select name="plan_id" class="form-control select-plan" @if(isset($subscription_data->plan_id)) disabled @endif >
                                 <option value="">Seleccionar plan</option>
-                                @if(isset($subscription_data['plan_id']))
+                                @if(isset($subscription_data->plan_id))
                                     @foreach($plans as $plan)
-                                        <option value="{{$plan->id}}" @if($subscription_data['plan_id'] == $plan->id) selected  @endif>{{$plan->name}}</option>
+                                        <option value="{{$plan->id}}" @if($subscription_data->plan_id == $plan->id) selected  @endif>{{$plan->name}}</option>
                                     @endforeach
                                 @else
                                     @foreach($plans as $plan)
@@ -65,22 +65,22 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="account-email">Precio</label>
-                            <input class="form-control input-price" type="text" name="price" readonly @if(isset($subscription_data['price'])) value="{{$subscription_data['price']}}" @endif>
+                            <input class="form-control input-price" type="text" name="price" readonly @if(isset($subscription_data->price)) value="{{$subscription_data->price}}" @endif>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Fecha de inicio</label>
-                            <input type="text" class="form-control starts_at" name="starts_at" @if(isset($subscription_data['start_date'])) value="{{$subscription_data['start_date']}}" @endif readonly>
+                            <input type="text" class="form-control starts_at" name="starts_at" @if(isset($subscription_data->start_date)) value="{{$subscription_data->start_date}}" @endif readonly>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Fecha de fin</label>
-                            <input type="text" class="form-control ends_at" name="ends_at" @if(isset($subscription_data['end_date'])) value="{{$subscription_data['end_date']}}" @endif readonly>
+                            <input type="text" class="form-control ends_at" name="ends_at" @if(isset($subscription_data->end_date)) value="{{$subscription_data->end_date}}" @endif readonly>
                         </div>
                     </div>
-                    @if(empty($subscription_data['plan_id']))
+                    @if(empty($subscription_data->plan_id))
                         <div class="col-12">
                             <hr class="mt-2 mb-3">
                             <div class="d-flex flex-wrap justify-content-end align-items-center">

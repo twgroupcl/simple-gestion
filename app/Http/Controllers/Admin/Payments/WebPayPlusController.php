@@ -113,7 +113,89 @@ class WebPayPlusController extends Controller
 
     }
 
+    public function subscriptionCustomerPayment($subscriptionId)
+    {
+
+        $subscription = PlanSubscription::where('id', $subscriptionId)->first();
+        $plan = $subscription->plan;
+        $amount = $plan->price;
+
+        $sessionId = session()->getId();
+
+        $buyOrder = $subscription->id;
+        $returnUrl = url('payment/subscription/result');
+        $finalUrl =  url('payment/subscription/detail');
+        $response = $this->transaction->initTransaction(
+            $amount, $buyOrder, $sessionId, $returnUrl, $finalUrl);
+        //Register payment
+        $subscriptionPayment = new PlanSubscriptionPayment();
+        $data = [
+            'event' => 'init transaction',
+            'data' => $response,
+            'buyOrder' => $buyOrder,
+            'sessionId' => $sessionId,
+            'amount' => $amount,
+        ];
+
+        $subscriptionPayment->plan_subscription_id = $subscription->id;
+        $subscriptionPayment->method = 1;
+        $subscriptionPayment->method_title = 'WebPayPlus Normal';
+        $subscriptionPayment->json_out = json_encode($data);
+        $subscriptionPayment->date_out = Carbon::now();
+        $subscriptionPayment->save();
+
+        if (!isset($response->url)) {
+            $result = null;
+            return view('payments.transbank.webpay.plus.failed');
+        } else {
+            return view('payments.transbank.webpay.plus.redirect', compact('response'));
+        }
+
+    }
+
+    public function subscriptionResultCustomerPayment()
+    {
+        $tokenWs = request()->input("token_ws");
+        $result = $this->transaction->getTransactionResult($tokenWs);
+
+        if (!isset($result->buyOrder)) {
+            return redirect()->route('customer.subscription.plans');
+        }
+        $sessionId = $result->sessionId;
+        session()->setId($sessionId);
+        session()->start();
+
+        $planSubscriptionId = $result->buyOrder;
+
+        /*
+        $orderpayment = PlanSubscriptionPayment::where('plan_subscription_id', $planSubscriptionId)->first();
+        $data = [
+            'event' => 'result transaction',
+            'token' => $tokenWs,
+            'data' => $result,
+
+        ];
+        $orderpayment->json_in = json_encode($data);
+        $orderpayment->date_in = Carbon::now();
+        $orderpayment->save();
+        */
+
+        $output = $result->detailOutput;
+        if ($output->responseCode == 0) {
+            $subscription = PlanSubscription::where('id', $planSubscriptionId)->first();
+            return view('payments.transbank.webpay.plus.result', compact('subscription'));
+        } else {
+            return view('payments.transbank.webpay.plus.failed', compact('result'));
+        }
+
+    }
+
     public function subscriptionDetailPayment($subscriptionId)
+    {
+
+    }
+
+    public function subscriptionDetailCustomerPayment($subscriptionId)
     {
 
     }

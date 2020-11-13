@@ -130,8 +130,6 @@ class SellerObserver
 
     public function syncSubscription(Seller $seller)
     {
-        // $seller->subscriptions()->delete();
-
         $subscription_data = is_array($seller->subscription_data)
         ? $seller->subscription_data
         : json_decode($seller->subscription_data, true);
@@ -143,13 +141,10 @@ class SellerObserver
 
         if (!empty($subscription_data['plan_id'])) {
             $user = User::find($seller->user->id);
-            // $user->subscription('main')->usage()->delete();
             $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
             $newSubscription = $user->newSubscription('plan', $plan);
             $plan = Plans::where('id', $newSubscription->plan_id)->first();
-            if ($plan->price > 0) {
-                return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
-            }
+            
             $currency = Currency::where('id',$plan->currency)->first();
             
             $dataEmail = [
@@ -160,10 +155,14 @@ class SellerObserver
                 'start_date' => $subscription_data['starts_at'],
                 'end_date' => $subscription_data['ends_at']
             ];
-    
+
             $emailsAdministrator = explode(';', Setting::get('administrator_email'));
             array_push($emailsAdministrator, $seller->email);
             $this->sendMailSuscription($dataEmail,$emailsAdministrator);
+           
+            if ($plan->price > 0) {
+                return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
+            }
         }
 
     }

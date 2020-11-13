@@ -15,5 +15,6 @@ class VerifyCsrfToken extends Middleware
         'transbank/webpay/mall/response',
         'transbank/final',
         'admin/payment/subscription/result',
+        'payment/subscription/result',
     ];
 }
