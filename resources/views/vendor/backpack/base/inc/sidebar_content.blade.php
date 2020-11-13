@@ -136,7 +136,7 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('report/sales') }}'><i class="nav-icon las la-file-invoice"></i> Reporte</a></li>
         @endcan
         @can('invoice.list')
-        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoice') }}'><i class='nav-icon la la-question'></i> Invoices</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoice') }}'><i class='nav-icon la la-file-invoice-dollar'></i> Doc. Electrónicos </a></li>
         @endcan
     </ul>
 </li>
@@ -163,7 +163,6 @@
             <li class='nav-item'><a class='nav-link' href='{{ backpack_url('service') }}'><i class='nav-icon la la-skiing-nordic'></i> Servicios</a></li>
             <li class='nav-item'><a class='nav-link' href='{{ backpack_url('timeblock') }}'><i class='nav-icon la la-map'></i> Bloques horarios</a></li>
         </ul>
-        @endcan
 </li>
 @endcanany
 
