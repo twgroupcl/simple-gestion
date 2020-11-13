@@ -6,7 +6,7 @@ use App\Http\Requests\InvoiceRequest;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Models\{Tax, Invoice, InvoiceType, CustomerAddress};
+use App\Models\{Tax, Invoice, InvoiceType, CustomerAddress, Seller};
 use App\Services\DTEService;
 /**
  * Class InvoiceCrudController
@@ -31,6 +31,10 @@ class InvoiceCrudController extends CrudController
         CRUD::setModel(\App\Models\Invoice::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/invoice');
         CRUD::setEntityNameStrings('invoice', 'invoices');
+        if (! backpack_user()->can('showAllInvoices')) {
+            $seller = Seller::where('user_id', backpack_user()->id)->first();
+            $this->crud->addClause('where', 'seller_id', $seller->id);
+        }
     }
 
     /**

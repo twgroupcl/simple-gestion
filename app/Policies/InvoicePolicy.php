@@ -29,4 +29,10 @@ class InvoicePolicy
     {
         return $invoice->invoice_status == Invoice::STATUS_TEMPORAL;
     }
+
+    public function showAllInvoices(User $user)
+    {
+        // it doesn't make sense
+        return $user->hasRole('Super admin') ? true : false;
+    }
 }
