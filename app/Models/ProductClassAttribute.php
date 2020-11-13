@@ -10,7 +10,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 class ProductClassAttribute extends Model
 {
     use CrudTrait;
-    use SoftDeletes;
+    //use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------

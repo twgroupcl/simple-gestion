@@ -1,6 +1,14 @@
 @extends(backpack_view('blank'))
 
 @section('content')
+    @if (session('error'))
+    <div class="alert alert-danger pb-0">
+        <ul class="list-unstyled">
+                <li><i class="la la-info-circle"></i> {{ session('error') }}</li>
+        </ul>
+    </div>    
+    @endif
+    
     <div class="row mt-3">
         <div class="col">
             <h3>Subir productos masivamente</h3>
@@ -14,6 +22,11 @@
                 <div class="form-group col-md-12 required">
                     <label>Archivo excel</label>
                     <input type="file" name="product-csv" value="" class="form-control">
+                </div>
+
+                <div class="form-group col-md-12 required">
+                    <label>Vendedor</label>
+                    <input type="file" name="seller_id" value="" class="form-control">
                 </div>
             </div>
         </div>

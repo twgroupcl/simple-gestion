@@ -36,7 +36,13 @@
           @foreach ($result['table_visible_rows'] as $keyName => $visibleName)
             <td class="dtr-control">
               @if ($keyName == 'errors')
-                  aqui los errores
+              <ul>
+                  @foreach ($product['errors'] as $fieldErrors)
+                      @foreach ($fieldErrors as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  @endforeach
+              <ul>
               @else
                 <span>
                   {{ $product[$keyName] }}
@@ -48,13 +54,15 @@
         @endforeach
 	  </tbody>
     </table>
-    
-    <div class="btn-group" role="group">
-        <button type="submit" class="btn btn-success">
-            <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
-            <span data-value="save_and_back">Cargar productos</span>
-        </button>
-    </div>
 
-    <a href="{{ url()->previous() }}" class="btn btn-default"><span class="la la-ban"></span> &nbsp;Cancelar</a>
+    @if ($result['validate'])
+    <div class="btn-group" role="group">
+      <button type="submit" class="btn btn-success">
+          <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
+          <span data-value="save_and_back">Cargar productos</span>
+      </button>
+    </div>  
+    @endif
+    
+    <a href="{{ route('products.bulk-upload') }}" class="btn btn-default"><span class="la la-angle-left"></span> &nbsp;Volver y cargar otro archivo</a>
 @endsection
