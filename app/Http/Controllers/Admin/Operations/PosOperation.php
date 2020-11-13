@@ -15,6 +15,12 @@ trait PosOperation
      */
     protected function setupPosRoutes($segment, $routeName, $controller)
     {
+        Route::get($segment.'/', [
+            'as'        => $routeName.'.index',
+            'uses'      => $controller.'@index',
+            'operation' => 'index',
+        ]);
+
         Route::get($segment.'/pos', [
             'as'        => $routeName.'.pos',
             'uses'      => $controller.'@pos',
@@ -37,6 +43,24 @@ trait PosOperation
             // $this->crud->addButton('top', 'pos', 'view', 'crud::buttons.pos');
             // $this->crud->addButton('line', 'pos', 'view', 'crud::buttons.pos');
         });
+    }
+
+    /**
+     * Show the view for performing the operation.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        // $this->crud->hasAccessOrFail('index');
+
+        // prepare the fields you need to show
+        $this->data = null;
+        // $this->data['crud'] = $this->crud;
+        // $this->data['title'] = $this->crud->getTitle() ?? 'pos '.$this->crud->entity_name;
+
+        // load the view
+        return view("pos.index");
     }
 
     /**
