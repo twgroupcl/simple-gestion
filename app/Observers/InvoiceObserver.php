@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Product;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
+use App\Services\DTEService;
 
 class InvoiceObserver
 {
@@ -25,6 +26,7 @@ class InvoiceObserver
         $invoice->cellphone = $invoice->customer->cellphone;
 
         $invoice->is_company = $invoice->customer->is_company;
+        $invoice->invoice_status = Invoice::STATUS_DRAFT;
     }
 
 
@@ -40,6 +42,24 @@ class InvoiceObserver
     }
 
     /**
+     * Handle the invoice "updating" event
+     * @param \App\Invoice $invoice
+     * @return void
+     */
+    public function updating(Invoice $invoice)
+    {
+        $service = new DTEservice();
+        $response = $service->deleteTemporalDocument($invoice);
+        if ($response->getStatusCode() !== 200) {
+            \Alert::add('danger', 'No es pudo cambiar el documento')->flash();
+            return false;
+        }
+        
+        \Alert::add('sucess', 'El documento temporal se ha eliminado, deberá enviarlo nuevamente.')->flash();
+        $invoice->toDraft();
+    }
+
+    /**
      * Handle the quotation "updated" event.
      *
      * @param  \App\Invoice  $invoice
@@ -47,7 +67,7 @@ class InvoiceObserver
      */
     public function updated(Invoice $invoice)
     {
-            $this->syncInvoiceItems($invoice, [ 'set_item_status' => 'pending']);
+        $this->syncInvoiceItems($invoice, [ 'set_item_status' => 'pending']);
     }
 
     public function syncInvoiceItems($invoice, $options = []) {

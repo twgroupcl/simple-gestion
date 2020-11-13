@@ -1,5 +1,7 @@
 @extends('backpack::blank')
 
+@php use \App\Models\Invoice; @endphp
+
 @section('header')
 
 @endsection
@@ -14,14 +16,14 @@
     ]);
 @endphp
 
-{{-- @if (!isset($invoice->dte_code))--}}
+@if ($invoice->invoice_status == Invoice::STATUS_DRAFT)
 @php
     Widget::add([
         'type' => 'view',
         'view' => 'invoice.manage_invoice.create_temporary_document'
     ]);
 @endphp
-{{--@endif--}}
+@endif
 
 @php
     Widget::add([
@@ -34,6 +36,15 @@
     Widget::add([
         'type' => 'view',
         'view' => 'invoice.manage_invoice.get_pdf',
+    ]);
+@endphp
+
+
+{{-- status invoice --}}
+@php
+    Widget::add([
+        'type' => 'view',
+        'view' => 'invoice.manage_invoice.delete_temporary_document',
     ]);
 @endphp
 @endsection
