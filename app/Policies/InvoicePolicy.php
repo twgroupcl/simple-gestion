@@ -7,10 +7,10 @@ use App\User;
 
 class InvoicePolicy
 {
-    public function before($user, $ability)
-    {
-        return $user->hasRole('Super admin') ? null : null;
-    }
+    //public function before($user, $ability)
+    //{
+    //    return $user->hasRole('Super admin') ? null : null;
+    //}
 
     /**
      * execute for update event
@@ -19,6 +19,10 @@ class InvoicePolicy
     {
         //return $user->id === $post->user_id;
         return true;
+    }
+    
+    public function canCreateTempDocument(User $user, Invoice $invoice) {
+        return $invoice->invoice_status == Invoice::STATUS_DRAFT;
     }
 
     public function doShowTempDocument(User $user, Invoice $invoice)
