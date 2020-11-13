@@ -68,7 +68,8 @@ Route::group([
      Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
      Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
      Route::crud('order', 'OrderCrudController');
-
+     Route::crud('faqanswer', 'FaqAnswerCrudController');
+     Route::crud('faqtopic', 'FaqTopicCrudController');
      /** invoice **/
      Route::crud('invoice', 'InvoiceCrudController');
      Route::get('quotation/{quotation}/to-invoice', 'QuotationCrudController@toInvoice');
@@ -76,8 +77,5 @@ Route::group([
      Route::get('invoice/{invoice}/delete-temporary-document', 'ManageInvoiceCrudController@deleteTemporaryDocument');
      Route::get('invoice/{invoice}/to-manage', 'ManageInvoiceCrudController@index');
      Route::get('invoice/{invoice}/get-pdf', 'ManageInvoiceCrudController@getPDF');
-    Route::crud('order', 'OrderCrudController');
-    Route::crud('faqanswer', 'FaqAnswerCrudController');
-    Route::crud('faqtopic', 'FaqTopicCrudController');
 }); // this should be the absolute last line of this file
 
