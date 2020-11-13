@@ -1139,9 +1139,9 @@ class ProductCrudController extends CrudController
     public function bulkUploadPreview(Request $request)
     {
         $file = $request->file('product-csv');
-        $data = Excel::toArray(new ProductsCollectionImport(), $file);
         $bulkUploadService = new BulkUploadBooksService();
-        dd($bulkUploadService->convertExcelToArray($file));
-        return view('admin.products.bulk-upload-preview');
+        $result = $bulkUploadService->convertExcelToArray($file);
+
+        return view('admin.products.bulk-upload-preview', compact('result'));
     }
 }
