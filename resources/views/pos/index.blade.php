@@ -1,5 +1,5 @@
 @extends(backpack_view('blank'))
 
 @section('content')
-    <button>xd</button>
+    @livewire('pos.pos')
 @endsection
