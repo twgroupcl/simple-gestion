@@ -44,9 +44,10 @@ class InvoiceCrudController extends CrudController
         //CRUD::setFromDb(); // columns
         
         // create temporary document
+         
         $this->crud->addButtonFromView(
             'line', 'create_temporary_document', 
-            'dte.create_temporary_document', 'beginning'
+            'invoice.to_manage', 'beginning'
         );
 
         CRUD::addColumn([
@@ -61,6 +62,7 @@ class InvoiceCrudController extends CrudController
             'name' => 'invoice_type_id',
              
         ]);
+
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -445,23 +447,4 @@ class InvoiceCrudController extends CrudController
 
     }
 
-    public function sendTemporaryDocument(Request $request, Invoice $invoice)
-    {
-        $service = new DTEService();
-
-        $response = $service->tempDocument($invoice);
-
-        if ($response->getStatusCode() === 200) {
-            \Alert::add('success', 'Se ha enviado el documento con éxito')->flash();
-        } else {
-            \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
-        }
-
-        return redirect($this->crud->route);
-    }
-
-    public function generateDTE(Request $request, Invoice $invoice)
-    {
-        ddd("Sent");
-    }
 }
