@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
@@ -1140,8 +1141,13 @@ class ProductCrudController extends CrudController
     {
         $file = $request->file('product-csv');
         $bulkUploadService = new BulkUploadBooksService();
-        $result = $bulkUploadService->convertExcelToArray($file);
 
+        try {
+            $result = $bulkUploadService->convertExcelToArray($file);
+        } catch (Exception $e) {
+            return redirect()->route('products.bulk-upload')->with('error', 'El formato del archivo excel es incorrecto');
+        }
+    
         return view('admin.products.bulk-upload-preview', compact('result'));
     }
 }
