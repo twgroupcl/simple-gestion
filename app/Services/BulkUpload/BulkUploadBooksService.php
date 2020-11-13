@@ -28,10 +28,17 @@ class BulkUploadBooksService {
     const ROW_META_KEYWORDS = 18;
     const ROW_META_DESCRIPTION = 19;
 
+    private $tableVisibleRows = [
+        'sku' => 'SKU',
+        'name' => 'Titulo',
+        'price' => 'Precio',
+        'errors' => 'Errores',
+    ];
+
     public function convertExcelToArray($file)
     {
         $products = [];
-        
+
         $data = Excel::toArray(new ProductsCollectionImport(), $file)[0];
         
         // Remove the titles rows
@@ -67,22 +74,58 @@ class BulkUploadBooksService {
 
     public function validate($productsArray)
     {
+        $isValid = true;
+        $products = [];
+        $productWithErrors = 0;
 
         $rules = [
-            'sku' => 'max:25',
+            'sku' => 'max:50',
         ];
 
-        $productData = $productsArray[0];
+        $tmpProducts = $this->removeEmptyRows($productsArray);
 
-        $validator = Validator::make($productData, $rules/* , $messages, $attributes */);
+        foreach ($tmpProducts as $product) {
 
-        if ($validator->fails()) {
-            return $validator->errors()->first();
+            $product['errors'] = [];
+            $validator = Validator::make($product, $rules/* , $messages, $attributes */);
+
+            if ($validator->fails()) {
+                $product['errors'][] = $validator->errors()->all();
+                $isValid = false;
+                $productWithErrors++;
+                //return $validator->errors()->first();
+            }
+
+            $products[] = $product;
+        }
+        
+        return [
+            'validate' => false,
+            'products_with_errors' => $productWithErrors,
+            'products_array' => $products,
+            'table_visible_rows' => $this->tableVisibleRows,
+        ];
+    }
+
+    public function removeEmptyRows($array)
+    {
+        $arrayWitouthEmptyRows = $array;
+
+        foreach($array as $key => $product) {
+            $rowWitouthNull = array_filter($product);
+            if ( empty($rowWitouthNull) ) unset($arrayWitouthEmptyRows[$key]);
         }
 
-        return [
-            'validate' => true,
-            'productsArray' => $productsArray,
-        ];
+        return $arrayWitouthEmptyRows;
+    }
+
+    public function prepareDataForSave($productsArray)
+    {
+
+    }
+
+    public function storeProducts($productsArray)
+    {
+
     }
 }
