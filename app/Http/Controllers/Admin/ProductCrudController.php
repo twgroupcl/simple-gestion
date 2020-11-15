@@ -1134,6 +1134,7 @@ class ProductCrudController extends CrudController
 
     public function bulkUploadView(Request $request)
     {
+        $request->session()->forget('bulk_upload_data');
         return view('admin.products.bulk-upload');
     }
 
@@ -1146,6 +1147,12 @@ class ProductCrudController extends CrudController
             $result = $bulkUploadService->convertExcelToArray($file);
         } catch (Exception $e) {
             return redirect()->route('products.bulk-upload')->with('error', 'El formato del archivo excel es incorrecto');
+        }
+
+        if ($result['validate']) {
+            $request->session()->put('bulk_upload_data', $result['products_array']);
+        } else {
+            $request->session()->forget('bulk_upload_data');
         }
     
         return view('admin.products.bulk-upload-preview', compact('result'));
