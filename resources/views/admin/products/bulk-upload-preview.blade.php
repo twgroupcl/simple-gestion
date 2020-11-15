@@ -13,7 +13,7 @@
             Numero de productos cargados: {{ count($result['products_array']) }}
           </div>
           <div class="col-md-12">
-            Productos con errores: {{ $result['products_with_errors'] }}
+            Numero de productos con errores: {{ $result['products_with_errors'] }}
           </div>
       </div>
   </div>
@@ -52,7 +52,7 @@
           @endforeach
           </tr>
         @endforeach
-	  </tbody>
+	    </tbody>
     </table>
 
     @if ($result['validate'])

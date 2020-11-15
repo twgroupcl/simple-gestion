@@ -34,6 +34,10 @@
                     </select>
                 </div>
                 @endif
+
+                @if ($userSeller)
+                <input type="hidden" name="seller_id" value="{{ $userSeller->id }}">
+                @endif
             </div>
         </div>
 
