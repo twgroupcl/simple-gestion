@@ -47,7 +47,7 @@ class BulkUploadBooksService {
         $data = Excel::toArray(new ProductsCollectionImport(), $file)[0];
         
         // Remove the titles rows
-        $data = array_slice($data, 2);
+        $data = array_slice($data, 7);
 
         $products = collect($data)->map(function ($value) {
             return [
@@ -173,9 +173,13 @@ class BulkUploadBooksService {
         return $arrayWitouthEmptyRows;
     }
 
-    public function prepareDataForSave($productsArray)
+    public function prepareDataForSave($data)
     {
+        $productsModelPrepared = collect($data)->map(function ($productData) {
 
+        });
+
+        
     }
 
     public function storeProducts($productsArray)
