@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\ProductBrand;
 use App\Models\ProductClass;
 use App\Models\ProductCategory;
+use Illuminate\Validation\Rule;
 use App\Services\ProductService;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
@@ -101,7 +102,12 @@ class BulkUploadBooksService {
 
         $rules = [
             'name' => 'required|max:255',
-            'sku' => 'required',
+            'sku' => [
+                'required',
+                Rule::unique('products')->where( function($query) {
+                    return $query->where('seller_id', '=', request('seller_id'));
+                }),
+            ],
             'category' => 'required',
             'author' => 'required', // atributo text
             'description' => 'required',
@@ -125,6 +131,8 @@ class BulkUploadBooksService {
 
         $messages = [
             '*.required' => 'El campo :attribute es obligatorio',
+            '*.unique' => 'El :attribute ya se encuentra registrado',
+            '*.exists' => 'El valor del campo :attribute no es valido',
         ];
 
         $attributes = [
@@ -152,8 +160,11 @@ class BulkUploadBooksService {
         ];
 
         $tmpProducts = $this->removeEmptyRows($productsArray);
+        $productSkus = collect($tmpProducts)->pluck('sku');
 
         foreach ($tmpProducts as $product) {
+
+            $hasError = false;
 
             $product['errors'] = [];
 
@@ -162,9 +173,18 @@ class BulkUploadBooksService {
             if ($validator->fails()) {
                 $product['errors'][] = $validator->errors()->all();
                 $isValid = false;
-                $productWithErrors++;
-                //return $validator->errors()->first();
+                $hasError = true;
             }
+
+            $duplicateSkus = array_count_values($productSkus->toArray());
+
+            if ( $duplicateSkus[$product['sku']] > 1 ) {
+                $product['errors'][] = ['El ISBN no puede estar duplicado'];
+                $isValid = false;
+                $hasError = true;
+            }
+
+            if ($hasError) $productWithErrors++;
 
             $products[] = $product;
         }
@@ -227,8 +247,6 @@ class BulkUploadBooksService {
                     'image' => '/storage/products/' . $productData['path_image']
                 ]
             ];
-
-            $slug = Str::slug($productData['name']);
 
             return [
                 'sku' => $productData['sku'],
