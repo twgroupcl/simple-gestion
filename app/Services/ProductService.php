@@ -187,6 +187,55 @@ class ProductService
         return [ 'status' => true, 'message' =>  'Productos creados exitosamente', 'status_response' => 'success', 'data' => $products];
     }
 
+    public function generateSlug($name, $maxAttempts, $companyId = 1)
+    {
+        $baseUrlKey = Str::slug($name);
+        $finalUrlKey = $baseUrlKey;
+        $counter = 0;
+
+        // If the Url key already exits, we added a suffix
+        while ( !$this->validateUniqueSlug($finalUrlKey, $companyId) && $counter < $maxAttempts) {
+            $counter++;
+            $finalUrlKey = $baseUrlKey . '-' . $counter;
+        }
+
+        if ($counter == $maxAttempts) {
+            return false;
+        }
+
+        return $finalUrlKey;
+    }
+
+    /**
+     * Transform an array (or JSON) with the format [ ['code' => code, 'value' => value] ]
+     * to a format that is accepted by the product model [ ['attribute-id' => value] ]
+     * 
+     */
+    public function extraAttributesAdapter($extraAttributesArray, $classId, $isJson = false)
+    {
+        $attributesArray = $isJson 
+                ? json_decode($extraAttributesArray, true)
+                : $extraAttributesArray;
+
+        $attributes = [];
+
+        foreach ($attributesArray as $attributeData) {
+            $attribute = ProductClassAttribute::where([
+                'json_attributes->code' => $attributeData['code'],
+                'product_class_id' => $classId,
+            ])->first();
+            
+            // @todo si el atributo es de tipo select, verificar que el value existe entre las opciones
+            if (!$attribute) {
+               return false;
+            }
+
+            $attributes['attribute-' . $attribute->id] = $attributeData['value'];
+        }
+
+        return $attributes;
+    }
+
     public function validateUniqueSku($sku, $sellerId, $companyId)
     {
         $productsSku = Product::where([
