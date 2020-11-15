@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\ProductRequest;
 use App\Imports\ProductsCollectionImport;
@@ -1161,5 +1162,25 @@ class ProductCrudController extends CrudController
         }
     
         return view('admin.products.bulk-upload-preview', compact('result', 'sellerId'));
+    }
+
+    public function bulkUploadStore(Request $request)
+    {
+        $bulkUploadService = new BulkUploadBooksService();
+
+        DB::beginTransaction();
+
+        $bulkUploadResult = $bulkUploadService->storeProducts($request->session()->get('bulk_upload_data'), $request['seller_id']);
+        
+        if (!$bulkUploadResult['status']) {
+            DB::rollBack();
+
+            return $bulkUploadResult['message'];
+        }
+
+        DB::commit();
+        
+        $request->session()->forget('bulk_upload_data');
+        return 'todo ok';
     }
 }
