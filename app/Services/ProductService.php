@@ -18,30 +18,7 @@ class ProductService
     const MAX_ATTEMPTS_FOR_URL_SLUG = 20;
     const DEFAULT_CURRENCY_ID = 63;
 
-    public function validateUniqueSku($sku, $sellerId, $companyId)
-    {
-        $productsSku = Product::where([
-            'seller_id' => $sellerId,
-            'company_id' => $companyId,
-        ])->pluck('sku')->toArray();
-
-        if ( in_array($sku, $productsSku) ) return false;
-
-        return true;
-    }
-
-    public function validateUniqueSlug($slug, $companyId)
-    {
-        $urlKeysArray = Product::where([
-            'company_id' => $companyId,
-        ])->pluck('url_key')->toArray();
-
-        if ( in_array($slug, $urlKeysArray) ) return false;
-
-        return true;
-    }
-
-    public function createSimpleProduct($request)
+    public function createSimpleProductWithWarehouse($request)
     {
         
         if (self::USE_INVENTORY_CONTROL_BY_DEFAULT) {
@@ -208,6 +185,29 @@ class ProductService
         }
 
         return [ 'status' => true, 'message' =>  'Productos creados exitosamente', 'status_response' => 'success', 'data' => $products];
+    }
+
+    public function validateUniqueSku($sku, $sellerId, $companyId)
+    {
+        $productsSku = Product::where([
+            'seller_id' => $sellerId,
+            'company_id' => $companyId,
+        ])->pluck('sku')->toArray();
+
+        if ( in_array($sku, $productsSku) ) return false;
+
+        return true;
+    }
+
+    public function validateUniqueSlug($slug, $companyId)
+    {
+        $urlKeysArray = Product::where([
+            'company_id' => $companyId,
+        ])->pluck('url_key')->toArray();
+
+        if ( in_array($slug, $urlKeysArray) ) return false;
+
+        return true;
     }
 
     private function getSellerIdFromWarehouse($warehouseCode)
