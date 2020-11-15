@@ -2,16 +2,22 @@
 
 namespace App\Services\BulkUpload;
 
+use App\Models\Seller;
+use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Models\ProductBrand;
+use App\Models\ProductClass;
 use App\Models\ProductCategory;
+use App\Services\ProductService;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\QueryException;
 use App\Imports\ProductsCollectionImport;
 use Illuminate\Support\Facades\Validator;
 
 class BulkUploadBooksService {
 
-    const PRODUCT_TYPE = 1;
+    const PRODUCT_TYPE = Product::PRODUCT_TYPE_SIMPLE;
+    const PRODUCT_CLASS_CODE = 'book';
 
     const ROW_SKU = 1;
     const ROW_NAME = 2;
@@ -42,6 +48,13 @@ class BulkUploadBooksService {
         'price' => 'Precio',
         'errors' => 'Errores',
     ];
+
+    private $productService;
+
+    public function __construct()
+    {
+        $this->productService = new ProductService();
+    }
 
     public function convertExcelToArray($file)
     {
@@ -176,12 +189,13 @@ class BulkUploadBooksService {
         return $arrayWitouthEmptyRows;
     }
 
-    public function prepareDataForSave($data, $sellerId)
+    public function prepareDataForSave($data, $sellerId, $companyId)
     {
-        $productsModelPrepared = collect($data)->map(function ($productData) use ($sellerId) {
+        $productsModelPrepared = collect($data)->map(function ($productData) use ($sellerId, $companyId) {
 
             $brandId = ProductBrand::where('name', $productData['editorial'])->first()->id;
-            $category = ProductCategory::where('name', $productData['category'])->first()->id;
+            $classId = ProductClass::where('code', self::PRODUCT_CLASS_CODE)->first()->id;
+            $categoryId = ProductCategory::where('name', $productData['category'])->first()->id;
 
             $extraAttributes = [
                 [
@@ -206,20 +220,25 @@ class BulkUploadBooksService {
                 ],
             ];
 
+            $attributes_json = $this->productService->extraAttributesAdapter($extraAttributes, $classId);
+
             $json_images = [
-                'image' => '/storage/products/' . $productData['path_image']
+                [
+                    'image' => '/storage/products/' . $productData['path_image']
+                ]
             ];
 
             $slug = Str::slug($productData['name']);
 
             return [
                 'sku' => $productData['sku'],
-                'slug' => $slug,
                 'name' => $productData['name'],
                 'description' => $productData['description'],
                 'use_inventory_control' => false,
                 'is_service' => false, 
                 'product_brand_id' => $brandId,
+                'product_type_id' => self::PRODUCT_TYPE,
+                'product_class_id' => $classId,
                 'product_category' => $categoryId,
                 'price' => $productData['price'],
                 'special_price' => $productData['special_price'],
@@ -230,16 +249,43 @@ class BulkUploadBooksService {
                 'meta_title' => $productData['meta_title'],
                 'meta_keywords' => $productData['meta_keywords'],
                 'meta_description' => $productData['meta_description'],
-                'extra_attributes' => $extraAttributes,
-                'json_images' => $json_images,
-
+                'attributes_json' => $attributes_json,
+                'images_json' => $json_images,
+                'currency_id' => 63,
                 'seller_id' => $sellerId,
+                'company_id' => $companyId,
             ];
         });
+
+        return $productsModelPrepared;
     }
 
-    public function storeProducts($productsArray)
+    public function storeProducts($productsArray, $sellerId)
     {
+        $companyId = Seller::find($sellerId)->company->id;
+        $products = $this->prepareDataForSave($productsArray, $sellerId, $companyId);
         
+        foreach($products as $product) {
+            $slug = $this->productService->generateSlug($product['name'], 20, $companyId);
+
+            if (!$slug) return ['status' => false, 'message' => 'Ocurrio un error generando el Slug'];
+
+            if ( ! $this->productService->validateUniqueSku($product['sku'], $sellerId, $companyId) ) {
+                return [ 'status' => false, 'message' =>  'Ya tienes un producto con el SKU indicado', 'status_response' => 'error'];
+            }
+            
+            try {
+                $newProduct = Product::create($product);
+            } catch(QueryException $exception) {
+                return ['status' => false, 'message' =>  $exception];
+            }
+
+            $newProduct->categories()->attach($product['product_category']);
+            $newProduct->url_key = $slug;
+            $newProduct->update();
+
+        }
+
+        return ['status' => true, 'message' => 'Productos importados con exito'];
     }
 }
