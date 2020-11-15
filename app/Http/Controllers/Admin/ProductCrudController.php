@@ -1135,13 +1135,18 @@ class ProductCrudController extends CrudController
     public function bulkUploadView(Request $request)
     {
         $request->session()->forget('bulk_upload_data');
-        return view('admin.products.bulk-upload');
+        return view('admin.products.bulk-upload', [ 
+            'admin' => $this->admin, 
+            'userSeller' => $this->userSeller,
+            'sellers' => Seller::all(),
+        ]);
     }
 
     public function bulkUploadPreview(Request $request)
     {
-        $file = $request->file('product-csv');
         $bulkUploadService = new BulkUploadBooksService();
+        $file = $request->file('product-csv');
+        $sellerId = $request['seller_id'];
 
         try {
             $result = $bulkUploadService->convertExcelToArray($file);
@@ -1155,6 +1160,6 @@ class ProductCrudController extends CrudController
             $request->session()->forget('bulk_upload_data');
         }
     
-        return view('admin.products.bulk-upload-preview', compact('result'));
+        return view('admin.products.bulk-upload-preview', compact('result', 'sellerId'));
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Services\BulkUpload;
 
+use Illuminate\Support\Str;
+use App\Models\ProductBrand;
+use App\Models\ProductCategory;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProductsCollectionImport;
 use Illuminate\Support\Facades\Validator;
@@ -70,7 +73,7 @@ class BulkUploadBooksService {
                 'meta_title' => $value[self::ROW_META_TITLE],
                 'meta_keywords' => $value[self::ROW_META_KEYWORDS],
                 'meta_description' => $value[self::ROW_META_DESCRIPTION],
-                'path_image' => $value[self::ROW_PATH_IMAGE]
+                'path_image' => $value[self::ROW_PATH_IMAGE],
             ];
         });
 
@@ -173,17 +176,70 @@ class BulkUploadBooksService {
         return $arrayWitouthEmptyRows;
     }
 
-    public function prepareDataForSave($data)
+    public function prepareDataForSave($data, $sellerId)
     {
-        $productsModelPrepared = collect($data)->map(function ($productData) {
+        $productsModelPrepared = collect($data)->map(function ($productData) use ($sellerId) {
 
+            $brandId = ProductBrand::where('name', $productData['editorial'])->first()->id;
+            $category = ProductCategory::where('name', $productData['category'])->first()->id;
+
+            $extraAttributes = [
+                [
+                    'code' => 'author',
+                    'value' => $productData['author'],
+                ],
+                [
+                    'code' => 'year',
+                    'value' => $productData['year'],
+                ],
+                [
+                    'code' => 'language',
+                    'value' => $productData['language'],
+                ],
+                [
+                    'code' => 'pages_number',
+                    'value' => $productData['pages_number'],
+                ],
+                [
+                    'code' => 'encuadernacion',
+                    'value' => $productData['encuadernacion'],
+                ],
+            ];
+
+            $json_images = [
+                'image' => '/storage/products/' . $productData['path_image']
+            ];
+
+            $slug = Str::slug($productData['name']);
+
+            return [
+                'sku' => $productData['sku'],
+                'slug' => $slug,
+                'name' => $productData['name'],
+                'description' => $productData['description'],
+                'use_inventory_control' => false,
+                'is_service' => false, 
+                'product_brand_id' => $brandId,
+                'product_category' => $categoryId,
+                'price' => $productData['price'],
+                'special_price' => $productData['special_price'],
+                'depth' => $productData['depth'],
+                'width' => $productData['width'],
+                'height' => $productData['height'],
+                'weight' => $productData['weight'],
+                'meta_title' => $productData['meta_title'],
+                'meta_keywords' => $productData['meta_keywords'],
+                'meta_description' => $productData['meta_description'],
+                'extra_attributes' => $extraAttributes,
+                'json_images' => $json_images,
+
+                'seller_id' => $sellerId,
+            ];
         });
-
-        
     }
 
     public function storeProducts($productsArray)
     {
-
+        
     }
 }
