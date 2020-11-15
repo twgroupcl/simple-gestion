@@ -24,10 +24,16 @@
                     <input type="file" name="product-csv" value="" class="form-control">
                 </div>
 
+                @if ($admin)
                 <div class="form-group col-md-12 required">
                     <label>Vendedor</label>
-                    <input type="file" name="seller_id" value="" class="form-control">
+                    <select name="seller_id">
+                        @foreach ($sellers as $seller)
+                            <option value="{{ $seller->id }}">{{ $seller->visible_name }}</option>
+                        @endforeach
+                    </select>
                 </div>
+                @endif
             </div>
         </div>
 
