@@ -10,6 +10,7 @@ use App\Models\ProductClass;
 use App\Models\ProductCategory;
 use Illuminate\Validation\Rule;
 use App\Services\ProductService;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
 use App\Imports\ProductsCollectionImport;
@@ -110,11 +111,11 @@ class BulkUploadBooksService {
             ],
             'author' => 'required', // atributo text
             'description' => 'required',
-            'year' => 'required|numeric', // atributo text
+            'year' => 'nullable|numeric', // atributo text
             'editorial' => 'required|exists:product_brands,name',
             'category' => 'required|exists:product_categories,name',
             'language' => 'required', // atributo quizas select
-            'pages_number' => 'required|numeric', // atributo text
+            'pages_number' => 'nullable|numeric', // atributo text
             'encuadernacion' => 'required', // atributo quizas select
             'price' => 'required|numeric',
             'special_price' => 'nullable|numeric',
@@ -122,9 +123,9 @@ class BulkUploadBooksService {
             'width' => 'required|numeric',
             'height' => 'required|numeric',
             'weight' => 'required|numeric',
-            'meta_title' => 'required',
-            'meta_keywords' => 'required',
-            'meta_description' => 'required',
+            'meta_title' => 'nullable',
+            'meta_keywords' => 'nullable',
+            'meta_description' => 'nullable',
             'path_image' => 'required|ends_with:.jpg,.jpeg,.png',
         ];
 
@@ -296,6 +297,11 @@ class BulkUploadBooksService {
             } catch(QueryException $exception) {
                 return ['status' => false, 'message' =>  $exception];
             }
+
+            DB::table('product_images')->insert([
+                'product_id' => $newProduct->id,
+                'path' => $product['images_json'][0]['image'],
+            ]);
 
             $newProduct->categories()->attach($product['product_category']);
             $newProduct->url_key = $slug;
