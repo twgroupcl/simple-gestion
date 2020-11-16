@@ -136,7 +136,6 @@ class DTEService
         return false;
     }
 
-
     public static function exec($url, $data = [], array $headers =[], $method = null) : GuzzleResponse
     {
         try {
