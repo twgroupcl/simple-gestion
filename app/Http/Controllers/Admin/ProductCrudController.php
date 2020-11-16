@@ -1156,7 +1156,7 @@ class ProductCrudController extends CrudController
         try {
             $result = $bulkUploadService->convertExcelToArray($file);
         } catch (Exception $e) {
-            return redirect()->route('products.bulk-upload')->with('error', 'El archivo contiene un formato incorrecto o se encuentra corrupto.');
+            return redirect()->route('products.bulk-upload')->with('error', 'El archivo CSV contiene un formato incompatible o se encuentra corrupto.');
         }
 
         if ($result['validate']) {
