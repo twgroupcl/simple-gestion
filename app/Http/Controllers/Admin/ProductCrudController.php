@@ -1136,6 +1136,7 @@ class ProductCrudController extends CrudController
     public function bulkUploadView(Request $request)
     {
         $request->session()->forget('bulk_upload_data');
+
         return view('admin.products.bulk-upload', [ 
             'admin' => $this->admin, 
             'userSeller' => $this->userSeller,
@@ -1146,13 +1147,14 @@ class ProductCrudController extends CrudController
     public function bulkUploadPreview(Request $request)
     {
         $bulkUploadService = new BulkUploadBooksService();
+
         $file = $request->file('product-csv');
         $sellerId = $request['seller_id'];
 
         try {
             $result = $bulkUploadService->convertExcelToArray($file);
         } catch (Exception $e) {
-            return redirect()->route('products.bulk-upload')->with('error', 'El formato del archivo excel es incorrecto');
+            return redirect()->route('products.bulk-upload')->with('error', 'El archivo contiene un formato incorrecto o se encuentra corrupto.');
         }
 
         if ($result['validate']) {
@@ -1170,17 +1172,17 @@ class ProductCrudController extends CrudController
 
         DB::beginTransaction();
 
-        $bulkUploadResult = $bulkUploadService->storeProducts($request->session()->get('bulk_upload_data'), $request['seller_id']);
+        $result = $bulkUploadService->storeProducts($request->session()->get('bulk_upload_data'), $request['seller_id']);
         
-        if (!$bulkUploadResult['status']) {
+        if (!$result['status']) {
             DB::rollBack();
 
-            return $bulkUploadResult['message'];
+            return view('admin.products.bulk-upload-store', ['error' => $result['message']]);
         }
 
         DB::commit();
         
         $request->session()->forget('bulk_upload_data');
-        return 'todo ok';
+        return view('admin.products.bulk-upload-store', ['success' => 'Productos cargados correctamente']);
     }
 }
