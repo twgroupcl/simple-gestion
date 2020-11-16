@@ -80,6 +80,8 @@ class ProductCrudController extends CrudController
         // Hide children products
         $this->crud->addClause('where', 'parent_id', '=', null);
 
+        $this->crud->addButtonFromView('top', 'bulk-upload', 'product.bulk-upload', 'end');
+
         CRUD::addColumn([
             'name' => 'sku',
             'label' => 'SKU',
@@ -87,7 +89,7 @@ class ProductCrudController extends CrudController
             ]);
 
 
-        if($this->admin) {
+        if ($this->admin) {
             CRUD::addColumn([
                 'name' => 'seller',
                 'label' => 'Vendedor',
