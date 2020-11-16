@@ -10,6 +10,7 @@ use App\Models\ProductClass;
 use App\Models\ProductCategory;
 use Illuminate\Validation\Rule;
 use App\Services\ProductService;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
 use App\Imports\ProductsCollectionImport;
@@ -296,6 +297,11 @@ class BulkUploadBooksService {
             } catch(QueryException $exception) {
                 return ['status' => false, 'message' =>  $exception];
             }
+
+            DB::table('product_images')->insert([
+                'product_id' => $newProduct->id,
+                'path' => $product['images_json'][0]['image'],
+            ]);
 
             $newProduct->categories()->attach($product['product_category']);
             $newProduct->url_key = $slug;
