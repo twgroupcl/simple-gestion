@@ -83,15 +83,26 @@ class ManageInvoiceCrudController extends CrudController
     public function createRealDocument(Request $request, Invoice $invoice)
     {
         if (!isset($invoice->dte_code)) {
-            return redirect('index');
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
         //check if emisor have folios. "disponibles >0 "
 
         $service = new DTEService();
-        $response = $service->generateDTE($invoice);
 
-        $contentResponse = $response->getBody()->getContents();
-        ddd($contentResponse, $response);
-        return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
+        if (!$service->foliosAvailables($invoice)) {
+            \Alert::add('warning', 'No hay folios disponibles')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        $response = $service->generateDTE($invoice);
+        if ($response->getStatusCode() === 200) {
+            $contentResponse = $response->getBody()->getContents();
+            ddd($contentResponse, $response);
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
+        }
+
+        \Alert::add('warning', 'Hubo algun problema al generar el documento.')->flash();
+        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+
     }
 }
