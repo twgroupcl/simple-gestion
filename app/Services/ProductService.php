@@ -5,6 +5,8 @@ namespace App\Services;
 use DateTime;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Models\ProductBrand;
+use App\Models\ProductClass;
 use App\Models\ProductClassAttribute;
 use App\Models\ProductInventorySource;
 use Illuminate\Database\QueryException;
@@ -13,31 +15,10 @@ class ProductService
 {
 
     const USE_INVENTORY_CONTROL_BY_DEFAULT = true;
+    const MAX_ATTEMPTS_FOR_URL_SLUG = 20;
+    const DEFAULT_CURRENCY_ID = 63;
 
-    public function validateUniqueSku($sku, $sellerId, $companyId)
-    {
-        $productsSku = Product::where([
-            'seller_id' => $sellerId,
-            'company_id' => $companyId,
-        ])->pluck('sku')->toArray();
-
-        if ( in_array($sku, $productsSku) ) return false;
-
-        return true;
-    }
-
-    public function validateUniqueSlug($slug, $companyId)
-    {
-        $urlKeysArray = Product::where([
-            'company_id' => $companyId,
-        ])->pluck('url_key')->toArray();
-
-        if ( in_array($slug, $urlKeysArray) ) return false;
-
-        return true;
-    }
-
-    public function createSimpleProduct($request)
+    public function createSimpleProductWithWarehouse($request)
     {
         
         if (self::USE_INVENTORY_CONTROL_BY_DEFAULT) {
@@ -45,11 +26,24 @@ class ProductService
             $is_service = 0;
         }
 
+    
+        $brandId = $request['product_brand_id'];
+        if (!$brandId) {
+            $brand = ProductBrand::where('code', $request['product_brand_code'])->first();
+            $brandId = $brand ? $brand->id : null;
+        }
+
+        $classId = $request['product_class_id'];
+        if (!$classId) {
+            $class = ProductClass::where('code', $request['product_class_code'])->first();
+            $classId = $class ? $class->id : null;
+        }
+
         $warehouses = json_decode($request['warehouse']);
         $companyId = auth()->user()->companies->first()->id;
         $products = [];
 
-        $type = ( $request['type'] == 'simple') ? Product::PRODUCT_TYPE_SIMPLE : Product::PRODUCT_TYPE_CONFIGURABLE;
+        $typeId = ( $request['type'] == 'simple') ? Product::PRODUCT_TYPE_SIMPLE : Product::PRODUCT_TYPE_CONFIGURABLE;
 
         // Validate unique warehouses
         $warehousCodes = collect($warehouses)->pluck('code');
@@ -75,7 +69,6 @@ class ProductService
             // Validate SKU
             if ( ! $this->validateUniqueSku($request['sku'], $sellerId, $companyId) ) {
                 return [ 'status' => false, 'message' =>  'Ya tienes un producto con el SKU indicado', 'status_response' => 'error'];
-
             }
 
             // Validate Url key
@@ -84,17 +77,17 @@ class ProductService
             $counter = 0;
 
             // If the Url key already exits, we added a suffix
-            while ( !$this->validateUniqueSlug($finalUrlKey, $companyId) && $counter < 20) {
+            while ( !$this->validateUniqueSlug($finalUrlKey, $companyId) && $counter < self::MAX_ATTEMPTS_FOR_URL_SLUG) {
                 $counter++;
                 $finalUrlKey = $baseUrlKey . '-' . $counter;
             }
 
-            if ($counter == 20) {
+            if ($counter == self::MAX_ATTEMPTS_FOR_URL_SLUG) {
                 return [ 'status' => false, 'message' =>  'Ha ocurrido un error con el url_key', 'status_response' => 'error'];
             }
             
             // Set default currency
-            $currencyId = 63;
+            $currencyId = self::DEFAULT_CURRENCY_ID;
 
             // Custom attributes
             if ($request['extra_attributes']) {
@@ -105,11 +98,10 @@ class ProductService
                 foreach ($attributes_json as $attributeData) {
                     $attribute = ProductClassAttribute::where([
                         'json_attributes->code' => $attributeData->code,
-                        'product_class_id' => $request['product_class_id'],
+                        'product_class_id' => $classId,
                     ])->first();
                     
                     // @todo si el atributo es de tipo select, verificar que el value existe entre las opciones
-
                     if (!$attribute) {
                         return [ 'status' => false, 'message' =>  'El atributo ' . $attributeData->code . ' no existe o es invalido', 'status_response' => 'error'];
                     }
@@ -118,12 +110,10 @@ class ProductService
                 }
             }
 
-            // Save inventories
             $inventories = [];
             $inventories['inventory-source-'.$warehouseData->id] = $warehouse->stock;
             
             try {
-
                 // Base Propierties
                 $product  = Product::create([
                     'name' => $request['name'],
@@ -135,9 +125,9 @@ class ProductService
                     'description' =>  $request['description'],
                     'price' => $warehouse->price,
                     
-                    'product_type_id' => $type,
-                    'product_class_id' => $request['product_class_id'],
-                    'prduct_brand_id' => $request['product_brand_id'],
+                    'product_type_id' => $typeId,
+                    'product_class_id' => $classId,
+                    'product_brand_id' => $brandId,
                     
                     'special_price' => $warehouse->special_price ?? null,
                     'special_price_from' => isset($warehouse->special_price_from) ? new DateTime($warehouse->special_price_from) : null,
@@ -195,6 +185,78 @@ class ProductService
         }
 
         return [ 'status' => true, 'message' =>  'Productos creados exitosamente', 'status_response' => 'success', 'data' => $products];
+    }
+
+    public function generateSlug($name, $maxAttempts, $companyId = 1)
+    {
+        $baseUrlKey = Str::slug($name);
+        $finalUrlKey = $baseUrlKey;
+        $counter = 0;
+
+        // If the Url key already exits, we added a suffix
+        while ( !$this->validateUniqueSlug($finalUrlKey, $companyId) && $counter < $maxAttempts) {
+            $counter++;
+            $finalUrlKey = $baseUrlKey . '-' . $counter;
+        }
+
+        if ($counter == $maxAttempts) {
+            return false;
+        }
+
+        return $finalUrlKey;
+    }
+
+    /**
+     * Transform an array (or JSON) with the format [ ['code' => code, 'value' => value] ]
+     * to a format that is accepted by the product model [ ['attribute-id' => value] ]
+     * 
+     */
+    public function extraAttributesAdapter($extraAttributesArray, $classId, $isJson = false)
+    {
+        $attributesArray = $isJson 
+                ? json_decode($extraAttributesArray, true)
+                : $extraAttributesArray;
+
+        $attributes = [];
+
+        foreach ($attributesArray as $attributeData) {
+            $attribute = ProductClassAttribute::where([
+                'json_attributes->code' => $attributeData['code'],
+                'product_class_id' => $classId,
+            ])->first();
+            
+            // @todo si el atributo es de tipo select, verificar que el value existe entre las opciones
+            if (!$attribute) {
+               return false;
+            }
+
+            $attributes['attribute-' . $attribute->id] = $attributeData['value'];
+        }
+
+        return $attributes;
+    }
+
+    public function validateUniqueSku($sku, $sellerId, $companyId)
+    {
+        $productsSku = Product::where([
+            'seller_id' => $sellerId,
+            'company_id' => $companyId,
+        ])->pluck('sku')->toArray();
+
+        if ( in_array($sku, $productsSku) ) return false;
+
+        return true;
+    }
+
+    public function validateUniqueSlug($slug, $companyId)
+    {
+        $urlKeysArray = Product::where([
+            'company_id' => $companyId,
+        ])->pluck('url_key')->toArray();
+
+        if ( in_array($slug, $urlKeysArray) ) return false;
+
+        return true;
     }
 
     private function getSellerIdFromWarehouse($warehouseCode)

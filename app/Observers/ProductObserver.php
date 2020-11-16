@@ -107,13 +107,17 @@ class ProductObserver
         $disk = 'public';
         $attribute_name = 'images_json';
 
-        if(is_string($product->images_json)) {
+        if (is_string($product->images_json)) {
             $valueDecode = json_decode($product->images_json, true);
         } else {
             $valueDecode = $product->images_json ?? [];
         }
 
-        $oldValueDecode = json_decode($product->getOriginal('images_json'), true);
+        if (is_string($product->getOriginal('images_json'))) {
+            $oldValueDecode = json_decode($product->getOriginal('images_json'), true);
+        } else {
+            $oldValueDecode = $product->getOriginal('images_json') ?? [];
+        }
 
         $images = [];
         $oldImages = [];

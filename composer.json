@@ -23,6 +23,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
         "livewire/livewire": "^2.3",
+        "maatwebsite/excel": "^3.1",
         "orangehill/iseed": "^2.6",
         "qoraiche/laravel-mail-editor": "^2.2",
         "transbank/transbank-sdk": "^1.8",

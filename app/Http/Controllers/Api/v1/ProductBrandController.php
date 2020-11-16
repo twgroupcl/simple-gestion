@@ -21,6 +21,7 @@ class ProductBrandController extends Controller
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
             'position' => 'required|numeric',
+            'code' => 'required|unique:product_brands,code',
             'slug' => new SlugRule(),
             'status' => 'boolean',
         ]);
