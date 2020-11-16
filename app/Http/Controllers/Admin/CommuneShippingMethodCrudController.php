@@ -169,7 +169,7 @@ class CommuneShippingMethodCrudController extends CrudController
 
         CRUD::addField(
             [
-                'label'     => 'Envio variable',
+                'label'     => 'Tarifa variable',
                 'type'      => 'checkbox',
                 'name'      => 'variable_status',
                 'fake' => true,
@@ -177,6 +177,20 @@ class CommuneShippingMethodCrudController extends CrudController
                 'tab' => 'Configuración general',
                 'attributes' => [
                     'class' => 'variable_checker'
+                ]
+            ]
+        );
+
+        CRUD::addField(
+            [
+                'label'     => 'Retiro en tienda',
+                'type'      => 'checkbox',
+                'name'      => 'pickup_status',
+                'fake' => true,
+                'store_in' => 'active_methods',
+                'tab' => 'Configuración general',
+                'attributes' => [
+                    'class' => 'pickup_checker'
                 ]
             ]
         );
@@ -206,6 +220,26 @@ class CommuneShippingMethodCrudController extends CrudController
             'fake' => true,
             'store_in' => 'shipping_methods',
             'tab' => 'Envío gratis',
+            'fields' => [
+                [
+                    'name' => 'price',
+                    'label' => 'Precio de envio',
+                    'type' => 'number',
+                    'default' => 0,
+                    'attributes' => [
+                        'readonly' => true,
+                    ]
+                ],
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'pickup',
+            'label' => 'Retiro en tienda',
+            'type' => 'repeatable',
+            'fake' => true,
+            'store_in' => 'shipping_methods',
+            'tab' => 'Retiro en tienda',
             'fields' => [
                 [
                     'name' => 'price',
