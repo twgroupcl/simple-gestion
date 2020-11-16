@@ -20,13 +20,13 @@
         <div class="card">
             <div class="card-body row">
                 <div class="form-group col-md-12 required">
-                    <label>Archivo excel</label>
+                    <label><strong>Archivo excel</strong></label>
                     <input required type="file" name="product-csv" value="" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
                 </div>
 
                 @if ($admin)
                 <div class="form-group col-md-12 required">
-                    <label>Vendedor</label>
+                    <label><strong>Vendedor</strong></label><br>
                     <select name="seller_id">
                         @foreach ($sellers as $seller)
                             <option value="{{ $seller->id }}">{{ $seller->visible_name }}</option>

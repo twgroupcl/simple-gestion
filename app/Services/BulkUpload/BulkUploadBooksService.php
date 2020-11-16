@@ -108,7 +108,6 @@ class BulkUploadBooksService {
                     return $query->where('seller_id', '=', request('seller_id'));
                 }),
             ],
-            'category' => 'required',
             'author' => 'required', // atributo text
             'description' => 'required',
             'year' => 'required|numeric', // atributo text
