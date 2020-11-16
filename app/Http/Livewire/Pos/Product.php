@@ -20,8 +20,6 @@ class Product extends Component
 
     public function addToCart()
     {
-
-        dd('ok');
-       // $this->emitUp('add-product-cart',$this->product);
+        $this->emit('add-product-cart:post',$this->product->id);
     }
 }
