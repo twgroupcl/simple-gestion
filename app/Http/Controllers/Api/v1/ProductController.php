@@ -41,7 +41,7 @@ class ProductController extends Controller
 
         DB::beginTransaction();
 
-        $result = $productService->createSimpleProduct($request);
+        $result = $productService->createSimpleProductWithWarehouse($request);
 
         if (!$result['status']) {
 

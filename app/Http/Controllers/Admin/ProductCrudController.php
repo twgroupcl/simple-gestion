@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\ProductRequest;
+use App\Imports\ProductsCollectionImport;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Requests\ProductVariantUpdateRequest;
+use App\Services\BulkUpload\BulkUploadBooksService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -75,6 +80,8 @@ class ProductCrudController extends CrudController
         // Hide children products
         $this->crud->addClause('where', 'parent_id', '=', null);
 
+        $this->crud->addButtonFromView('top', 'bulk-upload', 'product.bulk-upload', 'end');
+
         CRUD::addColumn([
             'name' => 'sku',
             'label' => 'SKU',
@@ -82,7 +89,7 @@ class ProductCrudController extends CrudController
             ]);
 
 
-        if($this->admin) {
+        if ($this->admin) {
             CRUD::addColumn([
                 'name' => 'seller',
                 'label' => 'Vendedor',
@@ -1126,5 +1133,58 @@ class ProductCrudController extends CrudController
 
 
 
+    }
+
+    public function bulkUploadView(Request $request)
+    {
+        $request->session()->forget('bulk_upload_data');
+
+        return view('admin.products.bulk-upload', [ 
+            'admin' => $this->admin, 
+            'userSeller' => $this->userSeller,
+            'sellers' => Seller::all(),
+        ]);
+    }
+
+    public function bulkUploadPreview(Request $request)
+    {
+        $bulkUploadService = new BulkUploadBooksService();
+
+        $file = $request->file('product-csv');
+        $sellerId = $request['seller_id'];
+
+        try {
+            $result = $bulkUploadService->convertExcelToArray($file);
+        } catch (Exception $e) {
+            return redirect()->route('products.bulk-upload')->with('error', 'El archivo CSV contiene un formato incompatible o se encuentra corrupto.');
+        }
+
+        if ($result['validate']) {
+            $request->session()->put('bulk_upload_data', $result['products_array']);
+        } else {
+            $request->session()->forget('bulk_upload_data');
+        }
+    
+        return view('admin.products.bulk-upload-preview', compact('result', 'sellerId'));
+    }
+
+    public function bulkUploadStore(Request $request)
+    {
+        $bulkUploadService = new BulkUploadBooksService();
+
+        DB::beginTransaction();
+
+        $result = $bulkUploadService->storeProducts($request->session()->get('bulk_upload_data'), $request['seller_id']);
+        
+        if (!$result['status']) {
+            DB::rollBack();
+
+            return view('admin.products.bulk-upload-store', ['error' => $result['message']]);
+        }
+
+        DB::commit();
+        
+        $request->session()->forget('bulk_upload_data');
+        return view('admin.products.bulk-upload-store', ['success' => 'Productos cargados correctamente']);
     }
 }

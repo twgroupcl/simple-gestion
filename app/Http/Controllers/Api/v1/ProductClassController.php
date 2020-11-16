@@ -20,6 +20,7 @@ class ProductClassController extends Controller
 
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
+            'code' => 'required|unique:product_classes,code',
             'category_id' => 'exists:product_categories,id',
             'status' => 'boolean',
         ]);
@@ -34,6 +35,7 @@ class ProductClassController extends Controller
         try {
             $productClass  = ProductClass::create([
                 'name' => $request['name'],
+                'code' => $request['code'],
                 'category_id' => $request['category_id'],
                 'status' => $request['status'] ?? 1,
                 'company_id' => $user->companies->first()->id,
