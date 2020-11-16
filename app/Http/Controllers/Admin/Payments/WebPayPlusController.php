@@ -1,13 +1,16 @@
 <?php
 namespace App\Http\Controllers\Admin\Payments;
 
-use App\Http\Controllers\Controller;
-use App\Models\PlanSubscription;
-use App\Models\PlanSubscriptionPayment;
-use Carbon\Carbon;
 use session;
-use Transbank\Webpay\Configuration;
+use Carbon\Carbon;
+use App\Models\Plans;
+use App\Models\Customer;
+use App\Models\Currency;
 use Transbank\Webpay\Webpay;
+use App\Models\PlanSubscription;
+use Transbank\Webpay\Configuration;
+use App\Http\Controllers\Controller;
+use App\Models\PlanSubscriptionPayment;
 
 class WebPayPlusController extends Controller
 {
@@ -167,7 +170,6 @@ class WebPayPlusController extends Controller
 
         $planSubscriptionId = $result->buyOrder;
 
-        /*
         $orderpayment = PlanSubscriptionPayment::where('plan_subscription_id', $planSubscriptionId)->first();
         $data = [
             'event' => 'result transaction',
@@ -178,12 +180,27 @@ class WebPayPlusController extends Controller
         $orderpayment->json_in = json_encode($data);
         $orderpayment->date_in = Carbon::now();
         $orderpayment->save();
-        */
 
         $output = $result->detailOutput;
         if ($output->responseCode == 0) {
             $subscription = PlanSubscription::where('id', $planSubscriptionId)->first();
-            return view('payments.transbank.webpay.plus.result', compact('subscription'));
+            
+            $customer = Customer::where('user_id',$subscription->user_id)->first();
+            $plan = Plans::where('id', $subscription->plan_id)->first();
+            $currency = Currency::where('id',$plan->currency)->first();
+            $starts_at = explode(' ',$subscription->starts_at);
+            $ends_at = explode(' ',$subscription->ends_at);
+
+            $dataSubscription = [
+                'plan_id' => $subscription->plan_id,
+                'price' => $plan->price,
+                'start_date' => $starts_at[0],
+                'end_date' => $ends_at[0]
+            ];
+            $customer->subscription_data = json_encode($dataSubscription);
+            $customer->save();
+            
+            return view('payments.transbank.webpay.plus.result')->with('data', $planSubscriptionId);
         } else {
             return view('payments.transbank.webpay.plus.failed', compact('result'));
         }
@@ -206,4 +223,6 @@ class WebPayPlusController extends Controller
     //     return view('vendor.backpack.base.payment.result', compact('subscription'));
 
     // }
+
+    
 }

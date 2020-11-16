@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::post('/payment/subscription/result', 'Admin\Payments\WebPayPlusController@subscriptionResultCustomerPayment')->name('payment.customer.result');
 Route::post('/payment/subscription/detail', 'Admin\Payments\WebPayPlusController@subscriptionDetailCustomerPayment')->name('payment.customer.detail');
+Route::post('/send-email-admin', 'Frontend\CustomerController@sendMailSubscription');
 
 Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.sign');
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
