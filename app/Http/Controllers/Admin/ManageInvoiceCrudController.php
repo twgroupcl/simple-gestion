@@ -79,4 +79,19 @@ class ManageInvoiceCrudController extends CrudController
         //    ['invoice' => $invoice->id]
         //);
     }
+
+    public function createRealDocument(Request $request, Invoice $invoice)
+    {
+        if (!isset($invoice->dte_code)) {
+            return redirect('index');
+        }
+        //check if emisor have folios. "disponibles >0 "
+
+        $service = new DTEService();
+        $response = $service->generateDTE($invoice);
+
+        $contentResponse = $response->getBody()->getContents();
+        ddd($contentResponse, $response);
+        return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
+    }
 }

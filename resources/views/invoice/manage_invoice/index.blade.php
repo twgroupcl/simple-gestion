@@ -42,10 +42,22 @@
 @endcan
 
 {{-- status invoice --}}
+@can('doShowTempDocument', $invoice)
 @php
     Widget::add([
         'type' => 'view',
         'view' => 'invoice.manage_invoice.delete_temporary_document',
     ]);
 @endphp
+@endcan
+
+@can('doShowTempDocument', $invoice)
+@php
+    Widget::add([
+        'type' => 'view',
+        'view' => 'invoice.manage_invoice.create_real_document',
+    ]);
+@endphp
+@endcan
+
 @endsection
