@@ -3,7 +3,7 @@
 @section('content')
     <div class="row mt-3">
         <div class="col">
-            <h3>Subir productos masivamente</h3>
+            <h3>Vista previa de productos a cargar</h3>
         </div>
 	  </div>
 

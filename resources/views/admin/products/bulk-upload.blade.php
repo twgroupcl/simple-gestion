@@ -21,7 +21,7 @@
             <div class="card-body row">
                 <div class="form-group col-md-12 required">
                     <label>Archivo excel</label>
-                    <input type="file" name="product-csv" value="" class="form-control">
+                    <input required type="file" name="product-csv" value="" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
                 </div>
 
                 @if ($admin)
@@ -44,7 +44,7 @@
         <div class="btn-group" role="group">
             <button type="submit" class="btn btn-success">
                 <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
-                <span>Cargar productos</span>
+                <span>Vista previa de productos a cargar</span>
             </button>
         </div>
     </form>
