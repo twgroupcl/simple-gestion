@@ -115,7 +115,7 @@ class BulkUploadBooksService {
             'editorial' => 'required|exists:product_brands,name',
             'category' => 'required|exists:product_categories,name',
             'language' => 'required', // atributo quizas select
-            'pages_number' => 'nullable|required|numeric', // atributo text
+            'pages_number' => 'nullable|numeric', // atributo text
             'encuadernacion' => 'required', // atributo quizas select
             'price' => 'required|numeric',
             'special_price' => 'nullable|numeric',
@@ -123,9 +123,9 @@ class BulkUploadBooksService {
             'width' => 'required|numeric',
             'height' => 'required|numeric',
             'weight' => 'required|numeric',
-            'meta_title' => 'nullable|required',
-            'meta_keywords' => 'nullable|required',
-            'meta_description' => 'nullable|required',
+            'meta_title' => 'nullable',
+            'meta_keywords' => 'nullable',
+            'meta_description' => 'nullable',
             'path_image' => 'required|ends_with:.jpg,.jpeg,.png',
         ];
 
