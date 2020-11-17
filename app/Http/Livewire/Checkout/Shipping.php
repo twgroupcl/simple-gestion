@@ -136,9 +136,9 @@ class Shipping extends Component
                             $itemShipping['shipping']['totalPrice'] = $shippingPrice;
                             break;
 
-                        case 'variable': 
+                        /* case 'variable': 
                             $itemShipping['shipping']['totalPrice'] = 1000;
-                            break;
+                            break; */
                             
                         default:
                             $itemShipping['shipping']['totalPrice'] = null;
