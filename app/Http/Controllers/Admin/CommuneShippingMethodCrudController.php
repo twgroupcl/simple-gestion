@@ -236,7 +236,7 @@ class CommuneShippingMethodCrudController extends CrudController
             'fields' => [
                 [
                     'name' => 'price',
-                    'label' => 'Precio de envio por paquete',
+                    'label' => 'Precio de envío por paquete',
                     'type' => 'number',
                     'default' => 0,
                     'attributes' => [
@@ -256,7 +256,7 @@ class CommuneShippingMethodCrudController extends CrudController
             'fields' => [
                 [
                     'name' => 'price',
-                    'label' => 'Precio de envio por paquete',
+                    'label' => 'Precio de envío por paquete',
                     'default' => 0,
                     'type' => 'number',
                 ],
@@ -281,9 +281,9 @@ class CommuneShippingMethodCrudController extends CrudController
                     'columns' => [
                         'min_weight' => 'Peso minimo (kg) *',
                         'max_weight' => 'Peso maximo (kg) *',
-                        'min_price' => 'Precio minimo ($)',
-                        'max_price' => 'Precio maximo ($)',
-                        'final_price' => 'Costo final de envio ($) *',
+                        'min_price' => 'Valor minimo del paquete ($)',
+                        'max_price' => 'Valor maximo del paquete ($)',
+                        'final_price' => 'Precio final de envío por paquete ($) *',
                     ]
                 ],
                 [
