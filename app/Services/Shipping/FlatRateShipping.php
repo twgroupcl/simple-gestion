@@ -21,9 +21,9 @@ class FlatRateShipping {
             }
         }
         
-        $freeShippingData = json_decode($shippingConfig->shipping_methods['flat_rate'], true)[0];
+        $flatRateShippingData = json_decode($shippingConfig->shipping_methods['flat_rate'], true)[0];
         
-        return $freeShippingData['price'];
+        return sanitizeNumber($flatRateShippingData['price']);
     }
 }
 
