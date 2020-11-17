@@ -219,7 +219,7 @@ class Item extends Component
     {
         $seller = Seller::whereId($this->sellerId)->first();
         $communeShippingMethods = $seller->getAvailableShippingMethodsByCommune($this->communeSelected);
-        $shippingMethods = ShippingMethod::whereIn('code',$communeShippingMethods)->get();
+        $shippingMethods = ShippingMethod::whereIn('code',$communeShippingMethods)->where('status', 1)->get();
         //$this->shippingMethods = $shippingMethods;
         return $shippingMethods;
 
