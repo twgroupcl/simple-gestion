@@ -2,13 +2,14 @@
 
 namespace App\Http\Livewire\Checkout;
 
-use App\Http\Chilexpress;
 use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Product;
 use App\Models\Seller;
-use App\Models\ShippingMethod;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\CartItem;
+use App\Http\Chilexpress;
+use App\Models\ShippingMethod;
+use App\Services\Shipping\FlatRateShipping;
 
 class Shipping extends Component
 {
@@ -74,7 +75,6 @@ class Shipping extends Component
 
         $items = $this->items->groupBy(['product.seller_id', 'shipping_id']);
 
-
         $this->sellersShippings = [];
         foreach ($items as $sellerKey => $sellerValue) {
             $seller = Seller::where('id', $sellerKey)->first();
@@ -108,13 +108,49 @@ class Shipping extends Component
                     $itemShipping['shipping']['totalPrice'] += $item->price * $item->qty;
                 }
                 if ($itemShipping['shipping']['isService'] == 0) {
-                    if ($shippingMethod->code == 'chilexpress') {
+
+                    $communeOrigin = $seller->addresses_data[0]['commune_id'];
+                    $communeDestine = $this->cart->address_commune_id;
+
+                    switch ($shippingMethod->code) {
+                        
+                        case 'chilexpress':
+                            $chilexpress = new Chilexpress();
+                            $chilexpressResult = $chilexpress->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);
+                            $resultitem = json_decode(json_encode($chilexpressResult['item']), false);
+
+                            $itemShipping['shipping']['totalPrice'] = $resultitem->service->serviceValue;
+                            break;
+
+                        case 'free_shipping': 
+                            $itemShipping['shipping']['totalPrice'] = 0;
+                            break;
+
+                        case 'picking': 
+                            $itemShipping['shipping']['totalPrice'] = 0;
+                            break;
+
+                        case 'flat_rate': 
+                            $flatRate = new FlatRateShipping();
+                            $shippingPrice = $flatRate->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);
+                            $itemShipping['shipping']['totalPrice'] = $shippingPrice;
+                            break;
+
+                        case 'variable': 
+                            $itemShipping['shipping']['totalPrice'] = 1000;
+                            break;
+                            
+                        default:
+                            $itemShipping['shipping']['totalPrice'] = null;
+                    }
+
+                    /* if ($shippingMethod->code == 'chilexpress') {
                         $chilexpress = new Chilexpress();
                         $communeOrigin = $seller->addresses_data[0]['commune_id'];
                         $communeDestine = $this->cart->address_commune_id;
 
                         $chilexpressResult = $chilexpress->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);
-
+                        dd($chilexpressResult);
                         $resultitem = json_decode(json_encode($chilexpressResult['item']), false);
 
                         $itemShipping['shipping']['totalPrice'] = $resultitem->service->serviceValue;
@@ -124,7 +160,7 @@ class Shipping extends Component
                         } else {
                             $itemShipping['shipping']['totalPrice'] = $itemShipping['shipping']['pricePackpage'] * $itemShipping['shipping']['totalShippingPackage'];
                         }
-                    }
+                    } */
 
                     if ($itemShipping['shipping']['totalPrice']) {
                         $firstItemSeller = CartItem::whereCartId($this->cart->id)->with('product')->get();
