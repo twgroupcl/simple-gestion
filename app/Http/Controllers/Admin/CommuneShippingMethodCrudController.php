@@ -222,7 +222,7 @@ class CommuneShippingMethodCrudController extends CrudController
             'fields' => [
                 [
                     'name' => 'price',
-                    'label' => 'Precio de envio',
+                    'label' => 'Precio de envio por paquete',
                     'type' => 'number',
                     'default' => 0,
                     'attributes' => [
@@ -242,7 +242,7 @@ class CommuneShippingMethodCrudController extends CrudController
             'fields' => [
                 [
                     'name' => 'price',
-                    'label' => 'Precio de envio',
+                    'label' => 'Precio de envio por paquete',
                     'default' => 0,
                     'type' => 'number',
                 ],
@@ -251,11 +251,11 @@ class CommuneShippingMethodCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'variable',
-            'label' => 'Variable',
+            'label' => 'Tarifa variable',
             'type' => 'repeatable',
             'fake' => true,
             'store_in' => 'shipping_methods',
-            'tab' => 'Variable',
+            'tab' => 'Tarifa variable',
             'fields' => [
                 [
                     'name' => 'table_prices',
