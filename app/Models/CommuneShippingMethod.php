@@ -102,6 +102,15 @@ class CommuneShippingMethod extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getIsGlobalAccesorAttribute()
+    {
+        if ($this->is_global) {
+            return 'Si';
+        } else {
+            return 'No';
+        }
+    }
+
     public function getShippingMethodsAccesorAttribute()
     {
         $availableMethods = $this->getAvailableShippingMethodCodes();

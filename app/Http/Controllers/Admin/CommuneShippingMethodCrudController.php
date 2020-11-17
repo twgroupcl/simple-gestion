@@ -70,20 +70,25 @@ class CommuneShippingMethodCrudController extends CrudController
         }
 
         CRUD::addColumn([
-            'name' => 'commune',
-            'label' => 'Comuna',
-            'type' => 'relationship',
-        ]);
-
-        CRUD::addColumn([
-            'name' => 'is_global',
-            'label' => 'Aplica a todas las comunas',
-        ]);
-
-        CRUD::addColumn([
             'name' => 'shipping_methods_accesor',
             'label' => 'Metodos de envio habilitados',
         ]);
+
+        CRUD::addColumn([
+            'name' => 'is_global_accesor',
+            'label' => 'Aplica a todas las comunas',
+            'type' => 'text',
+            'orderable'  => true,
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                    return $query->orderBy('commune_shipping_methods.is_global', $columnDirection);
+            },
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'commune',
+            'label' => 'Comuna',
+            'type' => 'relationship',
+        ]);        
     }
 
     /**
