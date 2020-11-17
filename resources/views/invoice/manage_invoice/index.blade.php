@@ -25,14 +25,16 @@
 @endphp
 @endcan
 
+@can('doEdit', $invoice)
 @php
     Widget::add([
         'type' => 'view',
         'view' => 'invoice.manage_invoice.go_to_edit',
     ]);
 @endphp
+@endcan
 
-@can('doShowTempDocument', $invoice)
+@can('doDownloadPDF', $invoice)
 @php
     Widget::add([
         'type' => 'view',
@@ -42,7 +44,7 @@
 @endcan
 
 {{-- status invoice --}}
-@can('doShowTempDocument', $invoice)
+@can('doDeleteDocument', $invoice)
 @php
     Widget::add([
         'type' => 'view',

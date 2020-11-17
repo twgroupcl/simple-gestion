@@ -56,23 +56,42 @@ class ManageInvoiceCrudController extends CrudController
         return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
     }
 
-    public function getPDF(Request $request, Invoice $invoice)
+    public function getRealPDF(Request $request, Invoice $invoice)
+    {
+        if (! isset($invoice->folio) ) {
+            \Alert::add('warning', 'Este no es un document emitido');
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+        
+        $service = new DTEService();
+        $response = $service->getRealPDF();
+        $pdfContent = $response->getBody()->getContents();
+
+        return $this->getResponsePDF($pdfContent, $invoice);
+
+    }
+
+    private function getResponsePDF($blob, Invoice $invoice)
+    {
+        return response()->make($blob, 200, [
+            'Content-Type' =>  'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$invoice->dte_code . '.pdf"'
+        ]);
+    }
+
+    public function getTemporalPDF(Request $request, Invoice $invoice)
     {
         if (!isset($invoice->dte_code)) {
             
             return redirect('index');
         }
         $service = new DTEService();
-        $response = $service->getPDF($invoice);
+        $response = $service->getTemporalPDF($invoice);
 
         $pdfContent = $response->getBody()->getContents();
-
         //@todo check
-        return response()->make($pdfContent, 200, [
-            'Content-Type' =>  'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$invoice->dte_code . '.pdf"'
-        ]);
 
+        return $this->getResponsePDF($pdfContent, $invoice);
         //\Alert::add('success', 'Descargar pdf')->flash();
         //return redirect()->action(
         //    [self::class, 'index'],
