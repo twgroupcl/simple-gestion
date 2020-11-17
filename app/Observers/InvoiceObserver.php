@@ -78,7 +78,7 @@ class InvoiceObserver
 
             InvoiceItem::where('invoice_id', $invoice->id)->delete();
             
-            $items = $invoice->items_data;
+            $items = is_string($invoice->items_data) ? json_decode($invoice->items_data, true) : $invoice->items_data;
             
             foreach($items as &$item) {
 
