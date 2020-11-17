@@ -10,6 +10,7 @@ use App\Models\CartItem;
 use App\Http\Chilexpress;
 use App\Models\ShippingMethod;
 use App\Services\Shipping\FlatRateShipping;
+use App\Services\Shipping\VariableShipping;
 
 class Shipping extends Component
 {
@@ -136,9 +137,11 @@ class Shipping extends Component
                             $itemShipping['shipping']['totalPrice'] = $shippingPrice;
                             break;
 
-                        /* case 'variable': 
-                            $itemShipping['shipping']['totalPrice'] = 1000;
-                            break; */
+                        case 'variable': 
+                            $variableRate = new VariableShipping();
+                            $shippingPrice = $variableRate->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);
+                            $itemShipping['shipping']['totalPrice'] = $shippingPrice;
+                            break; 
                             
                         default:
                             $itemShipping['shipping']['totalPrice'] = null;
