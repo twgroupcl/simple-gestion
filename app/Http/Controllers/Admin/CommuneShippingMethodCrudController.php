@@ -197,21 +197,6 @@ class CommuneShippingMethodCrudController extends CrudController
             ]
         );
 
-
-        CRUD::addField(
-            [
-                'label'     => 'Retiro en tienda',
-                'type'      => 'checkbox',
-                'name'      => 'pickup_status',
-                'fake' => true,
-                'store_in' => 'active_methods',
-                'tab' => 'Configuración general',
-                'attributes' => [
-                    'class' => 'pickup_checker'
-                ]
-            ]
-        );
-
         CRUD::addField(
             [
                 'label'     => 'Chilexpress',
@@ -225,9 +210,6 @@ class CommuneShippingMethodCrudController extends CrudController
                 ]
             ]
         );
-
-
-
 
 
         CRUD::addField([
@@ -249,27 +231,6 @@ class CommuneShippingMethodCrudController extends CrudController
                 ],
             ]
         ]);
-
-        CRUD::addField([
-            'name' => 'pickup',
-            'label' => 'Retiro en tienda',
-            'type' => 'repeatable',
-            'fake' => true,
-            'store_in' => 'shipping_methods',
-            'tab' => 'Retiro en tienda',
-            'fields' => [
-                [
-                    'name' => 'price',
-                    'label' => 'Precio de envio',
-                    'type' => 'number',
-                    'default' => 0,
-                    'attributes' => [
-                        'readonly' => true,
-                    ]
-                ],
-            ]
-        ]);
-
 
         CRUD::addField([
             'name' => 'flat_rate',
