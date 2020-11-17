@@ -279,6 +279,13 @@ class CommuneShippingMethodCrudController extends CrudController
                     ]
                 ],
                 [
+                    'name' => 'fallback_price',
+                    'label' => 'Precio de envío fallback',
+                    'type' => 'number',
+                    'default' => 0,
+                    'hint' => 'Este sera el precio de envío empleado cuando el paquete no cumpla ninguna de las condiciones de la tabla de configuracion de precios',
+                ],
+                [
                     'name' => 'help_text',
                     'type' => 'commune_shipping_method.help_text',
                 ]
