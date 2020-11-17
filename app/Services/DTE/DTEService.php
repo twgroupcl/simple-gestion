@@ -57,7 +57,7 @@ class DTEService
     public function generateDTE(Invoice $invoice)
     {
         $method = 'POST';
-
+        //retry 10 times send SII. With 0 send "automatically"
         $url = $this->url . '/dte/documentos/generar?getXML=0&links=0&email=0&retry=10&gzip=0';
 
         if (! isset($invoice->dte_code) ) {
