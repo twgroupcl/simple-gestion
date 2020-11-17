@@ -116,8 +116,9 @@ class CommuneShippingMethodCrudController extends CrudController
         CRUD::addField([
             'name' => 'commune_id',
             'type' => 'relationship',
-            'label' => 'Comuna',
+            'label' => 'Configurar por comuna',
             'placeholder' => 'Selecciona una comuna',
+            'hint' => 'Los métodos de envío sobre una comuna en particular dejan sin efecto las configuraciones globales que haya determinado',
             'options'   => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
@@ -125,6 +126,14 @@ class CommuneShippingMethodCrudController extends CrudController
             'attributes' => [
                 'id' => 'commune_id_selector'
             ]
+        ]);
+
+
+        CRUD::addField([
+            'name' => 'helper_text' ,
+            'type' => 'custom_html',
+            'value' => '<div style="margin-top:11px; margin-bottom:-11px;"><label>Configurar globalmente</label></div>',
+            'tab' => 'Configuración general',
         ]);
 
         CRUD::addField(
