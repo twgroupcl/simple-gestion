@@ -19,13 +19,10 @@ class ProductCustomAttributes extends Component
         return view('livewire.pos.product-custom-attributes');
     }
 
-    public function setProductDetailsInModal(Product $product)
+    public function setProductDetailsInModal(Product $product, $attributes)
     {
-        if (filled($product->getAttributesWithNames())) {
-            $this->attributes = $product->getAttributesWithNames();
-            $this->product = $product;
-            $this->dispatchBrowserEvent('showModal');
-        }
-
+        $this->attributes = $attributes;
+        $this->product = $product;
+        $this->dispatchBrowserEvent('showModal');
     }
 }

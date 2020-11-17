@@ -12,4 +12,12 @@ class Product extends Component
     {
         return view('livewire.pos.product');
     }
+
+    public function shareProductInModal()
+    {
+        $attributes = $this->product->getAttributesWithNames();
+        if (filled($attributes)) {
+            $this->emitTo('pos.product-custom-attributes', 'productShared', $this->product, $attributes);
+        }
+    }
 }
