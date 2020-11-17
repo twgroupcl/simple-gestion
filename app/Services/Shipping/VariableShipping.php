@@ -31,23 +31,32 @@ class VariableShipping {
         
         foreach ($tableRates as $rate) {
 
-            if ($totalWeight >= $rate['min_weight'] && $totalWeight <= $rate['max_weight']) {
+            // Sanitaze values
+            $rateMinWeight = sanitizeNumber($rate['min_weight']);
+            $rateMaxWeight = sanitizeNumber($rate['max_weight']);
+            $rateFinalPrice = sanitizeNumber($rate['final_price']);
+            $rateFallbackPrice = sanitizeNumber($shippingConfigurationData['fallback_price']);
 
-                if ( (isset($rate['max_price']) && strlen($rate['max_price'])) && !empty($rate['max_price']) ) {
+            if ($totalWeight >= $rateMinWeight && $totalWeight <= $rateMaxWeight) {
 
-                    if ($totalPrice >= $rate['min_price'] && $totalPrice <= $rate['max_price']) {
-                        $shippingPrice = $rate['final_price'];
+                if ( (isset($rate['min_price']) && strlen($rate['min_price'])) && !empty($rate['max_price']) ) {
+
+                    $rateMinPrice = sanitizeNumber($rate['min_price']);
+                    $rateMaxPrice = sanitizeNumber($rate['max_price']);
+
+                    if ($totalPrice >= $rateMinPrice && $totalPrice <= $rateMaxPrice) {
+                        $shippingPrice = $rateFinalPrice;
                         break; 
                     }
 
                 } else {
-                    $shippingPrice = $rate['final_price'];
+                    $shippingPrice = $rateFinalPrice;
                     break;
                 }
             }
         }
 
-        if (!$shippingPrice) $shippingPrice = $shippingConfigurationData['fallback_price'];
+        if (!$shippingPrice) $shippingPrice = $rateFallbackPrice;
 
         return $shippingPrice;
     }
