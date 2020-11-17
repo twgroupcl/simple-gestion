@@ -63,6 +63,14 @@ class Item extends Component
         $product = $this->item->product;
         $this->sellerId = $this->item->product->seller->id;
         $this->shippingMethods = $this->getShippingMethods();
+
+        if (count($this->shippingMethods)>0) {
+            $this->item->shipping_id = $this->shippingMethods->first()->id;
+        }else{
+            $this->item->shipping_id =  null;
+        }
+        $this->item->update();
+
         // if($this->item->shipping_id){
         // foreach($this->sellerShippingMethods as $key => $shippingMethod){
         //     if($thi)
@@ -221,6 +229,7 @@ class Item extends Component
         $communeShippingMethods = $seller->getAvailableShippingMethodsByCommune($this->communeSelected);
         $shippingMethods = ShippingMethod::whereIn('code',$communeShippingMethods)->where('status', 1)->get();
         //$this->shippingMethods = $shippingMethods;
+
         return $shippingMethods;
 
 
