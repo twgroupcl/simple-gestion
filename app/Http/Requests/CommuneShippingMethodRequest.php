@@ -55,31 +55,16 @@ class CommuneShippingMethodRequest extends FormRequest
             ],
             'shipping_methods_validation' => 'required',
 
+            'flat_rate_validation.*.price' => 'required_if:flat_rate_status,1|numeric|min:0',
+
             'variable_validation.*.fallback_price' => 'required_if:variable_status,1|numeric|min:0.1',
 
             'variable_validation.*.table_prices' => 'required_if:variable_status,1',
             'variable_validation_table_prices.*.min_weight' => ['required_if:variable_status,1', $numericCommaRule],
             'variable_validation_table_prices.*.max_weight' => ['required_if:variable_status,1', $numericCommaRule],
+            'variable_validation_table_prices.*.min_price' => [$numericCommaRule],
+            'variable_validation_table_prices.*.max_price' => [$numericCommaRule],
             'variable_validation_table_prices.*.final_price' => ['required_if:variable_status,1', $numericCommaRule],
-
-            /* 'variable_validation.*.table_prices' => [
-                'required_if:variable_status,1',
-                function ($attribute, $value, $fail) {
-                    $tablePrices = json_decode($value, true);
-
-                    $fieldGroupValidator = Validator::make($tablePrices, 
-                    [
-                        '*.min_price' => 'required|numeric|min:0'
-                    ]);
-
-                    if ($fieldGroupValidator->fails()) {
-                        $this->message = 'Hay un error en tu variacion. '  . $fieldGroupValidator->errors()->first();
-                        return $fail('er');
-                    }
-                    
-                }
-            ], */
-
         ];
     }
 
@@ -91,7 +76,17 @@ class CommuneShippingMethodRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'commune_id' => 'Comuna',
+            'is_global' => 'configurar como global',
+
+            'flat_rate_validation.*.price' => 'Precio (tarifa fija)',
+
+            'variable_validation_table_prices.*.min_weight' => 'Peso minimo (tarifa variable)',
+            'variable_validation_table_prices.*.max_weight' => 'Peso maximo (tarifa variable)',
+            'variable_validation_table_prices.*.min_price' => 'Precio minimo (tarifa variable)',
+            'variable_validation_table_prices.*.max_price' => 'Precio maximo (tarifa variable)',
+            'variable_validation_table_prices.*.final_price' => 'Precio final de envio (tarifa variable)',
+            'variable_validation.*.fallback_price' => 'Precio de fallback (tarifa variable)',
         ];
     }
 
@@ -107,6 +102,10 @@ class CommuneShippingMethodRequest extends FormRequest
             'commune_id.unique' => 'Ya tienes otra configuracíon de envío para la comuna seleccionada',
             'commune_id.required_if' => 'Debes seleccionar una comuna',
             'is_global.unique' => 'Solo puedes tener una configuracion global de envíos',
+            'flat_rate_validation.*.price.min' => 'El campo :attribute debe ser por lo menos :min',
+            'variable_validation.*.fallback_price.min' => 'El campo :attribute debe ser por lo menos :min',
+            'variable_validation_table_prices.*.*.required_if' => 'El campo :attribute es requerido',
+            'variable_validation.0.table_prices.required_if' => 'Debes especificar al menos un fila de precios para la configuracion de tarifa variable'
         ];
     }
 
