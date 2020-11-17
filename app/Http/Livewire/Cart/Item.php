@@ -63,8 +63,7 @@ class Item extends Component
         $product = $this->item->product;
         $this->sellerId = $this->item->product->seller->id;
         $this->shippingMethods = $this->getShippingMethods();
-
-        if (count($this->shippingMethods)>0) {
+        if (count($this->shippingMethods) > 0) {
             $this->item->shipping_id = $this->shippingMethods->first()->id;
         }else{
             $this->item->shipping_id =  null;

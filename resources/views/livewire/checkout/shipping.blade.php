@@ -83,9 +83,9 @@
                                     @else
                                         @if (!empty($item['notConfigured']))
                                             <div class="row">
-                                                <div class="col-6">La tienda no tiene configurados metodos de envíos
-                                                    parara la comuna seleccionada </div>
-
+                                                <div class="col-10">Esta tienda no tiene configurado metodos de envío
+                                                para la comuna seleccionada. Selecciona otra comuna de destino para continuar
+                                                o elimina los articulos de esta tienda. </div>
                                             </div>
                                         @endif
                                     @endif

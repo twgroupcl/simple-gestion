@@ -91,17 +91,20 @@ class Shipping extends Component
 
                     $itemShipping['shipping']['id'] = $shippingKey;
                     $itemShipping['shipping']['title'] = $shippingMethod->title;
+
                     if (!empty($shippingMethod->json_value)) {
                         $itemShipping['shipping']['pricePackpage'] = json_decode($shippingMethod->json_value)->price;
                     } else {
                         $itemShipping['shipping']['pricePackpage'] = null;
                     }
+
                     $itemShipping['shipping']['totalWidth'] = 0;
                     $itemShipping['shipping']['totalHeight'] = 0;
                     $itemShipping['shipping']['totalDepth'] = 0;
                     $itemShipping['shipping']['totalWeight'] = 0;
                     $itemShipping['shipping']['totalPrice'] = 0;
                     $itemShipping['shipping']['totalShippingPackage'] = 0;
+
                     foreach ($shippingValue as $item) {
                         $itemShipping['shipping']['totalShippingPackage'] += 1;
                         $itemShipping['shipping']['isService'] = $item->product->is_service;
@@ -111,6 +114,7 @@ class Shipping extends Component
                         $itemShipping['shipping']['totalWeight'] += $item->weight * $item->qty;
                         $itemShipping['shipping']['totalPrice'] += $item->price * $item->qty;
                     }
+                    
                     if ($itemShipping['shipping']['isService'] == 0) {
                         $communeOrigin = $seller->addresses_data[0]['commune_id'];
                         $communeDestine = $this->cart->address_commune_id;
@@ -192,9 +196,8 @@ class Shipping extends Component
                         }
                         array_push($itemShippingSeller, $itemShipping);
                     }
-                }
-                else {
-                    $itemShipping =[];
+                } else {
+                    $itemShipping = [];
                     $shippingMethodAvailable = false;
                     $itemShipping['notConfigured'] = true;
                     array_push($itemShippingSeller, $itemShipping);
