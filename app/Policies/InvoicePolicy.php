@@ -30,9 +30,15 @@ class InvoicePolicy
         return $invoice->invoice_status == Invoice::STATUS_TEMPORAL;
     }
 
-    public function doDownloadPDF(User $user, Invoice $invoice)
+    public function doDownloadTemporalPDF(User $user, Invoice $invoice)
     {
         return $this->doShowTempDocument($user, $invoice) ||
+            $invoice->invoice_status == Invoice::STATUS_TEMPORAL;
+    }
+    
+    public function doDownloadRealPDF(User $user, Invoice $invoice)
+    {
+        return isset($invoice->folio) &&
                 $invoice->invoice_status == Invoice::STATUS_SEND;
     }
 

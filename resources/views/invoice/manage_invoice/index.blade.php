@@ -34,11 +34,20 @@
 @endphp
 @endcan
 
-@can('doDownloadPDF', $invoice)
+@can('doDownloadTemporalPDF', $invoice)
 @php
     Widget::add([
         'type' => 'view',
-        'view' => 'invoice.manage_invoice.get_pdf',
+        'view' => 'invoice.manage_invoice.get_temporal_pdf',
+    ]);
+@endphp
+@endcan
+
+@can('doDownloadRealPDF', $invoice)
+@php
+    Widget::add([
+        'type' => 'view',
+        'view' => 'invoice.manage_invoice.get_real_pdf',
     ]);
 @endphp
 @endcan
