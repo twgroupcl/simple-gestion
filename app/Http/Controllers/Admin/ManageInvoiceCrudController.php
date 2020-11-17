@@ -116,7 +116,13 @@ class ManageInvoiceCrudController extends CrudController
         $response = $service->generateDTE($invoice);
         if ($response->getStatusCode() === 200) {
             $contentResponse = $response->getBody()->getContents();
-            $invoice->invoice_status = Invoice::SEND;
+            $contentResponse = json_decode($contentResponse, true);
+
+            if (array_key_exists('folio', $contentResponse)) {
+                $invoice->folio = $contentResponse['folio'];
+                $invoice->invoice_status = Invoice::SEND;
+            }
+            
             $invoice->updateWithoutEvents();
             #ddd($contentResponse, $response);
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
