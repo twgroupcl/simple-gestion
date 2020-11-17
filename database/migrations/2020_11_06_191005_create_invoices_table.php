@@ -54,7 +54,7 @@ class CreateInvoicesTable extends Migration
             $table->longText('items_data')->nullable();
             $table->longText('json_value')->nullable();
             $table->integer('status')->default(1);
-            $table->unsignedBigInteger('folio');
+            $table->unsignedBigInteger('folio')->nullable();
             // $table->unsignedBigInteger('quotation_template_id')->nullable();
             $table->unsignedBigInteger('seller_business_activity_id')->nullable();
             $table->unsignedBigInteger('customer_business_activity_id')->nullable();
