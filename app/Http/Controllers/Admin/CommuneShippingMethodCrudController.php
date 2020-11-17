@@ -24,7 +24,7 @@ class CommuneShippingMethodCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -50,7 +50,7 @@ class CommuneShippingMethodCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -58,15 +58,17 @@ class CommuneShippingMethodCrudController extends CrudController
     {
         // If not admin, show only seller config
         if (!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
-        
+
         if ($this->admin) {
             CRUD::addColumn([
                 'name' => 'seller',
                 'label' => 'Vendedor',
                 'type' => 'relationship',
+                'attribute' => 'visible_name',
+
             ]);
         }
-        
+
         CRUD::addColumn([
             'name' => 'commune',
             'label' => 'Comuna',
@@ -86,7 +88,7 @@ class CommuneShippingMethodCrudController extends CrudController
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -104,6 +106,7 @@ class CommuneShippingMethodCrudController extends CrudController
             'type' => 'relationship',
             'default' => $this->userSeller ?? '',
             'placeholder' => 'Selecciona un vendedor',
+            'attribute' => 'visible_name',
             'tab' => 'Configuración general',
             'wrapper' => [
                 'style' => $this->admin ? '' : 'display:none',
@@ -180,6 +183,20 @@ class CommuneShippingMethodCrudController extends CrudController
                 ]
             ]
         );
+        CRUD::addField(
+            [
+                'label'     => 'Retiro en tienda',
+                'type'      => 'checkbox',
+                'name'      => 'picking_status',
+                'fake' => true,
+                'store_in' => 'active_methods',
+                'tab' => 'Configuración general',
+                'attributes' => [
+                    'class' => 'picking_checker'
+                ]
+            ]
+        );
+
 
         CRUD::addField(
             [
@@ -196,7 +213,7 @@ class CommuneShippingMethodCrudController extends CrudController
         );
 
 
-        
+
 
 
         CRUD::addField([
@@ -271,6 +288,27 @@ class CommuneShippingMethodCrudController extends CrudController
         ]); */
 
         CRUD::addField([
+            'name' => 'picking',
+            'label' => 'Retiro en tienda',
+            'type' => 'repeatable',
+            'fake' => true,
+            'store_in' => 'shipping_methods',
+            'tab' => 'Retiro en tienda',
+            'fields' => [
+                [
+                    'name' => 'price',
+                    'label' => 'Precio de envio',
+                    'type' => 'number',
+                    'default' => 0,
+                    'attributes' => [
+                        'readonly' => true,
+                    ]
+                ],
+            ]
+        ]);
+
+
+        CRUD::addField([
             'name' => 'chilexpress',
             'label' => 'Chilexpress',
             'type' => 'repeatable',
@@ -301,7 +339,7 @@ class CommuneShippingMethodCrudController extends CrudController
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

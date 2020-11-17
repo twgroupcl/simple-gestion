@@ -19,7 +19,7 @@
             } else {
                 communeField.prop('disabled', false)
             }
-            
+
             isGlobalField.change(function() {
                 if (isGlobalValue.val() == 1) {
                     communeField.prop('disabled', true)
@@ -40,7 +40,7 @@
             } else {
                 tab.hide()
             }
-            
+
             checkField.change(function() {
                 if (val.val() == 1) {
                     tab.show()
@@ -55,6 +55,7 @@
             showHideTab('envio-gratis', 'free_shipping_status', 'free_shipping_checker');
             showHideTab('tarifa-fija', 'flat_rate_status', 'flat_rate_checker');
             showHideTab('variable', 'variable_status', 'variable_checker');
+            showHideTab('retiro-en-tienda', 'picking_status', 'picking_checker');
             showHideTab('chilexpress', 'chilexpress_status', 'chilexpress_checker');
 
             removeButtonDel();

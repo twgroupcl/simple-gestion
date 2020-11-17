@@ -23,12 +23,16 @@
                         <div class="card-body">
                             @php
 
-                            $shippingMethods = $seller->shippingmethods;
+                           // $shippingMethods = $seller->shippingmethods;
+
+
 
                             @endphp
                             @foreach ($items as $item)
                                 @if ($seller->id == $item->product->seller_id)
-                                    @livewire('cart.item', ['item' => $item, 'sellerShippingMethods'=>$shippingMethods,
+                                    {{-- @livewire('cart.item', ['item' => $item, 'sellerShippingMethods'=>$shippingMethods,
+                                    'showShipping'=>true , 'showAttributes' => true], key($item->id)) --}}
+                                    @livewire('cart.item', ['item' => $item,
                                     'showShipping'=>true , 'showAttributes' => true], key($item->id))
                                 @endif
                             @endforeach

@@ -16,6 +16,7 @@ class Shipping extends Component
     public $items;
     public $sellers;
     public $sellersShippings;
+    public $communeDestine;
     protected $listeners = [
         'deleteItem' => 'deleteItem',
         'shipping-update' => 'updateSellersShippings',
@@ -27,6 +28,7 @@ class Shipping extends Component
         $this->sellers = $this->getSellers();
         $this->sellersShippings = [];
         //$this->updateSellersShippings();
+        $this->communeDestine = $this->cart->address_commune_id;
 
     }
     public function render()
@@ -72,7 +74,7 @@ class Shipping extends Component
 
         $items = $this->items->groupBy(['product.seller_id', 'shipping_id']);
 
-        // dd($items);
+
         $this->sellersShippings = [];
         foreach ($items as $sellerKey => $sellerValue) {
             $seller = Seller::where('id', $sellerKey)->first();
