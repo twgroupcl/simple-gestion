@@ -270,6 +270,9 @@ class CommuneShippingMethodCrudController extends CrudController
                     'name' => 'table_prices',
                     'label' => 'Configuracion de precios',
                     'type' => 'table',
+                    'wrapper' => [
+                        'class' => 'col-md-12 form-group required'
+                    ],
                     'columns' => [
                         'min_weight' => 'Peso minimo (kg) *',
                         'max_weight' => 'Peso maximo (kg) *',
@@ -283,6 +286,9 @@ class CommuneShippingMethodCrudController extends CrudController
                     'label' => 'Precio de envío fallback',
                     'type' => 'number',
                     'default' => 0,
+                    'wrapper' => [
+                        'class' => 'col-md-12 form-group required'
+                    ],
                     'hint' => 'Este sera el precio de envío empleado cuando el paquete no cumpla ninguna de las condiciones de la tabla de configuracion de precios',
                 ],
                 [
