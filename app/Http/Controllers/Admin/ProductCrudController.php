@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Models\ProductClass;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +46,7 @@ class ProductCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Product::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/product');
-        CRUD::setEntityNameStrings('producto', 'productos');
+        CRUD::setEntityNameStrings('libro', 'libros');
 
         $this->crud->denyAccess('show');
 
@@ -157,13 +158,13 @@ class ProductCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'name',
-            'label' => 'Nombre del producto',
+            'label' => 'Nombre del libro',
             'type' => 'text',
         ]);
 
         CRUD::addField([
             'name' => 'sku',
-            'label' => 'SKU',
+            'label' => 'ISBN',
             'type' => 'text',
         ]);
 
@@ -211,19 +212,25 @@ class ProductCrudController extends CrudController
             'placeholder' => 'Selecciona la clase de producto',
             'entity'      => 'product_class',
             'attribute'   => "name",
+            'default'     => ProductClass::where('code', 'book')->first() 
+                                ? ProductClass::where('code', 'book')->first()->id
+                                : 0,
             'data_source' => url("admin/api/productclass/get"),
             'minimum_input_length' => 0,
             'include_all_form_fields'  => true,
-            'dependencies'  => ['categories'],
+            //'dependencies'  => ['categories'],
             'attributes' => [
                 'id' => 'product_class_id'
             ],
+            'wrapper' => [
+                'style' => 'display:none',
+            ],
         ]);
 
-        CRUD::addField([
+        /* CRUD::addField([
             'name' => 'product_type_class',
             'type' => 'product.product_class_hint',
-        ]);
+        ]); */
 
         CRUD::addField([
             'label' => 'Tipo de producto',
@@ -231,12 +238,15 @@ class ProductCrudController extends CrudController
             'type' => 'relationship',
             'entity' => 'product_type',
             'placeholder' => 'Selecciona un tipo de producto',
+            'wrapper' => [
+                'style' => 'display:none',
+            ],
         ]);
 
-        CRUD::addField([
+        /* CRUD::addField([
             'name' => 'product_type_hint',
             'type' => 'product.product_type_hint',
-        ]);
+        ]); */
 
         CRUD::addField([
             'label'       => "Atributos para variaciones",
@@ -290,6 +300,7 @@ class ProductCrudController extends CrudController
             'type' => 'checkbox',
             'wrapper' => [
                 'class' => 'col-md-12 form-group is_service_checkbox',
+                'style' => 'display:none',
             ],
             'attributes' => [
                 'class' => 'service_check',
@@ -302,6 +313,7 @@ class ProductCrudController extends CrudController
             'type' => 'checkbox',
             'wrapper' => [
                 'class' => 'col-md-12 form-group is_inventory_checkbox',
+                'style' => 'display:none',
             ],
             'attributes' => [
                 'class' => 'inventory_check',
