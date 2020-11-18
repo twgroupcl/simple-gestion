@@ -22,6 +22,11 @@ class ManageInvoiceCrudController extends CrudController
 
     public function sendTemporaryDocument(Request $request, Invoice $invoice)
     {
+        if (! isset($invoice->invoice_type)) {
+            \Alert::add('danger', 'No ha determinado el tipo de documento')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
         $service = new DTEService();
         $response = $service->tempDocument($invoice);
 

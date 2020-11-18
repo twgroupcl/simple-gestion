@@ -29,6 +29,7 @@ class DTEService
 
     /**
      * Generate temp document in libredte from services
+     * Require invoice with type (code ex. 33)
      *
      * @param $invoice invoice to generate temporal document
      * @return Response guzzlehttp response
@@ -37,7 +38,7 @@ class DTEService
     {
         $url = $this->url . '/dte/documentos/emitir?normalizar=1&formato=json&links=0&email=0';
         $method = 'POST';
-
+        
         $dte = DTEFactory::init($invoice->invoice_type->code, $invoice);
 
         $data = $dte->toArray();
