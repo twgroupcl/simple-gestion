@@ -3,7 +3,7 @@
 @section('content')
     <div class="row mt-3">
         <div class="col">
-            <h3>Subir productos masivamente</h3>
+            <h3>Subir libros masivamente</h3>
         </div>
     </div>
 
@@ -27,7 +27,7 @@
         <a href="{{ backpack_url('product') }}">
         <button type="submit" class="btn btn-success">
             <span class="la la-box" role="presentation" aria-hidden="true"></span> &nbsp;
-            <span>Ir a la pagina de Productos</span>
+            <span>Ir a la pagina de libros</span>
         </button>
         </a>
     </div>
