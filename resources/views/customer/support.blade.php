@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Page title-->
-    <div class="row d-flex justify-content-center pt-4">
+    <div class="d-flex justify-content-center pt-4">
         <div class="col-md-8">
             <h2 class="h4 mb-5">Servicio al cliente</h2>
 
