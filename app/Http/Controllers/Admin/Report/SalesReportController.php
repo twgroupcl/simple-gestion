@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin\Report;
 
 use App\Models\Order;
-use App\Models\Plans;
+use App\Models\OrderItem;
 use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\BaseController;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 /**
  * Class OrderCrudController
@@ -18,74 +19,26 @@ use Carbon\Carbon;
 class SalesReportController extends BaseController
 {
 
-
-
     public function __construct()
     {
         $this->middleware(backpack_middleware());
     }
 
-
     public function index()
     {
         $request = request();
 
+        // $period = $this->getPeriod();
 
-            $period = $this->getPeriod();
-
-            $data = [];
-            $subscriptionPlan = null;
-            if (backpack_user()->hasRole('Vendedor marketplace')) {
-                $seller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-                $sellerId = $seller->id;
-                $subscription = json_decode($seller->subscription_data);
-                $subscriptionPlan = Plans::where('id', $subscription->plan_id)->first();
-                if (!is_null($subscription)) {
-                    // $sales = OrderItem::where('seller_id', $sellerId)->get()->groupBy('order_id');
-
-                    $sales = Order::whereHas('order_items', function ($query) use ($sellerId) {
-                        $query->where('seller_id', 48);
-                    })->whereBetween(
-                        'created_at',
-                        [$period->first()->startOfDay(),
-                            $period->last()->endOfDay()]
-                    )->get();
-                    foreach ($sales as $order) {
-
-                        // $order = Order::where('id', $orderId)->first();
-                        $totalOrder = 0;
-                        $totalCommission = 0;
-
-                        foreach ($order->order_items as $orderItem) {
-                            if ($orderItem->product->categories[0]->commission) {
-                                $commissionsCategory = $orderItem->product->categories[0]->commission;
-                                if (!is_null($commissionsCategory)) {
-                                    $commisions = json_decode($commissionsCategory);
-
-                                    $currentCommission = array_search($subscription->plan_id, array_column($commisions, 'plan_id'));
-
-                                    $commisionProduct = $commisions[$currentCommission];
-                                    if ($commisionProduct) {
-                                        $totalCommission = $orderItem->price * $commisionProduct->commission / 100;
-                                    }
-                                }
-                                $totalOrder += $orderItem->sub_total;
-                            }
-                        }
-                        $order->total = $totalOrder;
-                        $order->totalCommission = $totalCommission;
-                        $order->totalFinal = $totalOrder - $totalCommission;
-
-                        array_push($data, $order);
-                    }
-                }
-            }
-
-            if ($request->wantsJson()) {
-                return json_encode($data);
-            } else {
-                return view('backpack::reports.index', compact('data', 'subscriptionPlan'));
-            }
+        $data = [];
+        $subscriptionPlan = null;
+        $sellers = Seller::orderBy('visible_name')->get();
+        $data = $this->getData($request);
+        if ($request->wantsJson()) {
+            return json_encode($data);
+        } else {
+            return view('backpack::reports.index', compact('data', 'subscriptionPlan', 'sellers'));
+        }
     }
 
     private function getPeriod()
@@ -104,6 +57,99 @@ class SalesReportController extends BaseController
         return Carbon::parse($from)->daysUntil($to);
     }
 
+    private function getData(Request $request)
+    {
+        $data = [];
+        $period = $this->getPeriod();
+        $requestSellerId = -1;
+        if (backpack_user()->hasRole('Vendedor marketplace')) {
+            $requestSellerId = Seller::where('user_id', backpack_user()->id)->firstOrFail()->id;
+        }
+        else {
+            if (isset($request->seller)) {
+                $requestSellerId = $request->seller;
+            } else {
+                $requestSellerId = -1;
+            }
+        }
 
+        $sales = null;
+
+        if ($requestSellerId == -1) {
+
+             $sales = Order::whereHas('order_items')->whereBetween(
+            'created_at',
+            [$period->first()->startOfDay(),
+            $period->last()->endOfDay()]
+            )->with(['order_items.seller' => function($query){
+                $query->groupBy('id');
+            }])->get();
+
+        } else {
+            $sales = Order::whereHas('order_items'
+            , function ($query) use ($requestSellerId) {
+                $query->where('seller_id', $requestSellerId);
+            }
+            )->whereBetween(
+                'created_at',
+                [$period->first()->startOfDay(),
+                    $period->last()->endOfDay()]
+            )->with(['order_items.seller' => function($query) use ($requestSellerId){
+                $query->where('id',$requestSellerId)->groupBy('id');
+            }])->get();
+        }
+
+
+
+
+        foreach ($sales as $order) {
+
+
+
+            $itemSale = [] ;
+            if (isset($order->order_items)) {
+                $sellers = $order->order_items->groupBy('seller_id');
+                if ($requestSellerId == -1) {
+                    $sellers = $order->order_items->groupBy('seller_id'); //collec de items por vendedor
+
+                 }else{
+                    $sellers = $order->order_items->where('seller_id',$requestSellerId)->groupBy('seller_id'); //collec de items por vendedor
+                 }
+
+                $sellers->map(function ($orderItems) {
+                    $totalOrder = 0;
+                    $totalCommission = 0;
+                    $sellerName = null;
+                    foreach ($orderItems as $orderItem) {
+                        if (empty($sellerName)) {
+                            $sellerName = $orderItem->seller->visible_name;
+                        }
+                        $totalCommission = ($orderItem->sub_total + $orderItem->shipping_total) * 0.11;
+                        $totalOrder += ($orderItem->sub_total + $orderItem->shipping_total);
+                    }
+                    $orderItems->totalOrder = $totalOrder;
+                    $orderItems->totalCommission = $totalCommission;
+                    $orderItems->totalFinal = $totalOrder - $totalCommission;
+                    $orderItems->sellerName = $sellerName;
+                    return $orderItems;
+                });
+
+
+                foreach ($sellers as $sellerId=>$seller) {
+                    $itemSale['id'] = $order->id;
+                    $itemSale['seller'] = $seller->sellerName;
+                    $itemSale['created_at'] = $order->created_at;
+                    $itemSale['total'] = $seller->totalOrder;
+                    $itemSale['totalCommission'] = $seller->totalCommission;
+                    $itemSale['totalFinal'] = $seller->totalFinal;
+                    array_push($data, $itemSale);
+                }
+            }
+
+
+        }
+
+        return $data;
+    }
 
 }

@@ -29,7 +29,8 @@
     <script>
         let filters = {
             from: '',
-            to: ''
+            to: '',
+            seller: ''
         };
         let salesTable;
 
@@ -39,6 +40,7 @@
 
             filters.from = sevenDaysAgo()
             filters.to = today()
+            filters.seller = -1
 
             $(`#date-from`).change(() => {
                 filters.from = event.target.value
@@ -50,7 +52,13 @@
                 this.refreshData();
             })
 
-
+            $('#seller-select2').select2();
+            $('#seller-select2').change(() => {
+                var data = $("#seller-select2 option:selected").val();
+                filters.seller =data;
+                console.log(data);
+                this.refreshData();
+            })
 
             salesTable = $('#sales-table').DataTable({
 
@@ -160,12 +168,19 @@
                         },
                         to: function() {
                             return filters.to
+                        },
+                        seller: function() {
+                            return filters.seller
                         }
                     },
                 },
                 columns: [{
                         data: 'id',
                         name: '#'
+                    },
+                    {
+                        data: 'seller',
+                        name: 'Vendedor#'
                     },
                     {
                         data: 'created_at',
@@ -190,15 +205,11 @@
                 columnDefs: [
 
                     {
-                        targets: 1,
+                        targets: 2,
                         render: function(data) {
                             return moment(data).format('DD/MM/Y hh:mm:ss');
                         },
                         className: 'text-center'
-                    },
-                    {
-                        targets: 2,
-                        className: 'text-right'
                     },
                     {
                         targets: 3,
@@ -207,8 +218,13 @@
                     {
                         targets: 4,
                         className: 'text-right'
+                    },
+                    {
+                        targets: 5,
+                        className: 'text-right'
                     }
                 ],
+
 
             });
 

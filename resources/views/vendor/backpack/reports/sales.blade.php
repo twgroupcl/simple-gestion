@@ -1,6 +1,7 @@
 
 @php
 
+
 Widget::add()->to('after_content')->type('div')->class('row')->content([
     Widget::add([
         'type' => 'div',
@@ -16,30 +17,36 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
     ]),
     Widget::add([
         'type' => 'div',
-		'class' => 'w-100',
+		'class' => 'row w-100',
 		'content' => [
 				[
 					'type'    => 'script',
 					'wrapper' => ['class' => 'col-sm-12'],
 					'content' => 'Scripts',
+                ],
+				[
+					'type'    => 'select2-seller',
+					'wrapper' => ['class' => 'col-6'],
+					'collection' => $sellers,
 				],
 				[
 					'type'    => 'date-range',
-					'wrapper' => ['class' => 'col-sm-12'],
+					'wrapper' => ['class' => 'col-6'],
 					'content' => 'Rango de fechas',
 				]
 			]
     ]),
-    Widget::add([
-        'type' => 'div',
-        'class'   => 'row ',
-        'content' => [ // widgets
-                [
-                    'type' => 'subscription',
-                    'content' => $subscriptionPlan
-                ],
-        ]
-    ]),
+
+    // Widget::add([
+    //     'type' => 'div',
+    //     'class'   => 'row ',
+    //     'content' => [ // widgets
+    //             [
+    //                 'type' => 'subscription',
+    //                 'content' => $subscriptionPlan
+    //             ],
+    //     ]
+    // ]),
      //break
      Widget::add([
         'type' => 'div',
@@ -57,6 +64,7 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
             'class'       => 'w-100 table table-bordered ',
             'columns'     => [
                 'id' => '#',
+                'seller' => 'Vendedor',
                 'created_at' => 'Fecha',
                 'total' => 'Importe',
                 'totalCommission' => 'Comisión',
