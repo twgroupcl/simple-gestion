@@ -36,14 +36,14 @@
                 @if ($product->has_special_price)
                     <div class="product-price">
                         @if ($product->getRealPriceRange()[0] == $product->getRealPriceRange()[1])
-                            <span class="text-accent">
+                            <span class="text-accent color-orange">
                                 {{ currencyFormat($product->getRealPriceRange()[0], defaultCurrency(), true) }}
                             </span>
                             <del class="font-size-sm text-muted"><small>
                                 {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
                             </small></del>
                         @else
-                            <span class="text-accent">  
+                            <span class="text-accent color-orange">  
                                 {{ currencyFormat($product->getRealPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getRealPriceRange()[1], defaultCurrency(), true) }}
                             </span>
                             <del class="font-size-sm text-muted"><small>
@@ -53,7 +53,7 @@
                     </div>
                 @else
                     <div class="product-price">
-                        <span class="text-accent">
+                        <span class="text-accent color-orange">
                             @if ($product->getPriceRange()[0] == $product->getPriceRange()[1])
                             {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
                             @else
@@ -64,11 +64,11 @@
                 @endif  
             @else
             <div class="product-price">
-                @if($product->has_special_price)
-                <span class="text-accent">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
+                @if($product->special_price)
+                <span class="text-accent color-orange">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
                 <del class="font-size-sm text-muted"><small>{{ currencyFormat($product->price, defaultCurrency(), true) }}</small></del>
                 @else
-                <span class="text-accent">{{ currencyFormat($product->real_price, defaultCurrency(), true) }}</span>
+                <span class="text-accent color-orange">{{ currencyFormat($product->real_price, defaultCurrency(), true) }}</span>
                 @endif
             </div>
             @endif

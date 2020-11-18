@@ -4,7 +4,7 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Header-->
-<div class="page-title-overlap bg-accent pt-4 bg-cp-gradient">
+<div class="page-title-overlap bg-accent pt-4 bg-light-blue">
     <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
         <div class="media media-ie-fix align-items-center pb-3">
             @if($seller->logo)
@@ -36,11 +36,9 @@
             <!-- Sidebar-->
             <aside class="col-lg-4">
                 <div class="cz-sidebar-static h-100 border-right">
-                    <h6>Categoría</h6>
-                    <p class="font-size-ms text-muted">{{ $seller->seller_category->name }}</p>
                     @if($seller->description)
-                        <h6>Información</h6>
-                        <p>{{$seller->description}}</p>
+                        <h6>Descripción o reseña de la empresa</h6>
+                        <p class="font-size-ms text-muted">{{$seller->description}}</p>
                     @endif
                     @if($seller->privacy_policy)
                         <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
@@ -52,7 +50,44 @@
                     @endif
                     @if($seller->return_policy)
                         <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
+                        <br>
                     @endif
+                    <br>
+
+                    @if($seller->addresses_data)
+                        @php
+                            $addresses = $seller->addresses_data;
+                        @endphp
+                        <h6>Dirección</h6>
+                        @if($addresses[0]['street'])
+                            <p class="font-size-ms text-muted mb-0">Calle: {{$addresses[0]['street']}}</p>
+                        @endif
+                        @if($addresses[0]['number'])
+                            <p class="font-size-ms text-muted mb-0">Número: {{$addresses[0]['number']}}</p>
+                        @endif
+                        @if($addresses[0]['subnumber'])
+                            <p class="font-size-ms text-muted mb-0">Casa/Dpto/Oficina: {{$addresses[0]['subnumber']}}</p>
+                        @endif
+                        <br>
+                    @endif
+                    @if($seller->web)
+                        <h6>Web</h6>
+                        <a href="" target="_blank">{{$seller->web}}</a>
+                        <br>
+                        <br>
+                    @endif
+                    <!--
+                        <h6>Twitter</h6>
+                        <h6>LinkedIn</h6>
+                        <h6>Instagram</h6>
+                        <h6>Facebook</h6>
+                    -->
+                    @if($seller->email)
+                        <h6>Contacto</h6>
+                        <p class="font-size-ms text-muted">{{$seller->email}}</p>
+                    @endif
+                    <h6>Materias</h6>
+                    
                     <hr class="my-4">
                     <!--
                         <h6>Contacts</h6>
@@ -78,7 +113,7 @@
                 @if($seller->banner)
                 <div class="py-sm-2">
                     <div class="d-sm-flex justify-content-between align-items-center overflow-hidden mb-4 rounded-lg">
-                        <img class="mw-75" src="{{ url($seller->banner) }}" alt="Banner {{ $seller->visible_name }}">
+                        <img class="mw-75 w-50" src="{{ url($seller->banner) }}" alt="Banner {{ $seller->visible_name }}">
                     </div>
                 </div>
                 @endif
@@ -115,9 +150,9 @@
                         </div>
                     -->
                     <!-- Products grid-->
-                    <div class="row mx-n2">
+                    <div class=" mx-n2">
                         <!-- Product-->
-                        @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 8, 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                        @livewire('products.card-general', ['columnLg' => '', 'showPaginate' => true, 'paginateBy' => 8, 'showFrom' => $render['view'], 'valuesQuery' => $data])
                     </div>
                 </div>
             </section>
