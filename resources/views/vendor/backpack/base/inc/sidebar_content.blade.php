@@ -134,3 +134,5 @@
 	</ul>
 </li>
 @endcanany
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('communeshippingmethod') }}'><i class='nav-icon la la-truck'></i> Metodos de envío</a></li>

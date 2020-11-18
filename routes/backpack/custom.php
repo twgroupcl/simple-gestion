@@ -70,6 +70,7 @@ Route::group([
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::crud('communeshippingmethod', 'CommuneShippingMethodCrudController');
 
     Route::get('product/bulk-upload', 'ProductCrudController@bulkUploadView')->name('products.bulk-upload');
     Route::post('product/bulk-upload-preview', 'ProductCrudController@bulkUploadPreview')->name('products.bulk-upload-preview');
