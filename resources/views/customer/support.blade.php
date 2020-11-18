@@ -4,7 +4,7 @@
 <!-- Page title-->
     <div class="row d-flex justify-content-center pt-4">
         <div class="col-md-8">
-            <h2 class="h4 mb-3">Servicio al cliente</h2>
+            <h2 class="h4 mb-5">Servicio al cliente</h2>
 
             <form method="POST"">
                 @csrf
@@ -62,12 +62,9 @@
                         <div class="form-group">
                             <label for="password">Teléfono <span class="text-danger">*</span></label>
                             <div class="password-toggle">
-                                <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" required>
-                                <label class="password-toggle-btn">
-                                    <input class="custom-control-input" type="checkbox"><span class="sr-only">Mostrar teléfono</span>
-                                </label>
+                                <input class="form-control" type="text" name="phone" id="phone" required>
                             </div>
-                            @error('password')
+                            @error('phone')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -78,10 +75,7 @@
                         <div class="form-group">
                             <label for="password_confirmation">N° de Orden <span class="text-danger">*</span></label>
                             <div class="password-toggle">
-                                <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" id="password_confirmation" required>
-                                <label class="password-toggle-btn">
-                                    <input class="custom-control-input" type="checkbox"><span class="sr-only">Mostrar contraseña</span>
-                                </label>
+                                <input class="form-control @error('order_number') is-invalid @enderror" type="text" name="order_number" id="order_number" required>
                             </div>
                         </div>
                     </div>
@@ -93,7 +87,7 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <button class="btn btn-primary" type="submit"><i class="czi-user mr-2 ml-n1"></i>Enviar</button>
+                    <button class="btn btn-primary" type="submit">Enviar</button>
                 </div>
             </form>
         </div>
