@@ -104,9 +104,10 @@ class Shipping extends Component
                     $itemShipping['shipping']['totalWeight'] = 0;
                     $itemShipping['shipping']['totalPrice'] = 0;
                     $itemShipping['shipping']['totalShippingPackage'] = 0;
-
+                    $itemShipping['shipping']['items_id'] = [];
                     foreach ($shippingValue as $item) {
                         $itemShipping['shipping']['totalShippingPackage'] += 1;
+                        $itemShipping['shipping']['items_id'][] = $item->product_id;
                         $itemShipping['shipping']['isService'] = $item->product->is_service;
                         $itemShipping['shipping']['totalWidth'] += $item->width * $item->qty;
                         $itemShipping['shipping']['totalHeight'] += $item->height * $item->qty;
@@ -181,7 +182,8 @@ class Shipping extends Component
 
                         if ($itemShipping['shipping']['totalPrice']) {
                             $firstItemSeller = CartItem::whereCartId($this->cart->id)->with('product')->get();
-                            $itemsSeller = $firstItemSeller->where('product.seller_id', $sellerKey);
+                            $itemsSeller = $firstItemSeller->where('product.seller_id', $sellerKey)->whereIn('product_id', $itemShipping['shipping']['items_id']);
+                           // dd($itemsSeller, $itemShipping['shipping']['items_id'], $itemShipping['shipping']['title']);
                             CartItem::whereIn('id', $itemsSeller->pluck('id')->toArray())->update(['shipping_total' => null]);
 
                             CartItem::where('id', $itemsSeller->pluck('id')->first())->update(['shipping_total' => $itemShipping['shipping']['totalPrice']]);
@@ -193,6 +195,13 @@ class Shipping extends Component
                             // });
                             // dd($itemsSeller);
                             //$itemsSeller->update();
+                        } else {
+                            $firstItemSeller = CartItem::whereCartId($this->cart->id)->with('product')->get();
+                            $itemsSeller = $firstItemSeller->where('product.seller_id', $sellerKey)->whereIn('product_id', $itemShipping['shipping']['items_id']);
+                            //dd($itemsSeller, $itemShipping['shipping']['items_id'], $itemShipping['shipping']['title']);
+                            CartItem::whereIn('id', $itemsSeller->pluck('id')->toArray())->update(['shipping_total' => null]);
+
+                            CartItem::where('id', $itemsSeller->pluck('id')->first())->update(['shipping_total' => $itemShipping['shipping']['totalPrice']]);                            
                         }
                         array_push($itemShippingSeller, $itemShipping);
                     }
