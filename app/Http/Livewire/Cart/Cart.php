@@ -168,7 +168,7 @@ class Cart extends Component
                 'depth' => $product->depth,
                 'weight' => $product->weight,
                 'sub_total' => $product->real_price * $qty,
-                'shipping_id' => $product->seller->shippingmethods->first()->id,
+                //'shipping_id' => $product->seller->shippingmethods->first()->id,
                 /*'sub_total' => ,
                 'shipping_total' => ,
                 'discount_total' => ,
