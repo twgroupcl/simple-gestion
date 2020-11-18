@@ -6,9 +6,11 @@ use Exception;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Models\ProductBrand;
 use App\Models\ProductClass;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\ProductRequest;
@@ -117,6 +119,20 @@ class ProductCrudController extends CrudController
             'label' => 'Tipo de producto',
             'type' => 'relationship',
         ]); */
+
+        CRUD::addColumn([
+            'name' => 'categories',
+            'label' => 'Subcategoria',
+            'type' => 'relationship',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'brand',
+            'label' => 'Editorial',
+            'type' => 'relationship',
+        ]);
+
+        
 
         CRUD::addColumn([
             'name' => 'is_approved_text',
@@ -1128,6 +1144,28 @@ class ProductCrudController extends CrudController
             'label' => 'Nombre',
         ], false, function ($value) {
             $this->crud->addClause('where', 'name', 'LIKE', '%' . $value . '%');
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'category_id',
+            'type'  => 'select2',
+            'label' => 'Subcategoria'
+        ], function() {
+            return ProductCategory::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('whereHas', 'categories', function($query) use ($value) {
+                $query->where('id', $value);
+            });
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'brand_id',
+            'type'  => 'select2',
+            'label' => 'Editorial'
+        ], function() {
+            return ProductBrand::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'product_brand_id', $value);
         });
 
         $this->crud->addFilter([
