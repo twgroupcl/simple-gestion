@@ -70,30 +70,17 @@
                     <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
                  -->
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="widget pb-2 mb-2 border-right border-dark">
                             <h3 class="widget-title text-dark pb-1">Organizan</h3>
                             <div class="d-flex flex-wrap">
                                 <div class="col-12 mb-2 text-center">
-                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
+                                    <img class="img-fluid w-50" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="widget pb-2 mb-2 border-right border-dark">
-                            <h3 class="widget-title text-dark pb-1">Auspician</h3>
-                            <div class="d-flex flex-wrap">
-                                <div class="col-6 mb-2 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
-                                </div>
-                                <div class="col-6 mb-2 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
                             <div class="d-flex flex-wrap">
