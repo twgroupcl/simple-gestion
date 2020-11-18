@@ -4,7 +4,7 @@
     
     <div class="row mt-3">
         <div class="col">
-            <h3>Subir productos masivamente</h3>
+            <h3>Subir libros masivamente</h3>
         </div>
     </div>
 
@@ -21,10 +21,10 @@
         <div class="card">
             <div class="card-body row">
                 <div class="col-md-8 mt-2 mb-5" style="text-align: justify">
-                    <span style="font-size: 17px">El primer paso es <a href="">descargar la plantilla .csv</a> donde podras agregar tus productos. 
+                    <span style="font-size: 17px">El primer paso es <a href="">descargar la plantilla .csv</a> donde podras agregar tus libros. 
                         La hoja de cálculos .csv contiene el texto de muestra, que te indica cómo formatear la información del producto. Es
                         Importante que no cambies ni borres los encabezados de las columnas, esto podria provocar problemas de compatibilidad
-                        y evitaria la carga exitosa de los productos. 
+                        y evitaria la carga exitosa de los libros. 
                     </span>
                 </div>
 
@@ -53,7 +53,7 @@
         <div class="btn-group" role="group">
             <button type="submit" class="btn btn-success">
                 <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
-                <span>Vista previa de productos a cargar</span>
+                <span>Vista previa de libros a cargar</span>
             </button>
         </div>
     </form>

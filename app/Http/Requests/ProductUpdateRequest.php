@@ -36,14 +36,15 @@ class ProductUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:255',
+            'name' => 'required|min:1|max:255',
             'sku' => [
                 'required',
                 Rule::unique('products')->where( function($query) {
                     return $query->where('seller_id', '=', request('seller_id'))->where('id', '!=', request('id'));
                 }),
             ],
-            'short_description' => 'required|min:5:max:150',
+            //'short_description' => 'required|min:5:max:150',
+            'description' => 'required',
             'url_key' => [
                 'required',
                 Rule::unique('products')->where( function($query) {

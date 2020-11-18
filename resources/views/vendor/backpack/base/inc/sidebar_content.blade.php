@@ -91,10 +91,10 @@
 
 @canany(['product.list'])
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Productos</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Libros</a>
 	<ul class="nav-dropdown-items">
         @can('product.list')
-        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('product') }}'><i class='nav-icon la la-box'></i> Productos</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('product') }}'><i class='nav-icon la la-box'></i> Libros</a></li>
         @endcan
 
         @can('productbrand.list')
