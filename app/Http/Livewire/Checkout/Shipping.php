@@ -168,7 +168,6 @@ class Shipping extends Component
                         $communeDestine = $this->cart->address_commune_id;
 
                         $chilexpressResult = $chilexpress->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);
-                        dd($chilexpressResult);
                         $resultitem = json_decode(json_encode($chilexpressResult['item']), false);
 
                         $itemShipping['shipping']['totalPrice'] = $resultitem->service->serviceValue;
