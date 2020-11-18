@@ -86,8 +86,6 @@
                         <h6>Contacto</h6>
                         <p class="font-size-ms text-muted">{{$seller->email}}</p>
                     @endif
-                    <h6>Materias</h6>
-                    
                     <hr class="my-4">
                     <!--
                         <h6>Contacts</h6>
