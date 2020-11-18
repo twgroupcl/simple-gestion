@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Page Title-->
-<div class="page-title-overlap bg-dark pt-4 bg-cp-gradient">
+<div class="page-title-overlap bg-dark pt-4 bg-light-blue">
     <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
         {{-- <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
             <nav aria-label="breadcrumb">
@@ -23,13 +23,15 @@
 <div class="container pb-5 mb-2 mb-md-4">
     <div class="row">
         <!-- Sidebar-->
-        <aside class="col-lg-4">
-            <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
-                @livewire('filters')
-            </div>
-        </aside>
+        {{--
+            <aside class="col-lg-4">
+                <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
+                    @livewire('filters')
+                </div>
+            </aside>
+        --}}
         <!-- Content  -->
-        <section class="col-lg-8">
+        <section class="col-lg-12">
             <!-- Toolbar-->
             <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
                 @livewire('sorting-products')

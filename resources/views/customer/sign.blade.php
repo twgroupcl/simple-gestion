@@ -76,7 +76,7 @@
                         </div>
                         <hr class="mt-4">
                         <div class="text-right pt-4">
-                            <button class="btn btn-primary" type="submit"><i class="czi-sign-in mr-2 ml-n21"></i>Iniciar sesión</button>
+                            <button class="btn btn-primary bg-light-blue" type="submit"><i class="czi-sign-in mr-2 ml-n21"></i>Iniciar sesión</button>
                         </div>
                     </form>
                 </div>
@@ -171,7 +171,7 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <button class="btn btn-primary" type="submit"><i class="czi-user mr-2 ml-n1"></i>Registrar</button>
+                    <button class="btn btn-primary bg-light-blue" type="submit"><i class="czi-user mr-2 ml-n1"></i>Registrar</button>
                 </div>
             </form>
         </div>

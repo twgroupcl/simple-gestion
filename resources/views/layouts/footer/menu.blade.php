@@ -66,42 +66,78 @@
                 </div>
             </div> --}}
             <div class="col-md-12 mb-4">
-                <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
-
-                {{-- <div class="widget pb-2 mb-2">
-                    <h3 class="widget-title text-dark pb-1">Organizan</h3>
-                    <div class="d-flex flex-wrap">
-                        <div class="col-6 mb-2 text-center">
-                            <img class="img-fluid" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
+                <!-- 
+                    <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
+                 -->
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="widget pb-2 mb-2 border-right border-dark">
+                            <h3 class="widget-title text-dark pb-1">Organizan</h3>
+                            <div class="d-flex flex-wrap">
+                                <div class="col-12 mb-2 text-center">
+                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-6 mb-2 text-center">
-                            <img class="img-fluid" src="{{ asset('img/logos/logo-corfo.png') }}" alt="Corfo" />
+                    </div>
+                    <div class="col-md-4">
+                        <div class="widget pb-2 mb-2 border-right border-dark">
+                            <h3 class="widget-title text-dark pb-1">Auspician</h3>
+                            <div class="d-flex flex-wrap">
+                                <div class="col-6 mb-2 text-center">
+                                    <img class="img-fluid" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
+                                </div>
+                                <div class="col-6 mb-2 text-center">
+                                    <img class="img-fluid" src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" />
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="widget pb-2 mb-2">
+                            <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
+                            <div class="d-flex flex-wrap">
+                                <div class="col-12 mb-2 text-center">
+                                    <img class="img-fluid h-75" src="{{ asset('img/filsa/logo-ministerio-municipio.png') }}" alt="Ministerio de Cultura" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="widget pb-2 mb-2 border-right border-dark">
+                            <h3 class="widget-title text-dark pb-1">Colaboran</h3>
+                            <div class="d-flex flex-wrap mt-4">
+                                <div class="col-6 col-md-4 mb-2 text-center">
+                                    <img class="img-fluid" src="{{ asset('img/logos/footer-twgroup.png') }}" alt="TW Group" />
+                                </div>
+                                <div class="col-6 col-md-4 mb-2 text-center">
+                                    <img class="img-fluid" src="{{ asset('img/logos/footer-pedidosya.png') }}" alt="Pedidos ya" />
+                                </div>
+                                <div class="col-6 col-md-4 mb-2 text-center">
+                                    <img class="img-fluid" src="{{ asset('img/logos/footer-vr.png') }}" />
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="col-md-6">
+                        <div class="widget pb-2 mb-2">
+                            <h3 class="widget-title text-dark pb-1">Media Partners</h3>
+                            <div class="d-flex flex-wrap align-items-center">
+                                <div class="col-6 col-md-4 text-center">
+                                    <img class="img-fluid" src="{{ asset('img/filsa/logo-cooperativa.jpg') }}" alt="Cooperativa" />
+                                </div>
+                                <div class="col-6 col-md-4 text-center">
+                                    <img class="img-fluid" src="{{ asset('img/filsa/logo-el-mercurio.png') }}" alt="El Mercurio" />
+                                </div>
+                                <div class="col-6 col-md-4 text-center">
+                                    <img class="img-fluid" src="{{ asset('img/logos/footer-vr.png') }}" alt="VR" />
+                                </div>
+                            </div>
+                        </div> 
                     </div>
                 </div>
-                <div class="widget pb-2 mb-2">
-                    <h3 class="widget-title text-dark pb-1">Colaboran</h3>
-                    <div class="d-flex flex-wrap">
-                        <div class="col-6 col-md-2 mb-2 text-center">
-                            <img class="img-fluid" src="{{ asset('img/logos/footer-twgroup.png') }}" alt="CRCP" />
-                        </div>
-                        <div class="col-6 col-md-2 mb-2 text-center">
-                            <img class="img-fluid" src="{{ asset('img/logos/footer-worklab.png') }}" alt="Corfo" />
-                        </div>
-                        <div class="col-6 col-md-2 mb-2 text-center">
-                            <img class="img-fluid" src="{{ asset('img/logos/footer-transbank.png') }}" alt="Corfo" />
-                        </div>
-                        <div class="col-6 col-md-2 mb-2 text-center">
-                            <img class="img-fluid" src="{{ asset('img/logos/footer-pedidosya.png') }}" alt="Corfo" />
-                        </div>
-                        <div class="col-6 col-md-2 mb-2 text-center">
-                            <img class="img-fluid" src="{{ asset('img/logos/footer-vr.png') }}" alt="Corfo" />
-                        </div>
-                        <div class="col-6 col-md-2 mb-2 text-center">
-                            <img class="img-fluid" src="{{ asset('img/logos/footer-ani.png') }}" alt="Corfo" />
-                        </div>
-                    </div>
-                </div> --}}
                 {{-- <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-light pb-1">Stay informed</h3>
                     <form class="cz-subscribe-form validate" action="https://studio.us12.list-manage.com/subscribe/post?u=c7103e2c981361a6639545bd5&amp;amp;id=29ca296126" method="post" name="mc-embedded-subscribe-form" target="_blank" novalidate>
@@ -133,7 +169,7 @@
         </div>
     </div>
     @endif
-    <div class="pt-5 bg-darker">
+    <div class="pt-5 bg-purple">
         <div class="container">
             {{-- <div class="row pb-3">
                 <div class="col-md-3 col-sm-6 mb-4">
@@ -195,12 +231,14 @@
                         </div>
                     </div> --}}
                     <div class="widget widget-links widget-light">
-                        <ul class="widget-list d-flex flex-wrap justify-content-center justify-content-md-start">
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq') }}">Preguntas frecuentes</a></li>
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('privacy') }}">Privacidad</a></li>
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
-                        </ul>
-                        <span class="font-size-md text-light"><a href="mailto:contigopyme@crcpvalpo.cl">contigopyme@crcpvalpo.cl</a></span>
+                        <!--
+                            <ul class="widget-list d-flex flex-wrap justify-content-center justify-content-md-start">
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq') }}">Preguntas frecuentes</a></li>
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('privacy') }}">Privacidad</a></li>
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
+                            </ul>
+                        -->
+                        <span class="font-size-md text-light"><a href="mailto:filsa@filsa.cl">filsa@filsa.cl</a></span>
                     </div>
                 </div>
                 <div class="col-md-6 text-center text-md-right mb-4">
@@ -213,6 +251,7 @@
                     </div>
 
                     <img class="d-inline-block img-fluid" width="120" src="{{ asset('img/logo-webpay.png') }}" alt="Métodos de pago" />
+
                 </div>
             </div>
             @endif
