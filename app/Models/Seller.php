@@ -76,7 +76,11 @@ class Seller extends Model
         'user_id',
         'company_id',
     ];
-    // protected $hidden = [];
+    
+    protected $hidden = [
+        'password'
+    ];
+    
     // protected $dates = [];
     protected $casts = [
         'addresses_data' => 'array',

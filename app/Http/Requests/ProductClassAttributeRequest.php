@@ -27,6 +27,7 @@ class ProductClassAttributeRequest extends FormRequest
     {
         return [
             'name' => 'required|min:1|max:255',
+            'code' => 'required',
             'type_attribute' => 'required',
             'product_class_id' => 'required',
             'json_options' => function ($attribute, $value, $fail) {
