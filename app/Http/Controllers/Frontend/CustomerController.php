@@ -196,4 +196,9 @@ class CustomerController extends Controller
 
         return redirect()->route('customer.profile');
     }
+
+    public function support(Request $request)
+    {
+        return view('customer.support');
+    }
 }
