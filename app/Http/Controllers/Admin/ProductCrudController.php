@@ -122,7 +122,7 @@ class ProductCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'categories',
-            'label' => 'Subcategoria',
+            'label' => 'Subcategoría',
             'type' => 'relationship',
         ]);
 
@@ -205,7 +205,7 @@ class ProductCrudController extends CrudController
         ]); */
 
         CRUD::addField([
-            'label'     => "Categoría",
+            'label'     => "Subcategoría",
             'type'      => 'product.select2_multiple',
             'name'      => 'categories',
             'entity'    => 'categories',
@@ -475,7 +475,7 @@ class ProductCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'label'     => "Categorías",
+            'label'     => "Subcategoría",
             'type'      => 'product.select2_multiple',
             'name'      => 'categories',
             'entity'    => 'categories',
@@ -1149,7 +1149,7 @@ class ProductCrudController extends CrudController
         $this->crud->addFilter([
             'name'  => 'category_id',
             'type'  => 'select2',
-            'label' => 'Subcategoria'
+            'label' => 'Subcategoría'
         ], function() {
             return ProductCategory::all()->sortBy('name')->pluck('name', 'id')->toArray();
         }, function($value) {
