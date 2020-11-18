@@ -191,6 +191,7 @@ class InvoiceCrudController extends CrudController
             'options' => InvoiceType::all()->pluck('name','id'),
             'attribute' => 'name',
             'name' => 'invoice_type_id',
+            'allows_null' => true,
             'label' => 'Tipo de documento',
             'tab' => 'General',
             'wrapper' => [
