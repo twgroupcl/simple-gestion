@@ -85,7 +85,7 @@ class ProductCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'sku',
-            'label' => 'SKU',
+            'label' => 'ISBN',
             'type' => 'text',
             ]);
 
@@ -106,16 +106,17 @@ class ProductCrudController extends CrudController
             'type' => 'text',
         ]);
 
-        CRUD::addColumn([
+       /*  CRUD::addColumn([
             'name' => 'product_class',
             'label' => 'Clase de producto',
             'type' => 'relationship',
-        ]);
-        CRUD::addColumn([
+        ]); */
+
+        /* CRUD::addColumn([
             'name' => 'product_type',
             'label' => 'Tipo de producto',
             'type' => 'relationship',
-        ]);
+        ]); */
 
         CRUD::addColumn([
             'name' => 'is_approved_text',
@@ -362,6 +363,11 @@ class ProductCrudController extends CrudController
         // General fields
         $this->setGeneralFields();
 
+        // Custom attributes fields
+        if(count($attributes) !== 0) {
+            $this->setAttributesFields($attributes, $product);
+        }
+
         // Images fields
         $this->setImagesFields();
 
@@ -380,10 +386,7 @@ class ProductCrudController extends CrudController
             $this->setInventoryFields($product);
         }
 
-        // Custom attributes fields
-        if(count($attributes) !== 0) {
-            $this->setAttributesFields($attributes, $product);
-        }
+        
 
         // SEO fields
         $this->setSeoFields();
@@ -397,14 +400,14 @@ class ProductCrudController extends CrudController
     public function setGeneralFields() {
         CRUD::addField([
             'name' => 'name',
-            'label' => 'Nombre del producto',
+            'label' => 'Nombre del libro',
             'type' => 'text',
             'tab' => 'Información general'
         ]);
 
         CRUD::addField([
             'name' => 'sku',
-            'label' => 'SKU',
+            'label' => 'ISBN',
             'type' => 'text',
             'tab' => 'Información general'
         ]);
@@ -433,7 +436,10 @@ class ProductCrudController extends CrudController
             'name' => 'short_description',
             'label' => 'Resumen',
             'type' => 'text',
-            'tab' => 'Información general'
+            'tab' => 'Información general',
+            'wrapper' => [
+                'style' => 'display:none',
+            ]
         ]);
 
         CRUD::addField([
@@ -444,11 +450,11 @@ class ProductCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'label' => 'Marca',
+            'label' => 'Editorial',
             'name' => 'product_brand_id',
             'type' => 'relationship',
             'entity' => 'brand',
-            'placeholder' => 'Selecciona una marca',
+            'placeholder' => 'Selecciona una editorial',
             'tab' => 'Información general'
         ]);
 
@@ -477,6 +483,9 @@ class ProductCrudController extends CrudController
             ],
             'attributes' => [
                 'disabled' => true,
+            ],
+            'wrapper' => [
+                'style' => 'display:none',
             ]
         ]);
 
@@ -487,7 +496,10 @@ class ProductCrudController extends CrudController
             'tab' => 'Información general',
             'attributes' => [
                 'disabled' => true,
-            ]
+            ],
+            'wrapper' => [
+                'style' => 'display:none',
+            ],
         ]);
 
         CRUD::addField([
@@ -814,7 +826,7 @@ class ProductCrudController extends CrudController
                     'label' => $json_attributes['name'],
                     'name' => 'attribute-' . $attribute->id,
                     'default' => $currentValue->json_value ?? '',
-                    'tab' => 'Atributos adicionales',
+                    'tab' => 'Detalles del libro',
                     'fake' => true,
                     'store_in' => 'attributes_json',
                 ]);
@@ -826,7 +838,7 @@ class ProductCrudController extends CrudController
                     'label' => $json_attributes['name'],
                     'name' => 'attribute-' . $attribute->id,
                     'default' => $currentValue->json_value ?? '',
-                    'tab' => 'Atributos adicionales',
+                    'tab' => 'Detalles del libro',
                     'fake' => true,
                     'store_in' => 'attributes_json',
                 ]);
@@ -844,7 +856,7 @@ class ProductCrudController extends CrudController
                     'name' => 'attribute-' . $attribute->id,
                     'options'     => $formattedOptions,
                     'default' => $currentValue->json_value ?? '',
-                    'tab' => 'Atributos adicionales',
+                    'tab' => 'Detalles del libro',
                     'fake' => true,
                     'store_in' => 'attributes_json',
                 ]);
@@ -1093,7 +1105,7 @@ class ProductCrudController extends CrudController
         CRUD::addFilter([
             'type'  => 'text',
             'name'  => 'sku',
-            'label' => 'SKU',
+            'label' => 'ISBN',
         ], false, function ($value) {
             $this->crud->addClause('where', 'sku', 'LIKE', '%' . $value . '%');
         });
@@ -1130,7 +1142,7 @@ class ProductCrudController extends CrudController
             $this->crud->addClause('where', 'is_approved', $value);
           });
 
-          $this->crud->addFilter([
+          /* $this->crud->addFilter([
             'name'  => 'product_type',
             'type'  => 'dropdown',
             'label' => 'Tipo de producto'
@@ -1140,7 +1152,7 @@ class ProductCrudController extends CrudController
             2 => 'Configurable',
           ], function($value) {
             $this->crud->addClause('where', 'product_type_id', $value);
-          });
+          }); */
 
 
 
