@@ -138,7 +138,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                                 src="{{ asset($product->getFirstImagePath()) }}"
                                                                 class="pr-3">
                                                             <div class="media-body">
-                                                                <h5> {{ $product->seller->name }} </h5>
+                                                                <h5> {{ $product->seller->visible_name }} </h5>
                                                                 <h6 class="widget-product-title">
                                                                     {{ $product->name }}
                                                                 </h6>
