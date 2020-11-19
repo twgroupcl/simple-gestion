@@ -22,7 +22,11 @@ class HomeController extends Controller
             ->where('parent_id', '=', null);
         })->limit(3)->inRandomOrder()->get();
 
-        return view('marketplace', compact('categories'));
+        $featuredProducts = Product::where('status', '=' ,'1')
+        ->where('featured', '=' ,'1')
+        ->inRandomOrder()->get();
+
+        return view('marketplace', compact('categories','featuredProducts'));
     }
 
     public function getAllProducts()
