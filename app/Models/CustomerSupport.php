@@ -77,6 +77,23 @@ class CustomerSupport extends Model
         }
     }
 
+    public function getContactTypeDescriptionAttribute()
+    {
+        switch ($this->contact_type) {
+            case $this::TYPE_QUESTION:
+                return 'Consulta';
+                break;
+            case $this::TYPE_CLAIM:
+                return 'Reclamo';
+                    break;
+            case $this::TYPE_SUGGESTION:
+                return 'Sugerencia';
+                break;
+            default:
+                break;
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

@@ -57,7 +57,7 @@ class CustomerSupportCrudController extends CrudController
         ],);
 
         CRUD::addColumn([
-            'name' => 'contact_type',
+            'name' => 'contact_type_description',
             'type' => 'text',
             'label' => 'Tipo',
         ]);
