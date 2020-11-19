@@ -3,10 +3,11 @@
 namespace App\Services\DTE\Types;
 
 use App\Models\Invoice;
+use App\Services\DTE\Traits\DTEArray;
 
-class ElectronicInvoice implements DocumentType
+class ElectronicTicket implements DocumentType
 {
-    use Traits\DTEArray;
+    use DTEArray;
 
     const TYPE=39;
     protected $invoice;
@@ -19,6 +20,10 @@ class ElectronicInvoice implements DocumentType
     /*
      * Override use Traits\DTEArray { toArray as ttArray; }
      * call with $this->ttArray() and override function toArray() 
-    */
+     *
+     * public function toArray() {
+     *      return $this->ttArray();
+     * }
+     */
 
 }
