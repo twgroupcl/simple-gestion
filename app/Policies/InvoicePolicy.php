@@ -52,7 +52,7 @@ class InvoicePolicy
     {
         $status = $invoice->invoice_status;
 
-        return $status == Invoice::STATUS_DRAFT || $status == Invoice::STATUS_TEMPORAL;
+        return $status == Invoice::STATUS_TEMPORAL;
     }
 
     public function showAllInvoices(User $user)
