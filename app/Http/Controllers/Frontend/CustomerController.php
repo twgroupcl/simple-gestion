@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\User;
+use App\Models\Plans;
+use App\Models\Commune;
 use App\Models\Customer;
+use App\Models\Currency;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Models\PlanSubscription;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\NotificationSuscription;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
-use App\Models\Commune;
-use App\User;
-use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -184,6 +188,16 @@ class CustomerController extends Controller
         return view('customer.order', ['customer' => $customer]);
     }
 
+    public function subscription()
+    {
+        $customer = Customer::firstWhere('user_id', auth()->user()->id);
+        $plans = Plans::orderBy('name','asc')->get();
+        return view('customer.subscription', [
+            'customer' => $customer,
+            'plans' => $plans
+        ]);
+    }
+
     public function update(CustomerUpdateRequest $request, Customer $customer)
     {
         $requestValidated = $request->validated();
@@ -196,4 +210,54 @@ class CustomerController extends Controller
 
         return redirect()->route('customer.profile');
     }
+
+    public function getPlans()
+    {
+        $request = request();
+        return Plans::where('id',$request->id)->first();
+    }
+
+    public function addSubscription($idPlan=null)
+    {
+        $request = request();
+        $planId = (!empty($idPlan))?$idPlan:$request->plan_id;
+            
+        $user = User::find(auth()->user()->id);
+        $plan = app('rinvex.subscriptions.plan')->find($planId);
+        $newSubscription = $user->newSubscription('plan', $plan);
+        
+        if ($plan->price > 0) {
+            return redirect()->route('payment.customer.subscription', ['id' => $newSubscription->id])->send();
+        }
+        
+    }
+
+    public function sendMailSubscription()
+    {
+        $request = request();
+        $customer = Customer::where('user_id',auth()->user()->id)->first();
+        $subscription = PlanSubscription::where('id', $request->idPlanSubscription)->first();
+        $plan = Plans::where('id', $subscription->plan_id)->first();
+        $currency = Currency::where('id',$plan->currency)->first();
+        $starts_at = explode(' ',$subscription->starts_at);
+        $ends_at = explode(' ',$subscription->ends_at);
+
+        $dataEmail = [
+            'customer' => $customer->first_name.' '.$customer->last_name,
+            'plan' => $plan->name,
+            'price' => $plan->price,
+            'currency' => $currency->code,
+            'start_date' => $starts_at[0],
+            'end_date' => $ends_at[0]
+        ];
+
+        $emailsAdministrator = explode(';', Setting::get('administrator_email'));
+        array_push($emailsAdministrator,$customer->email);
+
+        foreach($emailsAdministrator as $email){
+            Mail::to($email)->send(new NotificationSuscription($dataEmail));
+        }
+    }
+
+    
 }

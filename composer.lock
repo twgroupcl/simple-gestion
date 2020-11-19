@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
+    "content-hash": "86ab135ced211688f3a960744bfe3061",
+=======
     "content-hash": "30bc85f0bc921a90c037353bd7ac0c9f",
+>>>>>>> filsa
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -60,6 +64,18 @@
         },
         {
             "name": "backpack/crud",
+<<<<<<< HEAD
+            "version": "4.1.26",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Laravel-Backpack/CRUD.git",
+                "reference": "ae68ca24844929ac38d2e792197551e823c43570"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/ae68ca24844929ac38d2e792197551e823c43570",
+                "reference": "ae68ca24844929ac38d2e792197551e823c43570",
+=======
             "version": "4.1.27",
             "source": {
                 "type": "git",
@@ -70,6 +86,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/bd1bab5dde08df20eebd730ca3a2992e1bf334f7",
                 "reference": "bd1bab5dde08df20eebd730ca3a2992e1bf334f7",
+>>>>>>> filsa
                 "shasum": ""
             },
             "require": {
@@ -140,7 +157,11 @@
                 "read",
                 "update"
             ],
+<<<<<<< HEAD
+            "time": "2020-10-27T18:43:21+00:00"
+=======
             "time": "2020-11-08T12:56:14+00:00"
+>>>>>>> filsa
         },
         {
             "name": "backpack/permissionmanager",
@@ -438,6 +459,18 @@
         },
         {
             "name": "composer/package-versions-deprecated",
+<<<<<<< HEAD
+            "version": "1.11.99",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/package-versions-deprecated.git",
+                "reference": "c8c9aa8a14cc3d3bec86d0a8c3fa52ea79936855"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/c8c9aa8a14cc3d3bec86d0a8c3fa52ea79936855",
+                "reference": "c8c9aa8a14cc3d3bec86d0a8c3fa52ea79936855",
+=======
             "version": "1.11.99.1",
             "source": {
                 "type": "git",
@@ -448,6 +481,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/7413f0b55a051e89485c5cb9f765fe24bb02a7b6",
                 "reference": "7413f0b55a051e89485c5cb9f765fe24bb02a7b6",
+>>>>>>> filsa
                 "shasum": ""
             },
             "require": {
@@ -503,7 +537,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2020-08-25T05:50:16+00:00"
+=======
             "time": "2020-11-11T10:22:58+00:00"
+>>>>>>> filsa
         },
         {
             "name": "consoletvs/charts",
@@ -741,6 +779,18 @@
         },
         {
             "name": "doctrine/dbal",
+<<<<<<< HEAD
+            "version": "2.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/dbal.git",
+                "reference": "c6d37b4c42aaa3c3ee175f05eca68056f4185646"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/c6d37b4c42aaa3c3ee175f05eca68056f4185646",
+                "reference": "c6d37b4c42aaa3c3ee175f05eca68056f4185646",
+=======
             "version": "2.12.1",
             "source": {
                 "type": "git",
@@ -751,6 +801,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/doctrine/dbal/zipball/adce7a954a1c2f14f85e94aed90c8489af204086",
                 "reference": "adce7a954a1c2f14f85e94aed90c8489af204086",
+>>>>>>> filsa
                 "shasum": ""
             },
             "require": {
@@ -844,7 +895,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2020-10-22T17:26:24+00:00"
+=======
             "time": "2020-11-14T20:26:58+00:00"
+>>>>>>> filsa
         },
         {
             "name": "doctrine/event-manager",
@@ -1233,6 +1288,18 @@
         },
         {
             "name": "egulias/email-validator",
+<<<<<<< HEAD
+            "version": "2.1.23",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/egulias/EmailValidator.git",
+                "reference": "5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df",
+                "reference": "5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df",
+=======
             "version": "2.1.24",
             "source": {
                 "type": "git",
@@ -1243,6 +1310,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/ca90a3291eee1538cd48ff25163240695bd95448",
                 "reference": "ca90a3291eee1538cd48ff25163240695bd95448",
+>>>>>>> filsa
                 "shasum": ""
             },
             "require": {
@@ -1287,6 +1355,62 @@
                 "validation",
                 "validator"
             ],
+<<<<<<< HEAD
+            "time": "2020-10-31T20:37:35+00:00"
+        },
+        {
+            "name": "felixkiss/uniquewith-validator",
+            "version": "3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/felixkiss/uniquewith-validator.git",
+                "reference": "7ce4ff83c9003718e8febe1d4670eb869a720c5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/felixkiss/uniquewith-validator/zipball/7ce4ff83c9003718e8febe1d4670eb869a720c5c",
+                "reference": "7ce4ff83c9003718e8febe1d4670eb869a720c5c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.5|^6.0|^7.0",
+                "illuminate/validation": "^5.5|^6.0|^7.0",
+                "php": "^7.1.3"
+            },
+            "require-dev": {
+                "bossa/phpspec2-expect": "^3.0",
+                "phpspec/phpspec": "^5.0|^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Felixkiss\\UniqueWithValidator\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Felixkiss\\UniqueWithValidator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Felix Kiss",
+                    "email": "felix@felixkiss.com"
+                }
+            ],
+            "description": "Custom Laravel Validator for combined unique indexes",
+            "homepage": "https://github.com/felixkiss/uniquewith-validator",
+            "keywords": [
+                "laravel"
+            ],
+            "time": "2020-03-10T21:45:55+00:00"
+=======
             "funding": [
                 {
                     "url": "https://github.com/egulias",
@@ -1294,6 +1418,7 @@
                 }
             ],
             "time": "2020-11-14T15:56:27+00:00"
+>>>>>>> filsa
         },
         {
             "name": "fideloper/proxy",
@@ -2011,6 +2136,8 @@
                 "ui"
             ],
             "time": "2020-11-03T19:45:19+00:00"
+<<<<<<< HEAD
+=======
         },
         {
             "name": "lcobucci/jwt",
@@ -2076,6 +2203,7 @@
                 }
             ],
             "time": "2020-08-20T13:22:28+00:00"
+>>>>>>> filsa
         },
         {
             "name": "league/commonmark",
@@ -3041,6 +3169,18 @@
         },
         {
             "name": "opis/closure",
+<<<<<<< HEAD
+            "version": "3.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/closure.git",
+                "reference": "c547f8262a5fa9ff507bd06cc394067b83a75085"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/closure/zipball/c547f8262a5fa9ff507bd06cc394067b83a75085",
+                "reference": "c547f8262a5fa9ff507bd06cc394067b83a75085",
+=======
             "version": "3.6.1",
             "source": {
                 "type": "git",
@@ -3051,6 +3191,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/opis/closure/zipball/943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5",
                 "reference": "943b5d70cc5ae7483f6aff6ff43d7e34592ca0f5",
+>>>>>>> filsa
                 "shasum": ""
             },
             "require": {
@@ -3098,7 +3239,11 @@
                 "serialization",
                 "serialize"
             ],
+<<<<<<< HEAD
+            "time": "2020-10-11T21:42:15+00:00"
+=======
             "time": "2020-11-07T02:01:34+00:00"
+>>>>>>> filsa
         },
         {
             "name": "orangehill/iseed",
@@ -4204,6 +4349,168 @@
             "time": "2020-09-10T13:19:53+00:00"
         },
         {
+            "name": "rinvex/laravel-subscriptions",
+            "version": "v4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rinvex/laravel-subscriptions.git",
+                "reference": "d116beff3567dbd952ceca0c993469da1e975887"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rinvex/laravel-subscriptions/zipball/d116beff3567dbd952ceca0c993469da1e975887",
+                "reference": "d116beff3567dbd952ceca0c993469da1e975887",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^7.0.0",
+                "illuminate/database": "^7.0.0",
+                "illuminate/support": "^7.0.0",
+                "php": "^7.4.0",
+                "rinvex/laravel-support": "^4.0.0",
+                "spatie/eloquent-sortable": "^3.7.0",
+                "spatie/laravel-sluggable": "^2.2.0",
+                "spatie/laravel-translatable": "^4.2.0"
+            },
+            "require-dev": {
+                "codedungeon/phpunit-result-printer": "^0.27.0",
+                "illuminate/container": "^7.0.0",
+                "phpunit/phpunit": "^9.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rinvex\\Subscriptions\\Providers\\SubscriptionsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "database"
+                ],
+                "psr-4": {
+                    "Rinvex\\Subscriptions\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rinvex LLC",
+                    "email": "help@rinvex.com",
+                    "homepage": "https://rinvex.com"
+                },
+                {
+                    "name": "Abdelrahman Omran",
+                    "email": "me@omranic.com",
+                    "homepage": "https://omranic.com",
+                    "role": "Project Lead"
+                },
+                {
+                    "name": "The Generous Laravel Community",
+                    "homepage": "https://github.com/rinvex/laravel-subscriptions/contributors"
+                }
+            ],
+            "description": "Rinvex Subscriptions is a flexible plans and subscription management system for Laravel, with the required tools to run your SAAS like services efficiently. It's simple architecture, accompanied by powerful underlying to afford solid platform for your business.",
+            "homepage": "https://rinvex.com",
+            "keywords": [
+                "database",
+                "feature",
+                "laravel",
+                "plan",
+                "recurring",
+                "subscription",
+                "value"
+            ],
+            "time": "2020-06-15T13:32:43+00:00"
+        },
+        {
+            "name": "rinvex/laravel-support",
+            "version": "v4.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rinvex/laravel-support.git",
+                "reference": "3ea56162a80cee7cba4e8d6b2ca7419c2eec1ad7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rinvex/laravel-support/zipball/3ea56162a80cee7cba4e8d6b2ca7419c2eec1ad7",
+                "reference": "3ea56162a80cee7cba4e8d6b2ca7419c2eec1ad7",
+                "shasum": ""
+            },
+            "require": {
+                "felixkiss/uniquewith-validator": "^3.4.0",
+                "illuminate/auth": "^7.0.0",
+                "illuminate/bus": "^7.0.0",
+                "illuminate/contracts": "^7.0.0",
+                "illuminate/http": "^7.0.0",
+                "illuminate/routing": "^7.0.0",
+                "illuminate/support": "^7.0.0",
+                "illuminate/validation": "^7.0.0",
+                "php": "^7.4.0",
+                "spatie/laravel-schemaless-attributes": "^1.7.0",
+                "watson/validating": "^5.0.0"
+            },
+            "require-dev": {
+                "codedungeon/phpunit-result-printer": "^0.27.0",
+                "phpunit/phpunit": "^9.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rinvex\\Support\\Providers\\SupportServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Support/helpers.php"
+                ],
+                "psr-4": {
+                    "Rinvex\\Support\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rinvex LLC",
+                    "email": "help@rinvex.com",
+                    "homepage": "https://rinvex.com"
+                },
+                {
+                    "name": "Abdelrahman Omran",
+                    "email": "me@omranic.com",
+                    "homepage": "https://omranic.com",
+                    "role": "Project Lead"
+                },
+                {
+                    "name": "The Generous Laravel Community",
+                    "homepage": "https://github.com/rinvex/laravel-support/contributors"
+                }
+            ],
+            "description": "Rinvex common support helpers, contracts, and traits required by various Rinvex packages. Validator functionality, and basic controller included out-of-the-box.",
+            "homepage": "https://rinvex.com/marketplace/rinvex-support/",
+            "keywords": [
+                "contract",
+                "helper",
+                "laravel",
+                "mimetype",
+                "rinvex",
+                "support",
+                "timezones",
+                "trait",
+                "validator"
+            ],
+            "time": "2020-07-16T12:07:29+00:00"
+        },
+        {
             "name": "sabberworm/php-css-parser",
             "version": "8.3.1",
             "source": {
@@ -4247,6 +4554,71 @@
                 "stylesheet"
             ],
             "time": "2020-06-01T09:10:00+00:00"
+        },
+        {
+            "name": "spatie/eloquent-sortable",
+            "version": "3.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/eloquent-sortable.git",
+                "reference": "51bca09f0c49ac2da8cd480e1e667ddcfce5a3f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/eloquent-sortable/zipball/51bca09f0c49ac2da8cd480e1e667ddcfce5a3f2",
+                "reference": "51bca09f0c49ac2da8cd480e1e667ddcfce5a3f2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~5.8.0|^6.0|^7.0|^8.0",
+                "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0",
+                "php": "^7.3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "orchestra/testbench": "~3.8.0|^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\EloquentSortable\\EloquentSortableServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\EloquentSortable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be"
+                }
+            ],
+            "description": "Sortable behaviour for eloquent models",
+            "homepage": "https://github.com/spatie/eloquent-sortable",
+            "keywords": [
+                "behaviour",
+                "eloquent",
+                "laravel",
+                "model",
+                "sort",
+                "sortable"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-09-15T06:48:07+00:00"
         },
         {
             "name": "spatie/laravel-permission",
@@ -4321,6 +4693,206 @@
                 }
             ],
             "time": "2020-09-16T16:47:18+00:00"
+<<<<<<< HEAD
+        },
+        {
+            "name": "spatie/laravel-schemaless-attributes",
+            "version": "1.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-schemaless-attributes.git",
+                "reference": "e3037a509683fe7fc0a2681b6f404b90aeffdaf0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-schemaless-attributes/zipball/e3037a509683fe7fc0a2681b6f404b90aeffdaf0",
+                "reference": "e3037a509683fe7fc0a2681b6f404b90aeffdaf0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^5.6|^6.0|^7.0|^8.0",
+                "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.6|^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\SchemalessAttributes\\SchemalessAttributesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\SchemalessAttributes\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Add schemaless attributes to Eloquent models",
+            "homepage": "https://github.com/spatie/laravel-schemaless-attributes",
+            "keywords": [
+                "laravel-schemaless-attributes",
+                "spatie"
+            ],
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-11-04T13:21:43+00:00"
+        },
+        {
+            "name": "spatie/laravel-sluggable",
+            "version": "2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-sluggable.git",
+                "reference": "49c491cc28a6ed5cd23936c8d59ffc24f8319762"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/49c491cc28a6ed5cd23936c8d59ffc24f8319762",
+                "reference": "49c491cc28a6ed5cd23936c8d59ffc24f8319762",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^7.0|^8.0",
+                "illuminate/support": "^7.0.5|^8.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "orchestra/testbench": "^5.0|^6.0",
+                "spatie/laravel-translatable": "^4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Sluggable\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Generate slugs when saving Eloquent models",
+            "homepage": "https://github.com/spatie/laravel-sluggable",
+            "keywords": [
+                "laravel-sluggable",
+                "spatie"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-10-28T12:03:25+00:00"
+        },
+        {
+            "name": "spatie/laravel-translatable",
+            "version": "4.5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-translatable.git",
+                "reference": "73e5c922a0004967e6be2bf73e36780af4090155"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/73e5c922a0004967e6be2bf73e36780af4090155",
+                "reference": "73e5c922a0004967e6be2bf73e36780af4090155",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~5.8.0|^6.0|^7.0|^8.0",
+                "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "mockery/mockery": "^1.3",
+                "orchestra/testbench": "~3.8.0|^4.0|^5.0|^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Translatable\\TranslatableServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Translatable\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Mohamed Said",
+                    "email": "theMohamedSaid@gmail.com",
+                    "role": "Original idea"
+                }
+            ],
+            "description": "A trait to make an Eloquent model hold translations",
+            "homepage": "https://github.com/spatie/laravel-translatable",
+            "keywords": [
+                "eloquent",
+                "i8n",
+                "laravel-translatable",
+                "model",
+                "multilingual",
+                "spatie",
+                "translate"
+            ],
+            "funding": [
+                {
+                    "url": "https://spatie.be/open-source/support-us",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-10-22T13:52:25+00:00"
+=======
+>>>>>>> filsa
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4749,6 +5321,17 @@
         {
             "name": "symfony/event-dispatcher-contracts",
             "version": "v2.2.0",
+<<<<<<< HEAD
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher-contracts.git",
+                "reference": "0ba7d54483095a198fa51781bc608d17e84dffa2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/0ba7d54483095a198fa51781bc608d17e84dffa2",
+                "reference": "0ba7d54483095a198fa51781bc608d17e84dffa2",
+=======
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher-contracts.git",
@@ -4834,6 +5417,86 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/finder/zipball/e70eb5a69c2ff61ea135a13d2266e8914a67b3a0",
                 "reference": "e70eb5a69c2ff61ea135a13d2266e8914a67b3a0",
+>>>>>>> filsa
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5"
+            },
+            "type": "library",
+<<<<<<< HEAD
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                },
+                "thanks": {
+                    "name": "symfony/contracts",
+                    "url": "https://github.com/symfony/contracts"
+                }
+            },
+=======
+>>>>>>> filsa
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Finder\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+<<<<<<< HEAD
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Generic abstractions related to dispatching event",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "abstractions",
+                "contracts",
+                "decoupling",
+                "interfaces",
+                "interoperability",
+                "standards"
+            ],
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-09-07T11:33:47+00:00"
+        },
+        {
+            "name": "symfony/finder",
+            "version": "v5.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/finder.git",
+                "reference": "e70eb5a69c2ff61ea135a13d2266e8914a67b3a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/e70eb5a69c2ff61ea135a13d2266e8914a67b3a0",
+                "reference": "e70eb5a69c2ff61ea135a13d2266e8914a67b3a0",
                 "shasum": ""
             },
             "require": {
@@ -4854,6 +5517,8 @@
             ],
             "authors": [
                 {
+=======
+>>>>>>> filsa
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -5679,6 +6344,8 @@
                 }
             ],
             "time": "2020-10-23T14:02:19+00:00"
+<<<<<<< HEAD
+=======
         },
         {
             "name": "symfony/polyfill-php56",
@@ -5744,6 +6411,7 @@
                 }
             ],
             "time": "2020-10-23T14:02:19+00:00"
+>>>>>>> filsa
         },
         {
             "name": "symfony/polyfill-php72",
@@ -6691,6 +7359,8 @@
                 "transbank"
             ],
             "time": "2020-10-26T13:54:53+00:00"
+<<<<<<< HEAD
+=======
         },
         {
             "name": "tymon/jwt-auth",
@@ -6771,6 +7441,7 @@
                 }
             ],
             "time": "2020-09-08T12:29:20+00:00"
+>>>>>>> filsa
         },
         {
             "name": "vlucas/phpdotenv",
@@ -6914,7 +7585,61 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2020-07-22T23:32:04+00:00"
+        },
+        {
+            "name": "watson/validating",
+            "version": "5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dwightwatson/validating.git",
+                "reference": "861861a7c916d3e8bc4863d18b716cb0784a1a61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dwightwatson/validating/zipball/861861a7c916d3e8bc4863d18b716cb0784a1a61",
+                "reference": "861861a7c916d3e8bc4863d18b716cb0784a1a61",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "~7.0",
+                "illuminate/database": "~7.0",
+                "illuminate/events": "~7.0",
+                "illuminate/support": "~7.0",
+                "illuminate/validation": "~7.0",
+                "php": "^7.2.5"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.3.1",
+                "phpunit/phpunit": "~8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Watson\\Validating\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dwight Watson",
+                    "email": "dwight@studiousapp.com"
+                }
+            ],
+            "description": "Eloquent model validating trait.",
+            "keywords": [
+                "eloquent",
+                "laravel",
+                "validation"
+            ],
+            "time": "2020-03-06T10:53:12+00:00"
+=======
             "time": "2020-11-12T00:07:28+00:00"
+>>>>>>> filsa
         }
     ],
     "packages-dev": [
@@ -7182,6 +7907,18 @@
         },
         {
             "name": "facade/ignition",
+<<<<<<< HEAD
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facade/ignition.git",
+                "reference": "81698c5e32837c74abf9bb764ff0c1b3e001afb3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facade/ignition/zipball/81698c5e32837c74abf9bb764ff0c1b3e001afb3",
+                "reference": "81698c5e32837c74abf9bb764ff0c1b3e001afb3",
+=======
             "version": "2.5.1",
             "source": {
                 "type": "git",
@@ -7192,6 +7929,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/facade/ignition/zipball/3b3403f18bbdc0aeadf1ffaddf11a1588b12ec7a",
                 "reference": "3b3403f18bbdc0aeadf1ffaddf11a1588b12ec7a",
+>>>>>>> filsa
                 "shasum": ""
             },
             "require": {
@@ -7249,7 +7987,11 @@
                 "laravel",
                 "page"
             ],
+<<<<<<< HEAD
+            "time": "2020-10-27T13:02:22+00:00"
+=======
             "time": "2020-11-13T13:36:24+00:00"
+>>>>>>> filsa
         },
         {
             "name": "facade/ignition-contracts",
@@ -8432,7 +9174,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
+            "time": "2020-06-22T07:06:58+00:00"
+=======
             "time": "2020-11-10T12:51:38+00:00"
+>>>>>>> filsa
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
