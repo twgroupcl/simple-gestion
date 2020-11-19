@@ -31,9 +31,9 @@
             }
         })
 
-        categoriesField.change(function () {
+        /* categoriesField.change(function () {
             productClassField.val(null).trigger('change');
-        })
+        }) */
 
     });
 

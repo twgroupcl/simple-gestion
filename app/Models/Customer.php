@@ -51,10 +51,15 @@ class Customer extends Model
         'status',
         'customer_segment_id',
         'user_id',
+        'json_value',
+        'default_address_id',
         'company_id',
     ];
-    // protected $hidden = [];
-    // protected $dates = [];
+
+    protected $hidden = [
+        'password',
+    ];
+
     protected $casts = [
         'addresses_data' => 'array',
         'activities_data' => 'array',
@@ -63,7 +68,8 @@ class Customer extends Model
         'subscription_data' => 'array',
     ];
     protected $fakeColumns = [
-        'subscription_data'
+        'subscription_data',
+        'json_value' => 'array',
     ];
 
     /*

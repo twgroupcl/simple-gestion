@@ -1,7 +1,7 @@
 <!-- Navbar Electronics Store-->
 <header class="box-shadow-sm">
     <!-- Topbar-->
-    {{-- <div class="topbar topbar-dark bg-dark">
+    {{-- <div class="topbar topbar-dark bg-purple">
         <div class="container">
             <div>
                 <div class="topbar-text dropdown disable-autohide"><a class="topbar-link dropdown-toggle" href="#" data-toggle="dropdown"><img class="mr-2" width="20" src="{{ asset('img/flags/en.png') }}" alt="English" />Eng / $</a>
@@ -33,9 +33,9 @@
     </div>
     </div> --}}
     <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
-    <div class="navbar-sticky bg-dark">
+    <div class="navbar-sticky bg-purple b-bottom-2">
         <div class="navbar navbar-expand-lg navbar-dark">
-            <div class="container"><a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;"><img width="100" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a><a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
+            <div class="container"><a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;"><img width="100" src="{{ asset('img/filsa/logo-camara.png') }}" alt="Contigo Pyme" /></a><a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
                 <!-- Search-->
                 @if($header)
                 @php
@@ -112,7 +112,9 @@
                     <!-- Primary menu-->
                     <ul class="navbar-nav">
                         <li class="nav-item active"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
+                        <!--
                         <li class="nav-item active"><a class="nav-link" href="{{ route('seller.sign') }}">Quiero vender</a></li>
+                        -->
                         <li class="nav-item active"><a class="nav-link" href="{{ route('customer.sign') }}">Quiero comprar</a></li>
                         {{-- <li class="nav-item dropdown active"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Inicio</a>
                             <ul class="dropdown-menu">

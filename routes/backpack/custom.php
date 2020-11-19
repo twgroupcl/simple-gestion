@@ -77,6 +77,17 @@ Route::group([
     Route::get('report/sales', 'Report\SalesReportController@index')->name('report.sales');
 
 
+    Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
+    Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
+    Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
+    Route::crud('order', 'OrderCrudController');
+    Route::crud('faqanswer', 'FaqAnswerCrudController');
+    Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::crud('communeshippingmethod', 'CommuneShippingMethodCrudController');
+
+    Route::get('product/bulk-upload', 'ProductCrudController@bulkUploadView')->name('products.bulk-upload');
+    Route::post('product/bulk-upload-preview', 'ProductCrudController@bulkUploadPreview')->name('products.bulk-upload-preview');
+    Route::post('product/bulk-upload-store', 'ProductCrudController@bulkUploadStore')->name('products.bulk-upload-store');
 
 }); // this should be the absolute last line of this file
 //Payment

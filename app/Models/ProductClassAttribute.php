@@ -10,7 +10,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 class ProductClassAttribute extends Model
 {
     use CrudTrait;
-    use SoftDeletes;
+    //use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -118,6 +118,14 @@ class ProductClassAttribute extends Model
     public function getNameAttribute() {
         $data = $this->json_attributes;
         return $data['name'];
+    }
+
+    public function getCodeAttribute() {
+        $data = $this->json_attributes;
+        if (empty($data['code'])) {
+            return null;
+        }
+        return $data['code'];
     }
 
    public function getDescripcionNameAttribute()

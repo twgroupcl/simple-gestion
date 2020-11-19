@@ -84,6 +84,12 @@ class ProductClassCrudController extends CrudController
             'type' => 'text',
         ]);
 
+        CRUD::addField([
+            'name' => 'code',
+            'label' => 'Codigo',
+            'type' => 'text',
+        ]);
+
         CRUD::addField([  // TO DO: Maked nested
             'label'     => "Categoría",
             'type'      => 'select2',

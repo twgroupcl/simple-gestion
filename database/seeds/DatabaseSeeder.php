@@ -25,18 +25,22 @@ class DatabaseSeeder extends Seeder
         $this->call(SellerCategoriesTableSeeder::class);
         $this->call(SettingsTableSeeder::class);
         $this->call(ProductTypesTableSeeder::class);
-        $this->call(ProductCategoriesTableSeeder::class);
-        $this->call(ProductClassesTableSeeder::class);
-        $this->call(ProductClassAttributesTableSeeder::class);
+        //$this->call(ProductCategoriesTableSeeder::class);
+        //$this->call(ProductClassesTableSeeder::class);
+        //$this->call(ProductClassAttributesTableSeeder::class);
         $this->call(SellersTableSeeder::class);
-        $this->call(ProductsTableSeeder::class);
-        $this->call(ProductAttributesTableSeeder::class);
-        $this->call(ProductImagesTableSeeder::class);
-        $this->call(ProductCategoryMappingTableSeeder::class);
-        $this->call(ProductSuperAttributesTableSeeder::class);
+        //$this->call(ProductsTableSeeder::class);
+        //$this->call(ProductAttributesTableSeeder::class);
+        //$this->call(ProductImagesTableSeeder::class);
+        //$this->call(ProductCategoryMappingTableSeeder::class);
+        //$this->call(ProductSuperAttributesTableSeeder::class);
         $this->call(PaymentMethodSellerMappingTableSeeder::class);
         $this->call(FaqTopicTableSeeder::class);
         $this->call(FaqAnswerTableSeeder::class);
         $this->call(PlansTableSeeder::class);
+        $this->call(FilsaProductBrandsTableSeeder::class);
+        $this->call(FilsaProductCategoriesTableSeeder::class);
+        $this->call(FilsaProductClassesTableSeeder::class);
+        $this->call(FilsaProductClassAttributesTableSeeder::class);
     }
 }
