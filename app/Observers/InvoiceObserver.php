@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Models\Product;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
-use App\Services\DTEService;
+use App\Services\DTE\DTEService;
 
 class InvoiceObserver
 {
@@ -49,7 +49,7 @@ class InvoiceObserver
     public function updating(Invoice $invoice)
     {
         if ($invoice->invoice_status == Invoice::STATUS_TEMPORAL) {
-            $service = new DTEservice();
+            $service = new DTEService();
             $response = $service->deleteTemporalDocument($invoice);
             if ($response->getStatusCode() !== 200) {
                 \Alert::add('danger', 'No es pudo cambiar el documento')->flash();

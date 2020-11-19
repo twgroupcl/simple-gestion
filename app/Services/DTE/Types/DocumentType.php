@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\DTE;
+namespace App\Services\DTE\Types;
 
 interface DocumentType
 {
