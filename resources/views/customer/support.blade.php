@@ -14,10 +14,10 @@
                             <label for="contact_type" class="control-label">Tipo de contacto <span class="text-danger">*</span></label><br>
                             <div class="w-100">
                                 <select class="form-control" name="contact_type" id="contact_type">
-                                    <option selected>Seleccione una opción...</option>
-                                    <option value="1">1. Consulta</option>
-                                    <option value="2">2. Reclamo</option>
-                                    <option value="3">3. Sugerencia</option>
+                                    <option {{ old('contact_type') == '' ? "selected" : "" }}>Seleccione una opción...</option>
+                                    <option {{ old('contact_type') == '1' ? "selected" : "" }} value="1">1. Consulta</option>
+                                    <option {{ old('contact_type') == '2' ? "selected" : "" }} value="2">2. Reclamo</option>
+                                    <option {{ old('contact_type') == '3' ? "selected" : "" }} value="3">3. Sugerencia</option>
                                 </select>
                             </div>
                             @error('contact_type')
