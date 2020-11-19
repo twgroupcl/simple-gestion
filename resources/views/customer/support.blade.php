@@ -50,7 +50,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="subject">Asunto <span class="text-danger">*</span></label>
-                            <input class="form-control @error('subject') is-invalid @enderror" type="text" name="subject" id="subject" placeholder="Escribe aquí el asunto" value="{{ old('subject') }}" >
+                            <input class="form-control @error('subject') is-invalid @enderror" type="text" name="subject" id="subject" placeholder="Escribe aquí el asunto" value="{{ old('subject') }}" required>
                             @error('subject')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -61,7 +61,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name">Nombre <span class="text-danger">*</span></label>
-                            <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="Escribe aquí tu nombre" value="{{ old('name') }}" >
+                            <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="Escribe aquí tu nombre" value="{{ old('name') }}" required>
                             @error('name')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -72,7 +72,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="email">E-mail <span class="text-danger">*</span></label>
-                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Escribe aquí tu email" value="{{ old('email') }}" >
+                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Escribe aquí tu email" value="{{ old('email') }}" required>
                             @error('email')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -83,7 +83,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="phone">Teléfono <span class="text-danger">*</span></label>
-                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" value="{{ old('phone') }}" >
+                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" value="{{ old('phone') }}" required>
                             @error('phone')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -105,7 +105,7 @@
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="details">Detalle <span class="text-danger">*</span></label>
-                            <textarea class="form-control @error('details') is-invalid @enderror"" name="details" id="details" rows="3">{{ old('details') }}</textarea>
+                            <textarea class="form-control @error('details') is-invalid @enderror"" name="details" id="details" rows="3" required>{{ old('details') }}</textarea>
                             @error('details')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
