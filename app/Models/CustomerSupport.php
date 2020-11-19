@@ -19,6 +19,10 @@ class CustomerSupport extends Model
     const STATUS_IN_REVIEW = 2;
     const STATUS_SOLVED = 3;
 
+    const TYPE_QUESTION = 1;
+    const TYPE_CLAIM = 2;
+    const TYPE_SUGGESTION = 3;
+
     protected $table = 'customer_support';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
