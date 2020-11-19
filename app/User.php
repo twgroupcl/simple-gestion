@@ -60,7 +60,7 @@ class User extends Authenticatable implements JWTSubject
         $bg_color = imagecolorallocate($avatar, 65, 172, 44);
         imagefill($avatar, 0, 0, $bg_color);
         $avatar_text_color = imagecolorallocate($avatar, 0, 0, 0);
-        $font = 'packages/source-sans-pro/TTF/SourceSansPro-Black.ttf';
+        $font = public_path() . '/packages/source-sans-pro/TTF/SourceSansPro-Black.ttf';
         $white = imagecolorallocate($avatar, 255, 255, 255);
         imagettftext($avatar, 30, 0, 20, 40, $white, $font, $letter);
         imagepng($avatar, $imageFilePath);
