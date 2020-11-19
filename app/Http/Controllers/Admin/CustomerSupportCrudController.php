@@ -75,9 +75,21 @@ class CustomerSupportCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'name' => 'status',
-            'type' => 'text',
+            'name' => 'status_description',
             'label' => 'Estado',
+            'type' => 'text',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Resuelta') {
+                        return 'badge badge-success';
+                    }
+                    if ($column['text'] == 'En revisión') {
+                        return 'badge badge-primary';
+                    }
+                    return 'badge badge-default';
+                },
+            ],
         ]);
     }
 
