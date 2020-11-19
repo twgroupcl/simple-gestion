@@ -11,8 +11,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
+use App\Http\Requests\Frontend\CustomerSupportRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
 use App\Models\Commune;
+use App\Models\CustomerSupport;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -200,5 +202,11 @@ class CustomerController extends Controller
     public function support(Request $request)
     {
         return view('customer.support');
+    }
+
+    public function createIssue(CustomerSupportRequest $request)
+    {
+        $requestValidated = $request->validated();
+        CustomerSupport::create($requestValidated);
     }
 }
