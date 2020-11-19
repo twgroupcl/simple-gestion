@@ -113,7 +113,7 @@ class ProductUpdateRequest extends FormRequest
         return [
             'name' => 'nombre',
             'sku' => 'SKU',
-            'description' => 'descripcion',
+            'description' => 'reseña del libro',
             'short_description' => 'resumen',
             'url_key' => 'URL Key',
             'currency_id' => 'moneda',
@@ -124,7 +124,7 @@ class ProductUpdateRequest extends FormRequest
             'weight' => 'peso',
             'seller_id' => 'vendedor',
             'status' => 'estado',
-            'categories' => 'categorias',
+            'categories' => 'subcategoria',
             
         ];
     }
