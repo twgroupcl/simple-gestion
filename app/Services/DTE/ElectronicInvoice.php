@@ -20,16 +20,25 @@ class ElectronicInvoice implements DocumentType
         $customerAddress = $this->invoice->address;
         //dd($customerAddress, $this->invoice);
     
-        $items = $this->invoice->invoice_items;
         $itemsDTE = [];
 
-        foreach ($items as $item) {
-            $itemsDTE[] = [
-                'NmbItem' => $item->name,
-                'QtyItem' => $item->qty,
-                'PrcItem' => isset($item->custom_price) ? $item->custom_price : $item->price
+        $itemsDTE = $this->prepareItems();
+
+        $globalDiscounts = null;
+        if ($this->invoice->discount_percent > 0) {
+            $globalDiscounts = [
+                'TpoMov' => 'D',
+                'ValorDR' => $this->invoice->discount_percent,
+                'TpoValor' => '%'
             ];
-        }
+        } else if ($this->invoice->discount_amount > 0) {
+            $globalDiscounts = [
+                //Discount, by default Recharge
+                'TpoMov' => 'D',
+                'ValorDR' => $this->invoice->discount_amount,
+                'TpoValor' => '$'
+            ]; 
+        } 
 
         return [
             'Encabezado' => [
@@ -50,7 +59,38 @@ class ElectronicInvoice implements DocumentType
                     'CmnaRecep' => $customerAddress->commune->name,
                 ],
             ],
-            'Detalle' => $itemsDTE
+            'Detalle' => $itemsDTE,
+            'DscRcgGlobal' => $globalDiscounts 
         ];
+    }
+
+    private function prepareItems() {
+        $items = $this->invoice->invoice_items;
+        $itemsDTE= [];
+
+        foreach ($items as $item) {
+            $itemArray = [
+               // 'CdgITem' => [
+               //     'TipoCodigo' => 'INT1',
+               //     'VlrCodigo' => 'dte-cert'
+               // ],
+                'NmbItem' => $item->name,
+                'QtyItem' => $item->qty,
+                'PrcItem' => isset($item->custom_price) ? $item->custom_price : $item->price,
+            ];
+
+            if ($item->discount_amount > 0) {
+                $itemArray = array_merge($itemArray, [
+                    'DescuentoMonto' => $item->discount_amount
+                ]);
+            } else if ($item->discount_percent > 0) {
+                $itemArray = array_merge($itemArray, [
+                    'DescuentoPct' => $item->discount_percent
+                ]);
+            }
+            $itemsDTE[] = $itemArray;
+        }
+
+        return $itemsDTE;
     }
 }
