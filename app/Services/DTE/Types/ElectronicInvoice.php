@@ -3,10 +3,11 @@
 namespace App\Services\DTE\Types;
 
 use App\Models\Invoice;
+use App\Services\DTE\Traits\DTEArray;
 
 class ElectronicInvoice implements DocumentType
 {
-    use Traits\DTEArray;
+    use DTEArray;
 
     const TYPE=33;
     protected $invoice;
