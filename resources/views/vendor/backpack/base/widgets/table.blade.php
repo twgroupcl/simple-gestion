@@ -15,5 +15,12 @@ $collection = $widget['collection'];
             @endforeach
         </tr>
     </thead>
+    <tfoot align="right">
+		<tr>
+            @foreach (collect($attributes) as $column => $value)
+            <th></th>
+            @endforeach
+        </tr>
+	</tfoot>
 </table>
 @includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')

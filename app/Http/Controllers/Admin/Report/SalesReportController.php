@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Report;
 
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\BaseController;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -64,8 +63,7 @@ class SalesReportController extends BaseController
         $requestSellerId = -1;
         if (backpack_user()->hasRole('Vendedor marketplace')) {
             $requestSellerId = Seller::where('user_id', backpack_user()->id)->firstOrFail()->id;
-        }
-        else {
+        } else {
             if (isset($request->seller)) {
                 $requestSellerId = $request->seller;
             } else {
@@ -77,44 +75,75 @@ class SalesReportController extends BaseController
 
         if ($requestSellerId == -1) {
 
-             $sales = Order::whereHas('order_items')->whereBetween(
+            $sales = Order::whereHas('order_items')
+            /*  ->whereBetween(
             'created_at',
             [$period->first()->startOfDay(),
             $period->last()->endOfDay()]
-            )->with(['order_items.seller' => function($query){
-                $query->groupBy('id');
-            }])->get();
+            ) */
+                ->with(['order_items.seller' => function ($query) {
+                    $query->groupBy('id');
+                }])->get();
 
         } else {
             $sales = Order::whereHas('order_items'
-            , function ($query) use ($requestSellerId) {
-                $query->where('seller_id', $requestSellerId);
-            }
+                , function ($query) use ($requestSellerId) {
+                    $query->where('seller_id', $requestSellerId);
+                }
             )->whereBetween(
                 'created_at',
                 [$period->first()->startOfDay(),
                     $period->last()->endOfDay()]
-            )->with(['order_items.seller' => function($query) use ($requestSellerId){
-                $query->where('id',$requestSellerId)->groupBy('id');
+            )->with(['order_items.seller' => function ($query) use ($requestSellerId) {
+                $query->where('id', $requestSellerId)->groupBy('id');
             }])->get();
         }
 
-
-
-
         foreach ($sales as $order) {
+            /*TODO update */
+            $orderPayment = null;
+            if (!is_null($order->order_payments)) {
 
+                $tmpOrderPayment = $order->order_payments->first()->json_in;
+                if (!is_null($tmpOrderPayment)) {
+                    $tmpOrderPayment = json_decode($tmpOrderPayment);
 
+                    if (!is_null($tmpOrderPayment->data)) {
+                        if (!is_null($tmpOrderPayment->data->detailOutput)) {
 
-            $itemSale = [] ;
+                            if(isset($tmpOrderPayment->data->detailOutput->paymentTypeCode)) {
+                                $pymentType = $tmpOrderPayment->data->detailOutput->paymentTypeCode;
+                                switch ($pymentType) {
+                                    case 'VD':$orderPayment = 'Venta Débito.';
+                                        break;
+                                    case 'VN':$orderPayment = 'Venta Normal.';
+                                        break;
+                                    case 'VC':$orderPayment = 'Venta en cuotas.';
+                                        break;
+                                    case 'SI':$orderPayment = '3 cuotas sin interés.';
+                                        break;
+                                    case 'S2':$orderPayment = '2 cuotas sin interés.';
+                                        break;
+                                    case 'NC':$orderPayment = 'N Cuotas sin interés';
+                                        break;
+                                    case 'VP':$orderPayment = 'Venta Prepago.';
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $itemSale = [];
             if (isset($order->order_items)) {
                 $sellers = $order->order_items->groupBy('seller_id');
                 if ($requestSellerId == -1) {
                     $sellers = $order->order_items->groupBy('seller_id'); //collec de items por vendedor
 
-                 }else{
-                    $sellers = $order->order_items->where('seller_id',$requestSellerId)->groupBy('seller_id'); //collec de items por vendedor
-                 }
+                } else {
+                    $sellers = $order->order_items->where('seller_id', $requestSellerId)->groupBy('seller_id'); //collec de items por vendedor
+                }
 
                 $sellers->map(function ($orderItems) {
                     $totalOrder = 0;
@@ -134,18 +163,17 @@ class SalesReportController extends BaseController
                     return $orderItems;
                 });
 
-
-                foreach ($sellers as $sellerId=>$seller) {
+                foreach ($sellers as $sellerId => $seller) {
                     $itemSale['id'] = $order->id;
                     $itemSale['seller'] = $seller->sellerName;
                     $itemSale['created_at'] = $order->created_at;
+                    $itemSale['payment'] = $orderPayment;
                     $itemSale['total'] = $seller->totalOrder;
                     $itemSale['totalCommission'] = $seller->totalCommission;
                     $itemSale['totalFinal'] = $seller->totalFinal;
                     array_push($data, $itemSale);
                 }
             }
-
 
         }
 

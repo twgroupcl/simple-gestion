@@ -1,4 +1,4 @@
-<div class="col-md-6">
+<div class="col-md-6 @if(!$widget['visible']) d-none @endif">
 <div class="row col-md-12 d-flex">
     <span class="font-weight-bold">Vendedores</span>
 </div>

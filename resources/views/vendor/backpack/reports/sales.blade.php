@@ -1,6 +1,7 @@
 
 @php
 
+$isAdmin = backpack_user()->hasRole('Super admin');
 
 Widget::add()->to('after_content')->type('div')->class('row')->content([
     Widget::add([
@@ -19,15 +20,12 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
         'type' => 'div',
 		'class' => 'row w-100',
 		'content' => [
-				[
-					'type'    => 'script',
-					'wrapper' => ['class' => 'col-sm-12'],
-					'content' => 'Scripts',
-                ],
+
 				[
 					'type'    => 'select2-seller',
 					'wrapper' => ['class' => 'col-6'],
-					'collection' => $sellers,
+                    'collection' => $sellers,
+                    'visible' => $isAdmin
 				],
 				[
 					'type'    => 'date-range',
@@ -66,9 +64,10 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
                 'id' => '#',
                 'seller' => 'Vendedor',
                 'created_at' => 'Fecha',
-                'total' => 'Importe',
-                'totalCommission' => 'Comisión',
-                'totalFinal' => 'Total',
+                'payment' => 'Tipo Pago',
+                'total' => 'Total venta',
+                'totalCommission' => 'Comisión Market',
+
             ],
             'collection'  => $data]
         ]
@@ -80,11 +79,7 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
         'type' => 'sales-script',
 
     ]),
-    // Widget::add([
-    //     'name' => 'export_buttons',
-    //     'type' => 'export_buttons',
 
-    // ]),
 ]);
 
 @endphp

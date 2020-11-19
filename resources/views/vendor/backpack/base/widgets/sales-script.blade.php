@@ -24,9 +24,16 @@
     <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js" type="text/javascript"></script>
     <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js" type="text/javascript"></script>
     <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js" type="text/javascript"></script>
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/currencyformatter.js/2.2.0/currencyFormatter.min.js" integrity="sha512-zaNuym1dVrK6sRojJ/9JJlrMIB+8f9IdXGzsBQltqTElXpBHZOKI39OP+bjr8WnrHXZKbJFdOKLpd5RnPd4fdg==" crossorigin="anonymous"></script>
     <script>
+
+        const today = () => {
+            return moment().format('YYYY-MM-DD');
+        }
+
+        const sevenDaysAgo = () => {
+            return moment().subtract(6, 'days').format('YYYY-MM-DD');
+        }
         let filters = {
             from: '',
             to: '',
@@ -55,7 +62,7 @@
             $('#seller-select2').select2();
             $('#seller-select2').change(() => {
                 var data = $("#seller-select2 option:selected").val();
-                filters.seller =data;
+                filters.seller = data;
                 console.log(data);
                 this.refreshData();
             })
@@ -92,7 +99,7 @@
                             titleAttr: 'Copiar',
                             className: 'btn btn-app export barras',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
+                                columns: [0, 1, 2, 3, 4, 5]
                             }
                         },
 
@@ -103,7 +110,7 @@
                             titleAttr: 'PDF',
                             className: 'btn btn-app export pdf',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
+                                columns: [0, 1, 2, 3, 4, 5]
                             },
                             orientation: 'landscape',
                             customize: function(doc) {
@@ -130,7 +137,7 @@
                             titleAttr: 'Excel',
                             className: 'btn btn-app export excel',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
+                                columns: [0, 1, 2, 3, 4, 5]
                             },
                         },
                         {
@@ -140,7 +147,7 @@
                             titleAttr: 'CSV',
                             className: 'btn btn-app export csv',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
+                                columns: [0, 1, 2, 3, 4, 5]
                             }
                         },
                         {
@@ -150,7 +157,7 @@
                             titleAttr: 'Imprimir',
                             className: 'btn btn-app export imprimir',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
+                                columns: [0, 1, 2, 3, 4, 5]
                             }
                         }
                     ]
@@ -187,6 +194,10 @@
                         name: 'Fecha',
                     },
                     {
+                        data: 'payment',
+                        name: 'Tipo Pago',
+                    },
+                    {
                         data: 'total',
                         name: 'Total',
                         render: $.fn.dataTable.render.number('.', ',', 0, '$')
@@ -195,12 +206,13 @@
                         data: 'totalCommission',
                         name: 'Comisión',
                         render: $.fn.dataTable.render.number('.', ',', 0, '$')
-                    },
-                    {
-                        data: 'totalFinal',
-                        name: 'total',
-                        render: $.fn.dataTable.render.number('.', ',', 0, '$')
                     }
+                    // ,
+                    // {
+                    //     data: 'totalFinal',
+                    //     name: 'total',
+                    //     render: $.fn.dataTable.render.number('.', ',', 0, '$')
+                    // }
                 ],
                 columnDefs: [
 
@@ -213,7 +225,7 @@
                     },
                     {
                         targets: 3,
-                        className: 'text-right'
+                        className: 'text-center'
                     },
                     {
                         targets: 4,
@@ -225,7 +237,50 @@
                     }
                 ],
 
+                "footerCallback": function(row, data, start, end, display) {
+                    var api = this.api(),
+                        data;
 
+                    // converting to interger to find total
+                    var intVal = function(i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                            i : 0;
+                    };
+
+
+                    var amountTotal = api
+                        .column(4)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    var commissionTotal = api
+                        .column(5)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+
+                    // var finalTotal = api
+                    //     .column(6)
+                    //     .data()
+                    //     .reduce(function(a, b) {
+                    //         return intVal(a) + intVal(b);
+                    //     }, 0);
+
+
+                    // Update footer by showing the total with the reference of the column index
+                    $(api.column(2).footer()).html('Total');
+
+                    // $(api.column(3).footer()).html('$' + parseFloat(amountTotal, 10).toFixed(0).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
+                    $(api.column(4).footer()).html(OSREC.CurrencyFormatter.format(amountTotal, { currency: 'CLP' }) );
+                    $(api.column(5).footer()).html(OSREC.CurrencyFormatter.format(commissionTotal,  { currency: 'CLP' }));
+                    // $(api.column(5).footer()).html(finalTotal);
+                },
+                //  }
             });
 
 
