@@ -57,6 +57,7 @@ class Seller extends Model
         'shippings_data',
         'banks_data',
         'contacts_data',
+        'subscription_data',
         'is_approved',
         'rejected_reason',
         'source',
@@ -87,6 +88,10 @@ class Seller extends Model
         'activities_data' => 'array',
         'banks_data' => 'array',
         'contacts_data' => 'array',
+        'subdcription_data' => 'array',
+    ];
+    protected $fakeColumns = [
+        'subscription_data'
     ];
 
     /*
@@ -115,6 +120,26 @@ class Seller extends Model
                 return 'Pendiente'; //REVIEW_STATUS_PENDING
                 break;
         }
+    }
+
+    /**
+     * Return an array with the codes of the available shipping methods
+     */
+    public function getAvailableShippingMethodsByCommune($communeId)
+    {
+        $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'commune_id' => $communeId ])->first();
+
+        if (!$shippingConfig) {
+            $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
+            
+            if (!$shippingConfig) {
+                return [];
+            }
+
+            return $shippingConfig->getAvailableShippingMethodCodes();
+        }
+
+        return $shippingConfig->getAvailableShippingMethodCodes();
     }
 
     /*
@@ -148,6 +173,11 @@ class Seller extends Model
         return $this->hasMany(SellerAddress::class);
     }
 
+    public function plan_subscription()
+    {
+        return $this->hasMany(PlanSubscription::class);
+    }
+
     public function shippingmethods()
     {
         return $this->belongsToMany(ShippingMethod::class,'shipping_method_seller_mapping');
@@ -161,6 +191,11 @@ class Seller extends Model
     public function paymentmethods()
     {
         return $this->hasMany(PaymentMethodSeller::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->belongsToMany(PlanSubscription::class,'plan_subscription_seller_mapping','user_id');
     }
 
     /*

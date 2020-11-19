@@ -26,6 +26,7 @@
         "maatwebsite/excel": "^3.1",
         "orangehill/iseed": "^2.6",
         "qoraiche/laravel-mail-editor": "^2.2",
+        "rinvex/laravel-subscriptions": "^4.1",
         "transbank/transbank-sdk": "^1.8",
         "tymon/jwt-auth": "^1.0"
     },

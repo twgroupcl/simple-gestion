@@ -117,6 +117,8 @@ class SellerStoreRequest extends FormRequest
             'legal_representative_name' => 'nullable|string',
             'custom_1' => 'nullable',
             'custom_2' => 'nullable|string',
+
+            'logo' => 'required',
         ];
     }
 

@@ -2,15 +2,17 @@
     <div class="loading" wire:loading>Loading&#8230;</div>
     <!-- Sellers  accordion-->
     <div class="accordion mb-2" id="seller" role="tablist">
-        {{-- {{ dd($sellersShippings) }} --}}
+
         @if ($sellers)
             @foreach ($sellers as $seller)
                 @php
-                $shippings  = null;
+                $shippings = null;
                 if(!empty($sellersShippings)){
+
                 $indexSeller = array_search($seller->id, array_column($sellersShippings,'sellerId'), true);
                 $shippings = $sellersShippings[$indexSeller];
                 }
+
 
                 @endphp
                 <div class="card">
@@ -23,12 +25,18 @@
                         <div class="card-body">
                             @php
 
-                            $shippingMethods = $seller->shippingmethods;
+                            // $shippingMethods = $seller->shippingmethods;
+
+
 
                             @endphp
                             @foreach ($items as $item)
                                 @if ($seller->id == $item->product->seller_id)
-                                    @livewire('cart.item', ['item' => $item, 'sellerShippingMethods'=>$shippingMethods,
+                                    {{-- @livewire('cart.item', ['item' => $item,
+                                    'sellerShippingMethods'=>$shippingMethods,
+                                    'showShipping'=>true , 'showAttributes' => true], key($item->id))
+                                    --}}
+                                    @livewire('cart.item', ['item' => $item,
                                     'showShipping'=>true , 'showAttributes' => true], key($item->id))
                                 @endif
                             @endforeach
@@ -57,12 +65,29 @@
                             </div> --}}
 
                             @if ($shippings)
+
                                 @foreach ($shippings as $item)
                                     @if (!empty($item['shipping']))
                                         <div class="row">
                                             <div class="col-6">{{ $item['shipping']['title'] }}</div>
-                                            <div class="col-6">   @if(!is_null($item['shipping']['totalPrice'])) {{  currencyFormat($item['shipping']['totalPrice'] ? $item['shipping']['totalPrice'] : 0, 'CLP', true) }}  @endif</div>
+                                            @if ($item['shipping']['isAvailable'])
+                                                <div class="col-6">
+                                                    @if (!is_null($item['shipping']['totalPrice']))
+                                                        {{ currencyFormat($item['shipping']['totalPrice'] ? $item['shipping']['totalPrice'] : 0, 'CLP', true) }}
+                                                    @endif
+                                                </div>
+                                            @else
+                                                <div class="col-6"> {{ $item['shipping']['message'] }} </div>
+                                            @endif
                                         </div>
+                                    @else
+                                        @if (!empty($item['notConfigured']))
+                                            <div class="row">
+                                                <div class="col-10">Esta tienda no tiene configurado metodos de envío
+                                                para la comuna seleccionada. Selecciona otra comuna de destino para continuar
+                                                o elimina los articulos de esta tienda. </div>
+                                            </div>
+                                        @endif
                                     @endif
 
                                 @endforeach

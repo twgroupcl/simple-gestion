@@ -91,10 +91,10 @@
 
 @canany(['product.list'])
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Productos</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Libros</a>
 	<ul class="nav-dropdown-items">
         @can('product.list')
-        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('product') }}'><i class='nav-icon la la-box'></i> Productos</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('product') }}'><i class='nav-icon la la-box'></i> Libros</a></li>
         @endcan
 
         @can('productbrand.list')
@@ -131,6 +131,12 @@
         @can('order.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('order') }}'><i class="nav-icon las la-file-invoice"></i> Órdenes</a></li>
         @endcan
+        @can('sales.report')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('report/sales') }}'><i class="nav-icon las la-file-invoice"></i> Reporte</a></li>
+        @endcan
 	</ul>
 </li>
 @endcanany
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('plans') }}'><i class='nav-icon la la-question'></i> Plans</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('communeshippingmethod') }}'><i class='nav-icon la la-truck'></i> Metodos de envío</a></li>

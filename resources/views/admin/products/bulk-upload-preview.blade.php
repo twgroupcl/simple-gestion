@@ -3,17 +3,17 @@
 @section('content')
     <div class="row mt-3">
         <div class="col">
-            <h3>Vista previa de productos a cargar</h3>
+            <h3>Vista previa de libros a cargar</h3>
         </div>
 	  </div>
 
     <div class="card">
       <div class="card-body row">
           <div class="col-md-12">
-            Numero de productos cargados: {{ count($result['products_array']) }}
+            Numero de libros cargados: {{ count($result['products_array']) }}
           </div>
           <div class="col-md-12">
-            Numero de productos con errores: {{ $result['products_with_errors'] }}
+            Numero de libros con errores: {{ $result['products_with_errors'] }}
           </div>
       </div>
   </div>
@@ -63,7 +63,7 @@
         <input type="hidden" name="seller_id" value="{{ request('seller_id') }}">
         <button type="submit" class="btn btn-success">
             <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
-            <span data-value="save_and_back">Cargar productos</span>
+            <span data-value="save_and_back">Cargar libros</span>
         </button>
       </form> 
       </div> 

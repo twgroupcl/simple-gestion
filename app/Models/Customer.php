@@ -47,6 +47,7 @@ class Customer extends Model
         'activities_data',
         'banks_data',
         'contacts_data',
+        'subscription_data',
         'status',
         'customer_segment_id',
         'user_id',
@@ -64,6 +65,10 @@ class Customer extends Model
         'activities_data' => 'array',
         'banks_data' => 'array',
         'contacts_data' => 'array',
+        'subscription_data' => 'array',
+    ];
+    protected $fakeColumns = [
+        'subscription_data',
         'json_value' => 'array',
     ];
 
