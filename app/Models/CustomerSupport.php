@@ -35,6 +35,11 @@ class CustomerSupport extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

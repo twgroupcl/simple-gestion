@@ -39,13 +39,46 @@ class CustomerSupportCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        $this->crud->denyAccess('show');
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'id',
+            'type' => 'text',
+            'label' => 'ID',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'seller',
+            'type' => 'relationship',
+            'label' => 'Vendedor',
+            'entity' => 'seller',
+            'attribute' => 'name',
+        ],);
+
+        CRUD::addColumn([
+            'name' => 'contact_type',
+            'type' => 'text',
+            'label' => 'Tipo',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'subject',
+            'type' => 'text',
+            'label' => 'Asunto',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'created_at',
+            'type'  => 'date',
+            'label' => 'Fecha Ingreso',
+            'format' => 'l',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'status',
+            'type' => 'text',
+            'label' => 'Estado',
+        ]);
     }
 
     /**
