@@ -20,13 +20,14 @@ class CreateCustomerSupportTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('details');
-            $table->string('order')->nullable();
             $table->integer('status')->default(1);
+            $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('seller_id')->nullable();
             $table->timestamps();
         });
 
         Schema::table('customer_support', function (Blueprint $table) {
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('seller_id')->references('id')->on('sellers');
         });
     }
