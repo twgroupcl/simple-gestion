@@ -460,7 +460,7 @@ class ProductCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'description',
-            'label' => 'Descripción completa',
+            'label' => 'Reseña del libro',
             'type' => 'wysiwyg',
             'tab' => 'Información general'
         ]);
@@ -554,7 +554,6 @@ class ProductCrudController extends CrudController
                     'name' => "image",
                     'type' => 'image',
                     'crop' => true,
-                    'aspect_ratio' => 1,
                 ]
                 ],
             'new_item_label'  => 'Agregar otra imagen',
