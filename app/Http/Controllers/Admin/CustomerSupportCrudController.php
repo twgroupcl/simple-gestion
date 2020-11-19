@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CustomerSupportRequest;
+use App\Models\CustomerSupport;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -120,6 +121,99 @@ class CustomerSupportCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        CRUD::addField([
+            'name' => 'contact_type',
+            'label' => 'Tipo de contacto',
+            'type' => 'select2_from_array',
+            'options' => [
+                CustomerSupport::TYPE_QUESTION => 'Consulta',
+                CustomerSupport::TYPE_CLAIM => 'En Reclamo',
+                CustomerSupport::TYPE_SUGGESTION => 'Sugerencia'
+            ],
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'subject',
+            'type' => 'text',
+            'label' => 'Asunto',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'email',
+            'type' => 'text',
+            'label' => 'E-mail',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'phone',
+            'type' => 'text',
+            'label' => 'Teléfono',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'order',
+            'type' => 'text',
+            'label' => 'N° Orden',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
+        CRUD::addField([
+            'name' => 'details',
+            'label' => 'Detalle',
+            'type' => 'textarea',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
+            ],
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+        ]);
     }
 }
