@@ -15,6 +15,10 @@ class CustomerSupport extends Model
     |--------------------------------------------------------------------------
     */
 
+    const STATUS_PENDING = 1;
+    const STATUS_IN_REVIEW = 2;
+    const STATUS_SOLVED = 3;
+
     protected $table = 'customer_support';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
@@ -51,6 +55,23 @@ class CustomerSupport extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    public function getStatusDescriptionAttribute()
+    {
+        switch ($this->status) {
+            case $this::STATUS_PENDING:
+                return 'Pendiente';
+                break;
+            case $this::STATUS_IN_REVIEW:
+                return 'En revisión';
+                    break;
+            case $this::STATUS_SOLVED:
+                return 'Resuelta';
+                break;
+            default:
+                break;
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------
