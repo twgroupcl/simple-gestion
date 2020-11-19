@@ -1,10 +1,30 @@
 @extends('layouts.base')
 
 @section('content')
+@isset($ticket)
+<div class="d-flex justify-content-center pt-4">
+    <div class="col-md-8 p-5 align-middle">
+        <h2 class="h4 mb-5">Servicio al cliente</h2>
+        <div class="col-sm-12 pb-5">
+            <div class="card p-5">
+                <div class="card-body">
+                    <p>
+                        <strong> Hemos recibido tu mensaje. El ID de tu solicitud es el número <span class="h5">#{{ $ticket }}</span>.
+                        Procesaremos la información y te contactaremos a la brevedad.
+                        Para regresar a la página de inicio haz click <a class="text-danger" href="{{ route('index') }}">aquí</a>.</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endisset
+
+@empty($ticket)
 <!-- Page title-->
-    <div class="d-flex justify-content-center pt-4">
-        <div class="col-md-8">
-            <h2 class="h4 mb-5">Servicio al cliente</h2>
+<div class="d-flex justify-content-center pt-4">
+    <div class="col-md-8">
+        <h2 class="h4 mb-5">Servicio al cliente</h2>
 
             <form method="POST" action="{{ route('customer.support.create') }}">
                 @csrf
@@ -100,4 +120,5 @@
             </form>
         </div>
     </div>
+@endempty
 @endsection
