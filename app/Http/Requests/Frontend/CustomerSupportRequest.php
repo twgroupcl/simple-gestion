@@ -31,7 +31,7 @@ class CustomerSupportRequest extends FormRequest
             'email' => 'required|email',
             'details' => 'required|string',
             'phone' => 'required|string',
-            'order_id' => 'nullable|string',
+            'order_id' => 'nullable|int|exists:orders,id',
         ];
     }
 
@@ -55,6 +55,7 @@ class CustomerSupportRequest extends FormRequest
             'string' => 'El campo :attribute debe ser texto',
             'email' => 'El campo :attribute debe ser un email',
             'in' => 'Debes seleccionar una de las opciones válidas',
+            'exists' => 'Asegúrate de que la orden que escribas sea correcta',
         ];
     }
 }
