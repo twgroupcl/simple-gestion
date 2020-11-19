@@ -207,6 +207,8 @@ class CustomerController extends Controller
     public function createIssue(CustomerSupportRequest $request)
     {
         $requestValidated = $request->validated();
-        CustomerSupport::create($requestValidated);
+        $ticket = CustomerSupport::create($requestValidated);
+
+        return view('customer.support', ['ticket' => $ticket->id]);
     }
 }
