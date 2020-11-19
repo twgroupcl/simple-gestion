@@ -3,17 +3,19 @@
 namespace App\Observers;
 
 use App\User;
-use App\Models\Customer;
-use App\Models\BranchUser;
+use Throwable;
 use App\Models\Cart;
+use App\Models\Plans;
+use App\Models\Customer;
+use App\Models\Currency;
+use App\Models\BranchUser;
 use App\Models\CompanyUser;
 use Illuminate\Support\Carbon;
 use App\Models\CustomerAddress;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-use Backpack\Settings\app\Models\Setting;
 use Illuminate\Support\Facades\Mail;
-use Throwable;
+use Backpack\Settings\app\Models\Setting;
 
 class CustomerObserver
 {
@@ -72,6 +74,39 @@ class CustomerObserver
                 'password' => $customer->password,
             ]);
         }
+    }
+
+    public function syncSubscription(Customer $customer)
+    {
+
+        $subscription_data = is_array($customer->subscription_data)
+        ? $customer->subscription_data
+        : null;
+
+        if (!empty($subscription_data['plan_id'])) {
+            $user = User::find($customer->user->id);
+            $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
+            $newSubscription = $user->newSubscription('plan', $plan);
+            $plan = Plans::where('id', $newSubscription->plan_id)->first();
+            if ($plan->price > 0) {
+                return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
+            }
+            $currency = Currency::where('id',$plan->currency)->first();
+            
+            $dataEmail = [
+                'seller' => $customer->name,
+                'plan' => $plan->name,
+                'price' => $plan->price,
+                'currency' => $currency->code,
+                'start_date' => $subscription_data['starts_at'],
+                'end_date' => $subscription_data['ends_at']
+            ];
+    
+            $emailsAdministrator = explode(';', Setting::get('administrator_email'));
+            array_push($emailsAdministrator, $customer->email);
+            //$this->sendMailSuscription($dataEmail,$emailsAdministrator);
+        }
+
     }
 
     public function syncAddresses(Customer $customer)

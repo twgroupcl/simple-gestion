@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\ExpirationNotification',
+        'App\Console\Commands\DeleteSubscriptionData'
     ];
 
     /**
@@ -24,7 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('expiration:notification')->daily();        
+        $schedule->command('delete:subscription:data')->daily();        
     }
 
     /**

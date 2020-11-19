@@ -64,6 +64,19 @@ Route::group([
     Route::get('charts/most-purchased-products', 'Charts\MostPurchasedProductsChartController@response')->name('charts.most-purchased-products.index');
 
      // API routes
+     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
+     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
+     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
+     Route::post('api/getPlans', 'PlansCrudController@getPlans');
+     Route::post('api/getPlanById', 'PlansCrudController@getPlanById');
+    Route::crud('order', 'OrderCrudController');
+    Route::crud('faqanswer', 'FaqAnswerCrudController');
+    Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::crud('plans', 'PlansCrudController');
+    Route::get('payment/subscription/{id}', 'Payments\WebPayPlusController@subscriptionPayment')->name('payment.subscription');
+    Route::get('report/sales', 'Report\SalesReportController@index')->name('report.sales');
+
+
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
@@ -77,4 +90,9 @@ Route::group([
     Route::post('product/bulk-upload-store', 'ProductCrudController@bulkUploadStore')->name('products.bulk-upload-store');
 
 }); // this should be the absolute last line of this file
+//Payment
+Route::post('admin/payment/subscription/result', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionResultPayment')->name('payment.result');
+Route::post('admin/payment/subscription/detail/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionDetailPayment')->name('payment.detail');
+//Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
+
 
