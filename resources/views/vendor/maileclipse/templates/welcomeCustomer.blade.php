@@ -108,23 +108,19 @@
 <tbody>
 <tr>
 <td align="center" valign="top">
-<table class="force-full-width" style="border-collapse: collapse; width: auto;" cellspacing="0" cellpadding="0">
+<table class="force-full-width" style="border-collapse: collapse; height: 575px; width: 611px;" cellspacing="0" cellpadding="0" align="center" bgcolor="#4dbfbf">
 <tbody>
-<tr>
-<td style="font-size: 30px; text-align: center;"><br /><img src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" /><br /><br /></td>
+<tr style="height: 170px;">
+<td style="height: 170px; width: 600px; background-color: #2bb5fe;" valign="top"><img src="{{asset($logo)}}" alt="" width="" height="" /></td>
 </tr>
-</tbody>
-</table>
-<table class="force-full-width" style="border-collapse: collapse; height: 470px; width: 611px;" cellspacing="0" cellpadding="0" align="center" bgcolor="#4dbfbf">
-<tbody>
-<tr style="height: 263px;">
-<td style="height: 263px; width: 600px; background-color: #e67e23;"><br /><img src="{{asset($logo)}}" alt="" width="" height="" /></td>
+<tr style="height: 105px;">
+<td style="font-size: 30px; text-align: center; height: 105px; width: 600px; background: #2bb5fe;"><img src="{{ asset('img/logos/filsa-logo.png') }}" alt="Filsa" /></td>
 </tr>
 <tr style="height: 43px;">
-<td class="headline" style="height: 43px; width: 600px; background-color: #e67e23;">{{ $title }}</td>
+<td class="headline" style="height: 43px; width: 600px; background-color: #2bb5fe;">{{ $title }}</td>
 </tr>
 <tr style="height: 76px;">
-<td style="height: 76px; width: 600px; background-color: #e67e23;"><center>
+<td style="height: 76px; width: 600px; background-color: #2bb5fe;"><center>
 <table style="margin: 0 auto;" width="60%" cellspacing="0" cellpadding="0">
 <tbody>
 <tr>
@@ -138,12 +134,12 @@
 </center></td>
 </tr>
 <tr style="height: 88px;">
-<td style="height: 88px; width: 600px; background-color: #e67e23;">
+<td style="height: 88px; width: 600px; background-color: #2bb5fe;">
 <div><!-- [if mso]>
                         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="8%" stroke="f" fillcolor="#178f8f">
                           <w:anchorlock/>
                           <center>
-                        <![endif]--> <a style="background-color: #4b566b; border-radius: 4px; color: #ffffff; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none;" href="{{$buttonLink}}">{{ $buttonText }}</a> <!-- [if mso]>
+                        <![endif]--> <a style="background-color: #002d68; border-radius: 4px; color: #ffffff; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none;" href="{{$buttonLink}}">{{ $buttonText }}</a> <!-- [if mso]>
                           </center>
                         </v:roundrect>
                       <![endif]--></div>

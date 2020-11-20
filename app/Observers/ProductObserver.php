@@ -23,8 +23,17 @@ class ProductObserver
         if ( !$product->parent_id ) {
             $administrators = Setting::get('administrator_email');
             $recipients = explode(';', $administrators);
-            foreach ($recipients as $key => $recipient) {
-                Mail::to($recipient)->send(new ProductCreated($product, $product->seller->visible_name));
+            
+            if ( !empty($product->json_value['source']) ) {
+                if ($product->json_value['source'] != 'bulk_upload') {
+                    foreach ($recipients as $key => $recipient) {
+                        Mail::to($recipient)->send(new ProductCreated($product, $product->seller->visible_name));
+                    }
+                }
+            } else {
+                foreach ($recipients as $key => $recipient) {
+                    Mail::to($recipient)->send(new ProductCreated($product, $product->seller->visible_name));
+                }
             }
         }
     }

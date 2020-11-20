@@ -28,9 +28,9 @@ class SellerChangeStatus extends Mailable
         $this->rejectedText = '';
         if ($seller->getReviewStatus() == 'Aprobado') {
             $this->title = '¡Buenas noticias!';
-            $this->text = 'Felicitaciones <strong>' . $seller->visible_name . '</strong>, hemos aprobado tu cuenta de vendedor.<br /><br />Para iniciar sesión haz clic en el bóton "Agregar productos" e ingresa tus datos.<br /><br /><strong>Email:</strong> ' .$seller->email . '<br /><strong>Contraseña:</strong> (RUT empresa sin puntos, ej: 11222333-4)';
+            $this->text = 'Felicitaciones <strong>' . $seller->visible_name . '</strong>, hemos aprobado tu cuenta de vendedor.<br /><br />Para iniciar sesión haz clic en el bóton "Agregar libros" e ingresa tus datos.<br /><br /><strong>Email:</strong> ' .$seller->email . '<br /><strong>Contraseña:</strong> (RUT empresa sin puntos, ej: 11222333-4)';
 
-            $this->buttonText = 'Agregar productos';
+            $this->buttonText = 'Agregar libros';
             $this->buttonLink = config('app.url') . '/admin';
         } else {
             $this->title = 'Se ha rechazado la solicitud.';
@@ -44,7 +44,7 @@ class SellerChangeStatus extends Mailable
             $this->buttonLink = config('app.url');
         }
 
-        $this->logo = 'img/logo-pyme.png';
+        $this->logo = 'img/filsa-banner.jpg';
     }
 
     /**
@@ -54,6 +54,6 @@ class SellerChangeStatus extends Mailable
      */
     public function build()
     {
-        return $this->subject('Respuesta de su solicitud')->view('maileclipse::templates.basicEmailTemplate');
+        return $this->subject('Respuesta de su solicitud')->view('maileclipse::templates.welcomeCustomer');
     }
 }
