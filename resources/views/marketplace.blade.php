@@ -34,29 +34,29 @@
                                     @if ($products->children()->count())
                                         @if ($products->special_price)
                                             <div class="product-price">
-                                                @if ($product->getRealPriceRange()[0] == $product->getRealPriceRange()[1])
+                                                @if ($products->getRealPriceRange()[0] == $products->getRealPriceRange()[1])
                                                     <span class="text-accent">
-                                                        {{ currencyFormat($product->getRealPriceRange()[0], defaultCurrency(), true) }}
+                                                        {{ currencyFormat($products->getRealPriceRange()[0], defaultCurrency(), true) }}
                                                     </span>
                                                     <del class="font-size-sm text-muted"><small>
-                                                        {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
+                                                        {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }}
                                                     </small></del>
                                                 @else
                                                     <span class="text-accent">  
-                                                        {{ currencyFormat($product->getRealPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getRealPriceRange()[1], defaultCurrency(), true) }}
+                                                        {{ currencyFormat($products->getRealPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getRealPriceRange()[1], defaultCurrency(), true) }}
                                                     </span>
                                                     <del class="font-size-sm text-muted"><small>
-                                                        {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                                                        {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getPriceRange()[1], defaultCurrency(), true) }}
                                                     </small></del>
                                                 @endif
                                             </div>
                                         @else
                                             <div class="product-price">
                                                 <span class="text-accent">
-                                                    @if ($product->getPriceRange()[0] == $product->getPriceRange()[1])
-                                                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }}
+                                                    @if ($products->getPriceRange()[0] == $products->getPriceRange()[1])
+                                                    {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }}
                                                     @else
-                                                    {{ currencyFormat($product->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($product->getPriceRange()[1], defaultCurrency(), true) }}
+                                                    {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getPriceRange()[1], defaultCurrency(), true) }}
                                                     @endif
                                                 </span>
                                             </div> 
