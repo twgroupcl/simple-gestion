@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CustomerSupportRequest extends FormRequest
 {
@@ -26,31 +27,37 @@ class CustomerSupportRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'contact_type' => ['required', Rule::in(['1', '2', '3']),],
+            'subject' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'details' => 'required|string',
+            'phone' => 'required|string',
+            'order_id' => 'nullable|int|exists:orders,id',
         ];
     }
 
-    /**
-     * Get the validation attributes that apply to the request.
-     *
-     * @return array
-     */
     public function attributes()
     {
         return [
-            //
+            'contact_type' => 'Tipo de contacto',
+            'subject' => 'Asunto',
+            'name' => 'Nombre',
+            'email' => 'E-mail',
+            'details' => 'Detalle',
+            'phone' => 'Teléfono',
+            'order' => 'N° Orden',
         ];
     }
 
-    /**
-     * Get the validation messages that apply to the request.
-     *
-     * @return array
-     */
     public function messages()
     {
         return [
-            //
+            'required' => 'El campo :attribute es obligatorio',
+            'string' => 'El campo :attribute debe ser texto',
+            'email' => 'El campo :attribute debe ser un email',
+            'in' => 'Debes seleccionar una de las opciones válidas',
+            'exists' => 'Asegúrate de que la orden que escribas sea correcta',
         ];
     }
 }

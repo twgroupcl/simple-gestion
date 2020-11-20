@@ -107,13 +107,79 @@ class CustomerSupportCrudController extends CrudController
     {
         CRUD::setValidation(CustomerSupportRequest::class);
 
-        CRUD::setFromDb(); // fields
+        CRUD::addField([
+            'name' => 'contact_type',
+            'label' => 'Tipo de contacto',
+            'type' => 'select2_from_array',
+            'options' => [
+                CustomerSupport::TYPE_QUESTION => 'Consulta',
+                CustomerSupport::TYPE_CLAIM => 'En Reclamo',
+                CustomerSupport::TYPE_SUGGESTION => 'Sugerencia'
+            ],
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+            'name' => 'subject',
+            'type' => 'text',
+            'label' => 'Asunto',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'email',
+            'type' => 'text',
+            'label' => 'E-mail',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'phone',
+            'type' => 'text',
+            'label' => 'Teléfono',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'order',
+            'type' => 'text',
+            'label' => 'N° Orden',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+        CRUD::addField([
+            'name' => 'details',
+            'label' => 'Detalle',
+            'type' => 'textarea',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
+            ],
+        ]);
     }
 
     /**
