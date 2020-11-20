@@ -88,14 +88,20 @@ class Cart extends Component
         $this->cart->update();
         $this->subtotal = $this->cart->sub_total;
         $this->setCursor('not-allowed');
-        if ($this->cart->cart_items->count() > 0) {
-            $this->setCursor('auto');
-        }
 
         $this->emit('dropdown.update');
         $count = $this->cart->items_count;
         $this->emit('cart-counter.setCount', $count);
         $this->emit('cart-toolbar.update', $this->subtotal, $count);
+
+        if ($this->cart->cart_items->count() > 0) {
+            $this->setCursor('auto');
+        }else{
+            $this->emit('showToast', '¡Sin productos!', 'Ya no hay productos en su carro.', 3000, 'warning');
+            return redirect(route('index'));
+
+        }
+
     }
 
 
