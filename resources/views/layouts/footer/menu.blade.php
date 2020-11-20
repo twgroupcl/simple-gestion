@@ -203,8 +203,10 @@
                     </div> --}}
                     <div class="widget widget-links widget-light">
                         <ul class="widget-list d-flex flex-wrap justify-content-center justify-content-md-start">
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq') }}">Preguntas frecuentes</a></li>
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('privacy') }}">Privacidad</a></li>
+                            <!--
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq') }}">Preguntas frecuentes</a></li>
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('privacy') }}">Privacidad</a></li>
+                            -->
                             <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
                         </ul>
                         <span class="font-size-md text-light"><a href="mailto:filsa@filsa.cl">filsa@filsa.cl</a></span>
