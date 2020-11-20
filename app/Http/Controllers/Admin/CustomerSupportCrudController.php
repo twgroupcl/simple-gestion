@@ -17,7 +17,9 @@ class CustomerSupportCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
+        update as protected traitUpdate;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
@@ -252,5 +254,29 @@ class CustomerSupportCrudController extends CrudController
                 'class' => 'form-group col-md-12',
             ],
         ]);
+
+        CRUD::addField([
+            'name' => 'notes',
+            'label' => 'Notas',
+            'type' => 'view',
+            'view' => 'livewire.support.customer-support-backpack',
+            'tab' => 'Administrador',
+        ]);
+    }
+
+    protected function update()
+    {
+        $response = $this->traitUpdate();
+
+        $customerSupport = $this->crud->entry;
+
+        $note = request()->note;
+
+        if (filled($note)) {
+            $customerSupport->notes()->create(['note' => $note]);
+            logger($customerSupport->notes()->latest()->get()->count());
+        }
+
+        return $response;
     }
 }
