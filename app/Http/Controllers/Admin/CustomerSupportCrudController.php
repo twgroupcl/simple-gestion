@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CustomerSupportRequest;
 use App\Models\CustomerSupport;
+use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -213,6 +214,42 @@ class CustomerSupportCrudController extends CrudController
             ],
             'attributes' => [
                 'disabled' => 'disabled',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'status',
+            'label' => 'Estado',
+            'type' => 'select2_from_array',
+            'options' => [
+                CustomerSupport::STATUS_PENDING => 'Pendiente',
+                CustomerSupport::STATUS_IN_REVIEW => 'En revisión',
+                CustomerSupport::STATUS_SOLVED => 'Resuelta'
+            ],
+            'tab' => 'Administrador',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'seller_id',
+            'label' => 'Vendedor',
+            'type' => 'select2_from_array',
+            'options' => Seller::pluck('name', 'id')->toArray(),
+            'tab' => 'Administrador',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'note',
+            'label' => 'Nota',
+            'type' => 'textarea',
+            'tab' => 'Administrador',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
             ],
         ]);
     }
