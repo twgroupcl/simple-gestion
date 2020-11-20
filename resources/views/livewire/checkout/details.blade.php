@@ -211,7 +211,7 @@
         <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
                     class="czi-arrow-left mt-sm-0 mr-1"></i><span class="d-none d-sm-inline">Volver al carro</span><span
                     class="d-inline d-sm-none">Back</span></a></div>
-        <div class="w-50 pl-2"><a class="btn btn-primary btn-block" wire:click="nextStep()"><span
+        <div class="w-50 pl-2"><a class="btn btn-primary bg-light-blue btn-block" wire:click="nextStep()"><span
                     class="d-none d-sm-inline">Seleccionar metodos de envío</span><span
                     class="d-inline d-sm-none">Next</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></a></div>
     </div> --}}

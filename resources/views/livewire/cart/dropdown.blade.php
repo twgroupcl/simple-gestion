@@ -10,6 +10,6 @@
                 <span class="text-muted">Subtotal:</span><span class="text-accent font-size-base ml-1">{{ $cart->sub_total ? currencyFormat($cart->sub_total, defaultCurrency(), true) : currencyFormat(0, defaultCurrency(), true) }}</span>
             </div>
             <a class="btn btn-outline-secondary btn-sm" href="{{ route('shopping-cart') }}">Ver carro<i class="czi-arrow-right ml-1 mr-n1"></i></a>
-        </div><a class="btn btn-primary btn-sm btn-block" href="{{ route('checkout') }}"><i class="czi-card mr-2 font-size-base align-middle"></i>Realizar Pago</a>
+        </div><a class="btn btn-primary bg-light-blue btn-sm btn-block" href="{{ route('checkout') }}"><i class="czi-card mr-2 font-size-base align-middle"></i>Realizar Pago</a>
     </div>
 </div>

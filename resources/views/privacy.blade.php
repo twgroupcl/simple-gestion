@@ -3,7 +3,7 @@
 @section('content')
 <!-- Page title-->
 <!-- Page Title (Light)-->
-<div class="page-title-overlap bg-dark py-4 bg-cp-gradient">
+<div class="page-title-overlap bg-dark py-4 bg-light-blue">
     <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
         {{-- <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
             <nav aria-label="breadcrumb">

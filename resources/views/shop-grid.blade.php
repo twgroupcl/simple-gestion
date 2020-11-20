@@ -15,7 +15,7 @@
             </nav>
         </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-0">Búsqueda de productos</h1>
+            <h1 class="h3 text-light mb-0">Búsqueda de libros</h1>
         </div>
     </div>
 </div>
@@ -46,14 +46,6 @@
             <!-- Products grid-->
             <div class=" mx-n2 mt-5">
                 <!-- Product-->
-
-                {{-- @if(empty($products[0]) && !isset($products->id) )
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <p class="text-center">No existen productos en esta búsqueda.</p>
-                </div>
-                @else
-                    @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 6 , 'showFrom' => $render['view'], 'valuesQuery' => $data])
-                @endif --}}
                 @livewire('products.card-general', ['columnLg' => 3, 'showPaginate' => true, 'paginateBy' => 16, 'showFrom' => $render['view'], 'valuesQuery' => $data])
             </div>
             <!-- Banner-->

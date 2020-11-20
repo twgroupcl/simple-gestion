@@ -70,60 +70,44 @@
                     <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
                  -->
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="widget pb-2 mb-2 border-right border-dark">
-                            <h3 class="widget-title text-dark pb-1">Organizan</h3>
+                    <div class="col-md-4 border-right border-dark">
+                        <div class="widget pb-2 mb-2">
+                            <h3 class="widget-title text-dark pb-1">Organiza</h3>
                             <div class="d-flex flex-wrap">
                                 <div class="col-12 mb-2 text-center">
-                                    <img class="img-fluid w-50" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
+                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4 border-right border-dark">
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
                             <div class="d-flex flex-wrap">
                                 <div class="col-12 mb-2 text-center">
-                                    <img class="img-fluid h-75" src="{{ asset('img/filsa/logo-ministerio-municipio.png') }}" alt="Ministerio de Cultura" />
+                                    <img class="img-fluid" src="{{ asset('img/filsa/logo-ministerio-municipio.png') }}" alt="Ministerio de Cultura" />
                                 </div>
                             </div>
                         </div>
-                    </div>                    
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="widget pb-2 mb-2 border-right border-dark">
-                            <h3 class="widget-title text-dark pb-1">Colaboran</h3>
-                            <div class="d-flex flex-wrap mt-4">
-                                <div class="col-6 col-md-4 mb-2 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/logos/footer-twgroup.png') }}" alt="TW Group" />
-                                </div>
-                                <div class="col-6 col-md-4 mb-2 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/logos/footer-pedidosya.png') }}" alt="Pedidos ya" />
-                                </div>
-                                <div class="col-6 col-md-4 mb-2 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/logos/footer-vr.png') }}" />
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                    <div class="col-md-6">
+                    </div>   
+                    <div class="col-md-4">
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Media Partners</h3>
                             <div class="d-flex flex-wrap align-items-center">
-                                <div class="col-6 col-md-4 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/filsa/logo-cooperativa.jpg') }}" alt="Cooperativa" />
-                                </div>
-                                <div class="col-6 col-md-4 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/filsa/logo-el-mercurio.png') }}" alt="El Mercurio" />
-                                </div>
-                                <div class="col-6 col-md-4 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/logos/footer-vr.png') }}" alt="VR" />
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 text-center">
+                                        <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <img src="{{ asset('img/filsa/el-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
+                                    </div>
                                 </div>
                             </div>
                         </div> 
-                    </div>
+                    </div>                 
                 </div>
                 {{-- <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-light pb-1">Stay informed</h3>
@@ -156,7 +140,7 @@
         </div>
     </div>
     @endif
-    <div class="pt-5 bg-purple">
+    <div class="pt-5 bg-dark">
         <div class="container">
             {{-- <div class="row pb-3">
                 <div class="col-md-3 col-sm-6 mb-4">

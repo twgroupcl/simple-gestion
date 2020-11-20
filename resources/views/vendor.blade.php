@@ -126,7 +126,7 @@
                     </div>
                 -->
                 <div class="pt-2 px-4 pl-lg-0 pr-xl-5">
-                    <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-left border-bottom">Productos<span class="badge badge-secondary font-size-sm text-body align-middle ml-2">{{ $countProduct }}</span></h2>
+                    <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-left border-bottom">Libros<span class="badge badge-secondary font-size-sm text-body align-middle ml-2">{{ $countProduct }}</span></h2>
                     <!-- Toolbar-->
                     <!--
                         <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
