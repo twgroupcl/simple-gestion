@@ -14,13 +14,13 @@ class CreateCustomerSupportTable extends Migration
     public function up()
     {
         Schema::create('customer_support', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('contact_type');
             $table->string('subject');
             $table->string('name');
             $table->string('email');
             $table->string('phone');
-            $table->string('details');
+            $table->string('details')->nullable();
             $table->integer('status')->default(1);
             $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('seller_id')->nullable();

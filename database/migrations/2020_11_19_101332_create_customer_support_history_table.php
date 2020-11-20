@@ -14,7 +14,7 @@ class CreateCustomerSupportHistoryTable extends Migration
     public function up()
     {
         Schema::create('customer_support_history', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('issue_id');
             $table->text('note');
             $table->timestamps();
