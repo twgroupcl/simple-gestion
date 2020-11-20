@@ -94,7 +94,7 @@ class OrderCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'id',
             'type' => 'text',
-            'label' => '#',
+            'label' => 'Orden N°',
         ]);
 
         CRUD::addColumn([
