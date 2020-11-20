@@ -62,7 +62,7 @@ class BulkUploadBooksService {
         $this->productService = new ProductService();
     }
 
-    public function convertExcelToArray($file)
+    public function convertExcelToArray($file, $zip)
     {
         $products = [];
 
@@ -96,10 +96,10 @@ class BulkUploadBooksService {
             ];
         });
 
-        return $this->validate($products);
+        return $this->validate($products, $zip);
     }
 
-    public function validate($productsArray)
+    public function validate($productsArray, $zip)
     {
         $isValid = true;
         $products = [];
@@ -165,6 +165,9 @@ class BulkUploadBooksService {
 
         $tmpProducts = $this->removeEmptyRows($productsArray);
         $productSkus = collect($tmpProducts)->pluck('sku');
+        $PathImagesArray = collect($tmpProducts)->pluck('path_image');
+
+        $validateImages = $this->validateImagesZip($zip, $PathImagesArray);
 
         foreach ($tmpProducts as $product) {
 
@@ -196,8 +199,11 @@ class BulkUploadBooksService {
         return [
             'validate' => $isValid,
             'products_with_errors' => $productWithErrors,
+            'validate_images' => $validateImages['validate'],
+            'image_errors' => $validateImages['image_errors'],
             'products_array' => $products,
             'table_visible_rows' => $this->tableVisibleRows,
+            'temp_images_path' => $validateImages['temp_images_path'],
         ];
     }
 
@@ -246,9 +252,10 @@ class BulkUploadBooksService {
 
             $attributes_json = $this->productService->extraAttributesAdapter($extraAttributes, $classId);
 
+            // Add seller id as prefix of the image
             $json_images = [
                 [
-                    'image' => '/storage/products/' . $productData['path_image']
+                    'image' => '/storage/products/'. $sellerId . '-' . $productData['path_image']
                 ]
             ];
 
@@ -287,7 +294,7 @@ class BulkUploadBooksService {
         return $productsModelPrepared;
     }
 
-    public function storeProducts($productsArray, $sellerId)
+    public function storeProducts($productsArray, $sellerId, $imagesZipPath)
     {
         $companyId = Seller::find($sellerId)->company->id;
         $products = $this->prepareDataForSave($productsArray, $sellerId, $companyId);
@@ -318,6 +325,12 @@ class BulkUploadBooksService {
 
         }
 
+        try {
+            $this->extractAndMoveImages($imagesZipPath, $sellerId);
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e];
+        }
+
         // Send email to admins
         $administrators = Setting::get('administrator_email');
         $recipients = explode(';', $administrators) ?? [];
@@ -327,5 +340,83 @@ class BulkUploadBooksService {
         }
 
         return ['status' => true, 'message' => 'Productos importados con exito'];
+    }
+
+    public function validateImagesZip($zip, $PathImagesArray)
+    {
+        $zipHandler = new \ZipArchive();
+        $zipName = \Storage::disk('public')->put('products/temp', $zip);
+        $zipPath = \Storage::disk('public')->path($zipName);
+
+        $imageErrors = [];
+
+        $zipStatus = $zipHandler->open($zipPath);
+
+        if ($zipStatus !== true) {
+            abort('Ocurrio un error al subir el archivo ZIP de imagenes');
+        }
+
+        // Validar peso del ZIP
+
+        for ($i = 0; $i < $zipHandler->count(); $i++) {
+
+            $extension = explode('.', $zipHandler->getNameIndex($i));
+
+            if (empty($extension[1]) || !in_array($extension[1], ['jpg', 'jpeg', 'png'])) {
+                $imageErrors[] = 'La extension del archivo "' . $zipHandler->getNameIndex($i) .'" no es permitida. Solo se permiten: jpg, jpeg, y png.';
+            }
+
+            if (!(intval($zipHandler->statIndex($i)['size']) < 1000000)) {
+                $imageErrors[] = 'El peso del archivo "' . $zipHandler->getNameIndex($i) .'" excede el maximo permitido de 1MB.';
+            }
+    
+            if (!in_array($zipHandler->getNameIndex($i), $PathImagesArray->toArray())) {
+                $imageErrors[] = 'El nombre del archivo "' . $zipHandler->getNameIndex($i) .'" no se encuentra en ninguna fila de la columna "Titulo Foto Portada".';
+            }          
+
+        }
+
+        // si no es valido, borrar archivo zip
+        // @todo NOT WORKING, FIX
+        if (count($imageErrors)) {
+            \Storage::disk('public')->delete($zipPath);
+            \Storage::disk('public')->delete($zipName);
+            //dd('storage/' . $zipName);
+        }
+
+        $zipHandler->close();
+
+        return [
+            'validate' => count($imageErrors) ? false : true,
+            'image_errors' => $imageErrors,
+            'temp_images_path' => $zipPath,
+        ];
+    }
+
+    public function extractAndMoveImages($imagesZipPath, $sellerId)
+    {
+        // Upload images
+        $zipHandler = new \ZipArchive();
+        $zipStatus = $zipHandler->open($imagesZipPath);
+
+        if ($zipStatus !== true) {
+            abort('Ocurrio un error al subir el archivo ZIP de imagenes');
+        }
+
+        // Extract to temp folder
+        $zipHandler->extractTo('storage/products/temp/' .$sellerId . '/');
+        $zipHandler->close();
+
+        $allFiles = \Storage::disk('public')->allFiles('products/temp/' .$sellerId . '/');
+
+        // Move all images from temp folder to product images folder
+        foreach($allFiles as $file) {
+            if (! \Storage::disk('public')->exists(str_replace('products/temp/' .$sellerId . '/', 'products/' . $sellerId . '-', $file))) {
+                \Storage::disk('public')->move($file, str_replace('products/temp/' .$sellerId . '/', 'products/' . $sellerId . '-', $file));
+            } else {
+                // Remove temp image
+                \Storage::disk('public')->delete($file);
+            }
+        }
     }
 }
