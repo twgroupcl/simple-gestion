@@ -13,7 +13,7 @@
         @endif
     @else
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <p class="text-center">No existen libors en esta búsqueda.</p>
+            <p class="text-center">No existen libros en esta búsqueda.</p>
         </div>
     @endif
 </div>
