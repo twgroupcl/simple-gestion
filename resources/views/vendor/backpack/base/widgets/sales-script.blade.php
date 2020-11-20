@@ -218,10 +218,7 @@
                     {
                         targets: 0,
                         render: function(data) {
-                            console.log(data);
-
                                 data = '<a href="/admin/order/' + data  + '/edit">' + data + '</a>';
-
                             return data;
                         },
                         className: 'text-center'
