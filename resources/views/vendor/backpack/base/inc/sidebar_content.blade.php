@@ -138,5 +138,16 @@
 </li>
 @endcanany
 
+@canany(['support.list'])
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Servicio al cliente</a>
+    <ul class="nav-dropdown-items">
+        @can('support.list')
+            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('customersupport') }}'><i class='nav-icon la la-question'></i> Solicitudes</a></li>
+        @endcan
+    </ul>
+</li>
+@endcanany
+
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('plans') }}'><i class='nav-icon la la-question'></i> Plans</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('communeshippingmethod') }}'><i class='nav-icon la la-truck'></i> Metodos de envío</a></li>
