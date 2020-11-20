@@ -238,6 +238,7 @@ class CustomerSupportCrudController extends CrudController
             'name' => 'seller_id',
             'label' => 'Vendedor',
             'type' => 'select2_from_array',
+            'allows_null' => true,
             'options' => Seller::pluck('name', 'id')->toArray(),
             'tab' => 'Administrador',
             'wrapperAttributes' => [
