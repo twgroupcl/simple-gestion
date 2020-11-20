@@ -183,7 +183,7 @@
                 },
                 columns: [{
                         data: 'id',
-                        name: '#'
+                        name: 'Orden N°'
                     },
                     {
                         data: 'seller',
@@ -215,6 +215,14 @@
                     // }
                 ],
                 columnDefs: [
+                    {
+                        targets: 0,
+                        render: function(data) {
+                                data = '<a href="/admin/order/' + data  + '/edit">' + data + '</a>';
+                            return data;
+                        },
+                        className: 'text-center'
+                    },
 
                     {
                         targets: 2,
