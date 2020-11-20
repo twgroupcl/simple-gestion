@@ -26,6 +26,7 @@ class OrderUpdated extends Mailable
     public $paymentData;
     public $title;
     public $shippingMessage;
+    private $receiver;
     /**
      * Create a new message instance.
      *
@@ -36,6 +37,7 @@ class OrderUpdated extends Mailable
      */
     public function __construct(Order $order, Int $receiver, Seller $seller = null)
     {
+        $this->receiver = $receiver;
 
         //
         if ($order) {
@@ -128,7 +130,7 @@ class OrderUpdated extends Mailable
                 }
             }
         }
-        $this->logo = 'img/logo-pyme.png';
+        $this->logo = 'img/filsa-banner.jpg';
     }
 
     /**
@@ -138,6 +140,15 @@ class OrderUpdated extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->subject)->view('maileclipse::templates.orderEmailTemplate');
+        if($this->receiver === 1) {
+            return $this->subject($this->subject)->view('maileclipse::templates.orderEmailTemplate')
+            ->attach(public_path('pdf/2020_11_10_TERMINOS_Y_CONDICIONES_SITIO_WEB_filsavirtual.pdf'), [
+                'as' => '2020_11_10_TERMINOS_Y_CONDICIONES_SITIO_WEB_filsavirtual.pdf',
+                'mime' => 'application/pdf',
+           ]);
+        } else {
+            return $this->subject($this->subject)->view('maileclipse::templates.orderEmailTemplate');
+        }
+;
     }
 }

@@ -26,11 +26,11 @@ class ProductCreated extends Mailable
     public function __construct(Product $product, $seller)
     {
         $this->rejectedText = '';
-        $this->title= 'Un nuevo producto ha sido creado';
-        $this->text = 'La tienda <strong>' . $seller . '</strong> ha publicado el siguiente producto: <strong>' . $product->name . '</strong>.<br><br> Puedes acceder al panel de administrador para aprobarlo o rechazarlo.';
+        $this->title= 'Un nuevo libro ha sido creado';
+        $this->text = 'La tienda <strong>' . $seller . '</strong> ha publicado el siguiente libro: <strong>' . $product->name . '</strong>.<br><br> Puedes acceder al panel de administrador para aprobarlo o rechazarlo.';
         $this->buttonText = 'Ir al panel';
         $this->buttonLink = config('app.url') . '/admin';
-        $this->logo = 'img/logo-pyme.png';
+        $this->logo = 'img/filsa-banner.jpg';
     }
 
     /**
@@ -40,6 +40,6 @@ class ProductCreated extends Mailable
      */
     public function build()
     {
-        return $this->subject('Un nuevo producto ha sido creado')->view('maileclipse::templates.basicEmailTemplate');
+        return $this->subject('Un nuevo producto ha sido creado')->view('maileclipse::templates.welcomeCustomer');
     }
 }
