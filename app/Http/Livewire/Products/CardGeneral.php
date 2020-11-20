@@ -123,9 +123,6 @@ class CardGeneral extends Component
             ->whereHas('seller', function ($query) {
                 return $query->where('is_approved', '=', '1');
             })
-            ->whereHas('seller', function ($query) {
-                return $query->where('subscription_data', '<>', '');
-            })
             ->when($category_id, function ($query) use ($category_id) {
                 if ($category_id != 0) {
                     return $query->whereHas('categories', function ($q) use ($category_id) {
@@ -145,19 +142,20 @@ class CardGeneral extends Component
                 }
                 return $query;
             });
-        
+
+        return $baseQuery->inRandomOrder()->paginate($this->paginateBy);
+            
         // Filter and sorting
         $filterService = new ProductFilterService();
         $filterQuery = $filterService->filterByParams($baseQuery, $this->filters);
         $filterQuery->when(!is_null($random), function ($query) use ($random) {
-                if ($random) {
-                    return $query->inRandomOrder();
-                } else {
-                    $query->orderBy($this->sortingField, $this->sortingDirection);
-                }
-            });
+            if ($random) {
+                return $query->inRandomOrder();
+            } else {
+                $query->orderBy($this->sortingField, $this->sortingDirection);
+            }
+        });
 
         return $filterQuery->paginate($this->paginateBy);
-        return $filterQuery->toSql();
     }
 }

@@ -4,7 +4,7 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero section with search-->
-<section class="bg-dark bg-size-cover bg-cp-gradient bg-position-center-x position-relative py-5 mb-5"><span class="bg-overlay bg-darker" style="opacity: .0;"></span>
+<section class="bg-dark bg-size-cover bg-light-blue bg-position-center-x position-relative py-5 mb-5"><span class="bg-overlay bg-darker" style="opacity: .0;"></span>
     <div class="bg-overlay-content container py-4 my-3">
         <div class="row justify-content-center">
             <div class="col-lg-8">

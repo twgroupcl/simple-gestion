@@ -14,7 +14,7 @@
               <div class="collapse show" id="{{$payment->code}}" data-parent="#payment-method" role="tabpanel" style="">
                 <div class="card-body font-size-sm">
                   <p><span class="font-weight-medium">{{$payment->title}}</span> </p>
-                  <button class="btn btn-primary" type="button" wire:click="goPay">Realizar pago</button>
+                  <button class="btn btn-primary bg-light-blue" type="button" wire:click="goPay">Realizar pago</button>
                 </div>
               </div>
             </div>

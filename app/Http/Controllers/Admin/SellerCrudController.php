@@ -752,8 +752,10 @@ class SellerCrudController extends CrudController
                     'class' => 'form-group col-6',
                 ],
             ]);
-
-            if(!$this->crud->getCurrentEntry()->subscription_data){
+                
+            $subscription_data = (isset($this->crud->getCurrentEntry()->subscription_data))?$this->crud->getCurrentEntry()->subscription_data:false;
+            
+            if(!$subscription_data){
                 CRUD::addField([
                     'name' => 'plan_id',
                     'label' => 'Plan',

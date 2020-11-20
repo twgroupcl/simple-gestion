@@ -1,13 +1,18 @@
 .bg-dark-blue{
     /* background: #002d68 !important; */
-    background: #0f2746 !important;
-     
+    background: #0f2746 !important;     
+}
+.bg-dark-blue-2{
+    background: #182129 !important;     
 }
 .bg-light-blue{
     background: #2bb5fe !important;
 }
 .bg-purple{
     background: #994ae3 !important;
+}
+.bg-black{
+    background: #000 !important;
 }
 .b-bottom-2{
     border-bottom: 2px solid #fff;

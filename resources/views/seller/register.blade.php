@@ -8,7 +8,7 @@ $selected_commune = "";
 
 @section('content')
 <!-- Page Title-->
-<div class="page-title-overlap bg-accent pt-4 bg-cp-gradient">
+<div class="page-title-overlap bg-accent pt-4 bg-light-blue">
     <div class="container d-lg-flex justify-content-between">
         {{-- <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
             <h1 class="h3 text-light mb-0">Solicitud de Inscripción</h1>
