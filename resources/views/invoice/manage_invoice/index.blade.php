@@ -1,4 +1,4 @@
-@extends('backpack::blank')
+@extends(backpack_view('blank'))
 
 @php use \App\Models\Invoice; @endphp
 
