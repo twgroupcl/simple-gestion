@@ -1,4 +1,5 @@
 @extends(backpack_view('layouts.plain'))
+
 @push('before_styles')
 <style>
  body{
@@ -16,6 +17,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-4">
             <h3 class="text-center mb-4">{{ trans('backpack::base.login') }}</h3>
+
             <div class="card">
                 <div class="card-body">
                     <form class="col-md-12 p-t-10" role="form" method="POST" action="{{ route('backpack.auth.login') }}">

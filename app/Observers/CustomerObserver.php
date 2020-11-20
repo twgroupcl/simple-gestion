@@ -137,9 +137,9 @@ class CustomerObserver
     {
         try {
             $data = [
-                'logo' => asset('img/logo-pyme.png'),
+                'logo' => asset('img/filsa-banner.jpg'),
                 'title' => 'Te damos la bienvenida '.$customer->first_name,
-                'text' => 'Explora la cantidad de productos que tenemos para ti.',
+                'text' => 'Explora la cantidad de libros que tenemos para ti.',
                 'rejectedText' => '',
                 'buttonText' => 'Quiero comprar',
                 'buttonLink' => route('index')
@@ -147,7 +147,7 @@ class CustomerObserver
 
             Mail::send('vendor.maileclipse.templates.welcomeCustomer', $data, function ($message) use ($customer) {
                 $message->to($customer->email);
-                $message->subject('Bienvenido a Contigo Pyme');
+                $message->subject('Bienvenido a Filsa Virtual');
             });
 
         } catch (Throwable $th) {

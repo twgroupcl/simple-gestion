@@ -24,10 +24,6 @@ use App\Models\Product;
             -ms-interpolation-mode: bicubic;
         }
 
-        p {
-            color: white;
-        }
-
         a {
             text-decoration: none;
             border: 0;
@@ -145,7 +141,7 @@ use App\Models\Product;
                                             </tbody>
                                         </table> --}}
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                            cellspacing="0" cellpadding="0" bgcolor="#6a9eb8">
                                             <tbody>
                                                 {{-- <tr style="padding-top:15px;">
                                                     <td> <br><br> </td>
@@ -185,17 +181,17 @@ use App\Models\Product;
                                             </tbody>
                                         </table>
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                            cellspacing="0" cellpadding="0" bgcolor="#6a9eb8">
                                             <tbody>
                                                 <tr style="padding-top:15px;">
                                                     <td>
                                                         <table class="force-width-80" style="margin: 0 auto;"
-                                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                                            cellspacing="0" cellpadding="0" bgcolor="#6a9eb8">
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="headline">Orden #{{ $orderData['id'] }}
                                                                     </td>
-                                                                    <td style="text-align: right; color:white; ">
+                                                                    <td style="text-align: right">
                                                                         <strong>Fecha </strong>{{ $orderData['fecha'] }}
                                                                     </td>
                                                                 </tr>
@@ -206,10 +202,10 @@ use App\Models\Product;
                                             </tbody>
                                         </table>
                                         <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
-                                            cellpadding="0" bgcolor="#2bb5fe">
+                                            cellpadding="0" bgcolor="#6a9eb8">
                                             <tbody>
                                                 <tr>
-                                                    <td style="background-color: #2bb5fe;">
+                                                    <td style="background-color: #6a9eb8;">
                                                         <center>
                                                             <table class="force-width-80" style="margin: 0 auto;"
                                                                 cellspacing="0" cellpadding="0">
@@ -289,7 +285,7 @@ use App\Models\Product;
                                                                 </tr>
 
                                                             </table>
-                                                            <table class="force-width-80" style="margin: 0 auto; background:white"
+                                                            <table class="force-width-80" style="margin: 0 auto;"
                                                                 cellspacing="0" cellpadding="0">
                                                                 <thead>
                                                                     <tr>
@@ -426,7 +422,7 @@ use App\Models\Product;
                                                                     @endforeach
                                                                     <tr>
                                                                         <td colspan="4" style="text-align: right">
-                                                                            <br>
+
                                                                         </td>
                                                                         <td style="text-align: right">
 
@@ -441,7 +437,7 @@ use App\Models\Product;
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td colspan="1" style="text-align: left">
+                                                                        <td colspan="4" style="text-align: right">
                                                                             <strong>Subtotal</strong>
                                                                         </td>
                                                                         <td style="text-align: right">
@@ -450,7 +446,7 @@ use App\Models\Product;
                                                                     </tr>
                                                                     @if($totalshipping > 0)
                                                                     <tr>
-                                                                        <td colspan="1" style="text-align: left">
+                                                                        <td colspan="4" style="text-align: right">
                                                                             <strong>Envío</strong>
                                                                         </td>
                                                                         <td style="text-align: right">
@@ -459,7 +455,7 @@ use App\Models\Product;
                                                                     </tr>
                                                                     @endif
                                                                     <tr>
-                                                                        <td colspan="1" style="text-align: left">
+                                                                        <td colspan="4" style="text-align: right">
                                                                             <strong>Total</strong>
                                                                         </td>
                                                                         <td style="text-align: right">
@@ -468,7 +464,6 @@ use App\Models\Product;
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                            <br>
                                                             @if ($paymentData)
                                                                 <table class="force-width-80" style="margin: 0 auto;"
                                                                     cellspacing="0" cellpadding="0">
