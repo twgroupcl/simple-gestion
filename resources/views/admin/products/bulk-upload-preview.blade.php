@@ -16,7 +16,19 @@
             Numero de libros con errores: {{ $result['products_with_errors'] }}
           </div>
       </div>
-  </div>
+   </div>
+
+   @if (!$result['validate_images'])
+   <div class="card">
+    <div class="card-body row">
+        @foreach ($result['image_errors'] as $imageError)
+        <div class="col-md-12">
+          {{ $imageError }}
+        </div>
+        @endforeach
+    </div>
+   </div>
+   @endif
 
 
     <table id="crudTable" class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline collapsed has-hidden-columns" aria-describedby="crudTable_info" role="grid" cellspacing="0">
@@ -55,7 +67,7 @@
 	    </tbody>
     </table>
 
-    @if ($result['validate'])
+    @if ($result['validate'] && $result['validate_images'])
     
       <div class="btn-group" role="group">
         <form method="POST" action="{{ route('products.bulk-upload-store') }}">
