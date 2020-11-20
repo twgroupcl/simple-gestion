@@ -33,6 +33,11 @@ class ManageInvoiceCrudController extends CrudController
         if ($response->getStatusCode() === 200) {
             $content = json_decode($response->getBody()->getContents(), true);
             $code = array_key_exists('codigo', $content) ? $content['codigo'] : null;
+            if (empty($content) || empty($code)) {
+                //@todo problem with values ??? decimals in number_format
+                \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
+                return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+            }
             $invoice->invoice_status = Invoice::STATUS_TEMPORAL;
             $invoice->dte_code = $code;
             $invoice->updateWithoutEvents();
