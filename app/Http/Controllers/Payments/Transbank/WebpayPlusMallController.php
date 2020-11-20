@@ -47,16 +47,16 @@ class WebpayPlusMallController extends Controller
 
         $configuration = new Configuration();
 
-     //   $configuration->setEnvironment('PRODUCCION');
+        $configuration->setEnvironment('PRODUCCION');
         $configuration->setCommerceCode($wpmConfig[0]->variable_value);
         $configuration->setPublicCert($wpmConfig[1]->variable_value);
         $configuration->setPrivateKey($wpmConfig[2]->variable_value);
         $this->returnUrl = $wpmConfig[3]->variable_value;
         $this->finalUrl = $wpmConfig[4]->variable_value;
 
-        $this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
+        //$this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
 
-        //$this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
+        $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
 
     }
 
