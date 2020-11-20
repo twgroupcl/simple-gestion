@@ -24,6 +24,10 @@ use App\Models\Product;
             -ms-interpolation-mode: bicubic;
         }
 
+        p {
+            color: white;
+        }
+
         a {
             text-decoration: none;
             border: 0;
@@ -191,7 +195,7 @@ use App\Models\Product;
                                                                 <tr>
                                                                     <td class="headline">Orden #{{ $orderData['id'] }}
                                                                     </td>
-                                                                    <td style="text-align: right">
+                                                                    <td style="text-align: right; color:white; ">
                                                                         <strong>Fecha </strong>{{ $orderData['fecha'] }}
                                                                     </td>
                                                                 </tr>
@@ -464,6 +468,7 @@ use App\Models\Product;
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
+                                                            <br>
                                                             @if ($paymentData)
                                                                 <table class="force-width-80" style="margin: 0 auto;"
                                                                     cellspacing="0" cellpadding="0">

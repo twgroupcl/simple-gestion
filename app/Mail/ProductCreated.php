@@ -40,6 +40,6 @@ class ProductCreated extends Mailable
      */
     public function build()
     {
-        return $this->subject('Un nuevo producto ha sido creado')->view('maileclipse::templates.welcomeCustomer');
+        return $this->subject('Un nuevo libro ha sido publicado')->view('maileclipse::templates.welcomeCustomer');
     }
 }

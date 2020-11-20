@@ -10,7 +10,7 @@
     @if ( !empty($error))
         <div class="alert alert-success pb-0">
             <ul class="list-unstyled">
-                    <li><i class="la la-info-circle"></i> {{ session('error') }}</li>
+                    <li><i class="la la-info-circle"></i> {{ $error }}</li>
             </ul>
         </div>    
     @endif
