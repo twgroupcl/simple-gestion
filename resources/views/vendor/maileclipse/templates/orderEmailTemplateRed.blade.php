@@ -130,7 +130,7 @@ use App\Models\Product;
                             <tbody>
                                 <tr>
                                     <td align="center" valign="top">
-                                        {{-- <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
+                                        <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
                                             cellpadding="0">
                                             <tbody>
                                                 <tr>
@@ -139,9 +139,9 @@ use App\Models\Product;
                                                             alt="Camara de libro" /><br /><br /></td>
                                                 </tr>
                                             </tbody>
-                                        </table> --}}
+                                        </table>
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                            cellspacing="0" cellpadding="0" bgcolor="#f5774e">
                                             <tbody>
                                                 {{-- <tr style="padding-top:15px;">
                                                     <td> <br><br> </td>
@@ -181,12 +181,12 @@ use App\Models\Product;
                                             </tbody>
                                         </table>
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                            cellspacing="0" cellpadding="0" bgcolor="#f5774e">
                                             <tbody>
                                                 <tr style="padding-top:15px;">
                                                     <td>
                                                         <table class="force-width-80" style="margin: 0 auto;"
-                                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                                            cellspacing="0" cellpadding="0" bgcolor="#f5774e">
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="headline">Orden #{{ $orderData['id'] }}
@@ -202,10 +202,10 @@ use App\Models\Product;
                                             </tbody>
                                         </table>
                                         <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
-                                            cellpadding="0" bgcolor="#2bb5fe">
+                                            cellpadding="0" bgcolor="#f5774e">
                                             <tbody>
                                                 <tr>
-                                                    <td style="background-color: #2bb5fe;">
+                                                    <td style="background-color: #f5774e;">
                                                         <center>
                                                             <table class="force-width-80" style="margin: 0 auto;"
                                                                 cellspacing="0" cellpadding="0">
@@ -285,24 +285,24 @@ use App\Models\Product;
                                                                 </tr>
 
                                                             </table>
-                                                            <table class="force-width-80" style="margin: 0 auto; background:white"
+                                                            <table class="force-width-80" style="margin: 0 auto;"
                                                                 cellspacing="0" cellpadding="0">
                                                                 <thead>
                                                                     <tr>
                                                                         <th width="30%"
-                                                                            style="color: #ffffff; background-color: #0f0f0f; padding: 10px 0px;">
+                                                                            style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Producto </th>
                                                                         <th width="10%"
-                                                                            style="color: #ffffff; background-color: #0f0f0f; padding: 10px 0px;">
+                                                                            style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Cant. </th>
                                                                         <th width="15%"
-                                                                            style="color: #ffffff; background-color: #0f0f0f; padding: 10px 0px;">
+                                                                            style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Precio </th>
                                                                         <th width="15%"
-                                                                            style="color: #ffffff; background-color: #0f0f0f; padding: 10px 0px;">
+                                                                            style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Envío </th>
                                                                         <th width="30%"
-                                                                            style="color: #ffffff; background-color: #0f0f0f; padding: 10px 0px;">
+                                                                            style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                             Subtotal </th>
                                                                     </tr>
                                                                 </thead>
@@ -314,12 +314,12 @@ use App\Models\Product;
                                                                                 <tbody>
                                                                                     <tr>
                                                                                         <td
-                                                                                            style="color: #ffffff; background-color: #0f0f0f; padding: 10px 0px;">
+                                                                                            style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                                             Plan</td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td
-                                                                                            style="color: #fff; padding: 10px 0px; background-color: #f7a084;">
+                                                                                            style="color: #933f24; padding: 10px 0px; background-color: #f7a084;">
                                                                                             Silver Plan</td>
                                                                                     </tr>
                                                                                 </tbody>
@@ -331,12 +331,12 @@ use App\Models\Product;
                                                                                 <tbody>
                                                                                     <tr>
                                                                                         <td
-                                                                                            style="color: #ffffff; background-color: #0f0f0f; padding: 10px 0px;">
+                                                                                            style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                                             Period</td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td
-                                                                                            style="color: #fff; padding: 10px 0px; background-color: #f7a084;">
+                                                                                            style="color: #933f24; padding: 10px 0px; background-color: #f7a084;">
                                                                                             August</td>
                                                                                     </tr>
                                                                                 </tbody>
@@ -348,12 +348,12 @@ use App\Models\Product;
                                                                                 <tbody>
                                                                                     <tr>
                                                                                         <td
-                                                                                            style="color: #ffffff; background-color: #0f0f0f; padding: 10px 0px;">
+                                                                                            style="color: #ffffff; background-color: #ac4d2f; padding: 10px 0px;">
                                                                                             Amount</td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td
-                                                                                            style="color: #fff; padding: 10px 0px; background-color: #f7a084;">
+                                                                                            style="color: #933f24; padding: 10px 0px; background-color: #f7a084;">
                                                                                             $50.00</td>
                                                                                     </tr>
                                                                                 </tbody>
@@ -422,7 +422,7 @@ use App\Models\Product;
                                                                     @endforeach
                                                                     <tr>
                                                                         <td colspan="4" style="text-align: right">
-                                                                            <br>
+
                                                                         </td>
                                                                         <td style="text-align: right">
 
@@ -437,7 +437,7 @@ use App\Models\Product;
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td colspan="1" style="text-align: left">
+                                                                        <td colspan="4" style="text-align: right">
                                                                             <strong>Subtotal</strong>
                                                                         </td>
                                                                         <td style="text-align: right">
@@ -446,7 +446,7 @@ use App\Models\Product;
                                                                     </tr>
                                                                     @if($totalshipping > 0)
                                                                     <tr>
-                                                                        <td colspan="1" style="text-align: left">
+                                                                        <td colspan="4" style="text-align: right">
                                                                             <strong>Envío</strong>
                                                                         </td>
                                                                         <td style="text-align: right">
@@ -455,7 +455,7 @@ use App\Models\Product;
                                                                     </tr>
                                                                     @endif
                                                                     <tr>
-                                                                        <td colspan="1" style="text-align: left">
+                                                                        <td colspan="4" style="text-align: right">
                                                                             <strong>Total</strong>
                                                                         </td>
                                                                         <td style="text-align: right">
@@ -470,13 +470,13 @@ use App\Models\Product;
                                                                     <tbody>
                                                                         <tr>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
                                                                                 <br /><br />
                                                                                 Método de pago seleccionado:
                                                                                 <br /><br />
                                                                             </td>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
                                                                                 <br /><br />
                                                                                 {{ $paymentData['title'] }}
                                                                                 <br /><br />
@@ -484,13 +484,13 @@ use App\Models\Product;
                                                                         </tr>
                                                                         <tr>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
                                                                                 <br /><br />
                                                                                 Fecha de pago:
                                                                                 <br /><br />
                                                                             </td>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
                                                                                 <br /><br />
                                                                                 {{ $paymentData['date'] }}
                                                                                 <br /><br />
@@ -498,13 +498,13 @@ use App\Models\Product;
                                                                         </tr>
                                                                         <tr>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
                                                                                 <br /><br />
                                                                                 Importe Total:
                                                                                 <br /><br />
                                                                             </td>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #933f24; text-align: left; border-bottom: 1px solid #933f24;">
                                                                                 <br /><br />
                                                                                 {{ $paymentData['total'] }}
                                                                                 <br /><br />
@@ -519,7 +519,7 @@ use App\Models\Product;
                                                                     <tbody>
                                                                         <tr>
                                                                             <td
-                                                                                style="text-align: left; color: #fff;">
+                                                                                style="text-align: left; color: #933f24;">
 
                                                                                 <br /><br /><br />
                                                                                 {{ $shippingMessage }}
