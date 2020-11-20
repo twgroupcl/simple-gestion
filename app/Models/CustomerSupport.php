@@ -48,6 +48,11 @@ class CustomerSupport extends Model
         return $this->belongsTo(Seller::class);
     }
 
+    public function notes()
+    {
+        return $this->hasMany(CustomerSupportHistory::class, 'issue_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
