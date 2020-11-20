@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ProductCreated extends Mailable
+class BulkUploadMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -23,11 +23,13 @@ class ProductCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(Product $product, $seller)
+    public function __construct($seller, $nroProducts)
     {
+        $this->seller = $seller;
+        $this->nroProducts = $nroProducts;
         $this->rejectedText = '';
-        $this->title= 'Un nuevo libro ha sido creado';
-        $this->text = 'La tienda <strong>' . $seller . '</strong> ha publicado el siguiente libro: <strong>' . $product->name . '</strong>.<br><br> Puedes acceder al panel de administrador para aprobarlo o rechazarlo.';
+        $this->title= 'La libreria ' . $seller . ' ha publicado nuevos libros';
+        $this->text = 'La libreria <strong>' . $seller . '</strong> ha publicado <strong>' . $nroProducts . '</strong> libros utilizando la carga masiva.<br><br> Puedes acceder al panel de administrador para aprobarlos o rechazarlos.';
         $this->buttonText = 'Ir al panel';
         $this->buttonLink = config('app.url') . '/admin';
         $this->logo = 'img/filsa-banner.jpg';
@@ -40,6 +42,6 @@ class ProductCreated extends Mailable
      */
     public function build()
     {
-        return $this->subject('Un nuevo libro ha sido publicado')->view('maileclipse::templates.welcomeCustomer');
+        return $this->subject($this->seller . 'ha publicado ' . $this->nroProducts .' libros')->view('maileclipse::templates.welcomeCustomer');
     }
 }

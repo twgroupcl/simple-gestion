@@ -5,15 +5,19 @@ namespace App\Services\BulkUpload;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Mail\BulkUploadMail;
+use App\Mail\ProductCreated;
 use App\Models\ProductBrand;
 use App\Models\ProductClass;
 use App\Models\ProductCategory;
 use Illuminate\Validation\Rule;
 use App\Services\ProductService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
 use App\Imports\ProductsCollectionImport;
+use Backpack\Settings\app\Models\Setting;
 use Illuminate\Support\Facades\Validator;
 
 class BulkUploadBooksService {
@@ -248,6 +252,10 @@ class BulkUploadBooksService {
                 ]
             ];
 
+            $json_value = [
+                'source' => 'bulk_upload',
+            ];
+
             return [
                 'sku' => $productData['sku'],
                 'name' => $productData['name'],
@@ -270,6 +278,7 @@ class BulkUploadBooksService {
                 'attributes_json' => $attributes_json,
                 'images_json' => $json_images,
                 'currency_id' => 63,
+                'json_value' => $json_value,
                 'seller_id' => $sellerId,
                 'company_id' => $companyId,
             ];
@@ -307,6 +316,14 @@ class BulkUploadBooksService {
             $newProduct->url_key = $slug;
             $newProduct->update();
 
+        }
+
+        // Send email to admins
+        $administrators = Setting::get('administrator_email');
+        $recipients = explode(';', $administrators) ?? [];
+        
+        foreach ($recipients as $key => $recipient) {
+            Mail::to($recipient)->send(new BulkUploadMail(Seller::find($sellerId)->visible_name, count($products)));
         }
 
         return ['status' => true, 'message' => 'Productos importados con exito'];

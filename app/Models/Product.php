@@ -37,6 +37,7 @@ class Product extends Model
         'variations_json' => 'array',
         'attributes_json' => 'array',
         'inventories_json' => 'array',
+        'json_value' => 'array',
     ];
 
     const PRODUCT_TYPE_SIMPLE = 1;
