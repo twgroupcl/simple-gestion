@@ -66,16 +66,18 @@ trait DTEArray
                // ],
                 'NmbItem' => $item->name,
                 'QtyItem' => $item->qty,
-                'PrcItem' => isset($item->custom_price) ? $item->custom_price : $item->price,
+                'PrcItem' => isset($item->custom_price) ? 
+                    round($item->custom_price, 2, PHP_ROUND_HALF_ODD) : 
+                    round($item->price, 2, PHP_ROUND_HALF_ODD)
             ];
 
             if ($item->discount_amount > 0) {
                 $itemArray = array_merge($itemArray, [
-                    'DescuentoMonto' => $item->discount_amount
+                    'DescuentoMonto' => round($item->discount_amount, 2, PHP_ROUND_HALF_ODD)
                 ]);
             } else if ($item->discount_percent > 0) {
                 $itemArray = array_merge($itemArray, [
-                    'DescuentoPct' => $item->discount_percent
+                    'DescuentoPct' => round($item->discount_percent, 2, PHP_ROUND_HALF_ODD)
                 ]);
             }
             $itemsDTE[] = $itemArray;
