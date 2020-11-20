@@ -14,7 +14,7 @@
 <section class="container pt-5">
     <!-- Heading-->
     <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
-        <h2 class="h3 mb-0 pt-3 mr-2">Tiendas</h2>
+        <h2 class="h3 mb-0 pt-3 mr-2">Expositores</h2>
         <!--
             <div class="pt-3"><a class="btn btn-outline-accent btn-sm" href="{{ url('shop-grid') }}">Más productos<i class="czi-arrow-right ml-1 mr-n1"></i></a></div>
         -->
@@ -30,7 +30,43 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <img src="{{ asset('img/home-banner-01.png') }}" alt="Banner promoción 1" class="img-fluid">
+                <img src="{{ asset('img/filsa/banner-1.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container pt-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
+        <h2 class="h3 mb-0 pt-3 mr-2">Expositores</h2>
+    </div>
+    <div class="pt-2 mx-n2">
+        <!-- Product-->
+        @livewire('sellers.card-seller', ['columnLg' => 3, 'showPaginate' => false, 'paginateBy' => 8, 'showFrom' => '', 'data' => ''])
+    </div>
+</section>
+
+<section class="container mt-5 mb-grid-gutter">
+    <div class="rounded-lg py-4">
+        <div class="row align-items-center">
+            <div class="col-md-4 text-center">
+                <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-75">
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="{{ asset('img/filsa/el-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-75">
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-75">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container mt-5 mb-grid-gutter">
+    <div class="rounded-lg py-4">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <img src="{{ asset('img/filsa/banner-2.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
             </div>
         </div>
     </div>
