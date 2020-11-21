@@ -62,6 +62,24 @@
         </div>
     </div>
 
+    @if ($result['validate'] && $result['validate_images'])
+
+        <div class="btn-group" role="group">
+            <form method="POST" action="{{ route('products.bulk-upload-store') }}">
+                @csrf
+                <input type="hidden" name="seller_id" value="{{ request('seller_id') }}">
+                <button type="submit" class="btn btn-success">
+                    <span class="la la-save" role="presentation" aria-hidden="true"></span> &nbsp;
+                    <span data-value="save_and_back">Cargar libros</span>
+                </button>
+            </form>
+        </div>
+
+    @endif
+
+    <a href="{{ route('products.bulk-upload') }}" class="btn btn-default"><span class="la la-angle-left"></span>
+        &nbsp;Volver y cargar otro archivo</a>
+
     <table id="crudTable"
         class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline collapsed has-hidden-columns"
         aria-describedby="crudTable_info" role="grid" cellspacing="0">
