@@ -70,7 +70,7 @@
     </form>
 @endsection
 @push('after_scripts')
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="{{ asset('js/jquery.form.js') }}"></script> 
 <script>
     $(function() {
 
