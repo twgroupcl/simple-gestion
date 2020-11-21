@@ -89,7 +89,9 @@ Route::group([
     Route::post('product/bulk-upload-preview', 'ProductCrudController@bulkUploadPreview')->name('products.bulk-upload-preview');
     Route::post('product/bulk-upload-store', 'ProductCrudController@bulkUploadStore')->name('products.bulk-upload-store');
 
+    Route::crud('customersupport', 'CustomerSupportCrudController');
 }); // this should be the absolute last line of this file
+
 //Payment
 Route::post('admin/payment/subscription/result', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionResultPayment')->name('payment.result');
 Route::post('admin/payment/subscription/detail/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionDetailPayment')->name('payment.detail');

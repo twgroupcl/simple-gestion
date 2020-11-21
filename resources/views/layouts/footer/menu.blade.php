@@ -207,7 +207,9 @@
                                 <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq') }}">Preguntas frecuentes</a></li>
                                 <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('privacy') }}">Privacidad</a></li>
                             -->
-                            <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('about-us') }}">Sobre nosotros</a></li>
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ route('customer.support') }}">Servicio al cliente</a></li>
                         </ul>
                         <span class="font-size-md text-light"><a href="mailto:filsa@filsa.cl">filsa@filsa.cl</a></span>
                     </div>
