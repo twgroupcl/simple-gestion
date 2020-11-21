@@ -32,7 +32,7 @@ class CustomerSupportRequest extends FormRequest
             'email' => 'required|email|max:100',
             'details' => 'required|string|max:2000',
             'phone' => ['required', 'string', new PhoneRule],
-            'order_id' => 'nullable|int|exists:orders,id|max:5',
+            'order_id' => 'nullable|int|exists:orders,id|digits_between:1,5',
         ];
     }
 
