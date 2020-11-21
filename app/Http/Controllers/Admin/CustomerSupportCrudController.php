@@ -163,7 +163,7 @@ class CustomerSupportCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'order',
+            'name' => 'order_id',
             'type' => 'text',
             'label' => 'N° Orden',
             'tab' => 'General',
@@ -261,7 +261,7 @@ class CustomerSupportCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'order',
+            'name' => 'order_id',
             'type' => 'text',
             'label' => 'N° Orden',
             'tab' => 'General',

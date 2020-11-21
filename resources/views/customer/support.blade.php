@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <button class="btn btn-primary" type="submit">Enviar</button>
+                    <button class="btn btn-primary bg-light-blue" type="submit">Enviar</button>
                 </div>
             </form>
         </div>
