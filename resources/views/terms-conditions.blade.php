@@ -16,14 +16,14 @@
             </nav>
         </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-2">Términos y condiciones</h1>
+            <p class="h3 text-light mb-2">Términos y condiciones</p>
         </div>
     </div>
 </div>
 <!-- Page Content-->
 <div class="container py-5 mt-md-2 mb-2">
     <div class="row" >
-        <embed src="{{ url('pdf/TERMINOS_Y_CONDICIONES_CONTIGOPYME_CRCP.pdf') }}" type="application/pdf" width="100%" height="600px" />
+        <embed src="{{ url('pdf/TERMINOS_Y_CONDICIONES_SITIO_WEB_FILSA.pdf') }}" type="application/pdf" width="100%" height="600px" />
     </div>
 </div>
 @endsection

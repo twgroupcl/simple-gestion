@@ -22,10 +22,16 @@
 
 @empty($ticket)
 <!-- Page title-->
-<div class="d-flex justify-content-center pt-4">
-    <div class="col-md-8">
-        <h2 class="h4 mb-5">Servicio al cliente</h2>
-
+<div class="page-title-overlap bg-dark py-4 bg-light-blue">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+        <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
+            <p class="h3 text-light mb-2">Servicio al cliente</p>
+        </div>
+    </div>
+</div>
+<div class="container py-5 mt-md-2 mb-2">
+    <div class="d-flex justify-content-center pt-4">
+        <div class="col-md-12">
             <form method="POST" action="{{ route('customer.support.create') }}">
                 @csrf
                 <div class="row">
@@ -45,7 +51,7 @@
                                 <strong>{{ $message }}</strong>
                             </small>
                             @enderror
-                          </div>
+                            </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -120,5 +126,6 @@
             </form>
         </div>
     </div>
+</div>
 @endempty
 @endsection

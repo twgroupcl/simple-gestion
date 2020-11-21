@@ -150,7 +150,7 @@
                     <!-- Products grid-->
                     <div class=" mx-n2">
                         <!-- Product-->
-                        @livewire('products.card-general', ['columnLg' => '', 'showPaginate' => true, 'paginateBy' => 8, 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                        @livewire('products.card-general', ['columnLg' => '', 'showPaginate' => true, 'paginateBy' => 9, 'showFrom' => $render['view'], 'valuesQuery' => $data])
                     </div>
                 </div>
             </section>

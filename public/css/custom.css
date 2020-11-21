@@ -1,5 +1,4 @@
 .bg-dark-blue{
-    /* background: #002d68 !important; */
     background: #0f2746 !important;     
 }
 .bg-dark-blue-2{
@@ -19,4 +18,10 @@
 }
 .color-orange{
     color: #fa2600 !important;
+}
+.max-height-17{
+    max-height: 17em;   
+}
+.min-height-14{
+    max-height: 14em;   
 }
