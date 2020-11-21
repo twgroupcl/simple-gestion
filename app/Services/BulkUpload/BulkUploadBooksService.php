@@ -25,6 +25,8 @@ class BulkUploadBooksService {
     const PRODUCT_TYPE = Product::PRODUCT_TYPE_SIMPLE;
     const PRODUCT_CLASS_CODE = 'book';
 
+    const MAX_SIZE_ZIP = 100000000;
+
     const ROW_SKU = 1;
     const ROW_NAME = 2;
     const ROW_AUTHOR = 3;
@@ -113,14 +115,14 @@ class BulkUploadBooksService {
                     return $query->where('seller_id', '=', request('seller_id'));
                 }),
             ],
-            'author' => 'required', // atributo text
+            'author' => 'required', // atributo 
             'description' => 'required',
-            'year' => 'nullable|numeric', // atributo text
+            'year' => 'nullable|numeric', // atributo 
             'editorial' => 'required|exists:product_brands,name',
             'category' => 'required|exists:product_categories,name',
-            'language' => 'required', // atributo quizas select
-            'pages_number' => 'nullable|numeric', // atributo text
-            'encuadernacion' => 'required', // atributo quizas select
+            'language' => 'required', // atributo
+            'pages_number' => 'nullable|numeric', // atributo 
+            'encuadernacion' => 'required', // atributo
             'price' => 'required|numeric',
             'special_price' => 'nullable|numeric',
             'depth' => 'required|numeric',
@@ -137,6 +139,7 @@ class BulkUploadBooksService {
             '*.required' => 'El campo :attribute es obligatorio',
             '*.unique' => 'El :attribute ya se encuentra registrado',
             '*.exists' => 'El valor del campo :attribute no es valido',
+            '*.numeric' => 'El valor del campo :attribute debe ser un valor numerico'
         ];
 
         $attributes = [
@@ -344,6 +347,14 @@ class BulkUploadBooksService {
 
     public function validateImagesZip($zip, $PathImagesArray)
     {
+        if ($zip->getSize() > self::MAX_SIZE_ZIP) {
+            return [
+                'validate' => false,
+                'image_errors' => [ 'El comprimido de imagenes excede el tamaño maximo permitido de 100MB' ],
+                'temp_images_path' => null,
+            ];
+        }
+
         $zipHandler = new \ZipArchive();
         $zipName = \Storage::disk('public')->put('products/temp', $zip);
         $zipPath = \Storage::disk('public')->path($zipName);
@@ -356,14 +367,12 @@ class BulkUploadBooksService {
             abort('Ocurrio un error al subir el archivo ZIP de imagenes');
         }
 
-        // Validar peso del ZIP
-
         for ($i = 0; $i < $zipHandler->count(); $i++) {
 
             $extension = explode('.', $zipHandler->getNameIndex($i));
 
             if (empty($extension[1]) || !in_array($extension[1], ['jpg', 'jpeg', 'png'])) {
-                $imageErrors[] = 'La extension del archivo "' . $zipHandler->getNameIndex($i) .'" no es permitida. Solo se permiten: jpg, jpeg, y png.';
+                $imageErrors[] = 'La extension del archivo "' . $zipHandler->getNameIndex($i) .'" no es permitido. Solo se permiten: jpg, jpeg, y png.';
             }
 
             if (!(intval($zipHandler->statIndex($i)['size']) < 1000000)) {
@@ -376,15 +385,11 @@ class BulkUploadBooksService {
 
         }
 
-        // si no es valido, borrar archivo zip
-        // @todo NOT WORKING, FIX
-        if (count($imageErrors)) {
-            \Storage::disk('public')->delete($zipPath);
-            \Storage::disk('public')->delete($zipName);
-            //dd('storage/' . $zipName);
-        }
-
         $zipHandler->close();
+
+        if (count($imageErrors)) {
+            \Storage::disk('public')->delete($zipName);
+        }
 
         return [
             'validate' => count($imageErrors) ? false : true,
