@@ -29,8 +29,13 @@
                 </div>
 
                 <div class="form-group col-md-12 required">
-                    <label><strong>Archivo CSV</strong></label>
+                    <label><strong>Archivo CSV/EXCEL</strong></label>
                     <input required type="file" name="product-csv" value="" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
+                </div>
+
+                <div class="form-group col-md-12 required">
+                    <label><strong>Comprimido imagenes ZIP</strong></label>
+                    <input required type="file" name="images-zip" value="" class="form-control" accept=".zip" >
                 </div>
 
                 @if ($admin)

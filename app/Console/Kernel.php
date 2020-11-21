@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,7 +27,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('expiration:notification')->daily();        
-        $schedule->command('delete:subscription:data')->daily();        
+        $schedule->command('delete:subscription:data')->daily();      
+
+        // Clear temp folder
+        $schedule->call(function () {
+            $tmpFolderFiles = Storage::disk('public')->allFiles('/products/temp/');
+            Storage::disk('public')->delete($tmpFolderFiles);
+        })->dailyAt('03:00');
     }
 
     /**
