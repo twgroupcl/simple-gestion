@@ -58,7 +58,7 @@
 
     <div class="row mt-3">
         <div class="col">
-            <h3>Vista previa de libros obtenidos del .csv</h3>
+            <h3>Vista previa de libros obtenidos del EXCEL</h3>
         </div>
     </div>
 

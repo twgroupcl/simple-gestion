@@ -1219,7 +1219,7 @@ class ProductCrudController extends CrudController
         try {
             $result = $bulkUploadService->convertExcelToArray($file, $imagesZip);
         } catch (Exception $e) {
-            return redirect()->route('products.bulk-upload')->with('error', 'El archivo CSV contiene un formato incompatible o se encuentra corrupto.');
+            return redirect()->route('products.bulk-upload')->with('error', 'El archivo EXCEL contiene un formato incompatible o se encuentra corrupto.');
         }
 
         if ($result['validate'] && $result['validate_images']) {
@@ -1255,6 +1255,6 @@ class ProductCrudController extends CrudController
         $request->session()->forget('bulk_upload_temp_images_path');
         $request->session()->forget('bulk_upload_data');
 
-        return view('admin.products.bulk-upload-store', ['success' => 'Productos cargados correctamente']);
+        return view('admin.products.bulk-upload-store', ['success' => 'Libros cargados correctamente']);
     }
 }
