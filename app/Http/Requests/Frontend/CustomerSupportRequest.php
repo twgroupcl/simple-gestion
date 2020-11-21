@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Frontend;
 
+use App\Rules\PhoneRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -30,7 +31,7 @@ class CustomerSupportRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|email',
             'details' => 'required|string',
-            'phone' => 'required|string',
+            'phone' => ['required', 'string', new PhoneRule],
             'order_id' => 'nullable|int|exists:orders,id',
         ];
     }
