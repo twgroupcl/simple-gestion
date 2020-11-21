@@ -1199,11 +1199,12 @@ class ProductCrudController extends CrudController
     public function bulkUploadView(Request $request)
     {
         $request->session()->forget('bulk_upload_data');
+        $request->session()->forget('bulk_upload_temp_images_path');
 
         return view('admin.products.bulk-upload', [ 
             'admin' => $this->admin, 
             'userSeller' => $this->userSeller,
-            'sellers' => Seller::all(),
+            'sellers' => Seller::all()->sortBy('visible_name', SORT_NATURAL|SORT_FLAG_CASE),
         ]);
     }
 
@@ -1212,16 +1213,18 @@ class ProductCrudController extends CrudController
         $bulkUploadService = new BulkUploadBooksService();
 
         $file = $request->file('product-csv');
+        $imagesZip = $request->file('images-zip');
         $sellerId = $request['seller_id'];
 
         try {
-            $result = $bulkUploadService->convertExcelToArray($file);
+            $result = $bulkUploadService->convertExcelToArray($file, $imagesZip);
         } catch (Exception $e) {
             return redirect()->route('products.bulk-upload')->with('error', 'El archivo CSV contiene un formato incompatible o se encuentra corrupto.');
         }
 
-        if ($result['validate']) {
+        if ($result['validate'] && $result['validate_images']) {
             $request->session()->put('bulk_upload_data', $result['products_array']);
+            $request->session()->put('bulk_upload_temp_images_path', $result['temp_images_path']);
         } else {
             $request->session()->forget('bulk_upload_data');
         }
@@ -1235,7 +1238,11 @@ class ProductCrudController extends CrudController
 
         DB::beginTransaction();
 
-        $result = $bulkUploadService->storeProducts($request->session()->get('bulk_upload_data'), $request['seller_id']);
+        $result = $bulkUploadService->storeProducts(
+            $request->session()->get('bulk_upload_data'), 
+            $request['seller_id'],
+            $request->session()->get('bulk_upload_temp_images_path')
+        );
         
         if (!$result['status']) {
             DB::rollBack();
@@ -1244,8 +1251,10 @@ class ProductCrudController extends CrudController
         }
 
         DB::commit();
-        
+
+        $request->session()->forget('bulk_upload_temp_images_path');
         $request->session()->forget('bulk_upload_data');
+
         return view('admin.products.bulk-upload-store', ['success' => 'Productos cargados correctamente']);
     }
 }

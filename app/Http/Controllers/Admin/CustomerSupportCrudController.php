@@ -130,6 +130,9 @@ class CustomerSupportCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
+            'attributes' => [
+                'maxlength' => '200',
+            ],
         ]);
 
         CRUD::addField([
@@ -139,6 +142,9 @@ class CustomerSupportCrudController extends CrudController
             'tab' => 'General',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'maxlength' => '100',
             ],
         ]);
 
@@ -150,6 +156,9 @@ class CustomerSupportCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
+            'attributes' => [
+                'maxlength' => '100',
+            ],
         ]);
 
         CRUD::addField([
@@ -160,15 +169,21 @@ class CustomerSupportCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
+            'attributes' => [
+                'maxlength' => '2000',
+            ],
         ]);
 
         CRUD::addField([
-            'name' => 'order',
+            'name' => 'order_id',
             'type' => 'text',
             'label' => 'N° Orden',
             'tab' => 'General',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'maxlength' => '4',
             ],
         ]);
         CRUD::addField([
@@ -178,6 +193,9 @@ class CustomerSupportCrudController extends CrudController
             'tab' => 'General',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-12',
+            ],
+            'attributes' => [
+                'maxlength' => '2000',
             ],
         ]);
     }
@@ -261,7 +279,7 @@ class CustomerSupportCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'order',
+            'name' => 'order_id',
             'type' => 'text',
             'label' => 'N° Orden',
             'tab' => 'General',

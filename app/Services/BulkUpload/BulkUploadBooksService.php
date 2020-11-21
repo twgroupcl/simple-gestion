@@ -25,6 +25,8 @@ class BulkUploadBooksService {
     const PRODUCT_TYPE = Product::PRODUCT_TYPE_SIMPLE;
     const PRODUCT_CLASS_CODE = 'book';
 
+    const MAX_SIZE_ZIP = 100000000;
+
     const ROW_SKU = 1;
     const ROW_NAME = 2;
     const ROW_AUTHOR = 3;
@@ -62,7 +64,7 @@ class BulkUploadBooksService {
         $this->productService = new ProductService();
     }
 
-    public function convertExcelToArray($file)
+    public function convertExcelToArray($file, $zip)
     {
         $products = [];
 
@@ -96,47 +98,62 @@ class BulkUploadBooksService {
             ];
         });
 
-        return $this->validate($products);
+        return $this->validate($products, $zip);
     }
 
-    public function validate($productsArray)
+    public function validate($productsArray, $zip)
     {
         $isValid = true;
         $products = [];
         $productWithErrors = 0;
+        $tmpProducts = $this->removeEmptyRows($productsArray);
+        $productSkus = collect($tmpProducts)->pluck('sku');
+        $PathImagesArray = collect($tmpProducts)->pluck('path_image');
+
+        $validateImages = $this->validateImagesZip($zip, $PathImagesArray);
 
         $rules = [
-            'name' => 'required|max:255',
+            'name' => 'required|max:155',
             'sku' => [
                 'required',
                 Rule::unique('products')->where( function($query) {
                     return $query->where('seller_id', '=', request('seller_id'));
                 }),
             ],
-            'author' => 'required', // atributo text
+            'author' => 'required|max:155', // atributo 
             'description' => 'required',
-            'year' => 'nullable|numeric', // atributo text
+            'year' => 'nullable|numeric|max:2030', // atributo 
             'editorial' => 'required|exists:product_brands,name',
             'category' => 'required|exists:product_categories,name',
-            'language' => 'required', // atributo quizas select
-            'pages_number' => 'nullable|numeric', // atributo text
-            'encuadernacion' => 'required', // atributo quizas select
-            'price' => 'required|numeric',
-            'special_price' => 'nullable|numeric',
-            'depth' => 'required|numeric',
-            'width' => 'required|numeric',
-            'height' => 'required|numeric',
-            'weight' => 'required|numeric',
-            'meta_title' => 'nullable',
-            'meta_keywords' => 'nullable',
+            'language' => 'required|max:155', // atributo
+            'pages_number' => 'nullable|numeric', // atributo 
+            'encuadernacion' => 'required|max:155', // atributo
+            'price' => 'required|numeric|max:1000000',
+            'special_price' => 'nullable|numeric|max:1000000',
+            'depth' => 'required|numeric|max:1000',
+            'width' => 'required|numeric|max:1000',
+            'height' => 'required|numeric|max:1000',
+            'weight' => 'required|numeric|max:1000',
+            'meta_title' => 'nullable|max:255',
+            'meta_keywords' => 'nullable|max:255',
             'meta_description' => 'nullable',
             'path_image' => 'required|ends_with:.jpg,.jpeg,.png',
         ];
+
+        if ( !empty($validateImages['file_name_array']) ) {
+            $rules['path_image'] = [
+                    'required',
+                    'ends_with:.jpg,.jpeg,.png',
+                    Rule::in($validateImages['file_name_array']),
+            ];
+        }
 
         $messages = [
             '*.required' => 'El campo :attribute es obligatorio',
             '*.unique' => 'El :attribute ya se encuentra registrado',
             '*.exists' => 'El valor del campo :attribute no es valido',
+            '*.numeric' => 'El valor del campo :attribute debe ser un valor numerico',
+            '*.in' => 'El valor del campo :attribute no existe como archivo en el comprimido ZIP de imagenes',
         ];
 
         $attributes = [
@@ -163,8 +180,6 @@ class BulkUploadBooksService {
             
         ];
 
-        $tmpProducts = $this->removeEmptyRows($productsArray);
-        $productSkus = collect($tmpProducts)->pluck('sku');
 
         foreach ($tmpProducts as $product) {
 
@@ -196,8 +211,11 @@ class BulkUploadBooksService {
         return [
             'validate' => $isValid,
             'products_with_errors' => $productWithErrors,
+            'validate_images' => $validateImages['validate'],
+            'image_errors' => $validateImages['image_errors'],
             'products_array' => $products,
             'table_visible_rows' => $this->tableVisibleRows,
+            'temp_images_path' => $validateImages['temp_images_path'],
         ];
     }
 
@@ -246,9 +264,10 @@ class BulkUploadBooksService {
 
             $attributes_json = $this->productService->extraAttributesAdapter($extraAttributes, $classId);
 
+            // Add seller id as prefix of the image
             $json_images = [
                 [
-                    'image' => '/storage/products/' . $productData['path_image']
+                    'image' => '/storage/products/'. $sellerId . '-' . $productData['path_image']
                 ]
             ];
 
@@ -287,7 +306,7 @@ class BulkUploadBooksService {
         return $productsModelPrepared;
     }
 
-    public function storeProducts($productsArray, $sellerId)
+    public function storeProducts($productsArray, $sellerId, $imagesZipPath)
     {
         $companyId = Seller::find($sellerId)->company->id;
         $products = $this->prepareDataForSave($productsArray, $sellerId, $companyId);
@@ -318,6 +337,12 @@ class BulkUploadBooksService {
 
         }
 
+        try {
+            $this->extractAndMoveImages($imagesZipPath, $sellerId);
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => $e];
+        }
+
         // Send email to admins
         $administrators = Setting::get('administrator_email');
         $recipients = explode(';', $administrators) ?? [];
@@ -327,5 +352,94 @@ class BulkUploadBooksService {
         }
 
         return ['status' => true, 'message' => 'Productos importados con exito'];
+    }
+
+    public function validateImagesZip($zip, $PathImagesArray)
+    {
+        if ($zip->getSize() > self::MAX_SIZE_ZIP) {
+            return [
+                'validate' => false,
+                'image_errors' => [ 'El comprimido de imagenes excede el tamaño maximo permitido de 100MB' ],
+                'temp_images_path' => null,
+                'file_name_array' => []
+            ];
+        }
+
+        $zipHandler = new \ZipArchive();
+        $zipName = \Storage::disk('public')->put('products/temp', $zip);
+        $zipPath = \Storage::disk('public')->path($zipName);
+
+        $imageErrors = [];
+        $fileNameArray = [];
+
+        $zipStatus = $zipHandler->open($zipPath);
+
+        if ($zipStatus !== true) {
+            abort('Ocurrio un error al subir el archivo ZIP de imagenes');
+        }
+
+        if ($zipHandler->count() !== $PathImagesArray->count()) {
+            $imageErrors[] = 'La cantidad de archivos en el comprimido de imagenes (' . $zipHandler->count(). ') es diferente a la cantida de productos en el archivo excel (' . $PathImagesArray->count() .').';
+
+        }
+
+        for ($i = 0; $i < $zipHandler->count(); $i++) {
+            $fileNameArray[] = $zipHandler->getNameIndex($i);
+            $nameArray = explode('.', $zipHandler->getNameIndex($i));
+            $extension = $nameArray[count($nameArray) - 1];
+
+            if (empty($extension) || !in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                $imageErrors[] = 'La extension del archivo "' . $zipHandler->getNameIndex($i) .'" no es permitido. Solo se permiten: jpg, jpeg, y png.';
+            }
+
+            if (!(intval($zipHandler->statIndex($i)['size']) < 1000000)) {
+                $imageErrors[] = 'El peso del archivo "' . $zipHandler->getNameIndex($i) .'" excede el maximo permitido de 1MB.';
+            }
+    
+            if (!in_array($zipHandler->getNameIndex($i), $PathImagesArray->toArray())) {
+                $imageErrors[] = 'El nombre del archivo "' . $zipHandler->getNameIndex($i) .'" no se encuentra en ninguna fila de la columna "Titulo Foto Portada".';
+            }          
+
+        }
+
+        $zipHandler->close();
+
+        if (count($imageErrors)) {
+            \Storage::disk('public')->delete($zipName);
+        }
+
+        return [
+            'validate' => count($imageErrors) ? false : true,
+            'image_errors' => $imageErrors,
+            'temp_images_path' => $zipPath,
+            'file_name_array' => $fileNameArray,
+        ];
+    }
+
+    public function extractAndMoveImages($imagesZipPath, $sellerId)
+    {
+        // Upload images
+        $zipHandler = new \ZipArchive();
+        $zipStatus = $zipHandler->open($imagesZipPath);
+
+        if ($zipStatus !== true) {
+            abort('Ocurrio un error al subir el archivo ZIP de imagenes');
+        }
+
+        // Extract to temp folder
+        $zipHandler->extractTo('storage/products/temp/' .$sellerId . '/');
+        $zipHandler->close();
+
+        $allFiles = \Storage::disk('public')->allFiles('products/temp/' .$sellerId . '/');
+
+        // Move all images from temp folder to product images folder
+        foreach($allFiles as $file) {
+            if (! \Storage::disk('public')->exists(str_replace('products/temp/' .$sellerId . '/', 'products/' . $sellerId . '-', $file))) {
+                \Storage::disk('public')->move($file, str_replace('products/temp/' .$sellerId . '/', 'products/' . $sellerId . '-', $file));
+            } else {
+                // Remove temp image
+                \Storage::disk('public')->delete($file);
+            }
+        }
     }
 }

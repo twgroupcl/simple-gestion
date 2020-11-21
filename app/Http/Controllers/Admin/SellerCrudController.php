@@ -75,9 +75,11 @@ class SellerCrudController extends CrudController
     {
         //CRUD::setFromDb(); // columns
         if (!$this->admin) {
-            $value = $this->userSeller->id;
+            if (!is_null($this->userSeller)) {
+                $value = $this->userSeller->id;
 
-            $this->crud->addClause('where', 'id', '=', $value);
+                $this->crud->addClause('where', 'id', '=', $value);
+            }
         }
 
         /**
@@ -95,7 +97,7 @@ class SellerCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'visible_name',
             'type' => 'text',
-            'label' => 'Nombre visible',
+            'label' => 'Nombre tienda',
         ]);
 
         CRUD::addColumn([
@@ -104,12 +106,12 @@ class SellerCrudController extends CrudController
             'label' => 'Email',
         ]);
 
-        CRUD::addColumn([
-            'name' => 'seller_category',
-            'type' => 'relationship',
-            'label' => 'Categoría',
-            'attribute' => 'name',
-        ]);
+        // CRUD::addColumn([
+        //     'name' => 'seller_category',
+        //     'type' => 'relationship',
+        //     'label' => 'Categoría',
+        //     'attribute' => 'name',
+        // ]);
 
         CRUD::addColumn([
             'name' => 'approved_description',
@@ -180,7 +182,7 @@ class SellerCrudController extends CrudController
             'label' => 'RUT',
             'tab' => 'General',
             'wrapperAttributes' => [
-                'class' => 'form-group col-md-4',
+                'class' => 'form-group col-md-6',
             ],
         ]);
 
@@ -190,17 +192,26 @@ class SellerCrudController extends CrudController
             'label' => 'Razón social',
             'tab' => 'General',
             'wrapperAttributes' => [
-                'class' => 'form-group col-md-4',
+                'class' => 'form-group col-md-6',
             ],
         ]);
 
         CRUD::addField([
             'name' => 'visible_name',
             'type' => 'text',
-            'label' => 'Nombre visible',
+            'label' => 'Nombre Tienda',
             'tab' => 'General',
             'wrapperAttributes' => [
-                'class' => 'form-group col-md-4',
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+        CRUD::addField([
+            'name' => 'legal_representative_name',
+            'type' => 'text',
+            'label' => 'Nombre fantasia',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
             ],
         ]);
 
@@ -244,26 +255,24 @@ class SellerCrudController extends CrudController
             ],
         ]);
 
-        CRUD::addField([
+        // CRUD::addField([
+        //     'name' => 'seller_category_id',
+        //     'type' => 'select2_from_array',
+        //     'label' => 'Categoría',
+        //     'options' => SellerCategory::pluck('name', 'id')->toArray(),
+        //     'tab' => 'General',
+        //     'wrapperAttributes' => [
+        //         'class' => 'form-group col-md-6',
+        //     ],
+        // ]);
+
+         CRUD::addField([
             'name' => 'seller_category_id',
-            'type' => 'select2_from_array',
-            'label' => 'Categoría',
-            'options' => SellerCategory::pluck('name', 'id')->toArray(),
-            'tab' => 'General',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-md-6',
-            ],
+            'type' => 'hidden',
+            'value' => 1
         ]);
 
-        CRUD::addField([
-            'name' => 'legal_representative_name',
-            'type' => 'text',
-            'label' => 'Representante legal',
-            'tab' => 'General',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-md-6',
-            ],
-        ]);
+
 
         CRUD::addField([
             'name' => 'password',
@@ -626,43 +635,43 @@ class SellerCrudController extends CrudController
             'tab' => 'Venta',
         ]);
 
-        CRUD::addField([
-            'name' => 'shippings_data',
-            'type' => 'repeatable',
-            'label' => 'Métodos de envío',
-            'new_item_label'  => 'Agregar método de envío',
-            'default' => '{}',
-            'fields' => [
-                [
-                    'name' => 'shipping_method_id',
-                    'type' => 'select2_from_array',
-                    'options' => ShippingMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
-                    'label' => 'Metodo de envío',
-                    'wrapper' => [
-                        'class' => 'form-group col-12'
-                    ],
-                ],
-                [
-                    'name' => 'key',
-                    'type'  => 'text',
-                    'label' => 'Llave',
-                    'wrapper' => [
-                        'class' => 'form-group col-12'
-                    ],
-                ],
-                [
-                    'name' => 'status',
-                    'label' => 'Activo',
-                    'type' => 'checkbox',
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-md-12',
-                    ],
-                    'default' => true,
+        // CRUD::addField([
+        //     'name' => 'shippings_data',
+        //     'type' => 'repeatable',
+        //     'label' => 'Métodos de envío',
+        //     'new_item_label'  => 'Agregar método de envío',
+        //     'default' => '{}',
+        //     'fields' => [
+        //         [
+        //             'name' => 'shipping_method_id',
+        //             'type' => 'select2_from_array',
+        //             'options' => ShippingMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
+        //             'label' => 'Metodo de envío',
+        //             'wrapper' => [
+        //                 'class' => 'form-group col-12'
+        //             ],
+        //         ],
+        //         [
+        //             'name' => 'key',
+        //             'type'  => 'text',
+        //             'label' => 'Llave',
+        //             'wrapper' => [
+        //                 'class' => 'form-group col-12'
+        //             ],
+        //         ],
+        //         [
+        //             'name' => 'status',
+        //             'label' => 'Activo',
+        //             'type' => 'checkbox',
+        //             'wrapperAttributes' => [
+        //                 'class' => 'form-group col-md-12',
+        //             ],
+        //             'default' => true,
 
-                ]
-            ],
-            'tab' => 'Venta',
-        ]);
+        //         ]
+        //     ],
+        //     'tab' => 'Venta',
+        // ]);
 
         if ($this->admin) {
             CRUD::addField([
@@ -752,9 +761,9 @@ class SellerCrudController extends CrudController
                     'class' => 'form-group col-6',
                 ],
             ]);
-                
+
             $subscription_data = (isset($this->crud->getCurrentEntry()->subscription_data))?$this->crud->getCurrentEntry()->subscription_data:false;
-            
+
             if(!$subscription_data){
                 CRUD::addField([
                     'name' => 'plan_id',
@@ -777,7 +786,7 @@ class SellerCrudController extends CrudController
                     'fake'     => true,
                     'store_in' => 'subscription_data'
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'price',
                     'label' => 'Precio',
@@ -789,7 +798,7 @@ class SellerCrudController extends CrudController
                     'fake'     => true,
                     'store_in' => 'subscription_data'
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'starts_at',
                     'label' => 'Fecha de Inicio',
@@ -800,7 +809,7 @@ class SellerCrudController extends CrudController
                     'fake'     => true,
                     'store_in' => 'subscription_data'
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'ends_at',
                     'label' => 'Fecha de Fin',
@@ -841,7 +850,7 @@ class SellerCrudController extends CrudController
                     'fake'     => true,
                     'store_in' => 'subscription_data'
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'price',
                     'label' => 'Precio',
@@ -853,7 +862,7 @@ class SellerCrudController extends CrudController
                     'fake'     => true,
                     'store_in' => 'subscription_data'
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'starts_at',
                     'label' => 'Fecha de Inicio',
@@ -864,7 +873,7 @@ class SellerCrudController extends CrudController
                     'fake'     => true,
                     'store_in' => 'subscription_data'
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'ends_at',
                     'label' => 'Fecha de Fin',
