@@ -30,7 +30,7 @@ class CustomerSupportRequest extends FormRequest
             'subject' => 'required|string|max:200',
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:100',
-            'details' => 'required|string|max:255',
+            'details' => 'required|string|max:10000',
             'phone' => ['required', 'string', new PhoneRule],
             'order_id' => 'nullable|int|exists:orders,id|max:4',
         ];

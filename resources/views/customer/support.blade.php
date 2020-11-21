@@ -105,7 +105,7 @@
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="details">Detalle <span class="text-danger">*</span></label>
-                            <textarea class="form-control @error('details') is-invalid @enderror"" name="details" id="details" maxlength="255" placeholder="Describe aquí tu consulta o caso" rows="3" required>{{ old('details') }}</textarea>
+                            <textarea class="form-control @error('details') is-invalid @enderror"" name="details" id="details" maxlength="10000" placeholder="Describe aquí tu consulta o caso" rows="3" required>{{ old('details') }}</textarea>
                             @error('details')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
