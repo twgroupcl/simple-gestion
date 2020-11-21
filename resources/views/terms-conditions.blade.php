@@ -16,7 +16,7 @@
             </nav>
         </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-2">Términos y condiciones</h1>
+            <p class="h3 text-light mb-2">Términos y condiciones</p>
         </div>
     </div>
 </div>

@@ -15,9 +15,13 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <p class="h4 text-justify">
+                <p class="h5 text-justify">
                     Le damos la bienvenida a la 39ª Feria Internacional del Libro de Santiago que, en esta versión, por primera vez, se realiza a través de nuestra plataforma de Marketplace permitiendo acceder a la Feria desde cualquier comuna o lugar de Chile. 
+                </p>                
+                <p class="h5 text-justify">
                     Más de 80 tiendas de librerías, editoriales y distribuidoras forman parte de www.filsavirtual.cl 2020 (libros y lecturas), en ellas usted podrá encontrar la más amplia cantidad y diversidad de libros de diferentes categorías y temáticas pudiendo adquirirlos en línea. 
+                </p>    
+                <p class="h5 text-justify">
                     Asimismo, podrá disfrutar del atractivo programa cultural que acompaña la feria y que incluye presentaciones de libros, conferencias y conversaciones con autores, recitales, cine, teatro, música y actividades de fomento lector para niños. 
                 </p>
             </div>

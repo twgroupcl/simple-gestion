@@ -217,14 +217,14 @@
                 <div class="col-md-6 text-center text-md-right mb-4">
                     <div class="mb-3">
                         {{-- <a class="social-btn sb-light sb-twitter ml-2 mb-2" href="#"><i class="czi-twitter"></i></a> --}}
-                        <a class="social-btn sb-light sb-facebook ml-2 mb-2" href="https://www.facebook.com/Contigopymecl-100648024754209" target="_blank"><i class="czi-facebook"></i></a>
-                        <a class="social-btn sb-light sb-instagram ml-2 mb-2" href="https://www.instagram.com/contigopymecl/" target="_blank"><i class="czi-instagram" target="_blank"></i></a>
+                        <a class="social-btn sb-light sb-facebook ml-2 mb-2" href="https://www.facebook.com/camarachilenalibro/" target="_blank"><i class="czi-facebook"></i></a>
+                        <a class="social-btn sb-light sb-twitter ml-2 mb-2" href="https://twitter.com/camaradellibro" target="_blank"><i class="czi-twitter"></i></a>
+                        <a class="social-btn sb-light sb-instagram ml-2 mb-2" href="https://www.instagram.com/camaradellibro/" target="_blank"><i class="czi-instagram" target="_blank"></i></a>
+                        <a class="social-btn sb-light sb-youtube ml-2 mb-2" href="https://www.youtube.com/user/FILSAcamara/featured" target="_blank"><i class="czi-youtube" target="_blank"></i></a>
                         {{-- <a class="social-btn sb-light sb-pinterest ml-2 mb-2" href="#"><i class="czi-pinterest"></i></a>
                         <a class="social-btn sb-light sb-youtube ml-2 mb-2" href="#"><i class="czi-youtube"></i></a> --}}
                     </div>
-
                     <img class="d-inline-block img-fluid" width="120" src="{{ asset('img/logo-webpay.png') }}" alt="Métodos de pago" />
-
                 </div>
             </div>
             @endif
