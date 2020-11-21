@@ -25,3 +25,7 @@
 .min-height-14{
     max-height: 14em;   
 }
+.logo-principal{
+    width: 8em !important;
+    min-width: 7rem;
+}
