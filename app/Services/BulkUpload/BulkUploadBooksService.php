@@ -106,40 +106,56 @@ class BulkUploadBooksService {
         $isValid = true;
         $products = [];
         $productWithErrors = 0;
+        $tmpProducts = $this->removeEmptyRows($productsArray);
+        $productSkus = collect($tmpProducts)->pluck('sku');
+        $PathImagesArray = collect($tmpProducts)->pluck('path_image');
+
+        $validateImages = $this->validateImagesZip($zip, $PathImagesArray);
 
         $rules = [
             'name' => 'required|max:255',
             'sku' => [
                 'required',
+                'max:13',
                 Rule::unique('products')->where( function($query) {
                     return $query->where('seller_id', '=', request('seller_id'));
                 }),
             ],
-            'author' => 'required', // atributo 
+            'author' => 'required|max:255', // atributo 
             'description' => 'required',
-            'year' => 'nullable|numeric', // atributo 
+            'year' => 'nullable|numeric|max:2030', // atributo 
             'editorial' => 'required|exists:product_brands,name',
             'category' => 'required|exists:product_categories,name',
-            'language' => 'required', // atributo
+            'language' => 'required|max:155', // atributo
             'pages_number' => 'nullable|numeric', // atributo 
-            'encuadernacion' => 'required', // atributo
-            'price' => 'required|numeric',
-            'special_price' => 'nullable|numeric',
-            'depth' => 'required|numeric',
-            'width' => 'required|numeric',
-            'height' => 'required|numeric',
-            'weight' => 'required|numeric',
-            'meta_title' => 'nullable',
-            'meta_keywords' => 'nullable',
+            'encuadernacion' => 'required|max:155', // atributo
+            'price' => 'required|numeric|max:1000000',
+            'special_price' => 'nullable|numeric|max:1000000',
+            'depth' => 'required|numeric|max:1000',
+            'width' => 'required|numeric|max:1000',
+            'height' => 'required|numeric|max:1000',
+            'weight' => 'required|numeric|max:1000',
+            'meta_title' => 'nullable|max:255',
+            'meta_keywords' => 'nullable|max:255',
             'meta_description' => 'nullable',
             'path_image' => 'required|ends_with:.jpg,.jpeg,.png',
         ];
+
+        if ( !empty($validateImages['file_name_array']) ) {
+            $rules['path_image'] = [
+                    'required',
+                    'ends_with:.jpg,.jpeg,.png',
+                    Rule::in($validateImages['file_name_array']),
+            ];
+        }
 
         $messages = [
             '*.required' => 'El campo :attribute es obligatorio',
             '*.unique' => 'El :attribute ya se encuentra registrado',
             '*.exists' => 'El valor del campo :attribute no es valido',
-            '*.numeric' => 'El valor del campo :attribute debe ser un valor numerico'
+            '*.numeric' => 'El valor del campo :attribute debe ser un valor numerico',
+            '*.max' => 'El valor del campo :attribute debe ser como maximo :max',
+            '*.in' => 'El valor del campo ":attribute" no existe como archivo en el comprimido ZIP de imagenes',
         ];
 
         $attributes = [
@@ -155,22 +171,17 @@ class BulkUploadBooksService {
             'encuadernacion' => 'Encuadernacion', // atributo quizas select
             'price' => 'Precio Normal',
             'special_price' => 'Precio Oferta',
-            'depth' => 'Largo',
-            'width' => 'Ancho',
-            'height' => 'Alto',
-            'weight' => 'Peso',
+            'depth' => 'Largo (cm)',
+            'width' => 'Ancho (cm)',
+            'height' => 'Alto (cm)',
+            'weight' => 'Peso (kg)',
             'meta_title' => 'Título para buscadores',
             'meta_keywords' => 'Palabras clave',
             'meta_description' => 'Descripción para buscadores',
-            'path_image' => 'Titulo Foto Portada',
+            'path_image' => 'Foto de portada con nombre código ISBN',
             
         ];
 
-        $tmpProducts = $this->removeEmptyRows($productsArray);
-        $productSkus = collect($tmpProducts)->pluck('sku');
-        $PathImagesArray = collect($tmpProducts)->pluck('path_image');
-
-        $validateImages = $this->validateImagesZip($zip, $PathImagesArray);
 
         foreach ($tmpProducts as $product) {
 
@@ -352,6 +363,7 @@ class BulkUploadBooksService {
                 'validate' => false,
                 'image_errors' => [ 'El comprimido de imagenes excede el tamaño maximo permitido de 100MB' ],
                 'temp_images_path' => null,
+                'file_name_array' => []
             ];
         }
 
@@ -360,6 +372,7 @@ class BulkUploadBooksService {
         $zipPath = \Storage::disk('public')->path($zipName);
 
         $imageErrors = [];
+        $fileNameArray = [];
 
         $zipStatus = $zipHandler->open($zipPath);
 
@@ -367,11 +380,17 @@ class BulkUploadBooksService {
             abort('Ocurrio un error al subir el archivo ZIP de imagenes');
         }
 
+        if ($zipHandler->count() !== $PathImagesArray->count()) {
+            $imageErrors[] = 'La cantidad de archivos en el comprimido de imagenes (' . $zipHandler->count(). ') es diferente a la cantida de productos en el archivo excel (' . $PathImagesArray->count() .').';
+
+        }
+
         for ($i = 0; $i < $zipHandler->count(); $i++) {
+            $fileNameArray[] = $zipHandler->getNameIndex($i);
+            $nameArray = explode('.', $zipHandler->getNameIndex($i));
+            $extension = $nameArray[count($nameArray) - 1] ?? 'null';
 
-            $extension = explode('.', $zipHandler->getNameIndex($i));
-
-            if (empty($extension[1]) || !in_array($extension[1], ['jpg', 'jpeg', 'png'])) {
+            if (empty($extension) || !in_array($extension, ['jpg', 'jpeg', 'png'])) {
                 $imageErrors[] = 'La extension del archivo "' . $zipHandler->getNameIndex($i) .'" no es permitido. Solo se permiten: jpg, jpeg, y png.';
             }
 
@@ -380,7 +399,7 @@ class BulkUploadBooksService {
             }
     
             if (!in_array($zipHandler->getNameIndex($i), $PathImagesArray->toArray())) {
-                $imageErrors[] = 'El nombre del archivo "' . $zipHandler->getNameIndex($i) .'" no se encuentra en ninguna fila de la columna "Titulo Foto Portada".';
+                $imageErrors[] = 'El nombre del archivo "' . $zipHandler->getNameIndex($i) .'" no se encuentra en ninguna fila de la columna "Foto de portada con nombre código ISBN".';
             }          
 
         }
@@ -395,6 +414,7 @@ class BulkUploadBooksService {
             'validate' => count($imageErrors) ? false : true,
             'image_errors' => $imageErrors,
             'temp_images_path' => $zipPath,
+            'file_name_array' => $fileNameArray,
         ];
     }
 

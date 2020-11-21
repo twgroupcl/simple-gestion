@@ -76,10 +76,10 @@
 
 @canany(['seller.list'])
 <li class="nav-item nav-dropdown">
-	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-briefcase"></i> Vendedores</a>
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-briefcase"></i> Expositores </a>
 	<ul class="nav-dropdown-items">
         @can('seller.list')
-        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('seller') }}'><i class='nav-icon la la-briefcase'></i> Vendedores</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('seller') }}'><i class='nav-icon la la-briefcase'></i> Expositores </a></li>
         @endcan
 
         @can('sellercategory.list')
@@ -148,6 +148,9 @@
     </ul>
 </li>
 @endcanany
-
+@canany(['plans.list'])
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('plans') }}'><i class='nav-icon la la-question'></i> Plans</a></li>
+@endcanany
+@canany(['communeshippingmethod.list'])
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('communeshippingmethod') }}'><i class='nav-icon la la-truck'></i> Metodos de envío</a></li>
+@endcanany

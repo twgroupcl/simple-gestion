@@ -16,12 +16,12 @@
     </div>    
     @endif
 
-    <form method="POST" action="{{ route('products.bulk-upload-preview') }}" enctype="multipart/form-data">
+    <form id="form-bulk" method="POST" action="{{ route('products.bulk-upload-preview') }}" enctype="multipart/form-data">
         @csrf
         <div class="card">
             <div class="card-body row">
                 <div class="col-md-8 mt-2 mb-5" style="text-align: justify">
-                    <span style="font-size: 17px">El primer paso es <a href="">descargar la plantilla .csv</a> donde podras agregar tus libros. 
+                    <span style="font-size: 17px">El primer paso es <a href="{{  asset('bulk/EXCEL_CARGA_MASIVA.xlsx') }}">descargar la plantilla EXCEL</a> donde podras agregar tus libros. 
                         La hoja de cálculos .csv contiene el texto de muestra, que te indica cómo formatear la información del producto. Es
                         Importante que no cambies ni borres los encabezados de las columnas, esto podria provocar problemas de compatibilidad
                         y evitaria la carga exitosa de los libros. 
@@ -52,6 +52,12 @@
                 @if ($userSeller)
                 <input type="hidden" name="seller_id" value="{{ $userSeller->id }}">
                 @endif
+
+                <div class="col">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                </div>
             </div>
         </div>
 
@@ -63,3 +69,33 @@
         </div>
     </form>
 @endsection
+@push('after_scripts')
+<script src="{{ asset('js/jquery.form.js') }}"></script> 
+<script>
+    $(function() {
+
+        var bar = $('.progress-bar');
+        var percent = $('.percent');
+        var status = $('#status');
+
+        $('#form-bulk').ajaxForm({
+            target: 'body',
+            beforeSend: function() {
+                status.empty();
+                var percentVal = '0%';
+                percent.show();
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            complete: function(xhr) {
+                status.html(xhr.responseText);
+            }
+        });
+    }); 
+</script>
+@endpush

@@ -132,7 +132,7 @@ class SellerUpdateRequest extends FormRequest
         return [
             'uid' => 'RUT',
             'name' => 'Razón social',
-            'visible_name' => 'Nombre visible',
+            'visible_name' => 'Nombre de tienda',
             'email' => 'Email',
             'phone' => 'Teléfono',
             'cellphone' => 'Celular',
@@ -173,7 +173,7 @@ class SellerUpdateRequest extends FormRequest
             'contact_data_validation.*.contact_type_id' => 'Plataforma en Contactos',
             'contact_data_validation.*.url' => 'URL en Contactos',
 
-            'legal_representative_name' => 'Representante legal',
+            'legal_representative_name' => 'Nombre de encargado',
             'custom_1' => 'Transbank',
             'custom_2' => 'Despacho',
         ];

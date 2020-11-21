@@ -42,6 +42,6 @@ class BulkUploadMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->seller . 'ha publicado ' . $this->nroProducts .' libros')->view('maileclipse::templates.welcomeCustomer');
+        return $this->subject($this->seller . ' ha publicado ' . $this->nroProducts .' libros')->view('maileclipse::templates.welcomeCustomer');
     }
 }
