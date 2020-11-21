@@ -54,7 +54,7 @@ class CustomerSupportCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'seller',
             'type' => 'relationship',
-            'label' => 'Vendedor',
+            'label' => 'Expositor',
             'entity' => 'seller',
             'attribute' => 'name',
         ],);
@@ -99,7 +99,7 @@ class CustomerSupportCrudController extends CrudController
         $this->crud->addFilter([
             'name'  => 'seller_id',
             'type'  => 'select2',
-            'label' => 'Vendedor'
+            'label' => 'Expositor'
         ], function() {
             return Seller::all()->sortBy('name')->pluck('name', 'id')->toArray();
         }, function($value) {
@@ -363,7 +363,7 @@ class CustomerSupportCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Vendedor',
+            'label' => 'Expositor',
             'type' => 'select2_from_array',
             'allows_null' => true,
             'options' => Seller::pluck('name', 'id')->toArray(),
