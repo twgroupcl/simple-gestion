@@ -75,7 +75,7 @@ class BulkUploadBooksService {
 
         $products = collect($data)->map(function ($value) {
             return [
-                'sku' => $value[self::ROW_SKU],
+                'sku' => (string) $value[self::ROW_SKU],
                 'name' => $value[self::ROW_NAME],
                 'author' => $value[self::ROW_AUTHOR],
                 'description' => $value[self::ROW_DESCRIPTION],
@@ -196,7 +196,7 @@ class BulkUploadBooksService {
                 $isValid = false;
                 $hasError = true;
             }
-
+            //dd($productSkus->toArray());
             $duplicateSkus = array_count_values($productSkus->toArray());
 
             if ( $duplicateSkus[$product['sku']] > 1 ) {
