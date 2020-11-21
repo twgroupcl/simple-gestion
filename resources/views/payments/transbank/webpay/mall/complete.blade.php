@@ -429,7 +429,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                     <p class="font-size-sm">Recibirá un correo electrónico en breve con la confirmación de su pedido.
                         <u>Ahora puedes:</u>
                     </p><a class="btn btn-secondary mt-3 mr-3" href="/">Volver a comprar</a>
-                    <a class="btn btn-primary mt-3"
+                    <a class="btn btn-primary bg-light-blue mt-3"
                         href="{{ route('transbank.webpayplus.mall.download', ['order' => $order->id]) }}">&nbsp;Descargar
                         orden</a>
                 </div>
