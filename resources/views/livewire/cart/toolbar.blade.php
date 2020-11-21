@@ -3,5 +3,5 @@
         <i class="czi-cart"></i>
         @livewire('cart.cart-counter', ['count' => $count, 'view' => 'counter-toolbar'])
     </span>
-    <span class="cz-handheld-toolbar-label">{{ currencyFormat($subtotal, defaultCurrency(), true) }}</span>
+    {{--    <span class="cz-handheld-toolbar-label">{{ currencyFormat($subtotal, defaultCurrency(), true) }}</span>--}}
 </a>

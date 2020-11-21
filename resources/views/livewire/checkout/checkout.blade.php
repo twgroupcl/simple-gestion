@@ -115,13 +115,11 @@
                 <div class="widget mb-3">
                     <h2 class="widget-title text-center">Resumen del pedido</h2>
                     <ul class="list-unstyled font-size-sm pt-3 pb-2 border-bottom">
-                        <!--
                             <li class="d-flex justify-content-between align-items-center"><span
                                     class="mr-2">Subtotal:</span><span class="text-right">
                                     {{ currencyFormat($subtotal ? $subtotal : 0, 'CLP', true) }}</span>
                             </li>
 
-                        -->
                         {{-- @if ($chilexpresstotal['qty'] > 0)
                             <li class="d-flex justify-content-between align-items-center"><span class="mr-2">Chilexpress
                                     x {{ $chilexpresstotal['qty'] }}</span><span
@@ -152,12 +150,10 @@
                             @endforeach
                         @endif
                     </ul>
-                    <!--
 
                         <h3 class="font-weight-normal text-center my-4">
                             {{ currencyFormat($total ? $total : 0, 'CLP', true) }}
                         </h3>
-                    -->
                     @if (!$canContinue)
                         <div class="alert alert-primary">
                             Verifique los productos seleccionados para continuar con su compra.

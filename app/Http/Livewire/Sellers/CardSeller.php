@@ -14,6 +14,7 @@ class CardSeller extends Component
     public $showPaginate;
     public $valuesQuery;
     public $showFrom = '';
+    public $limit = '';
     public $sortingField = null;
     public $sortingDirection = null;
     public $render = null;
@@ -21,31 +22,38 @@ class CardSeller extends Component
 
     public function render()
     {
-        $render = [ 'sellers' => $this->getSellers()];
+        $render = [ 'sellers' => $this->getSellers($this->limit)];
         return view('livewire.sellers.card-seller', $render);
     }
 
-    public function mount($paginateBy, $showPaginate, $columnLg = null, $showFrom, $valuesQuery = null)
+    public function mount($paginateBy, $showPaginate, $columnLg = null, $showFrom, $valuesQuery = null,$limit=null)
     {
         $this->paginateBy = $paginateBy;
         $this->columnLg = $columnLg;
         $this->showPaginate = $showPaginate;
         $this->showFrom = $showFrom;
         $this->valuesQuery = $valuesQuery;
+        $this->limit = $limit;
     }
 
-    public function getSellers()
+    public function getSellers($limit)
     {
-        return $this->baseQuery(true);
+        return $this->baseQuery($limit);
     }
 
-    private function baseQuery($random = false, $category_id = null, $product_search = null, $seller_id = null)
+    private function baseQuery($limit = null)
     {
-        //$this->sortingField = $this->sortingField ?? 'created_at';
-        //$this->sortingDirection = $this->sortingDirection ?? 'DESC';
 
         $baseQuery =  Seller::where('status', '=', '1')
             ->where('is_approved', '=', '1')
+            ->when($limit, function ($query) use ($limit) {
+                if ($limit == 1) {
+                    return $query->take(40);
+                }else{
+                    return $query->skip(40)->take(80);
+                }
+                return $query;
+            })
             ->get();
         return $baseQuery;
 

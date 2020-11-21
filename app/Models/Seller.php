@@ -198,6 +198,11 @@ class Seller extends Model
         return $this->belongsToMany(PlanSubscription::class,'plan_subscription_seller_mapping','user_id');
     }
 
+    public function contact_types()
+    {
+        return $this->belongsTo(ContactType::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
