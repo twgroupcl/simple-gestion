@@ -23,8 +23,7 @@
 
                 <form action="{{ $response->url }}" id="webpay_plus_mall_post" method="POST">
                     @csrf
-                    <input class="btn btn-primary" value="Haz click aquí si no has sido redireccionado..." type="submit">
-
+                    <input class="btn btn-primary bg-light-blue" value="Haz click aquí si no has sido redireccionado..." type="submit">
                     <input type="hidden" name="TBK_TOKEN" value="{{ $response->token }}">
                 </form>
             </div>
