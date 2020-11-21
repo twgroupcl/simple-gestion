@@ -1204,7 +1204,7 @@ class ProductCrudController extends CrudController
         return view('admin.products.bulk-upload', [ 
             'admin' => $this->admin, 
             'userSeller' => $this->userSeller,
-            'sellers' => Seller::all()->sortBy('visible_name'),
+            'sellers' => Seller::all()->sortBy('visible_name', SORT_NATURAL|SORT_FLAG_CASE),
         ]);
     }
 
