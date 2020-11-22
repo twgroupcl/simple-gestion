@@ -4,14 +4,15 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
+use Freshwork\ChileanBundle\Rut;
 use App\Scopes\CompanyBranchScope;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\CommuneShippingMethod;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Freshwork\ChileanBundle\Rut;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class Seller extends Model
@@ -77,11 +78,11 @@ class Seller extends Model
         'user_id',
         'company_id',
     ];
-    
+
     protected $hidden = [
         'password'
     ];
-    
+
     // protected $dates = [];
     protected $casts = [
         'addresses_data' => 'array',
@@ -131,7 +132,7 @@ class Seller extends Model
 
         if (!$shippingConfig) {
             $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
-            
+
             if (!$shippingConfig) {
                 return [];
             }
@@ -140,6 +141,22 @@ class Seller extends Model
         }
 
         return $shippingConfig->getAvailableShippingMethodCodes();
+    }
+
+    /**
+     * Return boolean if available shipping methods
+     */
+    public function getAvailableShippingMethods()
+    {
+
+            $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
+
+            if (!$shippingConfig) {
+                return false;
+            }else{
+                return true;
+            }
+
     }
 
     /*
@@ -203,6 +220,11 @@ class Seller extends Model
         return $this->belongsTo(ContactType::class);
     }
 
+    public function commune_shipping_method()
+    {
+        return $this->hasMany(CommuneShippingMethod::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -262,6 +284,17 @@ class Seller extends Model
         }
 
         return '';
+    }
+
+    public function getCommuneShippingMethodAvailableAttribute()
+    {
+
+        if($this->getAvailableShippingMethods()){
+            return 'Si';
+        }else{
+            return 'No';
+        }
+
     }
 
     /*

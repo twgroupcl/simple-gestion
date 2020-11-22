@@ -47,17 +47,18 @@ class WebpayPlusMallController extends Controller
 
         $configuration = new Configuration();
 
-        $configuration->setEnvironment('PRODUCCION');
+        $configuration->setEnvironment(Setting::get('payment_environment'));
         $configuration->setCommerceCode($wpmConfig[0]->variable_value);
         $configuration->setPublicCert($wpmConfig[1]->variable_value);
         $configuration->setPrivateKey($wpmConfig[2]->variable_value);
         $this->returnUrl = $wpmConfig[3]->variable_value;
         $this->finalUrl = $wpmConfig[4]->variable_value;
 
-        //$this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
-
-        $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
-
+        if (Setting::get('payment_environment') == 'INTEGRACION') {
+            $this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
+        }else{
+            $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
+        }
     }
 
     public function redirect($orderId)
@@ -96,9 +97,9 @@ class WebpayPlusMallController extends Controller
 
             $totalsBySeller[$key] = array();
             $totalsBySeller[$key]['id'] = $seller->id;
-            $totalsBySeller[$key]['storeCode'] = $pmSeller->key;
+           // $totalsBySeller[$key]['storeCode'] = $pmSeller->key;
             $totalsBySeller[$key]['amount'] = 0;
-            $totalsBySeller[$key]['status'] = $pmSeller->status;
+            //$totalsBySeller[$key]['status'] = $pmSeller->status;
 
             foreach ($order->order_items as $item) {
 
@@ -116,13 +117,20 @@ class WebpayPlusMallController extends Controller
         foreach ($totalsBySeller as $key => $seller) {
 
             // Add transaction
-            $transactions[] = array(
-                "storeCode" => $seller['storeCode'],
-                "amount" => $seller['amount'],
-                "buyOrder" => $buyOrder . 't' . ($key + 1),
-            );
+            // $transactions[] = array(
+            //     "storeCode" => $seller['storeCode'],
+            //     "amount" => $seller['amount'],
+            //     "buyOrder" => $buyOrder . 't' . ($key + 1),
+            // );
             $amountTotal += $seller['amount'];
         }
+
+        $transactions[] = array(
+            "storeCode" => Setting::get('storecode_payment'),
+            "amount" => $amountTotal,
+            "buyOrder" => $buyOrder . 't1' ,
+        );
+       // $amountTotal += $seller['amount'];
 
         $response = $this->transaction->initTransaction($buyOrder, $sessionId, $this->returnUrl, $this->finalUrl, $transactions);
 
