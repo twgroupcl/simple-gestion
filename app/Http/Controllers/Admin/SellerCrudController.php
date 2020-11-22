@@ -1022,11 +1022,21 @@ class SellerCrudController extends CrudController
         });
 
         CRUD::addFilter([
-            'type'  => 'text',
-            'name'  => 'email',
-            'label' => 'Email',
-        ], false, function ($value) {
-            $this->crud->addClause('where', 'email', 'LIKE', '%' . $value . '%');
+            'name'  => 'commune_shipping_method',
+            'label' => 'Métodos de envío',
+            'type'    => 'select2',
+
+        ],  function () {
+            return [
+              1 => 'Si',
+              2 => 'No',
+            ];
+          }, function ($value) {
+              if($value == 1){
+                $this->crud->addClause('whereHas', 'commune_shipping_method');
+              }else{
+                $this->crud->addClause('whereDoesntHave', 'commune_shipping_method');
+              }
         });
     }
 }
