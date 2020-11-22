@@ -8,7 +8,7 @@
     <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
         <div class="media media-ie-fix align-items-center pb-3">
             @if($seller->logo)
-                <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{ url($seller->logo) }}" alt="Logo {{ $seller->visible_name }}"></div>
+                <div class="{{-- img-thumbnail --}} rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{ url($seller->logo) }}" alt="Logo {{ $seller->visible_name }}"></div>
             @endif
             <div class="media-body pl-3">
                 <h3 class="text-light font-size-lg mb-0">{{ $seller->visible_name }}</h3>
