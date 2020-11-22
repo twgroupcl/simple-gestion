@@ -138,6 +138,24 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
+            'name' => 'commune_shipping_method',
+            'label' => 'Métodos de envío',
+            'type'  => 'text',
+            //'function_name' => 'getAvailableShippingMethods',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Si') {
+                        return 'badge badge-success';
+                    }
+
+                    return 'badge badge-default';
+                },
+            ],
+
+        ]);
+
+        CRUD::addColumn([
             'name' => 'status_description',
             'type' => 'text',
             'label' => 'Estado',
