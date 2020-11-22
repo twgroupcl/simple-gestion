@@ -97,9 +97,9 @@ class WebpayPlusMallController extends Controller
 
             $totalsBySeller[$key] = array();
             $totalsBySeller[$key]['id'] = $seller->id;
-            $totalsBySeller[$key]['storeCode'] = $pmSeller->key;
+           // $totalsBySeller[$key]['storeCode'] = $pmSeller->key;
             $totalsBySeller[$key]['amount'] = 0;
-            $totalsBySeller[$key]['status'] = $pmSeller->status;
+            //$totalsBySeller[$key]['status'] = $pmSeller->status;
 
             foreach ($order->order_items as $item) {
 
