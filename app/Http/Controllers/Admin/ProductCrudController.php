@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DateTime;
 use Exception;
 use App\Models\Seller;
 use App\Models\Product;
@@ -57,8 +58,9 @@ class ProductCrudController extends CrudController
 
         if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
             $this->admin = true;
-
             $this->crud->enableExportButtons();
+            $this->crud->allowAccess('bulkApprove');
+            $this->crud->allowAccess('bulkReject');
         }
 
         if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
@@ -78,7 +80,13 @@ class ProductCrudController extends CrudController
     {
 
         // If not admin, show only user products
-        if(!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
+        if(!$this->admin) {
+            $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
+        } else {
+            $this->crud->enableBulkActions();
+            $this->crud->addButtonFromView('bottom', 'bulk_reject', 'product.bulk_reject', 'beginning');
+            $this->crud->addButtonFromView('bottom', 'bulk_approve', 'product.bulk_approve', 'beginning');
+        }
 
         // Hide children products
         $this->crud->addClause('where', 'parent_id', '=', null);
@@ -1115,6 +1123,39 @@ class ProductCrudController extends CrudController
         return $options->paginate(10);
     }
 
+    public function bulkApprove()
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        $entries = $this->crud->getRequest()->input('entries');
+
+        foreach ($entries as $key => $id) {
+            if ($entry = $this->crud->model->find($id)) {
+               $entry->is_approved = 1;
+               $entry->update();
+            }
+        }
+
+        return $entries;
+    }
+
+    public function bulkReject()
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        $entries = $this->crud->getRequest()->input('entries');
+
+        foreach ($entries as $key => $id) {
+            if ($entry = $this->crud->model->find($id)) {
+               $entry->is_approved = 0;
+               $entry->date_of_rejected = new DateTime();
+               $entry->update();
+            }
+        }
+
+        return $entries;
+    }
+
     private function customFilters()
     {
         CRUD::addFilter([
@@ -1172,10 +1213,11 @@ class ProductCrudController extends CrudController
             'type'  => 'dropdown',
             'label' => 'Estado de aprobación'
           ], [
-            //null => 'Pendiente',
+            2 => 'Pendiente',
             0 => 'Rechazado',
             1 => 'Aprobado',
           ], function($value) {
+              if ($value == 2) $value = null;
             $this->crud->addClause('where', 'is_approved', $value);
           });
 

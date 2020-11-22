@@ -88,6 +88,8 @@ Route::group([
     Route::get('product/bulk-upload', 'ProductCrudController@bulkUploadView')->name('products.bulk-upload');
     Route::post('product/bulk-upload-preview', 'ProductCrudController@bulkUploadPreview')->name('products.bulk-upload-preview');
     Route::post('product/bulk-upload-store', 'ProductCrudController@bulkUploadStore')->name('products.bulk-upload-store');
+    Route::post('product/bulk-approve', 'ProductCrudController@bulkApprove')->name('products.bulk-approve');
+    Route::post('product/bulk-reject', 'ProductCrudController@bulkReject')->name('products.bulk-reject');
 
     Route::crud('customersupport', 'CustomerSupportCrudController');
 }); // this should be the absolute last line of this file
