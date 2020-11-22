@@ -536,8 +536,8 @@ class SellerCrudController extends CrudController
             'new_item_label' => 'Agregar contacto',
             'tab' => 'Contactos',
         ]);
-        
-        /* comment for filsa 
+
+        /* comment for filsa
         CRUD::addField([
             'name' => 'privacy_policy',
             'type'  => 'tinymce',
@@ -785,7 +785,7 @@ class SellerCrudController extends CrudController
                     'class' => 'form-group col-6',
                 ],
             ]);
-            
+
 
             /* comment for filsa
 
@@ -925,7 +925,7 @@ class SellerCrudController extends CrudController
 
 
         }
-             
+
 
         CRUD::addField([
             'name' => 'rut_formatter',
@@ -1019,6 +1019,14 @@ class SellerCrudController extends CrudController
             return SellerCategory::all()->pluck('name', 'id')->toArray();
         }, function ($values) {
             $this->crud->addClause('where', 'seller_category_id', 'LIKE', '%' . $values . '%');
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'email',
+            'label' => 'Email',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'email', 'LIKE', '%' . $value . '%');
         });
     }
 }
