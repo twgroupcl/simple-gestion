@@ -22,7 +22,6 @@
         <ul class="list-unstyled mb-0">
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3 {{ route('customer.profile') == url()->current() ? 'active' : '' }}" href="{{ route('customer.profile') }}"><i class="czi-user opacity-60 mr-2"></i>Perfil</a></li>
             <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3 {{ route('customer.address') == url()->current() ? 'active' : '' }}" href="{{ route('customer.address') }}"><i class="czi-location opacity-60 mr-2"></i>Direcciones</a></li>
-            <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3 {{ route('customer.subscription') == url()->current() ? 'active' : '' }}" href="{{ route('customer.subscription') }}"><i class="czi-edit opacity-60 mr-2"></i>Subscripción</a></li>
             {{-- <li class="mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="account-payment.html"><i class="czi-card opacity-60 mr-2"></i>Payment methods</a></li> --}}
             <li class="d-lg-none border-top mb-0">
                 <a class="nav-link-style d-flex align-items-center px-4 py-3" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
