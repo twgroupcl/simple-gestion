@@ -28,7 +28,7 @@
             <!-- Toolbar-->
             <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
                 <h6 class="font-size-base text-light mb-0">Actualice los datos de su perfil a continuación:</h6>
-                <a class="btn btn-primary btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <a class="btn btn-primary btn-sm bg-light-blue border" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="czi-sign-out mr-2"></i> Cerrar sesión
                 </a>
 
@@ -114,7 +114,7 @@
                     <div class="col-12">
                         <hr class="mt-2 mb-3">
                         <div class="d-flex flex-wrap justify-content-end align-items-center">
-                            <input class="btn btn-primary mt-3 mt-sm-0" type="submit" value="Actualizar perfil">
+                            <input class="btn btn-primary bg-light-blue mt-3 mt-sm-0" type="submit" value="Actualizar perfil">
                         </div>
                     </div>
                 </div>

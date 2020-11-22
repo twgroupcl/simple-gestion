@@ -95,7 +95,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-                <button class="btn btn-primary btn-shadow" type="submit">Añadir dirección</button>
+                <button class="btn btn-primary bg-light-blue btn-shadow" type="submit">Añadir dirección</button>
             </div>
         </div>
     </div>
@@ -129,7 +129,7 @@
             <!-- Toolbar-->
             <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-4">
                 <h6 class="font-size-base text-light mb-0">Lista de tus direcciones registradas:</h6>
-                <a class="btn btn-primary btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <a class="btn btn-primary btn-sm bg-light-blue border" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="czi-sign-out mr-2"></i> Cerrar sesión
                 </a>
 
@@ -139,7 +139,7 @@
             </div>
             <!-- Addresses list-->
             <livewire:customer.address-list :communes="$communes" :customer="$customer">
-            <div class="text-sm-right"><a class="btn btn-primary" href="#add-address" data-toggle="modal">Añadir nueva dirección</a></div>
+            <div class="text-sm-right"><a class="btn btn-primary bg-light-blue" href="#add-address" data-toggle="modal">Añadir nueva dirección</a></div>
         </section>
     </div>
 </div>
