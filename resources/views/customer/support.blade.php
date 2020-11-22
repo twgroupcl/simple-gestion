@@ -22,10 +22,16 @@
 
 @empty($ticket)
 <!-- Page title-->
-<div class="d-flex justify-content-center pt-4">
-    <div class="col-md-8">
-        <h2 class="h4 mb-5">Servicio al cliente</h2>
-
+<div class="page-title-overlap bg-dark py-4 bg-light-blue">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+        <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
+            <p class="h3 text-light mb-2">Servicio al cliente</p>
+        </div>
+    </div>
+</div>
+<div class="container py-5 mt-md-2 mb-2">
+    <div class="d-flex justify-content-center pt-4">
+        <div class="col-md-12">
             <form method="POST" action="{{ route('customer.support.create') }}">
                 @csrf
                 <div class="row">
@@ -45,12 +51,12 @@
                                 <strong>{{ $message }}</strong>
                             </small>
                             @enderror
-                          </div>
+                            </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="subject">Asunto <span class="text-danger">*</span></label>
-                            <input class="form-control @error('subject') is-invalid @enderror" type="text" name="subject" id="subject" value="{{ old('subject') }}" required>
+                            <input class="form-control @error('subject') is-invalid @enderror" maxlength="200" type="text" name="subject" id="subject" value="{{ old('subject') }}" required>
                             @error('subject')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -61,7 +67,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="name">Nombre <span class="text-danger">*</span></label>
-                            <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name" value="{{ old('name') }}" required>
+                            <input class="form-control @error('name') is-invalid @enderror" type="text" maxlength="100" name="name" id="name" value="{{ old('name') }}" required>
                             @error('name')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -72,7 +78,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="email">E-mail <span class="text-danger">*</span></label>
-                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" value="{{ old('email') }}" required>
+                            <input class="form-control @error('email') is-invalid @enderror" maxlength="100" type="email" name="email" id="email" value="{{ old('email') }}" required>
                             @error('email')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -83,7 +89,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="phone">Teléfono <span class="text-danger">*</span></label>
-                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" value="{{ old('phone') }}" required>
+                            <input class="form-control @error('phone') is-invalid @enderror" type="text" maxlength="13" name="phone" id="phone" value="{{ old('phone') }}" required>
                             @error('phone')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -94,7 +100,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="order_id">N° de Orden</label>
-                            <input class="form-control @error('order_id') is-invalid @enderror" type="number" name="order_id" placeholder="Ej: 2334" id="order_id" value="{{ old('order_id') }}" >
+                            <input class="form-control @error('order_id') is-invalid @enderror" type="number" name="order_id" onKeyPress="if(this.value.length==5) return false;" placeholder="Ej: 2334" id="order_id" value="{{ old('order_id') }}" >
                             @error('order_id')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -105,7 +111,7 @@
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="details">Detalle <span class="text-danger">*</span></label>
-                            <textarea class="form-control @error('details') is-invalid @enderror"" name="details" id="details" placeholder="Describe aquí tu consulta o caso" rows="3" required>{{ old('details') }}</textarea>
+                            <textarea class="form-control @error('details') is-invalid @enderror"" name="details" id="details" maxlength="2000" placeholder="Describe aquí tu consulta o caso" rows="3" required>{{ old('details') }}</textarea>
                             @error('details')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -115,10 +121,11 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <button class="btn btn-primary" type="submit">Enviar</button>
+                    <button class="btn btn-primary bg-light-blue" type="submit">Enviar</button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 @endempty
 @endsection

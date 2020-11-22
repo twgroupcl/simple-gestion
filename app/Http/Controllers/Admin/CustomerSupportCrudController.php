@@ -54,7 +54,7 @@ class CustomerSupportCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'seller',
             'type' => 'relationship',
-            'label' => 'Vendedor',
+            'label' => 'Expositor',
             'entity' => 'seller',
             'attribute' => 'name',
         ],);
@@ -95,6 +95,49 @@ class CustomerSupportCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->crud->addFilter([
+            'name'  => 'seller_id',
+            'type'  => 'select2',
+            'label' => 'Expositor'
+        ], function() {
+            return Seller::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('whereHas', 'seller', function($query) use ($value) {
+                $query->where('id', $value);
+            });
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'contact_type',
+            'type'  => 'select2',
+            'label' => 'Tipo'
+        ], function() {
+            return [1 => 'Consulta', 2 => 'Reclamo', 3 => 'Sugerencia'];
+        }, function($value) {
+            $this->crud->addClause('where', 'contact_type', $value);
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'status',
+            'type'  => 'select2',
+            'label' => 'Estado'
+        ], function() {
+            return [1 => 'Pendiente', 2 => 'En revisión', 3 => 'Resuelta'];
+        }, function($value) {
+            $this->crud->addClause('where', 'status', $value);
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'created_at',
+            'type'  => 'date',
+            'label' => 'Fecha'
+        ],
+        false,
+        function($value) {
+            logger($value);
+            $this->crud->addClause('whereDate', 'created_at', $value);
+        });
     }
 
     /**
@@ -130,6 +173,9 @@ class CustomerSupportCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
+            'attributes' => [
+                'maxlength' => '200',
+            ],
         ]);
 
         CRUD::addField([
@@ -139,6 +185,9 @@ class CustomerSupportCrudController extends CrudController
             'tab' => 'General',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'maxlength' => '100',
             ],
         ]);
 
@@ -150,6 +199,9 @@ class CustomerSupportCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
+            'attributes' => [
+                'maxlength' => '100',
+            ],
         ]);
 
         CRUD::addField([
@@ -160,15 +212,21 @@ class CustomerSupportCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
+            'attributes' => [
+                'maxlength' => '2000',
+            ],
         ]);
 
         CRUD::addField([
-            'name' => 'order',
+            'name' => 'order_id',
             'type' => 'text',
             'label' => 'N° Orden',
             'tab' => 'General',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
+            ],
+            'attributes' => [
+                'maxlength' => '4',
             ],
         ]);
         CRUD::addField([
@@ -178,6 +236,9 @@ class CustomerSupportCrudController extends CrudController
             'tab' => 'General',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-12',
+            ],
+            'attributes' => [
+                'maxlength' => '2000',
             ],
         ]);
     }
@@ -261,7 +322,7 @@ class CustomerSupportCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'order',
+            'name' => 'order_id',
             'type' => 'text',
             'label' => 'N° Orden',
             'tab' => 'General',
@@ -302,7 +363,7 @@ class CustomerSupportCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Vendedor',
+            'label' => 'Expositor',
             'type' => 'select2_from_array',
             'allows_null' => true,
             'options' => Seller::pluck('name', 'id')->toArray(),

@@ -42,7 +42,7 @@ class SellerCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Seller::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/seller');
-        CRUD::setEntityNameStrings('vendedor', 'vendedores');
+        CRUD::setEntityNameStrings('expositor', 'expositores');
 
         $this->crud->denyAccess('show');
 
@@ -226,7 +226,17 @@ class SellerCrudController extends CrudController
         CRUD::addField([
             'name' => 'legal_representative_name',
             'type' => 'text',
-            'label' => 'Nombre fantasia',
+            'label' => 'Nombre de encargado',
+            'tab' => 'General',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'phone',
+            'type' => 'text',
+            'label' => 'Teléfono',
             'tab' => 'General',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
@@ -243,15 +253,6 @@ class SellerCrudController extends CrudController
             ],
         ]);
 
-        CRUD::addField([
-            'name' => 'phone',
-            'type' => 'text',
-            'label' => 'Teléfono',
-            'tab' => 'General',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-md-6',
-            ],
-        ]);
 
         CRUD::addField([
             'name' => 'cellphone',
@@ -535,7 +536,8 @@ class SellerCrudController extends CrudController
             'new_item_label' => 'Agregar contacto',
             'tab' => 'Contactos',
         ]);
-
+        
+        /* comment for filsa 
         CRUD::addField([
             'name' => 'privacy_policy',
             'type'  => 'tinymce',
@@ -556,6 +558,7 @@ class SellerCrudController extends CrudController
             'label' => 'Política de devolución',
             'type' => 'tinymce',
         ]);
+         */
 
         CRUD::addField([
             'name' => 'meta_title',
@@ -591,6 +594,7 @@ class SellerCrudController extends CrudController
             'name' => 'logo',
             'type' => 'image',
             'label' => 'Logo',
+            'aspect_ratio' => 1,
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-12'
@@ -616,6 +620,7 @@ class SellerCrudController extends CrudController
             'tab' => 'SEO',
         ]);
 
+        /* filsa
         CRUD::addField([
             'name' => 'payments_data',
             'type' => 'repeatable',
@@ -652,6 +657,7 @@ class SellerCrudController extends CrudController
             ],
             'tab' => 'Venta',
         ]);
+         */
 
         // CRUD::addField([
         //     'name' => 'shippings_data',
@@ -779,6 +785,9 @@ class SellerCrudController extends CrudController
                     'class' => 'form-group col-6',
                 ],
             ]);
+            
+
+            /* comment for filsa
 
             $subscription_data = (isset($this->crud->getCurrentEntry()->subscription_data))?$this->crud->getCurrentEntry()->subscription_data:false;
 
@@ -912,9 +921,11 @@ class SellerCrudController extends CrudController
                     'store_in' => 'subscription_data'
                 ]);
             }
+             */
 
 
         }
+             
 
         CRUD::addField([
             'name' => 'rut_formatter',

@@ -214,6 +214,11 @@ class Seller extends Model
         return $this->belongsToMany(PlanSubscription::class,'plan_subscription_seller_mapping','user_id');
     }
 
+    public function contact_types()
+    {
+        return $this->belongsTo(ContactType::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -295,9 +300,9 @@ class Seller extends Model
     public function setPasswordAttribute($value)
     {
         if ($value && $value != "") {
-            $this->attributes['password'] = Hash::make(strtoupper(
-                str_replace('.', '', $value)
-            ));
+            $this->attributes['password'] = Hash::make(
+                $value
+            );
         }
     }
 

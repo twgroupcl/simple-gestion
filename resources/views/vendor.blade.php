@@ -8,7 +8,7 @@
     <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
         <div class="media media-ie-fix align-items-center pb-3">
             @if($seller->logo)
-                <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{ url($seller->logo) }}" alt="Logo {{ $seller->visible_name }}"></div>
+                <div class="{{-- img-thumbnail --}} rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{ url($seller->logo) }}" alt="Logo {{ $seller->visible_name }}"></div>
             @endif
             <div class="media-body pl-3">
                 <h3 class="text-light font-size-lg mb-0">{{ $seller->visible_name }}</h3>
@@ -70,21 +70,36 @@
                         @endif
                         <br>
                     @endif
+
                     @if($seller->web)
                         <h6>Web</h6>
-                        <a href="" target="_blank">{{$seller->web}}</a>
+                        <a class="font-size-ms text-muted" href="{{$seller->web}}" target="_blank">{{$seller->web}}</a>
                         <br>
                         <br>
                     @endif
-                    <!--
-                        <h6>Twitter</h6>
-                        <h6>LinkedIn</h6>
-                        <h6>Instagram</h6>
-                        <h6>Facebook</h6>
-                    -->
+                    
+                    @if($seller->contacts_data)
+                        <h6>Redes Sociales</h6>
+                            @foreach($seller->contacts_data as $socialMedia)
+                                <a class="font-size-ms text-muted" href="{{$socialMedia['url']}}" target="_blank">{{$socialMedia['url']}}</a>                    
+                            @endforeach
+                        <br>
+                        <br>
+                    @endif
+                  
                     @if($seller->email)
                         <h6>Contacto</h6>
                         <p class="font-size-ms text-muted">{{$seller->email}}</p>
+                    @endif
+
+                    @if($seller->meta_title)
+                        <h6>Título para buscadores</h6>
+                        <p class="font-size-ms text-muted">{{$seller->meta_title}}</p>
+                    @endif
+
+                    @if($seller->meta_keywords)
+                        <h6>Palabras Clave</h6>
+                        <p class="font-size-ms text-muted">{{ str_replace(',','  ',$seller->meta_keywords) }}</p>
                     @endif
                     <hr class="my-4">
                     <!--
@@ -150,7 +165,7 @@
                     <!-- Products grid-->
                     <div class=" mx-n2">
                         <!-- Product-->
-                        @livewire('products.card-general', ['columnLg' => '', 'showPaginate' => true, 'paginateBy' => 8, 'showFrom' => $render['view'], 'valuesQuery' => $data])
+                        @livewire('products.card-general', ['columnLg' => '', 'showPaginate' => true, 'paginateBy' => 9, 'showFrom' => $render['view'], 'valuesQuery' => $data])
                     </div>
                 </div>
             </section>

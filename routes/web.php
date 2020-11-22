@@ -74,6 +74,9 @@ Route::get('/privacy', function () {
 Route::get('/terms-conditions', function () {
     return view('terms-conditions');
 });
+Route::get('/about-us', function () {
+    return view('about-us');
+});
 
 //Auth::routes();
 Route::redirect('/login', '/customer/login')->name('login');

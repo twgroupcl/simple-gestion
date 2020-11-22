@@ -8,24 +8,20 @@ $selected_commune = "";
 
 @section('content')
 <!-- Page Title-->
-<div class="page-title-overlap bg-accent pt-4 bg-light-blue">
-    <div class="container d-lg-flex justify-content-between">
-        {{-- <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-0">Solicitud de Inscripción</h1>
-        </div> --}}
+<div class="page-title-overlap bg-dark py-4 bg-light-blue">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+        <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
+            <p class="h3 text-light mb-2">Solicitud de Registro</p>
+        </div>
     </div>
 </div>
 <!-- Page Content-->
-<div class="container mb-5 pb-3">
+<div class="container py-5 mt-md-2 mb-2">
     <div class="bg-light box-shadow-lg rounded-lg overflow-hidden">
-        <div class="row">
-            <section class="col-12">
-                <img src="{{ asset('img/steps-register.png') }}" alt="Pasos registro" class="img-fluid">
-            </div>
+      
             <!-- Content-->
             <section class="col-12 pt-2 pt-lg-4 pb-4 mb-3">
                 <div class="pt-2 px-4 px-xl-5">
-                    <img src="{{ asset('img/seller-register.png') }}" alt="Registro vendedor" class="img-fluid mt-5">
 
                     <!-- Title-->
                     <div class="row justify-content-md-center mt-3">
@@ -219,7 +215,7 @@ $selected_commune = "";
 
                             <div class="col-12">
                                 <p class="float-right">
-                                    <button class="btn btn-primary" type="submit">Enviar</button>
+                                    <button class="btn btn-primary bg-light-blue" type="submit">Enviar</button>
                                 </p>
                             </div>
                         </div>

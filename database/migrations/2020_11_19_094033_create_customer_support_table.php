@@ -20,7 +20,7 @@ class CreateCustomerSupportTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('phone');
-            $table->string('details')->nullable();
+            $table->longText('details')->nullable();
             $table->integer('status')->default(1);
             $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('seller_id')->nullable();
