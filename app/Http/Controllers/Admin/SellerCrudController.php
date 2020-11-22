@@ -576,6 +576,7 @@ class SellerCrudController extends CrudController
             'name' => 'logo',
             'type' => 'image',
             'label' => 'Logo',
+            'aspect_ratio' => 1,
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-12'
