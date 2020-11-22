@@ -273,9 +273,9 @@ class Seller extends Model
     public function setPasswordAttribute($value)
     {
         if ($value && $value != "") {
-            $this->attributes['password'] = Hash::make(strtoupper(
-                str_replace('.', '', $value)
-            ));
+            $this->attributes['password'] = Hash::make(
+                $value
+            );
         }
     }
 
