@@ -286,7 +286,7 @@ class Seller extends Model
         return '';
     }
 
-    public function getCommuneShippingMethodAttribute()
+    public function getCommuneShippingMethodAvailableAttribute()
     {
 
         if($this->getAvailableShippingMethods()){

@@ -138,7 +138,7 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'name' => 'commune_shipping_method',
+            'name' => 'commune_shipping_method_available',
             'label' => 'Métodos de envío',
             'type'  => 'text',
             //'function_name' => 'getAvailableShippingMethods',
