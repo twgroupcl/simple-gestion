@@ -40,19 +40,21 @@
                         <h6>Descripción o reseña de la empresa</h6>
                         <p class="font-size-ms text-muted">{{$seller->description}}</p>
                     @endif
-                    @if($seller->privacy_policy)
-                        <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
-                        <br>
-                    @endif
-                    @if($seller->shipping_policy)
-                        <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
-                        <br>
-                    @endif
-                    @if($seller->return_policy)
-                        <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
-                        <br>
-                    @endif
-                    <br>
+                    <!--
+
+                        @if($seller->privacy_policy)
+                            <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
+                            <br>
+                        @endif
+                        @if($seller->shipping_policy)
+                            <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
+                            <br>
+                        @endif
+                        @if($seller->return_policy)
+                            <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
+                            <br>
+                        @endif
+                    -->
 
                     @if($seller->addresses_data)
                         @php
