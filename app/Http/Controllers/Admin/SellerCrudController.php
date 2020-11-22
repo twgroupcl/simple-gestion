@@ -138,7 +138,7 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'name' => 'commune_shipping_method',
+            'name' => 'commune_shipping_method_available',
             'label' => 'Métodos de envío',
             'type'  => 'text',
             //'function_name' => 'getAvailableShippingMethods',
@@ -536,8 +536,8 @@ class SellerCrudController extends CrudController
             'new_item_label' => 'Agregar contacto',
             'tab' => 'Contactos',
         ]);
-        
-        /* comment for filsa 
+
+        /* comment for filsa
         CRUD::addField([
             'name' => 'privacy_policy',
             'type'  => 'tinymce',
@@ -785,7 +785,7 @@ class SellerCrudController extends CrudController
                     'class' => 'form-group col-6',
                 ],
             ]);
-            
+
 
             /* comment for filsa
 
@@ -925,7 +925,7 @@ class SellerCrudController extends CrudController
 
 
         }
-             
+
 
         CRUD::addField([
             'name' => 'rut_formatter',
@@ -1019,6 +1019,24 @@ class SellerCrudController extends CrudController
             return SellerCategory::all()->pluck('name', 'id')->toArray();
         }, function ($values) {
             $this->crud->addClause('where', 'seller_category_id', 'LIKE', '%' . $values . '%');
+        });
+
+        CRUD::addFilter([
+            'name'  => 'commune_shipping_method',
+            'label' => 'Métodos de envío',
+            'type'    => 'select2',
+
+        ],  function () {
+            return [
+              1 => 'Si',
+              2 => 'No',
+            ];
+          }, function ($value) {
+              if($value == 1){
+                $this->crud->addClause('whereHas', 'commune_shipping_method');
+              }else{
+                $this->crud->addClause('whereDoesntHave', 'commune_shipping_method');
+              }
         });
     }
 }
