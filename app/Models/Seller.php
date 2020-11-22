@@ -77,11 +77,11 @@ class Seller extends Model
         'user_id',
         'company_id',
     ];
-    
+
     protected $hidden = [
         'password'
     ];
-    
+
     // protected $dates = [];
     protected $casts = [
         'addresses_data' => 'array',
@@ -131,7 +131,7 @@ class Seller extends Model
 
         if (!$shippingConfig) {
             $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
-            
+
             if (!$shippingConfig) {
                 return [];
             }
@@ -140,6 +140,22 @@ class Seller extends Model
         }
 
         return $shippingConfig->getAvailableShippingMethodCodes();
+    }
+
+    /**
+     * Return boolean if available shipping methods
+     */
+    public function getAvailableShippingMethods()
+    {
+
+            $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
+
+            if (!$shippingConfig) {
+                return false;
+            }else{
+                return true;
+            }
+
     }
 
     /*
@@ -257,6 +273,17 @@ class Seller extends Model
         }
 
         return '';
+    }
+
+    public function getCommuneShippingMethodAttribute()
+    {
+
+        if($this->getAvailableShippingMethods()){
+            return 'Si';
+        }else{
+            return 'No';
+        }
+
     }
 
     /*
