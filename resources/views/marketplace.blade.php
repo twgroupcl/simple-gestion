@@ -6,7 +6,7 @@
 <!-- Hero One item + Dots + Loop (defaults)-->
 <div class="cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-        <!-- <img src="{{ asset('img/home/hero-slider/banner-cyber.png') }}" alt="Contigo Pyme Banner Cyber"> -->
+        <img src="{{ asset('img/home/hero-slider/banner_navidad.png') }}" alt="Contigo Pyme Banner Navidad">
         <a href="{{ route('seller.sign') }}"><img src="{{ asset('img/seller-register.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
         <img src="{{ asset('img/home/hero-slider/banner-02.png') }}" alt="Contigo Pyme Banner 2">
         <img src="{{ asset('img/home/hero-slider/banner-03.png') }}" alt="Contigo Pyme Banner 3">
@@ -23,7 +23,7 @@
                 @foreach($featuredProducts as $products)
                     <div class="card product-card">
                         <a class="card-img-top d-block overflow-hidden" href="{{ route('product',['slug' => $products->url_key]) }}">
-                            <img class="w-100 max-h-17" src="{{ url($products->getFirstImagePath()) }}" alt="Product">
+                            <img class="w-100 max-height-14 min-height-14" src="{{ url($products->getFirstImagePath()) }}" alt="Product">
                         </a>
                         <div class="card-body py-2">
                             <h3 class="product-title font-size-sm"><a href="{{ 'seller-shop/' . $products->seller->id }}">{{ $products->seller->visible_name }}</a></h3>

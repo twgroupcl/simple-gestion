@@ -9,7 +9,7 @@
     <div class="row">
         @if($product->special_price)
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <span class="badge badge-warning badge-shadow">Descto</span>
+                <span class="badge badge-warning badge-shadow">Dcto</span>
             </div>
         @endif
         @if($product->new)
@@ -24,7 +24,7 @@
         @endif
     </div>
     <a class="card-img-top d-block overflow-hidden" href="{{ route('product',['slug' => $product->url_key]) }}">
-        <img class="w-100 max-h-17" src="{{ url($product->getFirstImagePath()) }}" alt="Product">
+        <img class="w-100 max-height-14 min-height-14" src="{{ url($product->getFirstImagePath()) }}" alt="Product">
     </a>
     <div class="card-body py-2">
         <h3 class="product-title font-size-sm"><a href="{{ 'seller-shop/' . $product->seller->id }}">{{ $product->seller->visible_name }}</a></h3>

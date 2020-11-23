@@ -36,7 +36,10 @@
              {{--   <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div> --}}
              <div class="d-none d-sm-flex pb-3">
                     <a class="btn btn-icon nav-link-style bg-light text-dark disabled opacity-100 mr-2 btn-shop-grid" href="{{ url()->current().'?render=shop-grid' }}"><i class="czi-view-grid"></i></a>
-                    <a class="btn btn-icon nav-link-style nav-link-light btn-shop-list" href="{{ url()->current().'?render=shop-list'}}"><i class="czi-view-list"></i></a>
+                    <!--
+
+                        <a class="btn btn-icon nav-link-style nav-link-light btn-shop-list" href="{{ url()->current().'?render=shop-list'}}"><i class="czi-view-list"></i></a>
+                    -->
                 </div>
             </div>
             <!-- Products grid-->
