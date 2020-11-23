@@ -5,15 +5,16 @@ use App\Models\Product;
 $addressData = $order->json_value;
 
 
+
 $addressShipping = null;
-if(isset($addressData->addressInvoice)){
-$addressShipping = json_decode($addressData->addressShipping);
+if(isset($addressData['addressShipping'])){
+$addressShipping = $addressData['addressShipping'];
 }
 
 
 $addressInvoice = null;
-if(isset($addressData->addressInvoice)){
-$addressInvoice = json_decode($addressData->addressInvoice);
+if(isset($addressData['addressInvoice'])){
+$addressInvoice = $addressData['addressInvoice'];
 }
 
 $communeShipping = null;
@@ -21,6 +22,7 @@ $communeInvoice = null;
 
 if($addressShipping){
 $communeShipping = Commune::where('id', $addressShipping->address_commune_id)->first();
+
 }
 
 if($addressInvoice){
@@ -96,7 +98,14 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
     .border-table {
         border: 1px solid lightgray;
     }
+    .title-data {
+        position: absolute;
+        left: 0;
 
+        width: 100%;
+
+        text-align: center;
+    }
     .footer-data {
         position: absolute;
         left: 0;
@@ -107,8 +116,14 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
     }
 
 </style>
-{{-- @endpush --}}
-{{-- @section('content') --}}
+
+<div class="title-data">
+    <div class="row">
+        <div class="col-12 text-center">
+            Orden de Pedido Filsa Virtual
+        </div>
+    </div>
+</div>
 
 
 <table width="100%" style="margin-top: 25px;">
@@ -129,7 +144,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
 <table width="100%">
     <tr>
         <td width="50%">
-            @if ($addressShipping)
+            @if (isset($addressShipping))
                 <div class="direccion-facturacion-titulo">
                     <p><strong>Dirección de envío</strong></p>
                 </div>
@@ -143,7 +158,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
             @endif
         </td>
         <td width="50%">
-            @if ($addressInvoice)
+            @if (isset($addressInvoice) && !empty($addressInvoice->address_street))
                 <div class="direccion-facturacion-titulo">
                     <p><strong>Direccion de facturación </strong></p>
                 </div>
@@ -151,8 +166,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                 <p class="p-estrecho">{{ $addressInvoice->first_name . ', ' . $addressInvoice->last_name }}</p>
                 <p class="p-estrecho">{{ $addressInvoice->address_street . ', ' . $addressInvoice->address_number }}</p>
                 <p class="p-estrecho">
-                    @if ($communeInvoice) {{ $communeInvoice->name }}</beautify
-                        end=" @endif">
+                    @if ($communeInvoice) {{ $communeInvoice->name }} @endif
                 </p>
                 <p class="p-estrecho">Teléfono: {{ $addressInvoice->cellphone }}</p>
                 </p>
@@ -251,5 +265,9 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
     </tr>
 </table>
 <div class="footer-data">
-    contigopyme.cl
+    <div class="row">
+        <div class="col-12 text-center">
+            www.filsavirtual.cl
+        </div>
+    </div>
 </div>
