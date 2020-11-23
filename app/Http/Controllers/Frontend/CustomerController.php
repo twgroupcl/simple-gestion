@@ -272,6 +272,17 @@ class CustomerController extends Controller
         $requestValidated = $request->validated();
         $ticket = CustomerSupport::create($requestValidated);
 
+        $mail_data = [
+            'logo' => 'img/filsa-banner.jpg',
+            'title' => '¡Tu solicitud ha sido recibida!',
+            'text' => 'Muchas gracias por contactarte con nosotros y ayudarnos a mejorar tu experiencia. Vamos a revisar el detalle de lo enviado y te responderemos a la brevedad. Que tengas un buen día.',
+        ];
+
+        Mail::send('maileclipse::templates.customerSupport', $mail_data, function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('¡Tu solicitud ha sido recibida!');
+        });
+
         return view('customer.support', ['ticket' => $ticket->id]);
     }
 }
