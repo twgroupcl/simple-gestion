@@ -187,7 +187,7 @@
                     },
                     {
                         data: 'seller',
-                        name: 'Vendedor#'
+                        name: 'Expositor'
                     },
                     {
                         data: 'created_at',
