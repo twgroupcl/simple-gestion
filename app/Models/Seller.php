@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
-use App\User;
-use Illuminate\Support\Str;
-use Freshwork\ChileanBundle\Rut;
-use App\Scopes\CompanyBranchScope;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use App\Models\CommuneShippingMethod;
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\CustomAttributeRelations;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\CommuneShippingMethod;
+use App\Scopes\CompanyBranchScope;
+use App\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Freshwork\ChileanBundle\Rut;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class Seller extends Model
@@ -25,7 +24,7 @@ class Seller extends Model
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
-    */
+     */
 
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
@@ -80,7 +79,7 @@ class Seller extends Model
     ];
 
     protected $hidden = [
-        'password'
+        'password',
     ];
 
     // protected $dates = [];
@@ -92,14 +91,14 @@ class Seller extends Model
         'subdcription_data' => 'array',
     ];
     protected $fakeColumns = [
-        'subscription_data'
+        'subscription_data',
     ];
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
-    */
+     */
 
     protected static function boot()
     {
@@ -128,10 +127,10 @@ class Seller extends Model
      */
     public function getAvailableShippingMethodsByCommune($communeId)
     {
-        $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'commune_id' => $communeId ])->first();
+        $shippingConfig = CommuneShippingMethod::where(['seller_id' => $this->id, 'commune_id' => $communeId])->first();
 
         if (!$shippingConfig) {
-            $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
+            $shippingConfig = CommuneShippingMethod::where(['seller_id' => $this->id, 'is_global' => 1])->first();
 
             if (!$shippingConfig) {
                 return [];
@@ -149,13 +148,13 @@ class Seller extends Model
     public function getAvailableShippingMethods()
     {
 
-            $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
+        $shippingConfig = CommuneShippingMethod::where(['seller_id' => $this->id, 'is_global' => 1])->first();
 
-            if (!$shippingConfig) {
-                return false;
-            }else{
-                return true;
-            }
+        if (!$shippingConfig) {
+            return false;
+        } else {
+            return true;
+        }
 
     }
 
@@ -163,7 +162,7 @@ class Seller extends Model
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
-    */
+     */
 
     public function company()
     {
@@ -197,7 +196,7 @@ class Seller extends Model
 
     public function shippingmethods()
     {
-        return $this->belongsToMany(ShippingMethod::class,'shipping_method_seller_mapping');
+        return $this->belongsToMany(ShippingMethod::class, 'shipping_method_seller_mapping');
     }
 
     public function shipping_method_seller()
@@ -212,7 +211,7 @@ class Seller extends Model
 
     public function subscriptions()
     {
-        return $this->belongsToMany(PlanSubscription::class,'plan_subscription_seller_mapping','user_id');
+        return $this->belongsToMany(PlanSubscription::class, 'plan_subscription_seller_mapping', 'user_id');
     }
 
     public function contact_types()
@@ -229,13 +228,13 @@ class Seller extends Model
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
-    */
+     */
 
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
     |--------------------------------------------------------------------------
-    */
+     */
 
     public function getStatusDescriptionAttribute()
     {
@@ -278,7 +277,7 @@ class Seller extends Model
         if (!empty($this->payments_data)) {
             $payment = json_decode($this->payments_data);
 
-            if(!empty($payment[0]->key)) {
+            if (!empty($payment[0]->key)) {
                 return $payment[0]->key;
             }
         }
@@ -289,9 +288,20 @@ class Seller extends Model
     public function getCommuneShippingMethodAvailableAttribute()
     {
 
-        if($this->getAvailableShippingMethods()){
+        if ($this->getAvailableShippingMethods()) {
             return 'Si';
-        }else{
+        } else {
+            return 'No';
+        }
+
+    }
+
+    public function getAddressesAvailableAttribute()
+    {
+
+        if (count($this->addresses)>0) {
+            return 'Si';
+        } else {
             return 'No';
         }
 
@@ -301,7 +311,7 @@ class Seller extends Model
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
-    */
+     */
 
     public function setPasswordAttribute($value)
     {
@@ -319,9 +329,9 @@ class Seller extends Model
         $disk = 'public';
 
         // if the image was erased
-        if ($value==null) {
+        if ($value == null) {
             // delete the image from disk
-            $deleteFile = Str::replaceFirst('/storage/','',$this->{$attribute_name});
+            $deleteFile = Str::replaceFirst('/storage/', '', $this->{$attribute_name});
             \Storage::disk($disk)->delete($deleteFile);
 
             // set null in the database column
@@ -334,13 +344,13 @@ class Seller extends Model
             $image = \Image::make($value)->encode('jpg', 90);
 
             // 1. Generate a filename.
-            $filename = md5($value.time()).'.jpg';
+            $filename = md5($value . time()) . '.jpg';
 
             // 2. Store the image on disk.
-            \Storage::disk($disk)->put('logos/'.$filename, $image->stream());
+            \Storage::disk($disk)->put('logos/' . $filename, $image->stream());
 
             // 3. Delete the previous image, if there was one.
-            $deleteFile = Str::replaceFirst('/storage/','',$this->{$attribute_name});
+            $deleteFile = Str::replaceFirst('/storage/', '', $this->{$attribute_name});
             \Storage::disk($disk)->delete($deleteFile);
 
             $this->attributes[$attribute_name] = '/storage/logos/' . $filename;
@@ -378,7 +388,7 @@ class Seller extends Model
             $deleteFile = Str::replaceFirst('/storage/', '', $this->{$attribute_name});
             \Storage::disk($disk)->delete($deleteFile);
 
-            $this->attributes[$attribute_name] = '/storage/logos/'.$filename;
+            $this->attributes[$attribute_name] = '/storage/logos/' . $filename;
         }
     }
 
