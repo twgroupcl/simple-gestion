@@ -26,6 +26,7 @@ class OrderUpdated extends Mailable
     public $paymentData;
     public $title;
     public $shippingMessage;
+    public $typeReceiver;
     private $receiver;
     /**
      * Create a new message instance.
@@ -38,6 +39,7 @@ class OrderUpdated extends Mailable
     public function __construct(Order $order, Int $receiver, Seller $seller = null)
     {
         $this->receiver = $receiver;
+        $this->typeReceiver = $receiver;
 
         //
         if ($order) {
@@ -115,7 +117,7 @@ class OrderUpdated extends Mailable
                     }
 
                     // “Próximamente estaremos notificando la fecha de envío” cambiar por
-                    $this->shippingMessage = '“*Por evento Cyber las fechas de envío podrían variar, estaremos notificando la fecha de envío”';
+                    $this->shippingMessage = '';// '“*Por evento Cyber las fechas de envío podrían variar, estaremos notificando la fecha de envío”';
                 }else{
                     $this->title = '¡Nueva orden generada!';
 

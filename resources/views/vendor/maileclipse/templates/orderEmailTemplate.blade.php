@@ -25,7 +25,7 @@ use App\Models\Product;
         }
 
         p {
-            color: white;
+            color: black;
         }
 
         a {
@@ -68,7 +68,7 @@ use App\Models\Product;
         }
 
         .headline {
-            color: #ffffff;
+            color: #000000;
             font-size: 36px;
         }
 
@@ -145,7 +145,7 @@ use App\Models\Product;
                                             </tbody>
                                         </table> --}}
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                            cellspacing="0" cellpadding="0" bgcolor="#ffffff">
                                             <tbody>
                                                 {{-- <tr style="padding-top:15px;">
                                                     <td> <br><br> </td>
@@ -154,13 +154,13 @@ use App\Models\Product;
                                                     <td  valign="top"> <img src="{{ asset($logo) }}" alt="" width="" height="" />
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td style="font-size: 30px; text-align: center;"><img
                                                         src="{{ asset('img/logos/filsa-logo.png') }}"
                                                         width="150px"
                                                         alt="Camara de libro" />
                                                     </td>
-                                                </tr>
+                                                </tr> --}}
                                                 <tr>
                                                     <td class="headline">{{ $title }}</td>
                                                 </tr>
@@ -185,17 +185,17 @@ use App\Models\Product;
                                             </tbody>
                                         </table>
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                            cellspacing="0" cellpadding="0" bgcolor="#ffffff">
                                             <tbody>
                                                 <tr style="padding-top:15px;">
                                                     <td>
                                                         <table class="force-width-80" style="margin: 0 auto;"
-                                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                                            cellspacing="0" cellpadding="0" bgcolor="#ffffff">
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="headline">Orden #{{ $orderData['id'] }}
                                                                     </td>
-                                                                    <td style="text-align: right; color:white; ">
+                                                                    <td style="text-align: right; color:#000000; ">
                                                                         <strong>Fecha </strong>{{ $orderData['fecha'] }}
                                                                     </td>
                                                                 </tr>
@@ -205,11 +205,30 @@ use App\Models\Product;
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
-                                            cellpadding="0" bgcolor="#2bb5fe">
+                                        @if ($typeReceiver == 1)
+                                        <table class="force-width-80" style="margin: 0 auto;"
+                                            cellspacing="0" cellpadding="0">
                                             <tbody>
                                                 <tr>
-                                                    <td style="background-color: #2bb5fe;">
+                                                    <td
+                                                        style="text-align: left; color: #000000;">
+                                                    <p>
+                                                        Estimado Cliente,<br/>
+                                                        Muchas gracias por realizar su pedido con Filsa.<br/>
+                                                        Este correo electrónico actúa como confirmación de la recepción de su pedido, verifique su dirección y los detalles del pedido.<br/>
+                                                        Para garantizar que reciba su pedido a tiempo, durante los períodos de feria no podemos cancelar ni cambiar pedidos. Consulte nuestro servicio al cliente para obtener más información.
+                                                    </p>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        @endif
+                                        <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
+                                            cellpadding="0" bgcolor="#ffffff">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="background-color: #ffffff;">
                                                         <center>
                                                             <table class="force-width-80" style="margin: 0 auto;"
                                                                 cellspacing="0" cellpadding="0">
@@ -475,13 +494,13 @@ use App\Models\Product;
                                                                     <tbody>
                                                                         <tr>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #000000; text-align: left; border-bottom: 1px solid #fff;">
                                                                                 <br /><br />
                                                                                 Método de pago seleccionado:
                                                                                 <br /><br />
                                                                             </td>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #000000; text-align: left; border-bottom: 1px solid #fff;">
                                                                                 <br /><br />
                                                                                 {{ $paymentData['title'] }}
                                                                                 <br /><br />
@@ -489,13 +508,13 @@ use App\Models\Product;
                                                                         </tr>
                                                                         <tr>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #000000; text-align: left; border-bottom: 1px solid #fff;">
                                                                                 <br /><br />
                                                                                 Fecha de pago:
                                                                                 <br /><br />
                                                                             </td>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #000000; text-align: left; border-bottom: 1px solid #fff;">
                                                                                 <br /><br />
                                                                                 {{ $paymentData['date'] }}
                                                                                 <br /><br />
@@ -503,13 +522,13 @@ use App\Models\Product;
                                                                         </tr>
                                                                         <tr>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #000000; text-align: left; border-bottom: 1px solid #fff;">
                                                                                 <br /><br />
                                                                                 Importe Total:
                                                                                 <br /><br />
                                                                             </td>
                                                                             <td
-                                                                                style="color: #fff; text-align: left; border-bottom: 1px solid #fff;">
+                                                                                style="color: #000000; text-align: left; border-bottom: 1px solid #fff;">
                                                                                 <br /><br />
                                                                                 {{ $paymentData['total'] }}
                                                                                 <br /><br />
@@ -518,7 +537,7 @@ use App\Models\Product;
                                                                     </tbody>
                                                                 </table>
                                                             @endif
-                                                            @if ($shippingMessage)
+                                                            {{-- @if ($shippingMessage)
                                                                 <table class="force-width-80" style="margin: 0 auto;"
                                                                     cellspacing="0" cellpadding="0">
                                                                     <tbody>
@@ -533,7 +552,7 @@ use App\Models\Product;
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
-                                                            @endif
+                                                            @endif --}}
                                                         </center>
                                                     </td>
                                                 </tr>
