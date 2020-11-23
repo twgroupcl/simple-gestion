@@ -98,7 +98,7 @@ class Cart extends Component
             $this->setCursor('auto');
         }else{
             $this->emit('showToast', '¡Sin productos!', 'Ya no hay productos en su carro.', 3000, 'warning');
-            return redirect(route('index'));
+            return redirect(route('home'));
 
         }
 
