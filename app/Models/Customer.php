@@ -50,15 +50,21 @@ class Customer extends Model
         'status',
         'customer_segment_id',
         'user_id',
+        'json_value',
+        'default_address_id',
         'company_id',
     ];
-    // protected $hidden = [];
-    // protected $dates = [];
+
+    protected $hidden = [
+        'password',
+    ];
+
     protected $casts = [
         'addresses_data' => 'array',
         'activities_data' => 'array',
         'banks_data' => 'array',
         'contacts_data' => 'array',
+        'json_value' => 'array',
     ];
 
     /*
