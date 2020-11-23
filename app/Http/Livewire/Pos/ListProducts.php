@@ -24,6 +24,10 @@ class ListProducts extends Component
 
     public function getProducts()
     {
-        return Product::whereSellerId($this->seller->id)->get();
+        return Product::where('status','=','1')
+                        ->where('is_approved','=','1')
+                        ->where('parent_id', '=', null)
+                        ->whereSellerId($this->seller->id)
+                        ->get();
     }
 }
