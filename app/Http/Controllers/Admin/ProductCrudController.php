@@ -58,17 +58,19 @@ class ProductCrudController extends CrudController
         $this->userSeller = null;
 
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace|Admin filsa')) {
             $this->admin = true;
             $this->crud->enableExportButtons();
             $this->crud->allowAccess('bulkApprove');
             $this->crud->allowAccess('bulkReject');
            
-        }
-
-        if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
+        } else {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
         }
+
+        /* if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
+            $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        } */
 
     }
 
