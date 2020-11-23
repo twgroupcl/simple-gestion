@@ -52,20 +52,22 @@ class ProductCrudController extends CrudController
         CRUD::setEntityNameStrings('libro', 'libros');
 
         $this->crud->denyAccess('show');
+        $this->crud->allowAccess('bulkDelete');
 
         $this->admin = false;
         $this->userSeller = null;
+
 
         if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
             $this->admin = true;
             $this->crud->enableExportButtons();
             $this->crud->allowAccess('bulkApprove');
             $this->crud->allowAccess('bulkReject');
+           
         }
 
         if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-            $this->crud->allowAccess('bulkDelete');
         }
 
     }
