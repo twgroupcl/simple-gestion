@@ -142,11 +142,13 @@ class CardGeneral extends Component
                 return $query;
             });
 
-        return $baseQuery->inRandomOrder()->paginate($this->paginateBy);
+        //return $baseQuery->inRandomOrder()->paginate($this->paginateBy);
             
-        // Filter and sorting
+        // Filter
         $filterService = new ProductFilterService();
         $filterQuery = $filterService->filterByParams($baseQuery, $this->filters);
+
+        // Sorting
         $filterQuery->when(!is_null($random), function ($query) use ($random) {
             if ($random) {
                 return $query->inRandomOrder();

@@ -118,6 +118,12 @@
                         <p class="font-size-ms text-muted">{{ str_replace(',','  ',$seller->meta_keywords) }}</p>
                     @endif
                     <hr class="my-4">
+                    <div>
+                        @livewire('sorting-products')
+                    </div>
+                    <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
+                        @livewire('filters')
+                    </div>
                     <!--
                         <h6>Contacts</h6>
                         <ul class="list-unstyled font-size-sm">
