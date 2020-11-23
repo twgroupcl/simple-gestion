@@ -1,11 +1,11 @@
-@if ($crud->hasAccess('bulkApprove') && $crud->get('list.bulkActions'))
-  <a href="javascript:void(0)" onclick="bulkApprovedEntries(this)" class="btn btn-sm btn-success bulk-button"><i class="fa fa-clone"></i> Aprobar</a>
+@if ($crud->hasAccess('bulkDelete') && $crud->get('list.bulkActions'))
+  <a href="javascript:void(0)" onclick="bulkDeleteEntries(this)" class="btn btn-sm btn-danger bulk-button"><i class="fa fa-clone"></i> Eliminar</a>
 @endif
 
 @push('after_scripts')
 <script>
-  if (typeof bulkApprovedEntries != 'function') {
-    function bulkApprovedEntries(button) {
+  if (typeof bulkDeleteEntries != 'function') {
+    function bulkDeleteEntries(button) {
 
         if (typeof crud.checkedItems === 'undefined' || crud.checkedItems.length == 0)
         {
@@ -17,7 +17,7 @@
           return;
         }
 
-        var message = "¿Esta seguro que desea aprobar :number libros?";
+        var message = "¿Esta seguro que desea eliminar :number libros? Esta acción no podrá ser revertida";
         message = message.replace(":number", crud.checkedItems.length);
 
         // show confirm message
@@ -34,27 +34,27 @@
           closeModal: true,
         },
           delete: {
-          text: "Continuar",
+          text: "Eliminar libros",
           value: true,
           visible: true,
-          className: "bg-primary",
+          className: "bg-danger",
         }
         },
       }).then((value) => {
         if (value) {
           var ajax_calls = [];
-              var approve_route = "{{ url($crud->route) }}/bulk-approve";
+              var delete_route = "{{ url($crud->route) }}/bulk-delete";
 
           // submit an AJAX delete call
           $.ajax({
-            url: approve_route,
+            url: delete_route,
             type: 'POST',
             data: { entries: crud.checkedItems },
             success: function(result) {
               // Show an alert with the result
                     new Noty({
                     type: "success",
-                    text: "<strong>Libros aprobados</strong><br>"+crud.checkedItems.length+" libros han sido aprobados."
+                    text: "<strong>Libros eliminados</strong><br>"+crud.checkedItems.length+" libros han sido eliminados."
                   }).show();
 
               crud.checkedItems = [];
@@ -64,7 +64,7 @@
               // Show an alert with the result
                     new Noty({
                     type: "danger",
-                    text: "<strong>Algo fallo!</strong><br>Uno o mas libros no pudieron ser aprobados. Intenta nuevamente."
+                    text: "<strong>Algo fallo!</strong><br>Uno o mas libros no pudieron ser eliminados. Intenta nuevamente."
                   }).show();
             }
           });

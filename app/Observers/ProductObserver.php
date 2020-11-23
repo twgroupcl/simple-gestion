@@ -2,7 +2,9 @@
 
 namespace App\Observers;
 
+use DateTime;
 use App\Models\Product;
+use App\Models\ProductLog;
 use Illuminate\Support\Str;
 use App\Mail\ProductCreated;
 use Illuminate\Support\Facades\DB;
@@ -86,6 +88,15 @@ class ProductObserver
         // Delete image references and files
         DB::table('product_images')->where('product_id', $product->id)->delete();
         $product->deleteImages();
+    }
+
+    public function deleted(Product $product)
+    {
+        $now = new DateTime();
+        $oldProduct = $product->toArray();
+        $oldProduct['deleted_at'] = $now->format('Y-m-d H:i:s');
+        $oldProduct['old_id'] = $product->id;
+        ProductLog::create($oldProduct);
     }
 
     /**

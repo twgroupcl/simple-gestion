@@ -131,10 +131,27 @@ class SellerCrudController extends CrudController
             ],
         ]);
 
+        // CRUD::addColumn([
+        //     'name' => 'transbank_code',
+        //     'type' => 'text',
+        //     'label' => 'Webpay',
+        // ]);
         CRUD::addColumn([
-            'name' => 'transbank_code',
-            'type' => 'text',
-            'label' => 'Webpay',
+            'name' => 'addresses_available',
+            'label' => 'Dirección',
+            'type'  => 'text',
+            //'function_name' => 'getAvailableShippingMethods',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Si') {
+                        return 'badge badge-success';
+                    }
+
+                    return 'badge badge-default';
+                },
+            ],
+
         ]);
 
         CRUD::addColumn([
@@ -1036,6 +1053,24 @@ class SellerCrudController extends CrudController
                 $this->crud->addClause('whereHas', 'commune_shipping_method');
               }else{
                 $this->crud->addClause('whereDoesntHave', 'commune_shipping_method');
+              }
+        });
+
+        CRUD::addFilter([
+            'name'  => 'addresses_data',
+            'label' => 'Dirección',
+            'type'    => 'select2',
+
+        ],  function () {
+            return [
+              1 => 'Si',
+              2 => 'No',
+            ];
+          }, function ($value) {
+              if($value == 1){
+                $this->crud->addClause('whereHas', 'addresses');
+              }else{
+                $this->crud->addClause('whereDoesntHave', 'addresses');
               }
         });
     }

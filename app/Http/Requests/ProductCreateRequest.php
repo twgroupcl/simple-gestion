@@ -80,7 +80,7 @@ class ProductCreateRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
-            'sku' => 'SKU',
+            'sku' => 'ISBN',
             'url_key' => 'Url Key',
             'currency_id' => 'moneda',
             'company_id' => 'negocio',
