@@ -35,7 +35,7 @@
     <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
     <div class="navbar-sticky bg-dark">
         <div class="navbar navbar-expand-lg navbar-dark">
-            <div class="container"><a class="navbar-brand d-none d-sm-block m-0 flex-shrink-0 logo-principal" href="{{ url('/') }}" ><img src="{{ asset('img/filsa/filsa-virtual.png') }}" alt="Filsa Virtual" /></a><a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/filsa/filsa-virtual.png') }}" alt="Filsa Virtual" /></a>
+            <div class="container"><a class="navbar-brand d-none d-sm-block m-0 flex-shrink-0 logo-principal" href="{{ url('/') }}" ><img src="{{ asset('img/filsa/filsa_virtual.png') }}" alt="Filsa Virtual" /></a><a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/filsa/filsa_virtual.png') }}" alt="Filsa Virtual" /></a>
                 <!-- Search-->
                 @if($header)
                 @php
