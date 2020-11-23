@@ -20,6 +20,7 @@ use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
 use App\Http\Requests\Frontend\CustomerSupportRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
+use App\Mail\CustomerSupport as MailCustomerSupport;
 use App\Models\CustomerSupport;
 
 class CustomerController extends Controller
@@ -271,6 +272,10 @@ class CustomerController extends Controller
     {
         $requestValidated = $request->validated();
         $ticket = CustomerSupport::create($requestValidated);
+
+        Mail::to($request->email)
+            ->cc([env('MAIL_FILSA_ADDRESS')])
+            ->send(new MailCustomerSupport());
 
         return view('customer.support', ['ticket' => $ticket->id]);
     }
