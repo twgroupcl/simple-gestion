@@ -9,7 +9,7 @@
     <div class="row">
         @if($product->special_price)
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <span class="badge badge-warning badge-shadow">Descto</span>
+                <span class="badge badge-warning badge-shadow">Dcto</span>
             </div>
         @endif
         @if($product->new)
