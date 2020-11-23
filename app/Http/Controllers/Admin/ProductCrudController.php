@@ -110,7 +110,7 @@ class ProductCrudController extends CrudController
         if ($this->admin) {
             CRUD::addColumn([
                 'name' => 'seller',
-                'label' => 'Vendedor',
+                'label' => 'Expositor',
                 'type' => 'relationship',
                 'attribute' => 'visible_name',
             ]);
@@ -304,12 +304,12 @@ class ProductCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Vendedor',
+            'label' => 'Expositor',
             'entity' => 'seller',
             'default' => $this->userSeller ?? '',
             'type' => 'relationship',
             'attribute' => 'visible_name',
-            'placeholder' => 'selecciona un vendedor',
+            'placeholder' => 'selecciona un expositor',
             'wrapper' => [
                'style' => $this->admin ? '' : 'display:none',
             ],
@@ -452,7 +452,7 @@ class ProductCrudController extends CrudController
 
        CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Vendedor',
+            'label' => 'Expositor',
             'entity' => 'seller',
             'type' => 'relationship',
             'tab' => 'Información general',
@@ -460,7 +460,7 @@ class ProductCrudController extends CrudController
             'wrapper' => [
                 'style' => $this->admin ? '' : 'display:none',
             ],
-            'placeholder' => 'selecciona un vendedor',
+            'placeholder' => 'selecciona un expositor',
         ]);
 
         CRUD::addField([
@@ -1192,7 +1192,7 @@ class ProductCrudController extends CrudController
             $this->crud->addFilter([
                 'name'  => 'seller_id',
                 'type'  => 'select2',
-                'label' => 'Vendedor'
+                'label' => 'Expositor'
             ], function() {
                 return Seller::all()->pluck('visible_name', 'id')->toArray();
             }, function($value) {

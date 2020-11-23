@@ -122,7 +122,7 @@ class ProductUpdateRequest extends FormRequest
             'height' => 'alto',
             'depth' => 'largo',
             'weight' => 'peso',
-            'seller_id' => 'vendedor',
+            'seller_id' => 'expositor',
             'status' => 'estado',
             'categories' => 'subcategoria',
             

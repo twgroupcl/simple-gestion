@@ -40,8 +40,8 @@
 
                 @if ($admin)
                 <div class="form-group col-md-12 required">
-                    <label><strong>Vendedor</strong></label><br>
-                    <select class="form-control"  name="seller_id">
+                    <label><strong>Expositor</strong></label><br>
+                    <select class="form-control" id="seller_select2"  name="seller_id">
                         @foreach ($sellers as $seller)
                             <option value="{{ $seller->id }}">{{ $seller->visible_name }}</option>
                         @endforeach
@@ -69,9 +69,20 @@
         </div>
     </form>
 @endsection
+
+@push('after_styles')
+<link href="{{ asset('packages/select2/dist/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+@endpush
+
 @push('after_scripts')
 <script src="{{ asset('js/jquery.form.js') }}"></script> 
+<script src="{{ asset('packages/select2/dist/js/select2.min.js') }}"></script>
+
 <script>
+    $(document).ready(function() {
+        $('#seller_select2').select2();
+    });
+
     $(function() {
 
         var bar = $('.progress-bar');

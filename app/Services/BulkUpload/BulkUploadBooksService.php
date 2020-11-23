@@ -25,7 +25,7 @@ class BulkUploadBooksService {
     const PRODUCT_TYPE = Product::PRODUCT_TYPE_SIMPLE;
     const PRODUCT_CLASS_CODE = 'book';
 
-    const MAX_SIZE_ZIP = 100000000;
+    const MAX_SIZE_ZIP = 900000000;
 
     const ROW_SKU = 1;
     const ROW_NAME = 2;
@@ -361,7 +361,7 @@ class BulkUploadBooksService {
         if ($zip->getSize() > self::MAX_SIZE_ZIP) {
             return [
                 'validate' => false,
-                'image_errors' => [ 'El comprimido de imagenes excede el tamaño maximo permitido de 100MB' ],
+                'image_errors' => [ 'El comprimido de imagenes excede el tamaño maximo permitido de 900MB' ],
                 'temp_images_path' => null,
                 'file_name_array' => []
             ];

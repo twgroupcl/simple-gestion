@@ -84,7 +84,7 @@ class ProductCreateRequest extends FormRequest
             'url_key' => 'Url Key',
             'currency_id' => 'moneda',
             'company_id' => 'negocio',
-            'seller_id' => 'vendedor',
+            'seller_id' => 'expositor',
             'product_class_id' => 'clase de producto',
             'super_attributes' => 'super atributos',
             'categories' => 'categoria',
