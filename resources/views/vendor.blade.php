@@ -118,6 +118,8 @@
                         <p class="font-size-ms text-muted">{{ str_replace(',','  ',$seller->meta_keywords) }}</p>
                     @endif
                     <hr class="my-4">
+                    <h6>Buscar en la tienda</h6>
+
                     <div>
                         @livewire('sorting-products')
                     </div>

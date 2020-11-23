@@ -596,6 +596,11 @@ class Product extends Model
         return $this->belongsToMany(ShippingMethod::class, 'shipping_method_product_mapping');
     }
 
+    public function product_brands()
+    {
+        return $this->belongsTo(ProductBrand::class,'product_brand_id');
+    }
+    
     /*
     |--------------------------------------------------------------------------
     | SCOPES
