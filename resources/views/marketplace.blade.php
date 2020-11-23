@@ -23,7 +23,7 @@
                 @foreach($featuredProducts as $products)
                     <div class="card product-card">
                         <a class="card-img-top d-block overflow-hidden" href="{{ route('product',['slug' => $products->url_key]) }}">
-                            <img class="w-100 max-h-17" src="{{ url($products->getFirstImagePath()) }}" alt="Product">
+                            <img class="w-100 max-height-14 min-height-14" src="{{ url($products->getFirstImagePath()) }}" alt="Product">
                         </a>
                         <div class="card-body py-2">
                             <h3 class="product-title font-size-sm"><a href="{{ 'seller-shop/' . $products->seller->id }}">{{ $products->seller->visible_name }}</a></h3>
