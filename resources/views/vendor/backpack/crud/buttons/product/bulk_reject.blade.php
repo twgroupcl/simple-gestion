@@ -1,4 +1,4 @@
-@if ($crud->hasAccess('bulkApprove') && $crud->get('list.bulkActions'))
+@if ($crud->hasAccess('bulkReject') && $crud->get('list.bulkActions'))
   <a href="javascript:void(0)" onclick="bulkRejectEntries(this)" class="btn btn-sm btn-secondary bulk-button"><i class="fa fa-clone"></i> Rechazar</a>
 @endif
 

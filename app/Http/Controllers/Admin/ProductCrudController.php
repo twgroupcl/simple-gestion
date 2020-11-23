@@ -65,9 +65,9 @@ class ProductCrudController extends CrudController
 
         if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-
-            $this->crud->denyAccess('delete');
+            $this->crud->allowAccess('bulkDelete');
         }
+
     }
 
     /**
@@ -82,8 +82,11 @@ class ProductCrudController extends CrudController
         // If not admin, show only user products
         if(!$this->admin) {
             $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
+            $this->crud->enableBulkActions();
+            $this->crud->addButtonFromView('bottom', 'bulk_delete', 'product.bulk_delete', 'beginning');
         } else {
             $this->crud->enableBulkActions();
+            $this->crud->addButtonFromView('bottom', 'bulk_delete', 'product.bulk_delete', 'beginning');
             $this->crud->addButtonFromView('bottom', 'bulk_reject', 'product.bulk_reject', 'beginning');
             $this->crud->addButtonFromView('bottom', 'bulk_approve', 'product.bulk_approve', 'beginning');
         }
@@ -1156,6 +1159,21 @@ class ProductCrudController extends CrudController
         return $entries;
     }
 
+    public function bulkDelete()
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        $entries = $this->crud->getRequest()->input('entries');
+
+        foreach ($entries as $key => $id) {
+            if ($entry = $this->crud->model->find($id)) {
+               $entry->delete();
+            }
+        }
+
+        return $entries;
+    }
+
     private function customFilters()
     {
         CRUD::addFilter([
@@ -1233,9 +1251,6 @@ class ProductCrudController extends CrudController
             $this->crud->addClause('where', 'product_type_id', $value);
           }); */
 
-
-
-
     }
 
     public function bulkUploadView(Request $request)
@@ -1256,7 +1271,8 @@ class ProductCrudController extends CrudController
 
         $file = $request->file('product-csv');
         $imagesZip = $request->file('images-zip');
-        $sellerId = $request['seller_id'];
+        $seller = Seller::find($request['seller_id']);
+        $admin = $this->admin;
 
         try {
             $result = $bulkUploadService->convertExcelToArray($file, $imagesZip);
@@ -1271,7 +1287,7 @@ class ProductCrudController extends CrudController
             $request->session()->forget('bulk_upload_data');
         }
     
-        return view('admin.products.bulk-upload-preview', compact('result', 'sellerId'));
+        return view('admin.products.bulk-upload-preview', compact('result', 'seller', 'admin'));
     }
 
     public function bulkUploadStore(Request $request)

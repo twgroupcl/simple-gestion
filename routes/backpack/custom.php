@@ -90,6 +90,7 @@ Route::group([
     Route::post('product/bulk-upload-store', 'ProductCrudController@bulkUploadStore')->name('products.bulk-upload-store');
     Route::post('product/bulk-approve', 'ProductCrudController@bulkApprove')->name('products.bulk-approve');
     Route::post('product/bulk-reject', 'ProductCrudController@bulkReject')->name('products.bulk-reject');
+    Route::post('product/bulk-delete', 'ProductCrudController@bulkDelete')->name('products.bulk-delete');
 
     Route::crud('customersupport', 'CustomerSupportCrudController');
 }); // this should be the absolute last line of this file
