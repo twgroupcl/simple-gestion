@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Commune;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
@@ -32,6 +33,11 @@ class SellerAddress extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function commune()
+    {
+        return $this->belongsTo(Commune::class,'commune_id');
+    }
 
     /*
     |--------------------------------------------------------------------------
