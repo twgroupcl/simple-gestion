@@ -111,7 +111,7 @@
                     <!-- Primary menu-->
                     <ul class="navbar-nav">
                         <li class="nav-item active"><a class="nav-link" href="{{ url('/home') }}">Inicio</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="#">Filsa Virtual</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{{ url('/about-us') }}">Filsa Virtual</a></li>
                         <li class="nav-item active"><a class="nav-link" href="http://www.camarachilenadellibro.cl" target="_blank" >Programa Cultural</a></li>
                         {{-- <li class="nav-item dropdown active"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Inicio</a>
                             <ul class="dropdown-menu">

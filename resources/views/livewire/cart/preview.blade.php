@@ -7,7 +7,7 @@
                 <div class="pt-2 px-4 pr-lg-0 pl-xl-5">
                     <!-- Header-->
                     <div class="d-flex flex-wrap justify-content-between align-items-center border-bottom pb-3">
-                        <div class="py-1"><a class="btn btn-outline-accent btn-sm" href="{{ route('index') }}"><i
+                        <div class="py-1"><a class="btn btn-outline-accent btn-sm" href="{{ route('home') }}"><i
                                     class="czi-arrow-left mr-1 ml-n1"></i>Volver a comprar</a></div>
                         <div class="d-none d-sm-block py-1 font-size-ms">Tienes {{count($items)}} productos en tu carro</div>
                         {{-- <div class="py-1"><a class="btn btn-outline-danger btn-sm" href="marketplace-category.html"><i
