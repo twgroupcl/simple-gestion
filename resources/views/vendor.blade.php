@@ -55,20 +55,19 @@
                             <br>
                         @endif
                     -->
-
-                    @if($seller->addresses_data)
-                        @php
-                            $addresses = $seller->addresses_data;
-                        @endphp
+                    @if($sellerAdress)
                         <h6>Dirección</h6>
-                        @if($addresses[0]['street'])
-                            <p class="font-size-ms text-muted mb-0">Calle: {{$addresses[0]['street']}}</p>
+                        @if($sellerAdress->commune_id)
+                            <p class="font-size-ms text-muted mb-0">Comuna: {{$sellerAdress->commune->name}}</p>
                         @endif
-                        @if($addresses[0]['number'])
-                            <p class="font-size-ms text-muted mb-0">Número: {{$addresses[0]['number']}}</p>
+                        @if($sellerAdress->street)
+                            <p class="font-size-ms text-muted mb-0">Calle: {{$sellerAdress->street}}</p>
                         @endif
-                        @if($addresses[0]['subnumber'])
-                            <p class="font-size-ms text-muted mb-0">Casa/Dpto/Oficina: {{$addresses[0]['subnumber']}}</p>
+                        @if($sellerAdress->number)
+                            <p class="font-size-ms text-muted mb-0">Número: {{$sellerAdress->number}}</p>
+                        @endif
+                        @if($sellerAdress->subnumber)
+                            <p class="font-size-ms text-muted mb-0">Casa/Dpto/Oficina: {{$sellerAdress->subnumber}}</p>
                         @endif
                         <br>
                     @endif
@@ -78,6 +77,11 @@
                         <a class="font-size-ms text-muted" href="{{$seller->web}}" target="_blank">{{$seller->web}}</a>
                         <br>
                         <br>
+                    @endif
+
+                    @if($seller->user)
+                        <h6>Nombre de  Encargado</h6>
+                        <p class="font-size-ms text-muted">{{$seller->user->name}}</p>
                     @endif
                     
                     @if($seller->contacts_data)
@@ -89,8 +93,18 @@
                         <br>
                     @endif
                   
+                    @if($seller->phone)
+                        <h6>Teléfono</h6>
+                        <p class="font-size-ms text-muted">{{$seller->phone}}</p>
+                    @endif
+                    
+                    @if($seller->cellphone)
+                        <h6>Teléfono Celular</h6>
+                        <p class="font-size-ms text-muted">{{$seller->cellphone}}</p>
+                    @endif
+
                     @if($seller->email)
-                        <h6>Contacto</h6>
+                        <h6>Correo Electrónico</h6>
                         <p class="font-size-ms text-muted">{{$seller->email}}</p>
                     @endif
 
