@@ -5,7 +5,7 @@ $product = $item->product;
     <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
         <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left"><a
                 class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img
-                    src="{{ url($product->getFirstImagePath()) }}" alt="Product"></a>
+                    src="{{ url($product->getFirstImagePath()) }}" class="max-height-14 min-height-14" alt="Product"></a>
             <div class="media-body pt-2">
                 <h3 class="product-title font-size-base mb-2"><a
                         href="{{ route('product', ['slug' => $product->url_key]) }}"

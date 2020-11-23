@@ -19,14 +19,17 @@
 .color-orange{
     color: #fa2600 !important;
 }
-.max-height-17{
-    max-height: 17em;   
+.max-height-14 {
+    max-height: 14em;
 }
-.min-height-8{
-    max-height: 8em;   
+.max-height-9 {
+    max-height: 9em;
 }
-.max-height-10 {
-    max-height: 10em;
+.min-height-14{
+    min-height: 14em;   
+}
+.min-height-9{
+    min-height: 9em;   
 }
 .logo-principal{
     width: 8em !important;

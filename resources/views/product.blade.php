@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-lg-4 pr-lg-0">
                             <div class="cz-product-gallery">
-                                <div class="cz-preview order-sm-2">
+                                <div class="cz-preview order-sm-2 m-0">
                                     @foreach($product->getImages() as $key => $value)
                                         @if($key == 0)
                                             <div class="cz-preview-item active" id="img-{{$key}}"><img class="cz-image-zoom" src="{{ url($value->path) }}" data-zoom="{{ url($value->path) }}" alt="Product image">
@@ -47,11 +47,13 @@
                                         @endif
                                     @endforeach
                                 </div>
-                                <div class="cz-thumblist order-sm-1">
-                                    @foreach($product->getImages() as $key => $value)
-                                        <a class="cz-thumblist-item" href="#img-{{$key}}"><img src="{{ url($value->path) }}" alt="Product thumb"></a>
-                                    @endforeach
-                                </div>
+                                <!--
+                                    <div class="cz-thumblist order-sm-1">
+                                        @foreach($product->getImages() as $key => $value)
+                                            <a class="cz-thumblist-item" href="#img-{{$key}}"><img src="{{ url($value->path) }}" alt="Product thumb"></a>
+                                        @endforeach
+                                    </div>
+                                -->
                             </div>
 
                            

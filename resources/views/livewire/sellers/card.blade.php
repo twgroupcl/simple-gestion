@@ -1,7 +1,7 @@
 <div class="card product-card">
     <a class="card-img-top d-block overflow-hidden" href="{{url('seller-shop/'.$seller->id)}}">
         @if($seller->logo)
-            <img class="w-100" src="{{ url($seller->logo) }}" alt="">
+            <img class="w-100 min-height-9 max-height-9" src="{{ url($seller->logo) }}" alt="">
         @else
             <img class="w-100" src="{{ url('/img/default/default-product-image.png') }}" alt="">
         @endif     

@@ -8,7 +8,7 @@
     <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
         <div class="media media-ie-fix align-items-center pb-3">
             @if($seller->logo)
-                <div class="{{-- img-thumbnail --}} rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-circle" src="{{ url($seller->logo) }}" alt="Logo {{ $seller->visible_name }}"></div>
+                <div class="{{-- img-thumbnail --}} rounded-circle position-relative" style="width: 6.375rem;"><img class="rounded-lg" src="{{ url($seller->logo) }}" alt="Logo {{ $seller->visible_name }}"></div>
             @endif
             <div class="media-body pl-3">
                 <h3 class="text-light font-size-lg mb-0">{{ $seller->visible_name }}</h3>
@@ -40,19 +40,21 @@
                         <h6>Descripción o reseña de la empresa</h6>
                         <p class="font-size-ms text-muted">{{$seller->description}}</p>
                     @endif
-                    @if($seller->privacy_policy)
-                        <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
-                        <br>
-                    @endif
-                    @if($seller->shipping_policy)
-                        <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
-                        <br>
-                    @endif
-                    @if($seller->return_policy)
-                        <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
-                        <br>
-                    @endif
-                    <br>
+                    <!--
+
+                        @if($seller->privacy_policy)
+                            <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
+                            <br>
+                        @endif
+                        @if($seller->shipping_policy)
+                            <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
+                            <br>
+                        @endif
+                        @if($seller->return_policy)
+                            <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
+                            <br>
+                        @endif
+                    -->
 
                     @if($seller->addresses_data)
                         @php
