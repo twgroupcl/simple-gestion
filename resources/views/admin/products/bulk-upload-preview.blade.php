@@ -56,9 +56,12 @@
     @endif
 
 
-    <div class="row mt-3">
+    <div class="row mt-3 mb-2">
         <div class="col">
             <h3>Vista previa de libros obtenidos del EXCEL</h3>
+            @if ($admin)
+                <h5>Libreria seleccionada: {{ $seller->visible_name }}</h5>
+            @endif
         </div>
     </div>
 
