@@ -11,7 +11,7 @@
                     <p>
                         <strong> Hemos recibido tu mensaje. El ID de tu solicitud es el número <span class="h5">#{{ $ticket }}</span>.
                         Procesaremos la información y te contactaremos a la brevedad.
-                        Para regresar a la página de inicio haz click <a class="text-danger" href="{{ route('index') }}">aquí</a>.</strong>
+                        Para regresar a la página de inicio haz click <a class="text-danger" href="{{ route('home') }}">aquí</a>.</strong>
                     </p>
                 </div>
             </div>

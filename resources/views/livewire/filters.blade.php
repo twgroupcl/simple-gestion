@@ -95,12 +95,12 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-block mt-3 btn-primary btn-shadow" wire:click="filter">Buscar</button>
+                    <button class="btn btn-block mt-3 btn-primary btn-shadow bg-light-blue" wire:click="filter">Buscar</button>
                 </div>
             </div>
             <!-- Filter by Brand-->
             <div class="widget cz-filter mb-4 pb-4 border-bottom">
-                <h3 class="widget-title">Marca</h3>
+                <h3 class="widget-title">Editorial</h3>
                 <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
                     @foreach($brands as $key => $brand)                    
                         <li class="cz-filter-item d-flex justify-content-between align-items-center">

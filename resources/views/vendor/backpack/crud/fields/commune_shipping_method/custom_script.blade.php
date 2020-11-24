@@ -54,7 +54,7 @@
 
             showHideTab('envio-gratis', 'free_shipping_status', 'free_shipping_checker');
             showHideTab('tarifa-fija', 'flat_rate_status', 'flat_rate_checker');
-            showHideTab('tarifa-variable', 'variable_status', 'variable_checker');
+            //showHideTab('tarifa-variable', 'variable_status', 'variable_checker');
             showHideTab('retiro-en-tienda', 'picking_status', 'picking_checker');
             showHideTab('chilexpress', 'chilexpress_status', 'chilexpress_checker');
 

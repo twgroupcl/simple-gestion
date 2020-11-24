@@ -100,7 +100,7 @@ class ProductVariantUpdateRequest extends FormRequest
             'short_description' => 'resumen',
             'url_key' => 'URL Key',
             'currency_id' => 'moneda',
-            'seller_id' => 'vendedor',
+            'seller_id' => 'expositor',
             'status' => 'estado',
             'categories' => 'categorias',
         ];

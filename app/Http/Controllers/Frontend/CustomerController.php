@@ -158,7 +158,7 @@ class CustomerController extends Controller
             'text' => 'Si no fuiste tú, te aconsejamos que restablezcas tu contraseña para garantizar la seguridad de tu cuenta.',
             'rejectedText' => '',
             'buttonText' => 'Vamos a comprar',
-            'buttonLink' => route('index'),
+            'buttonLink' => route('home'),
         ];
 
         Mail::send('vendor.maileclipse.templates.passwordChanged', $data, function ($message) use ($request) {

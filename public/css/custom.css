@@ -35,3 +35,7 @@
     width: 8em !important;
     min-width: 7rem;
 }
+.bgimg-1 {
+    background-image: url(filsavirtual.jpg);
+    height: 100%;
+}
