@@ -12,7 +12,7 @@ use App\Models\SellerCategory;
 use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
-use App\Http\Traits\HasCustomAttributes;
+use App\Traits\HasCustomAttributes;
 use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
