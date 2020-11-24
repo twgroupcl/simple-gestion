@@ -11,6 +11,7 @@ use App\Models\PaymentMethodSeller;
 use App\Models\Seller;
 use App\Models\SellerAddress;
 use App\Models\PlanSuscription;
+use App\Models\Plans;
 use App\Models\ShippingMethodSeller;
 use App\User;
 use Backpack\Settings\app\Models\Setting;
@@ -62,7 +63,7 @@ class SellerObserver
         $this->syncAddresses($seller);
         $this->syncPaymentMethods($seller);
         $this->syncShippingMethods($seller);
-        $this->syncSuscription($seller);
+        $this->syncSubscription($seller);
 
         if ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado') {
             Mail::to($seller)->send(new SellerChangeStatus($seller));
@@ -87,9 +88,8 @@ class SellerObserver
             if (array_key_exists('addresses_data', $dirtyModel)) {
                 $this->syncAddresses($seller);
             }
-
-            if (array_key_exists('suscription_data', $dirtyModel)) {
-                $this->syncSuscription($seller);
+            if (array_key_exists('subscription_data', $dirtyModel)) {
+                $this->syncSubscription($seller);
             }
             
             if (
@@ -129,7 +129,7 @@ class SellerObserver
         );
     }
 
-    public function syncSuscription(Seller $seller)
+    public function syncSubscription(Seller $seller)
     {
         // $seller->subscriptions()->delete();
 

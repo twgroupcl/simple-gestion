@@ -190,20 +190,6 @@ class WebPayPlusController extends Controller
 
     }
 
-    public function subscriptionDetailPayment($subscriptionId)
-    {
 
-    }
-
-    public function subscriptionDetailCustomerPayment($subscriptionId)
-    {
-
-    }
-
-    // public function subscriptionTestPayment($subscriptionId)
-    // {
-    //     $subscription = PlanSubscription::where('id', $subscriptionId)->first();
-    //     return view('vendor.backpack.base.payment.result', compact('subscription'));
-
-    // }
+  
 }

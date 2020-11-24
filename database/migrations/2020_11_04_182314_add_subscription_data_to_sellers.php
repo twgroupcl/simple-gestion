@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSuscriptionDataToSellers extends Migration
+class AddSubscriptionDataToSellers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddSuscriptionDataToSellers extends Migration
     public function up()
     {
         Schema::table('sellers', function (Blueprint $table) {
-            $table->longText('suscription_data')->nullable()->after('contacts_data');
+            $table->longText('subscription_data')->nullable()->after('contacts_data');
         });
     }
 
