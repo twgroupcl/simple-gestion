@@ -57,6 +57,7 @@ class Seller extends Model
         'shippings_data',
         'banks_data',
         'contacts_data',
+        'suscription_data',
         'is_approved',
         'rejected_reason',
         'source',
@@ -83,6 +84,10 @@ class Seller extends Model
         'activities_data' => 'array',
         'banks_data' => 'array',
         'contacts_data' => 'array',
+        'suscription_data' => 'array',
+    ];
+    protected $fakeColumns = [
+        'suscription_data'
     ];
 
     /*
@@ -142,6 +147,11 @@ class Seller extends Model
     public function addresses()
     {
         return $this->hasMany(SellerAddress::class);
+    }
+
+    public function plan_suscription()
+    {
+        return $this->hasMany(PlanSuscription::class);
     }
 
     public function shippingmethods()

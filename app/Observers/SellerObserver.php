@@ -8,6 +8,7 @@ use App\Models\CompanyUser;
 use App\Models\PaymentMethodSeller;
 use App\Models\Seller;
 use App\Models\SellerAddress;
+use App\Models\PlanSuscription;
 use App\Models\ShippingMethodSeller;
 use App\User;
 use Backpack\Settings\app\Models\Setting;
@@ -59,6 +60,7 @@ class SellerObserver
         $this->syncAddresses($seller);
         $this->syncPaymentMethods($seller);
         $this->syncShippingMethods($seller);
+        $this->syncSuscription($seller);
 
         if ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado') {
             Mail::to($seller)->send(new SellerChangeStatus($seller));
@@ -70,6 +72,7 @@ class SellerObserver
     {
 
         if ($seller->isDirty()) {
+            
             $dirtyModel = $seller->getDirty();
             if (array_key_exists('shippings_data', $dirtyModel)) {
                 $this->syncShippingMethods($seller);
@@ -83,10 +86,14 @@ class SellerObserver
                 $this->syncAddresses($seller);
             }
 
+            if (array_key_exists('suscription_data', $dirtyModel)) {
+                $this->syncSuscription($seller);
+            }
+            
             if (
                 array_key_exists('is_approved', $dirtyModel) &&
                 ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado')
-            ) {
+                ) {
                 Mail::to($seller->email)->send(new SellerChangeStatus($seller));
             }
             if (array_key_exists('password', $dirtyModel)) {
@@ -104,6 +111,7 @@ class SellerObserver
 
     public function syncAddresses(Seller $seller)
     {
+
         $seller->addresses()->delete();
 
         $addresses_data = is_array($seller->addresses_data)
@@ -117,6 +125,19 @@ class SellerObserver
         $seller->addresses()->saveMany(
             $addresses
         );
+    }
+
+    public function syncSuscription(Seller $seller)
+    {
+        $suscription_data = is_array($seller->suscription_data)
+        ? $seller->suscription_data
+        : json_decode($seller->suscription_data, true);
+     
+        $user = User::find($seller->user->id);
+       // $user->subscription('main')->usage()->delete();
+        $plan = app('rinvex.subscriptions.plan')->find($suscription_data['id_plan']);
+        $newSuscription = $user->newSubscription('plan', $plan);
+
     }
 
     public function syncShippingMethods(Seller $seller)

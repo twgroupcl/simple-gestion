@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DB;
 use App\Models\Bank;
 use App\Models\Commune;
 use App\Models\ContactType;
@@ -13,9 +14,11 @@ use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
 use App\Http\Traits\HasCustomAttributes;
+use App\Models\Plans;
 use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
 
 /**
  * Class SellerCrudController
@@ -749,6 +752,65 @@ class SellerCrudController extends CrudController
                     'class' => 'form-group col-6',
                 ],
             ]);
+
+            CRUD::addField([
+                'name' => 'id_plan',
+                'label' => 'Plan',
+                'placeholder' => 'Seleccionar un plan',
+                'minimum_input_length' => 0,
+                'attribute'   => "name",
+                //'type' => 'select2_from_array',
+                //'options' => Plans::orderBy('name', 'asc')->pluck('name', 'id', 'invoice_interval','currency','price')->toArray(),
+                'type' => 'select2_from_ajax',
+                'data_source' => url('admin/api/getPlans'),
+                'model' => 'App\Models\Plans',
+                'method' => 'POST',
+                'tab' => 'Suscripción',
+                'include_all_form_fields' => true,
+                'wrapper' => [
+                    'class' => 'form-group col-6',
+                ],
+                'attributes' => ['class'    => 'select-plan',],
+                'fake'     => true, 
+                'store_in' => 'suscription_data'
+            ]);
+
+            CRUD::addField([
+                'name' => 'price',
+                'label' => 'Precio',
+                'type' => 'expense.select_plans_to_price',
+                'dependencies' => ['id_plan'],
+                'tab' => 'Suscripción',
+                'wrapper' => ['class' => 'form-group col-6'],
+                'attributes' => ['readonly'    => 'readonly',],
+                'fake'     => true, 
+                'store_in' => 'suscription_data'
+            ]);
+
+            CRUD::addField([
+                'name' => 'starts_at',
+                'label' => 'Fecha de Inicio',
+                'type' => 'date_picker',
+                'tab' => 'Suscripción',
+                'wrapper' => ['class' => 'form-group col-6'],
+                'attributes' => ['disabled' => 'disabled', 'class' => ' suscription_starts_at form-group col-11'],
+                'fake'     => true, 
+                'store_in' => 'suscription_data'
+            ]);
+
+            CRUD::addField([
+                'name' => 'ends_at',
+                'label' => 'Fecha de Fin',
+                'type' => 'date_picker',
+                'tab' => 'Suscripción',
+                'wrapper' => [
+                    'class' => 'form-group col-6',
+                ],
+                'attributes' => ['disabled' => 'disabled', 'class' => 'suscription_ends_at form-group col-11'],
+                'fake'     => true, 
+                'store_in' => 'suscription_data'
+            ]);
+            
         }
 
         CRUD::addField([

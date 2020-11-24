@@ -67,8 +67,10 @@ Route::group([
      Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
      Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
      Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
+     Route::post('api/getPlans', 'PlansCrudController@getPlans');
+     Route::post('api/getPlanById', 'PlansCrudController@getPlanById');
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::crud('plans', 'PlansCrudController');
 }); // this should be the absolute last line of this file
-
