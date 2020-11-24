@@ -121,7 +121,7 @@
                     <h6>Buscar en la tienda</h6>
 
                     <div>
-                        @livewire('sorting-products')
+                        @livewire('sorting-products', [ 'showFrom' => 'vendor'])
                     </div>
                     <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
                         @livewire('filters')

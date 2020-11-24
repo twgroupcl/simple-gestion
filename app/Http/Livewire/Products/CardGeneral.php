@@ -148,6 +148,13 @@ class CardGeneral extends Component
             });
 
         //return $baseQuery->inRandomOrder()->paginate($this->paginateBy);
+
+        // Current price
+        $baseQuery->selectRaw('*');
+        $baseQuery->selectRaw('(CASE
+        WHEN special_price IS null THEN price
+        ELSE special_price END)  
+        AS current_price');
             
         // Filter
         $filterService = new ProductFilterService();

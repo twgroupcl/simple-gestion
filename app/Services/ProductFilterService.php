@@ -13,13 +13,6 @@ class ProductFilterService {
         $query = $baseQuery;
         $customAttributes = [];
 
-        // Current price
-        $query->selectRaw('*');
-                $query->selectRaw('(CASE
-                WHEN special_price IS null THEN price
-                ELSE special_price
-                END)  AS current_price');
-
         // Brand Filter
         if ( isset($data['brand']) ) {
             $brands = $data['brand'];
