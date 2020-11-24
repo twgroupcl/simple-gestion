@@ -633,6 +633,7 @@ class SellerCrudController extends CrudController
         CRUD::addField([
             'name' => 'description',
             'type'  => 'textarea',
+            'hint' => 'Máximo de 255 caracteres (incluyendo espacios en blanco)',
             'label' => 'Reseña',
             'tab' => 'SEO',
         ]);

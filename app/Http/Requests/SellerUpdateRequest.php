@@ -69,6 +69,7 @@ class SellerUpdateRequest extends FormRequest
             ],
             'name' => 'required|string',
             'visible_name' => 'required|string',
+            'description' => 'nullable|max:255',
             'email' => [
                 'required',
                 Rule::unique('sellers')->ignore($this->id),
@@ -141,6 +142,7 @@ class SellerUpdateRequest extends FormRequest
             'notes' => 'Notas',
             'password' => 'Contraseña',
             'password_confirmation' => 'Repetir contraseña',
+            'description' => 'Reseña',
 
             // addresses data
             'addresses_data' => 'Direcciones',
@@ -198,6 +200,7 @@ class SellerUpdateRequest extends FormRequest
             'bank_data_validation.*.*.distinct' => 'No puedes repetir el mismo valor de :attribute',
             'addresses_data_validation.*.*.required' => 'Todos los campos :attribute son obligatorios',
             'confirmed' => 'Las contraseñas ingresadas no coinciden',
+            '*.max' => 'El campo :attribute solo puedo contener un maximo de  :max caracteres.',
         ];
     }
 }
