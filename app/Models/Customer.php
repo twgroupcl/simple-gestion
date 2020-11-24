@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\User;
+use DateTime;
+use Freshwork\ChileanBundle\Rut;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Freshwork\ChileanBundle\Rut;
 
 class Customer extends Model
 {
@@ -78,6 +79,23 @@ class Customer extends Model
         parent::boot();
 
         static::addGlobalScope(new CompanyBranchScope);
+    }
+
+    public function registerAttendance()
+    {
+        $todayAttendances = CustomerAttendance::whereDay('attendance_time', date('d'))->where('customer_id', $this->id)->get();
+        $entryNumber = $todayAttendances->count() + 1;
+        $entryType = ($entryNumber % 2) ? CustomerAttendance::CHECK_IN : CustomerAttendance::CHECK_OUT;
+
+        $attendance = CustomerAttendance::create([
+            'attendance_time' => new DateTime(),
+            'entry_number' => $entryNumber,
+            'entry_type' => $entryType,
+            'customer_id' => $this->id,
+            'branch_id' => 1,
+        ]);
+
+        return $attendance;
     }
 
     /*
