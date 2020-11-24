@@ -636,17 +636,14 @@ class OrderCrudController extends CrudController
                 ],
                 [
                     'name' => 'price',
-                    'type' => 'number',
+                    'type' => 'text',
                     'label' => 'Precio',
-                    'dec_point' => ',',
-                    'thousands_sep' => '.',
-                    'decimals' => 0,
                     'prefix' => '$',
                     'attributes' => [
                         'readonly' => 'readonly',
                     ],
                     'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
+                        'class' => 'form-group col-md-2 order-amount',
                     ],
                 ],
                 // [
@@ -666,13 +663,14 @@ class OrderCrudController extends CrudController
                 // ],
                 [
                     'name' => 'sub_total',
-                    'type' => 'number',
+                    'type' => 'text',
                     'label' => 'Subtotal',
+                    'prefix' => '$',
                     'attributes' => [
                         'readonly' => 'readonly',
                     ],
                     'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
+                        'class' => 'form-group col-md-2 order-amount',
                     ],
                 ],
                 [
