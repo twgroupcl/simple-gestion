@@ -508,7 +508,8 @@ class ProductCrudController extends CrudController
     public function setImagesFields() {
         CRUD::addField([
             'name'  => 'images_json',
-            'label' => 'Imágenes',
+            'label' => 'Imágenes.',
+            'hint' => 'Los formatos permitidos son PNG y JPG. Las dimensiones deben ser menores o iguales a 1.024 x 1.024 px',
             'type'  => 'repeatable',
             'fields' => [
                 [
@@ -869,7 +870,9 @@ class ProductCrudController extends CrudController
                 'name' => 'image',
                 'type' => 'image',
                 'label' => 'Imagen',
-                'crop' => false,
+                'hint' => 'Los formatos permitidos son PNG y JPG. Las dimensiones deben ser menores o iguales a 1.024 x 1.024 px',
+                'aspect_ratio' => 1,
+                'crop' => true,
             ],
             [
                 'label' => "Precio",
