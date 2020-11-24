@@ -270,11 +270,16 @@ class CustomerController extends Controller
 
     public function createIssue(CustomerSupportRequest $request)
     {
+        $cc = DB::table('settings')->where('key', 'administrator_email')->first();
+        $cc = filled($cc)
+            ? explode(';', $cc->value)
+            : [];
+
         $requestValidated = $request->validated();
         $ticket = CustomerSupport::create($requestValidated);
 
         Mail::to($request->email)
-            ->cc([env('MAIL_FILSA_ADDRESS')])
+            ->cc($cc)
             ->send(new MailCustomerSupport());
 
         return view('customer.support', ['ticket' => $ticket->id]);
