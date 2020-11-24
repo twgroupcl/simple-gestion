@@ -134,32 +134,22 @@ use App\Models\Product;
                             <tbody>
                                 <tr>
                                     <td align="center" valign="top">
-                                        {{-- <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
+                                        <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
                                             cellpadding="0">
                                             <tbody>
                                                 <tr>
                                                     <td style="font-size: 30px; text-align: center;"><br /><img
-                                                            src="{{ asset('img/logos/filsa-logo.png') }}"
-                                                            alt="Camara de libro" /><br /><br /></td>
+                                                            src="{{ asset('img/logos/logo-crcp.png') }}"
+                                                            alt="CRCP" /><br /><br /></td>
                                                 </tr>
                                             </tbody>
-                                        </table> --}}
+                                        </table>
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                            cellspacing="0" cellpadding="0" bgcolor="#f5774e">
                                             <tbody>
-                                                {{-- <tr style="padding-top:15px;">
-                                                    <td> <br><br> </td>
-                                                </tr> --}}
                                                 <tr style="padding-top:15px;">
-                                                    <td  valign="top"> <img src="{{ asset($logo) }}" alt="" width="" height="" />
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="font-size: 30px; text-align: center;"><img
-                                                        src="{{ asset('img/logos/filsa-logo.png') }}"
-                                                        width="150px"
-                                                        alt="Camara de libro" />
-                                                    </td>
+                                                    <td  valign="top"> <br /><br /><img src="{{ asset($logo) }}" alt="" width="" height="" />
+                                                    <br /><br /></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="headline">{{ $title }}</td>
@@ -184,12 +174,12 @@ use App\Models\Product;
                                             </tbody>
                                         </table>
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                            cellspacing="0" cellpadding="0" bgcolor="#f5774e">
                                             <tbody>
                                                 <tr style="padding-top:15px;">
                                                     <td>
                                                         <table class="force-width-80" style="margin: 0 auto;"
-                                                            cellspacing="0" cellpadding="0" bgcolor="#2bb5fe">
+                                                            cellspacing="0" cellpadding="0" bgcolor="#f5774e">
                                                             <tbody>
                                                                 <tr>
                                                                     <br>
@@ -199,7 +189,7 @@ use App\Models\Product;
                                                                     <td style="text-align: left; color: #FFFFFF;">
                                                                         <br>
                                                                         Saludos,<br>
-                                                                        Equipo Filsa<br><br>
+                                                                        Equipo Contigo Pyme<br><br>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
