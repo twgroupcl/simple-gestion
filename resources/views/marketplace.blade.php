@@ -112,7 +112,7 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <img src="{{ asset('img/home-banner-01.png') }}" alt="Banner promoción 1" class="img-fluid">
+                <img src="{{ asset('img/banner-navidad-1.png') }}" alt="Banner navidad 1" class="img-fluid">
             </div>
         </div>
     </div>
@@ -195,7 +195,7 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <img src="{{ asset('img/home-banner-04.png') }}" alt="Banner promoción 4" class="img-fluid">
+                <img src="{{ asset('img/banner-navidad-2.png') }}" alt="Banner navidad 2" class="img-fluid">
             </div>
         </div>
     </div>
