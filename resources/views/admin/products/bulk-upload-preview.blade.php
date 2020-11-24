@@ -83,6 +83,13 @@
     <a href="{{ route('products.bulk-upload') }}" class="btn btn-default"><span class="la la-angle-left"></span>
         &nbsp;Volver y cargar otro archivo</a>
 
+        @php
+            $previewProducts = collect($result['products_array']);
+            $previewProducts = $previewProducts->sort(function ($a, $b) {
+                return count($a['errors']) < count($b['errors']);
+            });
+        @endphp
+
     <table id="crudTable"
         class="bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline collapsed has-hidden-columns"
         aria-describedby="crudTable_info" role="grid" cellspacing="0">
@@ -97,7 +104,7 @@
         </thead>
 
         <tbody>
-            @foreach ($result['products_array'] as $product)
+            @foreach ($previewProducts as $product)
                 <tr role="row" class="odd" @if (count($product['errors']))
                     style="background: #ffc3c3"
             @endif >

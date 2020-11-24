@@ -64,7 +64,7 @@ class CommuneShippingMethodCrudController extends CrudController
         if ($this->admin) {
             CRUD::addColumn([
                 'name' => 'seller',
-                'label' => 'Vendedor',
+                'label' => 'Expositor',
                 'type' => 'relationship',
                 'attribute' => 'visible_name',
 
@@ -109,10 +109,10 @@ class CommuneShippingMethodCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Vendedor',
+            'label' => 'Expositor',
             'type' => 'relationship',
             'default' => $this->userSeller ?? '',
-            'placeholder' => 'Selecciona un vendedor',
+            'placeholder' => 'Selecciona un expositor',
             'attribute' => 'visible_name',
             'tab' => 'Configuración general',
             'wrapper' => [
@@ -186,7 +186,7 @@ class CommuneShippingMethodCrudController extends CrudController
             ]
         );
 
-        CRUD::addField(
+       /*  CRUD::addField(
             [
                 'label'     => 'Tarifa variable',
                 'type'      => 'checkbox',
@@ -198,7 +198,8 @@ class CommuneShippingMethodCrudController extends CrudController
                     'class' => 'variable_checker'
                 ]
             ]
-        );
+        ); */
+
         CRUD::addField(
             [
                 'label'     => 'Retiro en tienda',
@@ -265,7 +266,7 @@ class CommuneShippingMethodCrudController extends CrudController
             ]
         ]);
 
-        CRUD::addField([
+        /* CRUD::addField([
             'name' => 'variable',
             'label' => 'Tarifa variable',
             'type' => 'repeatable',
@@ -303,7 +304,7 @@ class CommuneShippingMethodCrudController extends CrudController
                     'type' => 'commune_shipping_method.help_text',
                 ]
             ]
-        ]);
+        ]); */
 
         /* CRUD::addField([
             'name' => 'help_text',
