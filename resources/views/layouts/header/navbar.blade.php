@@ -1,41 +1,12 @@
 <!-- Navbar Electronics Store-->
 <header class="box-shadow-sm">
     <!-- Topbar-->
-    {{-- <div class="topbar topbar-dark bg-dark">
-        <div class="container">
-            <div>
-                <div class="topbar-text dropdown disable-autohide"><a class="topbar-link dropdown-toggle" href="#" data-toggle="dropdown"><img class="mr-2" width="20" src="{{ asset('img/flags/en.png') }}" alt="English" />Eng / $</a>
-    <ul class="dropdown-menu">
-        <li class="dropdown-item">
-            <select class="custom-select custom-select-sm">
-                <option value="usd">$ USD</option>
-                <option value="eur">€ EUR</option>
-                <option value="ukp">£ UKP</option>
-                <option value="jpy">¥ JPY</option>
-            </select>
-        </li>
-        <li><a class="dropdown-item pb-1" href="#"><img class="mr-2" width="20" src="{{ asset('img/flags/fr.png') }}" alt="Français" />Français</a></li>
-        <li><a class="dropdown-item pb-1" href="#"><img class="mr-2" width="20" src="{{ asset('img/flags/de.png') }}" alt="Deutsch" />Deutsch</a></li>
-        <li><a class="dropdown-item" href="#"><img class="mr-2" width="20" src="{{ asset('img/flags/it.png') }}" alt="Italiano" />Italiano</a></li>
-    </ul>
-    </div>
-    <div class="topbar-text text-nowrap d-none d-md-inline-block border-left border-light pl-3 ml-3">
-        <span class="text-muted mr-1">Available 24/7 at</span><a class="topbar-link" href="tel:00331697720">(00) 33 169 7720</a></div>
-    </div>
-    <div class="topbar-text dropdown d-md-none ml-auto"><a class="topbar-link dropdown-toggle" href="#" data-toggle="dropdown">Wishlist / Compare / Track</a>
-        <ul class="dropdown-menu dropdown-menu-right">
-            <li><a class="dropdown-item" href="account-wishlist.html"><i class="czi-heart text-muted mr-2"></i>Wishlist (3)</a></li>
-            <li><a class="dropdown-item" href="comparison.html"><i class="czi-compare text-muted mr-2"></i>Compare (3)</a></li>
-            <li><a class="dropdown-item" href="order-tracking.html"><i class="czi-location text-muted mr-2"></i>Order tracking</a></li>
-        </ul>
-    </div>
-    <div class="d-none d-md-block ml-3 text-nowrap"><a class="topbar-link d-none d-md-inline-block" href="account-wishlist.html"><i class="czi-heart mt-n1"></i>Wishlist (3)</a><a class="topbar-link ml-3 pl-3 border-left border-light d-none d-md-inline-block" href="comparison.html"><i class="czi-compare mt-n1"></i>Compare (3)</a><a class="topbar-link ml-3 border-left border-light pl-3 d-none d-md-inline-block" href="order-tracking.html"><i class="czi-location mt-n1"></i>Order tracking</a></div>
-    </div>
-    </div> --}}
+   
     <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
     <div class="navbar-sticky bg-dark">
         <div class="navbar navbar-expand-lg navbar-dark">
             <div class="container"><a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;"><img width="100" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a><a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
+            
                 <!-- Search-->
                 @if($header)
                 @php
@@ -70,12 +41,7 @@
                                 <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.profile') }}"><i class="czi-settings opacity-60 mr-2"></i>Perfil</a>
                                 <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.address') }}"><i class="czi-settings opacity-60 mr-2"></i>Direcciones</a>
                                 <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.order') }}"><i class="czi-settings opacity-60 mr-2"></i>Órdenes</a>
-                                {{-- <div class="dropdown-divider"></div>
-                                <h6 class="dropdown-header">Seller Dashboard</h6>
-                                <a class="dropdown-item d-flex align-items-center" href="dashboard-sales.html"><i class="czi-dollar opacity-60 mr-2"></i>Sales<span class="font-size-xs text-muted ml-auto">$1,375.00</span></a>
-                                <a class="dropdown-item d-flex align-items-center" href="dashboard-products.html"><i class="czi-package opacity-60 mr-2"></i>Products<span class="font-size-xs text-muted ml-auto">5</span></a>
-                                <a class="dropdown-item d-flex align-items-center" href="dashboard-add-new-product.html"><i class="czi-cloud-upload opacity-60 mr-2"></i>Add New Product</a>
-                                <a class="dropdown-item d-flex align-items-center" href="dashboard-payouts.html"><i class="czi-currency-exchange opacity-60 mr-2"></i>Payouts</a> --}}
+                               
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="czi-sign-out opacity-60 mr-2"></i> Cerrar sesión

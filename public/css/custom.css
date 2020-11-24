@@ -4,3 +4,6 @@
 .min-height-14 {
     min-height: 14em;
 }
+.border-radious-3{
+    border-radius: 3em !important;
+}
