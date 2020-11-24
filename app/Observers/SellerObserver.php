@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Mail\NotificationSuscription;
 use App\Mail\SellerChangeStatus;
 use App\Models\BranchUser;
 use App\Models\CompanyUser;
@@ -10,6 +11,7 @@ use App\Models\Seller;
 use App\Models\SellerAddress;
 use App\Models\PlanSuscription;
 use App\Models\ShippingMethodSeller;
+use App\Models\Plans;
 use App\User;
 use Backpack\Settings\app\Models\Setting;
 use Illuminate\Support\Facades\Mail;
@@ -129,40 +131,28 @@ class SellerObserver
 
     public function syncSuscription(Seller $seller)
     {
-        $subscription_data = is_array($seller->subscription_data)
-        ? $seller->subscription_data
-        : json_decode($seller->subscription_data, true);
+        $suscription_data = is_array($seller->suscription_data)
+        ? $seller->suscription_data
+        : json_decode($seller->suscription_data, true);
+     
+        $user = User::find($seller->user->id);
+        $planName = Plans::find($suscription_data['id_plan']);
+        $plan = app('rinvex.subscriptions.plan')->find($suscription_data['id_plan']);
+        $newSuscription = $user->newSubscription('plan', $plan);
 
-        // if (!empty($subscription_data['plan_subscription_id'])) {
-        //     $newplansubscription = new PlanSubscriptionSeller($subscription_data);
-        //     $seller->subscriptions()->save($newplansubscription);
-        // }
+        $dataEmail = [
+            'seller' => $seller->name,
+            'plan' => $planName->name,
+            'price' => $plan->price,
+            'currency' => $plan->currency,
+            'start_date' => $suscription_data['starts_at'],
+            'end_date' => $suscription_data['ends_at']
+        ];
 
-        if (!empty($subscription_data['plan_id'])) {
-            $user = User::find($seller->user->id);
-            $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
-            $newSubscription = $user->newSubscription('plan', $plan);
-            $plan = Plans::where('id', $newSubscription->plan_id)->first();
-            
-            $currency = Currency::where('id',$plan->currency)->first();
-            
-            $dataEmail = [
-                'seller' => $seller->name,
-                'plan' => $plan->name,
-                'price' => $plan->price,
-                'currency' => $currency->code,
-                'start_date' => $subscription_data['starts_at'],
-                'end_date' => $subscription_data['ends_at']
-            ];
+        $emailsAdministrator = explode(';', Setting::get('administrator_email'));
+        array_push($emailsAdministrator, $seller->email);
 
-            $emailsAdministrator = explode(';', Setting::get('administrator_email'));
-            array_push($emailsAdministrator, $seller->email);
-            $this->sendMailSuscription($dataEmail,$emailsAdministrator);
-           
-            if ($plan->price > 0) {
-                return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
-            }
-        }
+        $this->sendMailSuscription($dataEmail,$emailsAdministrator);
 
     }
 
@@ -236,6 +226,13 @@ class SellerObserver
             $seller->paymentmethods()->saveMany(
                 $paymentmethods
             );
+        }
+    }
+
+    public function sendMailSuscription($dataEmail,$emailsAdministrator)
+    {
+        foreach($emailsAdministrator as $email){
+            Mail::to($email)->send(new NotificationSuscription($dataEmail));
         }
     }
 }

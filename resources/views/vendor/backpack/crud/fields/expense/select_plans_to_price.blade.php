@@ -34,6 +34,8 @@
                     var currentDate = currentDay + '/' + currentMonth + '/' + currentYear;
 
                     $('.suscription_starts_at').val(currentDate)
+                    $("input[name*='starts_at']").val(currentDate)
+                    
 
                   
                     switch(response.invoice_interval){
@@ -45,6 +47,8 @@
 
                             var dateEnd = day + '/' + month + '/' + year;
                             $('.suscription_ends_at').val(dateEnd)
+                            $("input[name*='ends_at']").val(dateEnd)
+
                         break;
                         case 'month':
                             date.setMonth(date.getMonth() + 1);
@@ -54,6 +58,8 @@
 
                             var dateEnd = day + '/' + month + '/' + year;
                             $('.suscription_ends_at').val(dateEnd)
+                            $("input[name*='ends_at']").val(dateEnd)
+
                         break;
                     }
                     $('.input-price').val(response.price)

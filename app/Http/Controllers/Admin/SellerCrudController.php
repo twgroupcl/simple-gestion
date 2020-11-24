@@ -810,7 +810,7 @@ class SellerCrudController extends CrudController
                 'fake'     => true, 
                 'store_in' => 'suscription_data'
             ]);
-            
+
         }
 
         CRUD::addField([
