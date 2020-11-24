@@ -175,7 +175,7 @@ class WebpayPlusMallController extends Controller
         $result = $this->transaction->getTransactionResult(request()->input("token_ws"));
 
         if (!isset($result->buyOrder)) {
-            return redirect('/');
+            return redirect()->route('home');
         }
         $sessionId = $result->sessionId;
         session()->setId($sessionId);

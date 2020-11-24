@@ -142,7 +142,7 @@ class CustomerObserver
                 'text' => 'Explora la cantidad de libros que tenemos para ti.',
                 'rejectedText' => '',
                 'buttonText' => 'Quiero comprar',
-                'buttonLink' => route('index')
+                'buttonLink' => route('home')
             ];
 
             Mail::send('vendor.maileclipse.templates.welcomeCustomer', $data, function ($message) use ($customer) {
