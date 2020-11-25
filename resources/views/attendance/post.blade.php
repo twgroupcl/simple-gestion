@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titulo</title>
+    <title>Asistencia registrada - {{ env('APP_NAME') }}</title>
     <link rel="stylesheet" media="screen" href="{{ asset('css/theme.css') }}">
     <style>
         body {
@@ -31,7 +31,7 @@
             font-weight: 800;
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 420px) {
             .title {
             color: white;
             font-size: 25px;
@@ -39,7 +39,7 @@
             }
         }
 
-        @media (min-width: 401px) {
+        @media (min-width: 421px) {
             .title {
             color: white;
             font-size: 35px;
@@ -63,10 +63,10 @@
             <div class="col-lg-10 text-center title-container">
                 <span class="title">
                     @if ($attendance->entry_type === $typeCheckIn)
-                        Check IN registrado con exito!
+                        ¡Check In registrado!
                     @endif
                     @if ($attendance->entry_type === $typeCheckOut)
-                        Check OUT registrado con exito!
+                        ¡Check Out registrado!
                     @endif
                 </span>
             </div>
@@ -77,7 +77,7 @@
                 <div class="row mt-4 justify-content-center">
                     <div class="col-md-8">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><b>Cliente</b>: {{ $attendance->customer->first_name  . ' ' . $attendance->customer->las_tname }}</li>
+                            <li class="list-group-item"><b>Cliente</b>: {{ $attendance->customer->first_name  . ' ' . $attendance->customer->last_name }}</li>
                             <li class="list-group-item"><b>Hora marcada</b>: {{ $attendance->attendance_time->format('H:i A') }}</li>
                           </ul>
                     </div>

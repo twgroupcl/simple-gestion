@@ -17,11 +17,12 @@ class AttendanceController extends Controller
 
     public function post(Request $request)
     {
-        $customer = Customer::where('uid', $request['rut'])->first();
+        $customer = Customer::where('uid',str_replace('.', '', $request['rut']))->first();
 
         if (!$customer) return redirect()->route('attendance.index')->with('error', 'El RUT no pertenece a ningun cliente');
 
-        if (!$attendance = $customer->registerAttendance()) return redirect()->route('attendance.index')->with('error', 'Algo salio mal! intentalo de nuevo.');
+        if (!$attendance = $customer->registerAttendance()) return redirect()->route('attendance.index')->with('error', '¡Algo salio mal! intentalo de nuevo.');
+        
         $typeCheckIn = CustomerAttendance::CHECK_IN;
         $typeCheckOut = CustomerAttendance::CHECK_OUT;
 

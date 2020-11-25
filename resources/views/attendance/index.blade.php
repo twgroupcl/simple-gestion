@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titulo</title>
+    <title>Registrar asistencia - {{ env('APP_NAME') }}</title>
     <link rel="stylesheet" media="screen" href="{{ asset('css/theme.css') }}">
     <style>
         body {
@@ -25,7 +25,7 @@
             margin-top: 95px;
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 420px) {
             .title {
             color: white;
             font-size: 25px;
@@ -33,7 +33,7 @@
             }
         }
 
-        @media (min-width: 401px) {
+        @media (min-width: 421px) {
             .title {
             color: white;
             font-size: 35px;
@@ -56,7 +56,7 @@
 
         <div class="row header">
             <div class="col-lg-10 text-center title-container">
-                <span class="title">Registra tu ingreso/salida</span>
+                <span class="title">Registra tu Check in / Check out</span>
             </div>
         </div>
 
@@ -74,8 +74,14 @@
                         <form action="{{ route('attendance.post') }}" method="POST">
                             @csrf
                             <div class="form-group col-md-12">
-                                <input type="text" class="form-control form-control-lg" name="rut"
-                                    placeholder="Ingresa tu RUT">
+                                <input 
+                                    type="text" 
+                                    class="form-control form-control-lg" 
+                                    name="rut"
+                                    placeholder="Ingresa tu RUT"
+                                    id="rut"
+                                    required
+                                >
                             </div>
                             <div class="form-group col-md-12">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block">
@@ -91,6 +97,12 @@
 
     <script src="{{ asset('vendor/jquery/dist/jquery.slim.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+
+    {{-- Rut Formatter --}}
+    <script src="{{ asset('js/rut-formatter.js') }}"></script>
+    <script>
+        $('#rut').rut();
+    </script>
 </body>
 
 </html>
