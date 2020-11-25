@@ -21,5 +21,13 @@ $(function(){
         $('.policy-text').addClass('d-none')
     });
 
-    
+    $('#nexStep').prop("disabled", true);
+    $('#terms-condition-checkout').on('change',function() {
+        if( $(this).is(':checked') ) {
+            $('#nexStep').removeAttr("disabled");
+        } else {
+            $('#nexStep').prop("disabled", true);
+
+        }
+    });
 });
