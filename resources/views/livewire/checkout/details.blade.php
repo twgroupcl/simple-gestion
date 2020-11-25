@@ -101,9 +101,12 @@
     <!-- Title-->
     <h2 class="h6 border-bottom pb-3 mb-3">Información de Facturación</h2>
     <div class="custom-control custom-checkbox pb-3 mb-3">
-        <input class="custom-control-input" type="checkbox"  wire:model="anotherDataInvoice"
-            id="same-address">
+        <input class="custom-control-input" type="checkbox"  wire:model="anotherDataInvoice" id="same-address">
         <label class="custom-control-label" for="same-address">Indicar otros datos para facturación</label>
+    </div>
+    <div class="custom-control custom-checkbox pb-3 mb-3">
+        <input class="custom-control-input" type="checkbox" id="terms-condition-checkout">
+        <label class="custom-control-label" for="terms-condition-checkout">Acepto los términos y condiciones</label>
     </div>
     @if ($anotherDataInvoice)
         <!-- Billing detail-->

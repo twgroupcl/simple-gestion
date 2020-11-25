@@ -47,7 +47,7 @@
                                         que es <span class='font-weight-medium'>#{{ $order->id }}</span></p>
                                     --}}
                                     <a class="btn btn-secondary mt-3 mr-3" href="{{route('shopping-cart')}}">Volver al carro</a>
-                                    <a class="btn btn-primary mt-3"
+                                    <a class="btn btn-primary mt-3 bg-light-blue"
                                         href="{{ route('transbank.webpayplus.mall.redirect', ['order' => $order]) }}">Intenta nuevamente</a>
                                 </div>
                             </div>
