@@ -61,7 +61,7 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
             'id'          => 'sales-table',
             'class'       => 'w-100 table table-bordered ',
             'columns'     => [
-                'id' => '#',
+                'id' => 'Orden N°',
                 'seller' => 'Vendedor',
                 'created_at' => 'Fecha',
                 'payment' => 'Tipo Pago',

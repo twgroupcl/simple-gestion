@@ -79,11 +79,12 @@ Route::group([
     Route::get('payment/subscription/{id}', 'Payments\WebPayPlusController@subscriptionPayment')->name('payment.subscription');
     Route::get('report/sales', 'Report\SalesReportController@index')->name('report.sales');
 
+    Route::crud('banners', 'BannersCrudController');
+    Route::crud('customersupport', 'CustomerSupportCrudController');
+
 }); // this should be the absolute last line of this file
 //Payment
 Route::post('admin/payment/subscription/result', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionResultPayment')->name('payment.result');
 Route::post('admin/payment/subscription/detail/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionDetailPayment')->name('payment.detail');
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
 
-Route::crud('banners', 'BannersCrudController');
-Route::crud('customersupport', 'CustomerSupportCrudController');
