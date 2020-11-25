@@ -186,8 +186,8 @@
                         name: 'Orden N°'
                     },
                     {
-                        data: 'seller',
-                        name: 'Vendedor#'
+                        data: 'exhibitor',
+                        name: 'Expositor'
                     },
                     {
                         data: 'created_at',
