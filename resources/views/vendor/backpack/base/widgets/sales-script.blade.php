@@ -186,7 +186,7 @@
                         name: 'Orden N°'
                     },
                     {
-                        data: 'seller',
+                        data: 'exhibitor',
                         name: 'Expositor'
                     },
                     {

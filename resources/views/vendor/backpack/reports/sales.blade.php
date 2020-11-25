@@ -62,7 +62,7 @@ Widget::add()->to('after_content')->type('div')->class('row')->content([
             'class'       => 'w-100 table table-bordered ',
             'columns'     => [
                 'id' => 'Orden N°',
-                'seller' => 'Expositor',
+                'exhibitor' => 'Expositor',
                 'created_at' => 'Fecha',
                 'payment' => 'Tipo Pago',
                 'total' => 'Total venta',
