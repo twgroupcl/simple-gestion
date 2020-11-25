@@ -4,12 +4,29 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
-<div class="cz-carousel cz-dots-enabled">
+
+<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        <img src="{{ asset('img/home/hero-slider/banner-blackfriday.png') }}" alt="Contigo Pyme Black Friday">
         <img src="{{ asset('img/home/hero-slider/banner_navidad.png') }}" alt="Contigo Pyme Banner Navidad">
         <a href="{{ route('seller.sign') }}"><img src="{{ asset('img/seller-register.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
         <img src="{{ asset('img/home/hero-slider/banner-02.png') }}" alt="Contigo Pyme Banner 2">
         <img src="{{ asset('img/home/hero-slider/banner-03.png') }}" alt="Contigo Pyme Banner 3">
+    </div>
+</div>
+
+
+<div class="d-block d-sm-none">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-blackfriday.png') }}" alt="Contigo Pyme Black Friday">
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad.png') }}" alt="Contigo Pyme Banner 1">
+            <a href="{{ route('seller.sign') }}">
+                <img src="{{ asset('img/home/hero-slider/mobile-banner-1.png') }}" class="img-fluid w-100" alt="Contigo Pyme Banner 1">
+            </a>
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-2.png') }}" alt="Contigo Pyme Banner 2">
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-3.png') }}" alt="Contigo Pyme Banner 3">
+        </div>
     </div>
 </div>
 
@@ -111,8 +128,11 @@
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
-            <div class="col-md-12">
-                <img src="{{ asset('img/home-banner-01.png') }}" alt="Banner promoción 1" class="img-fluid">
+            <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
+                <img src="{{ asset('img/banner-navidad-1.png') }}" alt="Banner navidad 1" class="img-fluid">
+            </div>    
+            <div class="col-md-12 d-block d-sm-none">
+                <img src="{{ asset('img/mobile-banner-navidad-1.png') }}" alt="Banner navidad 1" class="w-100">
             </div>
         </div>
     </div>
@@ -182,10 +202,10 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-6 pb-3">
-                <img src="{{ asset('img/home-banner-02.png') }}" alt="Banner promoción 2" class="img-fluid">
+                <img src="{{ asset('img/home-banner-navidad-1.png') }}" alt="Banner promoción 2" class="img-fluid border-radious-3">
             </div>
             <div class="col-md-6 pb-3">
-                <img src="{{ asset('img/home-banner-03.png') }}" alt="Banner promoción 3" class="img-fluid">
+                <img src="{{ asset('img/home-banner-navidad-2.png') }}" alt="Banner promoción 3" class="img-fluid border-radious-3">
             </div>
         </div>
     </div>
@@ -194,8 +214,11 @@
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
-            <div class="col-md-12">
-                <img src="{{ asset('img/home-banner-04.png') }}" alt="Banner promoción 4" class="img-fluid">
+            <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
+                <img src="{{ asset('img/banner-navidad-2.png') }}" alt="Banner navidad 1" class="img-fluid">
+            </div>    
+            <div class="col-md-12 d-block d-sm-none">
+                <img src="{{ asset('img/mobile-banner-navidad-2.png') }}" alt="Banner navidad 1" class="w-100">
             </div>
         </div>
     </div>
