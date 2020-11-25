@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DateTime;
 use Exception;
+use DateInterval;
 use Illuminate\Support\Str;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\DB;
@@ -634,6 +635,7 @@ class Product extends Model
                 $date_now = new DateTime();
                 $from  = new DateTime($this->special_price_from);
                 $to = new DateTime($this->special_price_to);
+                $to->add( new DateInterval('P1D'));
 
                 if( ($date_now < $to) && ($date_now > $from) ) {
                     return $this->special_price;
@@ -663,7 +665,7 @@ class Product extends Model
                 $date_now = new DateTime();
                 $from  = new DateTime($this->special_price_from);
                 $to = new DateTime($this->special_price_to);
-
+                $to->add( new DateInterval('P1D'));
                 if( ($date_now < $to) && ($date_now > $from) ) {
                     return true;
                 } else {
