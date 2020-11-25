@@ -1,4 +1,7 @@
 <div>
+    {{-- <div   class="loading" wire:loading >Loading&#8230;</div> --}}
+
+
     <div class="container pb-5 mb-2 mb-md-4">
 
         <div class="row">
@@ -12,6 +15,7 @@
                         </a>
                     @endforeach
                 </div>
+
 
 
 
@@ -86,14 +90,19 @@
                                 class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
                                 class="d-inline d-sm-none">Anterior</span></button></div>
                     @if (!empty($activeStep['next-button']))
-                        <div class="w-50 pl-2"><button class="btn btn-primary btn-block" @if ($loading || !$canContinue) disabled
-                    @endif wire:click="nextStep()" ><span class="d-none d-sm-inline">
-                        @if ($loading)
-                            <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-                        @endif
+                        <div class="w-50 pl-2">
+                            {{-- @if ($loading || !$canContinue) disabled  @endif --}}
+                            <button class="btn btn-primary btn-block"
+
+                             wire:click="nextStep()" >
+                    <span class="d-none d-sm-inline">
+                        {{-- @if ($loading) --}}
+                            {{-- <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" ></span> --}}
+                        {{-- @endif --}}
                         {{ $activeStep['next-button'] }}
-                    </span><span class="d-inline d-sm-none">Siguiente</span><i
-                        class="czi-arrow-right mt-sm-0 ml-1"></i></button>
+                    </span>
+                    <span class="d-inline d-sm-none">Siguiente</span><i class="czi-arrow-right mt-sm-0 ml-1"></i>
+                    </button>
                 </div>
                 @endif
         </div>
@@ -123,10 +132,12 @@
                             </li>
                         @endif --}}
                         @if ($shippingtotals && $activeStep['number'] > 2)
+
                             @foreach ($shippingtotals as $shipping)
                                 {{-- @if ($shipping['qty']) --}}
                                     <li class="d-flex justify-content-between align-items-center">
-                                    <span class="mr-2">{{ $shipping['title'] }} x {{$shipping['totalShippingPackage']}}</span>
+                                        <span class="mr-2">{{ $shipping['title'] }} x
+                                            {{ $shipping['totalShippingPackage'] }}</span>
                                         <span class="text-right">
                                             @if (!is_null($shipping['totalPrice']))
                                                 {{ currencyFormat($shipping['totalPrice'] ? $shipping['totalPrice'] : 0, 'CLP', true) }}
@@ -163,11 +174,13 @@
                             class="d-none d-sm-inline">{{ $activeStep['prev-button'] }}</span><span
                             class="d-inline d-sm-none">Anterior</span></button></div>
                 @if (!empty($activeStep['next-button']))
-                    <div class="w-50 pl-2"><button class="btn btn-primary btn-block" @if ($loading || !$canContinue) disabled
-                @endif wire:click.prevent="nextStep()" >
-                @if ($loading)
-                    <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-                @endif
+                {{-- @if ($loading || !$canContinue) disabled  @endif  --}}
+                    <div class="w-50 pl-2"><button class="btn btn-primary btn-block"
+
+                         wire:click.prevent="nextStep()" >
+                {{-- @if ($loading) --}}
+                    {{-- <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> --}}
+                {{-- @endif --}}
                 <span class="d-none d-sm-inline">{{ $activeStep['next-button'] }}</span><span
                     class="d-inline d-sm-none">Siguiente</span><i class="czi-arrow-right mt-sm-0 ml-1"></i></button>
             </div>
@@ -177,7 +190,7 @@
 </div>
 </div>
 </div>
-@push('scripts')
+{{-- @push('scripts')
 
     <script>
         Livewire.on('select-shipping', (title, message, delay, type) => {
@@ -186,4 +199,4 @@
         })
 
     </script>
-@endpush
+@endpush --}}

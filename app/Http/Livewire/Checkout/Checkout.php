@@ -37,6 +37,7 @@ class Checkout extends Component
         'updateTotals' => 'updateTotals',
         'cartpreview' => 'cartpreview',
         'update-shipping-totals' => 'updateShippingTotals',
+       // 'updateLoading' => 'updateLoading'
     ];
 
     public function mount()
@@ -112,6 +113,8 @@ class Checkout extends Component
         $this->total = $this->getTotal();
         $this->shippings = [];
 
+        //$this->loading = false;
+
     }
 
     public function render()
@@ -134,7 +137,8 @@ class Checkout extends Component
     }
     public function nextStep()
     {
-        $this->loading = true;
+        //$this->loading = true;
+       // $this->updateLoading(true);
 
         //$currentStep  = array_search($this->activeStep, $this->steps);
 
@@ -272,13 +276,15 @@ class Checkout extends Component
         $this->steps[$currentStep + 1]['status'] = 'active';
         $this->activeStep = $this->steps[$currentStep + 1];
 
-        $this->loading = false;
+       // $this->loading = false;
+      // $this->updateLoading(false);
     }
 
     public function notFinishTask()
     {
 
-        $this->loading = false;
+        //$this->loading = false;
+       // $this->updateLoading(false);
     }
 
     public function pay()
@@ -385,9 +391,10 @@ class Checkout extends Component
 
     public function updateShippingTotals($shippingsSellers)
     {
-        //   dd($shippingsSellers);
+       //    dd($shippingsSellers);
         //     $shippings = array_column($shippingsSellers,'shipping');
         //     dd($shippings);
+
 
         $itemShippingTotal = [];
 
@@ -406,7 +413,10 @@ class Checkout extends Component
                         if (!is_null($shippingValue['shipping']['totalPrice'])) {
                             $itemShippingTotal[$indice]['totalPrice'] += $shippingValue['shipping']['totalPrice'];
                             $itemShippingTotal[$indice]['totalShippingPackage'] += $shippingValue['shipping']['totalShippingPackage'];
+                        }else{
+                            $itemShippingTotal[$indice]['totalShippingPackage'] += $shippingValue['shipping']['totalShippingPackage'];
                         }
+
                     } else {
                         $itemShippingTotal[$indice] = [];
                         $itemShippingTotal[$indice]['title'] = $shippingValue['shipping']['title'];
@@ -422,6 +432,15 @@ class Checkout extends Component
         $this->shippingtotals = $itemShippingTotal;
         $this->emit('change');
 
+        //$this->updateLoading(false);
+
+
+    }
+
+    public function updateLoading($value)
+    {
+
+        $this->loading = $value;
     }
 
 }

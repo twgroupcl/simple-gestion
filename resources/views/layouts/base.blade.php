@@ -39,6 +39,7 @@
     <!-- Main Theme Styles + Bootstrap-->
     <link rel="stylesheet" media="screen" href="{{ asset('css/theme.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     @livewireStyles
     @stack('styles')
 
