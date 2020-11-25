@@ -530,6 +530,11 @@ class Chilexpress
         $customerCity = json_decode($destineCommune->shipping_code);
 
         // If there is no coverage for the selected destine, we mark it so we can return it later
+        if(is_null($customerCity)){
+            $result['is_available'] = false;
+            $result['message'] =  'Comuna de destino no disponible';
+            return $result;
+        }
 
         $destineCommuneCoverage = collect($destineCoverages->coverageAreas)->where('coverageName', $customerCity[0]->value)->first();
 
