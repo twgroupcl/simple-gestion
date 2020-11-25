@@ -19,6 +19,9 @@ class CustomerObserver
 {
     public function creating(Customer $customer)
     {
+        $password = strtoupper(str_replace('.', '', $customer->uid));
+
+        $customer->password = $password;
         if(Setting::get('customer_create_user')) {
             $user = User::create([
                 'name' => $customer->first_name,
