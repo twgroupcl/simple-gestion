@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Branch;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -50,6 +51,11 @@ class ProductInventorySource extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
     }
 
     public function commune()

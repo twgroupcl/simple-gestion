@@ -11,8 +11,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
+use App\Http\Requests\Frontend\CustomerSupportRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
 use App\Models\Commune;
+use App\Mail\CustomerSupport as MailCustomerSupport;
+use App\Models\CustomerSupport;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -195,5 +198,27 @@ class CustomerController extends Controller
         $customer->update($requestValidated);
 
         return redirect()->route('customer.profile');
+    }
+
+    public function support(Request $request)
+    {
+        return view('customer.support');
+    }
+
+    public function createIssue(CustomerSupportRequest $request)
+    {
+        $cc = DB::table('settings')->where('key', 'administrator_email')->first();
+        $cc = filled($cc)
+            ? explode(';', $cc->value)
+            : [];
+
+        $requestValidated = $request->validated();
+        $ticket = CustomerSupport::create($requestValidated);
+
+        Mail::to($request->email)
+            ->cc($cc)
+            ->send(new MailCustomerSupport());
+
+        return view('customer.support', ['ticket' => $ticket->id]);
     }
 }

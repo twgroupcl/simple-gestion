@@ -35,6 +35,11 @@ class ShippingMethod extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'shipping_method_product_mapping');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
