@@ -28,9 +28,9 @@ class SellerChangeStatus extends Mailable
         $this->rejectedText = '';
         if ($seller->getReviewStatus() == 'Aprobado') {
             $this->title = '¡Buenas noticias!';
-            $this->text = 'Felicitaciones <strong>' . $seller->visible_name . '</strong>, hemos aprobado tu cuenta de vendedor.<br /><br />Para iniciar sesión haz clic en el bóton "Agregar libros" e ingresa tus datos.<br /><br /><strong>Email:</strong> ' .$seller->email . '<br /><strong>Contraseña:</strong> (RUT empresa sin puntos, ej: 11222333-4)';
+            $this->text = 'Felicitaciones <strong>' . $seller->visible_name . '</strong>, hemos habilitado la cuenta de tu tienda.<br /><br />Para iniciar sesión haz click en el botón "Ingresar a mi tienda" e ingresa tus datos.<br /><br /><strong>Email:</strong> ' .$seller->email . '<br /><strong>Contraseña:</strong> (RUT empresa sin puntos, ej: 11222333-4)<br /><br />Recuerde cualquier consulta escribir a filsavirtual@prolibro.cl o llamar a  26720348 o 569 76163284.';
 
-            $this->buttonText = 'Agregar libros';
+            $this->buttonText = 'Ingresar a mi tienda';
             $this->buttonLink = config('app.url') . '/admin';
         } else {
             $this->title = 'Se ha rechazado la solicitud.';
