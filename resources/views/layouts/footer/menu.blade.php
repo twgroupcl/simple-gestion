@@ -70,7 +70,7 @@
                     <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
                  -->
                 <div class="row">
-                    <div class="col-md-4 border-right border-dark">
+                    <div class="col-md-6 border-right border-dark">
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Organiza</h3>
                             <div class="d-flex flex-wrap">
@@ -80,7 +80,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 border-right border-dark">
+                    <div class="col-md-6 border-right">
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
                             <div class="d-flex flex-wrap">
@@ -90,24 +90,6 @@
                             </div>
                         </div>
                     </div>   
-                    <div class="col-md-4">
-                        <div class="widget pb-2 mb-2">
-                            <h3 class="widget-title text-dark pb-1">Media Partners</h3>
-                            <div class="d-flex flex-wrap align-items-center">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 text-center">
-                                        <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
-                                    </div>
-                                    <div class="col-md-4 text-center">
-                                        <img src="{{ asset('img/filsa/el-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
-                                    </div>
-                                    <div class="col-md-4 text-center">
-                                        <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>                 
                 </div>
                 {{-- <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-light pb-1">Stay informed</h3>
