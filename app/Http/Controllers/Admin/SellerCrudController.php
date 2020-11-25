@@ -12,7 +12,7 @@ use App\Models\SellerCategory;
 use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
-use App\Http\Traits\HasCustomAttributes;
+use App\Traits\HasCustomAttributes;
 use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -507,10 +507,23 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'download_recomended_policy',
+            'type' => 'custom_html',
+            'value' => '<a href="' . asset('pdf/POLITICAS_SUGERIDAS.pdf') . '">DESCARGAR POLITICAS SUGERIDAS</a>',
+            'tab' => 'Políticas',
+            'wrapper' => [
+                'style' => 'text-align: right; padding-right: 20px;'
+            ]
+        ]);
+
+        CRUD::addField([
             'name' => 'privacy_policy',
             'type'  => 'tinymce',
             'label' => 'Política de privacidad',
             'tab' => 'Políticas',
+            'wrapper' => [
+                'style' => 'margin-top: -15px;',
+            ]
         ]);
 
         CRUD::addField([

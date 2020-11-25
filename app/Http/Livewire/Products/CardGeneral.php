@@ -23,6 +23,7 @@ class CardGeneral extends Component
     public $showFrom = '';
     public $sortingField = null;
     public $sortingDirection = null;
+    public $renderIn = null;
     public $render = null;
     public $filters = null;
 
@@ -33,7 +34,6 @@ class CardGeneral extends Component
 
     public function render()
     {
-
         switch($this->showFrom) {
             case 'shop-general': 
                 $render = [ 'products' => $this->getProductsNoRandom()];
@@ -52,20 +52,18 @@ class CardGeneral extends Component
                 }
                 break;
         } 
-       /*  $render = [
-            'products' => (!empty($this->showFrom)) ? (($this->showFrom == 'searchCategory') ? $this->getProductsByCategory($this->valuesQuery) : $this->searchProduct($this->valuesQuery)) : $this->getProducts()
-        ]; 
-        */
+      
         return view('livewire.products.card-general', $render);
     }
 
-    public function mount($paginateBy, $showPaginate, $columnLg = null, $showFrom, $valuesQuery = null)
+    public function mount($paginateBy, $showPaginate, $columnLg = null, $showFrom, $valuesQuery = null, $renderIn = 'shop-grid')
     {
         $this->paginateBy = $paginateBy;
         $this->columnLg = $columnLg;
         $this->showPaginate = $showPaginate;
         $this->showFrom = $showFrom;
         $this->valuesQuery = $valuesQuery;
+        $this->renderIn = $renderIn;
     }
 
     public function filterProducts($data)

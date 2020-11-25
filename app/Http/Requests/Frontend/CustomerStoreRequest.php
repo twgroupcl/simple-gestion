@@ -31,7 +31,7 @@ class CustomerStoreRequest extends FormRequest
             'uid' => ['required', 'unique:customers,uid', 'string', $rutRule],
             'first_name' => 'required|string',
             'last_name' => 'nullable|string',
-            'email' => 'required|email|unique:customers,email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
         ];
