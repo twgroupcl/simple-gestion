@@ -50,6 +50,9 @@ Route::group([
     Route::crud('productclass', 'ProductClassCrudController');
     Route::crud('productclassattribute', 'ProductClassAttributeCrudController');
     Route::crud('product', 'ProductCrudController');
+    Route::post('product/bulk-approve', 'ProductCrudController@bulkApprove')->name('products.bulk-approve');
+    Route::post('product/bulk-reject', 'ProductCrudController@bulkReject')->name('products.bulk-reject');
+    Route::post('product/bulk-delete', 'ProductCrudController@bulkDelete')->name('products.bulk-delete');
     Route::crud('productinventorysource', 'ProductInventorySourceCrudController');
     Route::crud('productinventory', 'ProductInventoryCrudController');
     Route::crud('shippingmethod', 'ShippingMethodCrudController');

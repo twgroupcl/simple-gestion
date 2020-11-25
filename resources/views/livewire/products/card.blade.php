@@ -7,7 +7,7 @@
         </button>
     </div> --}}
     <div class="row">
-        @if($product->special_price)
+        @if($product->has_special_price)
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <span class="badge badge-warning badge-shadow">Dcto</span>
             </div>
@@ -34,7 +34,7 @@
         <div class="d-flex justify-content-between">
             <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->
             @if ($product->children()->count())
-                @if ($product->special_price)
+                @if ($product->has_special_price)
                     <div class="product-price">
                         @if ($product->getRealPriceRange()[0] == $product->getRealPriceRange()[1])
                             <span class="text-accent">
@@ -65,7 +65,7 @@
                 @endif  
             @else
                 <div class="product-price">
-                    @if($product->special_price)
+                    @if($product->has_special_price)
                         <span class="text-accent">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
                         <del class="font-size-sm text-muted"><small>{{ currencyFormat($product->price, defaultCurrency(), true) }}</small></del>
                     @else
