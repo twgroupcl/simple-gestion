@@ -134,3 +134,5 @@
 	</ul>
 </li>
 @endcanany
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('banners') }}'><i class='nav-icon la la-question'></i> Banners</a></li>

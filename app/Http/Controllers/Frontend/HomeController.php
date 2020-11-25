@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Seller;
+use App\Models\Banners;
 use App\Models\Product;
 use App\Models\FaqTopic;
 use App\Models\FaqAnswer;
@@ -26,7 +27,19 @@ class HomeController extends Controller
         ->where('featured', '=' ,'1')
         ->inRandomOrder()->get();
 
-        return view('marketplace', compact('categories','featuredProducts'));
+        $banner1 = Banners::where('section',1)->first();
+        $banner2 = Banners::where('section',2)->first();
+        $banner3 = Banners::where('section',3)->first();
+        $banner4 = Banners::where('section',4)->first();
+
+        $banners = [
+            1 => $banner1,
+            2 => $banner2,
+            3 => $banner3,
+            4 => $banner4
+        ];
+
+        return view('marketplace', compact('categories','featuredProducts','banners'));
     }
 
     public function getAllProducts()

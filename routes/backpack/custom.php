@@ -70,5 +70,5 @@ Route::group([
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::crud('banners', 'BannersCrudController');
 }); // this should be the absolute last line of this file
-
