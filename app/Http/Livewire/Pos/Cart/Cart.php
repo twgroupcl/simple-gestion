@@ -23,9 +23,9 @@ class Cart extends Component
 
     public function addProduct($productId)
     {
-
-
-
+        if (in_array($productId, $this->products)) {
+            return;
+        }
 
         array_push($this->products,$productId);
 
