@@ -92,7 +92,7 @@ class Customer extends Model
             'entry_number' => $entryNumber,
             'entry_type' => $entryType,
             'customer_id' => $this->id,
-            'branch_id' => 1,
+            'branch_id' => $this->user->branches->first()->id,
         ]);
 
         return $attendance;
