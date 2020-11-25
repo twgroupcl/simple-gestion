@@ -30,8 +30,8 @@ class ProductFilterService {
          // Price range filter
          if ( isset($data['price']) ) {
             $priceRange = $data['price'];
-            if ( isset($priceRange['min']) && $priceRange['min']) $queryForSimple->where('price', '>=', $priceRange['min']);
-            if ( isset($priceRange['max']) && $priceRange['max']) $queryForSimple->where('price', '<=', $priceRange['max']);
+            if ( isset($priceRange['min']) && $priceRange['min']) $queryForSimple->having('current_price', '>=', $priceRange['min']);
+            if ( isset($priceRange['max']) && $priceRange['max']) $queryForSimple->having('current_price', '<=', $priceRange['max']);
         }
 
         if (isset($data['attributes'])) {

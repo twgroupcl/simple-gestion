@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\Route;
 //     return redirect(backpack_url('dashboard'));
 // });
 
-Route::get('/', 'Frontend\HomeController@index')->name('index');
+Route::get('/', function () {
+    return view('home');
+});
 
 Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer.sign')->middleware(['guest']);
 Route::post('/customer/register', 'Frontend\CustomerController@store')->name('customer.frontend.store');

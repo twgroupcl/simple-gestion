@@ -64,6 +64,15 @@
         </div>
     </section>
 -->
+<section class="container mt-5 mb-grid-gutter">
+    <div class="rounded-lg py-4">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <img src="{{ asset('img/filsa/banner-2.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
 
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
@@ -76,16 +85,6 @@
             </div>
             <div class="col-md-4 text-center">
                 <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-75">
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="container mt-5 mb-grid-gutter">
-    <div class="rounded-lg py-4">
-        <div class="row align-items-center">
-            <div class="col-md-12">
-                <img src="{{ asset('img/filsa/banner-2.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
             </div>
         </div>
     </div>

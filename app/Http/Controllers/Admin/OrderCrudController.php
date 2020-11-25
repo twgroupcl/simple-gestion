@@ -113,7 +113,12 @@ class OrderCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'first_name',
             'type' => 'text',
-            'label' => 'Cliente',
+            'label' => 'Cliente nombre',
+        ]);
+        CRUD::addColumn([
+            'name' => 'last_name',
+            'type' => 'text',
+            'label' => 'Cliente apellido',
         ]);
 
         CRUD::addColumn([
@@ -149,6 +154,8 @@ class OrderCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->customFilters();
     }
 
     /**
@@ -629,17 +636,14 @@ class OrderCrudController extends CrudController
                 ],
                 [
                     'name' => 'price',
-                    'type' => 'number',
+                    'type' => 'text',
                     'label' => 'Precio',
-                    'dec_point' => ',',
-                    'thousands_sep' => '.',
-                    'decimals' => 0,
                     'prefix' => '$',
                     'attributes' => [
                         'readonly' => 'readonly',
                     ],
                     'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
+                        'class' => 'form-group col-md-2 order-amount',
                     ],
                 ],
                 // [
@@ -659,13 +663,14 @@ class OrderCrudController extends CrudController
                 // ],
                 [
                     'name' => 'sub_total',
-                    'type' => 'number',
+                    'type' => 'text',
                     'label' => 'Subtotal',
+                    'prefix' => '$',
                     'attributes' => [
                         'readonly' => 'readonly',
                     ],
                     'wrapperAttributes' => [
-                        'class' => 'form-group col-md-2',
+                        'class' => 'form-group col-md-2 order-amount',
                     ],
                 ],
                 [
@@ -797,5 +802,62 @@ class OrderCrudController extends CrudController
             'type' => 'order.support_data_script',
             'tab' => 'Items',
         ]);
+    }
+
+        /**
+     * Add filters in list view
+     *
+     * @return void
+     */
+    private function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'rut',
+            'label' => 'RUT',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'uid', 'LIKE', '%' . $value . '%');
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'created_at',
+            'type'  => 'date',
+            'label' => 'Fecha'
+        ],
+        false,
+        function($value) {
+            logger($value);
+            $this->crud->addClause('whereDate', 'created_at', $value);
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'first_name',
+            'label' => 'Cliente nombre',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'first_name', 'LIKE', '%' . $value . '%');
+        });
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'last_name',
+            'label' => 'Cliente apellido',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'last_name', 'LIKE', '%' . $value . '%');
+        });
+        CRUD::addFilter([
+            'type'  => 'select2',
+            'name'  => 'status',
+            'label' => 'Estado',
+        ],  function () {
+            return [
+              1 => 'Pendiente',
+              2 => 'Pagada',
+              3 => 'Completa',
+            ];
+          }, function ($value) {
+            $this->crud->addClause('where', 'status', $value );
+        });
+
+
     }
 }

@@ -158,7 +158,7 @@ class CustomerController extends Controller
             'text' => 'Si no fuiste tú, te aconsejamos que restablezcas tu contraseña para garantizar la seguridad de tu cuenta.',
             'rejectedText' => '',
             'buttonText' => 'Vamos a comprar',
-            'buttonLink' => route('index'),
+            'buttonLink' => route('home'),
         ];
 
         Mail::send('vendor.maileclipse.templates.passwordChanged', $data, function ($message) use ($request) {
@@ -270,11 +270,16 @@ class CustomerController extends Controller
 
     public function createIssue(CustomerSupportRequest $request)
     {
+        $cc = DB::table('settings')->where('key', 'administrator_email')->first();
+        $cc = filled($cc)
+            ? explode(';', $cc->value)
+            : [];
+
         $requestValidated = $request->validated();
         $ticket = CustomerSupport::create($requestValidated);
 
         Mail::to($request->email)
-            ->cc([env('MAIL_FILSA_ADDRESS')])
+            ->cc($cc)
             ->send(new MailCustomerSupport());
 
         return view('customer.support', ['ticket' => $ticket->id]);

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\FaqTopic;
 use App\Models\FaqAnswer;
 use Illuminate\Http\Request;
+use App\Models\SellerAddress;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
 use App\Services\ProductFilterService;
@@ -61,9 +62,10 @@ class HomeController extends Controller
     {
         $seller = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
         $countProduct = Product::where('seller_id', '=', $request->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
+        $sellerAdress = SellerAddress::whereSellerId($seller->id)->with('commune')->first();
         $render = ['view' => 'seller'];
         $data = $seller->id;
-        return view('vendor', compact('seller', 'countProduct','render', 'data'));
+        return view('vendor', compact('seller', 'countProduct','render', 'data','sellerAdress'));
     }
 
     public function getFaq()

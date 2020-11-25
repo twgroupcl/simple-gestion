@@ -8,10 +8,16 @@ class SortingProducts extends Component
 {
 
     public $sortingBy;
+    public $showFrom;
 
     public function render()
     {
         return view('livewire.sorting-products');
+    }
+
+    public function mount($showFrom = 'shop-grid')
+    {
+        $this->showFrom = $showFrom;
     }
 
     public function sortProducts()
@@ -30,11 +36,11 @@ class SortingProducts extends Component
                 'direction' => 'DESC',
             ],
             [
-                'field' => 'price',
+                'field' => 'current_price',
                 'direction' => 'ASC',
             ],
             [
-                'field' => 'price',
+                'field' => 'current_price',
                 'direction' => 'DESC',
             ],
         ];

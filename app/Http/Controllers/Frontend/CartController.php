@@ -31,7 +31,7 @@ class CartController extends Controller
     {
         $cart = $this->getCart();
         if (!$cart) {
-            return redirect('/');
+            return redirect()->route('home');            
         }
 
         return view('checkout', compact('cart'));
