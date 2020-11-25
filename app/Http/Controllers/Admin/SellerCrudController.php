@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DB;
-use App\Models\Bank;
-use App\Models\Commune;
-use App\Models\ContactType;
 use App\Cruds\BaseCrudFields;
-use App\Http\Requests\{SellerStoreRequest, SellerUpdateRequest};
+
+use App\Http\Requests\SellerStoreRequest;
+
+use App\Http\Requests\SellerUpdateRequest;
+use App\Models\Bank;
+use App\Models\BankAccountType;
+use App\Models\BusinessActivity;use App\Models\Commune;
+use App\Models\ContactType;
 use App\Models\PaymentMethod;
+use App\Models\Seller;
 use App\Models\SellerCategory;
 use App\Models\ShippingMethod;
-use App\Models\BankAccountType;
-use App\Models\BusinessActivity;
-use App\Http\Traits\HasCustomAttributes;
-use App\Models\Plans;
-use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Carbon\Carbon;
 
 /**
  * Class SellerCrudController
@@ -405,9 +403,9 @@ class SellerCrudController extends CrudController
         ]);
 
         Crud::addField([
-            'name'  => 'banks_data',
+            'name' => 'banks_data',
             'label' => 'Cuentas',
-            'type'  => 'repeatable',
+            'type' => 'repeatable',
             'default' => '{}',
             'fields' => [
                 [
@@ -441,7 +439,7 @@ class SellerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'RUT',
                     'wrapper' => [
-                        'class' => 'form-group col-md-4'
+                        'class' => 'form-group col-md-4',
                     ],
                 ],
                 [
@@ -449,7 +447,7 @@ class SellerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'Nombre',
                     'wrapper' => [
-                        'class' => 'form-group col-md-4'
+                        'class' => 'form-group col-md-4',
                     ],
                 ],
                 [
@@ -457,7 +455,7 @@ class SellerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'Apellido',
                     'wrapper' => [
-                        'class' => 'form-group col-md-4'
+                        'class' => 'form-group col-md-4',
                     ],
                 ],
                 [
@@ -465,7 +463,7 @@ class SellerCrudController extends CrudController
                     'type' => 'email',
                     'label' => 'Email',
                     'wrapper' => [
-                        'class' => 'form-group col-md-6'
+                        'class' => 'form-group col-md-6',
                     ],
                 ],
                 [
@@ -473,7 +471,7 @@ class SellerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'Teléfono',
                     'wrapper' => [
-                        'class' => 'form-group col-md-6'
+                        'class' => 'form-group col-md-6',
                     ],
                 ],
             ],
@@ -482,9 +480,9 @@ class SellerCrudController extends CrudController
         ]);
 
         Crud::addField([
-            'name'  => 'contacts_data',
+            'name' => 'contacts_data',
             'label' => 'Contactos',
-            'type'  => 'repeatable',
+            'type' => 'repeatable',
             'default' => '{}',
             'fields' => [
                 [
@@ -501,7 +499,7 @@ class SellerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'URL',
                     'wrapper' => [
-                        'class' => 'form-group col-md-6'
+                        'class' => 'form-group col-md-6',
                     ],
                 ],
             ],
@@ -510,15 +508,28 @@ class SellerCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'download_recomended_policy',
+            'type' => 'custom_html',
+            'value' => '<a href="' . asset('pdf/POLITICAS_SUGERIDAS.pdf') . '">DESCARGAR POLITICAS SUGERIDAS</a>',
+            'tab' => 'Políticas',
+            'wrapper' => [
+                'style' => 'text-align: right; padding-right: 20px;',
+            ],
+        ]);
+
+        CRUD::addField([
             'name' => 'privacy_policy',
-            'type'  => 'tinymce',
+            'type' => 'tinymce',
             'label' => 'Política de privacidad',
             'tab' => 'Políticas',
+            'wrapper' => [
+                'style' => 'margin-top: -15px;',
+            ],
         ]);
 
         CRUD::addField([
             'name' => 'shipping_policy',
-            'type'  => 'tinymce',
+            'type' => 'tinymce',
             'label' => 'Política de compra',
             'tab' => 'Políticas',
         ]);
@@ -536,7 +547,7 @@ class SellerCrudController extends CrudController
             'label' => 'Título para los buscadores ',
             'tab' => 'SEO',
             'wrapper' => [
-                'class' => 'form-group col-md-6'
+                'class' => 'form-group col-md-6',
             ],
         ]);
 
@@ -549,13 +560,13 @@ class SellerCrudController extends CrudController
             'label' => 'Palabras clave (separadas por coma)',
             'tab' => 'SEO',
             'wrapper' => [
-                'class' => 'form-group col-md-6'
+                'class' => 'form-group col-md-6',
             ],
         ]);
 
         CRUD::addField([
             'name' => 'meta_description',
-            'type'  => 'textarea',
+            'type' => 'textarea',
             'label' => 'Descripción para los buscadores',
             'tab' => 'SEO',
         ]);
@@ -566,7 +577,7 @@ class SellerCrudController extends CrudController
             'label' => 'Logo',
             'crop' => true,
             'wrapper' => [
-                'class' => 'form-group col-md-12'
+                'class' => 'form-group col-md-12',
             ],
             'tab' => 'SEO',
         ]);
@@ -577,14 +588,14 @@ class SellerCrudController extends CrudController
             'label' => 'Banner',
             'crop' => true,
             'wrapper' => [
-                'class' => 'form-group col-md-12'
+                'class' => 'form-group col-md-12',
             ],
             'tab' => 'SEO',
         ]);
 
         CRUD::addField([
             'name' => 'description',
-            'type'  => 'textarea',
+            'type' => 'textarea',
             'label' => 'Información de la tienda',
             'tab' => 'SEO',
         ]);
@@ -593,7 +604,7 @@ class SellerCrudController extends CrudController
             'name' => 'payments_data',
             'type' => 'repeatable',
             'label' => 'Métodos de pago',
-            'new_item_label'  => 'Agregar método de pago',
+            'new_item_label' => 'Agregar método de pago',
             'default' => '{}',
             'fields' => [
                 [
@@ -602,15 +613,15 @@ class SellerCrudController extends CrudController
                     'options' => PaymentMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
                     'label' => 'Metodo de pago',
                     'wrapper' => [
-                        'class' => 'form-group col-12'
+                        'class' => 'form-group col-12',
                     ],
                 ],
                 [
                     'name' => 'key',
-                    'type'  => 'text',
+                    'type' => 'text',
                     'label' => 'Llave',
                     'wrapper' => [
-                        'class' => 'form-group col-12'
+                        'class' => 'form-group col-12',
                     ],
                 ],
                 [
@@ -621,7 +632,7 @@ class SellerCrudController extends CrudController
                         'class' => 'form-group col-md-12',
                     ],
                     'default' => true,
-                ]
+                ],
             ],
             'tab' => 'Venta',
         ]);
@@ -630,7 +641,7 @@ class SellerCrudController extends CrudController
             'name' => 'shippings_data',
             'type' => 'repeatable',
             'label' => 'Métodos de envío',
-            'new_item_label'  => 'Agregar método de envío',
+            'new_item_label' => 'Agregar método de envío',
             'default' => '{}',
             'fields' => [
                 [
@@ -639,15 +650,15 @@ class SellerCrudController extends CrudController
                     'options' => ShippingMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
                     'label' => 'Metodo de envío',
                     'wrapper' => [
-                        'class' => 'form-group col-12'
+                        'class' => 'form-group col-12',
                     ],
                 ],
                 [
                     'name' => 'key',
-                    'type'  => 'text',
+                    'type' => 'text',
                     'label' => 'Llave',
                     'wrapper' => [
-                        'class' => 'form-group col-12'
+                        'class' => 'form-group col-12',
                     ],
                 ],
                 [
@@ -659,7 +670,7 @@ class SellerCrudController extends CrudController
                     ],
                     'default' => true,
 
-                ]
+                ],
             ],
             'tab' => 'Venta',
         ]);
@@ -672,7 +683,7 @@ class SellerCrudController extends CrudController
                 'options' => [
                     0 => 'En revisión',
                     1 => 'Aprobado',
-                    2 => 'Rechazado'
+                    2 => 'Rechazado',
                 ],
                 'default' => 0,
                 'inline' => true,
@@ -694,27 +705,27 @@ class SellerCrudController extends CrudController
 
             CRUD::addField([
                 'name' => 'commission_enable',
-                'type'  => 'checkbox',
+                'type' => 'checkbox',
                 'label' => 'Comisión',
                 'tab' => 'Administrador',
                 'wrapper' => [
-                    'class' => 'form-group col-md-12'
+                    'class' => 'form-group col-md-12',
                 ],
             ]);
 
             CRUD::addField([
                 'name' => 'commission_percentage',
-                'type'  => 'number',
+                'type' => 'number',
                 'attributes' => [
                     'step' => '.01',
                     'min' => 0,
-                    'max' => 100
+                    'max' => 100,
                 ],
                 'default' => '0,00',
                 'label' => 'Porcentaje comisión',
                 'tab' => 'Administrador',
                 'wrapper' => [
-                    'class' => 'form-group col-12'
+                    'class' => 'form-group col-12',
                 ],
             ]);
 
@@ -723,7 +734,7 @@ class SellerCrudController extends CrudController
                 'type' => 'checkbox_disable_fields',
                 'checkbox' => 'commission_enable',
                 'fields' => [
-                    'commission_percentage'
+                    'commission_percentage',
                 ],
                 'tab' => 'Administrador',
             ]);
@@ -740,7 +751,7 @@ class SellerCrudController extends CrudController
                 'inline' => true,
                 'tab' => 'Administrador',
                 'wrapper' => [
-                    'class' => 'form-group col-md-6'
+                    'class' => 'form-group col-md-6',
                 ],
             ]);
 
@@ -753,13 +764,13 @@ class SellerCrudController extends CrudController
                 ],
             ]);
 
-            if(!$this->crud->getCurrentEntry()->subscription_data){
+            if (!$this->crud->getCurrentEntry()->subscription_data) {
                 CRUD::addField([
                     'name' => 'plan_id',
                     'label' => 'Plan',
                     'placeholder' => 'Seleccionar un plan',
                     'minimum_input_length' => 0,
-                    'attribute'   => "name",
+                    'attribute' => "name",
                     //'type' => 'select2_from_array',
                     //'options' => Plans::orderBy('name', 'asc')->pluck('name', 'id', 'invoice_interval','currency','price')->toArray(),
                     'type' => 'select2_from_ajax',
@@ -771,11 +782,11 @@ class SellerCrudController extends CrudController
                     'wrapper' => [
                         'class' => 'form-group col-6',
                     ],
-                    'attributes' => ['class'    => 'select-plan',],
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'attributes' => ['class' => 'select-plan'],
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'price',
                     'label' => 'Precio',
@@ -783,11 +794,11 @@ class SellerCrudController extends CrudController
                     'dependencies' => ['id_plan'],
                     'tab' => 'Subscripción',
                     'wrapper' => ['class' => 'form-group col-6'],
-                    'attributes' => ['readonly'    => 'readonly',],
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'attributes' => ['readonly' => 'readonly'],
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'starts_at',
                     'label' => 'Fecha de Inicio',
@@ -795,10 +806,10 @@ class SellerCrudController extends CrudController
                     'tab' => 'Subscripción',
                     'wrapper' => ['class' => 'form-group col-6'],
                     'attributes' => ['readonly' => 'readonly', 'class' => ' subscription_starts_at form-control col-11'],
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'ends_at',
                     'label' => 'Fecha de Fin',
@@ -807,25 +818,25 @@ class SellerCrudController extends CrudController
                     'wrapper' => [
                         'class' => 'form-group col-6',
                     ],
-                    'attributes' => ['readonly' => 'readonly','class' => 'subscription_ends_at form-control col-11'],
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'attributes' => ['readonly' => 'readonly', 'class' => 'subscription_ends_at form-control col-11'],
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
                 CRUD::addField([
                     'name' => 'user_id',
                     'type' => 'hidden',
                     'tab' => 'Subscripción',
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
-            }else{
+            } else {
 
                 CRUD::addField([
                     'name' => 'plan_id',
                     'label' => 'Plan',
                     'placeholder' => 'Seleccionar un plan',
                     'minimum_input_length' => 0,
-                    'attribute'   => "name",
+                    'attribute' => "name",
                     'type' => 'select2_from_ajax',
                     'data_source' => url('admin/api/getPlans'),
                     'model' => 'App\Models\Plans',
@@ -835,11 +846,11 @@ class SellerCrudController extends CrudController
                     'wrapper' => [
                         'class' => 'form-group col-6',
                     ],
-                    'attributes' => ['class'    => 'select-plan','disabled'    => 'disabled'],
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'attributes' => ['class' => 'select-plan', 'disabled' => 'disabled'],
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'price',
                     'label' => 'Precio',
@@ -847,11 +858,11 @@ class SellerCrudController extends CrudController
                     'dependencies' => ['id_plan'],
                     'tab' => 'Datos de la Subscripción',
                     'wrapper' => ['class' => 'form-group col-6'],
-                    'attributes' => ['readonly'    => 'readonly'],
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'attributes' => ['readonly' => 'readonly'],
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'starts_at',
                     'label' => 'Fecha de Inicio',
@@ -859,10 +870,10 @@ class SellerCrudController extends CrudController
                     'tab' => 'Datos de la Subscripción',
                     'wrapper' => ['class' => 'form-group col-6'],
                     'attributes' => ['readonly' => 'readonly', 'class' => ' subscription_starts_at form-control col-12'],
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
-    
+
                 CRUD::addField([
                     'name' => 'ends_at',
                     'label' => 'Fecha de Fin',
@@ -871,19 +882,18 @@ class SellerCrudController extends CrudController
                     'wrapper' => [
                         'class' => 'form-group col-6',
                     ],
-                    'attributes' => ['readonly' => 'readonly','class' => 'subscription_ends_at form-control col-12'],
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'attributes' => ['readonly' => 'readonly', 'class' => 'subscription_ends_at form-control col-12'],
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
                 CRUD::addField([
                     'name' => 'user_id',
                     'type' => 'hidden',
                     'tab' => 'Datos de la Subscripción',
-                    'fake'     => true,
-                    'store_in' => 'subscription_data'
+                    'fake' => true,
+                    'store_in' => 'subscription_data',
                 ]);
             }
-
 
         }
 
@@ -948,24 +958,24 @@ class SellerCrudController extends CrudController
     private function customFilters()
     {
         CRUD::addFilter([
-            'type'  => 'text',
-            'name'  => 'rut',
+            'type' => 'text',
+            'name' => 'rut',
             'label' => 'RUT',
         ], false, function ($value) {
             $this->crud->addClause('where', 'uid', 'LIKE', '%' . $value . '%');
         });
 
         CRUD::addFilter([
-            'type'  => 'text',
-            'name'  => 'visible_name',
+            'type' => 'text',
+            'name' => 'visible_name',
             'label' => 'Nombre visible',
         ], false, function ($value) {
             $this->crud->addClause('where', 'visible_name', 'LIKE', '%' . $value . '%');
         });
 
         CRUD::addFilter([
-            'type'  => 'text',
-            'name'  => 'email',
+            'type' => 'text',
+            'name' => 'email',
             'label' => 'Email',
         ], false, function ($value) {
             $this->crud->addClause('where', 'email', 'LIKE', '%' . $value . '%');

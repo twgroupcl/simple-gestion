@@ -45,6 +45,7 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('shippingmethod') }}'><i class='nav-icon la la-truck'></i> Métodos shipping</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqanswer') }}'><i class='nav-icon la la-question'></i> FaqAnswers</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqtopic') }}'><i class='nav-icon la la-question'></i> FaqTopics</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('banners') }}'><i class='nav-icon la la-question'></i> Banners</a></li>
 	</ul>
 </li>
 
@@ -139,3 +140,13 @@
 @endcanany
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('plans') }}'><i class='nav-icon la la-question'></i> Plans</a></li>
+@canany(['support.list'])
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Servicio al cliente</a>
+    <ul class="nav-dropdown-items">
+        @can('support.list')
+            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('customersupport') }}'><i class='nav-icon la la-question'></i> Solicitudes</a></li>
+        @endcan
+    </ul>
+</li>
+@endcanany
