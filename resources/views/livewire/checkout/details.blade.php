@@ -106,7 +106,17 @@
     </div>
     <div class="custom-control custom-checkbox pb-3 mb-3">
         <input class="custom-control-input" type="checkbox" id="terms-condition-checkout">
-        <label class="custom-control-label" for="terms-condition-checkout">Acepto los términos y condiciones</label>
+        <label class="custom-control-label" for="terms-condition-checkout">Declaro haber leído y aceptar las políticas de privacidad contenidos en los
+            <a href="{{url('terms-conditions')}}" target="_blank">Términos y Condiciones del sitio web</a>
+        </label>
+    </div>
+    <div class="custom-control custom-checkbox pb-3 mb-3">
+        <input class="custom-control-input" type="checkbox" id="terms-condition-prolibro">
+        <label class="custom-control-label" for="terms-condition-prolibro">
+            Declaro entender que Prolibro S.A. otorga un servicio de intermediación gratuito entre mi persona y el
+            oferente, siendo este úl4mo la persona a quien le compro el/los producto/s seleccionados.
+        </label>
+        
     </div>
     @if ($anotherDataInvoice)
         <!-- Billing detail-->
