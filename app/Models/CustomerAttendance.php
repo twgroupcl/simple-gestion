@@ -25,9 +25,9 @@ class CustomerAttendance extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function seller()
+    public function customer()
     {
-        return $this->belongsTo(Seller::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function branch()
