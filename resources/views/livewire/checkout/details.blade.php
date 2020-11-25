@@ -114,7 +114,7 @@
         <input class="custom-control-input" type="checkbox" id="terms-condition-prolibro">
         <label class="custom-control-label" for="terms-condition-prolibro">
             Declaro entender que Prolibro S.A. otorga un servicio de intermediación gratuito entre mi persona y el
-            oferente, siendo este úl4mo la persona a quien le compro el/los producto/s seleccionados.
+            oferente, siendo este último la persona a quien le compro el/los producto/s seleccionados.
         </label>
         
     </div>

@@ -33,6 +33,7 @@ class CustomerSupportRequest extends FormRequest
             'details' => 'required|string|max:2000',
             'phone' => ['required', 'string', new PhoneRule],
             'order_id' => 'nullable|int|exists:orders,id|digits_between:1,5',
+            'json_value' => 'required' 
         ];
     }
 
@@ -46,6 +47,7 @@ class CustomerSupportRequest extends FormRequest
             'details' => 'Detalle',
             'phone' => 'Teléfono',
             'order' => 'N° Orden',
+            'json_value' => 'Términos y Condiciones' 
         ];
     }
 
