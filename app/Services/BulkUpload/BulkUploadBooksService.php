@@ -134,7 +134,7 @@ class BulkUploadBooksService {
             'depth' => 'required|numeric|max:100',
             'width' => 'required|numeric|max:100',
             'height' => 'required|numeric|max:100',
-            'weight' => 'required|numeric|max:5',
+            'weight' => 'required|numeric|max:10',
             'meta_title' => 'nullable|max:255',
             'meta_keywords' => 'nullable|max:255',
             'meta_description' => 'nullable',
