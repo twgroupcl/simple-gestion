@@ -4,11 +4,23 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
-<div class="cz-carousel cz-dots-enabled">
-    <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-        <img src="{{ asset('img/filsa/banner-principal.jpg') }}" alt="Filsa Banner">
-        <img src="{{ asset('img/filsa/banner-bienvenida.jpg') }}" alt="Filsa Banner">
-        <img src="{{ asset('img/filsa/banner-transmision.jpg') }}" alt="Filsa Banner">
+<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+            <img src="{{ asset('img/filsa/banner-principal.jpg') }}" alt="Filsa Banner">
+            <img src="{{ asset('img/filsa/banner-bienvenida.jpg') }}" alt="Filsa Banner">
+            <img src="{{ asset('img/filsa/banner-transmision.jpg') }}" alt="Filsa Banner">
+        </div>
+    </div>
+</div>
+
+<div class="d-block d-sm-none">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+            <img src="{{ asset('img/filsa/mobile-banner-principal.jpg') }}" alt="Filsa Banner">
+            <img src="{{ asset('img/filsa/mobile-banner-bienvenida.jpg') }}" alt="Filsa Banner">
+            <img src="{{ asset('img/filsa/mobile-banner-transmision.jpg') }}" alt="Filsa Banner">
+        </div>
     </div>
 </div>
 
