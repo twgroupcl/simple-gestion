@@ -76,11 +76,11 @@ class SalesReportController extends BaseController
         if ($requestSellerId == -1) {
 
             $sales = Order::whereHas('order_items')
-            /*  ->whereBetween(
-            'created_at',
-            [$period->first()->startOfDay(),
-            $period->last()->endOfDay()]
-            ) */
+                ->whereBetween(
+                    'created_at',
+                    [$period->first()->startOfDay(),
+                        $period->last()->endOfDay()]
+                )
                 ->with(['order_items.seller' => function ($query) {
                     $query->groupBy('id');
                 }])->get();
@@ -111,7 +111,7 @@ class SalesReportController extends BaseController
                     if (!is_null($tmpOrderPayment->data)) {
                         if (!is_null($tmpOrderPayment->data->detailOutput)) {
 
-                            if(isset($tmpOrderPayment->data->detailOutput->paymentTypeCode)) {
+                            if (isset($tmpOrderPayment->data->detailOutput->paymentTypeCode)) {
                                 $pymentType = $tmpOrderPayment->data->detailOutput->paymentTypeCode;
                                 switch ($pymentType) {
                                     case 'VD':$orderPayment = 'Venta Débito.';
@@ -156,7 +156,7 @@ class SalesReportController extends BaseController
                             $sellerName = $seller->visible_name;
                         }
                         $subscription = json_decode($seller->subscription_data);
-                       // $subscriptionPlan = Plans::where('id', $subscription->plan_id)->first();
+                        // $subscriptionPlan = Plans::where('id', $subscription->plan_id)->first();
                         if (!is_null($subscription)) {
                             $commissionsCategory = $orderItem->product->categories[0]->commission;
                             if (!is_null($commissionsCategory)) {
@@ -169,11 +169,11 @@ class SalesReportController extends BaseController
 
                             }
                         }
-                        if(!is_null($commissionProduct)){
+                        if (!is_null($commissionProduct)) {
 
-                            $totalCommission = ($orderItem->sub_total + $orderItem->shipping_total) * $commissionProduct->commission;
-                        }else{
-                            $totalCommission = 0;
+                            $totalCommission += ($orderItem->sub_total + $orderItem->shipping_total) * $commissionProduct->commission;
+                        } else {
+                            $totalCommission += 0;
                         }
 
                         $totalOrder += ($orderItem->sub_total + $orderItem->shipping_total);
@@ -195,6 +195,7 @@ class SalesReportController extends BaseController
                     $itemSale['totalFinal'] = $seller->totalFinal;
                     array_push($data, $itemSale);
                 }
+
             }
 
         }

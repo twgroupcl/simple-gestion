@@ -75,7 +75,7 @@ class SellerObserver
     {
 
         if ($seller->isDirty()) {
-            
+
             $dirtyModel = $seller->getDirty();
             if (array_key_exists('shippings_data', $dirtyModel)) {
                 $this->syncShippingMethods($seller);
@@ -91,7 +91,7 @@ class SellerObserver
             if (array_key_exists('subscription_data', $dirtyModel)) {
                 $this->syncSubscription($seller);
             }
-            
+
             if (
                 array_key_exists('is_approved', $dirtyModel) &&
                 ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado')
@@ -141,7 +141,7 @@ class SellerObserver
         //     $newplansubscription = new PlanSubscriptionSeller($subscription_data);
         //     $seller->subscriptions()->save($newplansubscription);
         // }
-       // if (!empty($subscription_data['plan_subscription_id'])) {
+        if (!empty($subscription_data['plan_subscription_id'])) {
             $user = User::find($seller->user->id);
             // $user->subscription('main')->usage()->delete();
             $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
@@ -150,12 +150,12 @@ class SellerObserver
             if ($plan->price > 0) {
                 return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
             }
-       // }else{
+            // }else{
             $plan = Plans::where('id', $subscription_data['plan_id'])->first();
-      //  }
-        $currency = Currency::where('id',$plan->currency)->first();
+            //  }
+            $currency = Currency::where('id', $plan->currency)->first();
 
-        $dataEmail = [
+            $dataEmail = [
             'seller' => $seller->name,
             'plan' => $plan->name,
             'price' => $plan->price,
@@ -165,10 +165,11 @@ class SellerObserver
         ];
 
 
-        $emailsAdministrator = explode(';', Setting::get('administrator_email'));
-        array_push($emailsAdministrator, $seller->email);
+            $emailsAdministrator = explode(';', Setting::get('administrator_email'));
+            array_push($emailsAdministrator, $seller->email);
 
-        $this->sendMailSuscription($dataEmail,$emailsAdministrator);
+            $this->sendMailSuscription($dataEmail, $emailsAdministrator);
+        }
 
     }
 
