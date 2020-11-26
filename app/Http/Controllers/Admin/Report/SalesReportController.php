@@ -111,7 +111,7 @@ class SalesReportController extends BaseController
                     if (!is_null($tmpOrderPayment->data)) {
                         if (!is_null($tmpOrderPayment->data->detailOutput)) {
 
-                            if(isset($tmpOrderPayment->data->detailOutput->paymentTypeCode)) {
+                            if (isset($tmpOrderPayment->data->detailOutput->paymentTypeCode)) {
                                 $pymentType = $tmpOrderPayment->data->detailOutput->paymentTypeCode;
                                 switch ($pymentType) {
                                     case 'VD':$orderPayment = 'Venta Débito.';
@@ -156,9 +156,12 @@ class SalesReportController extends BaseController
                         }
                         if ($orderItem->seller->commission_enable == 1) {
                             $percentageCommission = $orderItem->seller->commission_percentage;
+                            if (!is_null($percentageCommission)) {
+                                $percentageCommission = $percentageCommission / 100;
+                            }
                             $totalCommission += ($orderItem->sub_total + $orderItem->shipping_total) * $percentageCommission;
-                        }else{
-                            $totalCommission += 0;//($orderItem->sub_total + $orderItem->shipping_total);
+                        } else {
+                            $totalCommission += 0; //($orderItem->sub_total + $orderItem->shipping_total);
                         }
                         $totalOrder += ($orderItem->sub_total + $orderItem->shipping_total);
                     }
