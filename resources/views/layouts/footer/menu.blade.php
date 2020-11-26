@@ -74,7 +74,7 @@
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Organiza</h3>
                             <div class="d-flex flex-wrap">
-                                <div class="col-12 mb-2 text-center">
+                                <div class="col-12 mb-2 text-center mt-3">
                                     <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
                                 </div>
                             </div>
