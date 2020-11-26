@@ -11,6 +11,7 @@ class Details extends Component
 
     public $data;
     public $invoice;
+    public $termsAndConditions;
     public $cart;
     public $is_business;
     public $anotherDataInvoice;
@@ -26,7 +27,9 @@ class Details extends Component
         'data.email' => 'required|email',
         'data.cellphone' => 'required',
         'data.receiver_name' => 'max:255',
-        'data.shipping_details' => 'max:500'
+        'data.shipping_details' => 'max:500',
+        'termsAndConditions.accept_checkout_terms' => 'accepted',
+        'termsAndConditions.accept_checkout_terms_prolibro' => 'accepted'
     ];
 
 
@@ -37,7 +40,7 @@ class Details extends Component
         'min' => 'El mínimo es de 3 caracteres.',
         'numeric' => 'El valor ingresado no es numérico.',
         'max' => 'El máximo es de :max caracteres.',
-
+        'accepted' => 'Debe aceptar los términos y condiciones.',
     ];
 
 
@@ -63,7 +66,14 @@ class Details extends Component
             'business_name' => $this->cart->business_name,
             'receiver_name' => $this->cart->receiver_name,
             'shipping_details' => $this->cart->shipping_details,
-            'json_value' => json_encode($arrJsonValues)
+        ];
+
+        $jsonValues = !empty($this->cart->json_value) ? json_decode($this->cart->json_value, true) : [];
+        $this->termsAndConditions = [
+            'accept_checkout_terms' => array_key_exists('accept_checkout_terms', $jsonValues) ? 
+                                        $jsonValues['accept_checkout_terms'] : null,
+            'accept_checkout_terms_prolibro' => array_key_exists('accept_checkout_terms_prolibro', $jsonValues) ?
+                                        $jsonValues['accept_checkout_terms_prolibro'] : null,
         ];
 
         $invoice = [];
@@ -104,7 +114,6 @@ class Details extends Component
 
     public function updated($propertyName)
     {
-
 
         $dynamicRules = $this->getCustomRules();
         $this->rules = array_merge($this->rules, $dynamicRules);
@@ -181,6 +190,9 @@ class Details extends Component
 
             $this->data['is_company'] = $this->is_business;
 
+            $this->data['json_value'] = json_encode(
+                $this->termsAndConditions
+            );
             $this->cart->update($this->data);
 
             $this->emitUp('finishTask');

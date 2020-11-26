@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 
 class CustomerSupportRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -33,7 +34,8 @@ class CustomerSupportRequest extends FormRequest
             'details' => 'required|string|max:2000',
             'phone' => ['required', 'string', new PhoneRule],
             'order_id' => 'nullable|int|exists:orders,id|digits_between:1,5',
-            'json_value' => 'required' 
+            //'json_value' => 'required',
+            'accept_support_terms' => 'accepted' 
         ];
     }
 
@@ -47,7 +49,8 @@ class CustomerSupportRequest extends FormRequest
             'details' => 'Detalle',
             'phone' => 'Teléfono',
             'order' => 'N° Orden',
-            'json_value' => 'Términos y Condiciones' 
+            //'json_value' => 'Términos y Condiciones' 
+            'accept_support_terms' => 'Términos y Condiciones',
         ];
     }
 
@@ -60,6 +63,7 @@ class CustomerSupportRequest extends FormRequest
             'in' => 'Debes seleccionar una de las opciones válidas',
             'exists' => 'Asegúrate de que la orden que escribas sea correcta',
             'max' => 'Por favor no excedas los :max caracteres',
+            'accepted' => 'Debe aceptar los términos y condiciones',
         ];
     }
 }
