@@ -84,8 +84,11 @@
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
                             <div class="d-flex flex-wrap">
-                                <div class="col-12 mb-2 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/filsa/logo-ministerio-municipio.png') }}" alt="Ministerio de Cultura" />
+                                <div class="col-6 mb-2 text-center">
+                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-ministerio-cultura.png') }}" alt="Ministerio de Cultura" />
+                                </div>
+                                <div class="col-6 mb-2 text-center">
+                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/municipalidad-santiago.jpg') }}" alt="Municipalidad Santiago" />
                                 </div>
                             </div>
                         </div>
