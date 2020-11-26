@@ -121,10 +121,15 @@
                     </div>
                 </div>
                 <div class="custom-control custom-checkbox pb-3 mb-3">
-                    <input class="custom-control-input" type="checkbox" name="json_value" id="terms-condition-support">
+                    <input class="custom-control-input" type="checkbox" name="accept_support_terms" id="terms-condition-support">
                     <label class="custom-control-label" for="terms-condition-support">Declaro haber leído y aceptar las políticas de privacidad contenidos en los
                         <a href="{{url('terms-conditions')}}" target="_blank">Términos y Condiciones del sitio web</a>
                     </label>
+                    @error('accept_support_terms')
+                    <p class="text-danger" role="alert">
+                        <small><strong>{{ $message }}</strong></small>
+                    </p>
+                    @enderror
                 </div>
                 <div class="text-right">
                     <button class="btn btn-primary bg-light-blue btn-support" disabled type="submit">Enviar</button>
