@@ -12,8 +12,8 @@
             <p class="text-center w-100"> {{ $product->name }}</p>
             <p class="h5 text-center w-100">{{ currencyFormat($product->real_price ?? 0, 'CLP', true) }}</p>
         </div>
-        <button class="btn btn-primary btn-shadow btn-block" type="button" wire:click="addToCart">
+        {{-- <button class="btn btn-primary btn-shadow btn-block" type="button" wire:click="addToCart">
             <i class="czi-cart font-size-lg mr-2"></i>Añadir al carro
-        </button>
+        </button> --}}
     </div>
 </div>
