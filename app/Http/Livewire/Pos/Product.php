@@ -19,10 +19,18 @@ class Product extends Component
 
     public function shareProductInModal()
     {
-        $attributes = $this->product->getAttributesWithNames();
-        if (filled($attributes)) {
-            $this->emitTo('pos.product-custom-attributes', 'productShared', $this->product, $attributes);
+        if (! $this->productHasConfigurableDetail()) {
+            $this->addToCart();
+            return;
         }
+
+        $attributes = $this->product->getAttributesWithNames();
+        $this->emitTo('pos.product-custom-attributes', 'productShared', $this->product, $attributes);
+    }
+
+    public function productHasConfigurableDetail()
+    {
+        return $this->product->product_type->id == 2;
     }
 
     public function addToCart()
