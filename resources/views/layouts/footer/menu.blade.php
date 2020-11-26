@@ -74,7 +74,7 @@
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Organiza</h3>
                             <div class="d-flex flex-wrap">
-                                <div class="col-12 mb-2 text-center">
+                                <div class="col-12 mb-2 text-center mt-3">
                                     <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
                                 </div>
                             </div>
@@ -84,8 +84,11 @@
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
                             <div class="d-flex flex-wrap">
-                                <div class="col-12 mb-2 text-center">
-                                    <img class="img-fluid" src="{{ asset('img/filsa/logo-ministerio-municipio.png') }}" alt="Ministerio de Cultura" />
+                                <div class="col-6 mb-2 text-center">
+                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-ministerio-cultura.png') }}" alt="Ministerio de Cultura" />
+                                </div>
+                                <div class="col-6 mb-2 text-center">
+                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/municipalidad-santiago.jpg') }}" alt="Municipalidad Santiago" />
                                 </div>
                             </div>
                         </div>
@@ -189,7 +192,7 @@
                                 <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq') }}">Preguntas frecuentes</a></li>
                                 <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('privacy') }}">Privacidad</a></li>
                             -->
-                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('about-us') }}">Sobre nosotros</a></li>
+                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('about-us') }}">Quienes somos</a></li>
                                 <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
                                 <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ route('customer.support') }}">Servicio al cliente</a></li>
                         </ul>
