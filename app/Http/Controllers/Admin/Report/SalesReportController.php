@@ -156,9 +156,9 @@ class SalesReportController extends BaseController
                         }
                         if ($orderItem->seller->commission_enable == 1) {
                             $percentageCommission = $orderItem->seller->commission_percentage;
-                            $totalCommission = ($orderItem->sub_total + $orderItem->shipping_total) * $percentageCommission;
+                            $totalCommission += ($orderItem->sub_total + $orderItem->shipping_total) * $percentageCommission;
                         }else{
-                            $totalCommission = 0;//($orderItem->sub_total + $orderItem->shipping_total);
+                            $totalCommission += 0;//($orderItem->sub_total + $orderItem->shipping_total);
                         }
                         $totalOrder += ($orderItem->sub_total + $orderItem->shipping_total);
                     }
