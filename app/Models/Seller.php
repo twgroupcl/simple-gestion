@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Traits\CustomAttributeRelations;
+use App\Traits\CustomAttributeRelations;
 use App\Models\CommuneShippingMethod;
 use App\Scopes\CompanyBranchScope;
 use App\User;
