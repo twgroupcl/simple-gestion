@@ -142,8 +142,6 @@ class Details extends Component
         if ($this->anotherDataInvoice) {
             $dynamicRules = array_merge($dynamicRules, [
                 'invoice.uid' => ['required', new RutRule()],
-                'invoice.first_name' => 'required|min:3',
-                'invoice.last_name' => 'required|min:3',
                 'invoice.phone' => new PhoneRule('El número ingresado no es válido'),
                 'invoice.cellphone' => ['required',new PhoneRule('El número ingresado no es válido')],
                 'invoice.email' => 'required|email',
@@ -159,6 +157,11 @@ class Details extends Component
                 $dynamicRules = array_merge($dynamicRules, [
                     'invoice.business_activity_id' => 'required|exists:business_activities,id',
                     'invoice.business_name' => 'required|min:3',
+                ]);
+            } else {
+                $dynamicRules = array_merge($dynamicRules, [
+                    'invoice.first_name' => 'required|min:3',
+                    'invoice.last_name' => 'required|min:3',
                 ]);
             }
         }
@@ -177,8 +180,6 @@ class Details extends Component
 
     public function save()
     {
-
-
 
         $dynamicRules = $this->getCustomRules();
 
@@ -200,14 +201,6 @@ class Details extends Component
         } catch (\Throwable $th){ // (\Throwable $th) {
             $this->emitUp('notFinishTask');
             throw $th;
-
-
-
         }
-
-
-
-
-
     }
 }
