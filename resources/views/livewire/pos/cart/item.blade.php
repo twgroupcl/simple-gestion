@@ -24,7 +24,7 @@ $product = Product::whereId($item)->first();
                     @endforeach
                 @endif --}}
                 <div class="d-inline-block font-size-lg text-accent pt-2">
-                    {{ currencyFormat($product->real_price, 'CLP', true) }}
+                    {{ currencyFormat($product->real_price ?? 0, 'CLP', true) }}
                     <!--$154.<small>00</small>-->
                 </div>
                 {{-- <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2"
