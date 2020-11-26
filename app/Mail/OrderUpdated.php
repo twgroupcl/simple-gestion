@@ -111,15 +111,15 @@ class OrderUpdated extends Mailable
                 $this->paymentData['total'] =  currencyFormat($order->total ? $order->total : 0, 'CLP', true);
                 if ($receiver == 1) {
                     if($order->status == 3){
-                        $this->title = '¡Tu orden está completa!';
+                        $this->title = '¡Su pedido está completa!';
                     }else{
-                        $this->title = '¡Tu orden está pagada!';
+                        $this->title = '¡Su pedido está pagado!';
                     }
 
                     // “Próximamente estaremos notificando la fecha de envío” cambiar por
                     $this->shippingMessage = '';// '“*Por evento Cyber las fechas de envío podrían variar, estaremos notificando la fecha de envío”';
                 }else{
-                    $this->title = '¡Nueva orden generada!';
+                    $this->title = '¡Nuevo pedido generado!';
 
 
                 }

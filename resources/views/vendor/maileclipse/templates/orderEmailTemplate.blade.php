@@ -150,10 +150,10 @@ use App\Models\Product;
                                                 {{-- <tr style="padding-top:15px;">
                                                     <td> <br><br> </td>
                                                 </tr> --}}
-                                                <tr style="padding-top:15px;">
+                                                {{-- <tr style="padding-top:15px;">
                                                     <td  valign="top"> <img src="{{ asset($logo) }}" alt="" width="" height="" />
                                                     </td>
-                                                </tr>
+                                                </tr> --}}
                                                 {{-- <tr>
                                                     <td style="font-size: 30px; text-align: center;"><img
                                                         src="{{ asset('img/logos/filsa-logo.png') }}"
@@ -193,7 +193,7 @@ use App\Models\Product;
                                                             cellspacing="0" cellpadding="0" bgcolor="#ffffff">
                                                             <tbody>
                                                                 <tr>
-                                                                    <td class="headline">Orden #{{ $orderData['id'] }}
+                                                                    <td class="headline">Pedido #{{ $orderData['id'] }}
                                                                     </td>
                                                                     <td style="text-align: right; color:#000000; ">
                                                                         <strong>Fecha </strong>{{ $orderData['fecha'] }}
@@ -213,10 +213,9 @@ use App\Models\Product;
                                                     <td
                                                         style="text-align: left; color: #000000;">
                                                     <p>
-                                                        Estimado Cliente,<br/>
-                                                        Muchas gracias por realizar su pedido con Filsa.<br/>
-                                                        Este correo electrónico actúa como confirmación de la recepción de su pedido, verifique su dirección y los detalles del pedido.<br/>
-                                                        Para garantizar que reciba su pedido a tiempo, durante los períodos de feria no podemos cancelar ni cambiar pedidos. Consulte nuestro servicio al cliente para obtener más información.
+                                                        Estimado cliente,<br/> le confirmamos la recepción de su pedido y el respectivo pago, por favor verifique su dirección y los detalles del pedido para garantizar que reciba su despacho sin contratiempos.<br />
+                                                        Muchas gracias por su compra de libros.<br/>
+                                                        Para consultas dirigirse a página de inicio, sección: Servicio al Cliente.
                                                     </p>
 
                                                     </td>
