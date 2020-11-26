@@ -9,7 +9,8 @@ class Cart extends Component
 {
     public $products;
     protected $listeners = [
-        'add-product-cart:post' => 'addProduct'
+        'add-product-cart:post' => 'addProduct',
+        'remove-from-cart:post' => 'remove',
     ];
 
     public function mount()
@@ -23,11 +24,11 @@ class Cart extends Component
 
     public function addProduct($productId)
     {
-        if (in_array($productId, $this->products)) {
-            return;
-        }
+        $this->products[$productId] = $productId;
+    }
 
-        array_push($this->products,$productId);
-
+    public function remove($productId)
+    {
+        unset($this->products[$productId]);
     }
 }

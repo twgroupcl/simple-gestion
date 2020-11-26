@@ -13,7 +13,7 @@ $product = Product::whereId($item)->first();
             <div class="media-body pt-2">
                 <h3 class="product-title font-size-base mb-2"><a
                         href="{{ route('product', ['slug' => $product->url_key]) }}"
-                        target="_blank">{{ $product->name }}</a></h3>
+                        target="_blank">{{ $product->name }}</a><a wire:click="$emitUp('remove-from-cart:post', {{ $item }})" href="#"><i class="la la-times"></i></a></h3>
                 {{-- @if ($showAttributes && filled($product->getAttributesWithNames()))
                     @foreach ($product->getAttributesWithNames() as $attribute)
                         @if ($attribute['value'] != '* No aplica')
