@@ -170,8 +170,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="custom-control custom-checkbox pb-3 mb-3">
+                    <input class="custom-control-input" type="checkbox" id="terms-condition-register">
+                    <label class="custom-control-label" for="terms-condition-register">Declaro haber leído y aceptar las políticas de privacidad contenidos en los
+                        <a href="{{url('terms-conditions')}}" target="_blank">Términos y Condiciones del sitio web</a>
+                    </label>
+                </div>
                 <div class="text-right">
-                    <button class="btn btn-primary bg-light-blue" type="submit"><i class="czi-user mr-2 ml-n1"></i>Registrar</button>
+                    <button class="btn btn-primary bg-light-blue btn-register" type="submit" disabled><i class="czi-user mr-2 ml-n1"></i>Registrar</button>
                 </div>
             </form>
         </div>

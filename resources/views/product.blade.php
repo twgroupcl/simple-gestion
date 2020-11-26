@@ -75,6 +75,7 @@
                                 @else
                                     <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($product->price, defaultCurrency(), true) }}</div>
                                 @endif
+                                <small>Precio no incluye costos de envío. Estos se definirán al final de la compra.</small>
                             
                                 <div class="position-relative mr-n4 mb-3">
                                     @if ($product->haveSufficientQuantity(1))

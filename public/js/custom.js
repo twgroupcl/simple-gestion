@@ -21,5 +21,38 @@ $(function(){
         $('.policy-text').addClass('d-none')
     });
 
+    $('#nexStepCheckout').prop("disabled", true);
     
+    $('#terms-condition-checkout').on('change',function() {
+        if( $(this).is(':checked') && $('#terms-condition-prolibro').is(':checked') ) {
+            $('#nexStepCheckout').removeAttr("disabled");
+        } else {
+            $('#nexStepCheckout').prop("disabled", true);
+
+        }
+    });
+    $('#terms-condition-prolibro').on('change',function() {
+        if( $(this).is(':checked') && $('#terms-condition-checkout').is(':checked')) {
+            $('#nexStepCheckout').removeAttr("disabled");
+        } else {
+            $('#nexStepCheckout').prop("disabled", true);
+
+        }
+    });
+    $('#terms-condition-register').on('change',function() {
+        if( $(this).is(':checked') ) {
+            $('.btn-register').removeAttr("disabled");
+        } else {
+            $('.btn-register').prop("disabled", true);
+
+        }
+    });
+    $('#terms-condition-support').on('change',function() {
+        if( $(this).is(':checked') ) {
+            $('.btn-support').removeAttr("disabled");
+        } else {
+            $('.btn-support').prop("disabled", true);
+
+        }
+    });
 });
