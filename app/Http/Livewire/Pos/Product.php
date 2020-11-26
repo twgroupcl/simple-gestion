@@ -7,7 +7,6 @@ use Livewire\Component;
 class Product extends Component
 {
     public $product;
-    public $isInCart = false;
 
     protected $listeners = [
         'addToCart'=> 'addToCart'
@@ -36,7 +35,6 @@ class Product extends Component
 
     public function addToCart()
     {
-        $this->isInCart = true;
         $this->emit('add-product-cart:post', $this->product->id);
     }
 }
