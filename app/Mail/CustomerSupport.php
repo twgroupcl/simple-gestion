@@ -37,7 +37,6 @@ class CustomerSupport extends Mailable
     public function build()
     {
         return $this->subject('¡Tu solicitud ha sido recibida!')
-                    ->cc(env('MAIL_FILSA_ADDRESS'))
                     ->view('maileclipse::templates.customerSupport');
     }
 }

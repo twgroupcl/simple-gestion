@@ -45,6 +45,10 @@ class Details extends Component
     public function mount()
     {
         $this->is_business = $this->cart->is_company != 0;
+        $arrJsonValues = [
+            'accept_checkout_terms' => 'yes',
+            'accept_checkout_terms_prolibro' => 'yes'
+        ];
         $this->data = [
             'uid' => $this->cart->uid,
             'first_name' => $this->cart->first_name,
@@ -58,10 +62,9 @@ class Details extends Component
             'address_office' => $this->cart->address_office,
             'business_name' => $this->cart->business_name,
             'receiver_name' => $this->cart->receiver_name,
-            'shipping_details' => $this->cart->shipping_details
+            'shipping_details' => $this->cart->shipping_details,
+            'json_value' => json_encode($arrJsonValues)
         ];
-
-
 
         $invoice = [];
         //this variable can be simplified @todo

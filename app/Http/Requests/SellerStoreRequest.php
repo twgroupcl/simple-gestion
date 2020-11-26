@@ -78,6 +78,7 @@ class SellerStoreRequest extends FormRequest
             'web' => 'nullable|string',
             'seller_category_id' => 'required|exists:seller_categories,id',
             'notes' => 'nullable|string',
+            'description' => 'nullable|max:255',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
 
@@ -133,6 +134,7 @@ class SellerStoreRequest extends FormRequest
             'uid' => 'RUT',
             'name' => 'Razón social',
             'visible_name' => 'Nombre visible',
+            'description' => 'Reseña', 
             'email' => 'Email',
             'phone' => 'Teléfono',
             'cellphone' => 'Celular',
@@ -187,6 +189,7 @@ class SellerStoreRequest extends FormRequest
     {
         return [
             '*.required*' => 'Es necesario completar el campo :attribute.',
+            '*.max' => 'El campo :attribute solo puedo contener un maximo de  :max caracteres.',
             '*.string' => 'El campo :attribute debe ser texto',
             '*.date' => 'El campo :attribute debe ser de tipo fecha',
             '*.unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',

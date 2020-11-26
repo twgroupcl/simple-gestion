@@ -99,25 +99,28 @@
                 </div>
             </div>
             <!-- Filter by Brand-->
-            <div class="widget cz-filter mb-4 pb-4 border-bottom">
-                <h3 class="widget-title">Editorial</h3>
-                <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
-                    @foreach($brands as $key => $brand)                    
-                        <li class="cz-filter-item d-flex justify-content-between align-items-center">
-                            <div class="custom-control custom-checkbox">
-                                <input
-                                    wire:change="filter"
-                                    class="custom-control-input" 
-                                    wire:model="filterOptions.brand.{{ $key }}" 
-                                    type="checkbox" 
-                                    value="{{$brand->id}}" 
-                                    id="{{$brand->id}}">
-                                <label class="custom-control-label cz-filter-item-text"  for="{{$brand->id}}">{{$brand->name}}</label>
-                            </div>{{-- <span class="font-size-xs text-muted">{{$brand->products->count()}}</span> --}}
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+            <!--
+
+                <div class="widget cz-filter mb-4 pb-4 border-bottom">
+                    <h3 class="widget-title">Editorial</h3>
+                    <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
+                        @foreach($brands as $key => $brand)                    
+                            <li class="cz-filter-item d-flex justify-content-between align-items-center">
+                                <div class="custom-control custom-checkbox">
+                                    <input
+                                        wire:change="filter"
+                                        class="custom-control-input" 
+                                        wire:model="filterOptions.brand.{{ $key }}" 
+                                        type="checkbox" 
+                                        value="{{$brand->id}}" 
+                                        id="{{$brand->id}}">
+                                    <label class="custom-control-label cz-filter-item-text"  for="{{$brand->id}}">{{$brand->name}}</label>
+                                </div>{{-- <span class="font-size-xs text-muted">{{$brand->products->count()}}</span> --}}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            -->
             <!-- Filter by attributes -->
             <form action="">
             @foreach($attributes as $attribute)

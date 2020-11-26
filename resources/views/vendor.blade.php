@@ -37,7 +37,7 @@
             <aside class="col-lg-4">
                 <div class="cz-sidebar-static h-100 border-right">
                     @if($seller->description)
-                        <h6>Descripción o reseña de la empresa</h6>
+                        <h6>La empresa</h6>
                         <p class="font-size-ms text-muted">{{$seller->description}}</p>
                     @endif
                     <!--
@@ -78,11 +78,6 @@
                         <br>
                         <br>
                     @endif
-
-                    @if($seller->user)
-                        <h6>Nombre de  Encargado</h6>
-                        <p class="font-size-ms text-muted">{{$seller->user->name}}</p>
-                    @endif
                     
                     @if($seller->contacts_data)
                         <h6>Redes Sociales</h6>
@@ -93,21 +88,6 @@
                         <br>
                     @endif
                   
-                    @if($seller->phone)
-                        <h6>Teléfono</h6>
-                        <p class="font-size-ms text-muted">{{$seller->phone}}</p>
-                    @endif
-                    
-                    @if($seller->cellphone)
-                        <h6>Teléfono Celular</h6>
-                        <p class="font-size-ms text-muted">{{$seller->cellphone}}</p>
-                    @endif
-
-                    @if($seller->email)
-                        <h6>Correo Electrónico</h6>
-                        <p class="font-size-ms text-muted">{{$seller->email}}</p>
-                    @endif
-
                     @if($seller->meta_title)
                         <h6>Título para buscadores</h6>
                         <p class="font-size-ms text-muted">{{$seller->meta_title}}</p>

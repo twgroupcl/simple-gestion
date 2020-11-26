@@ -622,7 +622,7 @@ class SellerCrudController extends CrudController
         CRUD::addField([
             'name' => 'banner',
             'type' => 'image',
-            'label' => 'Banner',
+            'label' => 'Banner (Tamaño recomendado: 1200 * 600)',
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-12'
@@ -633,7 +633,8 @@ class SellerCrudController extends CrudController
         CRUD::addField([
             'name' => 'description',
             'type'  => 'textarea',
-            'label' => 'Información de la tienda',
+            'hint' => 'Máximo de 255 caracteres (incluyendo espacios en blanco)',
+            'label' => 'Reseña',
             'tab' => 'SEO',
         ]);
 

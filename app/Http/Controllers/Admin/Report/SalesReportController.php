@@ -171,7 +171,7 @@ class SalesReportController extends BaseController
 
                 foreach ($sellers as $sellerId => $seller) {
                     $itemSale['id'] = $order->id;
-                    $itemSale['seller'] = $seller->sellerName;
+                    $itemSale['exhibitor'] = $seller->sellerName;
                     $itemSale['created_at'] = $order->created_at;
                     $itemSale['payment'] = $orderPayment;
                     $itemSale['total'] = $seller->totalOrder;

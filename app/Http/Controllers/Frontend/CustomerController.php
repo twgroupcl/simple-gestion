@@ -38,8 +38,15 @@ class CustomerController extends Controller
             str_replace('.', '', $request['uid'])
         );
 
-
-        Customer::create($request->all());
+        $customerRegister = Customer::create($request->all());
+        $customer = Customer::where('email',$customerRegister->email)->first();
+        if($customer){
+            $arrJsonValues = [
+                'accept_register_terms' => 'yes'
+            ];
+            $customer->json_value = json_encode($arrJsonValues);
+            $customer->save();
+        }
 
         //@todo: debo mostrar los errores de contraseña
 
@@ -270,11 +277,21 @@ class CustomerController extends Controller
 
     public function createIssue(CustomerSupportRequest $request)
     {
+        $cc = DB::table('settings')->where('key', 'administrator_email')->first();
+        $cc = filled($cc)
+            ? explode(';', $cc->value)
+            : [];
+
         $requestValidated = $request->validated();
         $ticket = CustomerSupport::create($requestValidated);
+        $arrJsonValues = [
+            'accept_support_terms' => 'yes'
+        ];
+        $ticket->json_value = json_encode($arrJsonValues);
+        $ticket->save();
 
         Mail::to($request->email)
-            ->cc([env('MAIL_FILSA_ADDRESS')])
+            ->cc($cc)
             ->send(new MailCustomerSupport());
 
         return view('customer.support', ['ticket' => $ticket->id]);

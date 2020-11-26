@@ -92,7 +92,7 @@
                     @if (!empty($activeStep['next-button']))
                         <div class="w-50 pl-2">
                             {{-- @if ($loading || !$canContinue) disabled  @endif --}}
-                            <button class="btn btn-primary btn-block bg-light-blue"
+                            <button class="btn btn-primary btn-block bg-light-blue" id="nexStepCheckout"
                             @if ($blockButton) disabled @endif
                              wire:click="nextStep()" >
                     <span class="d-none d-sm-inline">
