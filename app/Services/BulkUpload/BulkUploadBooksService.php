@@ -2,6 +2,7 @@
 
 namespace App\Services\BulkUpload;
 
+use Exception;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
@@ -237,7 +238,7 @@ class BulkUploadBooksService {
     {
         $productsModelPrepared = collect($data)->map(function ($productData) use ($sellerId, $companyId) {
 
-            $brandId = ProductBrand::where('name', $productData['editorial'])->first()->id;
+            $brandId = ProductBrand::where('name', $productData['editorial'])->first()->id ?? null;
             $classId = ProductClass::where('code', self::PRODUCT_CLASS_CODE)->first()->id;
             $categoryId = ProductCategory::where('name', $productData['category'])->first()->id;
 
