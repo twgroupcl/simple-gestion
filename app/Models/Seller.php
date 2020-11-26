@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Traits\CustomAttributeRelations;
+use App\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Freshwork\ChileanBundle\Rut;
@@ -233,9 +233,9 @@ class Seller extends Model
     public function setPasswordAttribute($value)
     {
         if ($value && $value != "") {
-            $this->attributes['password'] = Hash::make(strtoupper(
-                str_replace('.', '', $value)
-            ));
+            $this->attributes['password'] = Hash::make(
+                $value
+            );
         }
     }
 
