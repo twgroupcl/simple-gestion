@@ -129,12 +129,10 @@ class OrderCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'total',
-            'type' => 'number',
             'label' => 'Total',
-            'dec_point' => ',',
-            'thousands_sep' => '.',
-            'decimals' => 0,
-            'prefix' => '$',
+            'type'  => 'model_function',
+            'function_name' => 'getTotal',
+            'function_parameters' => [$this->admin, $this->userSeller],
         ]);
 
         CRUD::addColumn([
