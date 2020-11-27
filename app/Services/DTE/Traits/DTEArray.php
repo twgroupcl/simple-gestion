@@ -64,6 +64,7 @@ trait DTEArray
                //     'TipoCodigo' => 'INT1',
                //     'VlrCodigo' => 'dte-cert'
                // ],
+               // 'UnmdItem' => 'Hora' // Unidad de medida
                 'NmbItem' => $item->name,
                 'QtyItem' => $item->qty,
                 'PrcItem' => isset($item->custom_price) ? 
