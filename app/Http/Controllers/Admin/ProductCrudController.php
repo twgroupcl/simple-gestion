@@ -563,6 +563,7 @@ class ProductCrudController extends CrudController
             'name'  => 'images_json',
             'label' => 'Imágenes',
             'type'  => 'repeatable',
+            'hint' => 'Los formatos permitidos son PNG y JPG. Las dimensiones deben ser menores o iguales a 1.024 x 1.024 px',
             'fields' => [
                 [
                     'label' => "Imagen",
