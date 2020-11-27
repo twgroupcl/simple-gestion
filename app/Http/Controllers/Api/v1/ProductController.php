@@ -24,7 +24,11 @@ class ProductController extends Controller
     
     public function show(Request $request)
     {
-        $product = Product::with('categories')->find($request['id']);
+        $product = Product::with('categories')  
+                        ->with('brand')
+                        ->with('product_class')
+                        ->with('inventories') 
+                        ->find($request['id']);
 
         if (!$product) return response()->json([ 
             'status' => 'error', 
@@ -41,7 +45,8 @@ class ProductController extends Controller
     {
         $product = Product::with('categories')
                         ->with('brand')
-                        ->with('product_class')                
+                        ->with('product_class')
+                        ->with('inventories')                
                         ->where('sku', $request['sku'])->first();
 
         if (!$product) return response()->json([

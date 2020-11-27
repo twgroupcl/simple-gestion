@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Validator;
 class ProductClassController extends Controller
 {
     
-    public function store(Request $request) {
+    public function store(Request $request) 
+    {
 
         $user = Auth::user();
 
