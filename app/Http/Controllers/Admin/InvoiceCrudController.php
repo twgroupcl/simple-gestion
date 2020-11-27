@@ -21,6 +21,8 @@ class InvoiceCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    protected $seller;
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
@@ -31,9 +33,15 @@ class InvoiceCrudController extends CrudController
         CRUD::setModel(\App\Models\Invoice::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/invoice');
         CRUD::setEntityNameStrings('invoice', 'invoices');
+        $this->seller = Seller::where('user_id', backpack_user()->id)->first();
         if (! backpack_user()->can('showAllInvoices')) {
-            $seller = Seller::where('user_id', backpack_user()->id)->first();
-            $this->crud->addClause('where', 'seller_id', $seller->id);
+            $this->crud->addClause('where', 'seller_id', $this->seller->id);
+        }
+
+        $this->crud->denyAccess('show');
+
+        if ($this->seller->is_approved !== Seller::STATUS_ACTIVE) {
+            $this->crud->denyAccess(['create', 'update', 'delete']);
         }
     }
 
@@ -157,23 +165,24 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        if (backpack_user()->hasRole('Vendedor Marketplace')) {
-            //CRUD::addField([
-            //    'label' => 'Vendedor',
-            //    'name' => 'seller_id',
-            //    'type' => 'select2',
-            //    'placeholder' => 'Selecciona un vendedor',
-            //    'model' => 'App\Models\Seller',
-            //    'attribute' => 'name',
-            //    'wrapper' => [
-            //        'class' => 'form-group col-md-6',
-            //    ],
-            //    'tab' => 'General',
-            //    'options' => (function ($query) {
-            //        $seller = Seller::where('user_id', backpack_user()->id)->first();
-            //        return $query->where('seller_id', $seller->id)->id;
-            //    })
-            //]);
+        if (backpack_user()->hasRole('Vendedor marketplace')) {
+            $sellerId = $this->seller->id;
+            CRUD::addField([
+                'label' => 'Vendedor',
+                'name' => 'seller_id',
+                'type' => 'select2',
+                'placeholder' => 'Selecciona un vendedor',
+                'model' => 'App\Models\Seller',
+                'attribute' => 'name',
+                'default' => $sellerId, 
+                'wrapper' => [
+                    'class' => 'form-group col-md-6',
+                ],
+                'tab' => 'General',
+                'options' => (function ($query) use($sellerId) {
+                    return $query->where('id', $sellerId)->get();
+                })
+            ]);
 
         } else {
             CRUD::addField([

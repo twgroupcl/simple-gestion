@@ -2,15 +2,21 @@
 
 namespace App\Policies;
 
-use App\Models\Invoice;
+use App\Models\{Invoice, Seller};
 use App\User;
 
 class InvoicePolicy
 {
-    //public function before($user, $ability)
-    //{
-    //    return $user->hasRole('Super admin') ? null : null;
-    //}
+    public function before($user, $ability)
+    {
+        if ($user->hasRole('Vendedor marketplace')) {
+            $seller = Seller::where('user_id', $user->id)->first();
+            if ($seller->is_approved != Seller::STATUS_ACTIVE) {
+                return false;
+            }
+        }
+        return $user->hasRole('Super admin') ? null : null;
+    }
 
     /**
      * execute for update event
@@ -19,6 +25,15 @@ class InvoicePolicy
     {
         //return $user->id === $post->user_id;
         return true;
+    }
+
+    public function manageInvoice(User $user, Invoice $invoice) 
+    {
+        if ($user->hasRole('Vendedor marketplace') && $invoice->seller->user_id === $user->id ) {
+            return true;
+        }
+
+        return false;
     }
     
     public function canCreateTempDocument(User $user, Invoice $invoice) {

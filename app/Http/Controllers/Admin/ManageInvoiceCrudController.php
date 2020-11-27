@@ -8,6 +8,8 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Invoice, InvoiceType, CustomerAddress};
 use App\Services\DTE\DTEService;
+use Illuminate\Support\Facades\Gate;
+
 /**
  * Class InvoiceCrudController
  * @package App\Http\Controllers\Admin
@@ -17,6 +19,9 @@ class ManageInvoiceCrudController extends CrudController
 {
     public function index(Invoice $invoice)
     {
+        //@todo check permissions
+        Gate::authorize('manageInvoice', $invoice); 
+            
         return view('invoice.manage_invoice.index', compact('invoice'));
     }
 
