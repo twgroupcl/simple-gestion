@@ -46,6 +46,8 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.products.store');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
+    Route::get('/products/sku/{sku}', 'Api\v1\ProductController@showBySku')
+        ->name('api.products.showBySku');
 
 
     // Product Brand

@@ -48,6 +48,9 @@ class ProductRequest extends FormRequest
 
             'categories' => 'array',
             'categories.*' => 'numeric|exists:product_categories,id',
+
+            'categories_code' => 'array',
+            'categories_code.*' => 'exists:product_categories,code',
             
             
 
@@ -105,9 +108,12 @@ class ProductRequest extends FormRequest
             'company_id' => 'company_id',
             'product_class_id' => 'product_class_id',
             'product_class_code' => 'product_class_code',
+            'product_brand_id' => 'product_brand_id',
+            'product_brand_code' => 'product_brand_code',
             'super_attributes' => 'super_attributes',
             'categories' => 'categories',
-
+            'categories_code' => 'categories_code', 
+    
             'warehouse' => 'warehouse',
             'warehouse_array' => 'warehouse',
             'warehouse_validation.*.code' => 'warehouse.*.code',
@@ -123,8 +129,8 @@ class ProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'product_class_code.required_without' => 'Si el campo product_class_id no esta presente, debe indicar el campo product_class_id',
-            'product_class_id.required_without' => 'Si el campo product_class_code no esta presente, debe indicar el campo product_class_code',
+            'product_class_code.required_without' => 'Si el campo product_class_id no esta presente, debe indicar el campo product_class_code',
+            'product_class_id.required_without' => 'Si el campo product_class_code no esta presente, debe indicar el campo product_class_id',
             '*.required' => 'Es necesario completar el campo :attribute.',
             '*.*.*.required' => 'Es necesario completar el campo :attribute.',
             '*.exists' => 'El id del atributo :attribute es invalido o no existe',

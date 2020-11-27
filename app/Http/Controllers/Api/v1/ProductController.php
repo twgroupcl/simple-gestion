@@ -34,6 +34,24 @@ class ProductController extends Controller
         ], 200);
     }
 
+    public function showBySku(Request $request)
+    {
+        $product = Product::with('categories')
+                        ->with('brand')
+                        ->with('product_class')                
+                        ->where('sku', $request['sku'])->first();
+
+        if (!$product) return response()->json([
+            'status' => 'error', 
+            'message' => 'El SKU del producto indicado no existe'
+        ],  404);
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $product,
+        ], 200);
+    }
+
 
     public function store(ProductRequest $request)
     {

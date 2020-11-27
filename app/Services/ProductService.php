@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Models\ProductBrand;
 use App\Models\ProductClass;
+use App\Models\ProductCategory;
 use App\Models\ProductClassAttribute;
 use App\Models\ProductInventorySource;
 use Illuminate\Database\QueryException;
@@ -37,6 +38,15 @@ class ProductService
         if (!$classId) {
             $class = ProductClass::where('code', $request['product_class_code'])->first();
             $classId = $class ? $class->id : null;
+        }
+
+        $categoriesId = $request['categories'];
+        if (!$categoriesId && $request['categories_code']) {
+            $categoriesId = [];
+            foreach ($request['categories_code'] as $cat) {
+                $category = ProductCategory::where('code', $cat)->first();
+                if ($category) $categoriesId[] = $category->id;
+            }
         }
 
         $warehouses = json_decode($request['warehouse']);
@@ -160,7 +170,7 @@ class ProductService
             }
 
             // Save categories
-            $product->categories()->attach($request['categories']);
+            $product->categories()->attach($categoriesId);
             
             // Save Shipping Methods
             $product->shipping_methods()->attach($warehouse->shipping_type);
