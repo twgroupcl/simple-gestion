@@ -55,7 +55,7 @@ class InvoiceObserver
                 \Alert::add('danger', 'No es pudo cambiar el documento')->flash();
                 return false;
             }
-            
+
             \Alert::add('sucess', 'El documento temporal se ha eliminado, deberá enviarlo nuevamente.')->flash();
             $invoice->toDraft();
         }
@@ -73,13 +73,13 @@ class InvoiceObserver
     }
 
     public function syncInvoiceItems($invoice, $options = []) {
-    
+
         if ( !empty($invoice->items_data) ) {
 
             InvoiceItem::where('invoice_id', $invoice->id)->delete();
-            
+
             $items = is_string($invoice->items_data) ? json_decode($invoice->items_data, true) : $invoice->items_data;
-            
+
             foreach($items as &$item) {
 
                 // Sanitize numbers
@@ -99,7 +99,7 @@ class InvoiceObserver
                     $item['discount_percent'] = $item['discount'];
                     $item['discount_total'] = $item['discount_percent'] / 100 * ($item['price'] * $item['qty']);
                 }
-                
+
                 $item['sub_total'] = $item['price'] * $item['qty'];
 
                 if ($item['is_custom']) {
@@ -126,7 +126,7 @@ class InvoiceObserver
 
                     //if ( isset($options['set_item_status']) ) $props['item_status'] = $options['set_item_status'];
 
-                    InvoiceItem::create($props); 
+                    InvoiceItem::create($props);
 
                 } else {
 
@@ -144,7 +144,7 @@ class InvoiceObserver
                         'height' => $product->height,
                         'depth' => $product->depth,
                         'width' => $product->width,
-                        'sub_total' => $item['sub_total'], 
+                        'sub_total' => $item['sub_total'],
                         'is_custom' => false,
                         'parent_id' => $product->parent_id,
                         'seller_id' => $invoice->seller_id,
@@ -161,9 +161,9 @@ class InvoiceObserver
 
                     //if ( isset($options['set_item_status']) ) $props['item_status'] = $options['set_item_status'];
 
-                    InvoiceItem::create($props); 
+                    InvoiceItem::create($props);
                 }
-                
+
             }
 
             // @todo Check this later
