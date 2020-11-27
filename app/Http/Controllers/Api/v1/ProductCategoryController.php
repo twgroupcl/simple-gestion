@@ -82,6 +82,22 @@ class ProductCategoryController extends Controller
         ], 200);
     }
 
+    public function showByCode(Request $request)
+    {
+        $productCategory = ProductCategory::where('code', $request['code'])->first();
+
+        if (!$productCategory) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'La categoria indicada no existe'
+        ],  404);
+
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $productCategory,
+        ], 200);
+    }
+
     public function all(Request $request)
     {
         $ProductCategories = ProductCategory::all();

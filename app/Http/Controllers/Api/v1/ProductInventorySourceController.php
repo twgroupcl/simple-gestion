@@ -101,4 +101,20 @@ class ProductInventorySourceController extends Controller
             'data' => $productInventorySource,
         ], 200);
     }
+
+    public function showByCode(Request $request)
+    {
+        $productInventorySource = ProductInventorySource::where('code', $request['code'])->first();
+
+        if (!$productInventorySource) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'El warehouse indicado no existe'
+        ],  404);
+
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $productInventorySource,
+        ], 200);
+    }
 }

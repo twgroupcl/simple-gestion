@@ -71,6 +71,22 @@ class ProductBrandController extends Controller
         ], 200);
     }
 
+    public function showByCode(Request $request)
+    {
+        $productBrand = ProductBrand::where('code', $request['code'])->first();
+
+        if (!$productBrand) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'La marca de producto no existe'
+        ],  404);
+
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $productBrand,
+        ], 200);
+    }
+
     public function all(Request $request)
     {
         $productBrands = ProductBrand::all();
