@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\ProductBrand;
 use App\Models\ProductClass;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -22,6 +23,7 @@ class ProductClassController extends Controller
             'name' => 'required',
             'code' => 'required|unique:product_classes,code',
             'category_id' => 'exists:product_categories,id',
+            'category_code' => 'exists:product_categories,code',
             'status' => 'boolean',
         ]);
       
@@ -32,11 +34,17 @@ class ProductClassController extends Controller
           ], 400);
         }
         
+        $categoryId = $request['category_id'];
+        
+        if (!$categoryId && $request['category_code']) {
+            $categoryId = ProductCategory::where('code', $request['category_code'])->first()->id;
+        }
+        
         try {
             $productClass  = ProductClass::create([
                 'name' => $request['name'],
                 'code' => $request['code'],
-                'category_id' => $request['category_id'],
+                'category_id' => $categoryId,
                 'status' => $request['status'] ?? 1,
                 'company_id' => $user->companies->first()->id,
             ]);
