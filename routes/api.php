@@ -45,11 +45,14 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/products', 'Api\v1\ProductController@store')
         ->middleware(['auth.jwt', 'permission:product.create'])
         ->name('api.products.store');
+    Route::delete('/products/{warehouse}/{sku}', 'Api\v1\ProductController@delete')
+        ->middleware(['auth.jwt', 'permission:product.delete'])
+        ->name('api.products.delete');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
     Route::get('/products/sku/{sku}', 'Api\v1\ProductController@showBySku')
         ->name('api.products.show-by-sku');
-
+    
 
     // Product Brand
     Route::post('/product-brands', 'Api\v1\ProductBrandController@store')
