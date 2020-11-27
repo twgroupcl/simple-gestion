@@ -156,20 +156,39 @@ class InvoiceCrudController extends CrudController
             ],
             'tab' => 'General',
         ]);
-        
-        CRUD::addField([
-            'label' => 'Vendedor',
-            'name' => 'seller_id',
-            'type' => 'select2',
-            'placeholder' => 'Selecciona un vendedor',
-            'model' => 'App\Models\Seller',
-            'attribute' => 'name',
-            'wrapper' => [
-                'class' => 'form-group col-md-6',
-            ],
-            'tab' => 'General',
-        ]);
 
+        if (backpack_user()->hasRole('Vendedor Marketplace')) {
+            //CRUD::addField([
+            //    'label' => 'Vendedor',
+            //    'name' => 'seller_id',
+            //    'type' => 'select2',
+            //    'placeholder' => 'Selecciona un vendedor',
+            //    'model' => 'App\Models\Seller',
+            //    'attribute' => 'name',
+            //    'wrapper' => [
+            //        'class' => 'form-group col-md-6',
+            //    ],
+            //    'tab' => 'General',
+            //    'options' => (function ($query) {
+            //        $seller = Seller::where('user_id', backpack_user()->id)->first();
+            //        return $query->where('seller_id', $seller->id)->id;
+            //    })
+            //]);
+
+        } else {
+            CRUD::addField([
+                'label' => 'Vendedor',
+                'name' => 'seller_id',
+                'type' => 'select2',
+                'placeholder' => 'Selecciona un vendedor',
+                'model' => 'App\Models\Seller',
+                'attribute' => 'name',
+                'wrapper' => [
+                    'class' => 'form-group col-md-6',
+                ],
+                'tab' => 'General',
+            ]);
+        }
 
         CRUD::addField([
             'label' => 'Número referencia',
