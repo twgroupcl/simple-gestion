@@ -714,7 +714,7 @@ class Product extends Model
 
     public function setPriceAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['price'] = $value;
 
             return true;
@@ -725,7 +725,7 @@ class Product extends Model
 
     public function setSpecialPriceAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['special_price'] = null;
 
             return true;
@@ -736,7 +736,7 @@ class Product extends Model
 
     public function setCostAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['cost'] = null;
 
             return true;
@@ -747,7 +747,7 @@ class Product extends Model
 
     public function setWidthAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['width'] = null;
 
             return true;
@@ -758,7 +758,7 @@ class Product extends Model
 
     public function setHeightAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['height'] = null;
 
             return true;
@@ -769,7 +769,7 @@ class Product extends Model
 
     public function setDepthAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['depth'] = null;
 
             return true;
@@ -780,7 +780,7 @@ class Product extends Model
 
     public function setWeightAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['weight'] = null;
 
             return true;
