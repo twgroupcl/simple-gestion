@@ -583,7 +583,7 @@ class SellerCrudController extends CrudController
             'label' => 'Slug',
             'tab' => 'SEO',
             'prefix' => 'https://www.filsavirtual.cl/shop/',
-            'hint' => 'Esta sera la URL para acceder a los libros de tu libreria',
+            'hint' => 'Esta sera el enlace que los visitantes pueden utilizar para acceder a los libros de tu libreria',
             'wrapper' => [
                 'class' => 'form-group col-md-12'
             ],
