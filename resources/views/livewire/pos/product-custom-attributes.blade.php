@@ -22,9 +22,31 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        @foreach ($product->getAttributesWithNames() as $attribute)
-                            <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">{{ $attribute['name'] }}:</span><span>{{ $attribute['value'] }}</span></li>
-                        @endforeach
+                        <div class="col-lg-12 pt-4 pt-lg-0">
+                            <div class="product-details ml-auto pb-3">
+
+
+
+                                {{-- Price --}}
+                                @if ($selectedChildrenId)
+                                    @if ($currentProduct->special_price === $currentProduct->real_price)
+                                    <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($currentProduct->special_price ?? 0, defaultCurrency(), true) }}</span>
+                                        <del class="text-muted font-size-lg mr-3">{{ currencyFormat($currentProduct->price ?? 0, defaultCurrency(), true) }}</del>
+                                        <br>
+                                        <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                                    </div>
+                                    @else
+                                        <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price ?? 0, defaultCurrency(), true) }}</div>
+                                    @endif
+                                @else
+                                    <div class="h3 font-weight-normal text-accent mb-1 mr-1">Desde {{currencyFormat($currentPrice, 'CLP', true) }}</div>
+                                    @if ($parentProduct->has_special_price)
+                                        <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
+                                    @endif
+                                @endif
+
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">

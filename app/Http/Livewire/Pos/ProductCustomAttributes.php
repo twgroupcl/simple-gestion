@@ -12,17 +12,22 @@ class ProductCustomAttributes extends Component
     ];
 
     public $product;
+    public $parentProduct;
     public $attributes;
+    public $options = [];
+    public $selectedChildrenId;
+    public $currentPrice;
 
     public function render()
     {
         return view('livewire.pos.product-custom-attributes');
     }
 
-    public function setProductDetailsInModal(Product $product, $attributes)
+    public function setProductDetailsInModal(Product $product, $currentPrice)
     {
-        $this->attributes = $attributes;
         $this->product = $product;
+        $this->parentProduct = $product;
+        $this->currentPrice = $currentPrice;
         $this->dispatchBrowserEvent('showModal');
     }
 }
