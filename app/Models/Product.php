@@ -720,7 +720,7 @@ class Product extends Model
             return true;
         }
 
-        $this->attributes['price'] = sanitizeNumber($value);
+        $this->attributes['price'] = $this->sanitizeNumber($value);
     }
 
     public function setSpecialPriceAttribute($value)
@@ -731,7 +731,7 @@ class Product extends Model
             return true;
         }
 
-        $this->attributes['special_price'] = sanitizeNumber($value);
+        $this->attributes['special_price'] = $this->sanitizeNumber($value);
     }
 
     public function setCostAttribute($value)
@@ -742,7 +742,7 @@ class Product extends Model
             return true;
         }
 
-        $this->attributes['cost'] = sanitizeNumber($value);
+        $this->attributes['cost'] = $this->sanitizeNumber($value);
     }
 
     public function setWidthAttribute($value)
@@ -753,7 +753,7 @@ class Product extends Model
             return true;
         }
 
-        $this->attributes['width'] = sanitizeNumber($value);
+        $this->attributes['width'] = $this->sanitizeNumber($value);
     }
 
     public function setHeightAttribute($value)
@@ -764,7 +764,7 @@ class Product extends Model
             return true;
         }
 
-        $this->attributes['height'] = sanitizeNumber($value);
+        $this->attributes['height'] = $this->sanitizeNumber($value);
     }
 
     public function setDepthAttribute($value)
@@ -775,7 +775,7 @@ class Product extends Model
             return true;
         }
 
-        $this->attributes['depth'] = sanitizeNumber($value);
+        $this->attributes['depth'] = $this->sanitizeNumber($value);
     }
 
     public function setWeightAttribute($value)
@@ -786,6 +786,14 @@ class Product extends Model
             return true;
         }
 
-        $this->attributes['weight'] = sanitizeNumber($value);
+        $this->attributes['weight'] = $this->sanitizeNumber($value);
+    }
+
+    function sanitizeNumber($number)
+    {
+        //$number = str_replace('.', '', $number);
+        $number = str_replace(',', '.', $number);
+
+        return $number;
     }
 }

@@ -10,7 +10,7 @@ use App\Models\BankAccountType;
 use App\Models\CustomerSegment;
 use App\Models\BusinessActivity;
 use App\Http\Requests\CustomerRequest;
-use App\Http\Traits\HasCustomAttributes;
+use App\Traits\HasCustomAttributes;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -454,7 +454,7 @@ class CustomerCrudController extends CrudController
         ]);
 
         if($this->crud->getCurrentEntry()->subscription_data){
-        
+
             CRUD::addField([
                 'name' => 'plan_id',
                 'label' => 'Plan',
@@ -474,7 +474,7 @@ class CustomerCrudController extends CrudController
                 'fake'     => true,
                 'store_in' => 'subscription_data'
             ]);
-    
+
             CRUD::addField([
                 'name' => 'price',
                 'label' => 'Precio',
@@ -486,7 +486,7 @@ class CustomerCrudController extends CrudController
                 'fake'     => true,
                 'store_in' => 'subscription_data'
             ]);
-    
+
             CRUD::addField([
                 'name' => 'start_date',
                 'label' => 'Fecha de Inicio',
@@ -497,7 +497,7 @@ class CustomerCrudController extends CrudController
                 'fake'     => true,
                 'store_in' => 'subscription_data'
             ]);
-    
+
             CRUD::addField([
                 'name' => 'end_date',
                 'label' => 'Fecha de Fin',
@@ -511,7 +511,7 @@ class CustomerCrudController extends CrudController
                 'store_in' => 'subscription_data'
             ]);
         }else{
-            CRUD::addField([  
+            CRUD::addField([
                 'name'  => 'no_susbscription',
                 'type'  => 'custom_html',
                 'value' => '<h4 class="text-center mt-3">No posee subscripción a un plan.</h4>',

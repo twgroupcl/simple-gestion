@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Seller;
 use App\Models\Commune;
 use App\Cruds\BaseCrudFields;
+use App\Models\CommuneShippingMethod;
 use App\Http\Requests\CommuneShippingMethodRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -34,6 +35,8 @@ class CommuneShippingMethodCrudController extends CrudController
         CRUD::setEntityNameStrings('configuracion de envio', 'metodos de envio');
 
         $this->crud->denyAccess('show');
+        $this->crud->enableDetailsRow();
+        
         $this->admin = false;
         $this->userSeller = null;
 
@@ -90,7 +93,9 @@ class CommuneShippingMethodCrudController extends CrudController
             'name' => 'commune',
             'label' => 'Comuna',
             'type' => 'relationship',
-        ]);        
+        ]);    
+        
+        $this->customFilters();
     }
 
     /**
@@ -371,5 +376,70 @@ class CommuneShippingMethodCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function showDetailsRow($id)
+    {
+        return view('admin.commune-shipping-method.view', [ 'data' => CommuneShippingMethod::find($id)]);
+    }
+
+    private function customFilters()
+    {
+
+        if ($this->admin) {
+            CRUD::addFilter([
+                'name'  => 'seller_id',
+                'type'  => 'select2',
+                'label' => 'Expositor'
+            ], function() {
+                return Seller::all()->sortBy('visible_name')->pluck('visible_name', 'id')->toArray();
+            }, function($value) {
+                $this->crud->addClause('where', 'seller_id', $value);
+            });
+        }
+
+        CRUD::addFilter([
+            'name'  => 'commune',
+            'type'  => 'select2',
+            'label' => 'Comuna'
+        ], function() {
+            return Commune::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'commune_id', $value);
+        });
+
+        CRUD::addFilter([
+            'name'  => 'is_global',
+            'type'  => 'dropdown',
+            'label' => 'Aplica a todas las comunas'
+          ], [
+            //null => 'Pendiente',
+            0 => 'No',
+            1 => 'Si',
+          ], function($value) {
+            $this->crud->addClause('where', 'is_global', $value);
+        });
+
+        CRUD::addFilter([
+            'name'  => 'shipping_method',
+            'type'  => 'select2_multiple',
+            'label' => 'Metodo de envío'
+          ], function() {
+              return [
+                'free_shipping_status' => 'Envío gratis',
+                'flat_rate_status' => 'Tarifa fija',
+                'chilexpress_status' => 'Chilexpress',
+                'variable_status' => 'Tarifa variable',
+                'picking_status' => 'Retiro en tienda',
+              ];
+          }, function($values) {
+              foreach(json_decode($values) as $key => $value) {
+                if ($key === 0) {
+                    $this->crud->addClause('where', 'active_methods->'. $value, 1);
+                } else {
+                    $this->crud->addClause('orWhere', 'active_methods->'. $value, 1);
+                }
+              }
+          });
     }
 }

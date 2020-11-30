@@ -2,6 +2,7 @@
 
 namespace App\Services\BulkUpload;
 
+use Exception;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
@@ -87,10 +88,10 @@ class BulkUploadBooksService {
                 'encuadernacion' => $value[self::ROW_ENCUADERNACION],
                 'price' => $value[self::ROW_PRICE],
                 'special_price' => $value[self::ROW_SPECIAL_PRICE],
-                'depth' => $value[self::ROW_DEPTH],
-                'width' => $value[self::ROW_WIDTH],
-                'height' => $value[self::ROW_HEIGHT],
-                'weight' => $value[self::ROW_WEIGHT],
+                'depth' => (float) $value[self::ROW_DEPTH],
+                'width' => (float) $value[self::ROW_WIDTH],
+                'height' => (float) $value[self::ROW_HEIGHT],
+                'weight' => (float) $value[self::ROW_WEIGHT],
                 'meta_title' => $value[self::ROW_META_TITLE],
                 'meta_keywords' => $value[self::ROW_META_KEYWORDS],
                 'meta_description' => $value[self::ROW_META_DESCRIPTION],
@@ -129,12 +130,12 @@ class BulkUploadBooksService {
             'language' => 'required|max:155', // atributo
             'pages_number' => 'nullable|numeric', // atributo 
             'encuadernacion' => 'required|max:155', // atributo
-            'price' => 'required|numeric|max:1000000',
-            'special_price' => 'nullable|numeric|max:1000000',
-            'depth' => 'required|numeric|max:1000',
-            'width' => 'required|numeric|max:1000',
-            'height' => 'required|numeric|max:1000',
-            'weight' => 'required|numeric|max:1000',
+            'price' => 'required|numeric|max:1000000|min:0',
+            'special_price' => 'nullable|numeric|max:1000000|min:0',
+            'depth' => 'required|numeric|max:100|min:0.01',
+            'width' => 'required|numeric|max:100|min:0.01',
+            'height' => 'required|numeric|max:100|min:0.01',
+            'weight' => 'required|numeric|max:10|min:0.01',
             'meta_title' => 'nullable|max:255',
             'meta_keywords' => 'nullable|max:255',
             'meta_description' => 'nullable',
@@ -237,7 +238,7 @@ class BulkUploadBooksService {
     {
         $productsModelPrepared = collect($data)->map(function ($productData) use ($sellerId, $companyId) {
 
-            $brandId = ProductBrand::where('name', $productData['editorial'])->first()->id;
+            $brandId = ProductBrand::where('name', $productData['editorial'])->first()->id ?? null;
             $classId = ProductClass::where('code', self::PRODUCT_CLASS_CODE)->first()->id;
             $categoryId = ProductCategory::where('name', $productData['category'])->first()->id;
 

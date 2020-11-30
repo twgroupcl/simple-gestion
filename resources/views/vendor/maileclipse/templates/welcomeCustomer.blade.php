@@ -113,9 +113,9 @@
 <tr style="height: 170px;">
 <td style="height: 170px; width: 600px; background-color: #2bb5fe;" valign="top"><img src="{{asset($logo)}}" alt="" width="" height="" /></td>
 </tr>
-<tr style="height: 105px;">
+{{-- <tr style="height: 105px;">
 <td style="font-size: 30px; text-align: center; height: 105px; width: 600px; background: #2bb5fe;"><img src="{{ asset('img/filsa/filsa_virtual.png') }}" alt="Filsa" /></td>
-</tr>
+</tr> --}}
 <tr style="height: 43px;">
 <td class="headline" style="height: 43px; width: 600px; background-color: #2bb5fe;">{{ $title }}</td>
 </tr>

@@ -283,16 +283,24 @@ class CustomerController extends Controller
             : [];
 
         $requestValidated = $request->validated();
-        $ticket = CustomerSupport::create($requestValidated);
         $arrJsonValues = [
-            'accept_support_terms' => 'yes'
+            'json_value' => json_encode([
+                'accept_support_terms' => 'yes'
+            ])
         ];
-        $ticket->json_value = json_encode($arrJsonValues);
-        $ticket->save();
 
-        Mail::to($request->email)
-            ->cc($cc)
-            ->send(new MailCustomerSupport());
+        $requestValidated = array_merge($requestValidated, $arrJsonValues);
+        
+        $ticket = CustomerSupport::create($requestValidated);
+        //$ticket->json_value = json_encode($arrJsonValues);
+        //$ticket->save();
+        try {
+            Mail::to($request->email)
+                ->cc($cc)
+                ->send(new MailCustomerSupport());
+        } catch (\Exception $e) {
+            \Log::warning('Correo hacia '. $request->email . ' con copia a  ' . serialize($cc) . ' ejecutado por CustomerSupportController no pudo ser enviado.');
+        }
 
         return view('customer.support', ['ticket' => $ticket->id]);
     }
