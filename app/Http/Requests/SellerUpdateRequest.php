@@ -3,10 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Rules\RutRule;
+use App\Rules\SlugRule;
 use App\Rules\PhoneRule;
 use App\Http\Requests\Request;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class SellerUpdateRequest extends FormRequest
 {
@@ -81,6 +82,12 @@ class SellerUpdateRequest extends FormRequest
             'seller_category_id' => 'required|exists:seller_categories,id',
             'notes' => 'nullable|string',
             'password' => 'confirmed',
+
+            'slug' => [
+                'nullable',
+                new SlugRule(), 
+                Rule::unique('sellers')->ignore($this->id),
+            ],
 
             // addresses data
             'addresses_data' => 'nullable|string',

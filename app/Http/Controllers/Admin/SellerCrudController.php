@@ -578,6 +578,18 @@ class SellerCrudController extends CrudController
          */
 
         CRUD::addField([
+            'name' => 'slug',
+            'type' => 'text',
+            'label' => 'Slug',
+            'tab' => 'SEO',
+            'prefix' => 'https://www.filsavirtual.cl/shop/',
+            'hint' => 'Esta sera la URL para acceder a los libros de tu libreria',
+            'wrapper' => [
+                'class' => 'form-group col-md-12'
+            ],
+        ]);
+
+        CRUD::addField([
             'name' => 'meta_title',
             'type' => 'text',
             'label' => 'Título para los buscadores ',
@@ -586,6 +598,15 @@ class SellerCrudController extends CrudController
                 'class' => 'form-group col-md-6'
             ],
         ]);
+
+        CRUD::addField([
+            'name' => 'slug_formatter_without_origin',
+            'type' => 'slug_formatter_without_origin',
+            'slug' => 'slug',
+            'tab' => 'SEO',
+        ]);
+
+
 
         CRUD::addField([
             'name' => 'meta_keywords',
