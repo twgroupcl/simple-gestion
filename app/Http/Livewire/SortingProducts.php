@@ -43,6 +43,10 @@ class SortingProducts extends Component
                 'field' => 'current_price',
                 'direction' => 'DESC',
             ],
+            [
+                'field' => 'random',
+                'direction' => 'random',
+            ],
         ];
 
         $this->emit('shop-grid.sort', $sortArray[$this->sortingBy]);
