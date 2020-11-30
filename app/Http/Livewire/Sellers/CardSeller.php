@@ -43,18 +43,19 @@ class CardSeller extends Component
 
     private function baseQuery($limit = null)
     {
-
         $baseQuery =  Seller::where('status', '=', '1')
             ->where('is_approved', '=', '1')
             ->when($limit, function ($query) use ($limit) {
                 if ($limit == 1) {
-                    return $query->take(40);
+                    return $query->offset(0)->limit(40);
                 }else{
-                    return $query->skip(40)->take(80);
+                    return $query->offset(40)->limit(50);
                 }
                 return $query;
             })
-            ->get();
+            ->get()
+            ->shuffle();
+
         return $baseQuery;
 
             /* ->whereHas('seller', function ($query) {

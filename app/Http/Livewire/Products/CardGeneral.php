@@ -110,8 +110,10 @@ class CardGeneral extends Component
         return 'paginator';
     }
 
-    private function baseQuery($random = false, $category_id = null, $product_search = null, $seller_id = null)
+    private function baseQuery($random = true, $category_id = null, $product_search = null, $seller_id = null)
     {
+
+        $random = true;
         $this->sortingField = $this->sortingField ?? 'random';
         $this->sortingDirection = $this->sortingDirection ?? 'random';
 
