@@ -44,7 +44,7 @@ public/hot
 public_html/storage
 public_html/hot
 storage/*.key
-/vendor/
+vendor/
 .env
 .phpunit.result.cache
 Homestead.json
