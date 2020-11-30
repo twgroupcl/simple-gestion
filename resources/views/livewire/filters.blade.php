@@ -85,13 +85,13 @@
                         <div class="w-50 pr-2 mr-2">
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                                <input class="form-control cz-range-slider-value-min" wire:model="filterOptions.price.min" type="text" placeholder="Mínimo">
+                                <input class="form-control cz-range-slider-value-min" wire:model="filterOptions.price.min" type="text" onkeypress="return isNumberKey(event)" placeholder="Mínimo">
                             </div>
                         </div>
                         <div class="w-50 pl-2">
                             <div class="input-group input-group-sm">
                                 <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-                                <input class="form-control cz-range-slider-value-max" wire:model="filterOptions.price.max" type="text" placeholder="Máximo">
+                                <input class="form-control cz-range-slider-value-max" wire:model="filterOptions.price.max" type="text" onkeypress="return isNumberKey(event)" placeholder="Máximo">
                             </div>
                         </div>
                     </div>
@@ -321,3 +321,14 @@
         Cargando...
     </button>
 </div>
+
+@push('scripts')
+<script>
+    function isNumberKey(evt){
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}
+</script>
+@endpush
