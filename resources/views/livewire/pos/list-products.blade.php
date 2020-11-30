@@ -5,5 +5,16 @@
         @endforeach
     </div>
     <!-- Order Details Modal-->
-    <livewire:pos.product-custom-attributes>
+    <div
+        class="modal fade"
+        id="productAttributesModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="productAttributesModalLabel"
+        aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <livewire:pos.product-custom-attributes>
+            </div>
+        </div>
 </div>
