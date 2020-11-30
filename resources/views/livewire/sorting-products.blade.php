@@ -10,6 +10,7 @@
             <select wire:change="sortProducts" wire:model="sortingBy" class="form-control custom-select" id="sorting">
                 {{-- <option>Popularity</option> --}}
                 {{-- <option>Average Rating</option> --}}
+                <option data-direction="DESC" data-field="created_at" value="5">Aleatorio</option>
                 <option data-direction="DESC" data-field="created_at" value="0">Más nuevo</option>
                 <option data-direction="ASC" data-field="name" value="1">Ordenar A - Z</option>
                 <option data-direction="DESC" data-field="name" value="2">Ordenar Z - A</option>
