@@ -7,6 +7,8 @@ use Livewire\Component;
 class Product extends Component
 {
     public $product;
+    public $currentPrice;
+    // public $data = [];
 
     protected $listeners = [
         'addToCart'=> 'addToCart'
@@ -17,6 +19,11 @@ class Product extends Component
         return view('livewire.pos.product');
     }
 
+    public function mount()
+    {
+        $this->currentPrice = $this->getCurrentPrice();
+    }
+
     public function shareProductInModal()
     {
         if (! $this->productHasConfigurableDetail()) {
@@ -24,8 +31,11 @@ class Product extends Component
             return;
         }
 
-        $attributes = $this->product->getAttributesWithNames();
-        $this->emitTo('pos.product-custom-attributes', 'productShared', $this->product, $attributes);
+        $this->emitTo(
+            'pos.product-custom-attributes', 'productShared',
+            $this->product->id,
+            $this->currentPrice
+        );
     }
 
     public function productHasConfigurableDetail()
@@ -36,5 +46,14 @@ class Product extends Component
     public function addToCart()
     {
         $this->emit('add-product-cart:post', $this->product->id);
+    }
+
+    public function getCurrentPrice()
+    {
+        return $this->product
+                    ->children
+                    ->pluck('real_price')
+                    ->sort()
+                    ->first() ?? 0;
     }
 }
