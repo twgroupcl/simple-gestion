@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Customer;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\Frontend\CustomerStoreRequest;
 use App\Http\Requests\Frontend\CustomerSupportRequest;
 use App\Http\Requests\Frontend\CustomerUpdateRequest;
-use App\Models\Commune;
 use App\Mail\CustomerSupport as MailCustomerSupport;
+use App\Models\Commune;
+use App\Models\Customer;
 use App\Models\CustomerSupport;
 use App\User;
+use Backpack\Settings\app\Models\Setting;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -33,7 +33,6 @@ class CustomerController extends Controller
         $request['uid'] = strtoupper(
             str_replace('.', '', $request['uid'])
         );
-
 
         Customer::create($request->all());
 
@@ -52,8 +51,8 @@ class CustomerController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            if(!Auth::user()->hasRole('Cliente Marketplace')) {
-                if(Auth::user()->hasRole(['Super admin', 'Administrador negocio', 'Vendedor marketplace', 'Supervisor Marketplace'])) {
+            if (!Auth::user()->hasRole('Cliente Marketplace')) {
+                if (Auth::user()->hasRole(['Super admin', 'Administrador negocio', 'Vendedor marketplace', 'Supervisor Marketplace'])) {
                     return redirect('admin');
                 } else {
                     Auth::logout();
@@ -83,11 +82,11 @@ class CustomerController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users',
         ],
-        [
-            'required' => 'Este campo es obligatorio',
-            'email' => 'El campo :attribute debe ser un email',
-            'exists' => 'El campo :attribute es inválido',
-        ]);
+            [
+                'required' => 'Este campo es obligatorio',
+                'email' => 'El campo :attribute debe ser un email',
+                'exists' => 'El campo :attribute es inválido',
+            ]);
 
         $token = Str::random(60);
 
@@ -125,11 +124,11 @@ class CustomerController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed',
         ],
-        [
-            'required' => 'Este campo es obligatorio',
-            'email' => 'El campo :attribute debe ser un email',
-            'confirmed' => 'Las contraseñas no coinciden',
-        ]);
+            [
+                'required' => 'Este campo es obligatorio',
+                'email' => 'El campo :attribute debe ser un email',
+                'confirmed' => 'Las contraseñas no coinciden',
+            ]);
 
         $passwordReset = DB::table('password_resets')
             ->where('token', $request->token)
@@ -138,7 +137,7 @@ class CustomerController extends Controller
         $isAllowed = $passwordReset
             ->count() !== 0;
 
-        if (! $isAllowed) {
+        if (!$isAllowed) {
             return redirect()->back()->withErrors(['email' => 'Email no válido']);
         }
 //@todo: validar esto en los casos que falle o que no sea cliente
@@ -200,6 +199,58 @@ class CustomerController extends Controller
         return redirect()->route('customer.profile');
     }
 
+    public function getPlans()
+    {
+        $request = request();
+        return Plans::where('id', $request->id)->first();
+    }
+
+    public function addSubscription($idPlan = null)
+    {
+        $request = request();
+        $planId = (!empty($idPlan)) ? $idPlan : $request->plan_id;
+
+        $user = User::find(auth()->user()->id);
+        $customer = Customer::where('user_id', $user->id)->first();
+        $plan = app('rinvex.subscriptions.plan')->find($planId);
+        $newSubscription = $user->newSubscription('plan', $plan);
+        $plan = Plans::where('id', $newSubscription->plan_id)->first();
+
+        $currency = Currency::where('id', $plan->currency)->first();
+
+        $dataSubscription = [
+            'plan_id' => $plan->id,
+            'price' => $plan->price,
+            'start_date' => $request->starts_at,
+            'end_date' => $request->ends_at,
+        ];
+        $customer->subscription_data = json_encode($dataSubscription);
+        $customer->save();
+        $dataEmail = [
+            'customer' => $customer->first_name . ' ' . $customer->last_name,
+            'plan' => $plan->name,
+            'price' => $plan->price,
+            'currency' => $currency->code,
+            'start_date' => $request->starts_at,
+            'end_date' => $request->ends_at,
+        ];
+
+        $emailsAdministrator = explode(';', Setting::get('administrator_email'));
+        array_push($emailsAdministrator, $customer->email);
+        $this->sendMailSuscription($dataEmail, $emailsAdministrator);
+
+        if ($plan->price > 0) {
+            return redirect()->route('payment.customer.subscription', ['id' => $newSubscription->id])->send();
+        }
+
+    }
+
+    public function sendMailSuscription($dataEmail, $emailsAdministrator)
+    {
+        foreach ($emailsAdministrator as $email) {
+            Mail::to($email)->send(new NotificationSuscription($dataEmail));
+        }
+    }
     public function support(Request $request)
     {
         return view('customer.support');
@@ -209,8 +260,8 @@ class CustomerController extends Controller
     {
         $cc = DB::table('settings')->where('key', 'administrator_email')->first();
         $cc = filled($cc)
-            ? explode(';', $cc->value)
-            : [];
+        ? explode(';', $cc->value)
+        : [];
 
         $requestValidated = $request->validated();
         $ticket = CustomerSupport::create($requestValidated);
