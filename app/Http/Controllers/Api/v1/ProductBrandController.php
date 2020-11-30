@@ -21,6 +21,7 @@ class ProductBrandController extends Controller
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
             'position' => 'required|numeric',
+            'code' => 'required|unique:product_brands,code',
             'slug' => new SlugRule(),
             'status' => 'boolean',
         ]);
@@ -57,6 +58,22 @@ class ProductBrandController extends Controller
     public function show(Request $request)
     {
         $productBrand = ProductBrand::find($request['id']);
+
+        if (!$productBrand) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'La marca de producto no existe'
+        ],  404);
+
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $productBrand,
+        ], 200);
+    }
+
+    public function showByCode(Request $request)
+    {
+        $productBrand = ProductBrand::where('code', $request['code'])->first();
 
         if (!$productBrand) return response()->json([ 
             'status' => 'error', 

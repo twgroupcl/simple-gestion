@@ -40,13 +40,19 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::get('/customers/{id}', 'Api\v1\CustomerController@show')
         ->name('api.customers.show');
 
+
     // Product
     Route::post('/products', 'Api\v1\ProductController@store')
         ->middleware(['auth.jwt', 'permission:product.create'])
         ->name('api.products.store');
+    Route::delete('/products/{warehouse}/{sku}', 'Api\v1\ProductController@delete')
+        ->middleware(['auth.jwt', 'permission:product.delete'])
+        ->name('api.products.delete');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
-
+    Route::get('/products/sku/{sku}', 'Api\v1\ProductController@showBySku')
+        ->name('api.products.show-by-sku');
+    
 
     // Product Brand
     Route::post('/product-brands', 'Api\v1\ProductBrandController@store')
@@ -64,6 +70,8 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.brands.store');
     Route::get('/brands/{id}', 'Api\v1\ProductBrandController@show')
         ->name('api.brands.show');
+    Route::get('/brands/code/{code}', 'Api\v1\ProductBrandController@showByCode')
+        ->name('api.brands.show-by-code');
     Route::get('/brands', 'Api\v1\ProductBrandController@all')
         ->name('api.brands.all');
 
@@ -84,6 +92,8 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.categories.store');
     Route::get('/categories/{id}', 'Api\v1\ProductCategoryController@show')
         ->name('api.categories.show');
+    Route::get('/categories/code/{code}', 'Api\v1\ProductCategoryController@showByCode')
+        ->name('api.categories.show-by-code');
     Route::get('/categories', 'Api\v1\ProductCategoryController@all')
         ->name('api.categories.all');
 
@@ -94,6 +104,8 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.product-classes.store');
     Route::get('/product-classes/{id}', 'Api\v1\ProductClassController@show')
         ->name('api.product-classes.show');
+    Route::get('/product-classes/code/{code}', 'Api\v1\ProductClassController@showBycode')
+        ->name('api.product-classes.show-by-code');
     Route::get('/product-classes', 'Api\v1\ProductClassController@all')
         ->name('api.product-classes.all');
 
@@ -108,5 +120,7 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.warehouses.store');
     Route::get('/warehouses/{id}', 'Api\v1\ProductInventorySourceController@show')
         ->name('api.warehouses.show');
+    Route::get('/warehouses/code/{code}', 'Api\v1\ProductInventorySourceController@showByCode')
+        ->name('api.warehouses.show-by-code');
 });
 

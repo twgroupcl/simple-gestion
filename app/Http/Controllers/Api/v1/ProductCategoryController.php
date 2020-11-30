@@ -21,7 +21,7 @@ class ProductCategoryController extends Controller
         $validator = Validator::make($request->all(), [ 
             'name' => 'required',
             'description' => 'required',
-            'code' => 'required',
+            'code' => 'required|unique:product_categories,code',
             'slug' => new SlugRule(),
             'position' => 'numeric',
             'parent_id' => 'exists:product_categories,id',
@@ -69,6 +69,22 @@ class ProductCategoryController extends Controller
     public function show(Request $request)
     {
         $productCategory = ProductCategory::find($request['id']);
+
+        if (!$productCategory) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'La categoria indicada no existe'
+        ],  404);
+
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $productCategory,
+        ], 200);
+    }
+
+    public function showByCode(Request $request)
+    {
+        $productCategory = ProductCategory::where('code', $request['code'])->first();
 
         if (!$productCategory) return response()->json([ 
             'status' => 'error', 
