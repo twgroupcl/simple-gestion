@@ -76,6 +76,7 @@ class Seller extends Model
         'seller_category_id',
         'user_id',
         'company_id',
+        'slug',
     ];
 
     protected $hidden = [
