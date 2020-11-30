@@ -15,7 +15,7 @@ class AddSlugToSellers extends Migration
     {
         Schema::table('sellers', function (Blueprint $table) {
             $table->string('slug')->nullable();
-            $table->unique('slug');
+            $table->unique(['company_id', 'slug']);
         });
     }
 
