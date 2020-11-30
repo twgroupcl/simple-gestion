@@ -190,6 +190,11 @@ class WebPayPlusController extends Controller
 
     }
 
-
+    public function sendEmailSubscription()
+    {
+        $request = request();
+        dd($request->subscriptionId);
+    }
+    
 
 }

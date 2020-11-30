@@ -18,6 +18,7 @@ $payment_result_data = $payment_result->data->detailOutput;
                         </div>
                         <div class="col-12">
                             Plan: {{ $subscription->plan->name }}</h4>
+                            <input type="hidden" class="subscription-id" value="{{$subscription->id}}">
                         </div>
                         <div class="col-12 mt-3">
                             <div class="row">
@@ -54,3 +55,12 @@ $payment_result_data = $payment_result->data->detailOutput;
         </div>
     </div>
 @endsection
+@push('scripts')
+<script>
+$(function(){
+    let subscriptionId = $('.subscription-id').val();
+    $.post("{{url('send-email-subscription')}}", {subscriptionId: subscriptionId});
+});
+</script>
+@endpush
+

@@ -131,38 +131,29 @@ class SellerObserver
 
     public function syncSubscription(Seller $seller)
     {
-        // $seller->subscriptions()->delete();
-
         $subscription_data = is_array($seller->subscription_data)
         ? $seller->subscription_data
         : json_decode($seller->subscription_data, true);
 
-        // if (!empty($subscription_data['plan_subscription_id'])) {
-        //     $newplansubscription = new PlanSubscriptionSeller($subscription_data);
-        //     $seller->subscriptions()->save($newplansubscription);
-        // }
-        if (!empty($subscription_data['plan_subscription_id'])) {
+        if (!empty($subscription_data['plan_id'])) {
             $user = User::find($seller->user->id);
-            // $user->subscription('main')->usage()->delete();
             $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
             $newSubscription = $user->newSubscription('plan', $plan);
             $plan = Plans::where('id', $newSubscription->plan_id)->first();
             if ($plan->price > 0) {
                 return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
             }
-            // }else{
-            $plan = Plans::where('id', $subscription_data['plan_id'])->first();
-            //  }
+          
             $currency = Currency::where('id', $plan->currency)->first();
 
             $dataEmail = [
-            'seller' => $seller->name,
-            'plan' => $plan->name,
-            'price' => $plan->price,
-            'currency' => $currency->code,
-            'start_date' => $subscription_data['starts_at'],
-            'end_date' => $subscription_data['ends_at']
-        ];
+                'seller' => $seller->name,
+                'plan' => $plan->name,
+                'price' => $plan->price,
+                'currency' => $currency->code,
+                'start_date' => $subscription_data['starts_at'],
+                'end_date' => $subscription_data['ends_at']
+            ];
 
 
             $emailsAdministrator = explode(';', Setting::get('administrator_email'));

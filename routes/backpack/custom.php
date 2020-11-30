@@ -86,5 +86,7 @@ Route::group([
 //Payment
 Route::post('admin/payment/subscription/result', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionResultPayment')->name('payment.result');
 Route::post('admin/payment/subscription/detail/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionDetailPayment')->name('payment.detail');
+Route::post('/send-email-subscription', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@sendEmailSubscription');
+
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
 
