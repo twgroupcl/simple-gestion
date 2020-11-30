@@ -60,6 +60,7 @@ Route::get('/shop-list/', function () {
 });
 Route::get('/shop-grid/', 'Frontend\HomeController@getProductsByCategory');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
+Route::get('/shop/{slug}', 'Frontend\HomeController@getSellerBySlug')->name('seller-slug');
 Route::get('/faq', 'Frontend\HomeController@getFaq');
 Route::get('/faq-single', function () {
     return view('faq-single');
