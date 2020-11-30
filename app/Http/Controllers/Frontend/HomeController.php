@@ -71,7 +71,7 @@ class HomeController extends Controller
     public function getSellerBySlug(Request $request)
     {
         $seller = Seller::where('slug', '=', $request->slug)->with('seller_category')->with('company')->firstOrFail();
-        $countProduct = Product::where('seller_id', '=', $request->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
+        $countProduct = Product::where('seller_id', '=', $seller->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
         $sellerAdress = SellerAddress::whereSellerId($seller->id)->with('commune')->first();
         $render = ['view' => 'seller'];
         $data = $seller->id;
