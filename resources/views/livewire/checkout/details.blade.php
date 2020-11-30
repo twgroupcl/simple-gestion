@@ -213,7 +213,7 @@
         </label>
         @error('termsAndConditions.accept_checkout_terms') <small class="text-danger">{{ $message }}</small> @enderror
     </div>
-    <div class="custom-control custom-checkbox pb-3 mb-3">
+    {{--<div class="custom-control custom-checkbox pb-3 mb-3">
         <input class="custom-control-input" wire:model="termsAndConditions.accept_checkout_terms_prolibro" type="checkbox" id="terms-condition-prolibro">
         <label class="custom-control-label" for="terms-condition-prolibro">
             Declaro entender que Prolibro S.A. otorga un servicio de intermediación gratuito entre mi persona y el
@@ -221,7 +221,8 @@
         </label>
         
         @error('termsAndConditions.accept_checkout_terms_prolibro') <small class="text-danger">{{ $message }}</small> @enderror
-    </div>
+    </div>--}}
+
     {{-- <div class="d-none d-lg-flex pt-4 mt-3">
         <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
                     class="czi-arrow-left mt-sm-0 mr-1"></i><span class="d-none d-sm-inline">Volver al carro</span><span

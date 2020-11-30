@@ -29,7 +29,7 @@ class Details extends Component
         'data.receiver_name' => 'max:255',
         'data.shipping_details' => 'max:500',
         'termsAndConditions.accept_checkout_terms' => 'accepted',
-        'termsAndConditions.accept_checkout_terms_prolibro' => 'accepted'
+        //'termsAndConditions.accept_checkout_terms_prolibro' => 'accepted'
     ];
 
 
