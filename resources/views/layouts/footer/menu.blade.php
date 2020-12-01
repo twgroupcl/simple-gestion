@@ -75,7 +75,7 @@
                             <h3 class="widget-title text-dark pb-1">Organiza</h3>
                             <div class="d-flex flex-wrap">
                                 <div class="col-12 mb-2 text-center mt-3">
-                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
+                                    <img class="img-fluid w-50" src="{{ asset('img/filsa/logo-camara-libro.jpg') }}" alt="CRCP" />
                                 </div>
                             </div>
                         </div>
@@ -85,10 +85,10 @@
                             <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
                             <div class="d-flex flex-wrap">
                                 <div class="col-6 mb-2 text-center">
-                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/logo-ministerio-cultura.png') }}" alt="Ministerio de Cultura" />
+                                    <img class="img-fluid w-50" src="{{ asset('img/filsa/logo-ministerio-cultura.png') }}" alt="Ministerio de Cultura" />
                                 </div>
                                 <div class="col-6 mb-2 text-center">
-                                    <img class="img-fluid w-75" src="{{ asset('img/filsa/municipalidad-santiago.jpg') }}" alt="Municipalidad Santiago" />
+                                    <img class="img-fluid w-50" src="{{ asset('img/filsa/municipalidad-santiago.jpg') }}" alt="Municipalidad Santiago" />
                                 </div>
                             </div>
                         </div>
@@ -192,9 +192,11 @@
                                 <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('faq') }}">Preguntas frecuentes</a></li>
                                 <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('privacy') }}">Privacidad</a></li>
                             -->
-                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('about-us') }}">Quienes somos</a></li>
-                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
-                                <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ route('customer.support') }}">Servicio al cliente</a></li>
+                                <li class="widget-list-item mr-3 d-none d-lg-block d-md-block d-sm-block"><a class="widget-list-link" href="{{ url('about-us') }}">Quienes somos</a></li>
+                                <li class="widget-list-item mr-1 d-block d-sm-none"><a class="widget-list-link" href="{{ url('about-us') }}">Quienes somos</a></li>
+                                <li class="widget-list-item mr-3 d-none d-lg-block d-md-block d-sm-block"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li> 
+                                <li class="widget-list-item mr-1 d-block d-sm-none"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
+                                <li class="widget-list-item"><a class="widget-list-link" href="{{ route('customer.support') }}">Servicio al cliente</a></li>
                         </ul>
                         <!--
                             <span class="font-size-md text-light"><a href="mailto:filsa@filsa.cl">filsa@filsa.cl</a></span>

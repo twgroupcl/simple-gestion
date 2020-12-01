@@ -3,7 +3,7 @@
         <a class="nav-link dropdown-toggle pl-0" href="#" data-toggle="dropdown">
             <i class="czi-menu align-middle mt-n1 mr-2"></i>Categorías
         </a>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu overflow-scroll-y">
             @foreach ($categories as $category)
             <li class="dropdown mega-dropdown">
                 <a class="dropdown-item" href="{{url('search-products/'.$category->id)}}">
