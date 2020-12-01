@@ -1,6 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
+
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Header-->
@@ -74,7 +75,17 @@
 
                     @if($seller->web)
                         <h6>Web</h6>
-                        <a class="font-size-ms text-muted" href="{{$seller->web}}" target="_blank">{{$seller->web}}</a>
+                        <a 
+                            class="font-size-ms text-muted" 
+                            target="_blank"
+                            @if (Illuminate\Support\Str::startsWith($seller->web, 'https://') || Illuminate\Support\Str::startsWith($seller->web, 'http://',))
+                                href="{{ $seller->web }}" 
+                            @else
+                                href="{{ 'https://' . $seller->web }}" 
+                            @endif
+                        >
+                            {{$seller->web}}
+                        </a>
                         <br>
                         <br>
                     @endif
@@ -82,7 +93,17 @@
                     @if($seller->contacts_data)
                         <h6>Redes Sociales</h6>
                             @foreach($seller->contacts_data as $socialMedia)
-                                <a class="font-size-ms text-muted" href="{{$socialMedia['url']}}" target="_blank">{{$socialMedia['url']}}</a>                    
+                                <a 
+                                    class="font-size-ms text-muted" 
+                                    target="_blank"
+                                    @if (Illuminate\Support\Str::startsWith($socialMedia['url'], 'https://') || Illuminate\Support\Str::startsWith($socialMedia['url'], 'http://')) 
+                                        href="{{ $socialMedia['url'] }}" 
+                                    @else
+                                        href="{{ 'https://' . $socialMedia['url'] }}" 
+                                    @endif
+                                >
+                                    {{$socialMedia['url']}}
+                                </a>                    
                             @endforeach
                         <br>
                         <br>
