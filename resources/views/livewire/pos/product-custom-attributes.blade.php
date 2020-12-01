@@ -27,10 +27,6 @@
                                     name="attribute-{{ $option['id'] }}"
                                     @if(!$option['enableOptions']) disabled @endif
                                 >
-                                @php
-                                    logger($option['id']);
-                                    logger(gettype($option['enableOptions']));
-                                @endphp
                                     @foreach ($option['items'] as $item)
                                         <option value="{{ $item }}">{{ $item }}</option>
                                     @endforeach
