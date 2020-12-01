@@ -8,6 +8,10 @@ use Livewire\Component;
 class Cart extends Component
 {
     public $products;
+    public $subtotal = 0;
+    public $discount = 0;
+    public $total = 0;
+    public $qty = [];
     protected $listeners = [
         'add-product-cart:post' => 'addProduct',
         'remove-from-cart:post' => 'remove',
@@ -24,11 +28,26 @@ class Cart extends Component
 
     public function addProduct($product)
     {
-        $this->products[$product['id']] = $product['id'];
+        isset($this->products[$product['id']]['qty'])
+            ? $this->products[$product['id']]['qty'] += 1
+            : $this->products[$product['id']]['qty'] = 1;
+
+        $this->products[$product['id']]['product'] = $product;
+        $this->calculateAmounts();
     }
 
     public function remove($productId)
     {
         unset($this->products[$productId]);
+        $this->calculateAmounts();
+    }
+
+    public function calculateAmounts()
+    {
+        $this->subtotal = collect($this->products)->sum(function ($product) {
+            return $product['product']['price'] * $product['qty'];
+        });
+
+        $this->total = $this->subtotal - $this->discount;
     }
 }
