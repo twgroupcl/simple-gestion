@@ -76,14 +76,14 @@ class SalesReportController extends BaseController
         if ($requestSellerId == -1) {
 
             $sales = Order::whereHas('order_items')
-            /*  ->whereBetween(
-            'created_at',
-            [$period->first()->startOfDay(),
-            $period->last()->endOfDay()]
-            ) */
-                ->with(['order_items.seller' => function ($query) {
-                    $query->groupBy('id');
-                }])->get();
+                ->whereBetween(
+                    'created_at',
+                    [$period->first()->startOfDay(),
+                        $period->last()->endOfDay()]
+                )->with(['order_items.seller' => function ($query) {
+                $query->groupBy('id');
+            }])->where('status', '>', 1)
+                ->get();
 
         } else {
             $sales = Order::whereHas('order_items'
@@ -96,7 +96,8 @@ class SalesReportController extends BaseController
                     $period->last()->endOfDay()]
             )->with(['order_items.seller' => function ($query) use ($requestSellerId) {
                 $query->where('id', $requestSellerId)->groupBy('id');
-            }])->get();
+            }])->where('status', '>', 1)
+                ->get();
         }
 
         foreach ($sales as $order) {
