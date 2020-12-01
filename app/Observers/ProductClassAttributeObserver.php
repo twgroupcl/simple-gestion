@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\ProductAttribute;
 use App\Models\ProductClassAttribute;
 
 class ProductClassAttributeObserver
@@ -27,6 +28,21 @@ class ProductClassAttributeObserver
     public function updating(ProductClassAttribute $productClassAttribute)
     {
         $productClassAttribute->removeEmptyOptions();
+    }
+
+    /**
+     * Handle the product class attribute "deleting" event.
+     *
+     * @param  \App\ProductClassAttribute  $productClassAttribute
+     * @return void
+     */
+    public function deleting(ProductClassAttribute $productClassAttribute)
+    {
+        $productsWithClass = ProductAttribute::where('product_class_attribute_id', $productClassAttribute->id)->get();
+
+        if ($productsWithClass->count()) {
+            abort(401, 'No puedes eliminar un atributo que esta siendo utilizada por un producto');
+        }
     }
 
     /**
