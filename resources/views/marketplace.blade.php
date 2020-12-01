@@ -115,13 +115,13 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-75">
+                <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/el-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-75">
+                <img src="{{ asset('img/filsa/el-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-75">
+                <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
         </div>
     </div>
