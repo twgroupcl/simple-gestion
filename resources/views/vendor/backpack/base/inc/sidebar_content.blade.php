@@ -132,10 +132,14 @@
         @can('order.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('order') }}'><i class="nav-icon las la-file-invoice"></i> Órdenes</a></li>
         @endcan
+        @can('sales.report')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('report/sales') }}'><i class="nav-icon las la-file-invoice"></i> Reporte</a></li>
+        @endcan
 	</ul>
 </li>
 @endcanany
 
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('plans') }}'><i class='nav-icon la la-question'></i> Plans</a></li>
 @canany(['support.list'])
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Servicio al cliente</a>

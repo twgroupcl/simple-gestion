@@ -83,6 +83,15 @@ class HomeController extends Controller
         return view('vendor', compact('seller', 'countProduct','render', 'data'));
     }
 
+    public function getSellerBySlug(Request $request)
+    {
+        $seller = Seller::where('slug', '=', $request->slug)->with('seller_category')->with('company')->firstOrFail();
+        $countProduct = Product::where('seller_id', '=', $seller->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
+        $render = ['view' => 'seller'];
+        $data = $seller->id;
+        return view('vendor', compact('seller', 'countProduct','render', 'data'));
+    }
+
     public function getFaq()
     {
         $faqs = FaqAnswer::where('status', '=', '1')->with('faq_topic')->get();
