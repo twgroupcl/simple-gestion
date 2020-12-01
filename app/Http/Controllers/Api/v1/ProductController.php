@@ -60,6 +60,52 @@ class ProductController extends Controller
         ], 200);
     }
 
+    
+    public function showBySkuAndWarehouse($warehouseCode, $sku)
+    {
+        $messages = [
+            '*.exists' => 'El valor de :attribute no se encuentra en la base de datos',
+        ];
+
+        $validator = Validator::make(['sku' => $sku, 'warehouse' => $warehouseCode], [ 
+            'sku' => 'required|exists:products,sku',
+            'warehouse' => 'required|exists:product_inventory_sources,code',
+        ], $messages);
+      
+        if ($validator->fails()) {
+          return response()->json([ 'status' => 'error', 'message' => $validator->errors() ], 400);
+        }
+
+        /**
+         * NOTE: This may fail when there is two seller with the same product SKU in the same warehouse
+         * 
+         */
+        $warehouse = ProductInventorySource::where('code', $warehouseCode)->first();
+
+        $productInventory = ProductInventory::where('product_inventory_source_id', $warehouse->id)
+                                ->whereHas('product', function ($query) use ($sku)  {
+                                   return $query->where('sku', $sku);
+                                })->first();
+
+        if (!$productInventory) {
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'La bodega no contiene el producto con el SKU indicado',
+            ],  404);
+        };
+
+        $product = Product::with('categories')
+                        ->with('brand')
+                        ->with('product_class')
+                        ->with('inventories')                
+                        ->find($productInventory->product_id);
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $product,
+        ], 200);
+    }
+
     public function delete($warehouseCode, $sku)
     {
         $messages = [
