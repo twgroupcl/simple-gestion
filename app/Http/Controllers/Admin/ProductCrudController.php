@@ -51,7 +51,7 @@ class ProductCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
+        if (backpack_user()->can('product.admin')) {
             $this->admin = true;
             $this->crud->enableExportButtons();
             $this->crud->allowAccess('bulkDelete');
