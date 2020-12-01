@@ -14,7 +14,7 @@ $product = Product::whereId($item)->first();
                 <h3 class="product-title font-size-base mb-2"><a
                         href="{{ route('product', ['slug' => $product->url_key]) }}"
                         target="_blank">{{ $product->name }}</a><a wire:click="$emitUp('remove-from-cart:post', {{ $item }})" href="#"><i class="la la-times"></i></a></h3>
-                {{-- @if ($showAttributes && filled($product->getAttributesWithNames()))
+                @if (filled($product->getAttributesWithNames()))
                     @foreach ($product->getAttributesWithNames() as $attribute)
                         @if ($attribute['value'] != '* No aplica')
                             <div class="font-size-sm"><span
@@ -22,11 +22,11 @@ $product = Product::whereId($item)->first();
                             </div>
                         @endif
                     @endforeach
-                @endif --}}
-                <div class="d-inline-block font-size-lg text-accent pt-2">
-                    {{ currencyFormat($product->real_price ?? 0, 'CLP', true) }}
-                    <!--$154.<small>00</small>-->
+                @endif
+                <div class="d-inline-block font-size-lg text-accent pt-2 form-inline">
+                    <input wire:model="qty" type="number" class="form-control w-50 h-25 input-sm"> item(s)
                 </div>
+                <strong>{{ currencyFormat($product->real_price ?? 0, 'CLP', true) }}</strong> por unidad
                 {{-- <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2"
                     href="{{ 'seller-shop/' . $product->seller->id }}">por {{ $product->seller->visible_name }}</a> --}}
                 {{-- @if ($shippingMethods)

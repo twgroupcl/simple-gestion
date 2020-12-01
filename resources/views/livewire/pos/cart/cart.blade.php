@@ -4,7 +4,7 @@
     @if (!is_null($products))
 
         @foreach ($products as $id => $product)
-             @livewire('pos.cart.item', ['item' => $id ], key($id))
+             @livewire('pos.cart.item', ['item' => $id, 'qty' => $product['qty'] ], key($id))
         @endforeach
 
         <div class='row'>

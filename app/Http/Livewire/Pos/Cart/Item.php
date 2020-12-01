@@ -7,6 +7,7 @@ use Livewire\Component;
 class Item extends Component
 {
     public $item;
+    public $qty;
     public function mount()
     {
 
