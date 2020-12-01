@@ -22,7 +22,7 @@
             <img src="{{ asset('img/filsa/mobile-banner-principal.jpg') }}" alt="Filsa Banner">
             <img src="{{ asset('img/filsa/mobile-banner-bienvenida.jpg') }}" alt="Filsa Banner">
             <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">                
-                <img src="{{ asset('img/filsa/mobile-banner-transmision.jpg') }}" alt="Filsa Banner">
+                <img src="{{ asset('img/filsa/mobile-banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
             </a>
         </div>
     </div>
@@ -65,9 +65,17 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">
-                    <img src="{{ asset('img/filsa/banner-transmision.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
-                </a>
+                <div class="d-none d-lg-block d-md-block d-sm-block">
+                    <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">
+                        <img src="{{ asset('img/filsa/banner-transmision.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
+                    </a>
+                </div>
+                
+                <div class="d-block d-sm-none">
+                    <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">
+                        <img src="{{ asset('img/filsa/mobile-banner-transmision.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
+                    </a>
+                </div>
             </div>
         </div>
     </div>
