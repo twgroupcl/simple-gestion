@@ -30,7 +30,7 @@ class ProductClassAttributeRequest extends FormRequest
             'name' => 'required|min:1|max:255',
             'code' => [
                 'required',
-                Rule::unique('product_class_attributes')->ignore($this->id),
+                Rule::unique('product_class_attributes', 'json_attributes->code')->ignore($this->id),
             ],
             'type_attribute' => 'required',
             'product_class_id' => 'required',
