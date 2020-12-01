@@ -22,9 +22,9 @@ class Cart extends Component
         return view('livewire.pos.cart.cart');
     }
 
-    public function addProduct($productId)
+    public function addProduct($product)
     {
-        $this->products[$productId] = $productId;
+        $this->products[$product['id']] = $product['id'];
     }
 
     public function remove($productId)

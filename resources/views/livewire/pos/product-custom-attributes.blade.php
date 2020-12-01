@@ -63,7 +63,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Cerrar
                 </button>
-                <button wire:click="$emit('add-product-cart:post', {{ $product->id }})" type="button" class="btn btn-primary">Agregar al carrito</button>
+                <button wire:click="$emit('add-product-cart:post', {{ $currentProduct }})" type="button" class="btn btn-primary">Agregar al carrito</button>
             </div>
         </div>
     @endisset
