@@ -39,10 +39,30 @@
     background-image: url(filsavirtual.jpg);
     height: 100%;
 }
-.overflow-scroll-y{
+
+/* .overflow-scroll-y{
     height: auto;
     width: 200px;
     border: 1px solid #ddd;
     background: #f1f1f1;
     overflow-y: scroll;    
+} */
+
+@media (min-width: 1000px) {
+    .dropdown-with-columns {
+        column-count: 4;
+    }
 }
+
+@media (max-width: 999px) and (min-width: 700px) {
+    .dropdown-with-columns {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 699px) { 
+    .dropdown-with-columns {
+        column-count: 1;
+    }
+}
+
