@@ -44,7 +44,7 @@ class OrderCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace|Contador filsa|Admin filsa')) {
             $this->admin = true;
         }
 
