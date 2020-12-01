@@ -3,10 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Rules\RutRule;
+use App\Rules\SlugRule;
 use App\Rules\PhoneRule;
 use App\Http\Requests\Request;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 
 class SellerStoreRequest extends FormRequest
@@ -82,6 +83,12 @@ class SellerStoreRequest extends FormRequest
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
 
+            'slug' => [
+                'nullable',
+                new SlugRule(), 
+                Rule::unique('sellers')->ignore($this->id),
+            ],
+
             // addresses data
             'addresses_data' => 'nullable|string',
             'addresses_data_validation.*.street' => 'required|distinct',
@@ -143,6 +150,7 @@ class SellerStoreRequest extends FormRequest
             'notes' => 'Notas',
             'password' => 'Contraseña',
             'password_confirmation' => 'Repetir contraseña',
+            'slug' => 'Slug',
             // addresses data
             'addresses_data' => 'Direcciones',
             'addresses_data_validation.*.street' => 'Calle en Direcciones',

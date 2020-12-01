@@ -88,15 +88,6 @@
                         <br>
                     @endif
                   
-                    @if($seller->meta_title)
-                        <h6>Título para buscadores</h6>
-                        <p class="font-size-ms text-muted">{{$seller->meta_title}}</p>
-                    @endif
-
-                    @if($seller->meta_keywords)
-                        <h6>Palabras Clave</h6>
-                        <p class="font-size-ms text-muted">{{ str_replace(',','  ',$seller->meta_keywords) }}</p>
-                    @endif
                     <hr class="my-4">
                     <h6>Buscar en la tienda</h6>
 

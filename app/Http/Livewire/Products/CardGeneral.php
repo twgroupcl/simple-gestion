@@ -110,10 +110,12 @@ class CardGeneral extends Component
         return 'paginator';
     }
 
-    private function baseQuery($random = false, $category_id = null, $product_search = null, $seller_id = null)
+    private function baseQuery($random = true, $category_id = null, $product_search = null, $seller_id = null)
     {
-        $this->sortingField = $this->sortingField ?? 'created_at';
-        $this->sortingDirection = $this->sortingDirection ?? 'DESC';
+
+        $random = true;
+        $this->sortingField = $this->sortingField ?? 'random';
+        $this->sortingDirection = $this->sortingDirection ?? 'random';
 
         $baseQuery =  ModelsProduct::where('status', '=', '1')
             ->where('parent_id', '=', null)
@@ -162,7 +164,7 @@ class CardGeneral extends Component
 
         // Sorting
         $filterQuery->when(!is_null($random), function ($query) use ($random) {
-            if ($random) {
+            if ($random || $this->sortingField === 'random') {
                 return $query->inRandomOrder();
             } else {
                 $query->orderBy($this->sortingField, $this->sortingDirection);

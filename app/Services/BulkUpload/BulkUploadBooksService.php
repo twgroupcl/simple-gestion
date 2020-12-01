@@ -2,6 +2,7 @@
 
 namespace App\Services\BulkUpload;
 
+use Exception;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
@@ -129,12 +130,12 @@ class BulkUploadBooksService {
             'language' => 'required|max:155', // atributo
             'pages_number' => 'nullable|numeric', // atributo 
             'encuadernacion' => 'required|max:155', // atributo
-            'price' => 'required|numeric|max:1000000',
-            'special_price' => 'nullable|numeric|max:1000000',
-            'depth' => 'required|numeric|max:1000',
-            'width' => 'required|numeric|max:1000',
-            'height' => 'required|numeric|max:1000',
-            'weight' => 'required|numeric|max:1000',
+            'price' => 'required|numeric|max:1000000|min:0',
+            'special_price' => 'nullable|numeric|max:1000000|min:0',
+            'depth' => 'required|numeric|max:100|min:0',
+            'width' => 'required|numeric|max:100|min:0',
+            'height' => 'required|numeric|max:100|min:0',
+            'weight' => 'required|numeric|max:10|min:0',
             'meta_title' => 'nullable|max:255',
             'meta_keywords' => 'nullable|max:255',
             'meta_description' => 'nullable',
@@ -237,7 +238,7 @@ class BulkUploadBooksService {
     {
         $productsModelPrepared = collect($data)->map(function ($productData) use ($sellerId, $companyId) {
 
-            $brandId = ProductBrand::where('name', $productData['editorial'])->first()->id;
+            $brandId = ProductBrand::where('name', $productData['editorial'])->first()->id ?? null;
             $classId = ProductClass::where('code', self::PRODUCT_CLASS_CODE)->first()->id;
             $categoryId = ProductCategory::where('name', $productData['category'])->first()->id;
 

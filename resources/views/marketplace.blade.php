@@ -4,10 +4,27 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
-<div class="cz-carousel cz-dots-enabled">
-    <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-        <img src="{{ asset('img/filsa/banner-filsa.jpg') }}" alt="Filsa Banner">
-        <img src="{{ asset('img/filsa/banner-filsa.jpg') }}" alt="Filsa Banner">
+<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+            <img src="{{ asset('img/filsa/banner-principal.jpg') }}" alt="Filsa Banner">
+            <img src="{{ asset('img/filsa/banner-bienvenida.jpg') }}" alt="Filsa Banner">
+            <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">
+                <img src="{{ asset('img/filsa/banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="d-block d-sm-none">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+            <img src="{{ asset('img/filsa/mobile-banner-principal.jpg') }}" alt="Filsa Banner">
+            <img src="{{ asset('img/filsa/mobile-banner-bienvenida.jpg') }}" alt="Filsa Banner">
+            <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">                
+                <img src="{{ asset('img/filsa/mobile-banner-transmision.jpg') }}" alt="Filsa Banner">
+            </a>
+        </div>
     </div>
 </div>
 
@@ -48,31 +65,43 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <img src="{{ asset('img/filsa/banner-1.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
+                <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">
+                    <img src="{{ asset('img/filsa/banner-transmision.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!--
-    <section class="container pt-5">
-        <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
-            <h2 class="h3 mb-0 pt-3 mr-2">Expositores</h2>
-        </div>
-        <div class="pt-2 mx-n2">
-            @livewire('sellers.card-seller', ['columnLg'=>3,'showPaginate'=>false,'paginateBy' => 8,'showFrom'=>'','data'=>'','limit'=>2])
-        </div>
-    </section>
--->
+<section class="container pt-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
+        <h2 class="h3 mb-0 pt-3 mr-2">Expositores</h2>
+    </div>
+    <div class="pt-2 mx-n2">
+        @livewire('sellers.card-seller', ['columnLg'=>3,'showPaginate'=>false,'paginateBy' => 8,'showFrom'=>'','data'=>'','limit'=>2])
+    </div>
+</section>
+
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <img src="{{ asset('img/filsa/banner-2.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
+                <div class="cz-carousel cz-dots-enabled">
+                    <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+                        <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank" class="border border-white">            
+                            <img src="{{ asset('img/filsa/banner-2.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
+                        </a>
+                        <a href="https://www.bibliotecasantiago.cl/" target="_blank" class="border border-white">            
+                            <img src="{{ asset('img/filsa/banner-biblioteca.jpg') }}" alt="Banner Biblioteca" class="img-fluid w-100 p-0 m-0">
+                        </a>                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+
 
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
