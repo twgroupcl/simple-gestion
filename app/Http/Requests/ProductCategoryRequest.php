@@ -30,7 +30,12 @@ class ProductCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|min:1|max:255',
-            'code' => 'required|min:1|max:255',
+            'code' => [
+                'required', 
+                'min:1',
+                'max:255',
+                Rule::unique('product_categories')->ignore($this->id),
+            ],
             'position' => 'required|numeric|min:0',
             'display_mode' => [
                 'required',
