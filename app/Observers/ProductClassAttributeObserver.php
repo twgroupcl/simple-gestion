@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\ProductAttribute;
+use Illuminate\Support\Facades\DB;
 use App\Models\ProductClassAttribute;
 
 class ProductClassAttributeObserver
@@ -38,9 +39,10 @@ class ProductClassAttributeObserver
      */
     public function deleting(ProductClassAttribute $productClassAttribute)
     {
-        $productsWithClass = ProductAttribute::where('product_class_attribute_id', $productClassAttribute->id)->get();
-
-        if ($productsWithClass->count()) {
+        $productsWithAttribute = ProductAttribute::where('product_class_attribute_id', $productClassAttribute->id)->get();
+        $productWithSuperAttribute = DB::table('product_super_attributes')->where('product_class_attribute_id', $productClassAttribute->id)->get();
+        
+        if ($productsWithAttribute->count() || $productWithSuperAttribute->count()) {
             abort(401, 'No puedes eliminar un atributo que esta siendo utilizada por un producto');
         }
     }
