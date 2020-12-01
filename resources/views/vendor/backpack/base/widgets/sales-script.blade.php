@@ -24,9 +24,10 @@
     <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js" type="text/javascript"></script>
     <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.print.min.js" type="text/javascript"></script>
     <script src="//cdn.datatables.net/buttons/1.5.6/js/buttons.colVis.min.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/currencyformatter.js/2.2.0/currencyFormatter.min.js" integrity="sha512-zaNuym1dVrK6sRojJ/9JJlrMIB+8f9IdXGzsBQltqTElXpBHZOKI39OP+bjr8WnrHXZKbJFdOKLpd5RnPd4fdg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/currencyformatter.js/2.2.0/currencyFormatter.min.js"
+        integrity="sha512-zaNuym1dVrK6sRojJ/9JJlrMIB+8f9IdXGzsBQltqTElXpBHZOKI39OP+bjr8WnrHXZKbJFdOKLpd5RnPd4fdg=="
+        crossorigin="anonymous"></script>
     <script>
-
         const today = () => {
             return moment().format('YYYY-MM-DD');
         }
@@ -41,20 +42,24 @@
         };
         let salesTable;
 
+        let datefrom = $(`#date-from`)
+        let dateto = $(`#date-to`)
+
         function start() {
-            $(`#date-to`).val(today)
-            $(`#date-from`).val(sevenDaysAgo)
+            datefrom.val(sevenDaysAgo)
+            dateto.val(today)
+
 
             filters.from = sevenDaysAgo()
             filters.to = today()
             filters.seller = -1
 
-            $(`#date-from`).change(() => {
+            datefrom.change(() => {
                 filters.from = event.target.value
                 this.refreshData();
             })
 
-            $(`#date-to`).change(() => {
+            dateto.change(() => {
                 filters.to = event.target.value
                 this.refreshData();
             })
@@ -63,81 +68,102 @@
             $('#seller-select2').change(() => {
                 var data = $("#seller-select2 option:selected").val();
                 filters.seller = data;
-                console.log(data);
                 this.refreshData();
             })
 
             salesTable = $('#sales-table').DataTable({
 
 
-                processing: true,
-                "paging": false,
-                "lengthChange": true,
-                "searching": false,
-                "ordering": true,
-                "info": false,
-                "autoWidth": true,
-                dom: 'Bfrtip',
-                buttons: {
-                    dom: {
-                        container: {
-                            tag: 'div',
-                            className: 'flexcontent'
-                        },
-                        buttonLiner: {
-                            tag: null
-                        }
-                    },
-
-                    buttons: [
-
-
-                        {
-                            extend: 'copyHtml5',
-                            text: '<i class="fa fa-clipboard"></i>Copiar',
-                            title: 'Reporte de ventas',
-                            titleAttr: 'Copiar',
-                            className: 'btn btn-app export barras',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5]
+                    processing: true,
+                    "paging": false,
+                    "lengthChange": true,
+                    "searching": false,
+                    "ordering": true,
+                    "info": false,
+                    "autoWidth": true,
+                    dom: 'Bfrtip',
+                    buttons: {
+                        dom: {
+                            container: {
+                                tag: 'div',
+                                className: 'flexcontent'
+                            },
+                            buttonLiner: {
+                                tag: null
                             }
                         },
 
-                        {
-                            extend: 'pdfHtml5',
-                            text: '<i class="fa fa-file-pdf-o"></i>PDF',
-                            title: 'Reporte de ventas pdf',
-                            titleAttr: 'PDF',
-                            className: 'btn btn-app export pdf',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5]
+                        buttons: [
+
+
+                            {
+                                extend: 'copyHtml5',
+                                text: '<i class="fa fa-clipboard"></i>Copiar',
+                                title: 'Reporte de ventas',
+                                titleAttr: 'Copiar',
+                                className: 'btn btn-app export barras',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5]
+                                }
                             },
-                            orientation: 'landscape',
-                            customize: function(doc) {
-                                var colCount = new Array();
-                                $('#sales-table').find('tbody tr:first-child td').each(function() {
-                                    if ($(this).attr('colspan')) {
-                                        for (var i = 1; i <= $(this).attr('colspan'); i++) {
+
+                            {
+                                extend: 'pdfHtml5',
+                                text: '<i class="fa fa-file-pdf-o"></i>PDF',
+                                title: 'Reporte de ventas pdf',
+                                titleAttr: 'PDF',
+                                className: 'btn btn-app export pdf',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5]
+                                },
+                                orientation: 'landscape',
+                                customize: function(doc) {
+                                    var colCount = new Array();
+                                    $('#sales-table').find('tbody tr:first-child td').each(function() {
+                                        if ($(this).attr('colspan')) {
+                                            for (var i = 1; i <= $(this).attr('colspan'); i++) {
+                                                colCount.push('*');
+                                            }
+                                        } else {
                                             colCount.push('*');
                                         }
-                                    } else {
-                                        colCount.push('*');
+                                    });
+                                    doc.content[1].table.widths = colCount;
+                                }
+
+
+                            },
+
+                            {
+                                extend: 'excelHtml5',
+                                text: '<i class="fa fa-file-excel-o"></i>Excel',
+                                title: 'Reporte de ventas excel',
+                                titleAttr: 'Excel',
+                                className: 'btn btn-app export excel',
+                                exportOptions: {
+                                    orthogonal: 'export',
+                                    columns: [0, 1, 2, 3, 4, 5],
+
+                                    format: {
+                                        body: function(data, row, column, node) {
+                                            if (typeof data !== 'undefined') {
+                                                if (data != null) {
+
+
+                                                    if (column == 4 || column ==5) { //column with percent
+                                                        if (data !== '') {
+
+                                                           data = data.toString().replace( /[$,]/g, '' )
+                                                        }
+                                                    }
+                                                    return data;
+                                                }
+                                            }
+                                        }
                                     }
-                                });
-                                doc.content[1].table.widths = colCount;
-                            }
 
 
-                        },
 
-                        {
-                            extend: 'excelHtml5',
-                            text: '<i class="fa fa-file-excel-o"></i>Excel',
-                            title: 'Reporte de ventas excel',
-                            titleAttr: 'Excel',
-                            className: 'btn btn-app export excel',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5]
                             },
                         },
                         {
@@ -200,7 +226,7 @@
                     {
                         data: 'total',
                         name: 'Total',
-                        render: $.fn.dataTable.render.number('.', ',', 0, '$')
+                        render:  $.fn.dataTable.render.number('.', ',', 0, '$')
                     },
                     {
                         data: 'totalCommission',
@@ -214,12 +240,16 @@
                     //     render: $.fn.dataTable.render.number('.', ',', 0, '$')
                     // }
                 ],
-                columnDefs: [
-                    {
+                columnDefs: [{
                         targets: 0,
-                        render: function(data) {
-                                data = '<a href="/admin/order/' + data  + '/edit">' + data + '</a>';
-                            return data;
+                        // render: function(data,type) {
+                        //     data = '<a href="/admin/order/' + data + '/edit">' + data + '</a>';
+                        //     return data;
+                        // },
+                        render: function (data, type, row) {
+                            return type === 'export' ?
+                                data:
+                                data = '<a href="/admin/order/' + data + '/edit">' + data + '</a>';
                         },
                         className: 'text-center'
                     },
@@ -284,8 +314,12 @@
                     $(api.column(2).footer()).html('Total');
 
                     // $(api.column(3).footer()).html('$' + parseFloat(amountTotal, 10).toFixed(0).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString());
-                    $(api.column(4).footer()).html(OSREC.CurrencyFormatter.format(amountTotal, { currency: 'CLP' }) );
-                    $(api.column(5).footer()).html(OSREC.CurrencyFormatter.format(commissionTotal,  { currency: 'CLP' }));
+                    $(api.column(4).footer()).html(OSREC.CurrencyFormatter.format(amountTotal, {
+                        currency: 'CLP'
+                    }));
+                    $(api.column(5).footer()).html(OSREC.CurrencyFormatter.format(commissionTotal, {
+                        currency: 'CLP'
+                    }));
                     // $(api.column(5).footer()).html(finalTotal);
                 },
                 //  }
