@@ -39,3 +39,10 @@
     background-image: url(filsavirtual.jpg);
     height: 100%;
 }
+.overflow-scroll-y{
+    height: auto;
+    width: 200px;
+    border: 1px solid #ddd;
+    background: #f1f1f1;
+    overflow-y: scroll;    
+}
