@@ -26,13 +26,13 @@ class Cart extends Component
         return view('livewire.pos.cart.cart');
     }
 
-    public function addProduct($product)
+    public function addProduct(Product $product)
     {
-        isset($this->products[$product['id']]['qty'])
-            ? $this->products[$product['id']]['qty'] += 1
-            : $this->products[$product['id']]['qty'] = 1;
+        isset($this->products[$product->id]['qty'])
+            ? $this->products[$product->id]['qty'] += 1
+            : $this->products[$product->id]['qty'] = 1;
 
-        $this->products[$product['id']]['product'] = $product;
+        $this->products[$product->id]['product'] = $product;
         $this->calculateAmounts();
     }
 
