@@ -49,13 +49,13 @@
     @stack('styles')
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138777725-6"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FM5Z04TT9J"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-        gtag('config', 'UA-138777725-6');
+    gtag('config', 'G-FM5Z04TT9J');
     </script>
 </head>
 <!-- Body-->
