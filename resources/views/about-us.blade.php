@@ -15,7 +15,7 @@
     <div class="row" >
         <div class="col-12 m-5 text-center">
             <p class="h2">Filsa Virtual 2020</p>
-            <p class="font-italic h4 text-info">"Libros y lectura"</p>
+            <p class="font-italic h4 text-info">"Libros y lecturas"</p>
             <br>
             <br>
             <p class="text-justify">

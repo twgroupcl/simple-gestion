@@ -9,7 +9,7 @@
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
             <img src="{{ asset('img/filsa/banner-principal.jpg') }}" alt="Filsa Banner">
             <img src="{{ asset('img/filsa/banner-bienvenida.jpg') }}" alt="Filsa Banner">
-            <a href="https://camaradellibro.cl/" target="_blank">
+            <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">
                 <img src="{{ asset('img/filsa/banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
             </a>
         </div>
@@ -21,7 +21,7 @@
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
             <img src="{{ asset('img/filsa/mobile-banner-principal.jpg') }}" alt="Filsa Banner">
             <img src="{{ asset('img/filsa/mobile-banner-bienvenida.jpg') }}" alt="Filsa Banner">
-            <a href="https://camaradellibro.cl/" target="_blank">                
+            <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">                
                 <img src="{{ asset('img/filsa/mobile-banner-transmision.jpg') }}" alt="Filsa Banner">
             </a>
         </div>
@@ -65,7 +65,7 @@
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
             <div class="col-md-12">
-                <a href="https://camaradellibro.cl/" target="_blank">
+                <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank">
                     <img src="{{ asset('img/filsa/banner-transmision.jpg') }}" alt="Banner Programa Cultural" class="img-fluid">
                 </a>
             </div>
@@ -88,7 +88,7 @@
             <div class="col-md-12">
                 <div class="cz-carousel cz-dots-enabled">
                     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-                        <a href="https://camaradellibro.cl/" target="_blank" class="border border-white">            
+                        <a href="https://camaradellibro.cl/wp-content/uploads/2020/11/Programa-FilsaVirtual-v.1.pdf" target="_blank" class="border border-white">            
                             <img src="{{ asset('img/filsa/banner-2.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
                         </a>
                         <a href="https://www.bibliotecasantiago.cl/" target="_blank" class="border border-white">            
