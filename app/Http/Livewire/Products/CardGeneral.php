@@ -25,6 +25,7 @@ class CardGeneral extends Component
     public $sortingDirection = null;
     public $render = null;
     public $filters = null;
+    public $seed;
 
     protected $listeners = [
         'shop-grid.filter' => 'filterProducts',
@@ -65,6 +66,7 @@ class CardGeneral extends Component
         $this->showPaginate = $showPaginate;
         $this->showFrom = $showFrom;
         $this->valuesQuery = $valuesQuery;
+        $this->seed = rand(100, 2000);
     }
 
     public function filterProducts($data)
@@ -77,6 +79,7 @@ class CardGeneral extends Component
     {
         $this->sortingField = $data['field'];
         $this->sortingDirection = $data['direction'];
+        if ($this->sortingField === 'random') $this->seed = rand(100, 2000);
         $this->render();
     }
 
@@ -110,10 +113,9 @@ class CardGeneral extends Component
         return 'paginator';
     }
 
-    private function baseQuery($random = true, $category_id = null, $product_search = null, $seller_id = null)
+    private function baseQuery($random = false, $category_id = null, $product_search = null, $seller_id = null)
     {
 
-        $random = true;
         $this->sortingField = $this->sortingField ?? 'random';
         $this->sortingDirection = $this->sortingDirection ?? 'random';
 
@@ -165,7 +167,7 @@ class CardGeneral extends Component
         // Sorting
         $filterQuery->when(!is_null($random), function ($query) use ($random) {
             if ($random || $this->sortingField === 'random') {
-                return $query->inRandomOrder();
+                return $query->inRandomOrder($this->seed);
             } else {
                 $query->orderBy($this->sortingField, $this->sortingDirection);
             }
