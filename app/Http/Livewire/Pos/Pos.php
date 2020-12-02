@@ -8,6 +8,11 @@ use Livewire\Component;
 class Pos extends Component
 {
     public $seller;
+    public $viewMode;
+
+    protected $listeners = [
+        'viewModeChanged' => 'setView',
+    ];
 
     public function render()
     {
@@ -17,5 +22,11 @@ class Pos extends Component
     public function mount()
     {
         $this->seller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        $this->setView('productList');
+    }
+
+    public function setView($view = null)
+    {
+        $this->viewMode = $view;
     }
 }
