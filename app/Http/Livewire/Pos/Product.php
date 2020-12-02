@@ -54,6 +54,6 @@ class Product extends Component
                     ->children
                     ->pluck('real_price')
                     ->sort()
-                    ->first() ?? 0;
+                    ->first() ?? $this->product->price;
     }
 }
