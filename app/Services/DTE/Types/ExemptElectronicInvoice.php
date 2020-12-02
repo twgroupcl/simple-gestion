@@ -7,7 +7,7 @@ use App\Services\DTE\Traits\DTEArray;
 
 class ExemptElectronicInvoice implements DocumentType
 {
-    use DTEArray;
+    use DTEArray { toArray as ttArray; }
 
     const TYPE=34;
     protected $invoice;
@@ -31,5 +31,20 @@ class ExemptElectronicInvoice implements DocumentType
      * Override use Traits\DTEArray { toArray as ttArray; }
      * call with $this->ttArray() and override function toArray() 
     */
+    public function toArray()
+    {
+        $array = $this->ttArray();
+
+        //$array['Encabezado']['IdDoc']['FchEmis'] = '2020-11-30';
+        /*$array['Encabezado']['IdDoc'] = array_merge($array['Encabezado']['IdDoc'], [
+            'FchEmis' => '2020-11-30',
+        ]);*/
+        
+        foreach ($array['Detalle'] as $key => $item) {
+            $array['Detalle'][$key]['IndExe'] = 1;
+        }
+
+        ddd($array);
+    }
 
 }
