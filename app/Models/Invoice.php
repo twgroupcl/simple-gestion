@@ -33,8 +33,51 @@ class Invoice extends Model
     protected $table = 'invoices';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
-    protected $guarded = ['id'];
-    // protected $fillable = [];
+    // protected $guarded = ['id'];
+    protected $fillable = [
+        'uid',
+        'first_name',
+        'last_name',
+        'address_id',
+        'email',
+        'email_sent',
+        'invoice_type_id',
+        'invoice_date',
+        //'invoice_status',
+        'is_company',
+        'items_count',
+        'include_payment_data',
+        'items_data',
+        'items_qty',
+        'json_value',
+        'phone',
+        'cellphone',
+        'notes',
+        'net',
+        'preface',
+        'has_discount_per_item',
+        'has_tax_per_item',
+        'folio',
+        'discount_amount',
+        'discount_percent',
+        'discount_total',
+        //'dte_code',
+        'customer_id',
+        'currency_id',
+        'customer_business_activity_id',
+        'expiry_date',
+        'seller_business_activity_id',
+        'seller_id',
+        //'status',
+        'sub_total',
+        'tax_amount',
+        'tax_percent',
+        'tax_specific',
+        'tax_total',
+        'tax_type',
+        'title',
+        'total',
+    ];
     // protected $hidden = [];
     // protected $dates = [];
 
