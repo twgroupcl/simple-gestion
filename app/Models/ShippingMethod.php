@@ -23,6 +23,13 @@ class ShippingMethod extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    // Shipping method codes
+    const FREE_SHIPPING = 'free_shipping';
+    const CHILEXPRESS = 'chilexpress';
+    const FLAT_RATE = 'flat_rate';
+    const VARIABLE = 'variable';
+    const PICKING = 'picking';
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
