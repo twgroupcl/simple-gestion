@@ -127,7 +127,7 @@
                 <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/el-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+                <img src="{{ asset('img/filsa/banner-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
                 <a href="https://www.cooperativa.cl/" target="_blank">
