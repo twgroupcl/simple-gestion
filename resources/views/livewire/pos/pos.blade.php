@@ -1,22 +1,58 @@
 <div class="content">
     <div class="row">
-        <div class="col-2">
+        <div class="col-1">
             <div class="bg-light border-right" id="sidebar-wrapper">
                 <div class="sidebar-heading">Punto de Venta </div>
-                <div class="list-group list-group-flush">
-                  <a href="#" wire:click="$emitUp('viewModeChanged', 'productList')" class="list-group-item list-group-item-action bg-light">POS</a>
-                  <a href="#" wire:click="$emitUp('viewModeChanged', 'selectCustomer')" class="list-group-item list-group-item-action bg-light">Customer</a>
-                </div>
-              </div>
+
+                <ul class="pos-list-group list-group-flush">
+                    <li class="pos-list-group-item text-center my-auto">
+                        <a href="#" wire:click="$emitUp('viewModeChanged', 'productList')"
+                            class="list-group-item-action ">
+                            <i class="las la-calculator" style="font-size: 32px;"></i>
+                            <br>
+                            POS
+                        </a>
+                    </li>
+                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                            <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
+                            <br>
+                            Sales</a></li>
+                    <li class="pos-list-group-item text-center"><a href="#"
+                            wire:click="$emitUp('viewModeChanged', 'selectCustomer')" class="list-group-item-action ">
+                            <i class="las la-user" style="font-size: 32px;"></i>
+                            Customer</a></li>
+
+                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                            <i class="las la-cash-register" style="font-size: 32px;"></i>
+                            <br>
+                            Cashier</a></li>
+                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                        <i class="las la-boxes" style="font-size: 32px;"></i>
+                            <br>
+                            Products</a></li>
+                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                        <i class="las la-cog" style="font-size: 32px;"></i>
+                            <br>
+                            Setting</a></li>
+                </ul>
+
+
+
+            </div>
         </div>
-        <div class="col-7">
-            @if ($viewMode == 'selectCustomer')
-                @livewire('pos.customer.customer-view')
-            @endif
-            @if ($viewMode == 'productList')
-                @livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
-            @endif
+        <div class="col-8">
+            <div class="position-relative overflow-auto vh-100">
+                @if ($viewMode == 'selectCustomer')
+                    @livewire('pos.customer.customer-view')
+                @endif
+                @if ($viewMode == 'productList')
+                    @livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
+                @endif
+            </div>
         </div>
-        <div class="col-3">@livewire('pos.cart.cart')</div>
+        <div class="col-3">
+            <div class="position-relative overflow-hidden vh-100">
+            @livewire('pos.cart.cart')</div>
+            </div>
     </div>
 </div>
