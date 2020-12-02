@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Seller;
 use App\Models\Commune;
 use App\Cruds\BaseCrudFields;
+use App\Models\ShippingMethod;
 use App\Models\CommuneShippingMethod;
 use App\Http\Requests\CommuneShippingMethodRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -23,6 +24,10 @@ class CommuneShippingMethodCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    private $admin;
+    private $userSeller;
+    private $shippingMethods;
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
@@ -39,6 +44,7 @@ class CommuneShippingMethodCrudController extends CrudController
         
         $this->admin = false;
         $this->userSeller = null;
+        $this->shippingMethods = ShippingMethod::where('status', 1)->get();
 
         if (backpack_user()->can('communeshippingmethod.admin')) {
             $this->admin = true;
@@ -105,7 +111,6 @@ class CommuneShippingMethodCrudController extends CrudController
 
         $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
-        //CRUD::setFromDb(); // fields
 
         CRUD::addField([
             'name' => 'seller_id',
@@ -169,6 +174,11 @@ class CommuneShippingMethodCrudController extends CrudController
                 'tab' => 'Configuración general',
                 'attributes' => [
                     'class' => 'free_shipping_checker'
+                ],
+                'wrapper' => [
+                    'style' => $this->shippingMethods->where('code', 'free_shipping')->count() 
+                                    ? ''
+                                    : 'display: none', 
                 ]
             ]);
 
@@ -182,6 +192,11 @@ class CommuneShippingMethodCrudController extends CrudController
                 'tab' => 'Configuración general',
                 'attributes' => [
                     'class' => 'flat_rate_checker'
+                ],
+                'wrapper' => [
+                    'style' => $this->shippingMethods->where('code', 'flat_rate')->count() 
+                                    ? ''
+                                    : 'display: none', 
                 ]
             ]
         );
@@ -196,9 +211,15 @@ class CommuneShippingMethodCrudController extends CrudController
                 'tab' => 'Configuración general',
                 'attributes' => [
                     'class' => 'variable_checker'
+                ],
+                'wrapper' => [
+                    'style' => $this->shippingMethods->where('code', 'variable')->count() 
+                                    ? ''
+                                    : 'display: none', 
                 ]
             ]
         );
+
         CRUD::addField(
             [
                 'label'     => 'Retiro en tienda',
@@ -209,6 +230,11 @@ class CommuneShippingMethodCrudController extends CrudController
                 'tab' => 'Configuración general',
                 'attributes' => [
                     'class' => 'picking_checker'
+                ],
+                'wrapper' => [
+                    'style' => $this->shippingMethods->where('code', 'picking')->count() 
+                                    ? ''
+                                    : 'display: none', 
                 ]
             ]
         );
@@ -223,6 +249,11 @@ class CommuneShippingMethodCrudController extends CrudController
                 'tab' => 'Configuración general',
                 'attributes' => [
                     'class' => 'chilexpress_checker'
+                ],
+                'wrapper' => [
+                    'style' => $this->shippingMethods->where('code', 'chilexpress')->count() 
+                                    ? ''
+                                    : 'display: none', 
                 ]
             ]
         );
@@ -234,7 +265,9 @@ class CommuneShippingMethodCrudController extends CrudController
             'type' => 'repeatable',
             'fake' => true,
             'store_in' => 'shipping_methods',
-            'tab' => 'Envío gratis',
+            'tab' => $this->shippingMethods->where('code', 'free_shipping')->count() 
+                                    ? 'Envio gratis'
+                                    : 'Configuración general', 
             'fields' => [
                 [
                     'name' => 'price',
@@ -245,6 +278,11 @@ class CommuneShippingMethodCrudController extends CrudController
                         'readonly' => true,
                     ]
                 ],
+            ],
+            'wrapper' => [
+                'style' => $this->shippingMethods->where('code', 'free_shipping')->count() 
+                                    ? ''
+                                    : 'display: none', 
             ]
         ]);
 
@@ -254,7 +292,9 @@ class CommuneShippingMethodCrudController extends CrudController
             'type' => 'repeatable',
             'fake' => true,
             'store_in' => 'shipping_methods',
-            'tab' => 'Tarifa fija',
+            'tab' => $this->shippingMethods->where('code', 'flat_rate')->count() 
+                                    ? 'Tarifa fija'
+                                    : 'Configuración general', 
             'fields' => [
                 [
                     'name' => 'price',
@@ -262,6 +302,11 @@ class CommuneShippingMethodCrudController extends CrudController
                     'default' => 0,
                     'type' => 'number',
                 ],
+            ],
+            'wrapper' => [
+                'style' => $this->shippingMethods->where('code', 'flat_rate')->count() 
+                                    ? ''
+                                    : 'display: none', 
             ]
         ]);
 
@@ -271,7 +316,9 @@ class CommuneShippingMethodCrudController extends CrudController
             'type' => 'repeatable',
             'fake' => true,
             'store_in' => 'shipping_methods',
-            'tab' => 'Tarifa variable',
+            'tab' => $this->shippingMethods->where('code', 'variable')->count() 
+                                    ? 'Tarifa variable'
+                                    : 'Configuración general', 
             'fields' => [
                 [
                     'name' => 'table_prices',
@@ -302,7 +349,12 @@ class CommuneShippingMethodCrudController extends CrudController
                     'name' => 'help_text',
                     'type' => 'commune_shipping_method.help_text',
                 ]
-            ]
+            ],
+            'wrapper' => [
+                'style' => $this->shippingMethods->where('code', 'variable')->count() 
+                                    ? ''
+                                    : 'display: none', 
+            ],
         ]);
 
         /* CRUD::addField([
@@ -317,7 +369,9 @@ class CommuneShippingMethodCrudController extends CrudController
             'type' => 'repeatable',
             'fake' => true,
             'store_in' => 'shipping_methods',
-            'tab' => 'Retiro en tienda',
+            'tab' => $this->shippingMethods->where('code', 'picking')->count() 
+                                    ? 'Retiro en tienda'
+                                    : 'Configuración general', 
             'fields' => [
                 [
                     'name' => 'price',
@@ -328,7 +382,12 @@ class CommuneShippingMethodCrudController extends CrudController
                         'readonly' => true,
                     ]
                 ],
-            ]
+            ],
+            'wrapper' => [
+                'style' => $this->shippingMethods->where('code', 'picking')->count() 
+                                    ? ''
+                                    : 'display: none', 
+            ],
         ]);
 
 
@@ -338,7 +397,9 @@ class CommuneShippingMethodCrudController extends CrudController
             'type' => 'repeatable',
             'fake' => true,
             'store_in' => 'shipping_methods',
-            'tab' => 'Chilexpress',
+            'tab' => $this->shippingMethods->where('code', 'chilexpress')->count() 
+                                    ? 'Chilexpress'
+                                    : 'Configuración general', 
             'fields' => [
                 [
                     'name' => 'price',
@@ -349,7 +410,12 @@ class CommuneShippingMethodCrudController extends CrudController
                         'disabled' => true,
                     ]
                 ],
-            ]
+            ],
+            'wrapper' => [
+                'style' => $this->shippingMethods->where('code', 'chilexpress')->count() 
+                                    ? ''
+                                    : 'display: none', 
+            ],
         ]);
 
 
