@@ -119,6 +119,26 @@ class Seller extends Model
         }
     }
 
+    /**
+     * Return an array with the codes of the available shipping methods
+     */
+    public function getAvailableShippingMethodsByCommune($communeId)
+    {
+        $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'commune_id' => $communeId ])->first();
+
+        if (!$shippingConfig) {
+            $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
+            
+            if (!$shippingConfig) {
+                return [];
+            }
+
+            return $shippingConfig->getAvailableShippingMethodCodes();
+        }
+
+        return $shippingConfig->getAvailableShippingMethodCodes();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
