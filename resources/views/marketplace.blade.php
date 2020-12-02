@@ -205,8 +205,8 @@
         </div>
     </section>
 -->
-
-@if(($banners[2]['path_web'] && $banners[2]['status']) || ($banners[3]['path_web'] && $banners[3]['status']))
+{{$banners[2]['status']}}
+@if($banners[2]['status'] == 'Activo' || $banners[3]['status'] == 'Activo')
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row text-center">
