@@ -34,6 +34,17 @@ trait DTEArray
             'Encabezado' => [
                 'IdDoc' => [
                     'TipoDTE' => self::TYPE,
+                    'TpoTranCompra' => false,
+                    'FmaPago' => 1, //Obligar contado por defecto. 2Credito - 3SinCosto (false = 2)
+                    'FmaPagExp' => false, //Ventas del giro 1, ventas activo fijo 2, Venta bien raiz 3
+                    'MedioPago' => false,
+                    'TpoCtaPago' => false,
+                    'NumCtaPago' => false,
+                    'BcoPago' => false,
+                    'TermPagoCdg' => false,
+                    'TermPagoGlosa' => false,
+                    'TermPagoDias' => false,
+                    'FchVenc' => false
                 ],
                 'Emisor' => [
                     'RUTEmisor' => sanitizeRUT($seller->uid),
@@ -48,9 +59,16 @@ trait DTEArray
                                     '',
                     'CmnaRecep' => $customerAddress->commune->name,
                 ],
+                'Totales' => [
+                    'TpoMoneda' => 'CLP',
+                    //'MntTotal' => 
+                ],
             ],
             'Detalle' => $itemsDTE,
-            'DscRcgGlobal' => $globalDiscounts 
+            'DscRcgGlobal' => $globalDiscounts,
+            'Comisiones' => false,
+            'Referencia' => false,
+            'SubTotInfo' => false
         ];
     }
 
