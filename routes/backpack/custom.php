@@ -7,12 +7,12 @@
 // Routes you generate using Backpack\Generators will be placed here.
 
 Route::group([
-    'prefix'     => config('backpack.base.route_prefix', 'admin'),
+    'prefix' => config('backpack.base.route_prefix', 'admin'),
     'middleware' => array_merge(
         (array) config('backpack.base.web_middleware', 'web'),
         (array) config('backpack.base.middleware_key', 'admin')
     ),
-    'namespace'  => 'App\Http\Controllers\Admin',
+    'namespace' => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
     Route::crud('country', 'CountryCrudController');
     Route::crud('region', 'RegionCrudController');
@@ -33,7 +33,7 @@ Route::group([
     Route::crud('companyuser', 'CompanyUserCrudController');
     Route::crud('branchcompany', 'BranchCompanyCrudController');
     Route::crud('branchuser', 'BranchUserCrudController');
-    Route::get('set_current_branch/{branch_id}', function($branch_id) {
+    Route::get('set_current_branch/{branch_id}', function ($branch_id) {
         $user = backpack_user()->set_current_branch($branch_id);
 
         return redirect()->route('backpack.dashboard');
@@ -50,6 +50,9 @@ Route::group([
     Route::crud('productclass', 'ProductClassCrudController');
     Route::crud('productclassattribute', 'ProductClassAttributeCrudController');
     Route::crud('product', 'ProductCrudController');
+    Route::post('product/bulk-approve', 'ProductCrudController@bulkApprove')->name('products.bulk-approve');
+    Route::post('product/bulk-reject', 'ProductCrudController@bulkReject')->name('products.bulk-reject');
+    Route::post('product/bulk-delete', 'ProductCrudController@bulkDelete')->name('products.bulk-delete');
     Route::crud('productinventorysource', 'ProductInventorySourceCrudController');
     Route::crud('productinventory', 'ProductInventoryCrudController');
     Route::crud('shippingmethod', 'ShippingMethodCrudController');
@@ -63,12 +66,27 @@ Route::group([
     Route::get('charts/most-purchased-product-categories', 'Charts\MostPurchasedProductCategoriesChartController@response')->name('charts.most-purchased-product-categories.index');
     Route::get('charts/most-purchased-products', 'Charts\MostPurchasedProductsChartController@response')->name('charts.most-purchased-products.index');
 
-     // API routes
-     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
-     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
-     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
+    // API routes
+    Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
+    Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
+    Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
+    Route::post('api/getPlans', 'PlansCrudController@getPlans');
+    Route::post('api/getPlanById', 'PlansCrudController@getPlanById');
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::crud('plans', 'PlansCrudController');
+    Route::get('payment/subscription/{id}', 'Payments\WebPayPlusController@subscriptionPayment')->name('payment.subscription');
+    Route::get('report/sales', 'Report\SalesReportController@index')->name('report.sales');
+
+    Route::crud('banners', 'BannersCrudController');
+    Route::crud('customersupport', 'CustomerSupportCrudController');
+
 }); // this should be the absolute last line of this file
+//Payment
+Route::post('admin/payment/subscription/result', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionResultPayment')->name('payment.result');
+Route::post('admin/payment/subscription/detail/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionDetailPayment')->name('payment.detail');
+Route::post('/send-email-subscription', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@sendEmailSubscription');
+
+//Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
 

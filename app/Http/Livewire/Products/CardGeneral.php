@@ -142,8 +142,31 @@ class CardGeneral extends Component
             });
         
         // Filter and sorting
+
+        // Current price
+        $baseQuery->selectRaw('*');
+        $baseQuery->selectRaw('id as aux_id');
+        $baseQuery->selectRaw('(CASE
+        WHEN product_type_id = 2 THEN (SELECT MAX(
+            CASE
+            WHEN special_price IS NULL THEN price
+            WHEN special_price IS NOT NULL AND (special_price_from IS NULL OR special_price_to IS NULL) THEN special_price 
+            WHEN special_price IS NOT NULL AND (special_price_from <= CURDATE() AND  CURDATE() <= special_price_to) THEN special_price
+            ELSE price
+            END
+            ) FROM products WHERE parent_id = aux_id) 
+        WHEN special_price IS NULL THEN price
+        WHEN special_price IS NOT NULL AND (special_price_from IS NULL OR special_price_to IS NULL) THEN special_price 
+        WHEN special_price IS NOT NULL AND (special_price_from <= CURDATE() AND  CURDATE() <= special_price_to) THEN special_price
+        ELSE price 
+        END)  
+        AS current_price');
+        
+        // Filter
         $filterService = new ProductFilterService();
         $filterQuery = $filterService->filterByParams($baseQuery, $this->filters);
+
+        // Sorting
         $filterQuery->when(!is_null($random), function ($query) use ($random) {
                 if ($random) {
                     return $query->inRandomOrder();

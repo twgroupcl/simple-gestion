@@ -29,15 +29,23 @@ Route::post('/customer/forget', 'Frontend\CustomerController@recovery')->name('c
 Route::post('/customer/reset', 'Frontend\CustomerController@updatePassword')->name('password.update');
 Route::get('/customer/reset/{token}', 'Frontend\CustomerController@reset')->name('password.reset');
 Route::get('/customer/exit', 'Frontend\CustomerController@logout')->name('exit');
+Route::get('/support', 'Frontend\CustomerController@support')->name('customer.support');
+Route::post('/support', 'Frontend\CustomerController@createIssue')->name('customer.support.create');
 
 Route::middleware(['auth'])->group(function () {
     Route::put('/customer/{customer}', 'Frontend\CustomerController@update')->name('customer.update');
     Route::get('/customer/profile', 'Frontend\CustomerController@profile')->name('customer.profile');
     Route::get('/customer/address', 'Frontend\CustomerController@address')->name('customer.address');
     Route::get('/customer/order', 'Frontend\CustomerController@order')->name('customer.order');
-
+    Route::get('/customer/subscription', 'Frontend\CustomerController@subscription')->name('customer.subscription');
+    Route::post('/customer/subscription/add', 'Frontend\CustomerController@addSubscription')->name('customer.subscription.add');
+    Route::post('/customer/subscription/plans', 'Frontend\CustomerController@getPlans')->name('customer.subscription.plans');
     Route::put('/address/{customer}', 'Frontend\AddressController@store')->name('address.update');
+    Route::get('/payment/subscription/{id}', 'Admin\Payments\WebPayPlusController@subscriptionCustomerPayment')->name('payment.customer.subscription');
+        
 });
+Route::post('/payment/subscription/result', 'Admin\Payments\WebPayPlusController@subscriptionResultCustomerPayment')->name('payment.customer.result');
+Route::post('/payment/subscription/detail', 'Admin\Payments\WebPayPlusController@subscriptionDetailCustomerPayment')->name('payment.customer.detail');
 
 Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.sign');
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
@@ -52,6 +60,7 @@ Route::get('/shop-list/', function () {
 });
 Route::get('/shop-grid/', 'Frontend\HomeController@getProductsByCategory');
 Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
+Route::get('/shop/{slug}', 'Frontend\HomeController@getSellerBySlug')->name('seller-slug');
 Route::get('/faq', 'Frontend\HomeController@getFaq');
 Route::get('/faq-single', function () {
     return view('faq-single');

@@ -4,12 +4,29 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
-<div class="cz-carousel cz-dots-enabled">
+
+<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        <img src="{{ asset('img/home/hero-slider/banner-blackfriday.png') }}" alt="Contigo Pyme Black Friday">
         <img src="{{ asset('img/home/hero-slider/banner_navidad.png') }}" alt="Contigo Pyme Banner Navidad">
         <a href="{{ route('seller.sign') }}"><img src="{{ asset('img/seller-register.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
         <img src="{{ asset('img/home/hero-slider/banner-02.png') }}" alt="Contigo Pyme Banner 2">
         <img src="{{ asset('img/home/hero-slider/banner-03.png') }}" alt="Contigo Pyme Banner 3">
+    </div>
+</div>
+
+
+<div class="d-block d-sm-none">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-blackfriday.png') }}" alt="Contigo Pyme Black Friday">
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad.png') }}" alt="Contigo Pyme Banner 1">
+            <a href="{{ route('seller.sign') }}">
+                <img src="{{ asset('img/home/hero-slider/mobile-banner-1.png') }}" class="img-fluid w-100" alt="Contigo Pyme Banner 1">
+            </a>
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-2.png') }}" alt="Contigo Pyme Banner 2">
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-3.png') }}" alt="Contigo Pyme Banner 3">
+        </div>
     </div>
 </div>
 
@@ -108,15 +125,26 @@
     </div>
 </section>
 
-<section class="container mt-5 mb-grid-gutter">
+@if($banners[1]['path_web'] && $banners[1]['status'])
+<section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
-            <div class="col-md-12">
-                <img src="{{ asset('img/home-banner-01.png') }}" alt="Banner promoción 1" class="img-fluid">
-            </div>
+            <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
+                <img src="{{url($banners[1]['path_web'])}}" alt="{{$banners[1]['name']}}">
+            </div>    
+            @if(!is_null($banners[1]['path_mobile']))
+                <div class="col-md-12 d-block d-sm-none">
+                    <img src="{{url($banners[1]['path_mobile'])}}" alt="{{$banners[1]['name']}}" class="w-100">
+                </div>
+            @else
+                <div class="col-md-12 d-none d-block d-sm-none">
+                    <img src="{{url($banners[1]['path_web'])}}" alt="{{$banners[1]['name']}}">
+                </div>
+            @endif
         </div>
     </div>
 </section>
+@endif
 
 <!-- Promo banner-->
 {{-- <section class="container mt-4 mb-grid-gutter">
@@ -177,29 +205,51 @@
         </div>
     </section>
 -->
-
+{{$banners[2]['status']}}
+@if($banners[2]['status'] == 'Activo' || $banners[3]['status'] == 'Activo')
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
-        <div class="row align-items-center">
-            <div class="col-md-6 pb-3">
-                <img src="{{ asset('img/home-banner-02.png') }}" alt="Banner promoción 2" class="img-fluid">
-            </div>
-            <div class="col-md-6 pb-3">
-                <img src="{{ asset('img/home-banner-03.png') }}" alt="Banner promoción 3" class="img-fluid">
-            </div>
+        <div class="row text-center">
+            @if($banners[2]['path_web'] && $banners[3]['path_web'])
+                <div class="col-md-6 pb-3">
+                    <img src="{{url($banners[2]['path_web'])}}" alt="{{$banners[2]['name']}}" class="img-fluid border-radious-3">
+                </div>
+                <div class="col-md-6 pb-3">
+                    <img src="{{url($banners[3]['path_web'])}}" alt="{{$banners[3]['name']}}" class="img-fluid border-radious-3">
+                </div>
+            @else
+                @php
+                    $imgPath = ($banners[2]['path_web'])?$banners[2]['path_web']:$banners[3]['path_web'];   
+                @endphp
+                <div class="col-md-12 pb-3">
+                    <img src="{{url($imgPath)}}" class="img-fluid border-radious-3">
+                </div>
+            @endif
         </div>
     </div>
 </section>
+@endif
 
+@if($banners[4]['path_web'] && $banners[4]['status'])
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
-            <div class="col-md-12">
-                <img src="{{ asset('img/home-banner-04.png') }}" alt="Banner promoción 4" class="img-fluid">
-            </div>
+            <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
+                <img src="{{url($banners[4]['path_web'])}}" alt="{{$banners[4]['name']}}">
+            </div>    
+            @if(!is_null($banners[4]['path_mobile']))
+                <div class="col-md-12 d-block d-sm-none">
+                    <img src="{{url($banners[4]['path_mobile'])}}" alt="{{$banners[4]['name']}}" class="w-100">
+                </div>
+            @else
+                <div class="col-md-12 d-none d-block d-sm-none">
+                    <img src="{{url($banners[4]['path_web'])}}" alt="{{$banners[4]['name']}}">
+                </div>
+            @endif
         </div>
     </div>
 </section>
+@endif
 
 <!-- YouTube feed-->
 {{-- <section class="container pb-5 mb-md-3">

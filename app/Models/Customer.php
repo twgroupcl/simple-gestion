@@ -8,7 +8,7 @@ use Freshwork\ChileanBundle\Rut;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Traits\CustomAttributeRelations;
+use App\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 

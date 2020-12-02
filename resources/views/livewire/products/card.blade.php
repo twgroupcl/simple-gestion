@@ -7,7 +7,7 @@
         </button>
     </div> --}}
     <div class="row">
-        @if($product->special_price)
+        @if($product->has_special_price)
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <span class="badge badge-warning badge-shadow">Dcto</span>
             </div>
@@ -27,14 +27,14 @@
         <img class="w-100 max-height-14 min-height-14" src="{{ url($product->getFirstImagePath()) }}" alt="Product">
     </a>
     <div class="card-body py-2">
-        <h3 class="product-title font-size-sm"><a href="{{ 'seller-shop/' . $product->seller->id }}">{{ $product->seller->visible_name }}</a></h3>
+        <h3 class="product-title font-size-sm"><a href="{{ url('seller-shop').'/'.$product->seller->id }}">{{ $product->seller->visible_name }}</a></h3>
         <a class="product-meta d-block font-size-xs pb-1" href="{{ url('search-products/'.$product->categories[0]->id) }}">{{ $product->showCategory() }}</a>
         <h3 class="product-title font-size-sm"><a href="{{ route('product',['slug' => $product->url_key]) }}">{{ $product->name }}</a></h3>
         {{-- <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}" @if(strlen($product->name) > 80) data-toggle="tooltip" data-placement="top" title="{{ $product->name }}" @endif>{{ substr($product->name, 0, 80) }} @if(strlen($product->name) > 80) ... @endif</a></h3> --}}
         <div class="d-flex justify-content-between">
             <!--<div class="product-price"><span class="text-accent">$198.<small>00</small></span></div>-->
             @if ($product->children()->count())
-                @if ($product->special_price)
+                @if ($product->has_special_price)
                     <div class="product-price">
                         @if ($product->getRealPriceRange()[0] == $product->getRealPriceRange()[1])
                             <span class="text-accent">
@@ -65,7 +65,7 @@
                 @endif  
             @else
                 <div class="product-price">
-                    @if($product->special_price)
+                    @if($product->has_special_price)
                         <span class="text-accent">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
                         <del class="font-size-sm text-muted"><small>{{ currencyFormat($product->price, defaultCurrency(), true) }}</small></del>
                     @else
