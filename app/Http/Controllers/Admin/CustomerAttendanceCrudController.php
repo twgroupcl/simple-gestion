@@ -75,7 +75,7 @@ class CustomerAttendanceCrudController extends CrudController
             'name' => 'attendance_time',
             'label' => 'Hora registrada',
             'type' => 'datetime',
-            'format' => 'H:m',
+            'format' => 'h:m A',
         ]);
 
         CRUD::addColumn([
@@ -179,7 +179,7 @@ class CustomerAttendanceCrudController extends CrudController
             'name' => 'attendance_time',
             'label' => 'Hora registrada',
             'type' => 'datetime',
-            'format' => 'H:m',
+            'format' => 'h:m A',
         ]);
 
         CRUD::addColumn([
