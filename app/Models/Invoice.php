@@ -113,6 +113,7 @@ class Invoice extends Model
     public static function toObject($array) : Invoice
     {
         $invoice = new Invoice($array);
+        $invoice->dte_code = $array['dte_code'];
         return $invoice;
     }
 
