@@ -33,18 +33,17 @@ class CommuneShippingMethodCrudController extends CrudController
         CRUD::setModel(\App\Models\CommuneShippingMethod::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/communeshippingmethod');
         CRUD::setEntityNameStrings('configuracion de envio', 'metodos de envio');
+
         $this->crud->denyAccess('show');
         $this->crud->enableDetailsRow();
+        
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
+        if (backpack_user()->can('communeshippingmethod.admin')) {
             $this->admin = true;
-
             $this->crud->enableExportButtons();
-        }
-
-        if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
+        } else { 
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
         }
     }
@@ -57,7 +56,7 @@ class CommuneShippingMethodCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        // If not admin, show only seller config
+        // If not admin, show only seller shipping config
         if (!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
 
         if ($this->admin) {
@@ -408,7 +407,6 @@ class CommuneShippingMethodCrudController extends CrudController
             'type'  => 'dropdown',
             'label' => 'Aplica a todas las comunas'
           ], [
-            //null => 'Pendiente',
             0 => 'No',
             1 => 'Si',
           ], function($value) {
@@ -419,22 +417,22 @@ class CommuneShippingMethodCrudController extends CrudController
             'name'  => 'shipping_method',
             'type'  => 'select2_multiple',
             'label' => 'Metodo de envío'
-          ], function() {
-              return [
+        ], function() {
+            return [
                 'free_shipping_status' => 'Envío gratis',
                 'flat_rate_status' => 'Tarifa fija',
                 'chilexpress_status' => 'Chilexpress',
                 'variable_status' => 'Tarifa variable',
                 'picking_status' => 'Retiro en tienda',
-              ];
-          }, function($values) { // if the filter is active
-              foreach(json_decode($values) as $key => $value) {
+            ];
+        }, function($values) {
+            foreach (json_decode($values) as $key => $value) {
                 if ($key === 0) {
                     $this->crud->addClause('where', 'active_methods->'. $value, 1);
                 } else {
                     $this->crud->addClause('orWhere', 'active_methods->'. $value, 1);
                 }
-              }
-          });
+            }
+        });
     }
 }
