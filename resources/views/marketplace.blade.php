@@ -96,11 +96,22 @@
             <div class="col-md-12">
                 <div class="cz-carousel cz-dots-enabled">
                     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-                        <a href="https://filsaenvivo.com/" target="_blank" class="border border-white">            
+                        <a href="https://camaradellibro.cl/wp-content/uploads/2020/12/Programa-FilsaVirtual-v.2.pdf" target="_blank" class="border border-white">            
                             <img src="{{ asset('img/filsa/banner-2.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-100">
                         </a>
                         <a href="https://www.bibliotecasantiago.cl/" target="_blank" class="border border-white">            
                             <img src="{{ asset('img/filsa/banner-biblioteca.jpg') }}" alt="Banner Biblioteca" class="img-fluid w-100 p-0 m-0">
+                        </a>
+
+                        <a href="https://www.elmercurio.com/revistadelibros/" target="_blank" class="border border-white">            
+                            <img src="{{ asset('img/filsa/banner-carrusel-mercurio.jpg') }}" alt="Banner Biblioteca" class="img-fluid w-100 p-0 m-0">
+                        </a>
+                        <img src="{{ asset('img/filsa/banner-carrusel-méxico.png') }}" alt="Banner Mexico" class="img-fluid p-0 m-0">
+                        <a href="https://iicsantiago.esteri.it/iic_santiago/it/" target="_blank" class="border border-white">            
+                            <img src="{{ asset('img/filsa/banner-carrusel-italia.png') }}" alt="Banner Italia" class="img-fluid w-100 p-0 m-0">
+                        </a>
+                        <a href="https://ondamedia.cl/#/playlist/cine-y-letras " target="_blank" class="border border-white">            
+                            <img src="{{ asset('img/filsa/banner-carrusel-onda.jpg') }}" alt="Banner Onda" class="img-fluid w-100 p-0 m-0">
                         </a>                        
                     </div>
                 </div>
@@ -119,7 +130,9 @@
                 <img src="{{ asset('img/filsa/el-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+                <a href="https://www.cooperativa.cl/" target="_blank">
+                    <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+                </a>
             </div>
         </div>
     </div>
