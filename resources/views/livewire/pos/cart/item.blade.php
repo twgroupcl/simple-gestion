@@ -24,8 +24,8 @@ $product = Product::whereId($item)->first();
                     @endforeach
                 @endif
                 <div class="d-inline-block font-size-lg text-accent pt-2 form-inline">
-                    <input wire:model="qty" type="number" class="form-control w-50 h-25 input-sm"> item(s)
-                </div>
+                    <input wire:model="qty" type="number" min="1" class="form-control w-50 h-25 input-sm"> item(s)
+                </div><br>
                 <strong>{{ currencyFormat($product->real_price ?? 0, 'CLP', true) }}</strong> por unidad
                 {{-- <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2"
                     href="{{ 'seller-shop/' . $product->seller->id }}">por {{ $product->seller->visible_name }}</a> --}}
