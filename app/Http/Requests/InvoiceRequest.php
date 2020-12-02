@@ -26,6 +26,7 @@ class InvoiceRequest extends FormRequest
     public function rules()
     {
         return [
+            'total' => 'gte:0',
             // 'name' => 'required|min:5|max:255'
         ];
     }
@@ -50,7 +51,7 @@ class InvoiceRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'gte' => 'El campo :attribute debe ser mayor o igual a 0'
         ];
     }
 }
