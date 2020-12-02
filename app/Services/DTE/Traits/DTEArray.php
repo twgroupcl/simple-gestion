@@ -87,7 +87,8 @@ trait DTEArray
                 'QtyItem' => $item->qty,
                 'PrcItem' => isset($item->custom_price) ? 
                     round($item->custom_price, 2, PHP_ROUND_HALF_ODD) : 
-                    round($item->price, 2, PHP_ROUND_HALF_ODD)
+                    round($item->price, 2, PHP_ROUND_HALF_ODD),
+                'DscItem' => empty($item->description) ? false : $item->description,
             ];
 
             if ($item->discount_amount > 0) {
