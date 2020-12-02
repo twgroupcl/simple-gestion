@@ -31,6 +31,7 @@ class ProductBrand extends Model
         'name',
         'slug',
         'image',
+        'position',
         'status',
         'company_id',
     ];

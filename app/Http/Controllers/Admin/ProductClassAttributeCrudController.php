@@ -128,6 +128,13 @@ class ProductClassAttributeCrudController extends CrudController
          ]);
 
          CRUD::addField([
+            'name' => 'code',
+            'label' => 'Codigo',
+            'fake' => true,
+            'store_in' => 'json_attributes'
+        ]);
+
+         CRUD::addField([
             'name' => 'type_attribute',
             'label' => 'Tipo de atributo',
             'type' => 'select2_from_array',
