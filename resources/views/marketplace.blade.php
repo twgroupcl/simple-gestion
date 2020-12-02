@@ -131,7 +131,17 @@
                         </a>
                         <a href="https://www.bibliotecasantiago.cl/" target="_blank" class="border border-white">            
                             <img src="{{ asset('img/filsa/banner-biblioteca.jpg') }}" alt="Banner Biblioteca" class="img-fluid w-100 p-0 m-0">
-                        </a>                        
+                        </a>   
+                        <a href="https://www.elmercurio.com/revistadelibros/" target="_blank" class="border border-white">
+                            <img src="{{ asset('img/filsa/banner-carrusel-mercurio.jpg') }}" alt="Banner Mercurio" class="img-fluid w-100">
+                        </a>
+                        <img src="{{ asset('img/filsa/banner-carrusel-méxico.png') }}" alt="Banner Mercurio" class="img-fluid">
+                        <a href="https://iicsantiago.esteri.it/iic_santiago/it/" target="_blank" class="border border-white">
+                            <img src="{{ asset('img/filsa/banner-carrusel-italia.png') }}" alt="Banner Mercurio" class="img-fluid w-100">
+                        </a>
+                        <a href="https://ondamedia.cl/#/playlist/cine-y-letras" target="_blank" class="border border-white">
+                            <img src="{{ asset('img/filsa/banner-carrusel-onda.jpg') }}" alt="Banner Mercurio" class="img-fluid w-100">
+                        </a>
                     </div>
                 </div>
             </div>
@@ -146,10 +156,14 @@
                 <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/el-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+                <a href="https://www.elmercurio.com/revistadelibros/" target="_blank">
+                    <img src="{{ asset('img/filsa/banner-mercurio.jpg') }}" alt="Banner Mercurio" class="img-fluid w-50">
+                </a>
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+                <a href="https://www.cooperativa.cl/" target="_blank">
+                    <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+                </a>
             </div>
         </div>
     </div>
