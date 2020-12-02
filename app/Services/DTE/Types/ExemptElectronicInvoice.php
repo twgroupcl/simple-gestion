@@ -39,12 +39,13 @@ class ExemptElectronicInvoice implements DocumentType
         /*$array['Encabezado']['IdDoc'] = array_merge($array['Encabezado']['IdDoc'], [
             'FchEmis' => '2020-11-30',
         ]);*/
-        
+
+        // add Item exent
         foreach ($array['Detalle'] as $key => $item) {
             $array['Detalle'][$key]['IndExe'] = 1;
         }
-
-        ddd($array);
+        
+        return ($array);
     }
 
 }
