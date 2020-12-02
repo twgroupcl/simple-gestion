@@ -10,6 +10,7 @@ class CustomerView extends Component
 {
     public $view;
     public $search = '';
+    public $selectedCustomer;
     private $customers = [];
 
     public function render()
@@ -28,5 +29,11 @@ class CustomerView extends Component
         $this->customers = Customer::where(DB::raw("CONCAT(`first_name`, ' ', `last_name`)"), 'LIKE', "%{$this->search}%")
                                     ->orWhere('uid', 'LIKE', "%{$this->search}%")
                                     ->paginate(10);
+    }
+
+    public function showCustomer(Customer $customer)
+    {
+        $this->selectedCustomer = $customer;
+        // dd($this->selectedCustomer);
     }
 }
