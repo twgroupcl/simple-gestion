@@ -668,11 +668,11 @@ class ProductCrudController extends CrudController
     public function setStatusVisibilityFields() {
         CRUD::addField([
             'name' => 'is_approved',
-            'label' => 'Aprobado',
+            'label' => 'Estado de aprobación',
             'type' => 'select2_from_array',
             'options' => [
                 1 => 'Aprobado',
-                null => 'Pendiente',
+                2 => 'Pendiente',
                 0 => 'Rechazado',
             ],
             'default' => null,
