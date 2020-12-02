@@ -67,6 +67,12 @@ class Invoice extends Model
         $this->dte_code = null;
     }
 
+    public static function toObject($array) : Invoice
+    {
+        $invoice = new Invoice($array);
+        return $invoice;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

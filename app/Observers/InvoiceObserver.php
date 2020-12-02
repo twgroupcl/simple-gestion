@@ -50,7 +50,9 @@ class InvoiceObserver
     {
         if ($invoice->invoice_status == Invoice::STATUS_TEMPORAL) {
             $service = new DTEService();
-            $response = $service->deleteTemporalDocument($invoice);
+            $originalInvoice = Invoice::toObject($invoice->getOriginal());
+
+            $response = $service->deleteTemporalDocument($originalInvoice);
             if ($response->getStatusCode() !== 200) {
                 \Alert::add('danger', 'No es pudo cambiar el documento')->flash();
                 return false;
