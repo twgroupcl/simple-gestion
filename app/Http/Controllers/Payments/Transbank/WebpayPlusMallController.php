@@ -315,10 +315,10 @@ class WebpayPlusMallController extends Controller
             //Verifico que no existan error en el envio de mails
             if (count(Mail::failures()) > 0) {
 
-                $order->email_sent = 0;
+                $order->email_sent = false;
                 $order->update();
             } else {
-                $order->email_sent = 1;
+                $order->email_sent = true;
                 $order->update();
             }
 
