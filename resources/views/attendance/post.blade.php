@@ -78,7 +78,7 @@
                     <div class="col-md-8">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><b>Cliente</b>: {{ $attendance->customer->first_name  . ' ' . $attendance->customer->last_name }}</li>
-                            <li class="list-group-item"><b>Hora marcada</b>: {{ $attendance->attendance_time->format('H:i A') }}</li>
+                            <li class="list-group-item"><b>Hora marcada</b>: {{ $attendance->attendance_time->format('h:i A') }}</li>
                           </ul>
                     </div>
                 </div>
