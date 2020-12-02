@@ -71,6 +71,8 @@
         @can('customersegment.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('customersegment') }}'><i class='nav-icon la la-shapes'></i> Segmentos</a></li>
         @endcan
+
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('customerattendance') }}'><i class='nav-icon la la-concierge-bell'></i> Asistencias</a></li>
 	</ul>
 </li>
 @endcanany
@@ -150,3 +152,4 @@
     </ul>
 </li>
 @endcanany
+
