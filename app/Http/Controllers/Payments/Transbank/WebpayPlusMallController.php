@@ -14,16 +14,16 @@ use App\Models\PaymentMethod;
 use App\Models\PaymentMethodSeller;
 use App\Models\Product;
 use App\Models\Seller;
+use App\Services\OrderLoggerService;
+use Backpack\Settings\app\Models\Setting;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Transbank\Webpay\Configuration;
 use Transbank\Webpay\Webpay;
-use Backpack\Settings\app\Models\Setting;
-
-
 
 class WebpayPlusMallController extends Controller
 {
@@ -33,6 +33,7 @@ class WebpayPlusMallController extends Controller
     private $returnUrl;
     private $finalUrl;
     private $orderId;
+    private $orderLoggerService;
 
     public function __construct()
     {
@@ -56,9 +57,11 @@ class WebpayPlusMallController extends Controller
 
         if (Setting::get('payment_environment') == 'INTEGRACION') {
             $this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
-        }else{
+        } else {
             $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
         }
+
+        $this->orderLoggerService = new OrderLoggerService();
     }
 
     public function redirect($orderId)
@@ -97,7 +100,7 @@ class WebpayPlusMallController extends Controller
 
             $totalsBySeller[$key] = array();
             $totalsBySeller[$key]['id'] = $seller->id;
-           // $totalsBySeller[$key]['storeCode'] = $pmSeller->key;
+            // $totalsBySeller[$key]['storeCode'] = $pmSeller->key;
             $totalsBySeller[$key]['amount'] = 0;
             //$totalsBySeller[$key]['status'] = $pmSeller->status;
 
@@ -128,9 +131,9 @@ class WebpayPlusMallController extends Controller
         $transactions[] = array(
             "storeCode" => Setting::get('storecode_payment'),
             "amount" => $amountTotal,
-            "buyOrder" => $buyOrder . 't1' ,
+            "buyOrder" => $buyOrder . 't1',
         );
-       // $amountTotal += $seller['amount'];
+        // $amountTotal += $seller['amount'];
 
         $response = $this->transaction->initTransaction($buyOrder, $sessionId, $this->returnUrl, $this->finalUrl, $transactions);
 
@@ -235,8 +238,8 @@ class WebpayPlusMallController extends Controller
             // Por cada item
             $orderItems = $order->order_items;
 
-            foreach($orderItems as $orderItem) {
-                if($orderItem->product->use_inventory_control) {
+            foreach ($orderItems as $orderItem) {
+                if ($orderItem->product->use_inventory_control) {
                     // 1. obtener cantidad en stock (cual bodega)
                     $qtyInStock = $orderItem->product->inventories->first()->pivot->qty;
                     $inventorySourceId = $orderItem->product->inventories->first()->id;
@@ -257,18 +260,67 @@ class WebpayPlusMallController extends Controller
             // $order = Order::where('id', $orderId)->first();
             $sellers = $order->getSellers();
             //Order to customer
-            Mail::to($order->email)->send(new OrderUpdated($order, 1, null));
+            $datacustomer = [
+                'email' => $order->email,
+            ];
+            try {
+                Mail::to($order->email)->send(new OrderUpdated($order, 1, null));
+                //Create log event
+                $this->orderLoggerService->registerLog($order, 'Customer Email Sent', $datacustomer);
+
+            } catch (Exception $ex) {
+                $datacustomer['error'] = $ex->getMessage();
+
+                //Create log event
+                $this->orderLoggerService->registerLog($order, 'Customer Email Error', $datacustomer);
+            }
+
             //Order to seller
+            $datasellers = [
+                'email' => null
+            ];
             foreach ($sellers as $seller) {
-                Mail::to($seller->email)->cc('jorge.castro@twgroup.cl')->send(new OrderUpdated($order, 2, $seller));
+                $datasellers['email'] = $seller->email ;
+                try {
+                    Mail::to($seller->email)->cc('jorge.castro@twgroup.cl')->send(new OrderUpdated($order, 2, $seller));
+                    //Create log event
+                    $this->orderLoggerService->registerLog($order, 'Seller Email Sent', $datasellers);
+                } catch (Exception $ex) {
+                    $datasellers['error'] = $ex->getMessage();
+
+                    //Create log event
+                    $this->orderLoggerService->registerLog($order, 'Seller Email Error', $datasellers);
+                }
             }
             //Order to admins
+            $dataadmins = [
+                'email' => null
+            ];
             $administrators = Setting::get('administrator_email');
             $recipients = explode(';', $administrators);
             foreach ($recipients as $key => $recipient) {
-                Mail::to($recipient)->send(new OrderUpdated($order, 3, null));
+                $dataadmins['email'] = $recipient ;
+                try {
+                    Mail::to($recipient)->send(new OrderUpdated($order, 3, null));
+                    //Create log event
+                    $this->orderLoggerService->registerLog($order, 'Admin Email Sent', $dataadmins);
+                } catch (Exception $ex) {
+                    $dataadmins['error'] = $ex->getMessage();
+
+                    //Create log event
+                    $this->orderLoggerService->registerLog($order, 'Admin Email Error', $dataadmins);
+                }
             }
 
+            //Verifico que no existan error en el envio de mails
+            if (count(Mail::failures()) > 0) {
+
+                $order->email_sent = 0;
+                $order->update();
+            } else {
+                $order->email_sent = 1;
+                $order->update();
+            }
 
             return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
         } else {
@@ -298,6 +350,7 @@ class WebpayPlusMallController extends Controller
     {
         # code...
         $order = Order::where('id', $orderId)->first();
+
         $result = null;
         return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
     }
