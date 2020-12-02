@@ -19,5 +19,7 @@
                 <div class="row border border-dark">{{ currencyFormat($total ?? 0, 'CLP', true) }}</div>
             </div>
         </div>
+
+        <button class="btn btn-danger" wire:click="$emitUp('viewModeChanged', 'selectCustomer')">Seleccionar Cliente</button>
     @endif
 </div>
