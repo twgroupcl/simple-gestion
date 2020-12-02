@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Pos\Customer;
 
 use App\Models\Customer;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class CustomerView extends Component
@@ -18,7 +19,7 @@ class CustomerView extends Component
 
     public function updatedSearch()
     {
-        $this->customers = Customer::where('first_name', 'LIKE', "%{$this->search}%")
+        $this->customers = Customer::where(DB::raw("CONCAT(`first_name`, ' ', `last_name`)"), 'LIKE', "%{$this->search}%")
                                     ->orWhere('uid', 'LIKE', "%{$this->search}%")
                                     ->paginate(10);
     }
