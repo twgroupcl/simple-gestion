@@ -24,15 +24,16 @@ class ProductFilterService {
             });
         }
 
+        // Price range filter
+        if ( isset($data['price']) ) {
+            $priceRange = $data['price'];
+            if ( isset($priceRange['min']) && $priceRange['min']) $query->having('current_price', '>=', $priceRange['min']);
+            if ( isset($priceRange['max']) && $priceRange['max']) $query->having('current_price', '<=', $priceRange['max']);
+        }
+
         $queryForSimple = clone $query;
         $queryForConfigurable = clone $query;
 
-         // Price range filter
-         if ( isset($data['price']) ) {
-            $priceRange = $data['price'];
-            if ( isset($priceRange['min']) && $priceRange['min']) $queryForSimple->where('price', '>=', $priceRange['min']);
-            if ( isset($priceRange['max']) && $priceRange['max']) $queryForSimple->where('price', '<=', $priceRange['max']);
-        }
 
         if (isset($data['attributes'])) {
             $customAttributes = $this->sanitizeAttributesOptions($data['attributes']);

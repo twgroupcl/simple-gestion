@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Branch extends Model
 {
@@ -43,6 +44,11 @@ class Branch extends Model
     public function companies()
     {
         return $this->belongsToMany(Company::class, 'branch_companies');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'branch_users')->withPivot(['is_default', 'branch_id']);
     }
 
     /*
