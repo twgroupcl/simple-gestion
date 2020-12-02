@@ -19,7 +19,7 @@
         <div class="col"><h5>Metodos de envio configurados</h5></div>
     </div>
 
-    @if ($data->active_methods['free_shipping_status'])
+    @if (!empty($data->active_methods['free_shipping_status']) && $data->active_methods['free_shipping_status'])
     <div class="row">
         <div class="col-md-12"><b>Envio gratis</b></div>
         <div class="col-md-12">
@@ -30,7 +30,7 @@
     </div>
     @endif
 
-    @if ($data->active_methods['picking_status'])
+    @if (!empty($data->active_methods['picking_status']) && $data->active_methods['picking_status'])
     <div class="row">
         <div class="col-md-12"><b>Retiro en tienda</b></div>
         <div class="col-md-12">
@@ -41,7 +41,7 @@
     </div>
     @endif
 
-    @if ($data->active_methods['flat_rate_status'])
+    @if (!empty($data->active_methods['flat_rate_status']) && $data->active_methods['flat_rate_status'])
     <div class="row">
         <div class="col-md-12"><b>Tarifa fija</b></div>
         <div class="col-md-12">
@@ -52,7 +52,7 @@
     </div>
     @endif
 
-    @if ($data->active_methods['chilexpress_status'])
+    @if (!empty($data->active_methods['chilexpress_status']) && $data->active_methods['chilexpress_status'])
     <div class="row">
         <div class="col-md-12"><b>Chilexpress</b></div>
         <div class="col-md-12">
@@ -63,7 +63,7 @@
     </div>
     @endif
 
-    @if ($data->active_methods['variable_status'])
+    @if (!empty($data->active_methods['variable_status']) && $data->active_methods['variable_status'])
     <div class="row">
         <div class="col-md-12"><b>Tarifa variable</b></div>
         <div class="col-md-12">
