@@ -156,9 +156,7 @@
                 <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <a href="https://www.elmercurio.com/revistadelibros/" target="_blank">
-                    <img src="{{ asset('img/filsa/banner-mercurio.jpg') }}" alt="Banner Mercurio" class="img-fluid w-50">
-                </a>
+                <img src="{{ asset('img/filsa/banner-mercurio.jpg') }}" alt="Banner Mercurio" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
                 <a href="https://www.cooperativa.cl/" target="_blank">
