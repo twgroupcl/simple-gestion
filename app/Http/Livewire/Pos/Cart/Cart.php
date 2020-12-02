@@ -15,6 +15,8 @@ class Cart extends Component
     protected $listeners = [
         'add-product-cart:post' => 'addProduct',
         'remove-from-cart:post' => 'remove',
+        'remove-from-cart:post' => 'remove',
+        'quantityUpdated' => 'updateQuantity',
     ];
 
     public function mount()
@@ -49,5 +51,11 @@ class Cart extends Component
         });
 
         $this->total = $this->subtotal - $this->discount;
+    }
+
+    public function updateQuantity(Product $product, $qty)
+    {
+        $this->products[$product->id]['qty'] = $qty;
+        $this->calculateAmounts();
     }
 }
