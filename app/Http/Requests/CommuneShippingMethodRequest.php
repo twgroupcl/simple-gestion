@@ -18,6 +18,7 @@ class CommuneShippingMethodRequest extends FormRequest
         'variable',
         'chilexpress',
         'flat_rate',
+        'arrange_with_seller',
     ];
 
     /**
@@ -118,6 +119,7 @@ class CommuneShippingMethodRequest extends FormRequest
             $this->variable_status,
             $this->chilexpress_status,
             $this->picking_status,
+            $this->arrange_with_seller_status,
         ];
 
         $shippingMethods = in_array(1, $shippingMethods);

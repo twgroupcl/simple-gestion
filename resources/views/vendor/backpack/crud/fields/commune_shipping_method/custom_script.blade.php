@@ -57,6 +57,7 @@
             showHideTab('tarifa-variable', 'variable_status', 'variable_checker');
             showHideTab('retiro-en-tienda', 'picking_status', 'picking_checker');
             showHideTab('chilexpress', 'chilexpress_status', 'chilexpress_checker');
+            showHideTab('envio-a-convenir', 'arrange_with_seller_status', 'arrange_with_seller_checker');
 
             removeButtonDel();
             removeButtonAddItem();

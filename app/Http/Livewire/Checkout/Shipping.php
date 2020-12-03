@@ -157,6 +157,10 @@ class Shipping extends Component
                                 $itemShipping['shipping']['totalPrice'] = 0;
                                 break;
 
+                            case 'arrange_with_seller':
+                                $itemShipping['shipping']['totalPrice'] = 0;
+                                break;
+
                             case 'flat_rate':
                                 $flatRate = new FlatRateShipping();
                                 $shippingPrice = $flatRate->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);

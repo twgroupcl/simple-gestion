@@ -41,6 +41,17 @@
     </div>
     @endif
 
+    @if (!empty($data->active_methods['arrange_with_seller_status']) && $data->active_methods['arrange_with_seller_status'])
+    <div class="row">
+        <div class="col-md-12"><b>Envio a convenir</b></div>
+        <div class="col-md-12">
+            <ul>
+                <li>Precio por paquete: No aplica</li>
+            </ul>
+        </div>
+    </div>
+    @endif
+
     @if (!empty($data->active_methods['flat_rate_status']) && $data->active_methods['flat_rate_status'])
     <div class="row">
         <div class="col-md-12"><b>Tarifa fija</b></div>
