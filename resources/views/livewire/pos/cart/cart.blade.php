@@ -1,3 +1,4 @@
+<div class="h-100">
 <div class="col-12 h-50 overflow-auto">
     {{-- Do your work, then step back. --}}
     Cart
@@ -34,4 +35,5 @@
                 </button>
      @endif
 
+</div>
 </div>
