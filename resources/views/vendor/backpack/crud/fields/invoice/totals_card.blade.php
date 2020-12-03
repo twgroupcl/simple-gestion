@@ -121,7 +121,7 @@
         function getTaxValue() {
             switch (invoiceType){
                 case '33':
-                case '39'
+                case '39':
                     return 19;
                     break;
                 case 'H':

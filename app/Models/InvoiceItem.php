@@ -25,4 +25,9 @@ class InvoiceItem extends Model
         return $this->belongsTo(Invoice::class);
     }
 
+    public function additional_tax()
+    {
+        return $this->belongsTo(Tax::class);
+    }
+
 }

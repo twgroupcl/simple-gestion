@@ -145,7 +145,7 @@ class InvoiceCrudController extends CrudController
         ]);
         
         CRUD::addField([
-            'label' => 'Fecha cotización',
+            'label' => 'Fecha de emisión',
             'name' => 'invoice_date',
             'type' => 'date',
             'default' => date("Y-m-d"),
@@ -156,7 +156,7 @@ class InvoiceCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'label' => 'Fecha expiración',
+            'label' => 'Fecha vencimiento',
             'name' => 'expiry_date',
             'type' => 'date',
             'wrapper' => [
@@ -200,7 +200,7 @@ class InvoiceCrudController extends CrudController
         }
 
         CRUD::addField([
-            'label' => 'Número referencia',
+            'label' => 'Identificador de documento',
             'name' => 'dte_code',
             'type' => 'text',
             'prefix' => '#',
@@ -433,7 +433,7 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        CRUD::addField([
+        /*CRUD::addField([
             'name' => 'notes',
             'label' => 'Notas',
             'type' => 'textarea',
@@ -441,7 +441,7 @@ class InvoiceCrudController extends CrudController
                 'class' => 'form-group col-md-12',
             ],
             'tab' => 'General',
-        ]);
+        ]);*/
 
 
         CRUD::addField([
