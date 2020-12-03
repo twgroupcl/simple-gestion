@@ -417,7 +417,61 @@ class InvoiceCrudController extends CrudController
             'allows_null' => false,
             'default' => '1',
             'wrapperAttributes' => [
-                'class' => 'form-group col-md-12',
+                'class' => 'form-group col-md-4',
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
+            'name' => 'payment_method',
+            'label' => 'Medio de pago',
+            'type' => 'select2_from_array',
+            'options' => [
+                'EF' => 'Efectivo', 
+                'PE' => 'Pago a Cta. Cte.',
+                'TC' => 'Tarjeta de crédito',
+                'CF' => 'Cheque a fecha',
+                'OT' => 'Otro'
+            ],
+            'allows_null' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-4',
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
+            'label' => 'Tipo de cuenta',
+            'name' => 'bank_account_type_id',
+            'type' => 'select2',
+            'placeholder' => 'Selecciona un banco',
+            'model' => 'App\Models\BankAccountType',
+            'attribute' => 'name',
+            'wrapper' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'tab' => 'General',
+        ]);
+        
+        CRUD::addField([
+            'label' => 'Banco',
+            'name' => 'bank_id',
+            'type' => 'select2',
+            'placeholder' => 'Selecciona un banco',
+            'model' => 'App\Models\Bank',
+            'attribute' => 'name',
+            'wrapper' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
+            'name' => 'bank_number_account',
+            'label' => 'Número de cuenta',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
             ],
             'tab' => 'General',
         ]);
