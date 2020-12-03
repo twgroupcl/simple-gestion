@@ -135,7 +135,6 @@
 
         function calculateGeneralTax(itemPrice, itemQty, itemDiscount) {
             let itemSubtotal = (itemQty * itemPrice) - itemDiscount
-            console.log(invoiceType)
             switch (invoiceType) {
                 case '33':
                 case '39':
@@ -243,7 +242,6 @@
             let totalVaxGeneral = 0
             let acumTotalValue = 0
 
-
             $(items).each( function() {
                 let price = parseDecimal($(this).find('.price').val())
                 let discountItem = calculateItemDiscount($(this)).itemDiscount
@@ -251,9 +249,16 @@
                 let itemQty = Number($(this).find('.qty').val())
                 let subTotal = $(this).find('.subtotal')
 
-                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
-                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
+
+                let taxAmount = 0;
+                switch (invoiceType) {
+                    case '33':
+                    case '39':
+                        taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal);
+                        break;
+                }
                 
+                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal);
                 let subTotalValue = (price * itemQty) 
                 let totalValue = ( (price * itemQty) - discountItem)
                 

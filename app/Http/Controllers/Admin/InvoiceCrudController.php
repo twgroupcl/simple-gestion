@@ -422,7 +422,7 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        CRUD::addField([
+        /*CRUD::addField([
             'name' => 'include_payment_data',
             'label' => 'Incluir datos de pago',
             'type' => 'checkbox',
@@ -431,7 +431,7 @@ class InvoiceCrudController extends CrudController
                 'class' => 'form-group col-md-12'
             ],
             'tab' => 'General',
-        ]);
+        ]);*/
 
         /*CRUD::addField([
             'name' => 'notes',
@@ -470,6 +470,7 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
+        /*
         CRUD::addField([
             'name' => 'preface',
             'type' => 'wysiwyg',
@@ -478,7 +479,7 @@ class InvoiceCrudController extends CrudController
                 'class' => 'form-group col-md-12'
             ],
             'tab' => 'Adicional',
-        ]);
+        ]);*/
     }
 
     /**
