@@ -163,6 +163,16 @@ class Invoice extends Model
         return $this->belongsTo(CustomerAddress::class);
     }
 
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
+
+    public function bank_account_type()
+    {
+        return $this->belongsTo(BankAccountType::class);
+    }
+
     public function tax()
     {
         return $this->belongsTo(Tax::class);
