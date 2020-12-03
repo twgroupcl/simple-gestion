@@ -433,15 +433,15 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);*/
 
-        /*CRUD::addField([
+        CRUD::addField([
             'name' => 'notes',
-            'label' => 'Notas',
+            'label' => 'Observaciones / Términos del pago',
             'type' => 'textarea',
             'wrapper' => [
                 'class' => 'form-group col-md-12',
             ],
             'tab' => 'General',
-        ]);*/
+        ]);
 
 
         CRUD::addField([
