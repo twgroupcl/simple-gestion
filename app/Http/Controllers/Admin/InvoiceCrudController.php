@@ -410,7 +410,7 @@ class InvoiceCrudController extends CrudController
         ]);*/
         
         CRUD::addField([
-            'name' => 'payment_method',
+            'name' => 'way_to_payment',
             'label' => 'Forma de pago',
             'type' => 'select2_from_array',
             'options' => ['1' => 'Contado', '2' => 'Crédito' ],
