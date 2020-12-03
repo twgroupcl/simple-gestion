@@ -5,8 +5,9 @@ use App\Models\Product;
 $product = Product::whereId($item)->first();
 @endphp
 @if ($product)
-    <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
-        <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left">
+    {{-- <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
+        <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left"> --}}
+            <div>
             {{-- <a
                 class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img
                     src="{{ url($product->getFirstImagePath()) }}" alt="Product"></a> --}}
@@ -55,9 +56,9 @@ $product = Product::whereId($item)->first();
                 @endif --}}
 
 
-            </div>
+            {{-- </div>
 
-        </div>
+        </div> --}}
         {{-- <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 9rem;">
             <div class="form-group mb-0">
                 @livewire('qty-item', [
@@ -75,7 +76,7 @@ $product = Product::whereId($item)->first();
             @endif
 
         </div> --}}
-
+        </div>
     </div>
 @endif
 
