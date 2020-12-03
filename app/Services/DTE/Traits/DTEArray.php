@@ -36,12 +36,12 @@ trait DTEArray
                 'IdDoc' => [
                     'TipoDTE' => self::TYPE,
                     'TpoTranCompra' => false,
-                    'FmaPago' => $this->invoice->payment_method ?? 1, //Obligar contado por defecto. 2Credito - 3SinCosto (false = 2)
+                    'FmaPago' => $this->invoice->way_to_payment ?? 1, //Obligar contado por defecto. 2Credito - 3SinCosto (false = 2)
                     //'FmaPagExp' => false, //Ventas del giro 1, ventas activo fijo 2, Venta bien raiz 3
-                    'MedioPago' => false,
-                    'TpoCtaPago' => false,
-                    'NumCtaPago' => false,
-                    'BcoPago' => false,
+                    'MedioPago' => !empty($this->invoice->payment_method) ? $this->invoice->payment_method : false,
+                    'TpoCtaPago' => !empty($this->invoice->bank_account_type) ? $this->invoice->bank_account_type->getTypeForDTE() : false,
+                    'NumCtaPago' => !empty($this->invoice->bank_number_account) ? $this->invoice->bank_number_account : false,
+                    'BcoPago' => !empty($this->invoice->bank) ? $this->invoice->bank->name : false,
                     'TermPagoCdg' => false,
                     'TermPagoGlosa' => false,
                     'TermPagoDias' => false,

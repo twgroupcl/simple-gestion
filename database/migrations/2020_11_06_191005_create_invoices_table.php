@@ -33,11 +33,11 @@ class CreateInvoicesTable extends Migration
             $table->longText('notes')->nullable();
             $table->boolean('include_payment_data')->default(true);
             //$table->string('tax_type'); invoice_type_id
-            $table->unsignedInteger('payment_method')->nullable()->comment('Method of payment by customer. Credit or debit Card - Cash - Transfer Bank');
+            $table->string('payment_method')->nullable()->comment('Method of payment by customer. Credit or debit Card - Cash - Transfer Bank');
             $table->unsignedInteger('way_to_payment')->nullable()->comment('Way to payment by customer. 1 Cash or Debit - 2 Credit');
             $table->unsignedBigInteger('bank_id')->nullable()->comment('payment bank');
             $table->unsignedBigInteger('bank_account_type_id')->nullable();
-            $table->string('number_account')->nullable();
+            $table->string('bank_number_account')->nullable();
             $table->boolean('email_sent')->default(false);
             $table->decimal('discount_percent', 12, 4)->nullable();
             $table->decimal('discount_amount', 12, 4)->nullable();
