@@ -61,7 +61,7 @@ trait DTEArray
                     'CmnaRecep' => $customerAddress->commune->name,
                 ],
                 'Totales' => [
-                    'TpoMoneda' => 'CLP',
+                    'TpoMoneda' => $this->invoice->currency->code,
                     //'MntTotal' => 
                 ],
             ],
