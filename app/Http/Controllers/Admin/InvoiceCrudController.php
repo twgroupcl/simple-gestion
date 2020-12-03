@@ -40,7 +40,7 @@ class InvoiceCrudController extends CrudController
 
         $this->crud->denyAccess('show');
 
-        if ($this->seller->is_approved !== Seller::STATUS_ACTIVE) {
+        if (!empty($this->seller) && $this->seller->is_approved !== Seller::STATUS_ACTIVE) {
             $this->crud->denyAccess(['create', 'update', 'delete']);
         }
     }
@@ -396,7 +396,7 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        CRUD::addField([
+        /*CRUD::addField([
             'name' => 'tax_type',
             'label' => 'Impuesto',
             'type' => 'select2_from_array',
@@ -407,7 +407,7 @@ class InvoiceCrudController extends CrudController
                 'class' => 'form-group col-md-12',
             ],
             'tab' => 'General',
-        ]);
+        ]);*/
 
         CRUD::addField([
             'name' => 'include_payment_data',
@@ -438,7 +438,7 @@ class InvoiceCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'type' => 'quotation.totals_card',
+            'type' => 'invoice.totals_card',
             'name' => 'totals_card',
             'wrapper' => [
                 'class' => 'form-group col-md-6',
