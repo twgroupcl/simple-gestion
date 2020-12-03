@@ -33,7 +33,11 @@ class CreateInvoicesTable extends Migration
             $table->longText('notes')->nullable();
             $table->boolean('include_payment_data')->default(true);
             //$table->string('tax_type'); invoice_type_id
-            $table->unsignedInteger('payment_method')->nullable()->comment('Method of payment by customer. 1 Cash or debit - 2 Credit');
+            $table->unsignedInteger('payment_method')->nullable()->comment('Method of payment by customer. Credit or debit Card - Cash - Transfer Bank');
+            $table->unsignedInteger('way_to_payment')->nullable()->comment('Way to payment by customer. 1 Cash or Debit - 2 Credit');
+            $table->unsignedBigInteger('bank_id')->nullable()->comment('payment bank');
+            $table->unsignedBigInteger('bank_account_type_id')->nullable();
+            $table->string('number_account')->nullable();
             $table->boolean('email_sent')->default(false);
             $table->decimal('discount_percent', 12, 4)->nullable();
             $table->decimal('discount_amount', 12, 4)->nullable();
@@ -77,6 +81,8 @@ class CreateInvoicesTable extends Migration
             $table->foreign('customer_business_activity_id')->references('id')->on('business_activities');
             $table->foreign('address_id')->references('id')->on('customer_addresses');
             $table->foreign('invoice_type_id')->references('id')->on('invoice_types');
+            $table->foreign('bank_id')->references('id')->on('banks');
+            $table->foreign('bank_account_type_id')->references('id')->on('bank_account_types');
             
             //$table->foreign('branch_id')->references('id')->on('branches');
             //$table->unique(['branch_id', 'dte_code']);
