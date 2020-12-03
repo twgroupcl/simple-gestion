@@ -72,6 +72,17 @@ class ShippingMethodsTableSeeder extends Seeder
                 'title' => 'Retiro en Tienda',
                 'updated_at' => NULL,
             ),
+            5 => 
+            array (
+                'code' => 'arrange_with_seller',
+                'created_at' => NULL,
+                'deleted_at' => NULL,
+                'id' => 6,
+                'json_value' => '',
+                'status' => 1,
+                'title' => 'Envio a convenir con el vendedor',
+                'updated_at' => NULL,
+            ),
         ));
         
         

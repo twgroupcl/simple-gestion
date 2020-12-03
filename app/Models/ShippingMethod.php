@@ -29,6 +29,7 @@ class ShippingMethod extends Model
     const FLAT_RATE = 'flat_rate';
     const VARIABLE = 'variable';
     const PICKING = 'picking';
+    const ARRANGE_WITH_SELLER = 'arrange_with_seller';
 
     /*
     |--------------------------------------------------------------------------
