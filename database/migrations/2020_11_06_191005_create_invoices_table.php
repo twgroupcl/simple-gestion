@@ -32,7 +32,8 @@ class CreateInvoicesTable extends Migration
             $table->longText('preface')->nullable();
             $table->longText('notes')->nullable();
             $table->boolean('include_payment_data')->default(true);
-            $table->string('tax_type');
+            //$table->string('tax_type'); invoice_type_id
+            $table->unsignedInteger('payment_method')->nullable()->comment('Method of payment by customer. 1 Cash or debit - 2 Credit');
             $table->boolean('email_sent')->default(false);
             $table->decimal('discount_percent', 12, 4)->nullable();
             $table->decimal('discount_amount', 12, 4)->nullable();
