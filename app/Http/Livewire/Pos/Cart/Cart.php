@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pos\Cart;
 
+use App\Models\Customer;
 use App\Models\Product;
 use Livewire\Component;
 
@@ -12,11 +13,13 @@ class Cart extends Component
     public $discount = 0;
     public $total = 0;
     public $qty = [];
+    public $customer = [];
     protected $listeners = [
         'add-product-cart:post' => 'addProduct',
         'remove-from-cart:post' => 'remove',
         'remove-from-cart:post' => 'remove',
         'quantityUpdated' => 'updateQuantity',
+        'customerSelected' => 'setCustomer',
     ];
 
     public function mount()
@@ -57,5 +60,10 @@ class Cart extends Component
     {
         $this->products[$product->id]['qty'] = $qty;
         $this->calculateAmounts();
+    }
+
+    public function setCustomer(Customer $customer)
+    {
+        $this->customer = $customer;
     }
 }

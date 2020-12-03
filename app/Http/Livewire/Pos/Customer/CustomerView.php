@@ -40,4 +40,18 @@ class CustomerView extends Component
     {
         $this->emitTo('pos.customer.create-customer', 'showForm');
     }
+
+    public function getSelectedCustomer()
+    {
+        if (session()->get('user.pos.selectedCustomer')) {
+            $this->selectedCustomer = session()->get('user.pos.selectedCustomer');
+        }
+    }
+
+    public function selectCustomer(Customer $customer)
+    {
+        $this->selectedCustomer = $customer;
+        session()->put(['user.pos.selectedCustomer' => $customer]);
+        $this->emit('customerSelected', $customer->id);
+    }
 }

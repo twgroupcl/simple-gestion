@@ -28,7 +28,22 @@
                 <li class="list-group-item"><strong>Celular:</strong> {{ $selectedCustomer->cellphone }}</li>
                 </ul>
                 <div class="card-body">
-                <button href="#" class="btn btn-success"><i class="nav-icon la la-check"></i> Seleccionar cliente</button>
+                <button wire:click="selectCustomer({{ $selectedCustomer['id'] }})" class="btn btn-success"><i class="nav-icon la la-check"></i> Elegir este cliente</button>
+                </div>
+            </div>
+        @elseif (session()->get('user.pos.selectedCustomer'))
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ session()->get('user.pos.selectedCustomer')->first_name }} {{ session()->get('user.pos.selectedCustomer')->last_name }}</h5>
+                    <p class="card-text text-info">{{ session()->get('user.pos.selectedCustomer')->email }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>RUT:</strong> {{ session()->get('user.pos.selectedCustomer')->uid }}</li>
+                    <li class="list-group-item"><strong>Teléfono:</strong> {{ session()->get('user.pos.selectedCustomer')->phone }}</li>
+                    <li class="list-group-item"><strong>Celular:</strong> {{ session()->get('user.pos.selectedCustomer')->cellphone }}</li>
+                </ul>
+                <div class="card-body">
+                    <button wire:click="selectCustomer({{ session()->get('user.pos.selectedCustomer')['id'] }})" class="btn btn-success"><i class="nav-icon la la-check"></i> Elegir este cliente</button>
                 </div>
             </div>
         @endif

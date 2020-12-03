@@ -29,8 +29,13 @@
         </div>
     </div>
     @if (!is_null($products))
-        <button class="btn btn-danger btn-block" wire:click="$emitUp('viewModeChanged', 'selectCustomer')">Seleccionar
-            Cliente</button>
+        <button class="btn btn-danger btn-block" wire:click="$emitUp('viewModeChanged', 'selectCustomer')">
+            @if (session()->get('user.pos.selectedCustomer'))
+                {{ session()->get('user.pos.selectedCustomer')->first_name }} {{ session()->get('user.pos.selectedCustomer')->last_name }}
+            @else
+                Seleccionar Cliente
+            @endif
+        </button>
         <button class="btn btn-danger btn-block ">Pagar
                 </button>
      @endif
