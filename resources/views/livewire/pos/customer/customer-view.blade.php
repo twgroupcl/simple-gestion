@@ -32,6 +32,18 @@
                 </div>
             </div>
         @endif
-        <button class="btn btn-outline-primary"><i class="nav-icon la la-plus"></i> Agregar nuevo cliente</button>
+        <button wire:click="createCustomerInModal" class="btn btn-outline-primary"><i class="nav-icon la la-plus"></i> Agregar nuevo cliente</button>
+    </div>
+    <div
+        class="modal fade"
+        id="productAttributesModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="createCustomerModalLabel"
+        aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <livewire:pos.customer.create-customer>
+            </div>
     </div>
 </div>
