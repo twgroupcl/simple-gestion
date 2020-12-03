@@ -107,7 +107,7 @@ class InvoiceObserver
                 if ($item['is_custom']) {
 
                     $props = [
-                        'quotation_id' => $invoice->id,
+                        'invoice_id' => $invoice->id,
                         'name' => $item['name'],
                         'description' => $item['description'],
                         'price' => $item['price'],
