@@ -24,9 +24,10 @@ trait DTEArray
         } else if ($this->invoice->discount_amount > 0) {
             $globalDiscounts = [
                 //Discount, by default Recharge
-                'TpoMov' => 'D',
+                'TpoMov' => 'D', //discount D o recharge R
                 'ValorDR' => $this->invoice->discount_amount,
-                'TpoValor' => '$'
+                'TpoValor' => '$',
+                //'IndExeDR' => 1 // Afecta a productos exentos
             ]; 
         } 
 
@@ -61,7 +62,7 @@ trait DTEArray
                     'CmnaRecep' => $customerAddress->commune->name,
                 ],
                 'Totales' => [
-                    'TpoMoneda' => $this->invoice->currency->code,
+                    'TpoMoneda' => !empty($this->invoice->currency) ? $this->invoice->currency->code : 'CLP',
                     //'MntTotal' => 
                 ],
             ],
