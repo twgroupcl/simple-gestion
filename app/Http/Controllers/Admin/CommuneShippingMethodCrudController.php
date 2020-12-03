@@ -241,6 +241,25 @@ class CommuneShippingMethodCrudController extends CrudController
 
         CRUD::addField(
             [
+                'label'     => 'Envío a convenir con Vendedor',
+                'type'      => 'checkbox',
+                'name'      => 'arrange_with_seller_status',
+                'fake' => true,
+                'store_in' => 'active_methods',
+                'tab' => 'Configuración general',
+                'attributes' => [
+                    'class' => 'arrange_with_seller_checker'
+                ],
+                'wrapper' => [
+                    'style' => $this->shippingMethods->where('code', 'arrange_with_seller')->count() 
+                                    ? ''
+                                    : 'display: none', 
+                ]
+            ]
+        );
+
+        CRUD::addField(
+            [
                 'label'     => 'Chilexpress',
                 'type'      => 'checkbox',
                 'name'      => 'chilexpress_status',
@@ -308,6 +327,33 @@ class CommuneShippingMethodCrudController extends CrudController
                                     ? ''
                                     : 'display: none', 
             ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'arrange_with_seller',
+            'label' => 'Envió a convenir con el Vendedor',
+            'type' => 'repeatable',
+            'fake' => true,
+            'store_in' => 'shipping_methods',
+            'tab' => $this->shippingMethods->where('code', 'arrange_with_seller')->count() 
+                                    ? 'Envió a convenir'
+                                    : 'Configuración general', 
+            'fields' => [
+                [
+                    'name' => 'price',
+                    'label' => 'Precio',
+                    'type' => 'text',
+                    'default' => 'El precio de envio sera acordado entre el vendedor y el cliente',
+                    'attributes' => [
+                        'disabled' => true,
+                    ]
+                ],
+            ],
+            'wrapper' => [
+                'style' => $this->shippingMethods->where('code', 'arrange_with_seller')->count() 
+                                    ? ''
+                                    : 'display: none', 
+            ],
         ]);
 
         CRUD::addField([
