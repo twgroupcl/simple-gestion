@@ -29,6 +29,8 @@ class Invoice extends Model
     const STATUS_DRAFT = 'draft';
     const STATUS_TEMPORAL = 'temporal';
     const STATUS_SEND = 'send';
+    const PAYMENT_CASH = 1;
+    const PAYMENT_CREDIT = 2;
 
     protected $table = 'invoices';
     // protected $primaryKey = 'id';
@@ -66,6 +68,7 @@ class Invoice extends Model
         'currency_id',
         'customer_business_activity_id',
         'expiry_date',
+        'payment_method',
         'seller_business_activity_id',
         'seller_id',
         //'status',
@@ -74,7 +77,7 @@ class Invoice extends Model
         'tax_percent',
         'tax_specific',
         'tax_total',
-        'tax_type',
+        //'tax_type',
         'title',
         'total',
     ];
@@ -104,12 +107,20 @@ class Invoice extends Model
         });
     }
 
+    /**
+     * Set status invoice to draft
+     */
     public function toDraft()
     {
         $this->invoice_status = self::STATUS_DRAFT;
         $this->dte_code = null;
     }
 
+    /**
+     * Get model Invoice from array
+     * @param array $array
+     * @return Invoice
+     */
     public static function toObject($array) : Invoice
     {
         $invoice = new Invoice($array);

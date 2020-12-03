@@ -408,6 +408,19 @@ class InvoiceCrudController extends CrudController
             ],
             'tab' => 'General',
         ]);*/
+        
+        CRUD::addField([
+            'name' => 'payment_method',
+            'label' => 'Forma de pago',
+            'type' => 'select2_from_array',
+            'options' => ['1' => 'Contado', '2' => 'Crédito' ],
+            'allows_null' => false,
+            'default' => '1',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
+            ],
+            'tab' => 'General',
+        ]);
 
         CRUD::addField([
             'name' => 'include_payment_data',
