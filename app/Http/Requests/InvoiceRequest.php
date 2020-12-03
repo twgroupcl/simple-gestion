@@ -34,6 +34,7 @@ class InvoiceRequest extends FormRequest
             'discount_percent' => 'gte:0,lte:100', 
             'discount_amount' => 'gte:0',
             'customer_id' => 'required|exists:customers,id', 
+            'address_id' => 'required|exists:customer_addresses,id',
             // 'name' => 'required|min:5|max:255'
         ];
     }
@@ -53,6 +54,7 @@ class InvoiceRequest extends FormRequest
             'invoice_date' => 'fecha de emisión',
             'expiry_date' => 'fecha de vencimiento',
             'invoice_type_id' => 'tipo de documento',
+            'address_id' => 'dirección',
         ];
     }
 
