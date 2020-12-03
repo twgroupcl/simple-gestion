@@ -35,8 +35,8 @@ trait DTEArray
                 'IdDoc' => [
                     'TipoDTE' => self::TYPE,
                     'TpoTranCompra' => false,
-                    'FmaPago' => 1, //Obligar contado por defecto. 2Credito - 3SinCosto (false = 2)
-                    'FmaPagExp' => false, //Ventas del giro 1, ventas activo fijo 2, Venta bien raiz 3
+                    'FmaPago' => $this->invoice->payment_method ?? 1, //Obligar contado por defecto. 2Credito - 3SinCosto (false = 2)
+                    //'FmaPagExp' => false, //Ventas del giro 1, ventas activo fijo 2, Venta bien raiz 3
                     'MedioPago' => false,
                     'TpoCtaPago' => false,
                     'NumCtaPago' => false,
@@ -44,7 +44,8 @@ trait DTEArray
                     'TermPagoCdg' => false,
                     'TermPagoGlosa' => false,
                     'TermPagoDias' => false,
-                    'FchVenc' => false
+                    'FchEmis' => $this->invoice->invoice_date ?? false,
+                    'FchVenc' => $this->invoice->expiry_date ?? false //AAAA-MM-DD
                 ],
                 'Emisor' => [
                     'RUTEmisor' => sanitizeRUT($seller->uid),
@@ -89,6 +90,8 @@ trait DTEArray
                     round($item->custom_price, 2, PHP_ROUND_HALF_ODD) : 
                     round($item->price, 2, PHP_ROUND_HALF_ODD),
                 'DscItem' => empty($item->description) ? false : $item->description,
+                'CodImpAdic' => !empty($item->additional_tax) ? $item->additional_tax->code : false,
+
             ];
 
             if ($item->discount_amount > 0) {
