@@ -167,6 +167,5 @@
         </div>
     </div>
 </section>
-1
 <!-- Toast: Added to Cart-->
 @endsection
