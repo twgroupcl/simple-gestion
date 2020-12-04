@@ -598,10 +598,6 @@ class InvoiceCrudController extends CrudController
             'wrapper' => [
                 'class' => 'form-group col-md-3',
             ],
-            'attributes' => [
-                'readonly' => true,
-                'disabled' => 'disabled'
-            ]
         ]);
 
         CRUD::addField([
