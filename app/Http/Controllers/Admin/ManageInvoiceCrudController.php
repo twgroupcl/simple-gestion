@@ -157,6 +157,11 @@ class ManageInvoiceCrudController extends CrudController
         $creditNote = new Invoice($invoice->toArray());
         $creditNoteType = InvoiceType::whereCode('61')->first();
         $creditNote->invoice_type_id = $creditNoteType->id;
+        $creditNote->json_value = json_encode([
+            'reference_type_document' => $invoice->invoice_type->code,
+            'reference_folio' => $invoice->folio,
+            'reference_date' => $invoice->invoice_date,
+        ]);
 
         $creditNote->save();
 
