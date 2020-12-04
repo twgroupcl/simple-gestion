@@ -24,14 +24,9 @@
 </div>
 
 @push('after_scripts')
-    <script>
-        console.log('asdfasd')
-        window.addEventListener('showCustomerModal', event => {
-            $('#productAttributesModal').appendTo("body").modal('show');
-        })
-
-        window.addEventListener('close-modal-form', event => {
-            $('#productAttributesModal').appendTo("body").modal('hide');
-        })
-    </script>
+<script>
+    const showCustomerModal = () => {
+        $('#showCustomerModal').appendTo("body").modal('show');
+    }
+</script>
 @endpush

@@ -29,7 +29,7 @@
         </div>
     </div>
     @if (!is_null($products))
-        <button class="btn btn-danger btn-block" wire:click="$emitUp('viewModeChanged', 'selectCustomer')">
+        <button class="btn btn-danger btn-block" onclick="changeViewMode('selectCustomer')">
             @if (session()->get('user.pos.selectedCustomer'))
                 {{ session()->get('user.pos.selectedCustomer')->first_name }} {{ session()->get('user.pos.selectedCustomer')->last_name }}
             @else

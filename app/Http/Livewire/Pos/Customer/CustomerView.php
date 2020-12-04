@@ -36,11 +36,6 @@ class CustomerView extends Component
         $this->selectedCustomer = $customer;
     }
 
-    public function createCustomerInModal()
-    {
-        $this->emitTo('pos.customer.create-customer', 'showForm');
-    }
-
     public function getSelectedCustomer()
     {
         if (session()->get('user.pos.selectedCustomer')) {

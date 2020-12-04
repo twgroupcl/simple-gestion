@@ -1,4 +1,4 @@
-<div class="row {{ $view !== 'selectCustomer' ? 'd-none' : '' }})">
+<div class="row col-md-12">
     <div class="col-md-6">
         <label for="searchCustomer">Buscar cliente</label>
         <input wire:model="search" class="form-control" type="text" id="searchCustomer" placeholder="Buscar" aria-label="Buscar">
@@ -47,11 +47,11 @@
                 </div>
             </div>
         @endif
-        <button wire:click="createCustomerInModal" class="btn btn-outline-primary"><i class="nav-icon la la-plus"></i> Agregar nuevo cliente</button>
+        <button onclick="showCustomerModal()" class="btn btn-outline-primary"><i class="nav-icon la la-plus"></i> Agregar nuevo cliente</button>
     </div>
     <div
         class="modal fade"
-        id="productAttributesModal"
+        id="showCustomerModal"
         tabindex="-1"
         role="dialog"
         aria-labelledby="createCustomerModalLabel"
