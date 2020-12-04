@@ -87,10 +87,15 @@ class Invoice extends Model
     ];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $fakeColumns = [
+        'json_value',
+    ];
 
     protected $casts = [
         'items_data' => 'array',
+        'json_value' => 'array'
     ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

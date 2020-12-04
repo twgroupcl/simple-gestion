@@ -527,6 +527,8 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
+        $this->creditNoteFields();
+
         /*
         CRUD::addField([
             'name' => 'preface',
@@ -551,6 +553,84 @@ class InvoiceCrudController extends CrudController
         if ($this->crud->getCurrentEntry()->invoice_status == Invoice::STATUS_TEMPORAL) {
             \Alert::add('warning', 'El documento temporal se eliminará si guarda cambios');
         }
+
+    }
+
+    protected function creditNoteFields() : void
+    {
+        CRUD::addField([
+            'name' => 'reference_date',
+            'label' => 'Fecha del documento original',
+            'type' => 'date',
+            'tab' => 'Referencia',
+            'fake' => true,
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ],
+            'attributes' => [
+                'readonly' => true,
+            ],
+            'store_in' => 'json_value',
+        ]);
+
+        CRUD::addField([
+            'name' => 'reference_folio',
+            'tab' => 'Referencia',
+            'fake' => true,
+            'wrapper' => [
+                'class' => 'form-group col-md-4',
+            ],
+            'attributes' => [
+                'readonly' => true,
+            ],
+            'store_in' => 'json_value',
+        ]);
+
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => InvoiceType::all()->pluck('name','id'),
+            'attribute' => 'name',
+            'name' => 'reference_type_document',
+            'label' => 'Tipo de documento',
+            'tab' => 'Referencia',
+            'fake' => true,
+            'store_in' => 'json_value',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ],
+            'attributes' => [
+                'readonly' => true,
+                'disabled' => 'disabled'
+            ]
+        ]);
+
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => [
+                1 => 'Anula documento de referencia',
+                2 => 'Corrige texto documento de referencia',
+                3 => 'Corrige montos',
+            ],
+            'tab' => 'Referencia',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ],
+            'fake' => true,
+            'store_in' => 'json_value',
+            'name' => 'reference_code',
+        ]);
+
+        CRUD::addField([
+            'name' => 'reference_reason',
+            'type' => 'textarea',
+            'label' => 'Descripción',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12'
+            ],
+            'tab' => 'Referencia',
+            'fake' => true,
+            'store_in' => 'json_value'
+        ]);
 
     }
 
