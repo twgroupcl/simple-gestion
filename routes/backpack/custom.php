@@ -80,5 +80,6 @@ Route::group([
      Route::get('invoice/{invoice}/get-temporal-pdf', 'ManageInvoiceCrudController@getTemporalPDF');
      Route::get('invoice/{invoice}/get-real-pdf', 'ManageInvoiceCrudController@getRealPDF');
      Route::get('invoice-type/{invoiceType}/get-code', 'InvoiceTypeCrudController@getCode');
+    Route::crud('payments', 'PaymentsCrudController');
+    Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
 }); // this should be the absolute last line of this file
-
