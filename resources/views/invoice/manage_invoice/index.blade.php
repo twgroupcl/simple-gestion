@@ -71,4 +71,12 @@
 @endphp
 @endcan
 
+@can('doDownloadRealPDF', $invoice)
+@php
+    Widget::add([
+        'type' => 'view',
+        'view' => 'invoice.manage_invoice.issue_credit_note',
+    ]);
+@endphp
+@endcan    
 @endsection
