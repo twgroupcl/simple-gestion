@@ -4,6 +4,7 @@ namespace App\Services\DTE\Types;
 
 use App\Models\Invoice;
 use App\Services\DTE\Traits\DTEArray;
+use App\Models\InvoiceType;
 
 class CreditNote implements DocumentType
 {
@@ -29,26 +30,34 @@ class CreditNote implements DocumentType
     {
         $array = $this->ttArray();
 
-        $referenceData = json_decode($this->invoice->json_value, true);
+        $referenceData = is_array($this->invoice->json_value) ? 
+            $this->invoice->json_value : json_decode($this->invoice->json_value, true);
 
-        $refDataExists = $this->checkReferenceData($referenceData);
-        
+        $tpoDocRef = $this->getRefDataByKey($referenceData, 'reference_type_document') ?? false;
+
+        if ($tpoDocRef) {
+            $tpoDocRef = InvoiceType::find($tpoDocRef)->code;
+        }
+
         $array['Referencia'] = [
-            'TpoDocRef' => $refDataExists ? $referenceData['reference_type_document'] : false,
-            'FolioRef' => $refDataExists ? $referenceData['reference_folio'] : false,
-            'FchRef' =>  $refDataExists ? $referenceData['reference_date'] : false,
+            'TpoDocRef' => $tpoDocRef, 
+            'FolioRef' => $this->getRefDataByKey($referenceData, 'reference_folio') ?? false,
+            'FchRef' =>  $this->getRefDataByKey($referenceData, 'reference_date') ?? false,
+            'CodRef' => $this->getRefDataByKey($referenceData, 'reference_code') ?? false,
             //'CodRef' => 1, 1-Anula 2-CorrigeTextDocDeRef 3-CorrigeMonto
-            'RazonRef' => 'Anula factura',
+            'RazonRef' => $this->getRefDataByKey($referenceData, 'reference_reason') ?? false, 
         ];
 
         return $array;
     }
 
-    private function checkReferenceData($array) : bool
+    private function getRefDataByKey($array, string $key) : ?string
     {
-        return array_key_exists('reference_type_document', $array) || 
-            array_key_exists('reference_folio', $array) ||
-            array_key_exists('reference_date', $array);
+        if (! array_key_exists($key, $array)) {
+            return null;
+        }
+
+        return $array[$key];
     }
 
 }
