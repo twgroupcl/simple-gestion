@@ -15,7 +15,7 @@ use App\Models\Commune;
 use Illuminate\Support\Facades\DB;
 use App\Services\ChilexpressService;
 use Barryvdh\Debugbar\Facade as Debugbar;
-
+use Exception;
 
 /**
  * Class Chilexpress.
@@ -468,6 +468,7 @@ class Chilexpress
     public function calculateItemBySeller($itemShipping,$sellerId, $communeOrigin, $communeDestine)
     {
 
+
         $result = null;
         //$product =  $item->product;
         // if(!isset($cart->address_commune_id)){
@@ -484,8 +485,13 @@ class Chilexpress
         $originState = $originProvince->attribute_region->name;
         // $originState = strtoupper($originState);
         // $originState = $this->replaceSpecialCharacters($originState);
-
-        $originCoverages = $this->service->coverage($this->states[$originState]);
+        try {
+            $originCoverages = $this->service->coverage($this->states[$originState]);
+        }catch(Exception $e){
+            $result['is_available'] = false;
+            $result['message'] =  'Servicio no disponible temporalmente';
+            return $result;
+        }
 
 
 
@@ -521,8 +527,13 @@ class Chilexpress
         $destineState = $destineProvince->attribute_region->name;
         // $destineState = strtoupper($destineState);
         // $destineState = $this->replaceSpecialCharacters($destineState);
-
-        $destineCoverages = $this->service->coverage($this->states[$destineState]);
+        try {
+            $destineCoverages = $this->service->coverage($this->states[$destineState]);
+        }catch(Exception $e){
+            $result['is_available'] = false;
+            $result['message'] =  'Servicio no disponible temporalmente';
+            return $result;
+        }
 
         //$customerCity = strtoupper($destineCommune->name);
         //$customerCity = $this->replaceSpecialCharacters($customerCity);
