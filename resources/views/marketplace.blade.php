@@ -27,6 +27,14 @@
         </div>
     </div>
 </div>
+<section class="container p-0">
+    <div class="col-12 text-right">
+        <a href="https://filsaenvivo.com/" target="_blank">
+            <img src="{{ asset('img/filsa/boton-transmision.jpg') }}" alt="Transmision en vivo" class="w-25">
+        </a>
+
+    </div>
+</section>
 
 <!--
     <section class="container mt-5 mb-grid-gutter">
