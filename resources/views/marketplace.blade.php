@@ -65,7 +65,22 @@
     <!-- Grid-->
     <div class="pt-2 mx-n2">
         <!-- Product-->
-        @livewire('sellers.card-seller', ['columnLg'=>3,'showPaginate'=>false,'paginateBy' => 8,'showFrom'=>'','data'=>'','limit'=>1])
+        <!-- @livewire('sellers.card-seller', ['columnLg'=>3,'showPaginate'=>false,'paginateBy' => 8,'showFrom'=>'','data'=>'','limit'=>1]) -->
+
+        @if(count($sellers))
+            <div class="row">
+                @foreach($sellers[0] as $key => $seller)
+                    <div class="col-lg-3 col-md-4 col-sm-6 px-5 mb-4" wire:key="{{ $key }}">
+                        @livewire('sellers.seller', ['seller' => $seller], key($seller->id . $key))
+                    </div>
+                    <hr class="d-sm-none">
+                @endforeach
+            </div>
+        @else
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <p class="text-center">No existen tiendas en esta búsqueda.</p>
+            </div>
+        @endif
     </div>
 </section>
 
@@ -94,7 +109,22 @@
         <h2 class="h3 mb-0 pt-3 mr-2">Expositores</h2>
     </div>
     <div class="pt-2 mx-n2">
-        @livewire('sellers.card-seller', ['columnLg'=>3,'showPaginate'=>false,'paginateBy' => 8,'showFrom'=>'','data'=>'','limit'=>2])
+        <!-- @livewire('sellers.card-seller', ['columnLg'=>3,'showPaginate'=>false,'paginateBy' => 8,'showFrom'=>'','data'=>'','limit'=>2]) -->
+        
+        @if(count($sellers))
+            <div class="row">
+                @foreach($sellers[1] as $key => $seller)
+                    <div class="col-lg-3 col-md-4 col-sm-6 px-5 mb-4" wire:key="{{ $key }}">
+                        @livewire('sellers.seller', ['seller' => $seller], key($seller->id . $key))
+                    </div>
+                    <hr class="d-sm-none">
+                @endforeach
+            </div>
+        @else
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <p class="text-center">No existen tiendas en esta búsqueda.</p>
+            </div>
+        @endif
     </div>
 </section>
 
@@ -110,7 +140,6 @@
                         <a href="https://www.bibliotecasantiago.cl/" target="_blank" class="border border-white">            
                             <img src="{{ asset('img/filsa/banner-biblioteca.jpg') }}" alt="Banner Biblioteca" class="img-fluid w-100 p-0 m-0">
                         </a>
-
                         <a href="https://www.elmercurio.com/revistadelibros/" target="_blank" class="border border-white">            
                             <img src="{{ asset('img/filsa/banner-carrusel-mercurio.jpg') }}" alt="Banner Biblioteca" class="img-fluid w-100 p-0 m-0">
                         </a>
@@ -121,6 +150,7 @@
                         <a href="https://ondamedia.cl/#/playlist/cine-y-letras " target="_blank" class="border border-white">            
                             <img src="{{ asset('img/filsa/banner-carrusel-onda.jpg') }}" alt="Banner Onda" class="img-fluid w-100 p-0 m-0">
                         </a>                        
+
                     </div>
                 </div>
             </div>
@@ -135,7 +165,7 @@
                 <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/banner-mercurio.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+                <img src="{{ asset('img/filsa/banner-mercurio.jpg') }}" alt="Banner Mercurio" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
                 <a href="https://www.cooperativa.cl/" target="_blank">

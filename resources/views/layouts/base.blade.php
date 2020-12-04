@@ -74,10 +74,10 @@
     <script src="{{ asset('vendor/jquery/dist/jquery.slim.min.js') }}"></script>
     <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    {{-- <script src="{{ asset('js/lazyload.js') }}"></script>
+    <script src="{{ asset('js/lazyload.js') }}"></script>
     <script>
         $('img.lazyload').lazyload();
-    </script> --}}
+    </script>
     <script src="{{ asset('vendor/bs-custom-file-input/dist/bs-custom-file-input.min.js') }}"></script>
     <script src="{{ asset('vendor/simplebar/dist/simplebar.min.js') }}"></script>
     <script src="{{ asset('vendor/tiny-slider/dist/min/tiny-slider.js') }}"></script>
@@ -89,23 +89,6 @@
     <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script>
     <!-- Main theme script-->
     <script src="{{ asset('js/theme.min.js') }}"></script>
-     <!-- Facebook Pixel Code -->
-     <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '485391568943230');
-        fbq('track', 'PageView');
-    </script>
-    <noscript>
-        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=485391568943230&ev=PageView&noscript=1"/>
-    </noscript>
-    <!-- End Facebook Pixel Code -->
     {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     {{-- <script>
         $(function () {

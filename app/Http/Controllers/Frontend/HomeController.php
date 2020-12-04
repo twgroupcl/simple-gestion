@@ -23,7 +23,14 @@ class HomeController extends Controller
             ->where('parent_id', '=', null);
         })->limit(3)->inRandomOrder()->get();
 
-        return view('marketplace', compact('categories'));
+        $sellers =  Seller::where('status', '=', '1')
+        ->where('is_approved', '=', '1')
+        ->get()
+        ->shuffle();
+
+        $sellers = $sellers->split(2);
+
+        return view('marketplace', compact('categories', 'sellers'));
     }
 
     public function getAllProducts()

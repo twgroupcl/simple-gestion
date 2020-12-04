@@ -117,6 +117,7 @@ class CommuneShippingMethodRequest extends FormRequest
             $this->flat_rate_status,
             $this->variable_status,
             $this->chilexpress_status,
+            $this->picking_status,
         ];
 
         $shippingMethods = in_array(1, $shippingMethods);
