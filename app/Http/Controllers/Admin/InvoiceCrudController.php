@@ -527,8 +527,29 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        $this->creditNoteFields();
+        if ($this->crud->getCurrentEntry()->invoice_type->code == 61) {
+            $this->creditNoteFields();
+            CRUD::removeSaveActions(['save_and_back','save_and_new']);
+        }
 
+        $this->crud->addSaveAction([
+            'name' => 'save_and_manage',
+            'redirect' => function($crud, $request, $itemId) {
+                return $crud->route . '/'. $itemId . '/to-manage';
+            }, // what's the redirect URL, where the user will be taken after saving?
+
+            // OPTIONAL:
+            'button_text' => 'Guardar y gestionar', // override text appearing on the button
+            // You can also provide translatable texts, for example:
+            // 'button_text' => trans('backpack::crud.save_action_one'),
+            'visible' => function($crud) {
+                return true;
+            }, // customize when this save action is visible for the current operation
+            'referrer_url' => function($crud, $request, $itemId) {
+                return $crud->route;
+            }, // override http_referrer_url
+            'order' => 1, // change the order save actions are in
+        ]);
         /*
         CRUD::addField([
             'name' => 'preface',
