@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DateTime;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
+use App\Models\ProductCategory;
 use App\Http\Requests\ProductRequest;
 use Backpack\Settings\app\Models\Setting;
 use App\Http\Requests\ProductCreateRequest;
@@ -43,21 +45,21 @@ class ProductCrudController extends CrudController
         CRUD::setEntityNameStrings('producto', 'productos');
 
         $this->crud->denyAccess('show');
+        $this->crud->allowAccess('bulkApprove');
+        $this->crud->allowAccess('bulkReject');
 
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace')) {
+        if (backpack_user()->can('product.admin')) {
             $this->admin = true;
-
             $this->crud->enableExportButtons();
-        }
-
-        if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
+            $this->crud->allowAccess('bulkDelete');
+        } else {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-
             $this->crud->denyAccess('delete');
         }
+
     }
 
     /**
@@ -68,9 +70,16 @@ class ProductCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableBulkActions();
 
         // If not admin, show only user products
-        if(!$this->admin) $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
+        if(!$this->admin) {
+            $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
+        } else {
+            $this->crud->addButtonFromView('bottom', 'bulk_delete', 'product.bulk_delete', 'beginning');
+            $this->crud->addButtonFromView('bottom', 'bulk_reject', 'product.bulk_reject', 'beginning');
+            $this->crud->addButtonFromView('bottom', 'bulk_approve', 'product.bulk_approve', 'beginning');
+        }
 
         // Hide children products
         $this->crud->addClause('where', 'parent_id', '=', null);
@@ -499,7 +508,8 @@ class ProductCrudController extends CrudController
     public function setImagesFields() {
         CRUD::addField([
             'name'  => 'images_json',
-            'label' => 'Imágenes',
+            'label' => 'Imágenes.',
+            'hint' => 'Los formatos permitidos son PNG y JPG. Las dimensiones deben ser menores o iguales a 1.024 x 1.024 px',
             'type'  => 'repeatable',
             'fields' => [
                 [
@@ -658,11 +668,11 @@ class ProductCrudController extends CrudController
     public function setStatusVisibilityFields() {
         CRUD::addField([
             'name' => 'is_approved',
-            'label' => 'Aprobado',
+            'label' => 'Estado de aprobación',
             'type' => 'select2_from_array',
             'options' => [
                 1 => 'Aprobado',
-                null => 'Pendiente',
+                2 => 'Pendiente',
                 0 => 'Rechazado',
             ],
             'default' => null,
@@ -860,7 +870,9 @@ class ProductCrudController extends CrudController
                 'name' => 'image',
                 'type' => 'image',
                 'label' => 'Imagen',
-                'crop' => false,
+                'hint' => 'Los formatos permitidos son PNG y JPG. Las dimensiones deben ser menores o iguales a 1.024 x 1.024 px',
+                'aspect_ratio' => 1,
+                'crop' => true,
             ],
             [
                 'label' => "Precio",
@@ -1050,17 +1062,16 @@ class ProductCrudController extends CrudController
             return Product::findMany($request->input('keys'));
         }
 
-        // if there is not product class selected, return empty
         if (! $form['seller_id']) {
             return [];
         }
 
-        // find attributes that are configurable and belong to the product class
+        // Find attributes that are configurable and belong to the product class
         if ($form['seller_id']) {
             $options = $options->where('seller_id', $form['seller_id'])->where('price', '!=', 'null')->orderBy('name');
         }
 
-        // filter by search term
+        // Filter by search term
         if ($search_term) {
             $results = $options->whereRaw('LOWER(name) like ?', '%'.strtolower($search_term).'%')->paginate(10);
         } else {
@@ -1079,8 +1090,9 @@ class ProductCrudController extends CrudController
             $this->crud->addClause('where', 'sku', 'LIKE', '%' . $value . '%');
         });
 
+
         if ($this->admin) {
-            $this->crud->addFilter([
+            CRUD::addFilter([
                 'name'  => 'seller_id',
                 'type'  => 'select2',
                 'label' => 'Vendedor'
@@ -1089,7 +1101,7 @@ class ProductCrudController extends CrudController
             }, function($value) {
                 $this->crud->addClause('where', 'seller_id', $value);
             });
-      }
+        }
 
         CRUD::addFilter([
             'type'  => 'text',
@@ -1099,24 +1111,12 @@ class ProductCrudController extends CrudController
             $this->crud->addClause('where', 'name', 'LIKE', '%' . $value . '%');
         });
 
-        $this->crud->addFilter([
-            'name'  => 'is_approved',
-            'type'  => 'dropdown',
-            'label' => 'Estado de aprobación'
-          ], [
-            //null => 'Pendiente',
-            0 => 'Rechazado',
-            1 => 'Aprobado',
-          ], function($value) {
-            $this->crud->addClause('where', 'is_approved', $value);
-          });
 
-          $this->crud->addFilter([
+        CRUD::addFilter([
             'name'  => 'product_type',
             'type'  => 'dropdown',
             'label' => 'Tipo de producto'
           ], [
-            //null => 'Pendiente',
             1 => 'Simple',
             2 => 'Configurable',
           ], function($value) {
@@ -1124,7 +1124,78 @@ class ProductCrudController extends CrudController
           });
 
 
+        CRUD::addFilter([
+            'name'  => 'category_id',
+            'type'  => 'select2',
+            'label' => 'Categoría'
+        ], function() {
+            return ProductCategory::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('whereHas', 'categories', function($query) use ($value) {
+                $query->where('id', $value);
+            });
+        });
 
 
+        CRUD::addFilter([
+            'name'  => 'is_approved',
+            'type'  => 'dropdown',
+            'label' => 'Estado de aprobación'
+        ], [
+            2 => 'Pendiente',
+            0 => 'Rechazado',
+            1 => 'Aprobado',
+        ], function($value) {
+            if ($value == 2) $value = null;
+        $this->crud->addClause('where', 'is_approved', $value);
+        });
+    }
+
+    public function bulkApprove()
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        $entries = $this->crud->getRequest()->input('entries');
+
+        foreach ($entries as $key => $id) {
+            if ($entry = $this->crud->model->find($id)) {
+               $entry->is_approved = 1;
+               $entry->update();
+            }
+        }
+
+        return $entries;
+    }
+
+    public function bulkReject()
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        $entries = $this->crud->getRequest()->input('entries');
+
+        foreach ($entries as $key => $id) {
+            if ($entry = $this->crud->model->find($id)) {
+               $entry->is_approved = 0;
+               $entry->date_of_rejected = new DateTime();
+               $entry->update();
+            }
+        }
+
+        return $entries;
+    }
+
+    public function bulkDelete()
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        $entries = $this->crud->getRequest()->input('entries');
+
+        foreach ($entries as $key => $id) {
+            if ($entry = $this->crud->model->find($id)) {
+               $entry->delete();
+            }
+        }
+
+        return $entries;
     }
 }

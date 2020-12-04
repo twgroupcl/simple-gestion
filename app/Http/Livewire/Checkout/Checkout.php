@@ -24,6 +24,7 @@ class Checkout extends Component
     public $shippings;
     public $shippingtotals;
     public $shippingTotal;
+    public $blockButton;
 
     protected $listeners = [
         'prev-step' => 'prevStep',
@@ -37,6 +38,7 @@ class Checkout extends Component
         'updateTotals' => 'updateTotals',
         'cartpreview' => 'cartpreview',
         'update-shipping-totals' => 'updateShippingTotals',
+        'checkout.blockButton' => 'blockButton',
        // 'updateLoading' => 'updateLoading'
     ];
 
@@ -124,6 +126,7 @@ class Checkout extends Component
 
     public function prevStep()
     {
+
         if ($this->activeStep['event-prev']) {
             $this->emit($this->activeStep['event-prev']);
         } else {
@@ -133,6 +136,9 @@ class Checkout extends Component
                 $this->steps[$currentStep]['status'] = '';
                 $this->activeStep = $this->steps[$currentStep - 1];
             }
+        }
+        if($this->activeStep['number']!=3){
+            $this->blockButton= false;
         }
     }
     public function nextStep()
@@ -443,4 +449,11 @@ class Checkout extends Component
         $this->loading = $value;
     }
 
+
+    public function blockButton($value)
+    {
+        if ($this->activeStep['number'] ==3) {
+            $this->blockButton = $value;
+        }
+    }
 }

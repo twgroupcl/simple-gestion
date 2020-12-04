@@ -149,7 +149,7 @@ class Order extends Model
                         $items[] = $item;
                     }
                 }
-                return $items;
+                return collect($items);
             } else {
                 return $this->order_items()->get();
             }

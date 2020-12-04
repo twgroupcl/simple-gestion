@@ -13,6 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'transbank/webpay/mall/response',
-        'transbank/final'
+        'transbank/final',
+        'admin/payment/subscription/result',
+        'payment/subscription/result',
     ];
 }
