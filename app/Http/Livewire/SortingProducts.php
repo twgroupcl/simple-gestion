@@ -30,11 +30,11 @@ class SortingProducts extends Component
                 'direction' => 'DESC',
             ],
             [
-                'field' => 'price',
+                'field' => 'current_price',
                 'direction' => 'ASC',
             ],
             [
-                'field' => 'price',
+                'field' => 'current_price',
                 'direction' => 'DESC',
             ],
         ];

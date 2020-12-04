@@ -99,6 +99,7 @@
                 </div>
             </div>
             <!-- Filter by Brand-->
+            @if ($brands->count())
             <div class="widget cz-filter mb-4 pb-4 border-bottom">
                 <h3 class="widget-title">Marca</h3>
                 <ul class="widget-list cz-filter-list list-unstyled pt-1" style="max-height: 12rem;" data-simplebar data-simplebar-auto-hide="false">
@@ -118,6 +119,7 @@
                     @endforeach
                 </ul>
             </div>
+            @endif
             <!-- Filter by attributes -->
             <form action="">
             @foreach($attributes as $attribute)

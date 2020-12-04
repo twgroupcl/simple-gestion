@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Cart;
 
+use App\Models\Seller;
 use Livewire\Component;
 use App\Models\CartItem;
 use App\Http\Chilexpress;
@@ -29,6 +30,7 @@ class Item extends Component
     // show attributes for configurable products
     public $showAttributes;
     public $sellerShippingMethods;
+    public $sellerId;
 
     protected $listeners = [
         'setQty',
@@ -59,6 +61,14 @@ class Item extends Component
         $this->total = $this->item->product->real_price * $this->qty;
         $this->communeSelected =  $this->item->cart->address_commune_id;
         $product = $this->item->product;
+        $this->sellerId = $this->item->product->seller->id;
+        $this->shippingMethods = $this->getShippingMethods();
+        if (count($this->shippingMethods) > 0) {
+            $this->item->shipping_id = $this->shippingMethods->first()->id;
+        }else{
+            $this->item->shipping_id =  null;
+        }
+        $this->item->update();
 
         // if($this->item->shipping_id){
         // foreach($this->sellerShippingMethods as $key => $shippingMethod){
@@ -149,67 +159,80 @@ class Item extends Component
     //     $this->individualShipment = $selected;
     //     $this->emit('select-shipping', $selected, $this->item->id);
     // }
+        /**
+         *  Unused
+         * */
+    // public function getShippingMethods()
+    // {
+
+    //     $seller  = $this->item->product->seller;
+    //     //dd($seller->shippingmethods()->get());
+    //     $tmpshippings = null;
+    //     $shippingsmethods = $seller->shippingmethods()->where('status', 1)->get() ;// ShippingMethod::where('status', 1)->get();
+
+    //     foreach ($shippingsmethods as $shippingmethodseller) {
+    //         $shippingmethod = $shippingmethodseller->shipping_method;
+    //         $itemshipping = null;
+    //         if ($shippingmethod->code == 'chilexpress') {
+    //             $chilexpress = new Chilexpress();
+
+    //             $result = $chilexpress->calculateItem($this->item, $this->communeSelected);
+
+    //             $itemshipping['id'] = $shippingmethod->id;
+    //             $itemshipping['name'] = $shippingmethod->title;
+    //             if ($result['is_available']) {
+
+    //                 $resultitem = json_decode(json_encode($result['item']), false);
+
+    //                 $itemshipping['price'] = $resultitem->service->serviceValue;
+    //                 $itemshipping['message'] = $resultitem->service->serviceDescription;
+    //             } else {
+    //                 $itemshipping['price'] = null;
+    //                 $itemshipping['message'] = $result['message'];
+    //             }
+    //             $itemshipping['is_available'] = $result['is_available'];
+
+    //         } else {
+    //             $json_value = json_decode($shippingmethod->json_value);
+
+    //             $itemshipping['id'] = $shippingmethod->id;
+    //             $itemshipping['name'] = $shippingmethod->title;
+    //             $itemshipping['message'] = '';
+    //             if ($json_value) {
+
+    //                 $itemshipping['price'] = $json_value->price;
+
+    //                 // if ($json_value->variable_name == 'price') {
+    //                 //     $itemshipping['price'] = $json_value[0]->variable_value;
+    //                 // }
+    //                 // if ($json_value[0]->variable_name == 'message') {
+    //                 //     $itemshipping['message'] = $json_value[0]->variable_value;
+    //                 // } else {
+    //                 //     $itemshipping['message'] = '';
+    //                 // }
+    //             } else {
+    //                 $itemshipping['price'] = null;
+    //             }
+    //             $itemshipping['is_available'] = true;
+    //         }
+    //         $tmpshippings[] = $itemshipping;
+    //     }
+
+    //     return $tmpshippings;
+    // }
+
 
     public function getShippingMethods()
     {
+        $seller = Seller::whereId($this->sellerId)->first();
+        $communeShippingMethods = $seller->getAvailableShippingMethodsByCommune($this->communeSelected);
+        $shippingMethods = ShippingMethod::whereIn('code',$communeShippingMethods)->where('status', 1)->get();
+        //$this->shippingMethods = $shippingMethods;
 
-        $seller  = $this->item->product->seller;
-        //dd($seller->shippingmethods()->get());
-        $tmpshippings = null;
-        $shippingsmethods = $seller->shippingmethods()->where('status', 1)->get() ;// ShippingMethod::where('status', 1)->get();
+        return $shippingMethods;
 
-        foreach ($shippingsmethods as $shippingmethodseller) {
-            $shippingmethod = $shippingmethodseller->shipping_method;
-            $itemshipping = null;
-            if ($shippingmethod->code == 'chilexpress') {
-                $chilexpress = new Chilexpress();
 
-                $result = $chilexpress->calculateItem($this->item, $this->communeSelected);
-
-                $itemshipping['id'] = $shippingmethod->id;
-                $itemshipping['name'] = $shippingmethod->title;
-                if ($result['is_available']) {
-
-                    $resultitem = json_decode(json_encode($result['item']), false);
-
-                    $itemshipping['price'] = $resultitem->service->serviceValue;
-                    $itemshipping['message'] = $resultitem->service->serviceDescription;
-                } else {
-                    $itemshipping['price'] = null;
-                    $itemshipping['message'] = $result['message'];
-                }
-                $itemshipping['is_available'] = $result['is_available'];
-
-            } else {
-                $json_value = json_decode($shippingmethod->json_value);
-
-                $itemshipping['id'] = $shippingmethod->id;
-                $itemshipping['name'] = $shippingmethod->title;
-                $itemshipping['message'] = '';
-                if ($json_value) {
-
-                    $itemshipping['price'] = $json_value->price;
-
-                    // if ($json_value->variable_name == 'price') {
-                    //     $itemshipping['price'] = $json_value[0]->variable_value;
-                    // }
-                    // if ($json_value[0]->variable_name == 'message') {
-                    //     $itemshipping['message'] = $json_value[0]->variable_value;
-                    // } else {
-                    //     $itemshipping['message'] = '';
-                    // }
-                } else {
-                    $itemshipping['price'] = null;
-                }
-                $itemshipping['is_available'] = true;
-            }
-            $tmpshippings[] = $itemshipping;
-        }
-
-        return $tmpshippings;
     }
-
-
 
     public function updateCommune($communeid)
     {

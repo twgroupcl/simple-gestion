@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Seller;
+use App\Models\Banners;
 use App\Models\Product;
 use App\Models\FaqTopic;
 use App\Models\FaqAnswer;
@@ -22,7 +23,23 @@ class HomeController extends Controller
             ->where('parent_id', '=', null);
         })->limit(3)->inRandomOrder()->get();
 
-        return view('marketplace', compact('categories'));
+        $featuredProducts = Product::where('status', '=' ,'1')
+        ->where('featured', '=' ,'1')
+        ->inRandomOrder()->get();
+
+        $banner1 = Banners::where('section',1)->first();
+        $banner2 = Banners::where('section',2)->first();
+        $banner3 = Banners::where('section',3)->first();
+        $banner4 = Banners::where('section',4)->first();
+
+        $banners = [
+            1 => $banner1,
+            2 => $banner2,
+            3 => $banner3,
+            4 => $banner4
+        ];
+
+        return view('marketplace', compact('categories','featuredProducts','banners'));
     }
 
     public function getAllProducts()
@@ -61,6 +78,15 @@ class HomeController extends Controller
     {
         $seller = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
         $countProduct = Product::where('seller_id', '=', $request->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
+        $render = ['view' => 'seller'];
+        $data = $seller->id;
+        return view('vendor', compact('seller', 'countProduct','render', 'data'));
+    }
+
+    public function getSellerBySlug(Request $request)
+    {
+        $seller = Seller::where('slug', '=', $request->slug)->with('seller_category')->with('company')->firstOrFail();
+        $countProduct = Product::where('seller_id', '=', $seller->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
         $render = ['view' => 'seller'];
         $data = $seller->id;
         return view('vendor', compact('seller', 'countProduct','render', 'data'));
