@@ -147,4 +147,20 @@ class ManageInvoiceCrudController extends CrudController
         return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
 
     }
+
+    public function issueCreditNote(Request $request, Invoice $invoice)
+    {
+        if (!isset($invoice->dte_code)) {
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        $creditNote = new Invoice($invoice->toArray());
+        $creditNoteType = InvoiceType::whereCode('61')->first();
+        $creditNote->invoice_type_id = $creditNoteType->id;
+
+        $creditNote->save();
+
+        return redirect()->to('admin/invoice/' . $creditNote->id . '/edit');
+        
+    }
 }

@@ -43,7 +43,7 @@ trait DTEArray
                     'NumCtaPago' => !empty($this->invoice->bank_number_account) ? $this->invoice->bank_number_account : false,
                     'BcoPago' => !empty($this->invoice->bank) ? $this->invoice->bank->name : false,
                     'TermPagoCdg' => false,
-                    'TermPagoGlosa' => false,
+                    'TermPagoGlosa' => $this->invoice->notes ?? false,
                     'TermPagoDias' => false,
                     'FchEmis' => $this->invoice->invoice_date ?? false,
                     'FchVenc' => $this->invoice->expiry_date ?? false //AAAA-MM-DD

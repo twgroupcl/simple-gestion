@@ -30,15 +30,15 @@ class BankAccountType extends Model
      */
     public function getTypeForDTE()
     {
-        if ('ca-02') {
-            return 'AH';
+        if ($this->code == 'ca-02') {
+            return 'AHORRO';
         }
 
-        if ('cc-01') {
-            return 'CT';
+        if ($this->code == 'cc-01') {
+            return 'CORRIENTE';
         }
 
-        return 'OT';
+        return 'OTRA';
     }
 
     /*

@@ -80,6 +80,10 @@ class Invoice extends Model
         //'tax_type',
         'title',
         'total',
+        'bank_id',
+        'bank_account_type_id',
+        'bank_number_account',
+        'way_to_payment',
     ];
     // protected $hidden = [];
     // protected $dates = [];

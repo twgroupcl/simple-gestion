@@ -6,7 +6,8 @@ use App\Models\Invoice;
 use App\Services\DTE\Types\{
     ElectronicInvoice, 
     ExemptElectronicInvoice,
-    ElectronicTicket
+    ElectronicTicket,
+    CreditNote
 };
 
 class DTEFactory
@@ -22,6 +23,9 @@ class DTEFactory
                 break;
             case 39:
                 return new ElectronicTicket($invoice);
+                break;
+            case 61;
+                return new CreditNote($invoice);
                 break;
         }
     }

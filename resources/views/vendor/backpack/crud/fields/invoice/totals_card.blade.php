@@ -148,6 +148,11 @@
                     break;
             }
         }
+
+        function isExent()
+        {
+            return invoiceType !== '33' && invoiceType !== '39';
+        }
     
         function calculateAndSetTaxItem(item, itemPrice, itemQty, itemDiscount) {
             let itemSubtotal = (itemQty * itemPrice) - itemDiscount
@@ -157,7 +162,7 @@
             let taxPercentField = item.find('.tax_percent_item')
             let taxTotalField = item.find('.tax_total_item')
 
-            if  (taxIdField.val() == 0) { 
+            if  (taxIdField.val() == 0 || isExent()) { 
                 taxPercentField.val(0)
                 taxAmountField.val(0)
                 taxTotalField.val(0)
@@ -250,15 +255,9 @@
                 let subTotal = $(this).find('.subtotal')
 
 
-                let taxAmount = 0;
-                switch (invoiceType) {
-                    case '33':
-                    case '39':
-                        taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal);
-                        break;
-                }
+                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
+                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
                 
-                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal);
                 let subTotalValue = (price * itemQty) 
                 let totalValue = ( (price * itemQty) - discountItem)
                 
@@ -302,7 +301,7 @@
                 $('#iva-container').hide()
                 $('#retencion-container').addClass('d-flex')
                 $('#retencion-container').show()
-            } else if (invoiceType === '33' || invoiceType === '39' ){ 
+            } else if (!isExent()){ 
                 $('input[name="tax_amount"]').val(totalVaxGeneral)
                 document.querySelector('#amount-tax-field').innerText = formatWithComma(totalVaxGeneral);
                 document.querySelector('#retencion-field').innerText = 0
