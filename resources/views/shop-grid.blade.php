@@ -25,7 +25,7 @@
         <!-- Sidebar-->
         <aside class="col-lg-4">
             <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
-                @livewire('filters')
+                @livewire('filters', ['data' => $data])
             </div>
         </aside>
         <!-- Content  -->
