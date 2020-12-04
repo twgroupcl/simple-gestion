@@ -165,6 +165,8 @@ class ManageInvoiceCrudController extends CrudController
 
         $creditNote->save();
 
+        \Alert::success('Se creó una nota de crédito a partir del documento seleccionado')->flash();
+
         return redirect()->to('admin/invoice/' . $creditNote->id . '/edit');
         
     }
