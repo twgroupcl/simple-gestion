@@ -125,6 +125,9 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
+        /*
+         * TO DO change method addresses to CustomerAddress
+         */
         CRUD::addField([
             'label' => 'Dirección',
             'type' => 'select2_from_ajax',
