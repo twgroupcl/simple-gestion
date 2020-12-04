@@ -29,15 +29,26 @@ class CreditNote implements DocumentType
     {
         $array = $this->ttArray();
 
+        $referenceData = json_decode($this->invoice->json_value, true);
+
+        $refDataExists = $this->checkReferenceData($referenceData);
+        
         $array['Referencia'] = [
-            //'TpoDocRef' =>
-            //"FolioRef": 1,
-            //"FchRef": "2016-01-01",
-            //"CodRef": 1,
+            'TpoDocRef' => $refDataExists ? $referenceData['reference_type_document'] : false,
+            'FolioRef' => $refDataExists ? $referenceData['reference_folio'] : false,
+            'FchRef' =>  $refDataExists ? $referenceData['reference_date'] : false,
+            //'CodRef' => 1, 1-Anula 2-CorrigeTextDocDeRef 3-CorrigeMonto
             'RazonRef' => 'Anula factura',
         ];
 
         return $array;
+    }
+
+    private function checkReferenceData($array) : bool
+    {
+        return array_key_exists('reference_type_document', $array) || 
+            array_key_exists('reference_folio', $array) ||
+            array_key_exists('reference_date', $array);
     }
 
 }
