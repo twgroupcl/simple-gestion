@@ -1,4 +1,5 @@
 <div
+    wire:ignore.self
     class="modal fade"
     id="showSaleBoxModal"
     id="showSaleBoxModal"
