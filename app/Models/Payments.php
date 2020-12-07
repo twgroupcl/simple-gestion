@@ -23,6 +23,16 @@ class Payments extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $fakeColumns = [
+        'data_fee',
+        'data_payment',
+    ];
+    
+    protected $casts = [
+        'data_fee' => 'array',
+        'data_payment' => 'array',
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

@@ -27,6 +27,24 @@ class PaymentsRequest extends FormRequest
     {
         return [
             // 'name' => 'required|min:5|max:255'
+            'data_fee' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $options = json_decode($value);
+                    if($options[0]->amount == '' || $options[0]->date == ''){
+                        return $fail('Los campos Fecha de corte y Monto son obligatorios');
+                    }
+                    
+            }],
+            'data_payment' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $options = json_decode($value);
+                    if($options[0]->payment_method == '' || $options[0]->amount_payment == ''){
+                        return $fail('Los campos Método de Pago y Monto son obligatorios');
+                    }
+                    
+            }],
         ];
     }
 
@@ -38,7 +56,8 @@ class PaymentsRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'data_fee.date' => 'fecha de corte',            
+            'data_fee.amount' => 'monto',            
         ];
     }
 
@@ -50,7 +69,8 @@ class PaymentsRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'gte' => 'El campo :attribute debe ser mayor o igual a 0',
+            'required' => 'Verifique el campo :attribute, es necesario que lo complete',
         ];
     }
 }

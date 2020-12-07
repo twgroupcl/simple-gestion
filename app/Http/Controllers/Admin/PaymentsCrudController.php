@@ -173,17 +173,6 @@ class PaymentsCrudController extends CrudController
             'tab' => 'Detalle de la factura',
         ]);
 
-
-        CRUD::addField([
-            'name' => 'total_debt',
-            'label' => 'Deuda total del cliente',
-            'type' => 'text',
-            'wrapper' => [
-                'class' => 'col-md-12 form-group',
-            ],
-            'tab' => 'Programar pagos',
-        ]);
-
         CRUD::addField([  
             'name'            => 'data_fee',
             'label'           => 'Cuotas',
@@ -191,18 +180,20 @@ class PaymentsCrudController extends CrudController
             'type'  => 'repeatable',
             'fields' => [
                 [
-                    'name'    => 'data_fee',
+                    'name'    => 'date',
                     'type'    => 'date',
                     'label'   => 'Fecha de corte',
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
                 [
-                    'name'    => 'data_fee',
+                    'name'    => 'amount',
                     'type'    => 'number',
                     'label'   => 'Monto',
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
             ],
+            'fake' => true,
+            'store_in' => 'data_fee',
             'tab' => 'Programar pagos',
         ]);
 
@@ -213,7 +204,7 @@ class PaymentsCrudController extends CrudController
             'type'  => 'repeatable',
             'fields' => [
                 [
-                    'name' => 'data_payment',
+                    'name' => 'payment_method',
                     'label' => 'Método de pago',
                     'type' => 'select2_from_array',
                     'options' => [
@@ -226,18 +217,20 @@ class PaymentsCrudController extends CrudController
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
                 [
-                    'name'    => 'data_payment',
+                    'name'    => 'amount_payment',
                     'type'    => 'number',
                     'label'   => 'Monto',
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
                 [
-                    'name'    => 'data_payment',
-                    'type'    => 'number',
+                    'name'    => 'comment',
+                    'type'    => 'textarea',
                     'label'   => 'Comentario',
                     'wrapper' => ['class' => 'form-group col-md-12'],
                 ],
             ],
+            'fake' => true,
+            'store_in' => 'data_payment',
             'tab' => 'Pagos',
         ]);
 
