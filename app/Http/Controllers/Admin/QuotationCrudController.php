@@ -54,8 +54,8 @@ class QuotationCrudController extends CrudController
 
         CRUD::addColumn([
             'label' => '#',
-            'name' => 'id',
-            'type' => 'number',
+            'name' => 'code',
+            'type' => 'text',
         ]);
 
         CRUD::addColumn([
@@ -211,10 +211,12 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Número cotización',
-            'name' => 'id_accesor',
+            'name' => 'code_accesor',
             'type' => 'text',
             'prefix' => '#',
-            'default' => Quotation::all()->last() ? Quotation::all()->last()->id + 1 : 1,
+            'default' => Quotation::withTrashed()->orderBy('created_at')->get()->last() 
+                ? intval(Quotation::withTrashed()->orderBy('created_at')->get()->last()->code) + 1 
+                : 1,
             'attributes' => [
                 'readonly' => true,
             ],
@@ -226,7 +228,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'label' => 'Número referencia',
-            'name' => 'code',
+            'name' => 'reference',
             'type' => 'text',
             'prefix' => '#',
             'wrapper' => [
@@ -537,7 +539,7 @@ class QuotationCrudController extends CrudController
 
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('templates.quotations.export_pdf', [
             'quotation' => $quotation,
-            'due_date' => new Carbon($quotation->expiry_date),
+            'due_date' => is_null($quotation->expiry_date) ? null : new Carbon($quotation->expiry_date),
             'creation_date'=> new Carbon($quotation->quotation_date),
             'title' => $quotation->title,
             'now' => New Carbon(),
