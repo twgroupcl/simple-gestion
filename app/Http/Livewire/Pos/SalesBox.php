@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire\Pos;
 
-use App\Models\SalesBox as ModelsSalesBox;
 use Livewire\Component;
 
 class SalesBox extends Component
 {
+    public $saleBox;
     public $isSaleBoxOpen = false;
     public $openSaleBoxModal = false;
     public $seller;
@@ -20,13 +20,9 @@ class SalesBox extends Component
 
     public function validateSaleBox()
     {
-        $sale_box = $this->seller->sales_boxes()->latest()->first();
+        $this->saleBox = $this->seller->sales_boxes()->latest()->first();
 
-        if (null !== $sale_box) {
-            $this->isSaleBoxOpen = $sale_box->closed_at !== null
-                ? true
-                : false;
-        }
+        $this->isSaleBoxOpen = optional($this->saleBox)->is_opened ?? false;
 
         if (! $this->isSaleBoxOpen) {
             $this->dispatchBrowserEvent('openSaleBoxModal');
@@ -35,7 +31,7 @@ class SalesBox extends Component
 
     public function openSaleBox()
     {
-        $this->seller->sales_boxes()->create([
+        $this->saleBox = $this->seller->sales_boxes()->create([
             'open_at' => now(),
         ]);
 
