@@ -22,7 +22,7 @@ class CreateSalesBoxTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('shipping_method_seller_mapping', function (Blueprint $table) {
+        Schema::table('sales_boxes', function (Blueprint $table) {
             $table->foreign('seller_id')->references('id')->on('sellers');
         });
     }
