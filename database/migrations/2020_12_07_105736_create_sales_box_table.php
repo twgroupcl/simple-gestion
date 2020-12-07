@@ -17,8 +17,8 @@ class CreateSalesBoxTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('seller_id');
             $table->text('remarks')->nullable();
-            $table->date('open_at')->nullable();
-            $table->date('closed_at')->nullable();
+            $table->dateTime('opened_at')->nullable();
+            $table->dateTime('closed_at')->nullable();
             $table->timestamps();
         });
 
