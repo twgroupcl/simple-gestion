@@ -40,9 +40,36 @@ class PaymentsCrudController extends CrudController
     protected function setupListOperation()
     {
         //CRUD::setFromDb(); // columns
-       // $this->crud->setModel(\App\Models\Payments::class);
-       $this->crud->setRoute("admin/invoice");
-       // OR $this->crud->setRouteName("admin.example");
+        CRUD::addColumn([
+            'name' => 'invoice_id',
+            'type' => 'text',
+            'label' => 'ID Factura',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'amount_total',
+            'type' => 'text',
+            'label' => 'Monto Total',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'amount_paid',
+            'type' => 'text',
+            'label' => 'Monto Pagado',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'number_fee',
+            'type' => 'text',
+            'label' => 'Nº de Cuotas',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'status',
+            'type' => 'text',
+            'label' => 'Estado',
+        ]);
+
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -60,7 +87,159 @@ class PaymentsCrudController extends CrudController
     {
         CRUD::setValidation(PaymentsRequest::class);
 
-        CRUD::setFromDb(); // fields
+        //CRUD::setFromDb(); // fields
+        CRUD::addField([
+            'name' => 'customer',
+            'label' => 'Cliente',
+            'type' => 'text',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group ',
+            ],
+            'attributes' => [
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Detalle de la factura',
+        ]);
+        CRUD::addField([
+            'name' => 'total_document',
+            'label' => 'Total Documento',
+            'type' => 'text',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
+            'attributes' => [
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Detalle de la factura',
+        ]);
+        CRUD::addField([
+            'name' => 'subscriber',
+            'label' => 'Abonado',
+            'type' => 'text',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
+            'attributes' => [
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Detalle de la factura',
+        ]);
+        CRUD::addField([
+            'name' => 'remaining',
+            'label' => 'Restante',
+            'type' => 'text',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
+            'attributes' => [
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Detalle de la factura',
+        ]);
+        CRUD::addField([
+            'name' => 'remaining',
+            'label' => 'Restante',
+            'type' => 'text',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
+            'attributes' => [
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Detalle de la factura',
+        ]);
+        CRUD::addField([
+            'name' => 'positive_balance',
+            'label' => 'Saldo a favor del cliente',
+            'type' => 'text',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
+            'attributes' => [
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Detalle de la factura',
+        ]);
+        CRUD::addField([
+            'name' => 'total_debt',
+            'label' => 'Deuda total del cliente',
+            'type' => 'text',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
+            'attributes' => [
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Detalle de la factura',
+        ]);
+
+
+        CRUD::addField([
+            'name' => 'total_debt',
+            'label' => 'Deuda total del cliente',
+            'type' => 'text',
+            'wrapper' => [
+                'class' => 'col-md-12 form-group',
+            ],
+            'tab' => 'Programar pagos',
+        ]);
+
+        CRUD::addField([  
+            'name'            => 'data_fee',
+            'label'           => 'Cuotas',
+            'new_item_label'  => 'Agregar Cuota',
+            'type'  => 'repeatable',
+            'fields' => [
+                [
+                    'name'    => 'data_fee',
+                    'type'    => 'date',
+                    'label'   => 'Fecha de corte',
+                    'wrapper' => ['class' => 'form-group col-md-6'],
+                ],
+                [
+                    'name'    => 'data_fee',
+                    'type'    => 'number',
+                    'label'   => 'Monto',
+                    'wrapper' => ['class' => 'form-group col-md-6'],
+                ],
+            ],
+            'tab' => 'Programar pagos',
+        ]);
+
+        CRUD::addField([  
+            'name'            => 'data_payment',
+            'label'           => 'Registrar pago',
+            'new_item_label'  => 'Agregar pago',
+            'type'  => 'repeatable',
+            'fields' => [
+                [
+                    'name' => 'data_payment',
+                    'label' => 'Método de pago',
+                    'type' => 'select2_from_array',
+                    'options' => [
+                        'EF' => 'Efectivo', 
+                        'PE' => 'Pago a Cta. Cte.',
+                        'TC' => 'Tarjeta de crédito',
+                        'CF' => 'Cheque a fecha',
+                        'OT' => 'Otro'
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-6'],
+                ],
+                [
+                    'name'    => 'data_payment',
+                    'type'    => 'number',
+                    'label'   => 'Monto',
+                    'wrapper' => ['class' => 'form-group col-md-6'],
+                ],
+                [
+                    'name'    => 'data_payment',
+                    'type'    => 'number',
+                    'label'   => 'Comentario',
+                    'wrapper' => ['class' => 'form-group col-md-12'],
+                ],
+            ],
+            'tab' => 'Pagos',
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
