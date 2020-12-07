@@ -36,7 +36,7 @@
                 Seleccionar Cliente
             @endif
         </button>
-        <button class="btn btn-danger btn-block ">Pagar
+        <button class="btn btn-danger btn-block " onclick="changeViewMode('paymentView')">Pagar
                 </button>
      @endif
 
