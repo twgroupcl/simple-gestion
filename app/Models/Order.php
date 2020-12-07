@@ -157,10 +157,11 @@ class Order extends Model
                 $tmpitems = $this->order_items()->get();
 
                 foreach ($tmpitems as $item) {
-                    if ($item->product->seller_id == $userSeller->id) {
+                    if ($item->seller_id == $userSeller->id) {
                         $items[] = $item;
                     }
                 }
+
                 return collect($items);
             } else {
                 return $this->order_items()->get();
