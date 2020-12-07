@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Invoice;
 use App\Http\Requests\PaymentsRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -86,7 +87,11 @@ class PaymentsCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(PaymentsRequest::class);
+        
+        $idInvoice = $this->crud->getCurrentEntry()->invoice_id;
+        $dataInvoice = Invoice::where('id',$idInvoice)->first();
 
+        //dd($dataInvoice->title);
         //CRUD::setFromDb(); // fields
         CRUD::addField([
             'name' => 'customer',
@@ -171,6 +176,19 @@ class PaymentsCrudController extends CrudController
                 'readonly' => 'readonly',
             ],
             'tab' => 'Detalle de la factura',
+        ]);
+
+        CRUD::addField([
+            'label' => 'Tipo de cuenta',
+            'name' => 'bank_account_type_id',
+            'type' => 'select2',
+            'placeholder' => 'Selecciona un banco',
+            'model' => 'App\Models\BankAccountType',
+            'attribute' => 'name',
+            'wrapper' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'tab' => 'Detalle de la factura'
         ]);
 
         CRUD::addField([  
