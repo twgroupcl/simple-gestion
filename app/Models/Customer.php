@@ -135,6 +135,11 @@ class Customer extends Model
         return $this->hasMany(Order::class);
     }
 
+    public function attendances()
+    {
+        return $this->hasMany(CustomerAttendance::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
