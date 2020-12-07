@@ -81,7 +81,7 @@ class Customer extends Model
         static::addGlobalScope(new CompanyBranchScope);
     }
 
-    public function registerAttendance()
+    public function registerAttendance($companyId)
     {
         $todayAttendances = CustomerAttendance::whereDay('attendance_time', date('d'))->where('customer_id', $this->id)->get();
         $entryNumber = $todayAttendances->count() + 1;
@@ -93,6 +93,7 @@ class Customer extends Model
             'entry_type' => $entryType,
             'customer_id' => $this->id,
             'branch_id' => $this->user->branches->first()->id,
+            'company_id' => $companyId,
         ]);
 
         return $attendance;

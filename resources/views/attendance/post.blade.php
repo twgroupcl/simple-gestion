@@ -13,7 +13,7 @@
 
         .header {
             background-color: #fd6060;
-            height: 300px;
+            /* height: 300px; */
             justify-content: center;
         }
 
@@ -29,6 +29,7 @@
             color: white;
             font-size: 35px;
             font-weight: 800;
+            display: block;
         }
 
         @media (max-width: 420px) {
@@ -36,6 +37,7 @@
             color: white;
             font-size: 25px;
             font-weight: 800;
+            display: block;
             }
         }
 
@@ -44,6 +46,7 @@
             color: white;
             font-size: 35px;
             font-weight: 800;
+            display: block;
             }
         }
 
@@ -51,6 +54,10 @@
             background-color: white;
             height: 300px;
             margin-top: -100px;
+        }
+
+        .spacing {
+            height: 130px;
         }
 
     </style>
@@ -61,6 +68,11 @@
 
         <div class="row header">
             <div class="col-lg-10 text-center title-container">
+                @if ($company->logo)
+                    <img src="{{ $company->logo }}" alt="" style="max-height: 70px">
+                @else 
+                    <span class="title">{{ $company->name }}</span>
+                @endif
                 <span class="title">
                     @if ($attendance->entry_type === $typeCheckIn)
                         ¡Check In registrado!
@@ -70,6 +82,7 @@
                     @endif
                 </span>
             </div>
+            <div class="col-lg-12 spacing"></div>
         </div>
 
         <div class="row px-0 mx-0 content">
