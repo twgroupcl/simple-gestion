@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Route;
 //     return redirect(backpack_url('dashboard'));
 // });
 
-// Route::get('/', function () {
-//     return view('home');
-// });
+ Route::get('/', function () {
+     return view('home');
+ });
 
-Route::get('/', 'Frontend\HomeController@index');
+//Route::get('/', 'Frontend\HomeController@index');
 
 Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer.sign')->middleware(['guest']);
 Route::post('/customer/register', 'Frontend\CustomerController@store')->name('customer.frontend.store');
