@@ -52,6 +52,19 @@
             @livewire('pos.cart.cart')</div>
             </div>
     </div>
+    <div
+    wire:ignore.self
+    class="modal fade"
+    id="showCustomerModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="createCustomerModalLabel"
+    aria-hidden="true"
+    >
+        <div class="modal-dialog" role="document">
+            @livewire('pos.customer.create-customer')
+        </div>
+</div>
 </div>
 
 @push('after_scripts')
@@ -62,5 +75,15 @@
         $('#'+view).show();
         currentView = view;
     }
+</script>
+
+<script>
+    const showCustomerModal = () => {
+        $('#showCustomerModal').appendTo("body").modal('show');
+    }
+
+    $("#showCustomerModal").on('hidden.bs.modal', function () {
+        $('#showCustomerModal').appendTo("body").modal('hide');
+    });
 </script>
 @endpush
