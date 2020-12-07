@@ -1,6 +1,24 @@
 <div class='container text-center'>
     <div class="row">
-        <div class='card col-md-6'>
+        <div class='card text-left col-md-6'>
+            @if (session()->get('user.pos.selectedCustomer'))
+            @php
+                $selectedCustomer = \App\Models\Customer::find(session()->get('user.pos.selectedCustomer'));
+            @endphp
+                <div class="row">
+                    <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                        <h5 class="card-title">$selectedCustomer->first_name</h5>
+                        <p class="card-text">$selectedCustomer->email</p>
+                        <p class="card-text">$selectedCustomer->uid</p>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary mb-3">Pago en efectivo</a>
+                        <a href="#" class="btn btn-outline-primary mb-3">Pago con transbank</a>
+                    </div>
+                    </div>
+                </div>
+            @endif
         </div>
         <div class='card col-md-6'>
             <div class='card-body'>
