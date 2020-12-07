@@ -21,7 +21,7 @@
                 background-size: cover;
             }
             .bgimg-1 {
-                background-image: url('img/filsa/filsa-virtual.jpg');
+                background-image: url('img/filsa/cortina-web.jpg');
                 height: 100%;
             }
         </style>
