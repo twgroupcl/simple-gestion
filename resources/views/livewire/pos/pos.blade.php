@@ -53,18 +53,19 @@
             </div>
     </div>
     <div
-    wire:ignore.self
-    class="modal fade"
-    id="showCustomerModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="createCustomerModalLabel"
-    aria-hidden="true"
-    >
+        wire:ignore.self
+        class="modal fade"
+        id="showCustomerModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="createCustomerModalLabel"
+        aria-hidden="true"
+        >
         <div class="modal-dialog" role="document">
             @livewire('pos.customer.create-customer')
         </div>
-</div>
+    </div>
+    @livewire('pos.sales-box', ['seller' => $seller])
 </div>
 
 @push('after_scripts')
