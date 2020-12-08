@@ -2,11 +2,17 @@
 
 namespace App\Http\Livewire\Pos;
 
+use App\Models\SalesBox;
 use Livewire\Component;
 
 class Navbar extends Component
 {
     public $search;
+    public $salesBox;
+
+    public $listeners = [
+        'salesBoxUpdated' => 'updateBoxDetails',
+    ];
 
     public function render()
     {
@@ -16,5 +22,10 @@ class Navbar extends Component
     public function search()
     {
         $this->emit('searchProduct', $this->search);
+    }
+
+    public function updateBoxDetails(SalesBox $salesBox)
+    {
+        $this->salesBox = $salesBox;
     }
 }

@@ -6,9 +6,15 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#"> <span class="sr-only"></span></a>
-                </li>
+                @isset($salesBox)
+                    @php
+                        $date = \Carbon\Carbon::parse($salesBox->opened_at)->locale('es');
+                    @endphp
+
+                    <li class="nav-item active">
+                        Caja abierta: <strong class="text-primary">{{ $date->translatedFormat('j/m/Y - g:i a') }}</strong>
+                    </li>
+                @endisset
             </ul>
             <form wire:submit.prevent="search()" class="form-inline">
                 <input wire:model.lazy="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

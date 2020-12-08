@@ -38,10 +38,12 @@ class SalesBox extends Component
         ]);
 
         $this->isSaleBoxOpen = true;
+        $this->emit('salesBoxUpdated', $this->saleBox->id);
     }
 
     public function closeSaleBox()
     {
         $this->isSaleBoxOpen = false;
+        $this->emit('salesBoxUpdated', $this->saleBox->id);
     }
 }
