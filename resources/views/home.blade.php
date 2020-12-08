@@ -30,7 +30,7 @@
 
             }
             .bgimg-2 {
-                background-image: url('img/filsa/cortina-mobile.jpg');
+                background-image: url('img/filsa/cortina-mobile-1.png');
                 height: 100%;
             }
         </style>
