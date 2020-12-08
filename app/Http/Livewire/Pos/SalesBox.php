@@ -34,7 +34,7 @@ class SalesBox extends Component
         $this->saleBox = $this->seller->sales_boxes()->create([
             'amount' => $this->amount,
             'remarks' => $this->remarks,
-            'open_at' => now(),
+            'opened_at' => now(),
         ]);
 
         $this->isSaleBoxOpen = true;
