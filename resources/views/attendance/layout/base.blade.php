@@ -22,7 +22,7 @@
         }
 
         .title-container {
-            margin-top: 95px;
+            margin-top: 55px;
         }
 
         @media (max-width: 420px) {
@@ -62,7 +62,7 @@
         <div class="row header">
             <div class="col-lg-10 text-center title-container">
                 @if ($company->logo)
-                    <img src="{{ $company->logo }}" alt="" style="max-height: 70px">
+                    <img src="{{ asset($company->logo) }}" alt="" style="max-height: 150px">
                 @else 
                     <span class="title">{{ $company->name }}</span>
                 @endif
