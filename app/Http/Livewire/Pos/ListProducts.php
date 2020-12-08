@@ -26,22 +26,18 @@ class ListProducts extends Component
         $this->products = $this->getProducts();
     }
 
-    public function getProducts()
+    public function getProducts(string $name = null)
     {
         return Product::where('status','=','1')
                         ->where('is_approved','=','1')
                         ->where('parent_id', '=', null)
                         ->whereSellerId($this->seller->id)
+                        ->where('name', 'LIKE', '%'.$name.'%')
                         ->get();
     }
 
-    public function filterProduct(string $name)
+    public function filterProduct(string $name = null)
     {
-        $this->products = Product::where('status','=','1')
-                            ->where('is_approved','=','1')
-                            ->where('parent_id', '=', null)
-                            ->whereSellerId($this->seller->id)
-                            ->where('name', 'LIKE', '%'.$name.'%')
-                            ->get();
+        $this->products = $this->getProducts($name);;
     }
 }
