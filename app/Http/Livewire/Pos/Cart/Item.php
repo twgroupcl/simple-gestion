@@ -8,6 +8,9 @@ class Item extends Component
 {
     public $item;
     public $qty;
+    protected $listeners = [
+        'item.updatedCustomQty' => 'updatedCustomQty',
+    ];
     public function mount()
     {
 
@@ -25,5 +28,12 @@ class Item extends Component
     {
         $this->qty += $value;
         $this->emit('quantityUpdated', $this->item, $this->qty);
+    }
+    public function updatedCustomQty($product, $value)
+    {
+        if ($product == $this->item) {
+            $this->qty = $value;
+        }
+
     }
 }

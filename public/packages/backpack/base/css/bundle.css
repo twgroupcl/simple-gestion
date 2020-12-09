@@ -46,3 +46,9 @@
         border-right-width: 1px;
         border-left-width: 1px; */
 }
+.disabled-link{
+    cursor: default;
+    pointer-events: none;
+    text-decoration: none;
+    color: grey;
+}

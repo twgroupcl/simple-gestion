@@ -39,14 +39,14 @@
 
             </div>
         </div>
-        <div class="col-7">
+        <div class="col-md-7 col-12">
             <div class="position-relative overflow-auto vh-100">
                 <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])</div>
                 <div id="selectCustomer" style="display: none;">@livewire('pos.customer.customer-view')</div>
                 <div id="paymentView" style="display: none;">@livewire('pos.payment.payment-view', ['seller' => $seller, 'view' => $viewMode])</div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-md-4 col-12">
             <div class="position-relative overflow-hidden vh-100">
             @livewire('pos.cart.cart')</div>
             </div>

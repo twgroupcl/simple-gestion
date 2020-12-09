@@ -1,3 +1,4 @@
+
 <div>
     @php
     use App\Models\Product;
@@ -43,7 +44,7 @@
             </div>
             <div class="row">
                 <div class="col-md-1">
-                   <a   wire:click="updatedQty(-1)"><i class="la la-minus-circle"></i></a>
+                   <a @if($qty <= 2) class="disabled-link" @endif wire:click="updatedQty(-1)"><i class="la la-minus-circle"></i></a>
                 </div>
                 <div class="col-md-2 text-center">
                    {{$qty}}
