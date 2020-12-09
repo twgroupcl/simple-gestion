@@ -11,10 +11,6 @@ class ListProducts extends Component
     public $products;
     public $seller;
 
-    public $listeners = [
-        'searchProduct' => 'filterProduct',
-    ];
-
     public function render()
     {
         return view('livewire.pos.list-products');
@@ -26,18 +22,12 @@ class ListProducts extends Component
         $this->products = $this->getProducts();
     }
 
-    public function getProducts(string $name = null)
+    public function getProducts()
     {
         return Product::where('status','=','1')
                         ->where('is_approved','=','1')
                         ->where('parent_id', '=', null)
                         ->whereSellerId($this->seller->id)
-                        ->where('name', 'LIKE', '%'.$name.'%')
                         ->get();
-    }
-
-    public function filterProduct(string $name = null)
-    {
-        $this->products = $this->getProducts($name);;
     }
 }

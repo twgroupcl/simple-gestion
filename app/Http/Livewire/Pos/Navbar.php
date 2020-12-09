@@ -19,11 +19,6 @@ class Navbar extends Component
         return view('livewire.pos.navbar');
     }
 
-    public function search()
-    {
-        $this->emit('searchProduct', $this->search);
-    }
-
     public function updateBoxDetails(SalesBox $salesBox)
     {
         $this->salesBox = $salesBox;

@@ -16,10 +16,26 @@
                     </li>
                 @endisset
             </ul>
-            <form wire:submit.prevent="search()" class="form-inline">
-                <input wire:model.lazy="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="form-inline">
+                <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
     </nav>
 </div>
+
+@push('after_scripts')
+    <script>
+        const filter = search => {
+            let value = search.val().toLowerCase();
+            $(".product-cart").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        }
+
+
+        $("#search").on("keyup", () => filter($("#search")));
+        $("#search").on("search", () => filter($("#search")));
+
+    </script>
+@endpush
