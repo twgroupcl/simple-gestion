@@ -10,11 +10,12 @@ class SalesBox extends Component
     public $isSaleBoxOpen = false;
     public $openSaleBoxModal = false;
     public $seller;
-    public $amount;
+    public $opening_amount;
+    public $closing_amount;
     public $remarks;
 
     protected $rules = [
-        'amount' => 'required|int',
+        'opening_amount' => 'required|int',
         'remarks' => 'nullable',
     ];
 
@@ -45,18 +46,22 @@ class SalesBox extends Component
     {
         $this->validate();
         $this->saleBox = $this->seller->sales_boxes()->create([
-            'amount' => $this->amount,
+            'opening_amount' => $this->opening_amount,
             'remarks' => $this->remarks,
             'opened_at' => now(),
         ]);
 
         $this->isSaleBoxOpen = true;
+        $this->opening_amount = null;
+        $this->closing_amount = null;
         $this->emit('salesBoxUpdated', $this->saleBox->id);
         $this->dispatchBrowserEvent('closeSaleBoxModal');
     }
 
     public function closeSaleBox()
     {
+        $this->saleBox->closing_amount = $this->closing_amount;
+        $this->saleBox->save();
         $this->isSaleBoxOpen = false;
         $this->emit('salesBoxUpdated');
         $this->dispatchBrowserEvent('closeSaleBoxModal');
