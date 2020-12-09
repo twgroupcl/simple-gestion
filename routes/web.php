@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 //     return redirect(backpack_url('dashboard'));
 // });
 
- Route::get('/', function () {
-     return view('home');
- });
+Route::get('/', function () {
+    return view('home');
+});
 
 //Route::get('/', 'Frontend\HomeController@index');
 
@@ -55,7 +55,10 @@ Route::post('/send-email-admin', 'Frontend\CustomerController@sendMailSubscripti
 Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.sign');
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
 
-Route::get('/home', 'Frontend\HomeController@index')->name('home');
+//Route::get('/home', 'Frontend\HomeController@index')->name('home');
+Route::get('/home', function () {
+    return view('home');
+});
 
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
 Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
