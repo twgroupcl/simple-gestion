@@ -3,7 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\Invoice;
 use Illuminate\Foundation\Http\FormRequest;
+
+use function GuzzleHttp\json_decode;
 
 class PaymentsRequest extends FormRequest
 {
@@ -12,6 +15,8 @@ class PaymentsRequest extends FormRequest
      *
      * @return bool
      */
+    public $idInvoice;
+
     public function authorize()
     {
         // only allow updates if the user is logged in
@@ -23,10 +28,30 @@ class PaymentsRequest extends FormRequest
      *
      * @return array
      */
+    protected function prepareForValidation() 
+    {
+        $this->idInvoice = $this->invoice_id;
+       //$dataPay = json_decode($this->data_pay);
+        $dataFee = json_decode($this->data_fee,true);
+       // dd($this->data_fee,$this->invoice_id);
+        $forValidation = [];
+        foreach ($dataFee as $attrs) {
+            $forValidation[] = (array) $attrs;
+        }
+        $this->merge([
+            'data_fee_validation' => $forValidation,
+         //   'data_pay_counter' => count($dataPay)
+        ]);
+    }
+
     public function rules()
     {
+        $dataInvoice = Invoice::find($this->idInvoice);
+        //$countDataFee = count(json_decode($this->data_fee));
         return [
-            // 'name' => 'required|min:5|max:255'
+            //'data_pay_counter' => 'gte:0|lt:'.$countDataFee,
+          //  'data_fee_validation.*.date' => 'before_or_equal:' . $dataInvoice->expiriy_date,
+            'data_fee_validation.*.amount' => 'gte:0',
             'data_fee' => [
                 'required',
                 function ($attribute, $value, $fail) {
