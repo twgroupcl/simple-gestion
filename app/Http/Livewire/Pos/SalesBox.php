@@ -15,7 +15,7 @@ class SalesBox extends Component
     public $remarks;
 
     protected $rules = [
-        'opening_amount' => 'required|int',
+        'opening_amount' => 'required|numeric',
         'remarks' => 'nullable',
     ];
 
@@ -54,6 +54,7 @@ class SalesBox extends Component
         $this->isSaleBoxOpen = true;
         $this->opening_amount = null;
         $this->closing_amount = null;
+        $this->remarks = null;
         $this->emit('salesBoxUpdated', $this->saleBox->id);
         $this->dispatchBrowserEvent('closeSaleBoxModal');
     }

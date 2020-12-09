@@ -41,7 +41,7 @@
                             <label for="openingAmount">Monto de apertura</label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text">$</div>
-                                <input wire:model="opening_amount" type="number" class="form-control @error('amount') is-invalid @enderror" id="opening_amount" placeholder="1000">
+                                <input wire:model="opening_amount" type="number" step="any" class="form-control @error('amount') is-invalid @enderror" id="opening_amount" placeholder="1000">
                             </div>
                             @error('amount')
                             <small class="text-danger" role="alert">
