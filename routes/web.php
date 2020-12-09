@@ -61,13 +61,27 @@ Route::get('/home', function () {
 });
 
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
-Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
-Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
+
+//Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
+Route::get('/search-products/{category}/{product}', function () {
+    return view('home');
+});
+
+//Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
+Route::get('/search-products/{category}', function () {
+    return view('home');
+});
+
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });
 Route::get('/shop-grid/', 'Frontend\HomeController@getProductsByCategory');
-Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
+
+//Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
+Route::get('/seller-shop/{id}', function () {
+    return view('home');
+});
+
 Route::get('/shop/{slug}', 'Frontend\HomeController@getSellerBySlug')->name('seller-slug');
 Route::get('/faq', 'Frontend\HomeController@getFaq');
 Route::get('/faq-single', function () {
@@ -90,7 +104,12 @@ Route::get('/about-us', function () {
 Route::redirect('/login', '/customer/login')->name('login');
 
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
-Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
+
+//Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
+Route::get('/checkout', function () {
+    return view('home');
+});
+
 Route::get('/filter-products', 'Frontend\HomeController@filterProducts');
 
 Route::group([
