@@ -13,10 +13,10 @@
                             class="custom-control-label"
                             for="boxSwitch"
                             style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;"
-                            >Caja abierta:
+                            >{{ $checked ? 'Caja abierta' : 'Caja cerrada' }}
                         </label>
                     </div>
-                    @isset($salesBox)
+                    @isset($salesBox->opened_at)
                         <strong class="text-primary">{{ \Carbon\Carbon::parse($salesBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</strong>
                     @endisset
                 </li>
