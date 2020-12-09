@@ -45,21 +45,22 @@ class PaymentsRequest extends FormRequest
         $this->merge([
             'data_fee_validation' => $forValidation,
             'data_payment_validation' => $forValidationPay,
-            'data_pay_counter' => count($dataPayment)
+            //'data_pay_counter' => count($dataFee)
         ]);
     }
 
     public function rules()
     {
-        $dataInvoice = Invoice::find($this->idInvoice);
-        $countDataFee = (isset($this->data_fee))?count(json_decode($this->data_fee,true)):null;
+        $dataInvoice = (isset($this->invoice_id))?Invoice::find($this->invoice_id)->select('expiriy_date'):now();
+       // dd($dataInvoice,$this->invoice_id,$this->data_fee);
+        $countDataFee = (isset($this->data_fee))?count(json_decode($this->data_fee,true)):1;
         return [
-            'data_pay_counter' => 'gte:0|lt:'.$countDataFee,
-            //'data_fee_validation.*.date' => 'before_or_equal:' . $dataInvoice->expiriy_date,
+            //'data_pay_counter' => 'gte:0|lt:'.$countDataFee,
+            //'data_fee_validation.*.date' => 'before_or_equal:'.$dataInvoice->expiriy_date,
             'data_fee_validation.*.amount' => 'gte:0|required',
             'data_fee_validation.*.date' => 'required',
-            'data_payment_validation.*.date' => 'date',
-            'data_payment_validation.*.amount_payment' => 'required|numeric',
+            //'data_payment_validation.*.date' => 'date',
+            //'data_payment_validation.*.amount_payment' => 'required|numeric',
            
             /*
             'data_payment' => [
@@ -86,7 +87,7 @@ class PaymentsRequest extends FormRequest
             'data_fee_validation.*.amount' => 'monto',            
             'data_payment_validation.*.amount_payment' => 'monto',            
             'data_payment_validation.*.date' => 'fecha',    
-                    
+            'data_pay_counter' => 'cuotas'
         ];
     }
 
@@ -100,6 +101,7 @@ class PaymentsRequest extends FormRequest
         return [
             'gte' => 'El campo :attribute debe ser mayor o igual a 0',
             'required' => 'Verifique el campo :attribute, es necesario que lo complete',
+            'lt' => 'La cantidad de pagos no puede ser superior a la cantidad de :attribute'
         ];
     }
 }

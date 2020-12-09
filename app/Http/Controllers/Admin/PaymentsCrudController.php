@@ -115,7 +115,8 @@ class PaymentsCrudController extends CrudController
         $idInvoice = $this->crud->getCurrentEntry()->invoice_id;
         $dataInvoice = Invoice::where('id',$idInvoice)->first();
         $dataPayment = Payment::find($this->crud->getCurrentEntry()->id);
-        
+        $dataPay = $dataPayment;
+
         $dataInvoice->remaining_amount = $dataPayment->amount_total-$dataPayment->amount_paid;
 
         $data_fee = json_decode(request()->data_fee);
@@ -182,7 +183,27 @@ class PaymentsCrudController extends CrudController
             'tab' => 'Programar pagos',
         ]);
 
-        CRUD::addField([  
+        CRUD::addField([
+            'name' => 'table_payment',
+            'label' => 'Tabla de pago',
+            'type' => 'payment.table_payment',
+            'payment' => $dataPay,            
+            'wrapper' => ['class' => 'form-group col-md-6 offset-3'],
+            'tab' => 'Pagos'
+        ]);
+
+        CRUD::addField([
+            'name' => 'form_payment',
+            'label' => 'Formulario de pago',
+            'type' => 'payment.form_payment',
+            'payment' => $dataPay,            
+            'wrapper' => ['class' => 'form-group col-md-12'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+
+       /*   CRUD::addField([  
             'name'            => 'data_payment',
             'label'           => 'Registrar pago',
             'new_item_label'  => 'Agregar pago',
@@ -202,9 +223,7 @@ class PaymentsCrudController extends CrudController
                     'placeholder' => 'Selecciona un banco',
                     'model' => 'App\Models\Bank',
                     'attribute' => 'name',
-                    'wrapper' => [
-                        'class' => 'form-group col-md-6 d-none input-pcc input-tr input-tc input-td input-ch',
-                    ]
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-pcc input-tr input-tc input-td input-ch input-payment']
                 ],
                 [
                     'name'    => 'amount_payment',
@@ -252,7 +271,7 @@ class PaymentsCrudController extends CrudController
             'fake' => true,
             'store_in' => 'data_payment',
             'tab' => 'Pagos',
-        ]);
+        ]);  */
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
