@@ -10,7 +10,7 @@ use App\Models\BankAccountType;
 use App\Models\CustomerSegment;
 use App\Models\BusinessActivity;
 use App\Http\Requests\CustomerRequest;
-use App\Http\Traits\HasCustomAttributes;
+use App\Traits\HasCustomAttributes;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Traits\CustomAttributeRelations;
+use App\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Freshwork\ChileanBundle\Rut;
@@ -57,6 +57,7 @@ class Seller extends Model
         'shippings_data',
         'banks_data',
         'contacts_data',
+        'subscription_data',
         'is_approved',
         'rejected_reason',
         'source',
@@ -75,6 +76,7 @@ class Seller extends Model
         'seller_category_id',
         'user_id',
         'company_id',
+        'slug',
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -83,6 +85,10 @@ class Seller extends Model
         'activities_data' => 'array',
         'banks_data' => 'array',
         'contacts_data' => 'array',
+        'subdcription_data' => 'array',
+    ];
+    protected $fakeColumns = [
+        'subscription_data'
     ];
 
     /*
@@ -144,6 +150,11 @@ class Seller extends Model
         return $this->hasMany(SellerAddress::class);
     }
 
+    public function plan_subscription()
+    {
+        return $this->hasMany(PlanSubscription::class);
+    }
+
     public function shippingmethods()
     {
         return $this->belongsToMany(ShippingMethod::class,'shipping_method_seller_mapping');
@@ -157,6 +168,11 @@ class Seller extends Model
     public function paymentmethods()
     {
         return $this->hasMany(PaymentMethodSeller::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->belongsToMany(PlanSubscription::class,'plan_subscription_seller_mapping','user_id');
     }
 
     /*
@@ -229,9 +245,9 @@ class Seller extends Model
     public function setPasswordAttribute($value)
     {
         if ($value && $value != "") {
-            $this->attributes['password'] = Hash::make(strtoupper(
-                str_replace('.', '', $value)
-            ));
+            $this->attributes['password'] = Hash::make(
+                $value
+            );
         }
     }
 

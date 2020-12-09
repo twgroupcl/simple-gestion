@@ -68,7 +68,10 @@ class OrderItem extends Model
         return $this->belongsTo(ShippingMethod::class);
     }
 
-
+    public function seller()
+    {
+        return $this->belongsTo(Seller::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

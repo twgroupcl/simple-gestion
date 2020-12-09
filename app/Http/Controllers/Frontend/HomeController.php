@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\Seller;
+use App\Models\Banners;
 use App\Models\Product;
 use App\Models\FaqTopic;
 use App\Models\FaqAnswer;
@@ -63,6 +64,15 @@ class HomeController extends Controller
     {
         $seller = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
         $countProduct = Product::where('seller_id', '=', $request->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
+        $render = ['view' => 'seller'];
+        $data = $seller->id;
+        return view('vendor', compact('seller', 'countProduct','render', 'data'));
+    }
+
+    public function getSellerBySlug(Request $request)
+    {
+        $seller = Seller::where('slug', '=', $request->slug)->with('seller_category')->with('company')->firstOrFail();
+        $countProduct = Product::where('seller_id', '=', $seller->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
         $render = ['view' => 'seller'];
         $data = $seller->id;
         return view('vendor', compact('seller', 'countProduct','render', 'data'));

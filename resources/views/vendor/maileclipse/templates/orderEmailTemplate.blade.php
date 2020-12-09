@@ -373,7 +373,7 @@ use App\Models\Product;
                                                                                 style="word-wrap: break-word;">
                                                                                 <span
                                                                                 style="font-size: 12px; word-wrap: break-word;">
-                                                                                {{ $product->seller->name }}</span>
+                                                                                {{ $product->seller->visible_name }}</span>
                                                                                 <br>
                                                                                 <img src="{{ asset($product->getFirstImagePath()) }}"
                                                                                     width="15%"> <br />

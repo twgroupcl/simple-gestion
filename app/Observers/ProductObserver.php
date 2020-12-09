@@ -24,7 +24,7 @@ class ProductObserver
             $administrators = Setting::get('administrator_email');
             $recipients = explode(';', $administrators);
             foreach ($recipients as $key => $recipient) {
-                Mail::to($recipient)->send(new ProductCreated($product));
+                Mail::to($recipient)->send(new ProductCreated($product, $product->seller->visible_name));
             }
         }
     }
@@ -43,7 +43,7 @@ class ProductObserver
         $this->multiUploadImages($product);
 
         if ($product->product_type->id == Product::PRODUCT_TYPE_CONFIGURABLE) {
-            $product->createUpdateVariations();   
+            $product->createUpdateVariations();
         } else if ($product->product_type->id == Product::PRODUCT_TYPE_SIMPLE) {
             if($product->use_inventory_control) {
                 $product->createUpdateInventories();
@@ -58,13 +58,13 @@ class ProductObserver
      * @return void
      */
     public function deleting(Product $product)
-    {  
+    {
         // Delete all children prducts
         foreach($product->children as $children) {
             $children->delete();
         }
-        
-        // Delete custom attributes values before deleting the product 
+
+        // Delete custom attributes values before deleting the product
         foreach($product->custom_attributes as $custom_attribute) {
             $custom_attribute->delete();
         }
@@ -102,7 +102,7 @@ class ProductObserver
     }
 
     // TODO: maybe this shoul go in another class?
-    public function multiUploadImages($product) 
+    public function multiUploadImages($product)
     {
         $disk = 'public';
         $attribute_name = 'images_json';
@@ -114,7 +114,7 @@ class ProductObserver
         }
 
         $oldValueDecode = json_decode($product->getOriginal('images_json'), true);
-        
+
         $images = [];
         $oldImages = [];
 
@@ -127,18 +127,18 @@ class ProductObserver
             foreach($oldValueDecode as $data) {
                 array_push($oldImages, $data['image']);
             }
-    
+
             // delete references to erased images
             foreach($oldImages as $oldImg) {
                 if (!in_array($oldImg, $images)) {
-    
+
                     // delete the image from disk
                     $deleteFile = Str::replaceFirst('/storage/', '', $oldImg);
                     \Storage::disk($disk)->delete($deleteFile);
-    
+
                     // delete reference on db
                     DB::table('product_images')->where('path', $oldImg)->delete();
-                } 
+                }
             }
         }
 
@@ -178,7 +178,7 @@ class ProductObserver
         $product->images_json = json_encode($formattedArray);
     }
 
-    public function validateSpecialPrice($product) 
+    public function validateSpecialPrice($product)
     {
        if($product->special_price == 0 || is_null($product->special_price)) {
            $product->special_price_from = null;
@@ -187,7 +187,7 @@ class ProductObserver
        }
     }
 
-    public function validateRejectFields($product) 
+    public function validateRejectFields($product)
     {
        if($product->is_approved != 0) {
            $product->rejected_reason = null;
@@ -195,14 +195,14 @@ class ProductObserver
        }
     }
 
-    public function syncAttributes($product) 
+    public function syncAttributes($product)
     {
         $attributesFromJson = $product->attributes_json ?? [];
         $attributes = [];
 
         // Get ID and values of every attribute
         foreach($attributesFromJson as $param => $value) {
-            $isAnAtributte = substr($param, 0, 9) == 'attribute'; 
+            $isAnAtributte = substr($param, 0, 9) == 'attribute';
             if($isAnAtributte) {
                 array_push($attributes, [
                     'id' =>  Str::replaceFirst('attribute-', '', $param),

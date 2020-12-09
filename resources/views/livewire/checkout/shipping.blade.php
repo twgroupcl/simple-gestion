@@ -1,6 +1,5 @@
 <div wire:init="updateSellersShippings()">
-
-
+    <div class="loading" wire:loading>Loading&#8230;</div>
     <!-- Sellers  accordion-->
     <div class="accordion mb-2" id="seller" role="tablist">
         {{-- {{ dd($sellersShippings) }} --}}

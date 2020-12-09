@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\User;
+use DateTime;
+use Freshwork\ChileanBundle\Rut;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Traits\CustomAttributeRelations;
+use App\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Freshwork\ChileanBundle\Rut;
 
 class Customer extends Model
 {
@@ -50,15 +51,21 @@ class Customer extends Model
         'status',
         'customer_segment_id',
         'user_id',
+        'json_value',
+        'default_address_id',
         'company_id',
     ];
-    // protected $hidden = [];
-    // protected $dates = [];
+
+    protected $hidden = [
+        'password',
+    ];
+
     protected $casts = [
         'addresses_data' => 'array',
         'activities_data' => 'array',
         'banks_data' => 'array',
         'contacts_data' => 'array',
+        'json_value' => 'array',
     ];
 
     /*
@@ -72,6 +79,24 @@ class Customer extends Model
         parent::boot();
 
         static::addGlobalScope(new CompanyBranchScope);
+    }
+
+    public function registerAttendance($companyId)
+    {
+        $todayAttendances = CustomerAttendance::whereDay('attendance_time', date('d'))->where('customer_id', $this->id)->get();
+        $entryNumber = $todayAttendances->count() + 1;
+        $entryType = ($entryNumber % 2) ? CustomerAttendance::CHECK_IN : CustomerAttendance::CHECK_OUT;
+
+        $attendance = CustomerAttendance::create([
+            'attendance_time' => new DateTime(),
+            'entry_number' => $entryNumber,
+            'entry_type' => $entryType,
+            'customer_id' => $this->id,
+            'branch_id' => $this->user->branches->first()->id,
+            'company_id' => $companyId,
+        ]);
+
+        return $attendance;
     }
 
     /*
@@ -108,6 +133,11 @@ class Customer extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(CustomerAttendance::class);
     }
 
     /*
