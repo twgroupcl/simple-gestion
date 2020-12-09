@@ -84,7 +84,6 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="submit">Save Contact</button>
             <button wire:click="createCustomer" class="btn btn-primary" type="submit">
                 Registrar
             </button>
