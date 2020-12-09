@@ -15,12 +15,13 @@ class SalesBox extends Component
     public $remarks;
 
     protected $rules = [
-        'opening_amount' => 'required|numeric',
+        'opening_amount' => 'required|numeric|max:99999999.99',
         'remarks' => 'nullable',
     ];
 
     protected $messages = [
         'required' => 'Este monto es obligatorio',
+        'max' => 'Estás excediendo el límite de 8 dígitos',
         'int' => 'El monto debe ser número',
     ];
 
