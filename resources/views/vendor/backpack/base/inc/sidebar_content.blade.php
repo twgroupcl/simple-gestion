@@ -153,3 +153,5 @@
 </li>
 @endcanany
 
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('service') }}'><i class='nav-icon la la-question'></i> Services</a></li>
