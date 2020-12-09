@@ -7,7 +7,7 @@
 
         <div>
 
-            <div class="media-body pt-2">
+            {{-- <div class="media-body pt-2">
                 <h6 class="product-title font-size-base mb-2"><a
                         href="{{ route('product', ['slug' => $product->url_key]) }}"
                         target="_blank">{{ $product->name }}</a><a
@@ -27,7 +27,7 @@
                     </div><br>
                     <strong>{{ currencyFormat($product->real_price ?? 0, 'CLP', true) }}</strong> por unidad
 
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-9">
