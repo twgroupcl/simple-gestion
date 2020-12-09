@@ -13,6 +13,16 @@ class SalesBox extends Component
     public $amount;
     public $remarks;
 
+    protected $rules = [
+        'amount' => 'required|int',
+        'remarks' => 'nullable',
+    ];
+
+    protected $messages = [
+        'required' => 'Este monto es obligatorio',
+        'int' => 'El monto debe ser número',
+    ];
+
     public function render()
     {
         return view('livewire.pos.sales-box');
@@ -33,6 +43,7 @@ class SalesBox extends Component
 
     public function openSaleBox()
     {
+        $this->validate();
         $this->saleBox = $this->seller->sales_boxes()->create([
             'amount' => $this->amount,
             'remarks' => $this->remarks,
@@ -41,11 +52,13 @@ class SalesBox extends Component
 
         $this->isSaleBoxOpen = true;
         $this->emit('salesBoxUpdated', $this->saleBox->id);
+        $this->dispatchBrowserEvent('closeSaleBoxModal');
     }
 
     public function closeSaleBox()
     {
         $this->isSaleBoxOpen = false;
         $this->emit('salesBoxUpdated');
+        $this->dispatchBrowserEvent('closeSaleBoxModal');
     }
 }

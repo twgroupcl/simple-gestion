@@ -41,18 +41,28 @@
                             <label for="openingAmount">Monto de apertura</label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text">$</div>
-                                <input wire:model="amount" type="number" class="form-control" id="amount" placeholder="1000">
+                                <input wire:model="amount" type="number" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="1000">
                             </div>
+                            @error('amount')
+                            <small class="text-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </small>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="remarks">Observaciones</label>
-                            <textarea wire:model="remarks" class="form-control" id="remarks" rows="3"></textarea>
+                            <textarea wire:model="remarks" class="form-control @error('remarks') is-invalid @enderror" id="remarks" rows="3"></textarea>
+                            @error('remarks')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                         <div class="text-right">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 Cancelar
                             </button>
-                            <button wire:click="openSaleBox()" type="button" class="btn btn-primary" data-dismiss="modal">
+                            <button wire:click="openSaleBox()" type="button" class="btn btn-primary">
                                 Abrir caja
                             </button>
                         </div>
@@ -67,6 +77,9 @@
 <script>
     window.addEventListener('openSaleBoxModal', event => {
         $('#showSaleBoxModal').appendTo("body").modal('show');
+    })
+    window.addEventListener('closeSaleBoxModal', event => {
+        $('#showSaleBoxModal').appendTo("body").modal('hide');
     })
 </script>
 @endpush
