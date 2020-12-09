@@ -21,7 +21,7 @@ class CreatePaymentsTable extends Migration
             $table->longText('data_payment')->nullable();
             $table->decimal('amount_total', 12, 4)->nullable();
             $table->decimal('amount_paid', 12, 4)->nullable();
-            $table->string('status');
+            $table->integer('status')->default(1);
             $table->string('comments')->nullable();
             $table->timestamps();
         });

@@ -14,6 +14,8 @@ class Payments extends Model
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
+    const STATUS_INITIATED = 1;
+    const STATUS_PAID = 2;
 
     protected $table = 'payments';
     // protected $primaryKey = 'id';
@@ -56,6 +58,19 @@ class Payments extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getStatusDescriptionAttribute()
+    {
+        switch ($this->status) {
+            case $this::STATUS_INITIATED:
+                return 'Pendiente';
+                break;
+            case $this::STATUS_PAID:
+                return 'Pagada';
+                break;
+            default:
+                break;
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------

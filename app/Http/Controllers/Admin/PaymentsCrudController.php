@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Invoice;
 use App\Http\Requests\PaymentsRequest;
+use App\Payment;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -29,7 +30,9 @@ class PaymentsCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Payments::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/payments');
-        CRUD::setEntityNameStrings('payments', 'payments');
+        CRUD::setEntityNameStrings('Pagos', 'Pagos');
+        $this->crud->denyAccess(['create', 'delete']);
+
     }
 
     /**
@@ -49,14 +52,22 @@ class PaymentsCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'amount_total',
-            'type' => 'text',
+            'type' => 'number',
             'label' => 'Monto Total',
+            'dec_point' => ',',
+            'thousands_sep' => '.',
+            'decimals' => 0,
+            'prefix' => '$',
         ]);
 
         CRUD::addColumn([
             'name' => 'amount_paid',
-            'type' => 'text',
+            'type' => 'number',
             'label' => 'Monto Pagado',
+            'dec_point' => ',',
+            'thousands_sep' => '.',
+            'decimals' => 0,
+            'prefix' => '$',
         ]);
 
         CRUD::addColumn([
@@ -64,11 +75,24 @@ class PaymentsCrudController extends CrudController
             'type' => 'text',
             'label' => 'Nº de Cuotas',
         ]);
+     
 
         CRUD::addColumn([
-            'name' => 'status',
+            'name' => 'status_description',
             'type' => 'text',
             'label' => 'Estado',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Completa') {
+                        return 'badge badge-success';
+                    }
+                    if ($column['text'] == 'Pagada') {
+                        return 'badge badge-success';
+                    }
+                    return 'badge badge-default';
+                },
+            ],
         ]);
 
         /**
@@ -90,105 +114,48 @@ class PaymentsCrudController extends CrudController
         
         $idInvoice = $this->crud->getCurrentEntry()->invoice_id;
         $dataInvoice = Invoice::where('id',$idInvoice)->first();
+        $dataPayment = Payment::find($this->crud->getCurrentEntry()->id);
+        
+        $dataInvoice->remaining_amount = $dataPayment->amount_total-$dataPayment->amount_paid;
 
-        //dd($dataInvoice->title);
+        $data_fee = json_decode(request()->data_fee);
+        $cntDataFee = (isset($data_fee))?count($data_fee):null;
+        $data_payment = json_decode(request()->data_payment);
+
+        if(!is_null($data_fee)){
+            $amountFee = 0;
+
+            foreach($data_fee as $dataFee){
+                $amountFee += $dataFee->amount;
+                if($dataFee->date > $dataInvoice->expiry_date){
+                    return 'error';
+                }
+            }
+            if($amountFee > $dataInvoice->total){
+                return 'error';
+            }
+        }
+
         //CRUD::setFromDb(); // fields
         CRUD::addField([
-            'name' => 'customer',
-            'label' => 'Cliente',
-            'type' => 'text',
+            'type' => 'payment.table_invoice',
+            'name' => 'totals_card',
+            'invoice' => $dataInvoice,
+            'payment' => $dataPayment,            
             'wrapper' => [
-                'class' => 'col-md-6 form-group ',
-            ],
-            'attributes' => [
-                'readonly' => 'readonly',
+                'class' => 'form-group col-md-6 offset-3',
             ],
             'tab' => 'Detalle de la factura',
         ]);
-        CRUD::addField([
-            'name' => 'total_document',
-            'label' => 'Total Documento',
-            'type' => 'text',
-            'wrapper' => [
-                'class' => 'col-md-6 form-group',
-            ],
-            'attributes' => [
-                'readonly' => 'readonly',
-            ],
-            'tab' => 'Detalle de la factura',
-        ]);
-        CRUD::addField([
-            'name' => 'subscriber',
-            'label' => 'Abonado',
-            'type' => 'text',
-            'wrapper' => [
-                'class' => 'col-md-6 form-group',
-            ],
-            'attributes' => [
-                'readonly' => 'readonly',
-            ],
-            'tab' => 'Detalle de la factura',
-        ]);
-        CRUD::addField([
-            'name' => 'remaining',
-            'label' => 'Restante',
-            'type' => 'text',
-            'wrapper' => [
-                'class' => 'col-md-6 form-group',
-            ],
-            'attributes' => [
-                'readonly' => 'readonly',
-            ],
-            'tab' => 'Detalle de la factura',
-        ]);
-        CRUD::addField([
-            'name' => 'remaining',
-            'label' => 'Restante',
-            'type' => 'text',
-            'wrapper' => [
-                'class' => 'col-md-6 form-group',
-            ],
-            'attributes' => [
-                'readonly' => 'readonly',
-            ],
-            'tab' => 'Detalle de la factura',
-        ]);
-        CRUD::addField([
-            'name' => 'positive_balance',
-            'label' => 'Saldo a favor del cliente',
-            'type' => 'text',
-            'wrapper' => [
-                'class' => 'col-md-6 form-group',
-            ],
-            'attributes' => [
-                'readonly' => 'readonly',
-            ],
-            'tab' => 'Detalle de la factura',
-        ]);
-        CRUD::addField([
-            'name' => 'total_debt',
-            'label' => 'Deuda total del cliente',
-            'type' => 'text',
-            'wrapper' => [
-                'class' => 'col-md-6 form-group',
-            ],
-            'attributes' => [
-                'readonly' => 'readonly',
-            ],
-            'tab' => 'Detalle de la factura',
-        ]);
+        
+        unset($dataPayment->remaining_amount);
+        $dataPayment->number_fee = $cntDataFee;
+        $dataPayment->save();
 
         CRUD::addField([
-            'label' => 'Tipo de cuenta',
-            'name' => 'bank_account_type_id',
-            'type' => 'select2',
-            'placeholder' => 'Selecciona un banco',
-            'model' => 'App\Models\BankAccountType',
-            'attribute' => 'name',
-            'wrapper' => [
-                'class' => 'form-group col-md-6',
-            ],
-            'tab' => 'Detalle de la factura'
+            'type' => 'hidden',
+            'name' => 'invoice_id',
+            'tab' => 'Programar pagos',
         ]);
 
         CRUD::addField([  
@@ -220,6 +187,7 @@ class PaymentsCrudController extends CrudController
             'label'           => 'Registrar pago',
             'new_item_label'  => 'Agregar pago',
             'type'  => 'repeatable',
+            'limit'  => '3',
             'fields' => [
                 [
                     'name' => 'payment_method',
