@@ -61,6 +61,7 @@ class SalesBox extends Component
     public function closeSaleBox()
     {
         $this->saleBox->closing_amount = $this->closing_amount;
+        $this->saleBox->closed_at = now();
         $this->saleBox->save();
         $this->isSaleBoxOpen = false;
         $this->emit('salesBoxUpdated');
