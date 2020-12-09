@@ -40,7 +40,7 @@
 
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-7">
             <div class="position-relative overflow-auto vh-100">
                 @if ($viewMode == 'selectCustomer')
                     @livewire('pos.customer.customer-view')
@@ -50,7 +50,7 @@
                 @endif
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-4">
             <div class="position-relative overflow-hidden vh-100">
             @livewire('pos.cart.cart')</div>
             </div>
