@@ -1,6 +1,6 @@
 <div class="content">
     <div class="row">
-        <div class="col-1">
+        <div class="col-md-1 col-3 p-0">
             <div class="bg-light border-right" id="sidebar-wrapper">
                 <div class="sidebar-heading">Punto de Venta </div>
 
@@ -47,7 +47,7 @@
                 <div id="paymentView" style="display: none;">@livewire('pos.payment.payment-view', ['seller' => $seller, 'view' => $viewMode])</div>
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-md-3 col-12">
             <div class="position-relative overflow-hidden vh-100">
             @livewire('pos.cart.cart')</div>
             </div>
