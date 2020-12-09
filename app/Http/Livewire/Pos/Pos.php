@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Pos;
 
+use App\Models\SaleBox;
+use App\Models\SalesBox;
 use App\Models\Seller;
 use Livewire\Component;
 

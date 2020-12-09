@@ -75,5 +75,9 @@
         window.addEventListener('close-modal-form', event => {
             $('#productAttributesModal').appendTo("body").modal('hide');
         })
+
+        window.addEventListener('openSaleBoxModal', event => {
+        $('#showSaleBoxModal').appendTo("body").modal('show');
+    })
     </script>
 @endpush

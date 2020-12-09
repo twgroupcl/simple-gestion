@@ -175,6 +175,11 @@ class Seller extends Model
         return $this->belongsToMany(PlanSubscription::class,'plan_subscription_seller_mapping','user_id');
     }
 
+    public function sales_boxes()
+    {
+        return $this->hasMany(SalesBox::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

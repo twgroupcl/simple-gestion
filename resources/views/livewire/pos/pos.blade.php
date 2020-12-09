@@ -6,7 +6,7 @@
 
                 <ul class="pos-list-group list-group-flush">
                     <li class="pos-list-group-item text-center my-auto">
-                        <a href="#" wire:click="$emitUp('viewModeChanged', 'productList')"
+                        <a href="#" onclick="changeViewMode('productList')""
                             class="list-group-item-action ">
                             <i class="las la-calculator" style="font-size: 32px;"></i>
                             <br>
@@ -18,7 +18,7 @@
                             <br>
                             Sales</a></li>
                     <li class="pos-list-group-item text-center"><a href="#"
-                            wire:click="$emitUp('viewModeChanged', 'selectCustomer')" class="list-group-item-action ">
+                            onclick="changeViewMode('selectCustomer')" class="list-group-item-action ">
                             <i class="las la-user" style="font-size: 32px;"></i>
                             Customer</a></li>
 
@@ -42,12 +42,9 @@
         </div>
         <div class="col-7">
             <div class="position-relative overflow-auto vh-100">
-                @if ($viewMode == 'selectCustomer')
-                    @livewire('pos.customer.customer-view')
-                @endif
-                @if ($viewMode == 'productList')
-                    @livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
-                @endif
+                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])</div>
+                <div id="selectCustomer" style="display: none;">@livewire('pos.customer.customer-view')</div>
+                <div id="paymentView" style="display: none;">@livewire('pos.payment.payment-view', ['seller' => $seller, 'view' => $viewMode])</div>
             </div>
         </div>
         <div class="col-4">
@@ -55,4 +52,39 @@
             @livewire('pos.cart.cart')</div>
             </div>
     </div>
+    <div
+        wire:ignore.self
+        class="modal fade"
+        id="showCustomerModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="createCustomerModalLabel"
+        aria-hidden="true"
+        >
+        <div class="modal-dialog" role="document">
+            @livewire('pos.customer.create-customer')
+        </div>
+    </div>
+    @livewire('pos.sales-box', ['seller' => $seller])
 </div>
+
+@push('after_scripts')
+<script>
+    var currentView = 'productList';
+    const changeViewMode = view => {
+        $('#'+currentView).hide();
+        $('#'+view).show();
+        currentView = view;
+    }
+</script>
+
+<script>
+    const showCustomerModal = () => {
+        $('#showCustomerModal').appendTo("body").modal('show');
+    }
+
+    $("#showCustomerModal").on('hidden.bs.modal', function () {
+        $('#showCustomerModal').appendTo("body").modal('hide');
+    });
+</script>
+@endpush

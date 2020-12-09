@@ -17,8 +17,13 @@ class Item extends Component
         return view('livewire.pos.cart.item');
     }
 
-    public function updatedQty()
+   /*  public function updatedQty()
     {
+        $this->emit('quantityUpdated', $this->item, $this->qty);
+    } */
+    public function updatedQty($value)
+    {
+        $this->qty += $value;
         $this->emit('quantityUpdated', $this->item, $this->qty);
     }
 }

@@ -1,4 +1,4 @@
-<div class="col-md-2 mb-3">
+<div class="col-md-2 mb-3 px-1">
     <div wire:click="shareProductInModal" class="card h-100">
         <a class="p-3">
         <img src="{{ url($product->getFirstImagePath()) }}" class="card-img-top" alt="Product">
