@@ -22,8 +22,8 @@
                 </li>
             </ul>
             <form class="form-inline">
-                <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                <input id="search" class="form-control mr-sm-2" type="search" placeholder="Buscar producto" aria-label="Search">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Buscar</button>
             </form>
         </div>
     </nav>
