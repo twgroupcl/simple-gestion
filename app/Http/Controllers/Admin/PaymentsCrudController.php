@@ -121,7 +121,8 @@ class PaymentsCrudController extends CrudController
 
         $data_fee = json_decode(request()->data_fee);
         $cntDataFee = (isset($data_fee))?count($data_fee):null;
-        $data_payment = json_decode(request()->data_payment);
+        dd(request()->data_payment);
+        //$data_payment = json_decode(request()->data_payment);
 
        /*  if(!is_null($data_fee)){
             $amountFee = 0;
@@ -193,11 +194,86 @@ class PaymentsCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'form_payment',
-            'label' => 'Formulario de pago',
-            'type' => 'payment.form_payment',
-            'payment' => $dataPay,            
-            'wrapper' => ['class' => 'form-group col-md-12'],
+            'name' => 'data_payment',
+            'label' => 'Método de pago',
+            'type' => 'expense.fields_payment_method',
+            'wrapper' => ['class' => 'form-group col-md-6'],
+            'attributes' => ['class' => 'select-payment-method'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'label' => 'Banco',
+            'name' => 'bank_id',
+            'type' => 'select2',
+            'placeholder' => 'Selecciona un banco',
+            'model' => 'App\Models\Bank',
+            'attribute' => 'name',
+            'wrapper' => ['class' => 'form-group col-md-6 d-none input-pcc input-tr input-tc input-td input-ch input-payment'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'name'    => 'amount_payment',
+            'type'    => 'text',
+            'label'   => 'Monto',
+            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ef input-ch input-tc input-tr input-pcc input-payment'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'name'    => 'rut',
+            'type'    => 'text',
+            'label'   => 'Rut',
+            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'name'    => 'serial_number',
+            'type'    => 'text',
+            'label'   => 'Nº de Serie',
+            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'name'    => 'account_number',
+            'type'    => 'text',
+            'label'   => 'Nº de cuenta',
+            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'name'    => 'date',
+            'type'    => 'date',
+            'label'   => 'Fecha',
+            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'name'    => 'voucher_number',
+            'type'    => 'text',
+            'label'   => 'Nº de Comprobante',
+            'wrapper' => ['class' => 'form-group col-md-6 d-none input-tc input-tr input-pcc input-payment'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'name'    => 'comment',
+            'type'    => 'textarea',
+            'label'   => 'Comentario',
+            'wrapper' => ['class' => 'form-group col-md-6'],
             'fake' => true,
             'store_in' => 'data_payment',
             'tab' => 'Pagos'
