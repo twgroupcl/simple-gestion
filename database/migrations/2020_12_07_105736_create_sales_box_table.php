@@ -16,6 +16,7 @@ class CreateSalesBoxTable extends Migration
         Schema::create('sales_boxes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('seller_id');
+            $table->text('amount')->nullable();
             $table->text('remarks')->nullable();
             $table->dateTime('opened_at')->nullable();
             $table->dateTime('closed_at')->nullable();

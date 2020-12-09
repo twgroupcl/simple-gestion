@@ -9,6 +9,7 @@ class Navbar extends Component
 {
     public $search;
     public $salesBox;
+    public $checked;
 
     public $listeners = [
         'salesBoxUpdated' => 'updateBoxDetails',
@@ -19,8 +20,10 @@ class Navbar extends Component
         return view('livewire.pos.navbar');
     }
 
-    public function updateBoxDetails(SalesBox $salesBox)
+    public function updateBoxDetails(SalesBox $salesBox = null)
     {
         $this->salesBox = $salesBox;
+
+        $this->checked = isset($this->salesBox->id);
     }
 }

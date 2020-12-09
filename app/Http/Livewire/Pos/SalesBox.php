@@ -26,6 +26,8 @@ class SalesBox extends Component
 
         if (! $this->isSaleBoxOpen) {
             $this->dispatchBrowserEvent('openSaleBoxModal');
+        } else {
+            $this->emit('salesBoxUpdated', $this->saleBox->id);
         }
     }
 
@@ -44,6 +46,6 @@ class SalesBox extends Component
     public function closeSaleBox()
     {
         $this->isSaleBoxOpen = false;
-        $this->emit('salesBoxUpdated', $this->saleBox->id);
+        $this->emit('salesBoxUpdated');
     }
 }

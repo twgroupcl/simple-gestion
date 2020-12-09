@@ -6,15 +6,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
-                @isset($salesBox)
-                    @php
-                        $date = \Carbon\Carbon::parse($salesBox->opened_at)->locale('es');
-                    @endphp
-
-                    <li class="nav-item active">
-                        Caja abierta: <strong class="text-primary">{{ $date->translatedFormat('j/m/Y - g:i a') }}</strong>
-                    </li>
-                @endisset
+                <li class="nav-item active pt-2">
+                   <div class="custom-control custom-switch">
+                       <input type="checkbox"  class="custom-control-input" id="boxSwitch" wire:model="checked">
+                       <label
+                            class="custom-control-label"
+                            for="boxSwitch"
+                            style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;"
+                            >Caja abierta:
+                        </label>
+                    </div>
+                    @isset($salesBox)
+                        <strong class="text-primary">{{ \Carbon\Carbon::parse($salesBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</strong>
+                    @endisset
+                </li>
             </ul>
             <form class="form-inline">
                 <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -37,5 +42,10 @@
         $("#search").on("keyup", () => filter($("#search")));
         $("#search").on("search", () => filter($("#search")));
 
+
+        $("#boxSwitch").change(() => {
+            event.target.checked = !event.target.checked
+            $('#showSaleBoxModal').appendTo("body").modal('show');
+        })
     </script>
 @endpush
