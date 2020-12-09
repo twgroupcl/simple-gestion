@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label for="last_name">Apellido</label>
+                                <label for="last_name">Apellido <span class="text-danger">*</span></label>
                                 <input wire:model="last_name" class="form-control @error('last_name') is-invalid @enderror" type="text" name="last_name" id="last_name" placeholder="Apellido" value="{{ old('last_name') }}" required>
                                 @error('last_name')
                                 <span class="invalid-feedback" role="alert">
@@ -49,9 +49,31 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label for="email">E-mail <span class="text-danger">*</span></label>
+                                <label for="email">E-mail</label>
                                 <input wire:model="email" class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Email" value="{{ old('email') }}" required>
                                 @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="phone">Teléfono</label>
+                                <input wire:model="phone" class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" placeholder="Teléfono" value="{{ old('phone') }}" required>
+                                @error('phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="cellphone">Celular</label>
+                                <input wire:model="cellphone" class="form-control @error('cellphone') is-invalid @enderror" type="text" name="cellphone" id="cellphone" placeholder="Celular" value="{{ old('cellphone') }}" required>
+                                @error('cellphone')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

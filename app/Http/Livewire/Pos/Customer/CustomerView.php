@@ -13,6 +13,10 @@ class CustomerView extends Component
     public $selectedCustomer;
     private $customers = [];
 
+    protected $listeners = [
+        'newCustomer' => 'selectCustomer',
+    ];
+
     public function render()
     {
         $this->filter();
@@ -43,8 +47,12 @@ class CustomerView extends Component
         }
     }
 
-    public function selectCustomer(Customer $customer)
+    public function selectCustomer(Customer $customer = null, $wilcard = null)
     {
+        if ($wilcard) {
+            $customer->fill($wilcard);
+        }
+
         $this->selectedCustomer = $customer;
         session()->put(['user.pos.selectedCustomer' => $customer]);
         $this->emit('customerSelected', $customer->id);
