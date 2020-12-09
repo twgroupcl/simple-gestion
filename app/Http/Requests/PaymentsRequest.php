@@ -31,36 +31,37 @@ class PaymentsRequest extends FormRequest
     protected function prepareForValidation() 
     {
         $this->idInvoice = $this->invoice_id;
-       //$dataPay = json_decode($this->data_pay);
+        $dataPayment = json_decode($this->data_payment,true);
         $dataFee = json_decode($this->data_fee,true);
        // dd($this->data_fee,$this->invoice_id);
         $forValidation = [];
+        $forValidationPay = [];
         foreach ($dataFee as $attrs) {
             $forValidation[] = (array) $attrs;
         }
+        foreach ($dataPayment as $attrs) {
+            $forValidationPay[] = (array) $attrs;
+        }
         $this->merge([
             'data_fee_validation' => $forValidation,
-         //   'data_pay_counter' => count($dataPay)
+            'data_payment_validation' => $forValidationPay,
+            'data_pay_counter' => count($dataPayment)
         ]);
     }
 
     public function rules()
     {
         $dataInvoice = Invoice::find($this->idInvoice);
-        //$countDataFee = count(json_decode($this->data_fee));
+        $countDataFee = (isset($this->data_fee))?count(json_decode($this->data_fee,true)):null;
         return [
-            //'data_pay_counter' => 'gte:0|lt:'.$countDataFee,
-          //  'data_fee_validation.*.date' => 'before_or_equal:' . $dataInvoice->expiriy_date,
-            'data_fee_validation.*.amount' => 'gte:0',
-            'data_fee' => [
-                'required',
-                function ($attribute, $value, $fail) {
-                    $options = json_decode($value);
-                    if($options[0]->amount == '' || $options[0]->date == ''){
-                        return $fail('Los campos Fecha de corte y Monto son obligatorios');
-                    }
-                    
-            }],
+            'data_pay_counter' => 'gte:0|lt:'.$countDataFee,
+            //'data_fee_validation.*.date' => 'before_or_equal:' . $dataInvoice->expiriy_date,
+            'data_fee_validation.*.amount' => 'gte:0|required',
+            'data_fee_validation.*.date' => 'required',
+            'data_payment_validation.*.date' => 'date',
+            'data_payment_validation.*.amount_payment' => 'required|numeric',
+           
+            /*
             'data_payment' => [
                 'required',
                 function ($attribute, $value, $fail) {
@@ -69,7 +70,7 @@ class PaymentsRequest extends FormRequest
                         return $fail('Los campos Método de Pago y Monto son obligatorios');
                     }
                     
-            }],
+            }], */
         ];
     }
 
@@ -81,8 +82,11 @@ class PaymentsRequest extends FormRequest
     public function attributes()
     {
         return [
-            'data_fee.date' => 'fecha de corte',            
-            'data_fee.amount' => 'monto',            
+            'data_fee_validation.*.date' => 'fecha de corte',            
+            'data_fee_validation.*.amount' => 'monto',            
+            'data_payment_validation.*.amount_payment' => 'monto',            
+            'data_payment_validation.*.date' => 'fecha',    
+                    
         ];
     }
 

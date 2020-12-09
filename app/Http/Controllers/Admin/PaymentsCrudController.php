@@ -122,7 +122,7 @@ class PaymentsCrudController extends CrudController
         $cntDataFee = (isset($data_fee))?count($data_fee):null;
         $data_payment = json_decode(request()->data_payment);
 
-        if(!is_null($data_fee)){
+       /*  if(!is_null($data_fee)){
             $amountFee = 0;
 
             foreach($data_fee as $dataFee){
@@ -134,7 +134,7 @@ class PaymentsCrudController extends CrudController
             if($amountFee > $dataInvoice->total){
                 return 'error';
             }
-        }
+        } */
 
         //CRUD::setFromDb(); // fields
         CRUD::addField([
@@ -187,32 +187,66 @@ class PaymentsCrudController extends CrudController
             'label'           => 'Registrar pago',
             'new_item_label'  => 'Agregar pago',
             'type'  => 'repeatable',
-            'limit'  => '3',
             'fields' => [
                 [
                     'name' => 'payment_method',
                     'label' => 'Método de pago',
-                    'type' => 'select2_from_array',
-                    'options' => [
-                        'EF' => 'Efectivo', 
-                        'PE' => 'Pago a Cta. Cte.',
-                        'TC' => 'Tarjeta de crédito',
-                        'CF' => 'Cheque a fecha',
-                        'OT' => 'Otro'
-                    ],
+                    'type' => 'expense.fields_payment_method',
                     'wrapper' => ['class' => 'form-group col-md-6'],
+                    'attributes' => ['class' => 'select-payment-method'],
+                ],
+                [
+                    'label' => 'Banco',
+                    'name' => 'bank_id',
+                    'type' => 'select2',
+                    'placeholder' => 'Selecciona un banco',
+                    'model' => 'App\Models\Bank',
+                    'attribute' => 'name',
+                    'wrapper' => [
+                        'class' => 'form-group col-md-6 d-none input-pcc input-tr input-tc input-td input-ch',
+                    ]
                 ],
                 [
                     'name'    => 'amount_payment',
-                    'type'    => 'number',
+                    'type'    => 'text',
                     'label'   => 'Monto',
-                    'wrapper' => ['class' => 'form-group col-md-6'],
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ef input-ch input-tc input-tr input-pcc input-payment'],
+                ],
+                [
+                    'name'    => 'rut',
+                    'type'    => 'text',
+                    'label'   => 'Rut',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
+                ],
+                [
+                    'name'    => 'serial_number',
+                    'type'    => 'text',
+                    'label'   => 'Nº de Serie',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
+                ],
+                [
+                    'name'    => 'account_number',
+                    'type'    => 'text',
+                    'label'   => 'Nº de cuenta',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
+                ],
+                [
+                    'name'    => 'date',
+                    'type'    => 'date',
+                    'label'   => 'Fecha',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
+                ],
+                [
+                    'name'    => 'voucher_number',
+                    'type'    => 'text',
+                    'label'   => 'Nº de Comprobante',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-tc input-tr input-pcc input-payment'],
                 ],
                 [
                     'name'    => 'comment',
                     'type'    => 'textarea',
                     'label'   => 'Comentario',
-                    'wrapper' => ['class' => 'form-group col-md-12'],
+                    'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
             ],
             'fake' => true,
