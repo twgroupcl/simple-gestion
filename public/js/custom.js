@@ -40,4 +40,22 @@ $(function(){
     $('body').on('click','.btn-close-modal', function(){
         $('.policy-text').addClass('d-none')
     });
+    
+    $('body').on('change','.select-payment-method',function(){
+        $('.delete-element').hide();
+        let value = $(this).val();
+        console.log(value);
+        
+        $('.input-payment').addClass('d-none');
+
+        switch(value){
+            case 'EF':
+                $('.input-ef').removeClass('d-none')
+            break;
+            case 'CH':
+                $('.input-ch').removeClass('d-none')                    
+            break;
+        }
+
+    });
 });
