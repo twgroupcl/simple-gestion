@@ -37,6 +37,10 @@ class CustomerView extends Component
 
     public function showCustomer(Customer $customer)
     {
+        session()->put([
+            'user.pos.isSelectedCustomerWildcard' => false,
+        ]);
+
         $this->selectedCustomer = $customer;
     }
 
@@ -54,7 +58,11 @@ class CustomerView extends Component
         }
 
         $this->selectedCustomer = $customer;
-        session()->put(['user.pos.selectedCustomer' => $customer]);
+        session()->put([
+            'user.pos.selectedCustomer' => $customer,
+            'user.pos.isSelectedCustomerWildcard' => isset($wilcard),
+        ]);
+
         $this->emit('customerSelected', $customer->id);
     }
 }

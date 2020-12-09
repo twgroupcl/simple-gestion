@@ -28,7 +28,9 @@
                 <li class="list-group-item"><strong>Celular:</strong> {{ $selectedCustomer->cellphone }}</li>
                 </ul>
                 <div class="card-body">
-                <button wire:click="selectCustomer({{ $selectedCustomer['id'] }})" class="btn btn-success"><i class="nav-icon la la-check"></i> Elegir este cliente</button>
+                    @if (! session()->get('user.pos.isSelectedCustomerWildcard', false))
+                        <button wire:click="selectCustomer({{ $selectedCustomer['id'] }})" class="btn btn-success"><i class="nav-icon la la-check"></i> Elegir este cliente</button>
+                    @endif
                 </div>
             </div>
         @elseif (session()->get('user.pos.selectedCustomer'))
@@ -43,7 +45,9 @@
                     <li class="list-group-item"><strong>Celular:</strong> {{ session()->get('user.pos.selectedCustomer')->cellphone }}</li>
                 </ul>
                 <div class="card-body">
-                    <button wire:click="selectCustomer({{ session()->get('user.pos.selectedCustomer')['id'] }})" class="btn btn-success"><i class="nav-icon la la-check"></i> Elegir este cliente</button>
+                    @if (! session()->get('user.pos.isSelectedCustomerWildcard', false))
+                        <button wire:click="selectCustomer({{ session()->get('user.pos.selectedCustomer')['id'] }})" class="btn btn-success"><i class="nav-icon la la-check"></i> Elegir este cliente</button>
+                    @endif
                 </div>
             </div>
         @endif
