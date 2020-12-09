@@ -53,6 +53,16 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getIsOpenedAttribute()
+    {
+        return ($this->opened_at !== null) && ($this->closed_at === null);
+    }
+
+    public function getIsClosedAttribute()
+    {
+        return ($this->opened_at !== null) && ($this->closed_at !== null);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
