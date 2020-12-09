@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ServiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -28,7 +29,7 @@ class ServiceCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Service::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/service');
-        CRUD::setEntityNameStrings('service', 'services');
+        CRUD::setEntityNameStrings('servicio', 'servicios');
     }
 
     /**
@@ -39,13 +40,29 @@ class ServiceCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'code',
+            'label' => 'Codigo',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'status_description',
+            'label' => 'Estado',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Activo') {
+                        return 'badge badge-success';
+                    }
+                    return 'badge badge-default';
+                },
+            ],
+        ]);
     }
 
     /**
@@ -58,13 +75,33 @@ class ServiceCrudController extends CrudController
     {
         CRUD::setValidation(ServiceRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
+
+        CRUD::addField([
+            'name' => 'description',
+            'label' => 'Descripción',
+            'type' => 'text',
+        ]);
+
+        CRUD::addField([
+            'name' => 'code',
+            'label' => 'Codigo',
+            'type' => 'text',
+        ]);
+
+        CRUD::addField([
+            'name' => 'status',
+            'label' => 'Activo',
+            'type' => 'checkbox',
+            'default' => '1',
+        ]);
+
     }
 
     /**

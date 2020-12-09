@@ -26,7 +26,9 @@ class ServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required',
+            'code' => 'required',
+            'status' => 'required',
         ];
     }
 
@@ -38,7 +40,9 @@ class ServiceRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'name' => 'nombre',
+            'code' => 'codigo',
+            'status' => 'estado',
         ];
     }
 
@@ -50,7 +54,7 @@ class ServiceRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            '*.required' => 'El campo :attribute es requerido'
         ];
     }
 }

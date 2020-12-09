@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Service extends Model
@@ -62,6 +63,19 @@ class Service extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getStatusDescriptionAttribute()
+    {
+        switch ($this->status) {
+            case $this::STATUS_ACTIVE:
+                return 'Activo';
+                break;
+            case $this::STATUS_INACTIVE:
+                return 'Inactivo';
+                break;
+            default:
+                break;
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------
