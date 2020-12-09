@@ -1,9 +1,8 @@
 <div class="content">
+    @livewire('pos.navbar')
     <div class="row">
         <div class="col-1">
             <div class="bg-light border-right" id="sidebar-wrapper">
-                <div class="sidebar-heading">Punto de Venta </div>
-
                 <ul class="pos-list-group list-group-flush">
                     <li class="pos-list-group-item text-center my-auto">
                         <a href="#" onclick="changeViewMode('productList')""

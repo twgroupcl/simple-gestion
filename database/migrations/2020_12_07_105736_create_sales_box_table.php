@@ -16,13 +16,15 @@ class CreateSalesBoxTable extends Migration
         Schema::create('sales_boxes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('seller_id');
+            $table->double('opening_amount', 10, 2)->nullable();
+            $table->double('closing_amount', 10, 2)->nullable();
             $table->text('remarks')->nullable();
-            $table->date('open_at')->nullable();
-            $table->date('closed_at')->nullable();
+            $table->dateTime('opened_at')->nullable();
+            $table->dateTime('closed_at')->nullable();
             $table->timestamps();
         });
 
-        Schema::table('shipping_method_seller_mapping', function (Blueprint $table) {
+        Schema::table('sales_boxes', function (Blueprint $table) {
             $table->foreign('seller_id')->references('id')->on('sellers');
         });
     }

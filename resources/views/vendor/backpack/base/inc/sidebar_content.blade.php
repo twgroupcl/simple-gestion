@@ -139,6 +139,7 @@
 </li>
 @endcanany
 
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('communeshippingmethod') }}'><i class='nav-icon la la-truck'></i> Metodos de envío</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('plans') }}'><i class='nav-icon la la-question'></i> Plans</a></li>
 @canany(['support.list'])
 <li class="nav-item nav-dropdown">
