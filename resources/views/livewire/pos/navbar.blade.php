@@ -13,17 +13,17 @@
                             class="custom-control-label"
                             for="boxSwitch"
                             style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;"
-                            >Caja abierta:
+                            >{{ $checked ? 'Caja abierta' : 'Caja cerrada' }}
                         </label>
                     </div>
-                    @isset($salesBox)
+                    @isset($salesBox->opened_at)
                         <strong class="text-primary">{{ \Carbon\Carbon::parse($salesBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</strong>
                     @endisset
                 </li>
             </ul>
             <form class="form-inline">
-                <input id="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+                <input id="search" class="form-control mr-sm-2" type="search" placeholder="Buscar producto" aria-label="Search">
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Buscar</button>
             </form>
         </div>
     </nav>

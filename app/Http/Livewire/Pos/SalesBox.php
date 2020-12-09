@@ -10,16 +10,18 @@ class SalesBox extends Component
     public $isSaleBoxOpen = false;
     public $openSaleBoxModal = false;
     public $seller;
-    public $amount;
+    public $opening_amount;
+    public $closing_amount;
     public $remarks;
 
     protected $rules = [
-        'amount' => 'required|int',
+        'opening_amount' => 'required|numeric|max:99999999.99',
         'remarks' => 'nullable',
     ];
 
     protected $messages = [
         'required' => 'Este monto es obligatorio',
+        'max' => 'Estás excediendo el límite de 8 dígitos',
         'int' => 'El monto debe ser número',
     ];
 
@@ -45,18 +47,24 @@ class SalesBox extends Component
     {
         $this->validate();
         $this->saleBox = $this->seller->sales_boxes()->create([
-            'amount' => $this->amount,
+            'opening_amount' => $this->opening_amount,
             'remarks' => $this->remarks,
             'opened_at' => now(),
         ]);
 
         $this->isSaleBoxOpen = true;
+        $this->opening_amount = null;
+        $this->closing_amount = null;
+        $this->remarks = null;
         $this->emit('salesBoxUpdated', $this->saleBox->id);
         $this->dispatchBrowserEvent('closeSaleBoxModal');
     }
 
     public function closeSaleBox()
     {
+        $this->saleBox->closing_amount = $this->closing_amount;
+        $this->saleBox->closed_at = now();
+        $this->saleBox->save();
         $this->isSaleBoxOpen = false;
         $this->emit('salesBoxUpdated');
         $this->dispatchBrowserEvent('closeSaleBoxModal');

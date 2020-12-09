@@ -25,7 +25,7 @@
             <div class="modal-body">
                 <form>
                     @if ($isSaleBoxOpen)
-                        <p class="text-uppercase font-weight-bold">Monto iniciado: <span class="ml-2 text-primary">{{ currencyFormat($saleBox->amount ?? 0, 'CLP', true) }}</span></p>
+                        <p class="text-uppercase font-weight-bold">Monto iniciado: <span class="ml-2 text-primary">{{ currencyFormat($saleBox->opening_amount ?? 0, 'CLP', true) }}</span></p>
                         <p class="text-uppercase font-weight-bold">Inicio: <span class="ml-2 text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</span></p>
                         <p class="text-uppercase font-weight-bold">Cierre: <span class="ml-2 text-primary">{{ now()->translatedFormat('j/m/Y - g:i a') }}</span></p>
                         <div class="text-right">
@@ -41,9 +41,9 @@
                             <label for="openingAmount">Monto de apertura</label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text">$</div>
-                                <input wire:model="amount" type="number" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="1000">
+                                <input wire:model="opening_amount" type="number" step="any" min="0" class="form-control @error('amount') is-invalid @enderror" id="opening_amount" placeholder="1000">
                             </div>
-                            @error('amount')
+                            @error('opening_amount')
                             <small class="text-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </small>
