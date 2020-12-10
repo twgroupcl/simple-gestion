@@ -12,7 +12,18 @@ Solicitar reservación
 <div class="row px-0 mx-0 content">
     <div class="col-lg-8 col-md-12 inner-content">
         <div class="row mt-4 justify-content-center">
-            @livewire('reservation-form', ['company' => $company, 'errors' => $errors->all()])
+            @if (session('success'))
+            <div class="col-md-8">
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            </div>
+            @endif
+            @livewire('reservation-form', [ 
+                'company' => $company, 
+                'errors' => $errors->all(), 
+                'sessionError' => session('sessionError'),
+            ])
         </div>
     </div>
 </div>
