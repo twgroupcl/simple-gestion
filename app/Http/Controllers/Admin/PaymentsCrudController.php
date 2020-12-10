@@ -121,7 +121,6 @@ class PaymentsCrudController extends CrudController
 
         $data_fee = json_decode(request()->data_fee);
         $cntDataFee = (isset($data_fee))?count($data_fee):null;
-        dd(request()->data_payment);
         //$data_payment = json_decode(request()->data_payment);
 
        /*  if(!is_null($data_fee)){
@@ -178,6 +177,11 @@ class PaymentsCrudController extends CrudController
                     'label'   => 'Monto',
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
+                [
+                    'name'    => 'status_fee',
+                    'type'    => 'hidden',
+                    'wrapper' => ['class' => 'form-group col-md-6'],
+                ],
             ],
             'fake' => true,
             'store_in' => 'data_fee',
@@ -185,16 +189,23 @@ class PaymentsCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'type' => 'hidden',
+            'name' => 'date_now',
+            'value' => date('Y-m-d'),
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
             'name' => 'table_payment',
             'label' => 'Tabla de pago',
             'type' => 'payment.table_payment',
             'payment' => $dataPay,            
-            'wrapper' => ['class' => 'form-group col-md-6 offset-3'],
+            'wrapper' => ['class' => 'form-group col-md-12'],
             'tab' => 'Pagos'
         ]);
-
         CRUD::addField([
-            'name' => 'data_payment',
+            'name' => 'payment_method',
             'label' => 'Método de pago',
             'type' => 'expense.fields_payment_method',
             'wrapper' => ['class' => 'form-group col-md-6'],
@@ -217,7 +228,7 @@ class PaymentsCrudController extends CrudController
         ]);
         CRUD::addField([
             'name'    => 'amount_payment',
-            'type'    => 'text',
+            'type'    => 'number',
             'label'   => 'Monto',
             'wrapper' => ['class' => 'form-group col-md-6 d-none input-ef input-ch input-tc input-tr input-pcc input-payment'],
             'fake' => true,
@@ -274,80 +285,11 @@ class PaymentsCrudController extends CrudController
             'type'    => 'textarea',
             'label'   => 'Comentario',
             'wrapper' => ['class' => 'form-group col-md-6'],
+            'attributes' => ['maxlength' => 12],
             'fake' => true,
             'store_in' => 'data_payment',
             'tab' => 'Pagos'
         ]);
-
-       /*   CRUD::addField([  
-            'name'            => 'data_payment',
-            'label'           => 'Registrar pago',
-            'new_item_label'  => 'Agregar pago',
-            'type'  => 'repeatable',
-            'fields' => [
-                [
-                    'name' => 'payment_method',
-                    'label' => 'Método de pago',
-                    'type' => 'expense.fields_payment_method',
-                    'wrapper' => ['class' => 'form-group col-md-6'],
-                    'attributes' => ['class' => 'select-payment-method'],
-                ],
-                [
-                    'label' => 'Banco',
-                    'name' => 'bank_id',
-                    'type' => 'select2',
-                    'placeholder' => 'Selecciona un banco',
-                    'model' => 'App\Models\Bank',
-                    'attribute' => 'name',
-                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-pcc input-tr input-tc input-td input-ch input-payment']
-                ],
-                [
-                    'name'    => 'amount_payment',
-                    'type'    => 'text',
-                    'label'   => 'Monto',
-                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ef input-ch input-tc input-tr input-pcc input-payment'],
-                ],
-                [
-                    'name'    => 'rut',
-                    'type'    => 'text',
-                    'label'   => 'Rut',
-                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
-                ],
-                [
-                    'name'    => 'serial_number',
-                    'type'    => 'text',
-                    'label'   => 'Nº de Serie',
-                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
-                ],
-                [
-                    'name'    => 'account_number',
-                    'type'    => 'text',
-                    'label'   => 'Nº de cuenta',
-                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
-                ],
-                [
-                    'name'    => 'date',
-                    'type'    => 'date',
-                    'label'   => 'Fecha',
-                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
-                ],
-                [
-                    'name'    => 'voucher_number',
-                    'type'    => 'text',
-                    'label'   => 'Nº de Comprobante',
-                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-tc input-tr input-pcc input-payment'],
-                ],
-                [
-                    'name'    => 'comment',
-                    'type'    => 'textarea',
-                    'label'   => 'Comentario',
-                    'wrapper' => ['class' => 'form-group col-md-6'],
-                ],
-            ],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos',
-        ]);  */
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
