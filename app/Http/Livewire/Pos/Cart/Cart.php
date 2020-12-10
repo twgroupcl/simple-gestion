@@ -2,8 +2,14 @@
 
 namespace App\Http\Livewire\Pos\Cart;
 
+use App\Models\Currency;
 use App\Models\Customer;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\OrderPayment;
 use App\Models\Product;
+use Backpack\Settings\app\Models\Setting;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class Cart extends Component
@@ -20,6 +26,7 @@ class Cart extends Component
         'remove-from-cart:post' => 'remove',
         'quantityUpdated' => 'updateQuantity',
         'customerSelected' => 'setCustomer',
+        'cart.confirmPayment' => 'confirmPayment',
     ];
 
     public function mount()
@@ -54,8 +61,8 @@ class Cart extends Component
         : $this->products[$product->id]['qty'] = 1;
 
         $this->products[$product->id]['product'] = $product;
-        $this->emit('item.updatedCustomQty', $product->id, $this->products[$product->id]['qty']);
         $this->calculateAmounts();
+        $this->emit('item.updatedCustomQty', $product->id, $this->products[$product->id]['qty']);
     }
 
     public function remove($productId)
@@ -89,10 +96,87 @@ class Cart extends Component
     {
         $this->products[$product->id]['qty'] = $qty;
         $this->calculateAmounts();
+        $this->emit('payment.updated');
     }
 
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+    }
+
+    public function confirmPayment($cash)
+    {
+        if ($cash >= $this->total) {
+            $currency = Currency::where('code', Setting::get('default_currency'))->firstOrFail();
+            //Make order
+            $order = new Order();
+            $order->company_id = $this->customer->company_id;
+            $order->uid = $this->customer->uid;
+            $order->first_name = $this->customer->first_name;
+            $order->last_name = $this->customer->last_name;
+            $order->email = $this->customer->email;
+            $order->phone = $this->customer->phone;
+            $order->cellphone = $this->customer->cellphone;
+            $order->currency_id = $currency->id;
+            $order->customer_id = $this->customer->id;
+
+            $order->status = 1; //initiated
+            $order->save();
+
+            //Add Order Item
+            foreach ($this->products as $item) {
+                $product = Product::find($item['product']['id'])->firstOrFail();
+                $orderitem = new OrderItem();
+                $orderitem->order_id = $order->id;
+                $orderitem->seller_id = $product->seller_id;
+                $orderitem->currency_id = $currency->id;
+                $orderitem->product_id = $product->id;
+                $orderitem->name = $product->name;
+                $orderitem->sku = $product->sku;
+                $orderitem->price = $product->real_price;
+                $orderitem->qty = $item['qty'];
+                $orderitem->sub_total = $product->real_price * $item['qty'];
+                $orderitem->total = $product->real_price * $item['qty'];
+                $orderitem->save();
+            }
+
+            $order->sub_total = $this->subtotal;
+            $order->total = $this->total;
+
+            $order->save();
+
+            //Register payment
+            $orderpayment = new OrderPayment();
+            $data = [
+                'event' => 'Cash Payment',
+                'data' => $cash,
+
+            ];
+            $orderpayment->order_id = $order->id;
+            $orderpayment->method = 'cash';
+            $orderpayment->method_title = 'cash';
+            $orderpayment->json_in = json_encode($data);
+            $orderpayment->date_in = Carbon::now();
+            $orderpayment->save();
+
+            //Add register to box sales
+            //$salebox = new SalesBox();
+
+
+
+            $this->clearCart();
+            $this->emit('showToast', 'Cobro realizado', 'Cobro registrado.', 3000, 'info');
+
+        } else {
+            $this->emit('showToast', 'Error', 'Ocurrio un error al registrar el pago.', 3000, 'error');
+        }
+
+    }
+
+    protected function clearCart(){
+        //Clear cart
+        session()->put(['user.pos.cart' => null]);
+        $this->total = 0;
+        $this->subtotal = 0;
     }
 }
