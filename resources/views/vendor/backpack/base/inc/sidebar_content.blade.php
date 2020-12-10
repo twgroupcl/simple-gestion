@@ -156,3 +156,4 @@
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('service') }}'><i class='nav-icon la la-question'></i> Services</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('timeblock') }}'><i class='nav-icon la la-question'></i> TimeBlocks</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('reservationrequest') }}'><i class='nav-icon la la-question'></i> ReservationRequests</a></li>

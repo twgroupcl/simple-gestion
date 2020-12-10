@@ -32,6 +32,8 @@ class ServiceCrudController extends CrudController
         CRUD::setModel(\App\Models\Service::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/service');
         CRUD::setEntityNameStrings('servicio', 'servicios');
+
+        $this->crud->denyAccess('show');
     }
 
     /**
@@ -98,20 +100,22 @@ class ServiceCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'status',
-            'label' => 'Activo',
-            'type' => 'checkbox',
-            'default' => '1',
-        ]);
-
-        CRUD::addField([
             'name' => 'timeblocks',
             'label' => 'Bloques horarios',
             'type' => 'relationship',
             'entity' => 'timeblocks',
             'model' => 'App\Models\TimeBlock',
+            'attribute' => 'name_with_time',
+            'placeholder' => 'Seleccionar bloque horario',
             //'ajax' => true,
             'inline_create' => [ 'entity' => 'timeblock' ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'status',
+            'label' => 'Activo',
+            'type' => 'checkbox',
+            'default' => '1',
         ]);
 
     }

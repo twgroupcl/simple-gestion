@@ -2,18 +2,12 @@
 
 namespace App\Models;
 
-use App\Scopes\CompanyBranchScope;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
 
-class TimeBlock extends Model
+class ReservationRequest extends Model
 {
     use CrudTrait;
-    use SoftDeletes;
-
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
 
     /*
     |--------------------------------------------------------------------------
@@ -21,41 +15,25 @@ class TimeBlock extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'time_blocks';
+    protected $table = 'reservation_requests';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $appends = ['name_with_time'];
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new CompanyBranchScope);
-    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
-
-    public function services()
-    {
-        return $this->belongsToMany(Service::class, 'service_time_block_mapping');
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -68,24 +46,6 @@ class TimeBlock extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getStatusDescriptionAttribute()
-    {
-        switch ($this->status) {
-            case $this::STATUS_ACTIVE:
-                return 'Activo';
-                break;
-            case $this::STATUS_INACTIVE:
-                return 'Inactivo';
-                break;
-            default:
-                break;
-        }
-    }
-
-    public function getNameWithTimeAttribute()
-    {
-        return $this->name . ' (' . $this->start_time . ' - ' . $this->end_time . ')';
-    }
 
     /*
     |--------------------------------------------------------------------------

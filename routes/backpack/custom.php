@@ -85,7 +85,7 @@ Route::group([
     Route::crud('customerattendance', 'CustomerAttendanceCrudController');
     Route::crud('service', 'ServiceCrudController');
     Route::crud('timeblock', 'TimeBlockCrudController');
+    Route::crud('reservationrequest', 'ReservationRequestCrudController');
 }); // this should be the absolute last line of this file
-Route::post('/send-email-subscription', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@sendEmailSubscription');
 
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');

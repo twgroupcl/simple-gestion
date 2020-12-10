@@ -31,6 +31,8 @@ class TimeBlockCrudController extends CrudController
         CRUD::setModel(\App\Models\TimeBlock::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/timeblock');
         CRUD::setEntityNameStrings('bloque horario', 'bloques horarios');
+
+        $this->crud->denyAccess('show');
     }
 
     /**
