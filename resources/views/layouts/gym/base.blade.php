@@ -45,7 +45,7 @@
 
         .inner-content {
             background-color: white;
-            height: 300px;
+            min-height: 300px;
             margin-top: -100px;
         }
         
@@ -54,6 +54,7 @@
         }
 
     </style>
+    @stack('styles')
 </head>
 
 <body>
@@ -83,6 +84,8 @@
     <script>
         $('#rut').rut();
     </script>
+    @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>

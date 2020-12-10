@@ -1,4 +1,4 @@
-@extends('attendance.layout.base')
+@extends('layouts.gym.base')
 
 @section('title')
 Asistencia registrada
