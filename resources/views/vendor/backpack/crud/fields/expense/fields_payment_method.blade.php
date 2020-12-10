@@ -1,7 +1,7 @@
 @include('crud::fields.inc.wrapper_start')
     <div class="form-group" element="div">
         <label for="">Método de pago</label>
-        <select name="" class="select-payment-method form-control">
+        <select name="payment_method" class="select-payment-method form-control">
             <option value="">Seleccione</option>
             <option value="EF">Efectivo</option>
             <option value="CH">Cheque</option>
