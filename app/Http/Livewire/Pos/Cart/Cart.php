@@ -125,7 +125,7 @@ class Cart extends Component
 
             //Add Order Item
             foreach ($this->products as $item) {
-                $product = Product::find($item['product']['id'])->firstOrFail();
+                $product = Product::whereId($item['product']['id'])->firstOrFail();
                 $orderitem = new OrderItem();
                 $orderitem->order_id = $order->id;
                 $orderitem->seller_id = $product->seller_id;
@@ -178,5 +178,6 @@ class Cart extends Component
         session()->put(['user.pos.cart' => null]);
         $this->total = 0;
         $this->subtotal = 0;
+        $this->cash = 0;
     }
 }
