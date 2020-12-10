@@ -22,7 +22,6 @@
                                     <label class="font-weight-medium" for="product-size">{{ $option['name'] }}</label>
                                 </div>
                                 <select class="custom-select"
-                                    {{-- wire:change="updatedOptions" --}}
                                     wire:model="options.{{ $key }}.selectedValue"
                                     name="attribute-{{ $option['id'] }}"
                                     @if(!$option['enableOptions']) disabled @endif
@@ -36,15 +35,7 @@
 
                         {{-- Price --}}
                         @if ($selectedChildrenId)
-                            @if ($currentProduct->special_price === $currentProduct->real_price)
-                            <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">{{ currencyFormat($currentProduct->special_price ?? 0, defaultCurrency(), true) }}</span>
-                                <del class="text-muted font-size-lg mr-3">{{ currencyFormat($currentProduct->price ?? 0, defaultCurrency(), true) }}</del>
-                                <br>
-                                <span class="badge badge-warning badge-shadow align-middle mt-n2">Descuento</span>
-                            </div>
-                            @else
-                                <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price ?? 0, defaultCurrency(), true) }}</div>
-                            @endif
+                            <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price ?? 0, defaultCurrency(), true) }}</div>
                         @else
                             <div class="h3 font-weight-normal text-accent mb-1 mr-1">Desde {{currencyFormat($currentPrice, 'CLP', true) }}</div>
                             @if ($parentProduct->has_special_price)
@@ -59,7 +50,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Cerrar
                 </button>
-                <button wire:click="$emit('add-product-cart:post', {{ $currentProduct }})" type="button" class="btn btn-primary">Agregar al carrito</button>
+                <button wire:click="addProductToCart()" type="button" class="btn btn-primary @if(! $enableAddButton) disabled @endif">Agregar al carrito</button>
             </div>
         </div>
     @endisset
