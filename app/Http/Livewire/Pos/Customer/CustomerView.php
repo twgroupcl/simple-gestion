@@ -13,6 +13,10 @@ class CustomerView extends Component
     public $selectedCustomer;
     private $customers = [];
 
+    protected $listeners = [
+        'newCustomer' => 'selectCustomer',
+    ];
+
     public function render()
     {
         $this->filter();
@@ -28,11 +32,16 @@ class CustomerView extends Component
     {
         $this->customers = Customer::where(DB::raw("CONCAT(`first_name`, ' ', `last_name`)"), 'LIKE', "%{$this->search}%")
                                     ->orWhere('uid', 'LIKE', "%{$this->search}%")
+                                    ->where('email', '!=', 'cliente_generico@twgroup.com')
                                     ->paginate(10);
     }
 
     public function showCustomer(Customer $customer)
     {
+        session()->put([
+            'user.pos.isSelectedCustomerWildcard' => false,
+        ]);
+
         $this->selectedCustomer = $customer;
     }
 
@@ -43,10 +52,18 @@ class CustomerView extends Component
         }
     }
 
-    public function selectCustomer(Customer $customer)
+    public function selectCustomer(Customer $customer = null, $wilcard = null)
     {
+        if ($wilcard) {
+            $customer->fill($wilcard);
+        }
+
         $this->selectedCustomer = $customer;
-        session()->put(['user.pos.selectedCustomer' => $customer]);
+        session()->put([
+            'user.pos.selectedCustomer' => $customer,
+            'user.pos.isSelectedCustomerWildcard' => isset($wilcard),
+        ]);
+
         $this->emit('customerSelected', $customer->id);
     }
 }
