@@ -19,6 +19,7 @@ class ProductCustomAttributes extends Component
     public $selectedChildrenId;
     public $currentPrice;
     public $currentProductChange = false;
+    public $enableAddButton = false;
 
     public function render()
     {
@@ -91,7 +92,6 @@ class ProductCustomAttributes extends Component
         if (!empty($selectedChildren)) {
             $this->selectedChildrenId = $selectedChildren->id;
             $this->currentProduct = $selectedChildren;
-            $this->emit('addToCart.setProduct', $this->currentProduct);
         } else {
             $this->selectedChildrenId = null;
             $this->currentProduct = $this->parentProduct;
@@ -111,7 +111,11 @@ class ProductCustomAttributes extends Component
      */
     public function loadNextSelect($index)
     {
-        if ($index + 1 < count($this->options)) {
+        $hasMoreOptions = $this->thereAreMoreOptions($index);
+
+        $this->enableAddButton = ! $hasMoreOptions;
+
+        if ($hasMoreOptions) {
             // Enable the next select and clean the old selected value
             $this->options[$index + 1]['enableOptions'] = true;
             $this->options[$index + 1]['selectedValue'] = '';
@@ -168,4 +172,17 @@ class ProductCustomAttributes extends Component
         }
     }
 
+    public function thereAreMoreOptions(int $index)
+    {
+        return $index + 1 < count($this->options);
+    }
+
+    public function addProductToCart()
+    {
+        $this->emit('add-product-cart:post', $this->currentProduct->id);
+        $this->enableAddButton = false;
+        $this->selectedChildrenId = null;
+        $this->options = [];
+        $this->getInitialOptions();
+    }
 }
