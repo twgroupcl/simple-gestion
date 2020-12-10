@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\TimeBlock;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ServiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -19,6 +20,7 @@ class ServiceCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -84,14 +86,14 @@ class ServiceCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'description',
-            'label' => 'Descripción',
+            'name' => 'code',
+            'label' => 'Codigo',
             'type' => 'text',
         ]);
 
         CRUD::addField([
-            'name' => 'code',
-            'label' => 'Codigo',
+            'name' => 'description',
+            'label' => 'Descripción',
             'type' => 'text',
         ]);
 
@@ -100,6 +102,16 @@ class ServiceCrudController extends CrudController
             'label' => 'Activo',
             'type' => 'checkbox',
             'default' => '1',
+        ]);
+
+        CRUD::addField([
+            'name' => 'timeblocks',
+            'label' => 'Bloques horarios',
+            'type' => 'relationship',
+            'entity' => 'timeblocks',
+            'model' => 'App\Models\TimeBlock',
+            //'ajax' => true,
+            'inline_create' => [ 'entity' => 'timeblock' ]
         ]);
 
     }
@@ -113,5 +125,10 @@ class ServiceCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function fetchTimeblocks()
+    {
+        return $this->fetch(\App\Models\TimeBlock::class);
     }
 }

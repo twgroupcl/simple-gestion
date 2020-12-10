@@ -51,6 +51,11 @@ class TimeBlock extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'service_time_block_mapping');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

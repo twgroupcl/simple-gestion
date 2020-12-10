@@ -16,6 +16,7 @@ class TimeBlockCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\InlineCreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -29,7 +30,7 @@ class TimeBlockCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\TimeBlock::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/timeblock');
-        CRUD::setEntityNameStrings('timeblock', 'time_blocks');
+        CRUD::setEntityNameStrings('bloque horario', 'bloques horarios');
     }
 
     /**
@@ -54,6 +55,20 @@ class TimeBlockCrudController extends CrudController
             'name' => 'end_time',
             'label' => 'Hora de fin',
         ]);
+
+        CRUD::addColumn([
+            'name' => 'status_description',
+            'label' => 'Estado',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Activo') {
+                        return 'badge badge-success';
+                    }
+                    return 'badge badge-default';
+                },
+            ],
+        ]);
     }
 
     /**
@@ -68,7 +83,34 @@ class TimeBlockCrudController extends CrudController
 
         $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
-        CRUD::setFromDb(); // fields
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'type' => 'text',
+        ]);
+
+        CRUD::addField([
+            'name' => 'code',
+            'label' => 'Codigo',
+            'type' => 'text',
+        ]);
+        
+        CRUD::addField([
+            'name' => 'start_time',
+            'label' => 'Hora de inicio',
+        ]);
+
+        CRUD::addField([
+            'name' => 'end_time',
+            'label' => 'Hora de fin',
+        ]);
+
+        CRUD::addField([
+            'name' => 'status',
+            'label' => 'Activo',
+            'type' => 'checkbox',
+            'default' => '1',
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

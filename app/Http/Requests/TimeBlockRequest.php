@@ -26,7 +26,10 @@ class TimeBlockRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required',
+            'code' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
         ];
     }
 
@@ -38,7 +41,10 @@ class TimeBlockRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'name' => 'nombre',
+            'code' => 'codigo',
+            'start_time' => 'hora de inicio',
+            'end_time' => 'hora de fin',
         ];
     }
 
@@ -50,7 +56,7 @@ class TimeBlockRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            '*.required' => 'El campo :attribute es requerido'
         ];
     }
 }
