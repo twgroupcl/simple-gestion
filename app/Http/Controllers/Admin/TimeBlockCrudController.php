@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\TimeBlock;
+use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\TimeBlockRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -130,5 +132,30 @@ class TimeBlockCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function getTimeblocksByService(Request $request) {
+        $search_term = $request->input('q');
+        $form = collect($request->input('form'))->pluck('value', 'name');
+        $options = TimeBlock::query();
+
+        if (! $form['service_id']) {
+            return [];
+        }
+
+        if ($form['service_id']) {
+            $options = $options->wherehas('services', function ($query) use ($form) {
+                return $query->where('id',  $form['service_id']);
+            });
+        }
+
+        // filter by search term
+        if ($search_term) {
+            $results = $options->whereRaw('name like ?', '%'.strtolower($search_term).'%')->paginate(10);
+        } else {
+            $results = $options->paginate(10);
+        }
+
+        return $options->paginate(10);
     }
 }

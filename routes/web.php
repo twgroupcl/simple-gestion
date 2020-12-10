@@ -100,5 +100,7 @@ Route::group([
 //     return view('payments.transbank.webpay.mall.complete');
 // });
 
+// Company Front Routes
 Route::get('/{company}/attendance/register', 'Frontend\AttendanceController@index')->name('attendance.index');
 Route::post('/{company}/attendance/post', 'Frontend\AttendanceController@post')->name('attendance.post');
+Route::get('/{company}/reservation/request', 'Frontend\ReservationRequestController@index')->name('reservation-request.index');

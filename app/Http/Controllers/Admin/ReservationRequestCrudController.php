@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ReservationRequestRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -28,7 +29,10 @@ class ReservationRequestCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\ReservationRequest::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/reservationrequest');
-        CRUD::setEntityNameStrings('reservationrequest', 'reservation_requests');
+        CRUD::setEntityNameStrings('solicitud de reserva', 'solicitudes de reserva');
+
+        $this->crud->enableExportButtons();
+        $this->crud->denyAccess('show');
     }
 
     /**
@@ -39,7 +43,36 @@ class ReservationRequestCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'customer',
+            'label' => 'RUT',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'customer',
+            'label' => 'Cliente',
+            'key' => 'customer_name',
+            'attribute' => 'full_name',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'service',
+            'label' => 'Servicio',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'date',
+            'label' => 'Fecha',
+            'type' => 'date',
+            'format' => 'L',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'timeblock',
+            'label' => 'Bloque horario',
+            'type' => 'relationship',
+            'attribute' => 'name_with_time',
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -58,7 +91,38 @@ class ReservationRequestCrudController extends CrudController
     {
         CRUD::setValidation(ReservationRequestRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
+
+        CRUD::addField([
+            'name' => 'customer_id',
+            'label' => 'Cliente',
+            'type' => 'relationship',
+        ]);
+
+        CRUD::addField([
+            'name' => 'service_id',
+            'label' => 'Servicio',
+            'type' => 'relationship',
+        ]);
+
+        CRUD::addField([
+            'label'       => "Bloque horario",
+            'type'        => "select2_from_ajax",
+            'name'        => 'time_block_id',
+            'placeholder' => 'Selecciona el bloque horario',
+            'entity'      => 'timeblock',
+            'attribute'   => "name_with_time",
+            'data_source' => url("admin/api/timeblocks/get-by-service"),
+            'minimum_input_length' => 0,
+            'include_all_form_fields'  => true,
+            'dependencies'  => ['service_id'],
+        ]);
+
+        CRUD::addField([
+            'name' => 'date',
+            'label' => 'Fecha',
+            'type' => 'date',
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
