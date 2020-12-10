@@ -1,24 +1,6 @@
 <div class="col-md-8">
     <form action="{{ route('reservation-request.store', [ 'company' => $company->id ]) }}" method="POST">
         @csrf
-
-        @if(count($errors) || $sessionError)
-        <div class="row">
-            <div class="col">
-                <div class="alert alert-danger">
-                    <ul style="margin-bottom: 0px">
-                        @if ($sessionError)
-                            <li>{{ $sessionError }}</li>
-                        @endif
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-        @endif
-
         <div class="row mb-3">
             <div class="col-md-4 align-self-center mb-2 mb-md-0">
                 <div class="font-size-lg">RUT</div>
@@ -31,7 +13,6 @@
                 placeholder="Ingresa tu RUT"
                 id="rut"
                 wire:model.lazy="rut"
-                value="{{ old('rut') }}"
                 required
             >
             </div>
@@ -75,10 +56,11 @@
                     name="time_block_id" 
                     placeholder="Bloque horario" 
                     @if (!count($timeblocks)) disabled @endif
-                    required>
-                    <option disabled selected>Selecciona una opción</option>
+                    required
+                >
+                    <option disabled selected>{{ $timeblockPlaceholder}}</option>
                     @foreach ($timeblocks as $timeblock)
-                        <option value="{{ $timeblock->id }}">{{ $timeblock->name_with_time }}</option>
+                    <option value="{{ $timeblock->id }}">{{ $timeblock->name_with_time }}</option>
                     @endforeach
                 </select>
             </div>

@@ -15,6 +15,7 @@ class ReservationForm extends Component
     public $services;
     public $timeblocks = [];
     public $serviceSelected = null;
+    public $timeblockPlaceholder;
     
     public $errors;
     public $sessionError;
@@ -24,11 +25,9 @@ class ReservationForm extends Component
         return view('livewire.reservation-form');
     }
 
-    public function mount(Company $company, $errors, $sessionError)
+    public function mount(Company $company)
     {
         $this->company = $company;
-        $this->errors = $errors ?: [];
-        $this->sessionError = $sessionError ?: null;
 
         $this->rut = old('rut') ?? '';
         $this->date = old('date') ?? '';
@@ -39,9 +38,19 @@ class ReservationForm extends Component
         
     }
 
+    public function setTimeblockPlaceholder()
+    {
+        if (count($this->timeblocks)) {
+            $this->timeblockPlaceholder = 'Selecciona una opción';
+        } else {
+            $this->timeblockPlaceholder = 'Este servicio no tiene ningun bloque disponible';
+        }
+    }
+
     public function loadServices()
     {
         $this->services = Service::where('status', '1')->where('company_id', $this->company->id)->get();
+        $this->serviceSelected = $this->serviceSelected ?: $this->services->first()->id;
     }
 
     public function updatedServiceSelected()
@@ -49,5 +58,7 @@ class ReservationForm extends Component
         $this->timeblocks = TimeBlock::whereHas('services', function ($query) {
             return $query->where('id', $this->serviceSelected);
         })->get();
+
+        $this->setTimeblockPlaceholder();
     }
 }

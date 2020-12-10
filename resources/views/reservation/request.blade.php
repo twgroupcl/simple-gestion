@@ -19,11 +19,26 @@ Solicitar reservación
                 </div>
             </div>
             @endif
+
+            @if( $errors->any() || session('sesionError'))
+            <div class="col-md-8">
+                        <div class="alert alert-danger">
+                            <ul style="margin-bottom: 0px">
+                                @if (session('sesionError'))
+                                    <li>{{ session('sesionError') }}</li>
+                                @endif
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                </div>
+            </div>
+            @endif
+            
+
             @livewire('reservation-form', [ 
                 'company' => $company, 
-                'errors' => $errors->all(), 
-                'sessionError' => session('sessionError'),
-            ])
+            ], key($company->id))
         </div>
     </div>
 </div>
