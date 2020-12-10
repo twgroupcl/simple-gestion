@@ -2,27 +2,15 @@
 
 namespace App\Models;
 
-use App\Scopes\CompanyBranchScope;
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
 
-class SalesBox extends Model
+class SalesBoxLog extends Model
 {
     use CrudTrait;
 
-    /*
-    |--------------------------------------------------------------------------
-    | GLOBAL VARIABLES
-    |--------------------------------------------------------------------------
-    */
-
-    protected $table = 'sales_boxes';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
+    protected $table = 'sales_box_logs';
     protected $guarded = ['id'];
-    // protected $fillable = [];
-    // protected $hidden = [];
-    // protected $dates = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -41,9 +29,9 @@ class SalesBox extends Model
         return $this->belongsTo(Seller::class);
     }
 
-    public function logs()
+    public function order()
     {
-        return $this->hasMany(SalesBoxLog::class);
+        return $this->belongsTo(Order::class);
     }
 
     /*
@@ -57,16 +45,6 @@ class SalesBox extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-
-    public function getIsOpenedAttribute()
-    {
-        return ($this->opened_at !== null) && ($this->closed_at === null);
-    }
-
-    public function getIsClosedAttribute()
-    {
-        return ($this->opened_at !== null) && ($this->closed_at !== null);
-    }
 
     /*
     |--------------------------------------------------------------------------
