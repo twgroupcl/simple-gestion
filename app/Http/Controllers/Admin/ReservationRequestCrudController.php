@@ -44,8 +44,10 @@ class ReservationRequestCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::addColumn([
-            'name' => 'customer',
-            'label' => 'RUT',
+            'name' => 'created_at',
+            'label' => 'Fecha de recepción',
+            'type' => 'date',
+            'format' => 'L'
         ]);
 
         CRUD::addColumn([
@@ -62,7 +64,7 @@ class ReservationRequestCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'date',
-            'label' => 'Fecha',
+            'label' => 'Fecha de reserva',
             'type' => 'date',
             'format' => 'L',
         ]);
@@ -97,6 +99,7 @@ class ReservationRequestCrudController extends CrudController
             'name' => 'customer_id',
             'label' => 'Cliente',
             'type' => 'relationship',
+            'attribute' => 'full_name'
         ]);
 
         CRUD::addField([

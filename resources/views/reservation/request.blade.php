@@ -20,12 +20,12 @@ Solicitar reservación
             </div>
             @endif
 
-            @if( $errors->any() || session('sesionError'))
+            @if( $errors->any() || session('error'))
             <div class="col-md-8">
                         <div class="alert alert-danger">
                             <ul style="margin-bottom: 0px">
-                                @if (session('sesionError'))
-                                    <li>{{ session('sesionError') }}</li>
+                                @if (session('error'))
+                                    <li>{{ session('error') }}</li>
                                 @endif
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>

@@ -21,20 +21,21 @@ class ReservationRequestController extends Controller
     {
         $rules = [
             'rut' => ['required', new RutRule()],
-            'date' => 'required|date',
+            'date' => 'required|date|after_or_equal:today',
             'service_id' => 'required|exists:services,id',
             'time_block_id' => 'required|exists:time_blocks,id',
         ];
 
         $attributes = [
             'rut' => 'RUT',
-            'date' => 'Fecha de reservacion',
-            'service_id' => 'Servicio',
-            'time_block_id' => 'Bloque horario',
+            'date' => 'fecha de reserva',
+            'service_id' => 'servicio',
+            'time_block_id' => 'bloque horario',
         ];
 
         $messages = [
             '*.required' => 'El campo :attribute es requerido',
+            'date.after_or_equal' => 'La :attribute debe igual o posterior al dia de hoy'
         ];
 
         $request->validate($rules, $messages, $attributes);
@@ -42,7 +43,7 @@ class ReservationRequestController extends Controller
         $customer = Customer::where('uid', str_replace('.', '', $request['rut']))->where('company_id', $company->id)->first();
 
         if (!$customer) {
-            return redirect()->route('reservation-request.index', ['company' => $company])->with('sessionError', 'El RUT no pertenece a ningún cliente');
+            return redirect()->route('reservation-request.index', ['company' => $company])->with('error', 'El RUT no pertenece a ningún cliente');
         }
 
         ReservationRequest::create([
@@ -53,6 +54,6 @@ class ReservationRequestController extends Controller
             'company_id' => $company->id,
         ]);
 
-        return redirect()->route('reservation-request.index', ['company' => $company])->with('success', 'Su solicitud fue recibida con éxito. Nos comunicaremos contigo en la brevedad posible.');
+        return redirect()->route('reservation-request.index', ['company' => $company])->with('success', 'Tu solicitud fue recibida con éxito. Nos comunicaremos contigo en la brevedad posible.');
     }
 }
