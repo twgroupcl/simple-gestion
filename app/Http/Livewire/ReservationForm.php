@@ -10,6 +10,8 @@ use App\Models\TimeBlock;
 class ReservationForm extends Component
 {
     public $company;
+    public $rut;
+    public $date;
     public $errors;
     public $services;
     public $timeblocks = [];
@@ -24,6 +26,10 @@ class ReservationForm extends Component
     {
         $this->company = $company;
         $this->errors = $errors;
+        $this->rut = old('rut') ?? '';
+        $this->date = old('date') ?? '';
+        $this->serviceSelected = old('service_id') ?? '';
+        
         $this->services = Service::where('status', '1')->where('company_id', $this->company->id)->get();
     }
 

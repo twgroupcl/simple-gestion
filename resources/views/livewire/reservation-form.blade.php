@@ -1,6 +1,21 @@
 <div class="col-md-8">
-    <form action="{{ route('attendance.post', [ 'company' => $company->id ]) }}" method="POST">
+    <form action="{{ route('reservation-request.store', [ 'company' => $company->id ]) }}" method="POST">
         @csrf
+
+        @if(count($errors))
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger">
+                    <ul style="margin-bottom: 0px">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="row mb-3">
             <div class="col-md-4 align-self-center mb-sm-2">
                 <div class="font-size-lg">RUT</div>
@@ -12,6 +27,7 @@
                 name="rut"
                 placeholder="Ingresa tu RUT"
                 id="rut"
+                wire:model.lazy="rut"
                 value="{{ old('rut') }}"
                 required
             >
@@ -23,7 +39,7 @@
                 <div class="font-size-lg">Fecha de reserva</div>
             </div>
             <div class="col">
-                <input class="form-control" type="date" name="date" placeholder="Fecha de reserva" required>
+                <input wire:model="date" class="form-control" type="date" name="date" placeholder="Fecha de reserva" value="{{ old('date') }}" required>
             </div>
         </div>
 

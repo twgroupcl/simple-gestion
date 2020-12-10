@@ -12,7 +12,7 @@ Solicitar reservación
 <div class="row px-0 mx-0 content">
     <div class="col-lg-8 col-md-12 inner-content">
         <div class="row mt-4 justify-content-center">
-            @livewire('reservation-form', ['company' => $company, 'errors' => session('error')])
+            @livewire('reservation-form', ['company' => $company, 'errors' => $errors->all()])
         </div>
     </div>
 </div>
