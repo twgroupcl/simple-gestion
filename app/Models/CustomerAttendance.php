@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class CustomerAttendance extends Model
 {
@@ -26,6 +27,12 @@ class CustomerAttendance extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new CompanyBranchScope);
+    }
 
 
     /*
