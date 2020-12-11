@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TimeBlockRequest extends FormRequest
@@ -27,7 +28,7 @@ class TimeBlockRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'code' => 'required',
+            'code' => ['required', Rule::unique('time_blocks')->ignore($this->id),],
             'start_time' => 'required',
             'end_time' => 'required',
         ];
@@ -56,7 +57,8 @@ class TimeBlockRequest extends FormRequest
     public function messages()
     {
         return [
-            '*.required' => 'El campo :attribute es requerido'
+            '*.required' => 'El campo :attribute es requerido',
+            '*.unique' => 'El :attribute ya se encuentra en uso',
         ];
     }
 }

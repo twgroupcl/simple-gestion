@@ -99,6 +99,7 @@ class TimeBlockCrudController extends CrudController
             'name' => 'code',
             'label' => 'Codigo',
             'type' => 'text',
+            'default' => generateUniqueModelCodeAttribute(TimeBlock::class, auth()->user()->companies()->first()->id)
         ]);
         
         CRUD::addField([

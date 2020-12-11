@@ -94,6 +94,7 @@ class ServiceCrudController extends CrudController
             'name' => 'code',
             'label' => 'Codigo',
             'type' => 'text',
+            'default' => generateUniqueModelCodeAttribute(Service::class, auth()->user()->companies()->first()->id)
         ]);
 
         CRUD::addField([
