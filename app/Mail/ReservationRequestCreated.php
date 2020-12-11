@@ -19,6 +19,7 @@ class ReservationRequestCreated extends Mailable
     public $rejectedText;
     public $buttonText, $buttonLink;
     public $logo;
+    public $company;
 
     /**
      * Create a new message instance.
@@ -32,6 +33,8 @@ class ReservationRequestCreated extends Mailable
         $this->receiver = $receiver;
         $this->reservationRequest = $reservationRequest;
         $this->rejectedText = '';
+        //dd($this->company = $reservationRequest->customer->companies);
+        $this->company = $reservationRequest->customer->company ?? null;
         
         $customerEmail = $this->reservationRequest->customer->email ?? 'No disponible';
         $customerCellphone = $this->reservationRequest->customer->cellphone ?? 'No disponible';
@@ -42,17 +45,17 @@ class ReservationRequestCreated extends Mailable
                         Fecha de reserva: '. $reservationRequest->date . ' <br>
                         Servicio: '. $reservationRequest->service->name . ' <br>
                         Bloque horario: '. $reservationRequest->timeblock->name_with_time . ' <br><br>
-                        Informacion de contacto del cliente: <br><br>
+                        Información de contacto del cliente: <br><br>
                         Nombre: '. $this->reservationRequest->customer->full_name .'<br>
                         Correo: '. $customerEmail .'<br>
-                        Numero te telefono: '. $customerCellphone .'<br><br>
+                        Número de teléfono: '. $customerCellphone .'<br><br>
                         Puedes acceder al panel de administración y ver todas las solicitudes de reserva.';
             $this->buttonText = 'Ir al panel';
             $this->buttonLink = config('app.url') . '/admin';
             $this->logo = '';
         } else if ($this->receiver === 2) {
-            $this->title= 'Tu solicitud de reserva fue enviada con exito';
-            $this->text = 'El administrador se pondra en contacto contigo para responder a tu solicitud. Información de tu reserva: <br><br>
+            $this->title= 'Tu solicitud de reserva fue enviada con éxito';
+            $this->text = 'El administrador se pondrá en contacto contigo para responder a tu solicitud. Información de tu reserva: <br><br>
                         Fecha de reserva: '. $reservationRequest->date . ' <br>
                         Servicio: '. $reservationRequest->service->name . ' <br>
                         Bloque horario: '. $reservationRequest->timeblock->name_with_time . ' <br><br>';
