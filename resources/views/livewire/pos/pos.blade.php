@@ -14,12 +14,13 @@
                         </a>
                     </li>
                     <li class="pos-list-group-item text-center  my-auto"><a href="#"
-                            onclick="changeViewMode('salesReport', 'orderDetail')" class="list-group-item-action link-sale">
+                            onclick="changeViewMode('salesReport', 'orderDetail')"
+                             class="list-group-item-action link-sale">
                             <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
                             <br>
                             Sales</a></li>
                     <li class="pos-list-group-item text-center"><a href="#" onclick="changeViewMode('selectCustomer')"
-                            class="list-group-item-action ">
+                            class="list-group-item-action  link-customer">
                             <i class="las la-user" style="font-size: 32px;"></i>
                             Customer</a></li>
 
@@ -297,11 +298,21 @@
         $('.link-pos').click(function() {
             $('.main-view').show();
             $('.payment-view').hide();
+            $('#cartView').show();
         });
 
         $('.link-sale').click(function() {
-            $('.main-view').hide();
+            $('.main-view').show();
             $('.payment-view').hide();
+
+            $('#cartView').hide();
+            $('#orderDetail').hide();
+        });
+
+        $('.link-customer').click(function() {
+            $('.payment-view').hide();
+            $('.main-view').show();
+
         });
 
     </script>
