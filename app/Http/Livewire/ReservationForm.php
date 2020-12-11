@@ -50,7 +50,7 @@ class ReservationForm extends Component
     public function loadServices()
     {
         $this->services = Service::where('status', '1')->where('company_id', $this->company->id)->get();
-        $this->serviceSelected = $this->serviceSelected ?: $this->services->first()->id;
+        $this->serviceSelected = $this->serviceSelected ?: ($this->services->first()->id ?? null);
     }
 
     public function updatedServiceSelected()

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Service;
+use App\Models\Customer;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ReservationRequestRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -43,6 +45,13 @@ class ReservationRequestCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->customFilters();
+
+        CRUD::addColumn([
+            'name' => 'id',
+            'label' => '#',
+        ]);
+
         CRUD::addColumn([
             'name' => 'created_at',
             'label' => 'Fecha de recepción',
@@ -143,5 +152,63 @@ class ReservationRequestCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    private function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'select2',
+            'name'  => 'customer_rut',
+            'label' => 'RUT',
+        ], function() {
+            return Customer::all()->pluck('uid', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'customer_id', $value);
+        });
+
+
+        CRUD::addFilter([
+            'name'  => 'customer_name',
+            'type'  => 'select2',
+            'label' => 'Cliente'
+        ], function() {
+            return Customer::all()->pluck('full_name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'customer_id', $value);
+        });
+
+        CRUD::addFilter([
+            'type'  => 'date_range',
+            'name'  => 'from_to_recevied',
+            'label' => 'Fecha de recepción'
+          ],
+          false,
+          function ($value) { // if the filter is active, apply these constraints
+            $dates = json_decode($value);
+            $this->crud->addClause('where', 'created_at', '>=', $dates->from);
+            $this->crud->addClause('where', 'created_at', '<=', $dates->to . ' 23:59:59');
+        });
+
+        CRUD::addFilter([
+            'type'  => 'date_range',
+            'name'  => 'from_to',
+            'label' => 'Fecha de reserva'
+          ],
+          false,
+          function ($value) { // if the filter is active, apply these constraints
+            $dates = json_decode($value);
+            $this->crud->addClause('where', 'date', '>=', $dates->from);
+            $this->crud->addClause('where', 'date', '<=', $dates->to . ' 23:59:59');
+        });
+
+        CRUD::addFilter([
+            'name'  => 'service',
+            'type'  => 'select2',
+            'label' => 'Servicio'
+        ], function() {
+            return Service::all()->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'service_id', $value);
+        });
     }
 }
