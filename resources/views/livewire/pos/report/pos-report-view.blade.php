@@ -1,8 +1,6 @@
 <div class="row col-md-12">
     <div class="col-md-4 px-0">
-        <form class="form-inline">
-            <input id="searchOrder" wire:model="search" class="form-control mr-sm-2 w-100" type="search" placeholder="Buscar orden" aria-label="Search">
-        </form>
+        <input id="searchOrder" wire:model="search" class="form-control mr-sm-2 w-100" type="text" placeholder="Buscar orden" aria-label="Search">
         <div class="pt-3 pr-2">
             <div class="list-group">
                 @foreach ($orders as $order)
