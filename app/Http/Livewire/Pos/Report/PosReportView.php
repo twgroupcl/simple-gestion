@@ -12,6 +12,7 @@ class PosReportView extends Component
     public $logs;
     public $orders;
     public $selectedOrder;
+    public $search;
 
     public function render()
     {
@@ -32,5 +33,20 @@ class PosReportView extends Component
     public function selectOrder(Order $order)
     {
         $this->selectedOrder = $order;
+    }
+
+    public function updatedSearch()
+    {
+        $this->filter();
+    }
+
+    public function filter()
+    {
+        $this->orders = $this->salesBox->logs()->whereHas('order', function($query) {
+            $query->where('id', 'LIKE', "%{$this->search}%");
+        })->limit(10)
+        ->get()->map(function($item) {
+            return $item->order;
+        });
     }
 }
