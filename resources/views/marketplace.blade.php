@@ -7,7 +7,7 @@
 
 <div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-        <img src="{{ asset('img/home/hero-slider/banner-venta-especial.png') }}" alt="Contigo Pyme Black Friday">
+        <img src="{{ asset('img/home/hero-slider/banner-navidad-general.png') }}" alt="Contigo Pyme Navidad">
         <img src="{{ asset('img/home/hero-slider/banner_navidad.png') }}" alt="Contigo Pyme Banner Navidad">
         <a href="{{ route('seller.sign') }}"><img src="{{ asset('img/seller-register.png') }}" alt="Registra tu Pyme" class="img-fluid"></a>
         <img src="{{ asset('img/home/hero-slider/banner-02.png') }}" alt="Contigo Pyme Banner 2">
@@ -19,7 +19,7 @@
 <div class="d-block d-sm-none">
     <div class="cz-carousel cz-dots-enabled">
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-            <img src="{{ asset('img/home/hero-slider/mobile-banner-venta-especial.png') }}" alt="Contigo Pyme Black Friday">
+            <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad-general.png') }}" alt="Contigo Pyme Navidad">
             <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad.png') }}" alt="Contigo Pyme Banner 1">
             <a href="{{ route('seller.sign') }}">
                 <img src="{{ asset('img/home/hero-slider/mobile-banner-1.png') }}" class="img-fluid w-100" alt="Contigo Pyme Banner 1">
