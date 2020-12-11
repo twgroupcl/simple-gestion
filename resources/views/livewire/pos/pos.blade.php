@@ -13,7 +13,7 @@
                             POS
                         </a>
                     </li>
-                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                    <li class="pos-list-group-item text-center  my-auto"><a href="#" onclick="changeViewMode('salesReport', 'orderDetail')" class="list-group-item-action ">
                             <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
                             <br>
                             Sales</a></li>
@@ -147,12 +147,13 @@
                 <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
                 </div>
                 <div id="selectCustomer" style="display: none;">@livewire('pos.customer.customer-view')</div>
+                <div id="salesReport" style="display: none;">@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
                 <div id="paymentView" style="display: none;">@livewire('pos.payment.payment-view', ['seller' =>
                     $seller, 'view' => $viewMode])</div>
             </div>
         </div>
         <div class="col-md-4 col-12 main-view">
-            <div class="position-relative overflow-hidden vh-100">
+            <div id="cartView" class="position-relative overflow-hidden vh-100">
                 @livewire('pos.cart.cart')</div>
         </div>
     </div>
@@ -192,12 +193,19 @@
 
     <script>
         var currentView = 'productList';
-        const changeViewMode = view => {
+        const changeViewMode = (view, cartAlternative) => {
             $('#' + currentView).hide();
             $('#' + view).show();
-            currentView = view;
-        }
 
+            currentView = view;
+
+            if (cartAlternative) {
+                $('#cartView').hide()
+                $('#' + cartAlternative).show()
+            } else {
+                $('#cartView').show()
+            }
+        }
     </script>
 
     <script>
