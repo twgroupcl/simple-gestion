@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Service;
 use App\Models\TimeBlock;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\ServiceRequest;
@@ -44,6 +45,8 @@ class ServiceCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->customFilters();
+        
         CRUD::addColumn([
             'name' => 'name',
             'label' => 'Nombre',
@@ -134,5 +137,29 @@ class ServiceCrudController extends CrudController
     protected function fetchTimeblocks()
     {
         return $this->fetch(\App\Models\TimeBlock::class);
+    }
+
+    private function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'select2',
+            'name'  => 'name',
+            'label' => 'Nombre',
+        ], function() {
+            return Service::all()->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'id', $value);
+        });
+
+        CRUD::addFilter([
+            'name'  => 'status',
+            'type'  => 'dropdown',
+            'label' => 'Estado'
+        ], [
+            0 => 'Inactivo',
+            1 => 'Activo',
+        ], function($value) {
+            $this->crud->addClause('where', 'status', $value);
+        });
     }
 }

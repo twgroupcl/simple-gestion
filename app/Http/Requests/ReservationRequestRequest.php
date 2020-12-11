@@ -26,7 +26,11 @@ class ReservationRequestRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'customer_id' => 'required',
+            'date' => 'required|date|after_or_equal:today',
+            'service_id' => 'required|exists:services,id',
+            'time_block_id' => 'required|exists:time_blocks,id',
+            'company_id' => 'required',
         ];
     }
 
@@ -38,7 +42,10 @@ class ReservationRequestRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'customer_id' => 'cliente',
+            'service_id' => 'servicio',
+            'time_block_id' => 'bloque horario',
+            'date' => 'fecha de reserva',
         ];
     }
 
@@ -50,7 +57,8 @@ class ReservationRequestRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            '*.required' => 'El campo :attribute es requerido',
+            'date.after_or_equal' => 'La :attribute debe igual o posterior al dia de hoy',
         ];
     }
 }

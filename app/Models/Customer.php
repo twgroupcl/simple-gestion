@@ -196,6 +196,11 @@ class Customer extends Model
         return $rutFormatter->format();
     }
 
+    public function getCustomerSegmentNameAttribute()
+    {
+        return $this->customer_segment->name ?? '';
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
+use App\Models\CustomerSegment;
 use App\Models\CustomerAttendance;
 use App\Http\Requests\CustomerAttendanceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -61,6 +62,14 @@ class CustomerAttendanceCrudController extends CrudController
             'label' => 'Cliente',
             'key' => 'customer_name',
             'attribute' => 'full_name',
+            'type' => 'relationship',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'customer',
+            'label' => 'Tipo',
+            'key' => 'customer_segment',
+            'attribute' => 'customer_segment_name',
             'type' => 'relationship',
         ]);
 
@@ -243,7 +252,17 @@ class CustomerAttendanceCrudController extends CrudController
             $this->crud->addClause('where', 'entry_type', $value);
         });
 
-        
+        CRUD::addFilter([
+            'name'  => 'customer_segment',
+            'type'  => 'select2',
+            'label' => 'Tipo de cliente'
+        ], function() {
+            return CustomerSegment::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('whereHas', 'customer.customer_segment', function($query) use ($value) {
+                $query->where('id', $value);
+            });
+        });
 
     }
 }
