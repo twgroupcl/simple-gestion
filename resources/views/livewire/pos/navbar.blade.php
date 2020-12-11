@@ -45,7 +45,7 @@
 
         $("#boxSwitch").change(() => {
             event.target.checked = !event.target.checked
-            $('#showSaleBoxModal').appendTo("body").modal('show');
+            Livewire.emit('showBoxModal')
         })
     </script>
 @endpush

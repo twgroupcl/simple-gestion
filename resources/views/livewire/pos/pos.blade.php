@@ -7,13 +7,14 @@
                 <ul class="pos-list-group list-group-flush">
                     <li class="pos-list-group-item text-center my-auto">
                         <a href="#" onclick="changeViewMode('productList')""
-                            class=" list-group-item-action ">
+                            class=" list-group-item-action link-pos ">
                             <i class=" las la-calculator" style="font-size: 32px;"></i>
                             <br>
                             POS
                         </a>
                     </li>
-                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                    <li class="pos-list-group-item text-center  my-auto"><a href="#"
+                            onclick="changeViewMode('salesReport', 'orderDetail')" class="list-group-item-action link-sale">
                             <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
                             <br>
                             Sales</a></li>
@@ -147,8 +148,11 @@
             </div>
         </div>
 
+        <div class="col-11" id="salesReport" style="display: none;">
+            <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
+        </div>
 
-        <div class="col-md-7 col-12 main-view">
+        <div class="col-md-7 col-12 main-view" id="left-main-view">
             <div class="position-relative overflow-auto vh-100">
                 <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
                 </div>
@@ -158,8 +162,9 @@
             </div>
         </div>
         <div class="col-md-4 col-12 main-view">
-            <div class="position-relative overflow-hidden vh-100">
-                @livewire('pos.cart.cart')</div>
+            <div id="cartView" class="position-relative overflow-hidden vh-100">
+                @livewire('pos.cart.cart')
+            </div>
         </div>
     </div>
 </div>
@@ -201,12 +206,12 @@
 
     <script>
         var currentView = 'productList';
-        const changeViewMode = view => {
+        const changeViewMode = (view, cartAlternative) => {
             $('#' + currentView).hide();
             $('#' + view).show();
+
             currentView = view;
         }
-
         const showCustomerModal = () => {
             $('#showCustomerModal').appendTo("body").modal('show');
         }
@@ -287,6 +292,17 @@
             tmpValue = tmpValue.replace(/\./g, '')
             return tmpValue
         }
+
+
+        $('.link-pos').click(function() {
+            $('.main-view').show();
+            $('.payment-view').hide();
+        });
+
+        $('.link-sale').click(function() {
+            $('.main-view').hide();
+            $('.payment-view').hide();
+        });
 
     </script>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Pos;
 
 use Livewire\Component;
+use Prophecy\Promise\ThrowPromise;
 
 class SalesBox extends Component
 {
@@ -25,6 +26,10 @@ class SalesBox extends Component
         'int' => 'El monto debe ser número',
     ];
 
+    protected $listeners = [
+        'showBoxModal' => 'showSaleBoxModal'
+    ];
+
     public function render()
     {
         return view('livewire.pos.sales-box');
@@ -37,7 +42,7 @@ class SalesBox extends Component
         $this->isSaleBoxOpen = optional($this->saleBox)->is_opened ?? false;
 
         if (! $this->isSaleBoxOpen) {
-            $this->dispatchBrowserEvent('openSaleBoxModal');
+            $this->showSaleBoxModal();
         } else {
             $this->emit('salesBoxUpdated', $this->saleBox->id);
         }
@@ -64,9 +69,21 @@ class SalesBox extends Component
     {
         $this->saleBox->closing_amount = $this->closing_amount;
         $this->saleBox->closed_at = now();
+        $this->saleBox->closing_amount = $this->saleBox->calculateClosingAmount();
         $this->saleBox->save();
         $this->isSaleBoxOpen = false;
         $this->emit('salesBoxUpdated');
         $this->dispatchBrowserEvent('closeSaleBoxModal');
+    }
+
+    public function showSaleBoxModal()
+    {
+        $this->dispatchBrowserEvent('openSaleBoxModal');
+    }
+
+    public function getClosingAmount()
+    {
+        $this->saleBox = $this->saleBox->refresh();
+        dd($this->saleBox->getClosingAmount());
     }
 }
