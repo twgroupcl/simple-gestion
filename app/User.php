@@ -47,6 +47,9 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+
+    const BUSINESS_ADMIN_ROL_ID = 2;
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

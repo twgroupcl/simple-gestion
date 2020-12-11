@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Company extends Model
 {
@@ -33,6 +35,19 @@ class Company extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getBusinessAdminUsers()
+    {
+        $usersAdminId = DB::table('company_users')
+            ->where('role_id', User::BUSINESS_ADMIN_ROL_ID)
+            ->where('company_id', $this->id)
+            ->get()
+            ->pluck('user_id');
+        
+        $adminUsers = User::whereIn('id', $usersAdminId)->get();
+
+        return $adminUsers ?: [];
+    }
 
     /*
     |--------------------------------------------------------------------------
