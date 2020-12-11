@@ -185,7 +185,7 @@ class Cart extends Component
     protected function clearCart(){
         //Clear cart
         session()->put(['user.pos.cart' => null]);
-        $this->product = [];
+        $this->products = [];
         $this->total = 0;
         $this->subtotal = 0;
         $this->cash = 0;
