@@ -141,20 +141,23 @@
             </div>
         </div>
 
+        <div class="col-11" id="salesReport" style="display: none;">
+            <div >@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
+        </div>
 
-        <div class="col-md-7 col-12 main-view">
+        <div class="col-md-7 col-12 main-view" id="left-main-view">
             <div class="position-relative overflow-auto vh-100">
                 <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
                 </div>
                 <div id="selectCustomer" style="display: none;">@livewire('pos.customer.customer-view')</div>
-                <div id="salesReport" style="display: none;">@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
                 <div id="paymentView" style="display: none;">@livewire('pos.payment.payment-view', ['seller' =>
                     $seller, 'view' => $viewMode])</div>
             </div>
         </div>
         <div class="col-md-4 col-12 main-view">
             <div id="cartView" class="position-relative overflow-hidden vh-100">
-                @livewire('pos.cart.cart')</div>
+                @livewire('pos.cart.cart')
+            </div>
         </div>
     </div>
 </div>

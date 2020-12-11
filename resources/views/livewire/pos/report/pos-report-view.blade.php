@@ -1,5 +1,5 @@
 <div class="row col-md-12">
-    <div class="col-md-6 px-0">
+    <div class="col-md-4 px-0">
         <form class="form-inline">
             <input id="search" class="form-control mr-sm-2 w-100" type="search" placeholder="Buscar orden" aria-label="Search">
         </form>
@@ -17,8 +17,8 @@
             </div>
           </div>
     </div>
-    <div class="col-md-6 px-0">
-        @isset($selectedOrder)
+    @isset($selectedOrder)
+        <div class="col-md-3">
             <div class="card px-5 py-3">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
@@ -39,6 +39,35 @@
                     <button href="#" class="btn btn-success">Imprimir Boleta</button>
                 </div>
             </div>
-        @endisset
-    </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card px-5 py-3">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="font-weight-bold">Resumen del pedido</div>
+                        <br />
+                        @foreach ($selectedOrder->order_items as $item)
+                        <div class="d-flex justify-content-between" >
+                            <span class="text-danger">{{ $item->name }} </span>
+                            <span class="font-weight-bold">{{ currencyFormat($item->total, 'CLP', true) }}</span>
+                        </div>
+                        <span class="text-muted">{{ $item->qty }} Unidad(es)</span>
+                        @endforeach
+                    </li>
+                    <li class="list-group-item">
+                        <div class="font-weight-bold">Sub total</div>
+                        <div class="m-0">{{ currencyFormat($selectedOrder->sub_total ?? 0, 'CLP', true) }}</div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="font-weight-bold">Descuento</div>
+                        <div class="m-0">{{ currencyFormat($selectedOrder->discount_total ?? 0, 'CLP', true) }}</div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="font-weight-bold">Total</div>
+                        <div class="m-0">{{ currencyFormat($selectedOrder->total ?? 0, 'CLP', true) }}</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    @endisset
 </div>
