@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Invoice;
 use App\Http\Requests\PaymentsRequest;
+use App\Models\Bank;
 use App\Payment;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -115,29 +116,18 @@ class PaymentsCrudController extends CrudController
         $idInvoice = $this->crud->getCurrentEntry()->invoice_id;
         $dataInvoice = Invoice::where('id',$idInvoice)->first();
         $dataPayment = Payment::find($this->crud->getCurrentEntry()->id);
-        $dataPay = $dataPayment;
+        $banks = Bank::get();
 
         $dataInvoice->remaining_amount = $dataPayment->amount_total-$dataPayment->amount_paid;
-
         $data_fee = json_decode(request()->data_fee);
         $cntDataFee = (isset($data_fee))?count($data_fee):null;
-        //$data_payment = json_decode(request()->data_payment);
 
-       /*  if(!is_null($data_fee)){
-            $amountFee = 0;
+        $dataPayment->amount_paid = $dataPayment->amount_paid+request()->amount_payment;
+        if($cntDataFee){
+            $dataPayment->number_fee = $cntDataFee;
+        }
+        $dataPayment->save();
 
-            foreach($data_fee as $dataFee){
-                $amountFee += $dataFee->amount;
-                if($dataFee->date > $dataInvoice->expiry_date){
-                    return 'error';
-                }
-            }
-            if($amountFee > $dataInvoice->total){
-                return 'error';
-            }
-        } */
-
-        //CRUD::setFromDb(); // fields
         CRUD::addField([
             'type' => 'payment.table_invoice',
             'name' => 'totals_card',
@@ -148,10 +138,6 @@ class PaymentsCrudController extends CrudController
             ],
             'tab' => 'Detalle de la factura',
         ]);
-        
-        unset($dataPayment->remaining_amount);
-        $dataPayment->number_fee = $cntDataFee;
-        $dataPayment->save();
 
         CRUD::addField([
             'type' => 'hidden',
@@ -179,6 +165,7 @@ class PaymentsCrudController extends CrudController
                 ],
                 [
                     'name'    => 'status_fee',
+                    'value'    => '1',
                     'type'    => 'hidden',
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
@@ -200,15 +187,36 @@ class PaymentsCrudController extends CrudController
             'name' => 'table_payment',
             'label' => 'Tabla de pago',
             'type' => 'payment.table_payment',
-            'payment' => $dataPay,            
+            'payment' => $dataPayment,            
             'wrapper' => ['class' => 'form-group col-md-12'],
             'tab' => 'Pagos'
         ]);
+        
+        $fees = $this->crud->getCurrentEntry()->data_fee;
+        $firstFee = collect($fees)->sortBy('date')->firstWhere('status_fee',1);   
+        CRUD::addField([
+            'type' => 'hidden',
+            'name' => 'date_fee',
+            'value' => (!is_null($firstFee))?$firstFee['date']:'',
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+    
         CRUD::addField([
             'name' => 'payment_method',
             'label' => 'Método de pago',
             'type' => 'expense.fields_payment_method',
-            'wrapper' => ['class' => 'form-group col-md-6'],
+            'wrapper' => ['class' => 'col-md-6'],
+            'attributes' => ['class' => 'select-payment-method'],
+            'fake' => true,
+            'store_in' => 'data_payment',
+            'tab' => 'Pagos'
+        ]);
+        CRUD::addField([
+            'name' => 'status_payment',
+            'type' => 'hidden',
+            'value' => '1',
             'attributes' => ['class' => 'select-payment-method'],
             'fake' => true,
             'store_in' => 'data_payment',
@@ -230,6 +238,8 @@ class PaymentsCrudController extends CrudController
             'name'    => 'amount_payment',
             'type'    => 'number',
             'label'   => 'Monto',
+            'value'   => (!is_null($firstFee))?$firstFee['amount']:'',
+            'attributes' => ['readonly' => 'readonly'],
             'wrapper' => ['class' => 'form-group col-md-6 d-none input-ef input-ch input-tc input-tr input-pcc input-payment'],
             'fake' => true,
             'store_in' => 'data_payment',
@@ -308,4 +318,5 @@ class PaymentsCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
 }

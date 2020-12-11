@@ -36,22 +36,6 @@
                         <span class="text-muted">${{$field['invoice']->remaining_amount }} </span>
                     </div>
                 </li> 
-                <li id="iva-container" class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div>
-                        <h6 class="my-0">Saldo total del cliente</h6>
-                    </div>
-                    <div>
-                        <span class="text-muted">$0</span>
-                    </div>
-                </li> 
-                <li id="retencion-container" class="list-group-item d-flex justify-content-between lh-condensed">
-                    <div>
-                        <h6 class="my-0">Deuda total del cliente</h6>
-                    </div>
-                    <div>
-                        <span class="text-muted">$0</span>
-                    </div>
-                </li>
             </ul>
         </div>
     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use App\Models\Invoice;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 use function GuzzleHttp\json_decode;
 
@@ -15,7 +16,6 @@ class PaymentsRequest extends FormRequest
      *
      * @return bool
      */
-    public $idInvoice;
 
     public function authorize()
     {
@@ -28,50 +28,43 @@ class PaymentsRequest extends FormRequest
      *
      * @return array
      */
+   
     protected function prepareForValidation() 
     {
         $this->idInvoice = $this->invoice_id;
-        $dataPayment = json_decode($this->data_payment,true);
         $dataFee = json_decode($this->data_fee,true);
-        //dd($this->data_fee,$this->invoice_id);
         $forValidation = [];
         $forValidationPay = [];
         foreach ($dataFee as $attrs) {
             $forValidation[] = (array) $attrs;
         }
-        foreach ($dataPayment as $attrs) {
-            $forValidationPay[] = (array) $attrs;
-        } 
+   
         $this->merge([
             'data_fee_validation' => $forValidation,
-            'data_payment_validation' => $forValidationPay,
+            'invoice_id' => $this->invoice_id,
+            //'data_payment_validation' => $forValidationPay,
             //'data_pay_counter' => count($dataFee)
         ]);
     }
 
     public function rules()
     {
-        $dataInvoice = (isset($this->invoice_id))?Invoice::find($this->invoice_id)->select('expiriy_date'):now();
+
         //dd($dataInvoice,$this->invoice_id,$this->data_fee);
         $countDataFee = (isset($this->data_fee))?count(json_decode($this->data_fee,true)):1;
         return [
             //'data_pay_counter' => 'gte:0|lt:'.$countDataFee,
-            //'data_fee_validation.*.date' => 'before_or_equal:'.$dataInvoice->expiriy_date,
+            /* 'data_fee_validation.*.date' =>  Rule::exists('invoices')->where(function($q){
+                $dataInvoice = Invoice::find($this->invoice_id)->select('expiriy_date');
+               //logger($dataInvoice);
+                //dd($dataInvoice);
+            }), */
             'data_fee_validation.*.amount' => 'gte:0|required',
-            'data_fee_validation.*.date' => 'required',
-            'data_payment_validation.*.date' => 'date',
+           // 'data_fee_validation.*.date' => 'required',
+            
+            //'data_payment_validation.*.date' => 'date',
             //'data_payment_validation.*.amount_payment' => 'required|numeric',
            
-            /*
-            'data_payment' => [
-                'required',
-                function ($attribute, $value, $fail) {
-                    $options = json_decode($value);
-                    if($options[0]->payment_method == '' || $options[0]->amount_payment == ''){
-                        return $fail('Los campos Método de Pago y Monto son obligatorios');
-                    }
-                    
-            }], */
         ];
     }
 
