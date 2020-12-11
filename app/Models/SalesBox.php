@@ -46,6 +46,11 @@ class SalesBox extends Model
         return $this->hasMany(SalesBoxLog::class);
     }
 
+    public function calculateClosingAmount()
+    {
+        return $this->logs()->sum('amount') + $this->opening_amount;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

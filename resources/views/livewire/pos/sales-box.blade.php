@@ -2,7 +2,6 @@
     wire:ignore.self
     class="modal fade"
     id="showSaleBoxModal"
-    id="showSaleBoxModal"
     tabindex="-1"
     role="dialog"
     aria-labelledby="SaleBoxModalLabel"
@@ -26,6 +25,7 @@
                 <form>
                     @if ($isSaleBoxOpen)
                         <p class="text-uppercase font-weight-bold">Monto iniciado: <span class="ml-2 text-primary">{{ currencyFormat($saleBox->opening_amount ?? 0, 'CLP', true) }}</span></p>
+                        <p class="text-uppercase font-weight-bold">Monto fin: <span class="ml-2 text-primary">{{ currencyFormat($saleBox->calculateClosingAmount() ?? 0, 'CLP', true) }}</span></p>
                         <p class="text-uppercase font-weight-bold">Inicio: <span class="ml-2 text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</span></p>
                         <p class="text-uppercase font-weight-bold">Cierre: <span class="ml-2 text-primary">{{ now()->translatedFormat('j/m/Y - g:i a') }}</span></p>
                         <div class="text-right">
