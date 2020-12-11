@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="card px-1 py-3">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
