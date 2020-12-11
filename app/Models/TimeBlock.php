@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -84,7 +85,12 @@ class TimeBlock extends Model
 
     public function getNameWithTimeAttribute()
     {
-        return $this->name . ' (' . $this->start_time . ' - ' . $this->end_time . ')';
+        $start_time = new DateTime($this->start_time);
+        $start_time = $start_time->format('h:i A');
+        $end_time = new DateTime($this->end_time);
+        $end_time = $end_time->format('h:i A');
+
+        return $this->name . ' (' . $start_time . ' - ' . $end_time . ')';
     }
 
     /*

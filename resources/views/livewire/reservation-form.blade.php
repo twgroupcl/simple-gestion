@@ -72,7 +72,7 @@
                     type="submit" 
                     class="btn btn-primary btn-lg btn-block"
                 >
-                    Solicitar reservación
+                    Solicitar reserva
                 </button>
             </div>
         </div>

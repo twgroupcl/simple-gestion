@@ -38,7 +38,7 @@ class ReservationRequestCreated extends Mailable
 
         if ($this->receiver === 1) {
             $this->title= 'Tienes una nueva solicitud de reserva';
-            $this->text = 'El cliente <strong>' . $this->reservationRequest->customer->full_name . '</strong> ha realizado una solicitud de reservación: <br><br>
+            $this->text = 'El cliente <strong>' . $this->reservationRequest->customer->full_name . '</strong> ha realizado una solicitud de reserva: <br><br>
                         Fecha de reserva: '. $reservationRequest->date . ' <br>
                         Servicio: '. $reservationRequest->service->name . ' <br>
                         Bloque horario: '. $reservationRequest->timeblock->name_with_time . ' <br><br>
