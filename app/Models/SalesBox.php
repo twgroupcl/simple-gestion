@@ -30,6 +30,11 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function calculateClosingAmount()
+    {
+        return $this->logs()->sum('amount') + $this->opening_amount;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -46,16 +51,22 @@ class SalesBox extends Model
         return $this->hasMany(SalesBoxLog::class);
     }
 
-    public function calculateClosingAmount()
-    {
-        return $this->logs()->sum('amount') + $this->opening_amount;
-    }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    public function scopeClosed($query)
+    {
+        return $query->where('closed_at', '!=', null);
+    }
+
+    public function scopeOpened($query)
+    {
+        return $query->where('opened_at', '!=', null)
+                    ->where('closed_at', null);
+    }
 
     /*
     |--------------------------------------------------------------------------

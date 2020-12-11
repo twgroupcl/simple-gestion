@@ -125,14 +125,17 @@ class Order extends Model
             $tmpAddressData = is_object($tmpAddressData)
             ? $tmpAddressData
             : json_decode($tmpAddressData);
+            if(!is_null($tmpAddressData)) {
+                $item = [
+                    'addressShipping' => json_decode($tmpAddressData->addressShipping),
+                    'addressInvoice' => json_decode($tmpAddressData->addressInvoice),
+                ];
+                $addressData[] = $item;
 
-            $item = [
-                'addressShipping' => json_decode($tmpAddressData->addressShipping),
-                'addressInvoice' => json_decode($tmpAddressData->addressInvoice),
-            ];
-            $addressData[] = $item;
-
-            return $item;
+                return $item;
+            } else {
+                return null;
+            }
         }
     }
 
