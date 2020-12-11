@@ -8,6 +8,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\Product;
+use App\Models\SalesBox;
+use App\Models\Seller;
 use Backpack\Settings\app\Models\Setting;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -160,8 +162,13 @@ class Cart extends Component
             $orderpayment->save();
 
             //Add register to box sales
-            //$salebox = new SalesBox();
-
+            $currentSeller = Seller::firstWhere('user_id', backpack_user()->id);
+            $salebox = $currentSeller->sales_boxes()->latest()->first();
+            $salebox->logs()->create([
+                'order_id' => $order->id,
+                'amount' => $order->total,
+                'event' => 'Nueva orden generada',
+            ]);
 
 
             $this->clearCart();
@@ -170,7 +177,7 @@ class Cart extends Component
         } else {
             $this->emit('showToast', 'Error', 'Ocurrio un error al registrar el pago.', 3000, 'error');
         }
-
+// dd($salebox, $salebox->logs, $order);
     }
 
     protected function clearCart(){

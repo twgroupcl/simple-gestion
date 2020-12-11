@@ -13,10 +13,12 @@ class SalesBoxObserver
         ]);
     }
 
-    public function updated(SalesBox $salesBox)
+    public function updating(SalesBox $salesBox)
     {
-        $salesBox->logs()->create([
-            'event' => 'Caja cerrada',
-        ]);
+        if ($salesBox->isDirty('closed_at')) {
+            $salesBox->logs()->create([
+                'event' => 'Caja cerrada',
+            ]);
+        }
     }
 }
