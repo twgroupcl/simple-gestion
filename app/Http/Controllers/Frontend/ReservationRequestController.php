@@ -9,6 +9,9 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\ReservationRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReservationRequestCreated;
+use Illuminate\Database\QueryException;
 
 class ReservationRequestController extends Controller
 {
@@ -46,13 +49,25 @@ class ReservationRequestController extends Controller
             return redirect()->route('reservation-request.index', ['company' => $company])->with('error', 'El RUT no pertenece a ningún cliente');
         }
 
-        ReservationRequest::create([
-            'customer_id' => $customer->id,
-            'date' => $request['date'],
-            'service_id' => $request['service_id'],
-            'time_block_id' => $request['time_block_id'],
-            'company_id' => $company->id,
-        ]);
+        try {
+            $reservation = ReservationRequest::create([
+                'customer_id' => $customer->id,
+                'date' => $request['date'],
+                'service_id' => $request['service_id'],
+                'time_block_id' => $request['time_block_id'],
+                'company_id' => $company->id,
+            ]);
+        } catch(QueryException $exception) {
+            return redirect()->route('reservation-request.index', ['company' => $company])->with('error', 'Ups! parece que ocurrió un error. Inténtalo nuevamente.');
+        }
+
+        $adminUsers = $company->getBusinessAdminUsers();
+        
+        foreach ($adminUsers as $adminUser) {
+            Mail::to($adminUser->email)->send(new ReservationRequestCreated(1, $reservation));
+        }
+
+        Mail::to($customer->email)->send(new ReservationRequestCreated(2, $reservation));
 
         return redirect()->route('reservation-request.index', ['company' => $company])->with('success', 'Tu solicitud fue recibida con éxito. Nos comunicaremos contigo en la brevedad posible.');
     }

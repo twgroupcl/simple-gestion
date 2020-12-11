@@ -1,11 +1,11 @@
 @extends('layouts.gym.base')
 
 @section('title')
-Solicitar reservación
+Solicitar reserva
 @endsection
 
 @section('header-title')
-Solicitar reservación
+Solicitar reserva
 @endsection
 
 @section('content')

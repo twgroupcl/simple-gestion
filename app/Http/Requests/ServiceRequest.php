@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ServiceRequest extends FormRequest
@@ -27,7 +28,7 @@ class ServiceRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'code' => 'required',
+            'code' => ['required', Rule::unique('services')->ignore($this->id),],
             'status' => 'required',
         ];
     }
@@ -54,7 +55,8 @@ class ServiceRequest extends FormRequest
     public function messages()
     {
         return [
-            '*.required' => 'El campo :attribute es requerido'
+            '*.required' => 'El campo :attribute es requerido',
+            '*.unique' => 'El :attribute ya se encuentra en uso',
         ];
     }
 }

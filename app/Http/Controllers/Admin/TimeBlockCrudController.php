@@ -45,6 +45,8 @@ class TimeBlockCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->customFilters();
+
         CRUD::addColumn([
             'name' => 'name',
             'label' => 'Nombre',
@@ -97,6 +99,7 @@ class TimeBlockCrudController extends CrudController
             'name' => 'code',
             'label' => 'Codigo',
             'type' => 'text',
+            'default' => generateUniqueModelCodeAttribute(TimeBlock::class, auth()->user()->companies()->first()->id)
         ]);
         
         CRUD::addField([
@@ -149,7 +152,6 @@ class TimeBlockCrudController extends CrudController
             });
         }
 
-        // filter by search term
         if ($search_term) {
             $results = $options->whereRaw('name like ?', '%'.strtolower($search_term).'%')->paginate(10);
         } else {
@@ -157,5 +159,29 @@ class TimeBlockCrudController extends CrudController
         }
 
         return $options->paginate(10);
+    }
+
+    private function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'select2',
+            'name'  => 'name',
+            'label' => 'Nombre',
+        ], function() {
+            return TimeBlock::all()->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'id', $value);
+        });
+
+        CRUD::addFilter([
+            'name'  => 'status',
+            'type'  => 'dropdown',
+            'label' => 'Estado'
+        ], [
+            0 => 'Inactivo',
+            1 => 'Activo',
+        ], function($value) {
+            $this->crud->addClause('where', 'status', $value);
+        });
     }
 }
