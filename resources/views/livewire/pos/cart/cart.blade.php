@@ -66,7 +66,7 @@
                         @endif
                     </button>
 
-                    <button class="btn btn-danger btn-block " onclick="changeViewMode('paymentView')" @if($total <= 0 || is_null($customer) ) disabled @endif>Pagar
+                    <button class="btn btn-danger btn-block " id="btn-pay" @if($total <= 0 || is_null($customer) ) disabled @endif>Pagar
                     </button>
 
                 </div>

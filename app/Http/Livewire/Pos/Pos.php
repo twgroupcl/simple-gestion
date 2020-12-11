@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire\Pos;
 
-use App\Models\SaleBox;
-use App\Models\SalesBox;
 use App\Models\Seller;
 use Livewire\Component;
 
@@ -11,6 +9,7 @@ class Pos extends Component
 {
     public $seller;
     public $viewMode;
+    public $cash;
 
     protected $listeners = [
         'viewModeChanged' => 'setView',
@@ -30,5 +29,11 @@ class Pos extends Component
     public function setView($view = null)
     {
         $this->viewMode = $view;
+    }
+
+    public function updateCash($value)
+    {
+        $this->cash = $value;
+        $this->emit('cart.confirmPayment', $value);
     }
 }
