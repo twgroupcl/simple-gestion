@@ -72,6 +72,7 @@ Route::group([
     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
     Route::post('api/getPlans', 'PlansCrudController@getPlans');
     Route::post('api/getPlanById', 'PlansCrudController@getPlanById');
+    Route::get('/api/timeblocks/get-by-service', 'TimeBlockCrudController@getTimeblocksByService');
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
@@ -83,9 +84,11 @@ Route::group([
     Route::crud('customersupport', 'CustomerSupportCrudController');
 
     Route::crud('customerattendance', 'CustomerAttendanceCrudController');
+    Route::crud('service', 'ServiceCrudController');
+    Route::crud('timeblock', 'TimeBlockCrudController');
+   
+
+    Route::crud('reservationrequest', 'ReservationRequestCrudController');
 }); // this should be the absolute last line of this file
-Route::post('admin/payment/subscription/result', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionResultPayment')->name('payment.result');
-Route::post('admin/payment/subscription/detail/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionDetailPayment')->name('payment.detail');
-Route::post('/send-email-subscription', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@sendEmailSubscription');
 
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');

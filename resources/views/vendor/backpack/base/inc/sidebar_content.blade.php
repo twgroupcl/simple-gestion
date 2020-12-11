@@ -153,3 +153,15 @@
 </li>
 @endcanany
 
+<li class="nav-item nav-dropdown">
+        <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-dumbbell"></i> Gimnasio</a>
+        <ul class="nav-dropdown-items">
+            @can('support.list')
+            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('service') }}'><i class='nav-icon la la-skiing-nordic'></i> Servicios</a></li>
+            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('timeblock') }}'><i class='nav-icon la la-map'></i> Bloques horarios</a></li>
+            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('reservationrequest') }}'><i class='nav-icon la la-calendar-alt'></i>Reservaciones</a></li>
+            @endcan
+        </ul>
+    </li>
+
+
