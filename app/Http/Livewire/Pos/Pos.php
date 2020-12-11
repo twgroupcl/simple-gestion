@@ -13,7 +13,6 @@ class Pos extends Component
 
     protected $listeners = [
         'viewModeChanged' => 'setView',
-        'foo' => 'foo',
     ];
 
     public function render()
@@ -32,13 +31,9 @@ class Pos extends Component
         $this->viewMode = $view;
     }
 
-    public function foo()
-    {
-        dd($this->cash);
-    }
-
     public function updateCash($value)
     {
         $this->cash = $value;
+        $this->emit('cart.confirmPayment', $value);
     }
 }

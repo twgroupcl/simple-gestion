@@ -134,7 +134,7 @@
                         </table>
                     </div>
                     <div class='card-body'>
-                        <button class="btn btn-danger btn-block " id="confirm-pay" wire:click="$emit('foo')" >Confirmar pago
+                        <button class="btn btn-danger btn-block " id="confirm-pay">Confirmar pago
                         </button>
                     </div>
                 </div>
@@ -166,6 +166,24 @@
         @livewire('pos.customer.create-customer')
     </div>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-confirm-pay">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Confirmar</h4>
+             </div>
+             <div class="modal-body">
+                <p>Este proceso generará una nueva orden y una factura electrónica.</p>
+             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal-btn-yes">Si</button>
+                <button type="button" class="btn btn-default" id="modal-btn-no">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert" role="alert" id="result"></div>
 @livewire('pos.sales-box', ['seller' => $seller])
 </div>
 
@@ -301,22 +319,36 @@
 
 <script>
     document.addEventListener('livewire:load', function () {
-        // Get the value of the "count" property
-        // var someValue = @this.count
 
-        // Set the value of the "count" property
-        // @this.count = 5
+        const modalConfirm = function(callback){
 
-        // Call the increment component action
-        // @this.increment()
+            $("#confirm-pay").on("click", function(){
+                $("#modal-confirm-pay").appendTo("body").modal('show');
+            });
 
+            $("#modal-btn-yes").on("click", function(){
+                callback(true);
+                $("#modal-confirm-pay").modal('hide');
+            });
 
-        // Run a callback when an event ("foo") is emitted from this component
-        @this.on('foo', () => {
-            var totalCash = $('.total-cash').text()
+            $("#modal-btn-no").on("click", function(){
+                callback(false);
+                $("#modal-confirm-pay").modal('hide');
+            });
+        };
 
-            @this.updateCash(totalCash)
-        })
+        modalConfirm(async function(confirm){
+            if(confirm){
+                let totalCash = $('.total-cash').text()
+                totalCash = totalCash.replace('$','')
+                totalCash = totalCash.replace(/\./g,'')
+                totalCash = parseFloat(totalCash)
+
+                await @this.updateCash(totalCash)
+                $('.payment-view').hide();
+                $('.customer-view').hide();
+            }
+        });
     })
 </script>
 @endpush
