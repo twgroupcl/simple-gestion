@@ -50,7 +50,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Cerrar
                 </button>
-                <button wire:click="addProductToCart()" type="button" class="btn btn-primary @if(! $enableAddButton) disabled @endif">Agregar al carrito</button>
+                <button wire:click="addProductToCart()" type="button" class="btn btn-primary " @if(! $enableAddButton) disabled @endif>Agregar al carrito</button>
             </div>
         </div>
     @endisset

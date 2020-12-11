@@ -92,6 +92,8 @@ class Cart extends Component
         // Save cart to session
         session()->put(['user.pos.cart' => json_encode($cart)]);
 
+       // $this->emitUp('pos.updateCart');
+
     }
 
     public function updateQuantity(Product $product, $qty)
@@ -183,6 +185,7 @@ class Cart extends Component
     protected function clearCart(){
         //Clear cart
         session()->put(['user.pos.cart' => null]);
+        $this->product = [];
         $this->total = 0;
         $this->subtotal = 0;
         $this->cash = 0;

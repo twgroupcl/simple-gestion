@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" wire:ignore.self>
     @livewire('pos.navbar')
 
     <div class="row">
@@ -45,22 +45,28 @@
             <div class="row">
                 <div class="col-12"><i class="la la-close float-right" id="close-payment"></i></div>
             </div>
-            <div class="row customer-view " >
+            <div class="row  ">
                 <div class='card text-left col-md-12'>
                     <div class="row">
                         <div class="col-sm-12">
-                        <div class="">
-                            <div class="card-body">
-                            {{-- <h5 class="card-title">{{$selectedCustomer->first_name}}</h5>
-                            <p class="card-text">{{$selectedCustomer->email}}</p>
-                            <p class="card-text">{{$selectedCustomer->uid}}</p> --}}
-                            <h5 class="card-title"><span class="customer-firstname"></span> <span class="customer-lastname"></span></h5>
-                            <p class="card-text"><span class="customer-email"></span></p>
-                            <p class="card-text"><span class="customer-uid"></span></p>
+                            <div class="">
+                                <div class="card-body">
+                                    {{-- <h5 class="card-title">
+                                        {{ $selectedCustomer->first_name }}
+                                    </h5>
+                                    <p class="card-text">{{ $selectedCustomer->email }}</p>
+                                    <p class="card-text">{{ $selectedCustomer->uid }}</p>
+                                    --}}
+                                    <h5 class="card-title"><span class="customer-firstname"></span> <span
+                                            class="customer-lastname"></span></h5>
+                                    <p class="card-text"><span class="customer-email"></span></p>
+                                    <p class="card-text"><span class="customer-uid"></span></p>
+                                </div>
+                                {{-- <a href="#" class="btn btn-outline-primary mb-3">Pago
+                                    en efectivo</a> --}}
+                                {{-- <a href="#" class="btn btn-outline-primary mb-3">Pago
+                                    con transbank</a> --}}
                             </div>
-                            {{-- <a href="#" class="btn btn-outline-primary mb-3">Pago en efectivo</a> --}}
-                            {{-- <a href="#" class="btn btn-outline-primary mb-3">Pago con transbank</a> --}}
-                        </div>
                         </div>
                     </div>
 
@@ -95,7 +101,7 @@
                                 <h4>Cambio</h4>
                             </div>
                             <div class="col-6 text-danger text-right">
-                               <h4> <span class="total-change"></span></h4>
+                                <h4> <span class="total-change"></span></h4>
                             </div>
                         </div>
                     </div>
@@ -134,7 +140,7 @@
                         </table>
                     </div>
                     <div class='card-body'>
-                        <button class="btn btn-danger btn-block " id="confirm-pay">Confirmar pago
+                        <button class="btn btn-danger btn-block " id="confirm-pay" disabled>Confirmar pago
                         </button>
                     </div>
                 </div>
@@ -166,15 +172,16 @@
         @livewire('pos.customer.create-customer')
     </div>
 </div>
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-confirm-pay">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+    id="modal-confirm-pay">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Confirmar</h4>
-             </div>
-             <div class="modal-body">
+            </div>
+            <div class="modal-body">
                 <p>Este proceso generará una nueva orden y una factura electrónica.</p>
-             </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="modal-btn-yes">Si</button>
                 <button type="button" class="btn btn-default" id="modal-btn-no">No</button>
@@ -188,7 +195,9 @@
 </div>
 
 @push('after_scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/currencyformatter.js/2.2.0/currencyFormatter.min.js" integrity="sha512-zaNuym1dVrK6sRojJ/9JJlrMIB+8f9IdXGzsBQltqTElXpBHZOKI39OP+bjr8WnrHXZKbJFdOKLpd5RnPd4fdg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/currencyformatter.js/2.2.0/currencyFormatter.min.js"
+        integrity="sha512-zaNuym1dVrK6sRojJ/9JJlrMIB+8f9IdXGzsBQltqTElXpBHZOKI39OP+bjr8WnrHXZKbJFdOKLpd5RnPd4fdg=="
+        crossorigin="anonymous"></script>
 
     <script>
         var currentView = 'productList';
@@ -198,9 +207,6 @@
             currentView = view;
         }
 
-    </script>
-
-    <script>
         const showCustomerModal = () => {
             $('#showCustomerModal').appendTo("body").modal('show');
         }
@@ -223,46 +229,7 @@
 
         $('.payment-view').hide();
 
-        $('.customer-view').hide();
-
-        $('#btn-pay').click(function() {
-            //load cart
-
-            @php
-            $cart = json_decode(session()->get('user.pos.cart'));
-            $cartTotal = currencyFormat($cart-> total ?? 0, 'CLP', true);
-
-            $customer = json_decode(session()->get('user.pos.selectedCustomer'));
-
-            @endphp
-            currentCart = JSON.parse({!!json_encode(session()-> get('user.pos.cart'), JSON_FORCE_OBJECT) !!})
-
-
-            @if(!is_null($customer))
-                //show customer
-                $('.customer-firstname').text('{{$customer->first_name}}')
-                $('.customer-lastname').text('{{$customer->last_name}}')
-                $('.customer-email').text('{{$customer->email}}')
-                $('.customer-uid').text('{{$customer->uid}}')
-                $('.customer-view').show();
-            @endif
-            //show total cart
-            currentCartTotal = '{{ $cartTotal }}'
-
-
-
-            $('.total-cart').append(currentCartTotal)
-            $('.main-view').hide();
-            $('.payment-view').show();
-
-
-
-        });
-        $('#close-payment').click(function() {
-            $('.main-view').show();
-            $('.payment-view').hide();
-        });
-
+        //$('.customer-view').hide();
         function chr(value) {
 
             // totalCart = $('.total-cart')
@@ -274,12 +241,15 @@
 
             tmpCash = clearCurrency(spanCash)
 
-            switch(value){
-                case '<<' :  tmpCash = tmpCash.slice(0, -1)
+            switch (value) {
+                case '<<':
+                    tmpCash = tmpCash.slice(0, -1)
                     break;
-                case 'C' :  tmpCash = 0
+                case 'C':
+                    tmpCash = 0
                     break;
-                default: tmpCash += value
+                default:
+                    tmpCash += value
                     break;
             }
 
@@ -287,68 +257,120 @@
             tmpCashFloat = parseFloat(tmpCash)
             tmpTotalCartFloat = parseFloat(tmpTotalCart)
 
-            if( tmpCashFloat >= tmpTotalCartFloat){
-                tmpChange = calculeChange( tmpCashFloat, tmpTotalCartFloat)
+            if (tmpCashFloat >= tmpTotalCartFloat) {
+                tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat)
 
                 spanChange.text(formatCurrency(tmpChange))
                 confirmPay.removeAttr('disabled');
-            }else{
+            } else {
                 spanChange.text(formatCurrency(0))
                 confirmPay.prop("disabled", true);
             }
         }
 
-        function formatCurrency(value){
-            let options = { style: 'currency', currency: 'CLP' };
+        function formatCurrency(value) {
+            let options = {
+                style: 'currency',
+                currency: 'CLP'
+            };
             let numberFormat = new Intl.NumberFormat('es-CL', options);
             return numberFormat.format(value);
         }
 
-        function calculeChange(totalCash, totalCart){
+        function calculeChange(totalCash, totalCart) {
             return totalCash - totalCart
         }
 
-        function clearCurrency(value){
+        function clearCurrency(value) {
             tmpValue = value.text()
-            tmpValue = tmpValue.replace('$','')
-            tmpValue = tmpValue.replace(/\./g,'')
+            tmpValue = tmpValue.replace('$', '')
+            tmpValue = tmpValue.replace(/\./g, '')
             return tmpValue
         }
 
     </script>
 
-<script>
-    document.addEventListener('livewire:load', function () {
 
-        const modalConfirm = function(callback){
 
-            $("#confirm-pay").on("click", function(){
-                $("#modal-confirm-pay").appendTo("body").modal('show');
+    <script>
+        document.addEventListener('livewire:load', function() {
+
+
+
+
+            $('#btn-pay').click(async function() {
+
+
+
+
+                customer = await @this.getSelectedCustomer()
+
+                tmpTotalCart = await @this.getTotalCart()
+
+                customer = JSON.parse(customer)
+
+
+
+                if (customer != null) {
+
+                    //show customer
+                    $('.customer-firstname').text(customer.first_name)
+                    $('.customer-lastname').text(customer.last_name)
+                    $('.customer-email').text(customer.email)
+                    $('.customer-uid').text(customer.uid)
+
+                }
+
+
+                totalCart.text(tmpTotalCart)
+
+                $('.main-view').hide();
+                $('.payment-view').show();
+
+
+
             });
 
-            $("#modal-btn-yes").on("click", function(){
-                callback(true);
-                $("#modal-confirm-pay").modal('hide');
-            });
 
-            $("#modal-btn-no").on("click", function(){
-                callback(false);
-                $("#modal-confirm-pay").modal('hide');
-            });
-        };
-
-        modalConfirm(async function(confirm){
-            if(confirm){
-                let totalCash = $('.total-cash').text()
-                totalCash = totalCash.replace('$','')
-                totalCash = totalCash.replace(/\./g,'')
-                totalCash = parseFloat(totalCash)
-
-                await @this.updateCash(totalCash)
+            $('#close-payment').click(function() {
+                $('.main-view').show();
                 $('.payment-view').hide();
-                $('.customer-view').hide();
-            }
-        });
-    })
-</script>
+            });
+
+
+
+            const modalConfirm = function(callback) {
+
+                $("#confirm-pay").on("click", function() {
+                    $("#modal-confirm-pay").appendTo("body").modal('show');
+                });
+
+                $("#modal-btn-yes").on("click", function() {
+                    callback(true);
+                    $("#modal-confirm-pay").modal('hide');
+                });
+
+                $("#modal-btn-no").on("click", function() {
+                    callback(false);
+                    $("#modal-confirm-pay").modal('hide');
+                });
+            };
+
+
+
+            modalConfirm(async function(confirm) {
+                if (confirm) {
+                    let totalCash = $('.total-cash').text()
+                    totalCash = totalCash.replace('$', '')
+                    totalCash = totalCash.replace(/\./g, '')
+                    totalCash = parseFloat(totalCash)
+
+                    await @this.updateCash(totalCash)
+                    $('.payment-view').hide();
+                    // $('.customer-view').hide();
+                }
+            });
+        })
+
+    </script>
 @endpush

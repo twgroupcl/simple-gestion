@@ -10,9 +10,13 @@ class Pos extends Component
     public $seller;
     public $viewMode;
     public $cash;
+    protected $cart;
+    protected $customer;
 
     protected $listeners = [
         'viewModeChanged' => 'setView',
+
+
     ];
 
     public function render()
@@ -35,5 +39,19 @@ class Pos extends Component
     {
         $this->cash = $value;
         $this->emit('cart.confirmPayment', $value);
+    }
+
+
+    public function getTotalCart()
+    {
+        $this->cart =  json_decode(session()->get('user.pos.cart'));
+
+        return currencyFormat($this->cart->total ?? 0, 'CLP', true) ;
+    }
+    public function getSelectedCustomer()
+    {
+        $this->customer =  session()->get('user.pos.selectedCustomer');
+
+        return json_encode($this->customer);
     }
 }
