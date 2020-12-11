@@ -14,13 +14,14 @@
                 <tbody>
                     @php
                         $arrData = (!is_null($field['payment']->data_payment))?json_decode($field['payment']->data_payment,true):null;
+                        $arr = (isset($arrData->payment_method))?json_decode($arrData['data_payment']):null;  
                     @endphp
                     
-                    @if($arrData != null)
-                        @if(array_key_exists('amount_payment',$arrData))
+                    @if($arr != null)
+                        @if($arr->amount_payment != null)
                             <tr class="text-center">
                                 <td>
-                                    @switch($arrData['payment_method'])
+                                    @switch($arr->payment_method)
                                         @case('EF')
                                             Efectivo
                                         @break
@@ -47,13 +48,12 @@
                                         @break
                                     @endswitch
                                 </td>
-                                <td>${{ $arrData['amount_payment'] }}</td>
-                                <td>{{ $arrData['date_now'] }}</td>
-                                <td>{{ $comment = ($arrData['comment'])?$arrData['comment']:'S/N' }}</td>
+                                <td>${{ $arr->amount_payment }}</td>
+                                <td>{{ $arr->date_now }}</td>
+                                <td>{{ $comment = ($arr->comment)?$arr->comment:'S/N' }}</td>
                             </tr>
                         @else    
                             @foreach($arrData as $data)
-                                
                                 <tr class="text-center">
                                     <td>MP</td>
                                     <td>${{ $data['amount_payment'] }}</td>
@@ -61,7 +61,6 @@
                                     <td>{{ $comment = ($data['comment'])?$data['comment']:'S/N' }}</td>
                                 </tr>
                             @endforeach
-                        
                         @endif
                     @else
                         <tr class="text-center">

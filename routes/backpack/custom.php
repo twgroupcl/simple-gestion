@@ -67,6 +67,7 @@ Route::group([
      Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
      Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
      Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
+     Route::post('api/payment/form', 'PaymentCrudController@formPayment');
      Route::crud('order', 'OrderCrudController');
      Route::crud('faqanswer', 'FaqAnswerCrudController');
      Route::crud('faqtopic', 'FaqTopicCrudController');

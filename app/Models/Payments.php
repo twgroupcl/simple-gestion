@@ -33,6 +33,7 @@ class Payments extends Model
     protected $casts = [
         'data_fee' => 'array',
         'data_payment' => 'array',
+        'data_pay' => 'array',        
     ];
 
     /*
