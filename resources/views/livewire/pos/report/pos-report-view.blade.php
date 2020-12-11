@@ -5,10 +5,15 @@
             <div class="list-group">
                 @foreach ($orders as $order)
                 <a href="#" wire:click="selectOrder({{ $order->id }})" class=" list-group-item text-decoration-none">
-                    <div class="d-flex justify-content-between" >
+                    {{-- <div class="d-flex justify-content-between" >
                         <span class="text-danger"># {{ $order->id }} </span>
                         <span class="">{{ $order->created_at->format('j/m/Y - g:i a') }}</span>
                         <span class="font-weight-bold">{{ currencyFormat($order->total, 'CLP', true) }}</span>
+                    </div> --}}
+                    <div class="row">
+                        <div class="col-2 text-danger"># {{ $order->id }}</div>
+                        <div class="col-6">{{ $order->created_at->format('j/m/Y - g:i a') }}</div>
+                        <div class="col-4">{{ currencyFormat($order->total, 'CLP', true) }}</div>
                     </div>
                 </a>
                 @endforeach
@@ -17,7 +22,7 @@
     </div>
     @isset($selectedOrder)
         <div class="col-md-3">
-            <div class="card px-5 py-3">
+            <div class="card px-1 py-3">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <div class="text-muted font-weight-bold"># Orden</div>
@@ -38,8 +43,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5">
-            <div class="card px-5 py-3">
+        <div class="col-md-6">
+            <div class="card px-1 py-3">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <div class="font-weight-bold">Resumen del pedido</div>
@@ -54,15 +59,15 @@
                     </li>
                     <li class="list-group-item">
                         <div class="font-weight-bold">Sub total</div>
-                        <div class="m-0">{{ currencyFormat($selectedOrder->sub_total ?? 0, 'CLP', true) }}</div>
+                        <div class="m-0 text-right">{{ currencyFormat($selectedOrder->sub_total ?? 0, 'CLP', true) }}</div>
                     </li>
                     <li class="list-group-item">
                         <div class="font-weight-bold">Descuento</div>
-                        <div class="m-0">{{ currencyFormat($selectedOrder->discount_total ?? 0, 'CLP', true) }}</div>
+                        <div class="m-0 text-right">{{ currencyFormat($selectedOrder->discount_total ?? 0, 'CLP', true) }}</div>
                     </li>
                     <li class="list-group-item">
                         <div class="font-weight-bold">Total</div>
-                        <div class="m-0">{{ currencyFormat($selectedOrder->total ?? 0, 'CLP', true) }}</div>
+                        <div class="m-0  text-right">{{ currencyFormat($selectedOrder->total ?? 0, 'CLP', true) }}</div>
                     </li>
                 </ul>
             </div>
