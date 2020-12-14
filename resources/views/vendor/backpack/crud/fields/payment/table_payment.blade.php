@@ -14,14 +14,14 @@
                 <tbody>
                     @php
                         $arrData = (!is_null($field['payment']->data_payment))?json_decode($field['payment']->data_payment,true):null;
-                        $arr = (isset($arrData->payment_method))?json_decode($arrData['data_payment']):null;  
+                        //$arr = (isset($arrData->payment_method))?json_decode($arrData['data_payment']):$arrData;  
                     @endphp
                     
-                    @if($arr != null)
-                        @if($arr->amount_payment != null)
+                    @if($arrData != null)
+                        @foreach($arrData as $data)
                             <tr class="text-center">
                                 <td>
-                                    @switch($arr->payment_method)
+                                    @switch($data['payment_method'])
                                         @case('EF')
                                             Efectivo
                                         @break
@@ -48,20 +48,11 @@
                                         @break
                                     @endswitch
                                 </td>
-                                <td>${{ $arr->amount_payment }}</td>
-                                <td>{{ $arr->date_now }}</td>
-                                <td>{{ $comment = ($arr->comment)?$arr->comment:'S/N' }}</td>
+                                <td>${{ $data['amount_payment'] }}</td>
+                                <td>{{ $data['date_now'] }}</td>
+                                <td>{{ $comment = ($data['comment'])?$data['comment']:'S/N' }}</td>
                             </tr>
-                        @else    
-                            @foreach($arrData as $data)
-                                <tr class="text-center">
-                                    <td>MP</td>
-                                    <td>${{ $data['amount_payment'] }}</td>
-                                    <td>{{ $data['date_now'] }}</td>
-                                    <td>{{ $comment = ($data['comment'])?$data['comment']:'S/N' }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
+                        @endforeach
                     @else
                         <tr class="text-center">
                             <td colspan="4"><p>No hay registros</p></td>

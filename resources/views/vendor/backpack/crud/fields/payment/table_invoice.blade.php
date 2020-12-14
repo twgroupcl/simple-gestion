@@ -17,7 +17,7 @@
                         <h6 class="my-0">Total Documento</h6>
                     </div>
                     <div>
-                        <span class="text-muted">{{$field['invoice']->total }}</span>
+                        <span class="text-muted">$ {{$field['invoice']->total }}</span>
                     </div>
                 </li> 
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -25,7 +25,7 @@
                         <h6 class="my-0">Abonado</h6>
                     </div>
                     <div>
-                        <span class="text-muted">${{$field['payment']->amount_paid }}</span>
+                        <span class="text-muted">$ @php echo $amoundPaid = (!is_null($field['payment']->amount_paid))?$field['payment']->amount_paid:0; @endphp</span>
                     </div>
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -33,7 +33,12 @@
                         <h6 class="my-0">Restante</h6>
                     </div>
                     <div>
-                        <span class="text-muted">${{$field['invoice']->remaining_amount }} </span>
+                        <span class="text-muted">                            
+                            $
+                            @php
+                                echo $field['invoice']->total-$field['payment']->amount_paid;
+                            @endphp
+                        </span>
                     </div>
                 </li> 
             </ul>

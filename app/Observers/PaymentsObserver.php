@@ -31,42 +31,40 @@ class PaymentsObserver
 
     public function updating(Payments $payments)
     {
+        $currentDataPayments = Payments::find($payments->id);
+        if (isset($payments->data_payment['payment_method'])) {
 
-        if ($payments->data_payment['payment_method'] != null) { //Solo datos de cuota
-            $tmpDataPayment = ($payments->data_payment['payment_method'])?$payments->getDirty():null;
-            $paymentCurrent = json_decode($tmpDataPayment['data_payment']);
-            $idFee = json_encode(['id_fee' => 1]);
-            $paymentCurrent->id_fee = 1;
-            $payments->data_payment = $paymentCurrent;
-        }else{
-
-        }
-
-
-        /* foreach($payments->data_fee['data_fee'] as $key => $data_fee){
-            if ($payments->data_payment['date_fee'] == $data_fee['date'] && $payments->data_payment['amount_payment'] == $data_fee['amount']) {
-                //$info = ['productos' => ['carro' => ['color' => 'azul']]];
-                $arr = $payments->data_fee['data_fee'][$key];
-                Arr::set($arr, 'status_fee', '2');
-                $payments->data_fee['data_fee'][$key] = $arr;
-                //dd($payments->data_fee['data_fee'][$key]);
+            if($currentDataPayments->data_payment != null){
+                $currentData = $currentDataPayments->data_payment;
+                $keyArr = array_keys($currentData);
+                $endKey = end($keyArr); 
+                $tmpCurrentDataPayment[$endKey+1] = $payments->data_payment;
+                $tmpDataFee[$endKey+1] = $payments->data_fee;
+                $tmpDataFee[$endKey+1]['data_fee'][$tmpCurrentDataPayment[$endKey+1]['id_fee']]['status_fee'] = 2;
+                $tmpCurrentDataPayment[$endKey+1]['id_fee'] = $tmpDataFee[$endKey+1]['data_fee'][$tmpCurrentDataPayment[$endKey+1]['id_fee']]['id_fee'];
+                $arrResult = array_merge($currentData,$tmpCurrentDataPayment);
+                $payments->data_payment = $arrResult;
+                $payments->data_fee = $tmpDataFee[$endKey+1];
+                $payments->amount_paid += $tmpCurrentDataPayment[$endKey+1]['amount_payment']; 
+                if($payments->amount_paid == $payments->amount_total){
+                    $payments->status = 2;
+                }
+            }else{
+                
+                $tmpDataPayment[0] = $payments->data_payment;
+                $tmpDataFee = $payments->data_fee;
+                $tmpDataFee['data_fee'][0]['status_fee'] = 2;
+                $idFee = $tmpDataFee['data_fee'][0]['id_fee'];
+                $tmpDataPayment[0]['id_fee'] = $idFee;
+                $payments->amount_paid = $tmpDataFee['data_fee'][0]['amount'];
+                $payments->data_payment = $tmpDataPayment;          
+                $payments->data_fee = $tmpDataFee;     
             }
+        }else{
+            $paymentData = $payments->data_payment;
+            $paymentData = $currentDataPayments->data_payment;
+            $payments->data_payment = $paymentData;
         }
-        dd($payments->data_payment,$payments->data_fee); */
-
-
-
-        //$data_payment = ($payments->data_payment['date_fee'] != null)?$payments->data_payment:null;
-        //$payments->data_payment = $data_payment;
-        //$payments->save();
-        //$payments->data_payment = $tmpDataPayment;
-       // dd($payments->data_payment['data_payment']);
-        //$tmpCurrentDataPayment = collect($payments->data_payment);
-
-
-        //$tmpCurrentDataPayment->push($tmpDataPayment);
-        //$payments->data_payment = $tmpCurrentDataPayment;
-
     }
 
     /**
