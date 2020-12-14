@@ -78,12 +78,6 @@
 
     <script src="{{ asset('vendor/jquery/dist/jquery.slim.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-
-    {{-- Rut Formatter --}}
-    <script src="{{ asset('js/rut-formatter.js') }}"></script>
-    <script>
-        $('#rut').rut();
-    </script>
     @livewireScripts
     @stack('scripts')
 </body>

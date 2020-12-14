@@ -22,7 +22,7 @@ class Company extends Model
     // public $timestamps = false;
     protected $guarded = ['id'];
     protected $fillable = [
-        'uid', 'name', 'real_name', 'logo', 'unique_hash', 'payment_data', 'status',
+        'uid', 'name', 'real_name', 'slug', 'logo', 'unique_hash', 'payment_data', 'status',
     ];
     // protected $hidden = [];
     // protected $dates = [];

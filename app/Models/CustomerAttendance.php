@@ -51,6 +51,11 @@ class CustomerAttendance extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Service;
 use App\Models\Customer;
 use App\Models\CustomerSegment;
 use App\Models\CustomerAttendance;
@@ -88,6 +89,11 @@ class CustomerAttendanceCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
+            'name' => 'service',
+            'label' => 'Servicio',
+        ]);
+
+        CRUD::addColumn([
             'name' => 'entry_type_accesor',
             'label' => 'Tipo de entrada',
             'type' => 'text',
@@ -156,6 +162,11 @@ class CustomerAttendanceCrudController extends CrudController
             'key' => 'customer_name',
             'attribute' => 'full_name',
             'type' => 'relationship',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'service',
+            'label' => 'Servicio',
         ]);
 
         
@@ -262,6 +273,16 @@ class CustomerAttendanceCrudController extends CrudController
             $this->crud->addClause('whereHas', 'customer.customer_segment', function($query) use ($value) {
                 $query->where('id', $value);
             });
+        });
+
+        CRUD::addFilter([
+            'type'  => 'select2',
+            'name'  => 'service',
+            'label' => 'Servicio',
+        ], function() {
+            return Service::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'service_id', $value);
         });
 
     }

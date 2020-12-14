@@ -45,9 +45,32 @@ Solicitar reserva
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/rut-formatter.js') }}"></script>
 <script>
-    $(document).ready(function () {
-        $('input[name="date"]').datepicker();
+
+    $('#rut').rut();
+
+    let isForeignCheck = $('#is_foreign_checkbox');
+
+    function removeEventListeners(elementId) {
+        let el = document.getElementById(elementId),
+        elClone = el.cloneNode(true);
+        el.parentNode.replaceChild(elClone, el);
+    }
+
+    if (isForeignCheck.prop('checked')) {
+        removeEventListeners('rut')
+    } else {
+        $('#rut').rut();
+    }
+
+    isForeignCheck.change( function() {
+        if (isForeignCheck.prop('checked')) {
+            removeEventListeners('rut')
+        } else {
+            $('#rut').rut();
+        }
     })
+
 </script>
 @endpush

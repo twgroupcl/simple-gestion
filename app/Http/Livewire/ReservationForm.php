@@ -16,6 +16,9 @@ class ReservationForm extends Component
     public $timeblocks = [];
     public $serviceSelected = null;
     public $timeblockPlaceholder;
+    public $checkDeclaracionJurada;
+    public $oldRutValue;
+    public $oldIsForeignValue;
     
     public $errors;
     public $sessionError;
@@ -29,7 +32,8 @@ class ReservationForm extends Component
     {
         $this->company = $company;
 
-        $this->rut = old('rut') ?? '';
+        $this->oldRutValue = old('rut') ?? '';
+        $this->oldIsForeignValue = old('is_foreign') ?? '';
         $this->date = old('date') ?? '';
         $this->serviceSelected = old('service_id') ?? '';
 

@@ -9,6 +9,7 @@ $rutFields = json_encode($field['rut_fields']);
     var rutFields = {!! $rutFields !!};
 
     $(document).ready(function(){
+
         var observer = new MutationObserver(function(mutations, observer) {
             rutFields.forEach(nameField => {
                 if ($('*[data-repeatable-input-name="'+nameField+'"]').length > 0)
