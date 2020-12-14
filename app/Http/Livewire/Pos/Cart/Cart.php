@@ -63,6 +63,7 @@ class Cart extends Component
         : $this->products[$product->id]['qty'] = 1;
 
         $this->products[$product->id]['product'] = $product;
+        $this->products[$product->id]['product']['real_price'] = $product->real_price;
         $this->calculateAmounts();
         $this->emit('item.updatedCustomQty', $product->id, $this->products[$product->id]['qty']);
     }
