@@ -16,6 +16,7 @@ class ReservationForm extends Component
     public $timeblocks = [];
     public $serviceSelected = null;
     public $timeblockPlaceholder;
+    public $checkDeclaracionJurada;
     
     public $errors;
     public $sessionError;
