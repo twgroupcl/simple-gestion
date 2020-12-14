@@ -100,7 +100,7 @@ class Cart extends Component
     {
         $this->products[$product->id]['qty'] = $qty;
         $this->calculateAmounts();
-        $this->emit('payment.updated');
+        // $this->emit('payment.updated');
     }
 
     public function setCustomer(Customer $customer)
