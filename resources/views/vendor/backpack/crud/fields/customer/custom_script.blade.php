@@ -18,6 +18,7 @@
 
         } else {
             $('*[name="uid"]').rut();
+            $('input[name="uid"]').parent().find('label').text('RUT')
             $('input[name="cellphone"]').parent().attr('class', 'form-group col-md-4')
         }
     }
@@ -57,8 +58,6 @@
         foreignField.change( function() {
             checkIsForeing()
         })
-
-
 
     })
 </script>

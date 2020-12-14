@@ -7,14 +7,24 @@
             </div>
             <div class="col">
                 <input 
-                type="text" 
-                class="form-control" 
-                name="rut"
-                placeholder="Ingresa tu RUT"
-                id="rut"
-                wire:model.lazy="rut"
-                required
-            >
+                    type="text" 
+                    class="form-control" 
+                    name="rut"
+                    placeholder="Ingresa tu RUT"
+                    id="rut"
+                    value="{{ $oldRutValue }}"
+                    required
+                >
+                <div class="custom-control custom-checkbox mt-2">
+                    <input 
+                        class="custom-control-input" 
+                        name="is_foreign" 
+                        type="checkbox" 
+                        id="is_foreign_checkbox"
+                        {{ $oldIsForeignValue == 'on' ? 'checked' : '' }}
+                    >
+                    <label class="custom-control-label" for="is_foreign_checkbox">Extranjero</label>
+                </div>
             </div>
         </div>
 

@@ -22,8 +22,11 @@ class ReservationRequestController extends Controller
 
     public function store(Request $request, Company $company)
     {
+        $rutRule = new RutRule($request['is_foreign'] ? true : false);
+        $rut = $request['is_foreign'] ? $request['rut'] : str_replace('.', '', $request['rut']);
+
         $rules = [
-            'rut' => ['required', new RutRule()],
+            'rut' => ['required', $rutRule],
             'date' => 'required|date|after_or_equal:today',
             'service_id' => 'required|exists:services,id',
             'time_block_id' => 'required|exists:time_blocks,id',
@@ -43,10 +46,12 @@ class ReservationRequestController extends Controller
 
         $request->validate($rules, $messages, $attributes);
 
-        $customer = Customer::where('uid', str_replace('.', '', $request['rut']))->where('company_id', $company->id)->first();
+        $customer = Customer::where('uid', $rut)->where('company_id', $company->id)->first();
 
         if (!$customer) {
-            return redirect()->route('reservation-request.index', ['company' => $company])->with('error', 'El RUT no pertenece a ningún cliente');
+            return redirect()->route('reservation-request.index', ['company' => $company])
+                ->with('error', 'El RUT no pertenece a ningún cliente')
+                ->withInput();
         }
 
         try {

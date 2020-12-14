@@ -24,12 +24,15 @@ class AttendanceController extends Controller
     {
         $minutesValidation = 10;
 
-        $customer = Customer::where('uid', str_replace('.', '', $request['rut']))->where('company_id', $company->id)->first();
+        $rut = $request['is_foreign'] ? $request['rut'] : str_replace('.', '', $request['rut']);
+
+        $customer = Customer::where('uid', $rut)->where('company_id', $company->id)->first();
 
         if (!$customer) return redirect()->route('attendance.index', ['company' => $company])->with('error', 'El RUT no pertenece a ningún cliente');
 
         $date = new DateTime();
         $date->sub(new DateInterval('PT' . $minutesValidation . 'M'));
+        
         $validateAttendance = $customer->attendances()->where('attendance_time', '>', $date)->get();
 
         if ($validateAttendance->count() && $request['confirm'] == 0) {

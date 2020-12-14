@@ -32,12 +32,27 @@ Registra tu Check in / Check out
                             value="{{ old('rut') }}"
                             required
                         >
+                        <div class="custom-control custom-checkbox mt-2">
+                            <input 
+                                class="custom-control-input" 
+                                name="is_foreign" 
+                                type="checkbox" 
+                                id="is_foreign_checkbox"
+                                {{ old('is_foreign') == 'on' ? 'checked' : '' }}
+                            >
+                            <label class="custom-control-label" for="is_foreign_checkbox">Extranjero</label>
+                        </div>
                     </div>
                     <div class="form-group col-md-12">
                         <select name="service_id" class="custom-select" style="height: calc(1.5em + 1.5rem + 2px)" required>
                             <option value="" disabled selected>Selecciona un servicio</option>
                             @foreach ($services as $service)
-                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                <option 
+                                    value="{{ $service->id }}"
+                                    {{ old('service_id') == $service->id ? 'selected' : '' }}
+                                >
+                                    {{ $service->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -54,3 +69,34 @@ Registra tu Check in / Check out
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/rut-formatter.js') }}"></script>
+<script>
+
+    $('#rut').rut();
+
+    let isForeignCheck = $('#is_foreign_checkbox');
+
+    function removeEventListeners(elementId) {
+        let el = document.getElementById(elementId),
+        elClone = el.cloneNode(true);
+        el.parentNode.replaceChild(elClone, el);
+    }
+
+    if (isForeignCheck.prop('checked')) {
+        removeEventListeners('rut')
+    } else {
+        $('#rut').rut();
+    }
+
+    isForeignCheck.change( function() {
+        if (isForeignCheck.prop('checked')) {
+            removeEventListeners('rut')
+        } else {
+            $('#rut').rut();
+        }
+    })
+
+</script>
+@endpush
