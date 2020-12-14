@@ -35,7 +35,7 @@
 
                         {{-- Price --}}
                         @if ($selectedChildrenId)
-                            <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->price ?? 0, defaultCurrency(), true) }}</div>
+                            <div class="h3 font-weight-normal text-accent mb-3 mr-1">{{ currencyFormat($currentProduct->real_price ?? 0, defaultCurrency(), true) }}</div>
                         @else
                             <div class="h3 font-weight-normal text-accent mb-1 mr-1">Desde {{currencyFormat($currentPrice, 'CLP', true) }}</div>
                         @endif

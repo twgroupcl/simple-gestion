@@ -79,7 +79,7 @@ class Cart extends Component
         $cart = null;
         $this->subtotal = collect($this->products)->sum(function ($product) {
             // return ($product['product']->price??$product['product']['price']) * $product['qty'];
-            return $product['product']['price'] * $product['qty'];
+            return $product['product']['real_price'] * $product['qty'];
         });
 
         $this->total = $this->subtotal - $this->discount;
