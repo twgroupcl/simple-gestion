@@ -117,16 +117,7 @@ class PaymentsCrudController extends CrudController
         $dataInvoice = Invoice::where('id',$idInvoice)->first();
         $dataPayment = Payment::find($this->crud->getCurrentEntry()->id);
         $banks = Bank::get();
-
-        $dataInvoice->remaining_amount = $dataPayment->amount_total-$dataPayment->amount_paid;
-        $data_fee = json_decode(request()->data_fee);
-        $cntDataFee = (isset($data_fee))?count($data_fee):null;
-
-        $dataPayment->amount_paid = $dataPayment->amount_paid+request()->amount_payment;
-        if($cntDataFee){
-            $dataPayment->number_fee = $cntDataFee;
-        }
-        $dataPayment->save();
+        $readonlyField = ($this->crud->getCurrentEntry()->status == 2)?['readonly' => 'readonly']:[];
 
         CRUD::addField([
             'type' => 'payment.table_invoice',
@@ -145,6 +136,7 @@ class PaymentsCrudController extends CrudController
             'tab' => 'Programar pagos',
         ]);
 
+       // dd($this->crud->getCurrentEntry()->data_fee);
         CRUD::addField([  
             'name'            => 'data_fee',
             'label'           => 'Cuotas',
@@ -155,13 +147,15 @@ class PaymentsCrudController extends CrudController
                     'name'    => 'date',
                     'type'    => 'date',
                     'label'   => 'Fecha de corte',
+                    'attributes' => $readonlyField,
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
                 [
                     'name'    => 'amount',
                     'type'    => 'number',
                     'label'   => 'Monto',
-                    'wrapper' => ['class' => 'form-group col-md-6'],
+                    'attributes' => $readonlyField,
+                    'wrapper' => ['class' => 'form-group col-md-6 field-amount'],
                 ],
                 [
                     'name'    => 'status_fee',
@@ -169,137 +163,174 @@ class PaymentsCrudController extends CrudController
                     'type'    => 'hidden',
                     'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
+                [
+                    'name'    => 'id_fee',
+                    'type'    => 'hidden',
+                    'wrapper' => ['class' => 'form-group col-md-6 id-fee'],
+                ],
             ],
             'fake' => true,
             'store_in' => 'data_fee',
             'tab' => 'Programar pagos',
         ]);
+        CRUD::addField([  
+            'name' => 'total_fee',
+            'type' => 'hidden',
+            'attributes' => ['class' => 'total-fee'],
+            'tab' => 'Programar pagos',
+        ]);
 
-        CRUD::addField([
-            'type' => 'hidden',
-            'name' => 'date_now',
-            'value' => date('Y-m-d'),
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name' => 'table_payment',
-            'label' => 'Tabla de pago',
-            'type' => 'payment.table_payment',
-            'payment' => $dataPayment,            
-            'wrapper' => ['class' => 'form-group col-md-12'],
-            'tab' => 'Pagos'
-        ]);
-        
-        $fees = $this->crud->getCurrentEntry()->data_fee;
-        $firstFee = collect($fees)->sortBy('date')->firstWhere('status_fee',1);   
-        CRUD::addField([
-            'type' => 'hidden',
-            'name' => 'date_fee',
-            'value' => (!is_null($firstFee))?$firstFee['date']:'',
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-    
-        CRUD::addField([
-            'name' => 'payment_method',
-            'label' => 'Método de pago',
-            'type' => 'expense.fields_payment_method',
-            'wrapper' => ['class' => 'col-md-6'],
-            'attributes' => ['class' => 'select-payment-method'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name' => 'status_payment',
-            'type' => 'hidden',
-            'value' => '1',
-            'attributes' => ['class' => 'select-payment-method'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'label' => 'Banco',
-            'name' => 'bank_id',
-            'type' => 'select2',
-            'placeholder' => 'Selecciona un banco',
-            'model' => 'App\Models\Bank',
-            'attribute' => 'name',
-            'wrapper' => ['class' => 'form-group col-md-6 d-none input-pcc input-tr input-tc input-td input-ch input-payment'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name'    => 'amount_payment',
-            'type'    => 'number',
-            'label'   => 'Monto',
-            'value'   => (!is_null($firstFee))?$firstFee['amount']:'',
-            'attributes' => ['readonly' => 'readonly'],
-            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ef input-ch input-tc input-tr input-pcc input-payment'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name'    => 'rut',
-            'type'    => 'text',
-            'label'   => 'Rut',
-            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name'    => 'serial_number',
-            'type'    => 'text',
-            'label'   => 'Nº de Serie',
-            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name'    => 'account_number',
-            'type'    => 'text',
-            'label'   => 'Nº de cuenta',
-            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name'    => 'date',
-            'type'    => 'date',
-            'label'   => 'Fecha',
-            'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name'    => 'voucher_number',
-            'type'    => 'text',
-            'label'   => 'Nº de Comprobante',
-            'wrapper' => ['class' => 'form-group col-md-6 d-none input-tc input-tr input-pcc input-payment'],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
-        CRUD::addField([
-            'name'    => 'comment',
-            'type'    => 'textarea',
-            'label'   => 'Comentario',
-            'wrapper' => ['class' => 'form-group col-md-6'],
-            'attributes' => ['maxlength' => 12],
-            'fake' => true,
-            'store_in' => 'data_payment',
-            'tab' => 'Pagos'
-        ]);
+        if($this->crud->getCurrentEntry()->data_fee !=null){
+
+            CRUD::addField([
+                'type' => 'hidden',
+                'name' => 'date_now',
+                'value' => date('Y-m-d'),
+                'fake' => true,
+                'store_in' => 'data_payment',
+                'tab' => 'Pagos'
+            ]);
+            CRUD::addField([
+                'type' => 'hidden',
+                'name' => 'number_fee',
+                'attributes' => ['class' => 'number-fee'],
+                'tab' => 'Pagos'
+            ]);
+            CRUD::addField([
+                'name' => 'table_payment',
+                'label' => 'Tabla de pago',
+                'type' => 'payment.table_payment',
+                'payment' => $dataPayment,            
+                'wrapper' => ['class' => 'form-group col-md-12'],
+                'tab' => 'Pagos'
+            ]);
+            
+            $fees = $this->crud->getCurrentEntry()->data_fee;
+            $firstFee = collect($fees)->sortBy('date')->firstWhere('status_fee',1);   
+            if($firstFee != null){
+                CRUD::addField([  
+                    'name'  => 'separator',
+                    'type'  => 'custom_html',
+                    'value' => '<p class="text-muted h5">Realizar Pago</p>',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'type' => 'hidden',
+                    'name' => 'date_fee',
+                    'value' => (!is_null($firstFee))?$firstFee['date']:'',
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name' => 'payment_method',
+                    'label' => 'Método de pago',
+                    'type' => 'expense.fields_payment_method',
+                    'wrapper' => ['class' => 'col-md-6'],
+                    'attributes' => ['class' => 'select-payment-method'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name' => 'status_payment',
+                    'type' => 'hidden',
+                    'value' => $firstFee['status_fee'],
+                    'attributes' => ['class' => 'select-payment-method'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name' => 'id_fee',
+                    'type' => 'hidden',
+                    'value' => $firstFee['id_fee'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'label' => 'Banco',
+                    'name' => 'bank_id',
+                    'type' => 'select2',
+                    'placeholder' => 'Selecciona un banco',
+                    'model' => 'App\Models\Bank',
+                    'attribute' => 'name',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-pcc input-tr input-tc input-td input-ch input-payment'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name'    => 'amount_payment',
+                    'type'    => 'number',
+                    'label'   => 'Monto',
+                    'value'   => (!is_null($firstFee))?$firstFee['amount']:'',
+                    'attributes' => ['readonly' => 'readonly'],
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ef input-ch input-tc input-tr input-pcc input-payment'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name'    => 'rut',
+                    'type'    => 'text',
+                    'label'   => 'Rut',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name'    => 'serial_number',
+                    'type'    => 'text',
+                    'label'   => 'Nº de Serie',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-payment'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name'    => 'account_number',
+                    'type'    => 'text',
+                    'label'   => 'Nº de cuenta',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name'    => 'date',
+                    'type'    => 'date',
+                    'label'   => 'Fecha',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-ch input-tr input-pcc input-payment'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name'    => 'voucher_number',
+                    'type'    => 'text',
+                    'label'   => 'Nº de Comprobante',
+                    'wrapper' => ['class' => 'form-group col-md-6 d-none input-tc input-tr input-pcc input-payment'],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+                CRUD::addField([
+                    'name'    => 'comment',
+                    'type'    => 'textarea',
+                    'label'   => 'Comentario',
+                    'wrapper' => ['class' => 'form-group col-md-6'],
+                    'attributes' => ['maxlength' => 12],
+                    'fake' => true,
+                    'store_in' => 'data_payment',
+                    'tab' => 'Pagos'
+                ]);
+            }
+        }
+
+
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
 use App\Models\Invoice;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request as RequestHelper;
+use Illuminate\Validation\Factory as ValidationFactory;
 
 use function GuzzleHttp\json_decode;
 
@@ -34,7 +36,7 @@ class PaymentsRequest extends FormRequest
         $this->idInvoice = $this->invoice_id;
         $dataFee = json_decode($this->data_fee,true);
         $forValidation = [];
-        $forValidationPay = [];
+        
         foreach ($dataFee as $attrs) {
             $forValidation[] = (array) $attrs;
         }
@@ -42,29 +44,30 @@ class PaymentsRequest extends FormRequest
         $this->merge([
             'data_fee_validation' => $forValidation,
             'invoice_id' => $this->invoice_id,
-            //'data_payment_validation' => $forValidationPay,
-            //'data_pay_counter' => count($dataFee)
         ]);
     }
 
     public function rules()
     {
 
-        //dd($dataInvoice,$this->invoice_id,$this->data_fee);
-        $countDataFee = (isset($this->data_fee))?count(json_decode($this->data_fee,true)):1;
         return [
-            //'data_pay_counter' => 'gte:0|lt:'.$countDataFee,
-            /* 'data_fee_validation.*.date' =>  Rule::exists('invoices')->where(function($q){
-                $dataInvoice = Invoice::find($this->invoice_id)->select('expiriy_date');
-               //logger($dataInvoice);
-                //dd($dataInvoice);
-            }), */
-            'data_fee_validation.*.amount' => 'gte:0|required',
-           // 'data_fee_validation.*.date' => 'required',
-            
-            //'data_payment_validation.*.date' => 'date',
-            //'data_payment_validation.*.amount_payment' => 'required|numeric',
-           
+          
+            'data_fee_validation.*.amount' => 'required',
+            'data_fee_validation.*.date' =>   ['required',function ($attribute, $value, $fail) {
+                $dataInvoice = Invoice::find($this->invoice_id);
+                if($value > $dataInvoice->expiry_date){
+                    return $fail('La fecha no puede ser mayor a la fecha de fin de la factura');
+                }
+                if($value == null){
+                    return $fail('El campo fecha de corte es obligatorio');
+                }
+            }],
+            'total_fee' => ['required',function ($attribute, $value, $fail) {
+                $dataInvoice = Invoice::find($this->invoice_id);
+                if($value != $dataInvoice->total){
+                    return $fail('El monto total de las cuotas debe ser igual al monto total de la factura');
+                }
+            }] 
         ];
     }
 
