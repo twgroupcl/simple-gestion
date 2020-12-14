@@ -8,13 +8,16 @@ use Freshwork\ChileanBundle\Rut;
 
 class RutRule implements Rule
 {
+    private $isForeign;
+
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($isForeign = false)
     {
+        $this->isForeign = $isForeign;
     }
 
     /**
@@ -26,6 +29,8 @@ class RutRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        if ($this->isForeign) return true;
+
         try {
             return Rut::parse($value)->validate();
         } catch (InvalidFormatException $e) {

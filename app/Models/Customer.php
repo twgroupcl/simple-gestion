@@ -38,6 +38,7 @@ class Customer extends Model
         'uid',
         'first_name',
         'last_name',
+        'is_foreign',
         'email',
         'phone',
         'cellphone',
@@ -192,6 +193,8 @@ class Customer extends Model
 
     public function getUidAttribute()
     {
+        if ($this->is_foreign) return $this->attributes['uid'];
+
         $rutFormatter = Rut::parse($this->attributes['uid']);
 
         return $rutFormatter->format();
@@ -217,6 +220,11 @@ class Customer extends Model
 
     public function setUidAttribute($value)
     {
+        if ($this->is_foreign) {
+            $this->attributes['uid'] = $value;
+            return true;
+        }
+
         $this->attributes['uid'] = strtoupper(
             str_replace('.', '', $value)
         );

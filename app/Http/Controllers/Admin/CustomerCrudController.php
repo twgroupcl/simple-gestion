@@ -147,7 +147,7 @@ class CustomerCrudController extends CrudController
             'type' => 'checkbox',
             'tab' => 'General',
             'wrapper' => [
-                'class' => 'form-group col-9'
+                'class' => 'form-group col-9 is_foreing_field'
             ],
             'attributes' => [
                 'class' => 'is_foreign_checkbox'
@@ -162,6 +162,9 @@ class CustomerCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-4',
             ],
+            'attributes' => [
+                'id' => 'rut_field',
+            ]
         ]);
 
         CRUD::addField([
@@ -473,7 +476,6 @@ class CustomerCrudController extends CrudController
             'name' => 'rut_formatter',
             'type' => 'rut_formatter',
             'rut_fields' => ['uid', 'rut'],
-            'foreign_check_field' => 'is_foreign_checkbox',
             'tab' => 'General',
         ]);
 
@@ -500,7 +502,8 @@ class CustomerCrudController extends CrudController
         $this->setupCreateOperation();
 
         CRUD::field('uid')->attributes([
-            'readonly' => 'readonly'
+            'readonly' => 'readonly',
+            'id' => 'rut_field',
         ]);
 
         CRUD::field('email')->attributes([

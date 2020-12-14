@@ -1,6 +1,5 @@
 @php
 $rutFields = json_encode($field['rut_fields']);
-$foreignCheckField = isset($field['foreign_check_field']) ? $field['foreign_check_field'] : null; 
 @endphp
 
 @push('crud_fields_scripts')
@@ -10,15 +9,6 @@ $foreignCheckField = isset($field['foreign_check_field']) ? $field['foreign_chec
     var rutFields = {!! $rutFields !!};
 
     $(document).ready(function(){
-
-        @if ($foreignCheckField)
-
-        var foreignCheckField = $('.{{ $foreignCheckField }}') 
-
-        console.log(foreignCheckField);
-        @endif
-
-
 
         var observer = new MutationObserver(function(mutations, observer) {
             rutFields.forEach(nameField => {

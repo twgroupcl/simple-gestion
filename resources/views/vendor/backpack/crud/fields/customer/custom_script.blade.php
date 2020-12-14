@@ -1,5 +1,15 @@
 @push('after_scripts')
 <script>
+
+    function removeEventListeners(elementId) {
+        var el = document.getElementById(elementId),
+        elClone = el.cloneNode(true);
+        el.parentNode.replaceChild(elClone, el);
+    }
+
+    var foreignCheck = $('.is_foreign_checkbox')
+    var foreignField = $('.is_foreing_field')
+
     is_company_group = $('input[name="is_company"]').parent();
 
     function changeInputs(target) {
@@ -29,6 +39,23 @@
 
     $(document).ready(function() {
         changeInputs(is_company_group)
+
+        if (foreignCheck.prop('checked')) {
+            removeEventListeners('rut_field')
+        } else {
+            $('*[name="uid"]').rut();
+        }
+
+        foreignField.change( function() {
+            if (foreignCheck.prop('checked')) {
+                removeEventListeners('rut_field')
+            } else {
+                $('*[name="uid"]').rut();
+            }
+        })
+
+
+
     })
 </script>
 @endpush

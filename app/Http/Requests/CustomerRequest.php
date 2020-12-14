@@ -54,7 +54,7 @@ class CustomerRequest extends FormRequest
      */
     public function rules()
     {
-        $rutRule = new RutRule;
+        $rutRule = new RutRule($this->is_foreign ? true : false);
         $phoneRule = new PhoneRule;
 
         return [
