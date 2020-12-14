@@ -164,6 +164,11 @@ class CustomerAttendanceCrudController extends CrudController
             'type' => 'relationship',
         ]);
 
+        CRUD::addColumn([
+            'name' => 'service',
+            'label' => 'Servicio',
+        ]);
+
         
         CRUD::addColumn([
             'name' => 'entry_type_accesor',
