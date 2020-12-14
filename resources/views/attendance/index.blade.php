@@ -34,7 +34,7 @@ Registra tu Check in / Check out
                         >
                     </div>
                     <div class="form-group col-md-12">
-                        <select name="service_id" class="custom-select" required>
+                        <select name="service_id" class="custom-select" style="height: calc(1.5em + 1.5rem + 2px)" required>
                             <option value="" disabled selected>Selecciona un servicio</option>
                             @foreach ($services as $service)
                                 <option value="{{ $service->id }}">{{ $service->name }}</option>
