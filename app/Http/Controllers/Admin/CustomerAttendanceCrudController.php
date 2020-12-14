@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Service;
 use App\Models\Customer;
 use App\Models\CustomerSegment;
 use App\Models\CustomerAttendance;
@@ -85,6 +86,11 @@ class CustomerAttendanceCrudController extends CrudController
             'label' => 'Hora registrada',
             'type' => 'datetime',
             'format' => 'h:m A',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'service',
+            'label' => 'Servicio',
         ]);
 
         CRUD::addColumn([
@@ -262,6 +268,16 @@ class CustomerAttendanceCrudController extends CrudController
             $this->crud->addClause('whereHas', 'customer.customer_segment', function($query) use ($value) {
                 $query->where('id', $value);
             });
+        });
+
+        CRUD::addFilter([
+            'type'  => 'select2',
+            'name'  => 'service',
+            'label' => 'Servicio',
+        ], function() {
+            return Service::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'service_id', $value);
         });
 
     }

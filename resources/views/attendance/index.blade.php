@@ -34,6 +34,14 @@ Registra tu Check in / Check out
                         >
                     </div>
                     <div class="form-group col-md-12">
+                        <select name="service_id" class="custom-select" required>
+                            <option value="" disabled selected>Selecciona un servicio</option>
+                            @foreach ($services as $service)
+                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
                         <button type="submit" class="btn btn-primary btn-lg btn-block">
                             Registrar asistencia
                         </button>
