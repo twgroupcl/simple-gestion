@@ -13,7 +13,9 @@ class PosReportView extends Component
     public $orders;
     public $selectedOrder;
     public $search;
-
+    protected $listeners = [
+        'sales.updateOrders' => 'updateOrders',
+    ];
     public function render()
     {
         return view('livewire.pos.report.pos-report-view');
@@ -23,11 +25,12 @@ class PosReportView extends Component
     {
         $this->salesBox = $this->seller->sales_boxes()->opened()->with('logs.order')->latest()->first();
         $this->logs = $this->salesBox->logs;
-        $this->orders = $this->salesBox->logs()->whereHas('order', function($query) {
-            $query->where('event', 'Nueva orden generada');
-        })->get()->map(function($item) {
-            return $item->order;
-        });
+        // $this->orders = $this->salesBox->logs()->whereHas('order', function($query) {
+        //     $query->where('event', 'Nueva orden generada');
+        // })->get()->map(function($item) {
+        //     return $item->order;
+        // });
+        $this->updateOrders();
     }
 
     public function selectOrder(Order $order)
@@ -42,10 +45,19 @@ class PosReportView extends Component
 
     public function filter()
     {
-        $this->orders = $this->salesBox->logs()->whereHas('order', function($query) {
+        $this->orders = $this->salesBox->logs()->whereHas('order', function ($query) {
             $query->where('id', 'LIKE', "%{$this->search}%");
         })->limit(10)
-        ->get()->map(function($item) {
+            ->get()->map(function ($item) {
+            return $item->order;
+        });
+    }
+
+    public function updateOrders()
+    {
+        $this->orders = $this->salesBox->logs()->whereHas('order', function ($query) {
+            $query->where('event', 'Nueva orden generada');
+        })->get()->map(function ($item) {
             return $item->order;
         });
     }

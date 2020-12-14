@@ -175,6 +175,7 @@ class Cart extends Component
 
 
             $this->clearCart();
+            $this->emit('sales.updateOrders');
             $this->emit('showToast', 'Cobro realizado', 'Cobro registrado.', 3000, 'info');
 
         } else {
