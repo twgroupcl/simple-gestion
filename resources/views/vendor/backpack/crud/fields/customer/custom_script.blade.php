@@ -1,15 +1,27 @@
 @push('after_scripts')
 <script>
 
+    var foreignCheck = $('.is_foreign_checkbox')
+    var foreignField = $('.is_foreing_field')
+
     function removeEventListeners(elementId) {
         var el = document.getElementById(elementId),
         elClone = el.cloneNode(true);
         el.parentNode.replaceChild(elClone, el);
     }
 
-    var foreignCheck = $('.is_foreign_checkbox')
-    var foreignField = $('.is_foreing_field')
+    function checkIsForeing() {
+        if (foreignCheck.prop('checked')) {
+            removeEventListeners('rut_field')
+            $('input[name="uid"]').parent().find('label').text('N de identificación')
+            $('input[name="cellphone"]').parent().attr('class', 'form-group col-md-4 required')
 
+        } else {
+            $('*[name="uid"]').rut();
+            $('input[name="cellphone"]').parent().attr('class', 'form-group col-md-4')
+        }
+    }
+   
     is_company_group = $('input[name="is_company"]').parent();
 
     function changeInputs(target) {
@@ -40,18 +52,10 @@
     $(document).ready(function() {
         changeInputs(is_company_group)
 
-        if (foreignCheck.prop('checked')) {
-            removeEventListeners('rut_field')
-        } else {
-            $('*[name="uid"]').rut();
-        }
+        checkIsForeing()
 
         foreignField.change( function() {
-            if (foreignCheck.prop('checked')) {
-                removeEventListeners('rut_field')
-            } else {
-                $('*[name="uid"]').rut();
-            }
+            checkIsForeing()
         })
 
 

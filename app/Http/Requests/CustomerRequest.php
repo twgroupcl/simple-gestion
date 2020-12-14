@@ -57,7 +57,7 @@ class CustomerRequest extends FormRequest
         $rutRule = new RutRule($this->is_foreign ? true : false);
         $phoneRule = new PhoneRule;
 
-        return [
+        $rules =  [
             'uid' => ['required', 'string', $rutRule],
             'first_name' => 'required|string',
             'last_name' => 'string|nullable',
@@ -100,6 +100,12 @@ class CustomerRequest extends FormRequest
             'contact_data_validation.*.contact_type_id' => 'required|exists:contact_types,id',
             'contact_data_validation.*.url' => 'required|distinct',
         ];
+
+        if ($this->is_foreign) {
+            $rules['cellphone'] = ['required', $phoneRule];
+        }
+
+        return $rules;
     }
 
     /**
