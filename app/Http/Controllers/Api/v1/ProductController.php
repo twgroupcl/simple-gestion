@@ -143,7 +143,7 @@ class ProductController extends Controller
 
         try {
             $product->delete();
-        } catch(QueryException $e) {
+        } catch(QueryException $exception) {
             return response()->json([ 'status' => 'error', 'message' => $exception ], 400);
         }
 

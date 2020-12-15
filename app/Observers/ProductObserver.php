@@ -73,6 +73,7 @@ class ProductObserver
         $product->super_attributes()->detach();
         $product->inventories()->detach();
         $product->categories()->detach();
+        $product->shipping_methods()->detach();
 
         // Delete image references and files
         DB::table('product_images')->where('product_id', $product->id)->delete();
