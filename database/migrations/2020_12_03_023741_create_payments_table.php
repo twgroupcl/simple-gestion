@@ -17,7 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('invoice_id');
             $table->integer('number_fee')->nullable();
             $table->longText('data_fee')->nullable();
-            $table->string('payment_method')->nullable();
+            $table->date('invoice_date')->nullable();
             $table->longText('data_payment')->nullable();
             $table->decimal('amount_total', 12, 4)->nullable();
             $table->decimal('amount_paid', 12, 4)->nullable();

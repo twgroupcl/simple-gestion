@@ -32,8 +32,14 @@ class PaymentsCrudController extends CrudController
         CRUD::setModel(\App\Models\Payments::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/payments');
         CRUD::setEntityNameStrings('Pagos', 'Pagos');
-        $this->crud->denyAccess(['create', 'delete']);
-
+        $this->crud->denyAccess(['create', 'delete', 'show']);
+        $this->admin = false;
+        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+            $this->admin = true;
+        }
+        if (!$this->admin) {
+            $this->crud->denyAccess('update');    
+        }
     }
 
     /**
@@ -44,11 +50,19 @@ class PaymentsCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        //CRUD::setFromDb(); // columns
+
         CRUD::addColumn([
             'name' => 'invoice_id',
             'type' => 'text',
+            'prefix' => '# ',
             'label' => 'ID Factura',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'invoice_date',
+            'format' => 'l j F Y',
+            'type' => 'text',
+            'label' => 'Fecha de Emisión',
         ]);
 
         CRUD::addColumn([
@@ -76,7 +90,6 @@ class PaymentsCrudController extends CrudController
             'type' => 'text',
             'label' => 'Nº de Cuotas',
         ]);
-     
 
         CRUD::addColumn([
             'name' => 'status_description',
@@ -136,7 +149,6 @@ class PaymentsCrudController extends CrudController
             'tab' => 'Programar pagos',
         ]);
 
-       // dd($this->crud->getCurrentEntry()->data_fee);
         CRUD::addField([  
             'name'            => 'data_fee',
             'label'           => 'Cuotas',
@@ -148,7 +160,7 @@ class PaymentsCrudController extends CrudController
                     'type'    => 'date',
                     'label'   => 'Fecha de corte',
                     'attributes' => $readonlyField,
-                    'wrapper' => ['class' => 'form-group col-md-6'],
+                    'wrapper' => ['class' => 'form-group col-md-6 field-date'],
                 ],
                 [
                     'name'    => 'amount',
@@ -161,7 +173,7 @@ class PaymentsCrudController extends CrudController
                     'name'    => 'status_fee',
                     'value'    => '1',
                     'type'    => 'hidden',
-                    'wrapper' => ['class' => 'form-group col-md-6'],
+                    'wrapper' => ['class' => 'form-group col-md-6 field-status'],
                 ],
                 [
                     'name'    => 'id_fee',
@@ -177,6 +189,12 @@ class PaymentsCrudController extends CrudController
             'name' => 'total_fee',
             'type' => 'hidden',
             'attributes' => ['class' => 'total-fee'],
+            'tab' => 'Programar pagos',
+        ]);
+        CRUD::addField([  
+            'name' => 'status',
+            'type' => 'hidden',
+            'attributes' => ['class' => 'status-register'],
             'tab' => 'Programar pagos',
         ]);
 
@@ -322,7 +340,6 @@ class PaymentsCrudController extends CrudController
                     'type'    => 'textarea',
                     'label'   => 'Comentario',
                     'wrapper' => ['class' => 'form-group col-md-6'],
-                    'attributes' => ['maxlength' => 12],
                     'fake' => true,
                     'store_in' => 'data_payment',
                     'tab' => 'Pagos'
