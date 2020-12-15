@@ -50,6 +50,7 @@ class ProductInventorySourceController extends Controller
                 'password' => $request['code'],
                 'status' => $request['status'] ?? 1,
                 'company_id' => auth()->user()->companies->first()->id,
+                'is_approved' => 1,
             ]);
 
             // Create branch

@@ -159,7 +159,8 @@ class ProductService
                     'meta_title' => $request['meta_title'],
                     'meta_keywords' => $request['meta_keywords'],
                     'meta_description' => $request['meta_description'],
-                    
+
+                    'is_approved' => 1,
                     'status' => $request['status'] ?? 1,
                     'seller_id' => $sellerId,
                     'company_id' => $companyId,
