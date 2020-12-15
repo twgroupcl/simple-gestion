@@ -527,7 +527,8 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        if ($this->crud->getCurrentEntry()->invoice_type->code == 61) {
+        $model = $this->crud->getCurrentEntry();
+        if (isset($model->invoice_type) && $model->invoice_type->code == 61) {
             $this->creditNoteFields();
             CRUD::removeSaveActions(['save_and_back','save_and_new']);
         }
