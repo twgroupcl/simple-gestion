@@ -75,6 +75,8 @@ Route::group([
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::crud('communeshippingmethod', 'CommuneShippingMethodCrudController');
+
     Route::crud('plans', 'PlansCrudController');
     Route::get('payment/subscription/{id}', 'Payments\WebPayPlusController@subscriptionPayment')->name('payment.subscription');
     Route::get('report/sales', 'Report\SalesReportController@index')->name('report.sales');

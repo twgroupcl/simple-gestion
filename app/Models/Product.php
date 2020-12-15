@@ -681,7 +681,7 @@ class Product extends Model
     {
         $value = $this->is_approved;
 
-        if (is_null($value)) {
+        if (is_null($value) || $value === 2) {
             return 'Pendiente';
         } else if ($value == 1) {
             return 'Aprobado';
@@ -702,11 +702,29 @@ class Product extends Model
         }
     }
 
+    public function getIsApprovedAttribute($value)
+    {
+        if (is_null($value)) return 2;
+
+        return $value;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function setIsApprovedAttribute($value)
+    {
+        if ($value == 2) {
+            $this->attributes['is_approved'] = null;
+            return true;
+        }
+
+        $this->attributes['is_approved'] = $value;
+    }
+
 
     public function setPriceAttribute($value)
     {

@@ -15,9 +15,11 @@ use App\Observers\ProductObserver;
 use App\Observers\CustomerObserver;
 use App\Observers\OrderItemObserver;
 use App\Observers\QuotationObserver;
+use App\Models\CommuneShippingMethod;
 use App\Models\ProductClassAttribute;
 use App\Observers\ProductClassObserver;
 use Illuminate\Support\ServiceProvider;
+use App\Observers\CommuneShippingMethodObserver;
 use App\Observers\ProductClassAttributeObserver;
 
 class AppServiceProvider extends ServiceProvider
@@ -50,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
         Quotation::observe(QuotationObserver::class);
         Order::observe(OrderObserver::class);
         OrderItem::observe(OrderItemObserver::class);
+        CommuneShippingMethod::observe(CommuneShippingMethodObserver::class);
 
     }
 }
