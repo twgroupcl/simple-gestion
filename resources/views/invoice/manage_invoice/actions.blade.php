@@ -42,9 +42,7 @@
         ]
     ]);
 @endphp
-@endcan
-
-@can('doDownloadRealPDF', $invoice)
+@elsecan('doDownloadRealPDF', $invoice)
 @php
     Widget::add([
         'type' => 'view',

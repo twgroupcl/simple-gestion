@@ -71,6 +71,9 @@ class ManageInvoiceCrudController extends CrudController
         return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
     }
 
+    /**
+     * @deprecated
+     */
     public function getRealPDF(Request $request, Invoice $invoice)
     {
         if (! isset($invoice->folio) ) {
@@ -79,7 +82,6 @@ class ManageInvoiceCrudController extends CrudController
         }
         
         $service = new DTEService();
-        $response = $service->getRealPDF();
         $pdfContent = $response->getBody()->getContents();
 
         return $this->getResponsePDF($pdfContent, $invoice);
@@ -94,14 +96,17 @@ class ManageInvoiceCrudController extends CrudController
         ]);
     }
 
-    public function getTemporalPDF(Request $request, Invoice $invoice)
+    public function getPDF(Request $request, Invoice $invoice)
     {
         if (!isset($invoice->dte_code)) {
-            
             return redirect('index');
         }
         $service = new DTEService();
-        $response = $service->getTemporalPDF($invoice);
+        if (isset($invoice->folio)) {
+            $response = $service->getRealPDF($invoice);
+        } else {
+            $response = $service->getTemporalPDF($invoice);
+        }
 
         $pdfContent = $response->getBody()->getContents();
         //@todo check
@@ -135,7 +140,7 @@ class ManageInvoiceCrudController extends CrudController
 
             if (array_key_exists('folio', $contentResponse)) {
                 $invoice->folio = $contentResponse['folio'];
-                $invoice->invoice_status = Invoice::SEND;
+                $invoice->invoice_status = Invoice::STATUS_SEND;
             }
             
             $invoice->updateWithoutEvents();
