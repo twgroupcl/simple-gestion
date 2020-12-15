@@ -3,18 +3,22 @@
 namespace App;
 
 use App\Models\Branch;
+use App\Models\Seller;
 use App\Models\Company;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Rinvex\Subscriptions\Traits\HasSubscriptions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     use CrudTrait;
     use HasRoles;
+    use HasSubscriptions;
 
     /**
      * The attributes that are mass assignable.
@@ -58,7 +62,7 @@ class User extends Authenticatable
         $bg_color = imagecolorallocate($avatar, 65, 172, 44);
         imagefill($avatar, 0, 0, $bg_color);
         $avatar_text_color = imagecolorallocate($avatar, 0, 0, 0);
-        $font = 'packages/source-sans-pro/TTF/SourceSansPro-Black.ttf';
+        $font = public_path() . '/packages/source-sans-pro/TTF/SourceSansPro-Black.ttf';
         $white = imagecolorallocate($avatar, 255, 255, 255);
         imagettftext($avatar, 30, 0, 20, 40, $white, $font, $letter);
         imagepng($avatar, $imageFilePath);
@@ -123,6 +127,16 @@ class User extends Authenticatable
         return $current;
     }
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -137,5 +151,10 @@ class User extends Authenticatable
     public function branches()
     {
         return $this->belongsToMany(Branch::class, 'branch_users')->withPivot(['is_default', 'branch_id']);
+    }
+
+    public function seller()
+    {
+        return $this->hasOne(Seller::class);
     }
 }

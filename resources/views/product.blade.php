@@ -73,7 +73,7 @@
                         <!-- Product details-->
                         <div class="col-lg-5 pt-4 pt-lg-0">
                             <div class="product-details ml-auto">
-                                <a href="{{ url('seller-shop/'.$product->seller->id) }}" class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</a>
+                                <span class="d-inline-block font-size-sm align-middle mt-1">Vendido por: </span><a href="{{ url('seller-shop/'.$product->seller->id) }}" class="d-inline-block font-size-sm align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</a>
                             </div>
                             <div class="product-details ml-auto pb-3">
                                 @if ($product->has_special_price)

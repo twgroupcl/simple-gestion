@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Traits\CustomAttributeRelations;
+use App\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Support\Str;

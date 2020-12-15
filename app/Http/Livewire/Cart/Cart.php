@@ -20,9 +20,11 @@ class Cart extends Component
     public $subtotal;
     public $cart;
 
+
     protected $listeners = [
         'cart:add' => 'add',
-        'cart.updateSubtotal' => 'updateSubtotal'
+        'cart.updateSubtotal' => 'updateSubtotal',
+
     ];
 
     protected $rules = [
@@ -42,6 +44,7 @@ class Cart extends Component
         if (!isset($this->cart->cart_items) || $this->cart->cart_items->count() == 0) {
             $this->setCursor('not-allowed');
         }
+
     }
 
     public function add(Request $request, Product $product, $qty = 1)
@@ -168,7 +171,7 @@ class Cart extends Component
                 'depth' => $product->depth,
                 'weight' => $product->weight,
                 'sub_total' => $product->real_price * $qty,
-                'shipping_id' => $product->seller->shippingmethods->first()->id,
+                // 'shipping_id' => $product->seller->shippingmethods()->orderBy('id')->first()->id,
                 /*'sub_total' => ,
                 'shipping_total' => ,
                 'discount_total' => ,
@@ -232,4 +235,5 @@ class Cart extends Component
         $user = auth()->check() ? auth()->user() : null;
         return CartModel::getInstance($user, $session);
     }
+
 }
