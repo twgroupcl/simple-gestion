@@ -9,7 +9,8 @@ $(function(){
     $('body').on('click','.add-repeatable-element-button',function(){
         $('.id-fee').each(function(value,element){
             $(this).find('input').attr("name","id_fee").val(value);
-        })
+        });
+        $('a[href = "#tab_pagos"]').hide();
     });
 
     $('body').on('submit',function(e){
@@ -24,6 +25,10 @@ $(function(){
         });
         $('.total-fee').val(totalFee)
     });
+
+    $('.delete-element').click(function(){
+        $('a[href = "#tab_pagos"]').hide()
+    })
 
     $('a[href = "#tab_programar-pagos"]').click(function(){
         let totalFee = 0;
