@@ -194,4 +194,12 @@ class InvoiceObserver
             $invoice->updateWithoutEvents($propsToUpdate);
         }
     }
+
+    public function deleted(Invoice $invoice)
+    {
+        if ($invoice->invoice_status == Invoice::STATUS_TEMPORAL) {
+            $service = new DTEService();
+            $service->deleteTemporalDocument($invoice);
+        }
+    }
 }
