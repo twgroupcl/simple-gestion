@@ -25,16 +25,22 @@ class InvoiceRequest extends FormRequest
      */
     public function rules()
     {
+
+        $expiryDateRules = '';
+        if (request()->way_to_payment == 2) {
+            $expiryDateRules = 'required|date|after_or_equal:invoice_date';
+        } 
+
         return [
             'invoice_type_id' => 'required|exists:invoice_types,id',
             'total' => 'gte:0',
             'invoice_date' => 'date',
-            //'expiry_date' => 'sometimes|date|after_or_equal:invoice_date'
             'seller_id' => 'required|exists:sellers,id',
             'discount_percent' => 'gte:0,lte:100', 
             'discount_amount' => 'gte:0',
             'customer_id' => 'required|exists:customers,id', 
             'address_id' => 'required|exists:customer_addresses,id',
+            'expiry_date' => $expiryDateRules,
             // 'name' => 'required|min:5|max:255'
         ];
     }

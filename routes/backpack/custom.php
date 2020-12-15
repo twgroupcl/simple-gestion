@@ -93,6 +93,8 @@ Route::group([
 
     Route::crud('banners', 'BannersCrudController');
     Route::crud('customersupport', 'CustomerSupportCrudController');
+    Route::crud('payments', 'PaymentsCrudController');
+    Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
 
 }); // this should be the absolute last line of this file
 //Payment
@@ -101,4 +103,3 @@ Route::post('admin/payment/subscription/detail/{id}', 'App\Http\Controllers\Admi
 Route::post('/send-email-subscription', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@sendEmailSubscription');
 
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
-

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Product;
 use App\Models\Invoice;
+use App\Models\Payments;
 use App\Models\InvoiceItem;
 use App\Services\DTE\DTEService;
 
@@ -72,6 +73,7 @@ class InvoiceObserver
     public function updated(Invoice $invoice)
     {
         $this->syncInvoiceItems($invoice, [ 'set_item_status' => 'pending']);
+
     }
 
     public function syncInvoiceItems($invoice, $options = []) {
