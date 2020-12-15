@@ -59,7 +59,8 @@ class ProductRequest extends FormRequest
             'warehouse_validation.*.code' => 'required|exists:product_inventory_sources,code',
             'warehouse_validation.*.stock' => 'required|numeric',
             'warehouse_validation.*.price' => 'required|numeric',
-            'warehouse_validation.*.shipping_type' => 'required|exists:shipping_methods,id',
+            'warehouse_validation.*.shipping_type' => 'required|array',
+            'warehouse_validation.*.shipping_type.*' => 'exists:shipping_methods,id',
 
             'warehouse_validation.*.special_price' => 'numeric|min:1',
             'warehouse_validation.*.special_price_from' => 'date_format:d-m-Y|before:special_price_to',
