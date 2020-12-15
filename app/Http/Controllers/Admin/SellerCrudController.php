@@ -12,11 +12,12 @@ use App\Models\PaymentMethod;
 use App\Models\SellerCategory;
 use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
+use App\Models\BusinessActivity;
 use App\Traits\HasCustomAttributes;
 use App\Http\Requests\SellerStoreRequest;
 use App\Http\Requests\SellerUpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use App\Models\BusinessActivity;use App\Models\Commune;
+use App\Models\Commune;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
@@ -48,13 +49,11 @@ class SellerCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+        if (backpack_user()->can('seller.admin')) {
             $this->admin = true;
 
             $this->crud->enableExportButtons();
-        }
-
-        if (backpack_user()->hasAnyRole('Vendedor marketplace')) {
+        } else {
             $this->crud->denyAccess('create');
             $this->crud->denyAccess('delete');
 

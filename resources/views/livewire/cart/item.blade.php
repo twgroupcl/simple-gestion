@@ -51,7 +51,7 @@ $product = $item->product;
                 @endif --}}
 
                 @if ($product->is_service == 0)
-                    @if ($showShipping && $sellerShippingMethods)
+                    {{-- @if ($showShipping && $sellerShippingMethods)
 
 
                         <div class="select-shipping mb-0 pt-2">
@@ -59,7 +59,25 @@ $product = $item->product;
                                 wire:init="setSelected({{ $item->shipping_id ? $item->shipping_id : 0 }})">
 
                                 @foreach ($sellerShippingMethods as $key => $shipping)
-                                    <option value="{{ $shipping->id }}">{{ $shipping->title }} </option>
+                                    --}}
+                                    {{-- <option value="{{ $shipping->id }}">
+                                        {{ $shipping->title }}
+                                    </option> --}}
+                                    {{-- <option value="{{ $key }}">{{ $shipping }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif --}}
+
+                    @if ($showShipping && $shippingMethods)
+                        <div class="select-shipping mb-0 pt-2">
+                            <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected"
+                            wire:init="setSelected({{ $item->shipping_id ? $item->shipping_id : 0 }})">
+                                @foreach ($shippingMethods as $shippingMethod)
+                                    <option value="{{ $shippingMethod->id }}">
+                                        {{ $shippingMethod->title }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>

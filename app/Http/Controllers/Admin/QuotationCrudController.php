@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Customer;
 use App\Models\Quotation;
+use App\Models\{Invoice, InvoiceItem};
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Models\CustomerAddress;
@@ -549,5 +550,30 @@ class QuotationCrudController extends CrudController
         $pdf->getDomPDF()->set_option("isPhpEnabled", true);
 
         return $pdf->stream('invoice.pdf');
+    }
+
+    public function toInvoice(Request $request, Quotation $quotation)
+    {
+        \DB::beginTransaction();
+        try {
+            $invoice = new Invoice($quotation->toArray());
+            $invoice->items_data = json_encode($invoice->items_data);
+            unset($invoice->expiry_date);
+            $invoice->save();
+
+            foreach ($quotation->quotation_items as $item) {
+                $invoiceItem = new InvoiceItem($item->toArray());
+                $invoiceItem->invoice_id = $invoice->id;
+                $invoiceItem->save();
+            }
+            
+            \DB::commit();
+            
+            return redirect('admin/invoice/' . $invoice->id . '/edit');
+        } catch (Exception $e) {
+            // @todo Alert and redirect to crud->route
+            \DB::rollback();
+        }
+
     }
 }

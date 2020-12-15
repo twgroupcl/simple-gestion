@@ -66,6 +66,16 @@ Route::group([
     Route::get('charts/most-purchased-product-categories', 'Charts\MostPurchasedProductCategoriesChartController@response')->name('charts.most-purchased-product-categories.index');
     Route::get('charts/most-purchased-products', 'Charts\MostPurchasedProductsChartController@response')->name('charts.most-purchased-products.index');
 
+     /** invoice **/
+     Route::crud('invoice', 'InvoiceCrudController');
+     Route::get('quotation/{quotation}/to-invoice', 'QuotationCrudController@toInvoice');
+     Route::get('invoice/{invoice}/send-temporary-document', 'ManageInvoiceCrudController@sendTemporaryDocument');
+     Route::get('invoice/{invoice}/create-real-document', 'ManageInvoiceCrudController@createRealDocument');
+     Route::get('invoice/{invoice}/delete-temporary-document', 'ManageInvoiceCrudController@deleteTemporaryDocument');
+     Route::get('invoice/{invoice}/to-manage', 'ManageInvoiceCrudController@index');
+     Route::get('invoice/{invoice}/get-pdf', 'ManageInvoiceCrudController@getPDF');
+     Route::get('invoice/{invoice}/issue-credit-note', 'ManageInvoiceCrudController@issueCreditNote');
+     Route::get('invoice-type/{invoiceType}/get-code', 'InvoiceTypeCrudController@getCode');
     // API routes
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
@@ -76,12 +86,16 @@ Route::group([
     Route::crud('order', 'OrderCrudController');
     Route::crud('faqanswer', 'FaqAnswerCrudController');
     Route::crud('faqtopic', 'FaqTopicCrudController');
+    Route::crud('communeshippingmethod', 'CommuneShippingMethodCrudController');
+
     Route::crud('plans', 'PlansCrudController');
     Route::get('payment/subscription/{id}', 'Payments\WebPayPlusController@subscriptionPayment')->name('payment.subscription');
     Route::get('report/sales', 'Report\SalesReportController@index')->name('report.sales');
 
     Route::crud('banners', 'BannersCrudController');
     Route::crud('customersupport', 'CustomerSupportCrudController');
+    Route::crud('payments', 'PaymentsCrudController');
+    Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
 
     Route::crud('customerattendance', 'CustomerAttendanceCrudController');
     Route::crud('service', 'ServiceCrudController');

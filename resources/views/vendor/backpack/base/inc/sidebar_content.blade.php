@@ -121,7 +121,7 @@
 </li>
 @endcanany
 
-@canany(['quotation.list', 'order.list'])
+@canany(['quotation.list', 'order.list', 'invoice.list', 'payments.list'])
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Ventas</a>
 	<ul class="nav-dropdown-items">
@@ -132,6 +132,12 @@
         @can('order.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('order') }}'><i class="nav-icon las la-file-invoice"></i> Órdenes</a></li>
         @endcan
+        @can('payments.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('payments') }}'><i class='nav-icon la la-dollar'></i> Pagos</a></li>
+        @endcan
+        @can('invoice.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoice') }}'><i class='nav-icon la la-file-invoice-dollar'></i> Doc. Electrónicos </a></li>
+        @endcan
         @can('sales.report')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('report/sales') }}'><i class="nav-icon las la-file-invoice"></i> Reporte</a></li>
         @endcan
@@ -139,6 +145,7 @@
 </li>
 @endcanany
 
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('communeshippingmethod') }}'><i class='nav-icon la la-truck'></i> Metodos de envío</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('plans') }}'><i class='nav-icon la la-question'></i> Plans</a></li>
 @canany(['support.list'])
 <li class="nav-item nav-dropdown">
