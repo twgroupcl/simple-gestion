@@ -227,6 +227,7 @@ class ProductService
         $warehouse = ProductInventorySource::where('code', $warehouseCode)->first();
         if (!$warehouse) return [ 'status' => false, 'message' => 'El codigo de la bodega (' . $warehouseCode . ') no existe'];
 
+        // @todo the user must have a seller associate
         $seller = $warehouse->branch->users->first()->seller;
         if (!$seller) return [ 'status' => false, 'message' => 'El codigo de la bodega (' . $warehouseCode . ') no tiene asociado un vendedor'];
 

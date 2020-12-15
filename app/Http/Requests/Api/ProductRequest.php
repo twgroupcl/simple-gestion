@@ -49,7 +49,7 @@ class ProductRequest extends FormRequest
             'categories' => 'array',
             'categories.*' => 'numeric|exists:product_categories,id',
 
-            'categories_code' => 'array',
+            'categories_code' => 'required_without:categories|array',
             'categories_code.*' => 'exists:product_categories,code',
             
             

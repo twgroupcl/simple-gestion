@@ -51,7 +51,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::get('/products/{warehouse}/{sku}', 'Api\v1\ProductController@showBySkuAndWarehouse')
         ->name('api.products.show-by-sku');
     Route::post('/products/{warehouse}/{sku}/stock', 'Api\v1\ProductController@updateStock')
-        ->name('api.products.show-by-sku');
+        ->name('api.products.update-stock');
+    Route::post('/products/{warehouse}/{sku}/price', 'Api\v1\ProductController@updatePrice')
+        ->name('api.products.update-price');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
     
