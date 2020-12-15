@@ -18,7 +18,7 @@ use App\Models\BusinessActivity;
 use App\Traits\HasCustomAttributes;
 use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use App\Models\BusinessActivity;use App\Models\Commune;
+use App\Models\Commune;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
