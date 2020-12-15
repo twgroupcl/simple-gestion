@@ -2,7 +2,18 @@ $(function(){
     let URL = window.location;
     let acumTotal = 0;
 
-    $('body').on('submit',function(){
+    if($('.status-register').val() == 2){
+        $('.add-repeatable-element-button').hide();
+    }
+
+    $('body').on('click','.add-repeatable-element-button',function(){
+        $('.id-fee').each(function(value,element){
+            $(this).find('input').attr("name","id_fee").val(value);
+        })
+    });
+
+    $('body').on('submit',function(e){
+       
         if (URL.pathname.includes("/admin/payments")){
             $('.number-fee').val($('.repeatable-element').length)          
         }
@@ -15,12 +26,6 @@ $(function(){
     });
 
     $('a[href = "#tab_programar-pagos"]').click(function(){
-        if($('.repeatable-element').length == 1 ){
-            $('.id-fee').each(function(e){
-                $(this).find("input").val(e)
-            })
-        }
-
         let totalFee = 0;
         $('.field-amount').each(function(){
             let amount = $(this).find('input').val();
@@ -31,31 +36,20 @@ $(function(){
     });
 
     $('a[tab_name = "programar-pagos"]').on('click',function(){
-        if($('.repeatable-element').length > 0 ){
-            console.log($('.id-fee').length, 'idfee')
+        /* if($('.repeatable-element').length > 0 ){
             $('.id-fee').each(function(value,element){
+                console.log(value,element)
                 $(this).find('input').val(value);
             })
-        }
+        } */
+       
+        $('.field-status').each(function(){
+            if($(this).find('input').val() == 2){
+                $(this).parent('.repeatable-element').find('.delete-element').hide()                
+                $(this).parent('.repeatable-element').find('.field-date').find('input').attr('readonly', true)                
+                $(this).parent('.repeatable-element').find('.field-amount').find('input').attr('readonly', true)                
+            }
+        });
     })
 
-    $('.add-repeatable-element-button').click(function(e){
-
-   /*      $('.field-amount').each(function(val){
-            let amount = $(this).find('input').val();
-            acumTotal = parseFloat(acumTotal) + parseFloat(amount);
-        });
-        $('.total-fee').val(acumTotal) */
-
-        if(URL.hash == '#programar-pagos'){
-           // console.log($('.repeatable-element').length,'len')
-            if($('.repeatable-element').length > 0 ){
-                $('.id-fee').each(function(value,element){
-                   // console.log(value,element,'value,element')
-                    $(this).addClass('id-f-'+value);
-                    //$(this).find("input").val(value+1)
-                })
-            }
-        }
-    });
 });
