@@ -6,6 +6,8 @@ use DateTime;
 use Exception;
 use App\Models\Seller;
 use App\Models\Product;
+use App\Models\CartItem;
+use App\Models\OrderItem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProductInventory;
@@ -145,11 +147,22 @@ class ProductController extends Controller
 
         $product = Product::find($productInventory->product_id);
 
+        DB::beginTransaction();
+
         try {
+            $productInOrders = OrderItem::where('product_id', $product->id)->first();
+            $productInCarts = CartItem::where('product_id', $product->id)->first();
+
+            if ($productInOrders || $productInCarts) throw new Exception('No puedes eliminar un producto existente en ordenes o carro');
+
             $product->delete();
-        } catch(QueryException $exception) {
-            return response()->json([ 'status' => 'error', 'message' => $exception ], 400);
+
+        } catch(Exception $exception) {
+            DB::rollBack();
+            return response()->json([ 'status' => 'error', 'message' => $exception->getMessage() ], 400);
         }
+
+        DB::commit();
 
         return response()->json([
             'status' => 'success',
