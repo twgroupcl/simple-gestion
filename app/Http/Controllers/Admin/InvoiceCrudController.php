@@ -32,7 +32,7 @@ class InvoiceCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Invoice::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/invoice');
-        CRUD::setEntityNameStrings('invoice', 'invoices');
+        CRUD::setEntityNameStrings('documento electrónico', 'documentos electrónicos');
         $this->seller = Seller::where('user_id', backpack_user()->id)->first();
         if (! backpack_user()->can('showAllInvoices')) {
             $this->crud->addClause('where', 'seller_id', $this->seller->id);
@@ -42,6 +42,11 @@ class InvoiceCrudController extends CrudController
 
         if (!empty($this->seller) && $this->seller->is_approved !== Seller::STATUS_ACTIVE) {
             $this->crud->denyAccess(['create', 'update', 'delete']);
+        }
+
+        // if dte is real, deny delete
+        if ($this->crud->getCurrentOperation() === 'delete' && $this->crud->getCurrentEntry()->invoice_status === Invoice::STATUS_SEND) {
+            $this->crud->denyAccess(['delete']);
         }
     }
 
@@ -64,16 +69,24 @@ class InvoiceCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'first_name',
+            'label' => 'Nombre / Razón Soc.'
         ]);
 
         CRUD::addColumn([
-            'name' => 'uid'
+            'name' => 'uid',
+            'label' => 'RUT'
         ]);
 
         CRUD::addColumn([
-            'name' => 'invoice_type_id',
-             
+            'name' => 'invoice_type',
+            'type' => 'relationship',
+            'label' => 'Tipo',
         ]);
+
+        CRUD::addColumn([
+            'name' => 'folio'
+        ]);
+
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -527,7 +540,8 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        if ($this->crud->getCurrentEntry()->invoice_type->code == 61) {
+        $model = $this->crud->getCurrentEntry();
+        if (isset($model->invoice_type) && $model->invoice_type->code == 61) {
             $this->creditNoteFields();
             CRUD::removeSaveActions(['save_and_back','save_and_new']);
         }

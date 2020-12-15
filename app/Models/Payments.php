@@ -41,12 +41,15 @@ class Payments extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function insertDataInvoices(){
+    public static function insertDataInvoices(Invoice $invoice) : Payments
+    {
         $payment = new Payments();
-        $payment->invoice_id = request()->invoice_id;
-        $payment->invoice_date = request()->invoice_date;
-        $payment->amount_total = request()->amount_total;
+        $payment->invoice_id = $invoice->id;
+        $payment->invoice_date = $invoice->invoice_date;
+        $payment->amount_total = $invoice->total;
         $payment->save();
+
+        return $payment;
     }
 
     /*

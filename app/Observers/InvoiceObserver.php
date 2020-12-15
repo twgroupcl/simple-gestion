@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Product;
 use App\Models\Invoice;
+use App\Models\Payments;
 use App\Models\InvoiceItem;
 use App\Services\DTE\DTEService;
 
@@ -72,6 +73,7 @@ class InvoiceObserver
     public function updated(Invoice $invoice)
     {
         $this->syncInvoiceItems($invoice, [ 'set_item_status' => 'pending']);
+
     }
 
     public function syncInvoiceItems($invoice, $options = []) {
@@ -192,6 +194,14 @@ class InvoiceObserver
             //if ( isset($options['set_quotation_status']) ) $propsToUpdate['quotation_status'] = ($options['set_quotation_status']);
 
             $invoice->updateWithoutEvents($propsToUpdate);
+        }
+    }
+
+    public function deleted(Invoice $invoice)
+    {
+        if ($invoice->invoice_status == Invoice::STATUS_TEMPORAL) {
+            $service = new DTEService();
+            $service->deleteTemporalDocument($invoice);
         }
     }
 }

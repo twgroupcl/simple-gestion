@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\Customer;
 use App\Models\Payments;
 use App\Observers\PaymentsObserver;
+use App\Models\Invoice;
+use App\Observers\InvoiceObserver;
 use App\Models\OrderItem;
 use App\Models\Quotation;
 use App\Observers\OrderObserver;
@@ -53,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
         Order::observe(OrderObserver::class);
         OrderItem::observe(OrderItemObserver::class);
         Payments::observe(PaymentsObserver::class);
+        Invoice::observe(InvoiceObserver::class);
         CommuneShippingMethod::observe(CommuneShippingMethodObserver::class);
     }
 }
