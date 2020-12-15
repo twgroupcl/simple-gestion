@@ -6,7 +6,7 @@ use App\Http\Requests\InvoiceRequest;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Models\{Invoice, InvoiceType, CustomerAddress};
+use App\Models\{Invoice, InvoiceType, CustomerAddress, Payments};
 use App\Services\DTE\DTEService;
 use Illuminate\Support\Facades\Gate;
 
@@ -144,6 +144,10 @@ class ManageInvoiceCrudController extends CrudController
             }
             
             $invoice->updateWithoutEvents();
+
+            if ($invoice->invoice_status === Invoice::STATUS_SEND && $invoice->way_to_payment === 2) {
+                $payment = Payments::insertDataInvoices($invoice);
+            }
             #ddd($contentResponse, $response);
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
         }

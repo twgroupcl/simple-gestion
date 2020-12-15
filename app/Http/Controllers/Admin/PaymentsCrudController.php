@@ -347,6 +347,11 @@ class PaymentsCrudController extends CrudController
             }
         }
 
+        CRUD::addField([
+            'name' => 'script_payments',
+            'type' => 'payment.script_payments',
+            'tab' => 'Programar pagos',
+        ]);
 
 
         /**

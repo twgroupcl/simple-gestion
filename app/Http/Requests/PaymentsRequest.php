@@ -52,7 +52,7 @@ class PaymentsRequest extends FormRequest
 
         return [
           
-            'data_fee_validation.*.amount' => 'required',
+            'data_fee_validation.*.amount' => 'required|gt:0',
             'data_fee_validation.*.date' =>   ['required',function ($attribute, $value, $fail) {
                 $dataInvoice = Invoice::find($this->invoice_id);
                 if($value > $dataInvoice->expiry_date){
@@ -95,7 +95,7 @@ class PaymentsRequest extends FormRequest
     public function messages()
     {
         return [
-            'gte' => 'El campo :attribute debe ser mayor o igual a 0',
+            'gt' => 'El campo :attribute debe ser mayor a 0',
             'required' => 'Verifique el campo :attribute, es necesario que lo complete',
             'lt' => 'La cantidad de pagos no puede ser superior a la cantidad de :attribute'
         ];
