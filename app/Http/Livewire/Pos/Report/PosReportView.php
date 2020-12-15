@@ -9,8 +9,8 @@ class PosReportView extends Component
 {
     public $seller;
     public $salesBox;
-    public $logs;
-    public $orders;
+    public $logs = [];
+    public $orders = [];
     public $selectedOrder;
     public $search;
     protected $listeners = [
@@ -24,7 +24,10 @@ class PosReportView extends Component
     public function mount()
     {
         $this->salesBox = $this->seller->sales_boxes()->opened()->with('logs.order')->latest()->first();
-        $this->logs = $this->salesBox->logs;
+
+        if ($this->salesBox) {
+            $this->logs = $this->salesBox->logs;
+        }
         // $this->orders = $this->salesBox->logs()->whereHas('order', function($query) {
         //     $query->where('event', 'Nueva orden generada');
         // })->get()->map(function($item) {
@@ -55,10 +58,12 @@ class PosReportView extends Component
 
     public function updateOrders()
     {
-        $this->orders = $this->salesBox->logs()->whereHas('order', function ($query) {
-            $query->where('event', 'Nueva orden generada');
-        })->get()->map(function ($item) {
-            return $item->order;
-        });
+        if ($this->salesBox) {
+            $this->orders = $this->salesBox->logs()->whereHas('order', function ($query) {
+                $query->where('event', 'Nueva orden generada');
+            })->get()->map(function ($item) {
+                return $item->order;
+            });
+        }
     }
 }
