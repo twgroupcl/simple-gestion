@@ -43,6 +43,11 @@ class InvoiceCrudController extends CrudController
         if (!empty($this->seller) && $this->seller->is_approved !== Seller::STATUS_ACTIVE) {
             $this->crud->denyAccess(['create', 'update', 'delete']);
         }
+
+        // if dte is real, deny delete
+        if ($this->crud->getCurrentOperation() === 'delete' && $this->crud->getCurrentEntry()->invoice_status === Invoice::STATUS_SEND) {
+            $this->crud->denyAccess(['delete']);
+        }
     }
 
     /**
