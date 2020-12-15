@@ -160,6 +160,8 @@ class ManageInvoiceCrudController extends CrudController
         }
 
         $creditNote = new Invoice($invoice->toArray());
+        $creditNote->folio = null;
+        $creditNote->dte_code = null;
         $creditNoteType = InvoiceType::whereCode('61')->first();
         $creditNote->invoice_type_id = $creditNoteType->id;
         $creditNote->json_value = [
