@@ -50,6 +50,8 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.products.delete');
     Route::get('/products/{warehouse}/{sku}', 'Api\v1\ProductController@showBySkuAndWarehouse')
         ->name('api.products.show-by-sku');
+    Route::post('/products/{warehouse}/{sku}/stock', 'Api\v1\ProductController@updateStock')
+        ->name('api.products.show-by-sku');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
     

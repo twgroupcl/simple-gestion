@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use DateTime;
+use Exception;
 use App\Models\Seller;
 use App\Models\Product;
 use Illuminate\Support\Str;
@@ -182,6 +183,52 @@ class ProductController extends Controller
         ], 200);
     }
 
-    
+    public function updateStock(Request $request, $warehouseCode, $sku)
+    {
+        $messages = [
+            '*.exists' => 'El valor de :attribute no se encuentra en la base de datos',
+        ];
+
+        $validator = Validator::make(['sku' => $sku, 'warehouse' => $warehouseCode, 'qty' => $request['qty']], [ 
+            'sku' => 'required|exists:products,sku',
+            'warehouse' => 'required|exists:product_inventory_sources,code',
+            'qty' => 'required|numeric|min:0',
+        ], $messages);
+      
+        if ($validator->fails()) {
+          return response()->json([ 'status' => 'error', 'message' => $validator->errors() ], 400);
+        }
+
+        /**
+         * NOTE: This may fail when there is two seller with the same product SKU in the same warehouse
+         * 
+         */
+        $warehouse = ProductInventorySource::where('code', $warehouseCode)->first();
+
+        $productInventory = ProductInventory::where('product_inventory_source_id', $warehouse->id)
+                                ->whereHas('product', function ($query) use ($sku)  {
+                                   return $query->where('sku', $sku);
+                                })->first();
+
+        if (!$productInventory) {
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'La bodega no contiene el producto con el SKU indicado',
+            ],  404);
+        };
+
+        $product = Product::find($productInventory->product_id);
+
+        try {
+            $product->updateInventory($request['qty'], $warehouse->id);
+        } catch(Exception $exception) {
+            return response()->json([ 'status' => 'error', 'message' => $exception->getMessage() ], 400);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Inventario del producto ' . $product->sku . ' en la bodega "' . $warehouse->name . '" actualizado',
+        ], 200);
+    }
 
 }
