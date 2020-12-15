@@ -61,10 +61,10 @@ trait DTEArray
                                     '',
                     'CmnaRecep' => $customerAddress->commune->name,
                 ],
-                'Totales' => [
+                /*'Totales' => [
                     'TpoMoneda' => !empty($this->invoice->currency) ? $this->invoice->currency->code : 'CLP',
                     //'MntTotal' => 
-                ],
+                ],*/
             ],
             'Detalle' => $itemsDTE,
             'DscRcgGlobal' => $globalDiscounts,
