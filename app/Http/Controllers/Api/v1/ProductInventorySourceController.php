@@ -20,6 +20,14 @@ class ProductInventorySourceController extends Controller
 
         $error = false;
         $errorMessage = '';
+
+        $sellerAddress = [
+            [
+                'street' => $request['street'],
+                'number' => $request['number'],
+                'commune_id' => $request['commune_id'],
+            ]
+        ];
         
         try {
 
@@ -47,6 +55,7 @@ class ProductInventorySourceController extends Controller
                 'visible_name' => $request['name'],
                 'name' => $request['contact_name'],
                 'seller_category_id' => 1,
+                'addresses_data' => $sellerAddress,
                 'password' => $request['code'],
                 'status' => $request['status'] ?? 1,
                 'company_id' => auth()->user()->companies->first()->id,
