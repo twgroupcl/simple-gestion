@@ -110,6 +110,22 @@ class DTEService
         return self::exec($url, [], $headers, $method);
     }
 
+    public function getTemporalPDF(Invoice $invoice)
+    {
+        $method = 'GET';
+        $customerUid = rutWithoutDV($invoice->uid); 
+        $sellerUid = rutWithoutDV($invoice->company->uid);
+        $url = $this->url . '/dte/dte_tmps/pdf/' . 
+            $customerUid . '/' .
+            $invoice->invoice_type->code . '/' . 
+            $invoice->dte_code . '/' .
+            $sellerUid . '?cotizacion=0&papelContinuo=0&compress=0';
+
+        $headers = $this->headers;
+
+        return self::exec($url, [], $headers, $method);
+    }
+
     /**
      * Return if exists folios availables
      *
