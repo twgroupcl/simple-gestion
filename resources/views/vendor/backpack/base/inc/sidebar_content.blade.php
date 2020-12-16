@@ -139,6 +139,7 @@
 </li>
 @endcanany
 
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('communeshippingmethod') }}'><i class='nav-icon la la-truck'></i> Metodos de envío</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('plans') }}'><i class='nav-icon la la-question'></i> Plans</a></li>
 @canany(['support.list'])
 <li class="nav-item nav-dropdown">
@@ -151,6 +152,8 @@
 </li>
 @endcanany
 
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('pos') }}"><i class="la la-home nav-icon"></i>POS</a></li>
+
 @canany(['reservation.list'])
 <li class="nav-item nav-dropdown">
         <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-dumbbell"></i> Gimnasio</a>
@@ -162,4 +165,3 @@
         </ul>
 </li>
 @endcanany
-

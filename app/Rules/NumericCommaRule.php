@@ -14,16 +14,16 @@ use Request;
 class NumericCommaRule implements Rule
 {
     protected $message = 'El campo :attribute debe ser un valor numerico.';
-
+    private $min;
     
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($min = 0.01)
     {
-
+        $this->min = $min;
     }
 
     /**
@@ -39,24 +39,24 @@ class NumericCommaRule implements Rule
             }
 
             if ( strpos($value, '.') ) {
-                $this->message = 'El formato de los numeros solo puede tilizar la coma "," como separador decimal.';
+                $this->message = 'El formato del campo :attribute solo puede tilizar la coma "," como separador decimal.';
                 return false;
             }
 
             if ( substr_count($value, ',') > 1 ) {
-                $this->message = 'El formato de los numeros solo puede tilizar la coma "," como separador decimal.';
+                $this->message = 'El formato del campo :attribute solo puede tilizar la coma "," como separador decimal.';
                 return false;
             }
 
             $number = sanitizeNumber($value);
 
             if( ! is_numeric($number) ) {
-                $this->message = 'El campo :attribute debe ser un valor numerico y mayor a 0,01.';
+                $this->message = 'El campo :attribute debe ser un valor numerico y mayor a ' . str_replace('.', ',', $this->min) . '.';
                 return false;
             }
 
-            if($number <= 0.01) {
-                $this->message = 'El campo :attribute debe ser un valor numerico y mayor a 0,01.';
+            if($number < $this->min) {
+                $this->message = 'El campo :attribute debe ser un valor numerico y mayor a ' . str_replace('.', ',', $this->min) . '.';
                 return false;
             }
 
