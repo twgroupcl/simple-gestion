@@ -276,6 +276,10 @@ class CustomerCrudController extends CrudController
             'default' => '{}',
             'fields' => [
                 [
+                    'name' => 'customer_address_id',
+                    'type' => 'hidden',
+                ],
+                [
                     'name' => 'street',
                     'type' => 'text',
                     'label' => 'Calle',

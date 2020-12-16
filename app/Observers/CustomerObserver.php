@@ -58,15 +58,20 @@ class CustomerObserver
 
     public function created(Customer $customer)
     {
-        $this->syncAddresses($customer);
+        $this->syncAddressesWithoutDeleting($customer, true);
         $this->sendWelcomeMail($customer);
+    }
+
+    public function updating(Customer $customer)
+    {
+        $this->syncAddressesWithoutDeleting($customer);
     }
 
     public function updated(Customer $customer)
     {
-        CustomerAddress::where('customer_id', $customer->id)->delete();
+        //CustomerAddress::where('customer_id', $customer->id)->delete();
 
-        $this->syncAddresses($customer);
+        //$this->syncAddresses($customer);
 
         if(!empty($customer->user())) {
             $customer->user()->update([
@@ -75,6 +80,40 @@ class CustomerObserver
                 'password' => $customer->password,
             ]);
         }
+    }
+
+    public function syncAddressesWithoutDeleting(Customer $customer, $update = false)
+    {
+        $addresses_data = is_array($customer->addresses_data)
+            ? $customer->addresses_data
+            : json_decode($customer->addresses_data, true);
+
+        $originalAddresses =  $customer->getOriginal('addresses_data');
+
+        if (!is_null($originalAddresses)) {
+            $originalAddressesId = collect($originalAddresses)->pluck('customer_address_id')->toArray();
+            $actualAddressesId = collect($addresses_data)->pluck('customer_address_id')->toArray();
+
+            foreach($originalAddressesId as $originalId) {
+                if (empty($originalId)) continue;
+
+                if (!in_array($originalId, $actualAddressesId)) {
+                    CustomerAddress::find($originalId)->delete();
+                }
+            }
+        }
+
+        foreach($addresses_data as &$address) {
+            if ($address['customer_address_id'] == '') {
+                $newAddress = $customer->addresses()->create($address);
+                $address['customer_address_id'] = $newAddress->id;
+            } else {
+                CustomerAddress::find($address['customer_address_id'])->update($address);
+            }
+        }
+
+        $customer->addresses_data = $addresses_data;
+        if ($update) $customer->update();
     }
 
     public function syncAddresses(Customer $customer)
@@ -87,6 +126,7 @@ class CustomerObserver
             return new CustomerAddress($address);
         });
 
+        // TODO move this to the new sync method
         if (CustomerAddress::whereCustomerId($customer->id)->count() > 0) {
             $cart = Cart::whereCustomerId($customer->id)->first();
 
