@@ -523,7 +523,7 @@ class QuotationCrudController extends CrudController
 
         $customer = Customer::where('id', $form['customer_id'])->first();
 
-        return $customer->addresses()->paginate(100);
+        return $customer->addresses_with_deletes()->paginate(100);
     }
 
     public function exportPDF($id) {
