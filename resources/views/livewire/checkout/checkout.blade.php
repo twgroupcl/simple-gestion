@@ -93,7 +93,7 @@
                         <div class="w-50 pl-2">
                             {{-- @if ($loading || !$canContinue) disabled  @endif --}}
                             <button class="btn btn-primary btn-block"
-
+                            @if ($blockButton) disabled @endif
                              wire:click="nextStep()" >
                     <span class="d-none d-sm-inline">
                         {{-- @if ($loading) --}}
@@ -176,7 +176,7 @@
                 @if (!empty($activeStep['next-button']))
                 {{-- @if ($loading || !$canContinue) disabled  @endif  --}}
                     <div class="w-50 pl-2"><button class="btn btn-primary btn-block"
-
+                        @if ($blockButton) disabled @endif
                          wire:click.prevent="nextStep()" >
                 {{-- @if ($loading) --}}
                     {{-- <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> --}}

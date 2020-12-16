@@ -4,14 +4,15 @@ namespace App\Http;
 
 // use App\ChilexpressPaymentCalculation;
 use Config;
+use Exception;
 use App\Region;
-use App\Models\CartItem;
 use App\Models\Commune;
 // use Webkul\Checkout\Facades\Cart;
 // use Webkul\Checkout\Models\CartShippingRate;
 // use Webkul\Core\Models\CountryState;
 // use Webkul\Shipping\Facades\Shipping;
 // use Webkul\Shipping\Services\ChilexpressService;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\DB;
 use App\Services\ChilexpressService;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -468,6 +469,7 @@ class Chilexpress
     public function calculateItemBySeller($itemShipping,$sellerId, $communeOrigin, $communeDestine)
     {
 
+
         $result = null;
         //$product =  $item->product;
         // if(!isset($cart->address_commune_id)){
@@ -485,7 +487,13 @@ class Chilexpress
         // $originState = strtoupper($originState);
         // $originState = $this->replaceSpecialCharacters($originState);
 
-        $originCoverages = $this->service->coverage($this->states[$originState]);
+        try {
+            $originCoverages = $this->service->coverage($this->states[$originState]);
+        }catch(Exception $e){
+            $result['is_available'] = false;
+            $result['message'] =  'No disponible temporalmente, seleccione otro método de envio si es posible';
+            return $result;
+        }
 
 
 
@@ -522,7 +530,13 @@ class Chilexpress
         // $destineState = strtoupper($destineState);
         // $destineState = $this->replaceSpecialCharacters($destineState);
 
-        $destineCoverages = $this->service->coverage($this->states[$destineState]);
+        try {
+            $destineCoverages = $this->service->coverage($this->states[$destineState]);
+        }catch(Exception $e){
+            $result['is_available'] = false;
+            $result['message'] =  'No disponible temporalmente, seleccione otro método de envio si es posible';
+            return $result;
+        }
 
         //$customerCity = strtoupper($destineCommune->name);
         //$customerCity = $this->replaceSpecialCharacters($customerCity);
