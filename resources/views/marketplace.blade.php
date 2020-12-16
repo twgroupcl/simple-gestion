@@ -30,7 +30,7 @@
     </div>
 </div>
 
-@if(count($featuredProducts) > 3)
+@if(count($featuredProducts) > 0)
     <section class="container mt-5 mb-grid-gutter">
         <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
             <h2 class="h3 mb-0 pt-3 mr-2">El regalo de la semana</h2>
@@ -186,15 +186,17 @@
 <!-- Product widgets-->
 <section class="container pb-4 pb-md-5">
     <div class="row">
-        @foreach($categories as $category)
-        <div class="col-lg-4 col-md-6 mb-2 py-3">
-            <div class="widget">
-                <h3 class="widget-title">{{$category->name}}</h3>
-                @livewire('products.products-general',['idCategory'=>$category->id])
-                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('search-products/'.$category->id)}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+        @if(count($categories) > 0)
+            @foreach($categories as $category)
+            <div class="col-lg-4 col-md-6 mb-2 py-3">
+                <div class="widget">
+                    <h3 class="widget-title">{{$category->name}}</h3>
+                    @livewire('products.products-general',['idCategory'=>$category->id])
+                    <p class="mb-0">...</p><a class="font-size-sm" href="{{url('search-products/'.$category->id)}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                </div>
             </div>
-        </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 </section>
 
