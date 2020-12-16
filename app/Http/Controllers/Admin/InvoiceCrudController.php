@@ -2,25 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
-use App\Models\Tax;
-use App\Models\Customer;
-use App\Models\Quotation;
-use App\Models\{Invoice, InvoiceItem};
+use App\Http\Requests\InvoiceRequest;
 use Illuminate\Http\Request;
-use App\Cruds\BaseCrudFields;
-use App\Models\CustomerAddress;
-use App\Http\Requests\QuotationRequest;
-use App\Http\Requests\QuotationCreateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use App\Models\{Tax, Invoice, InvoiceType, CustomerAddress, Seller, Company};
+use App\Services\DTEService;
 /**
- * Class QuotationCrudController
+ * Class InvoiceCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class QuotationCrudController extends CrudController
+class InvoiceCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -28,99 +21,110 @@ class QuotationCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    protected $emitter;
+    protected $seller;
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     *
+     * 
      * @return void
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Quotation::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/quotation');
-        CRUD::setEntityNameStrings('cotización', 'cotizaciones');
+        CRUD::setModel(\App\Models\Invoice::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/invoice');
+        CRUD::setEntityNameStrings('documento electrónico', 'documentos electrónicos');
+        
+        $this->seller = Seller::where('user_id', backpack_user()->id);
+        if ($this->seller->exists()) {
+            $this->seller= $this->seller->first();
+            if (! backpack_user()->can('showAllInvoices')) {
+                $this->crud->addClause('where', 'seller_id', $this->seller->id);
+            }
+            if ($this->seller->is_approved !== Seller::STATUS_ACTIVE) {
+                $this->crud->denyAccess(['create', 'update', 'delete']);
+            }
+        } else {
+            $this->seller = null;
+        }
+        
+        $company = session('user')['current']['company'];
+        $company = Company::find($company['id']);
+        $this->emitter = $company;
+        $this->crud->addClause('where', 'company_id', $company->id);
 
         $this->crud->denyAccess('show');
+
+        // if dte is real, deny delete
+        if ($this->crud->getCurrentOperation() === 'delete' && $this->crud->getCurrentEntry()->invoice_status === Invoice::STATUS_SEND) {
+            $this->crud->denyAccess(['delete']);
+        }
     }
 
     /**
      * Define what happens when the List operation is loaded.
-     *
+     * 
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
     protected function setupListOperation()
     {
-        // Export PDF option
-        $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
+        //CRUD::setFromDb(); // columns
+        
+        // create temporary document
+         
+        $this->crud->addButtonFromView(
+            'line', 'create_temporary_document', 
+            'invoice.to_manage', 'beginning'
+        );
 
         CRUD::addColumn([
-            'label' => '#',
-            'name' => 'code',
-            'type' => 'text',
+            'name' => 'first_name',
+            'label' => 'Nombre / Razón Soc.'
         ]);
 
         CRUD::addColumn([
-            'label' => 'Fecha cotización',
-            'name' => 'quotation_date',
-            'type' => 'date',
-            'format' => 'L'
+            'name' => 'uid',
+            'label' => 'RUT'
         ]);
 
         CRUD::addColumn([
-            'label' => 'Título',
-            'name' => 'title',
-        ]);
-
-        CRUD::addColumn([
-            'label' => 'Cliente',
-            'name' => 'customer',
+            'name' => 'invoice_type',
             'type' => 'relationship',
+            'label' => 'Tipo',
         ]);
 
         CRUD::addColumn([
-            'label' => 'Total',
-            'name' => 'total',
-            'type' => 'number',
-            'dec_point' => ',',
-            'thousands_sep' => '.',
-            'decimals' => 0,
-            'prefix' => '$' // @todo change symbol depending on the currency
+            'name' => 'folio'
         ]);
 
-        CRUD::addColumn([
-            'name' => 'quotation_status_text',
-            'type' => 'text',
-            'label' => 'Estado cotización',
-            'wrapper' => [
-                'element' => 'span',
-                'class' => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Activa') {
-                        return 'badge badge-success';
-                    }
-                    return 'badge badge-default';
-                },
-            ],
-        ]);
 
-        CRUD::addColumn([
-            'label' => 'Fecha expiración',
-            'name' => 'expiry_date',
-            'type' => 'date',
-            'format' => 'L'
-        ]);
+        /**
+         * Columns can be defined using the fluent syntax or array syntax:
+         * - CRUD::column('price')->type('number');
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     *
+     * 
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(QuotationCreateRequest::class);
+        CRUD::setValidation(InvoiceRequest::class);
 
-        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
+        //CRUD::setFromDb(); // fields
+
+        /**
+         * Fields can be defined using the fluent syntax or array syntax:
+         * - CRUD::field('price')->type('number');
+         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         */
+          
+        //$this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
         $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'current_tab', 'save_action']);
 
@@ -145,6 +149,9 @@ class QuotationCrudController extends CrudController
             'tab' => 'General',
         ]);
 
+        /*
+         * TO DO change method addresses to CustomerAddress
+         */
         CRUD::addField([
             'label' => 'Dirección',
             'type' => 'select2_from_ajax',
@@ -163,22 +170,10 @@ class QuotationCrudController extends CrudController
             'include_all_form_fields' => true,
             'tab' => 'General',
         ]);
-
-        // CRUD::addField([
-        //     'label' => 'Dirección',
-        //     'name' => 'address_id',
-        //     'type' => 'relationship',
-        //     'entity' => 'customer',
-        //     'placeholder' => 'Selecciona un cliente',
-        //     'wrapper' => [
-        //         'class' => 'form-group col-md-6',
-        //     ],
-        //     'tab' => 'General',
-        // ]);
-
+        
         CRUD::addField([
-            'label' => 'Fecha cotización',
-            'name' => 'quotation_date',
+            'label' => 'Fecha de emisión',
+            'name' => 'invoice_date',
             'type' => 'date',
             'default' => date("Y-m-d"),
             'wrapper' => [
@@ -188,7 +183,7 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'label' => 'Fecha expiración',
+            'label' => 'Fecha vencimiento',
             'name' => 'expiry_date',
             'type' => 'date',
             'wrapper' => [
@@ -197,29 +192,48 @@ class QuotationCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        CRUD::addField([
-            'label' => 'Vendedor',
-            'name' => 'seller_id',
-            'type' => 'select2',
-            'placeholder' => 'Selecciona un vendedor',
-            'model' => 'App\Models\Seller',
-            'attribute' => 'name',
-            'wrapper' => [
-                'class' => 'form-group col-md-6',
-            ],
-            'tab' => 'General',
-        ]);
+        if (backpack_user()->hasRole('Administrador negocio') && !empty($this->seller)) {
+            $this->sellerId = $this->seller->id;
+            CRUD::addField([
+                'label' => 'Vendedor',
+                'name' => 'seller_id',
+                'type' => 'select2',
+                'placeholder' => 'Selecciona un vendedor',
+                'model' => 'App\Models\Seller',
+                'attribute' => 'name',
+                'default' => $this->sellerId, 
+                'wrapper' => [
+                    'class' => 'form-group col-md-6',
+                ],
+                'tab' => 'General',
+                'options' => (function ($query) use($sellerId) {
+                    return $query->where('user_id', $this->sellerId)->get();
+                })
+            ]);
+
+        } else {
+            CRUD::addField([
+                'label' => 'Vendedor',
+                'name' => 'seller_id',
+                'type' => 'select2',
+                'placeholder' => 'Selecciona un vendedor',
+                'model' => 'App\Models\Seller',
+                'attribute' => 'name',
+                'wrapper' => [
+                    'class' => 'form-group col-md-6',
+                ],
+                'tab' => 'General',
+            ]);
+        }
 
         CRUD::addField([
-            'label' => 'Número cotización',
-            'name' => 'code_accesor',
+            'label' => 'Identificador de documento',
+            'name' => 'dte_code',
             'type' => 'text',
             'prefix' => '#',
-            'default' => Quotation::withTrashed()->orderBy('created_at')->get()->last() 
-                ? intval(Quotation::withTrashed()->orderBy('created_at')->get()->last()->code) + 1 
-                : 1,
             'attributes' => [
-                'readonly' => true,
+                'disabled' => 'disabled',
+                'readonly' => 'readonly',
             ],
             'wrapper' => [
                 'class' => 'form-group col-md-3',
@@ -228,14 +242,16 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'label' => 'Número referencia',
-            'name' => 'reference',
-            'type' => 'text',
-            'prefix' => '#',
+            'type' => 'select2_from_array',
+            'options' => InvoiceType::all()->pluck('name','id'),
+            'attribute' => 'name',
+            'name' => 'invoice_type_id',
+            'allows_null' => true,
+            'label' => 'Tipo de documento',
+            'tab' => 'General',
             'wrapper' => [
                 'class' => 'form-group col-md-3',
-            ],
-            'tab' => 'General',
+            ]
         ]);
 
         CRUD::addField([
@@ -407,7 +423,7 @@ class QuotationCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        CRUD::addField([
+        /*CRUD::addField([
             'name' => 'tax_type',
             'label' => 'Impuesto',
             'type' => 'select2_from_array',
@@ -418,9 +434,76 @@ class QuotationCrudController extends CrudController
                 'class' => 'form-group col-md-12',
             ],
             'tab' => 'General',
+        ]);*/
+        
+        CRUD::addField([
+            'name' => 'way_to_payment',
+            'label' => 'Forma de pago',
+            'type' => 'select2_from_array',
+            'options' => ['1' => 'Contado', '2' => 'Crédito' ],
+            'allows_null' => false,
+            'default' => '1',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-4',
+            ],
+            'tab' => 'General',
         ]);
 
         CRUD::addField([
+            'name' => 'payment_method',
+            'label' => 'Medio de pago',
+            'type' => 'select2_from_array',
+            'options' => [
+                'EF' => 'Efectivo', 
+                'PE' => 'Pago a Cta. Cte.',
+                'TC' => 'Tarjeta de crédito',
+                'CF' => 'Cheque a fecha',
+                'OT' => 'Otro'
+            ],
+            'allows_null' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-4',
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
+            'label' => 'Tipo de cuenta',
+            'name' => 'bank_account_type_id',
+            'type' => 'select2',
+            'placeholder' => 'Selecciona un banco',
+            'model' => 'App\Models\BankAccountType',
+            'attribute' => 'name',
+            'wrapper' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'tab' => 'General',
+        ]);
+        
+        CRUD::addField([
+            'label' => 'Banco',
+            'name' => 'bank_id',
+            'type' => 'select2',
+            'placeholder' => 'Selecciona un banco',
+            'model' => 'App\Models\Bank',
+            'attribute' => 'name',
+            'wrapper' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
+            'name' => 'bank_number_account',
+            'label' => 'Número de cuenta',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+            'tab' => 'General',
+        ]);
+
+        /*CRUD::addField([
             'name' => 'include_payment_data',
             'label' => 'Incluir datos de pago',
             'type' => 'checkbox',
@@ -429,11 +512,11 @@ class QuotationCrudController extends CrudController
                 'class' => 'form-group col-md-12'
             ],
             'tab' => 'General',
-        ]);
+        ]);*/
 
         CRUD::addField([
             'name' => 'notes',
-            'label' => 'Notas',
+            'label' => 'Observaciones / Términos del pago',
             'type' => 'textarea',
             'wrapper' => [
                 'class' => 'form-group col-md-12',
@@ -441,27 +524,6 @@ class QuotationCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        CRUD::addField([
-            'name' => 'quotation_status',
-            'label' => 'Estado cotización',
-            'options' => [
-                Quotation::STATUS_DRAFT => 'Borrador',
-                Quotation::STATUS_SENT => 'Enviado',
-                Quotation::STATUS_VIEWED => 'Visto',
-                Quotation::STATUS_EXPIRED => 'Expirado',
-                Quotation::STATUS_ACCEPTED => 'Aceptado',
-                Quotation::STATUS_REJECTED => 'Rechazado',
-            ],
-            'attributes' => [
-                'readonly' => true,
-                'disabled' => true,
-            ],
-            'type' => 'select2_from_array',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-md-12',
-            ],
-            'tab' => 'General',
-        ]);
 
         CRUD::addField([
             'name' => 'check_group_end',
@@ -470,7 +532,7 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'type' => 'quotation.totals_card',
+            'type' => 'invoice.totals_card',
             'name' => 'totals_card',
             'wrapper' => [
                 'class' => 'form-group col-md-6',
@@ -489,6 +551,31 @@ class QuotationCrudController extends CrudController
             'tab' => 'General',
         ]);
 
+        $model = $this->crud->getCurrentEntry();
+        if (isset($model->invoice_type) && $model->invoice_type->code == 61) {
+            $this->creditNoteFields();
+            CRUD::removeSaveActions(['save_and_back','save_and_new']);
+        }
+
+        $this->crud->addSaveAction([
+            'name' => 'save_and_manage',
+            'redirect' => function($crud, $request, $itemId) {
+                return $crud->route . '/'. $itemId . '/to-manage';
+            }, // what's the redirect URL, where the user will be taken after saving?
+
+            // OPTIONAL:
+            'button_text' => 'Guardar y gestionar', // override text appearing on the button
+            // You can also provide translatable texts, for example:
+            // 'button_text' => trans('backpack::crud.save_action_one'),
+            'visible' => function($crud) {
+                return true;
+            }, // customize when this save action is visible for the current operation
+            'referrer_url' => function($crud, $request, $itemId) {
+                return $crud->route;
+            }, // override http_referrer_url
+            'order' => 1, // change the order save actions are in
+        ]);
+        /*
         CRUD::addField([
             'name' => 'preface',
             'type' => 'wysiwyg',
@@ -497,84 +584,96 @@ class QuotationCrudController extends CrudController
                 'class' => 'form-group col-md-12'
             ],
             'tab' => 'Adicional',
-        ]);
+        ]);*/
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     *
+     * 
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    public function addresses(Request $request)
-    {
-        $search_term = $request->input('q');
-        $page = $request->input('page');
-        $form = collect($request->input('form'))->pluck('value', 'name');
-
-        if (empty($form['customer_id'])) {
-            return collect()->paginate(100);
+        if ($this->crud->getCurrentEntry()->invoice_status == Invoice::STATUS_TEMPORAL) {
+            \Alert::add('warning', 'El documento temporal se eliminará si guarda cambios');
         }
 
-        $customer = Customer::where('id', $form['customer_id'])->first();
-
-        return $customer->addresses()->paginate(100);
     }
 
-    public function exportPDF($id) {
-
-        $quotation = Quotation::findOrFail($id);
-
-         /* return view('templates.quotations.export_pdf', [
-            'quotation' => $quotation,
-            'due_date' => new Carbon($quotation->expiry_date),
-            'creation_date'=> new Carbon($quotation->quotation_date),
-            'title' => 'Cotizacion',
-            'now' => New Carbon(),
-        ]);   */
-
-        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('templates.quotations.export_pdf', [
-            'quotation' => $quotation,
-            'due_date' => is_null($quotation->expiry_date) ? null : new Carbon($quotation->expiry_date),
-            'creation_date'=> new Carbon($quotation->quotation_date),
-            'title' => $quotation->title,
-            'now' => New Carbon(),
+    protected function creditNoteFields() : void
+    {
+        CRUD::addField([
+            'name' => 'reference_date',
+            'label' => 'Fecha del documento original',
+            'type' => 'date',
+            'tab' => 'Referencia',
+            'fake' => true,
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ],
+            'attributes' => [
+                'readonly' => true,
+            ],
+            'store_in' => 'json_value',
         ]);
 
-        //$pdf->getDomPDF()->set_option('enable_php', true);
-        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+        CRUD::addField([
+            'name' => 'reference_folio',
+            'tab' => 'Referencia',
+            'fake' => true,
+            'wrapper' => [
+                'class' => 'form-group col-md-4',
+            ],
+            'attributes' => [
+                'readonly' => true,
+            ],
+            'store_in' => 'json_value',
+        ]);
 
-        return $pdf->stream('invoice.pdf');
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => InvoiceType::all()->pluck('name','id'),
+            'attribute' => 'name',
+            'name' => 'reference_type_document',
+            'label' => 'Tipo de documento',
+            'tab' => 'Referencia',
+            'fake' => true,
+            'store_in' => 'json_value',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ],
+        ]);
+
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => [
+                1 => 'Anula documento de referencia',
+                2 => 'Corrige texto documento de referencia',
+                3 => 'Corrige montos',
+            ],
+            'tab' => 'Referencia',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ],
+            'fake' => true,
+            'store_in' => 'json_value',
+            'name' => 'reference_code',
+        ]);
+
+        CRUD::addField([
+            'name' => 'reference_reason',
+            'type' => 'textarea',
+            'label' => 'Descripción',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12'
+            ],
+            'tab' => 'Referencia',
+            'fake' => true,
+            'store_in' => 'json_value'
+        ]);
+
     }
 
-    public function toInvoice(Request $request, Quotation $quotation)
-    {
-        \DB::beginTransaction();
-        try {
-            $invoice = new Invoice($quotation->toArray());
-            $invoice->items_data = json_encode($invoice->items_data);
-            unset($invoice->expiry_date);
-            $invoice->save();
-
-            //foreach ($quotation->quotation_items as $item) {
-            //    $invoiceItem = new InvoiceItem($item->toArray());
-            //    $invoiceItem->invoice_id = $invoice->id;
-            //    $invoiceItem->save();
-            //}
-            
-            \DB::commit();
-            
-            return redirect('admin/invoice/' . $invoice->id . '/edit');
-        } catch (Exception $e) {
-            // @todo Alert and redirect to crud->route
-            \Alert::warning('Hubo un problema al generar el documento electrónico');
-            \DB::rollback();
-        }
-
-    }
 }

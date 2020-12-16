@@ -121,7 +121,7 @@
 </li>
 @endcanany
 
-@canany(['quotation.list', 'order.list'])
+@canany(['quotation.list', 'order.list', 'invoice.list', 'payments.list'])
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Ventas</a>
 	<ul class="nav-dropdown-items">
@@ -135,7 +135,13 @@
         @can('sales.report')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('report/sales') }}'><i class="nav-icon las la-file-invoice"></i> Reporte</a></li>
         @endcan
-	</ul>
+        @can('payments.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('payments') }}'><i class='nav-icon la la-dollar'></i> Pagos</a></li>
+        @endcan
+        @can('invoice.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoice') }}'><i class='nav-icon la la-file-invoice-dollar'></i> Doc. Electrónicos </a></li>
+        @endcan
+    </ul>
 </li>
 @endcanany
 

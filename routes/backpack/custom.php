@@ -66,6 +66,18 @@ Route::group([
     Route::get('charts/most-purchased-product-categories', 'Charts\MostPurchasedProductCategoriesChartController@response')->name('charts.most-purchased-product-categories.index');
     Route::get('charts/most-purchased-products', 'Charts\MostPurchasedProductsChartController@response')->name('charts.most-purchased-products.index');
 
+     /** invoice **/
+     Route::crud('invoice', 'InvoiceCrudController');
+     Route::get('quotation/{quotation}/to-invoice', 'QuotationCrudController@toInvoice');
+     Route::get('invoice/{invoice}/send-temporary-document', 'ManageInvoiceCrudController@sendTemporaryDocument');
+     Route::get('invoice/{invoice}/create-real-document', 'ManageInvoiceCrudController@createRealDocument');
+     Route::get('invoice/{invoice}/delete-temporary-document', 'ManageInvoiceCrudController@deleteTemporaryDocument');
+     Route::get('invoice/{invoice}/to-manage', 'ManageInvoiceCrudController@index');
+     Route::get('invoice/{invoice}/get-pdf', 'ManageInvoiceCrudController@getPDF');
+     Route::get('invoice/{invoice}/issue-credit-note', 'ManageInvoiceCrudController@issueCreditNote');
+     Route::get('invoice-type/{invoiceType}/get-code', 'InvoiceTypeCrudController@getCode');
+    Route::crud('payments', 'PaymentsCrudController');
+    Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
     // API routes
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
@@ -92,6 +104,5 @@ Route::group([
    
 
     Route::crud('reservationrequest', 'ReservationRequestCrudController');
-}); // this should be the absolute last line of this file
-
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
+}); // this should be the absolute last line of this file

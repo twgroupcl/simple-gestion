@@ -3,20 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Bank;
-
-use App\Models\Seller;
-
 use App\Models\ContactType;
 use App\Cruds\BaseCrudFields;
 use App\Models\PaymentMethod;
 use App\Models\SellerCategory;
 use App\Models\ShippingMethod;
 use App\Models\BankAccountType;
+use App\Models\BusinessActivity;
 use App\Traits\HasCustomAttributes;
 use App\Http\Requests\SellerStoreRequest;
 use App\Http\Requests\SellerUpdateRequest;
+use App\Models\Seller;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use App\Models\BusinessActivity;use App\Models\Commune;
+use App\Models\Commune;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
