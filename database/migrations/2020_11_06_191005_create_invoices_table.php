@@ -60,6 +60,7 @@ class CreateInvoicesTable extends Migration
             $table->longText('json_value')->nullable();
             $table->integer('status')->default(1);
             $table->unsignedBigInteger('folio')->nullable();
+            $table->unsignedBigInteger('company_id');
             // $table->unsignedBigInteger('quotation_template_id')->nullable();
             $table->unsignedBigInteger('seller_business_activity_id')->nullable();
             $table->unsignedBigInteger('customer_business_activity_id')->nullable();
@@ -84,6 +85,7 @@ class CreateInvoicesTable extends Migration
             $table->foreign('bank_id')->references('id')->on('banks');
             $table->foreign('bank_account_type_id')->references('id')->on('bank_account_types');
             
+            $table->foreign('company_id')->references('id')->on('companies');
             //$table->foreign('branch_id')->references('id')->on('branches');
             //$table->unique(['branch_id', 'dte_code']);
         });

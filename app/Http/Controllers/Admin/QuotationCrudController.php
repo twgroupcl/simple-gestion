@@ -561,17 +561,18 @@ class QuotationCrudController extends CrudController
             unset($invoice->expiry_date);
             $invoice->save();
 
-            foreach ($quotation->quotation_items as $item) {
-                $invoiceItem = new InvoiceItem($item->toArray());
-                $invoiceItem->invoice_id = $invoice->id;
-                $invoiceItem->save();
-            }
+            //foreach ($quotation->quotation_items as $item) {
+            //    $invoiceItem = new InvoiceItem($item->toArray());
+            //    $invoiceItem->invoice_id = $invoice->id;
+            //    $invoiceItem->save();
+            //}
             
             \DB::commit();
             
             return redirect('admin/invoice/' . $invoice->id . '/edit');
         } catch (Exception $e) {
             // @todo Alert and redirect to crud->route
+            \Alert::warning('Hubo un problema al generar el documento electrónico');
             \DB::rollback();
         }
 

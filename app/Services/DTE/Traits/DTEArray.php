@@ -6,7 +6,7 @@ trait DTEArray
 {
     public function toArray()
     {
-        $seller = $this->invoice->seller;
+        $emitter = $this->invoice->company;
         $customerAddress = $this->invoice->address;
         //dd($customerAddress, $this->invoice);
     
@@ -49,7 +49,7 @@ trait DTEArray
                     'FchVenc' => $this->invoice->expiry_date ?? false //AAAA-MM-DD
                 ],
                 'Emisor' => [
-                    'RUTEmisor' => sanitizeRUT($seller->uid),
+                    'RUTEmisor' => sanitizeRUT($emitter->uid),
                 ],
                 'Receptor' => [
                     'RUTRecep' => sanitizeRUT($this->invoice->uid),
