@@ -127,7 +127,7 @@
     </div>
 </section>
 
-@if(count($banners) > 0)
+@if(count($banners) > 1)
     @if($banners[1]['path_web'] && $banners[1]['status'])
     <section class="container mt-4 mb-grid-gutter">
         <div class="rounded-lg py-4">
@@ -211,7 +211,7 @@
     </section>
 -->
 
-@if(count($banners) > 0)
+@if(count($banners) > 2)
     @if($banners[2]['status'] == 'Activo' || $banners[3]['status'] == 'Activo')
     <section class="container mt-4 mb-grid-gutter">
         <div class="rounded-lg py-4">
@@ -237,7 +237,7 @@
     @endif
 @endif
 
-@if(count($banners) > 0)
+@if(count($banners) > 3)
     @if($banners[4]['path_web'] && $banners[4]['status'])
     <section class="container mt-4 mb-grid-gutter">
         <div class="rounded-lg py-4">
