@@ -34,6 +34,7 @@ class Quotation extends Model
     protected $guarded = ['id'];
     protected $fillable = [
         'code',
+        'reference',
         'title',
         'quotation_date',
         'expiry_date',
@@ -156,6 +157,11 @@ class Quotation extends Model
     public function getIdAccesorAttribute()
     {
         return $this->id;
+    }
+
+    public function getCodeAccesorAttribute()
+    {
+        return $this->code;
     }
 
     public function getQuotationStatusTextAttribute() 

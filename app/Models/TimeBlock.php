@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
-use App\User;
-use Illuminate\Support\Facades\DB;
+use DateTime;
+use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Company extends Model
+class TimeBlock extends Model
 {
     use CrudTrait;
+    use SoftDeletes;
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
 
     /*
     |--------------------------------------------------------------------------
@@ -17,36 +22,25 @@ class Company extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'companies';
+    protected $table = 'time_blocks';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = [
-        'uid', 'name', 'real_name', 'slug', 'logo', 'unique_hash', 'payment_data', 'status',
-    ];
+    // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+    protected $appends = ['name_with_time'];
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-    public function getBusinessAdminUsers()
+    protected static function boot()
     {
-        $usersAdminId = DB::table('company_users')
-            ->where('role_id', User::BUSINESS_ADMIN_ROL_ID)
-            ->where('company_id', $this->id)
-            ->get()
-            ->pluck('user_id');
-        
-        $adminUsers = User::whereIn('id', $usersAdminId)->get();
+        parent::boot();
 
-        return $adminUsers ?: [];
+        static::addGlobalScope(new CompanyBranchScope);
     }
 
     /*
@@ -54,15 +48,14 @@ class Company extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function branches()
+    public function company()
     {
-        return $this->belongsToMany(Branch::class);
+        return $this->belongsTo(Company::class);
     }
 
-    public function inventory_sources()
+    public function services()
     {
-        return $this->hasMany(ProductInventorySource::class);
+        return $this->belongsToMany(Service::class, 'service_time_block_mapping');
     }
 
     /*
@@ -76,6 +69,29 @@ class Company extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getStatusDescriptionAttribute()
+    {
+        switch ($this->status) {
+            case $this::STATUS_ACTIVE:
+                return 'Activo';
+                break;
+            case $this::STATUS_INACTIVE:
+                return 'Inactivo';
+                break;
+            default:
+                break;
+        }
+    }
+
+    public function getNameWithTimeAttribute()
+    {
+        $start_time = new DateTime($this->start_time);
+        $start_time = $start_time->format('h:i A');
+        $end_time = new DateTime($this->end_time);
+        $end_time = $end_time->format('h:i A');
+
+        return $this->name . ' (' . $start_time . ' - ' . $end_time . ')';
+    }
 
     /*
     |--------------------------------------------------------------------------

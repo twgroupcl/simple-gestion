@@ -136,6 +136,22 @@ class CustomerCrudController extends CrudController
             'label' => 'Es empresa',
             'type' => 'checkbox',
             'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-auto'
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'is_foreign',
+            'label' => 'Es extranjero',
+            'type' => 'checkbox',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-9 is_foreing_field'
+            ],
+            'attributes' => [
+                'class' => 'is_foreign_checkbox'
+            ]
         ]);
 
         CRUD::addField([
@@ -146,6 +162,9 @@ class CustomerCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-4',
             ],
+            'attributes' => [
+                'id' => 'rut_field',
+            ]
         ]);
 
         CRUD::addField([
@@ -483,7 +502,8 @@ class CustomerCrudController extends CrudController
         $this->setupCreateOperation();
 
         CRUD::field('uid')->attributes([
-            'readonly' => 'readonly'
+            'readonly' => 'readonly',
+            'id' => 'rut_field',
         ]);
 
         CRUD::field('email')->attributes([

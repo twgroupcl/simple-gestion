@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\User;
-use Illuminate\Support\Facades\DB;
+use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Company extends Model
+class ReservationRequest extends Model
 {
     use CrudTrait;
 
@@ -17,36 +16,24 @@ class Company extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'companies';
+    protected $table = 'reservation_requests';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = [
-        'uid', 'name', 'real_name', 'slug', 'logo', 'unique_hash', 'payment_data', 'status',
-    ];
+    // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-    public function getBusinessAdminUsers()
+    protected static function boot()
     {
-        $usersAdminId = DB::table('company_users')
-            ->where('role_id', User::BUSINESS_ADMIN_ROL_ID)
-            ->where('company_id', $this->id)
-            ->get()
-            ->pluck('user_id');
-        
-        $adminUsers = User::whereIn('id', $usersAdminId)->get();
+        parent::boot();
 
-        return $adminUsers ?: [];
+        static::addGlobalScope(new CompanyBranchScope);
     }
 
     /*
@@ -54,15 +41,24 @@ class Company extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function branches()
+    public function company()
     {
-        return $this->belongsToMany(Branch::class);
+        return $this->belongsTo(Company::class);
     }
 
-    public function inventory_sources()
+    public function customer()
     {
-        return $this->hasMany(ProductInventorySource::class);
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+
+    public function timeblock()
+    {
+        return $this->belongsTo(TimeBlock::class, 'time_block_id');
     }
 
     /*

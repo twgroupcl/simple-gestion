@@ -24,6 +24,8 @@ class QuotationObserver
         $quotation->phone = $quotation->customer->phone;
         $quotation->cellphone = $quotation->customer->cellphone;
 
+        $quotation->code = $this->generateUniqueCodeByBranch($quotation);
+
         $quotation->is_company = $quotation->customer->is_company;
     }
 
@@ -202,5 +204,21 @@ class QuotationObserver
 
             $quotation->updateWithoutEvents($propsToUpdate);
         }
+    }
+
+    public function generateUniqueCodeByBranch($quotation)
+    {
+        $lastQuotation = Quotation::withTrashed()->where('branch_id', $quotation->branch_id)->orderBy('created_at')->get()->last();
+
+        $lastCode = $lastQuotation ? intval($lastQuotation->code) + 1 : 1;
+
+        $verification = Quotation::withTrashed()->where([ 'code' => $lastCode, 'branch_id' => $quotation->branch_id ])->get();
+
+        while ( $verification->count() ) {
+            $lastCode++;
+            $verification = Quotation::withTrashed()->where([ 'code' => $lastCode, 'branch_id' => $quotation->branch_id ])->get();
+        }
+
+        return $lastCode;
     }
 }

@@ -16,30 +16,16 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $categories = ProductCategory::where('status', '=' ,'1')
-        ->whereHas('products', function ($query) {
-            $query->where('status', '=', '1')
-            ->where('is_approved', '=', '1')
-            ->where('parent_id', '=', null);
-        })->limit(3)->inRandomOrder()->get();
+        return redirect('admin');
 
-        $featuredProducts = Product::where('status', '=' ,'1')
-        ->where('featured', '=' ,'1')
-        ->inRandomOrder()->get();
+        // $categories = ProductCategory::where('status', '=' ,'1')
+        // ->whereHas('products', function ($query) {
+        //     $query->where('status', '=', '1')
+        //     ->where('is_approved', '=', '1')
+        //     ->where('parent_id', '=', null);
+        // })->limit(3)->inRandomOrder()->get();
 
-        $banner1 = Banners::where('section',1)->first();
-        $banner2 = Banners::where('section',2)->first();
-        $banner3 = Banners::where('section',3)->first();
-        $banner4 = Banners::where('section',4)->first();
-
-        $banners = [
-            1 => $banner1,
-            2 => $banner2,
-            3 => $banner3,
-            4 => $banner4
-        ];
-
-        return view('marketplace', compact('categories','featuredProducts','banners'));
+        // return view('marketplace', compact('categories'));
     }
 
     public function getAllProducts()

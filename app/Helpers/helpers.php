@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Currency;
+use App\Models\Quotation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -133,5 +134,23 @@ if (!function_exists('defaultCurrency')) {
         }
 
         return $default_currency;
+    }
+}
+
+if (!function_exists('generateUniqueCodeByCompany')) {
+    function generateUniqueModelCodeAttribute($model, int $companyId)
+    {
+        $lastModel = $model::withTrashed()->where('company_id', $companyId)->orderBy('created_at')->get()->last();
+
+        $lastCode = $lastModel ? intval($lastModel->code) + 1 : 1;
+
+        $verification = $model::withTrashed()->where([ 'code' => $lastCode, 'company_id' => $companyId ])->get();
+
+        while ( $verification->count() ) {
+            $lastCode++;
+            $verification = $model::withTrashed()->where([ 'code' => $lastCode, 'company_id' => $companyId ])->get();
+        }
+
+        return $lastCode;
     }
 }

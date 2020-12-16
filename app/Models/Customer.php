@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\User;
+use DateTime;
+use Freshwork\ChileanBundle\Rut;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Freshwork\ChileanBundle\Rut;
 
 class Customer extends Model
 {
@@ -37,6 +38,7 @@ class Customer extends Model
         'uid',
         'first_name',
         'last_name',
+        'is_foreign',
         'email',
         'phone',
         'cellphone',
@@ -80,6 +82,25 @@ class Customer extends Model
         static::addGlobalScope(new CompanyBranchScope);
     }
 
+    public function registerAttendance(int $companyId, $serviceId = null)
+    {
+        $todayAttendances = CustomerAttendance::whereDay('attendance_time', date('d'))->where('customer_id', $this->id)->get();
+        $entryNumber = $todayAttendances->count() + 1;
+        $entryType = ($entryNumber % 2) ? CustomerAttendance::CHECK_IN : CustomerAttendance::CHECK_OUT;
+
+        $attendance = CustomerAttendance::create([
+            'attendance_time' => new DateTime(),
+            'entry_number' => $entryNumber,
+            'entry_type' => $entryType,
+            'service_id' => $serviceId,
+            'customer_id' => $this->id,
+            'branch_id' => $this->user->branches->first()->id,
+            'company_id' => $companyId,
+        ]);
+
+        return $attendance;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -114,6 +135,11 @@ class Customer extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(CustomerAttendance::class);
     }
 
     /*
@@ -167,9 +193,16 @@ class Customer extends Model
 
     public function getUidAttribute()
     {
+        if ($this->is_foreign) return $this->attributes['uid'];
+
         $rutFormatter = Rut::parse($this->attributes['uid']);
 
         return $rutFormatter->format();
+    }
+
+    public function getCustomerSegmentNameAttribute()
+    {
+        return $this->customer_segment->name ?? '';
     }
 
     /*
@@ -187,6 +220,11 @@ class Customer extends Model
 
     public function setUidAttribute($value)
     {
+        if ($this->is_foreign) {
+            $this->attributes['uid'] = $value;
+            return true;
+        }
+
         $this->attributes['uid'] = strtoupper(
             str_replace('.', '', $value)
         );
