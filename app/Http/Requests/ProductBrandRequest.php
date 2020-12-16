@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductBrandRequest extends FormRequest
@@ -26,7 +27,10 @@ class ProductBrandRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required',
+            'code' => [
+                'required',
+                Rule::unique('product_brands')->ignore($this->id),
+            ],
             'name' => 'required',
             'slug' => 'required',
         ];

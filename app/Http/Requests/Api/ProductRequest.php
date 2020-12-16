@@ -38,27 +38,33 @@ class ProductRequest extends FormRequest
             'sku' => 'required',
             'url_key' => new SlugRule(),
             'categories' => 'required',
-            'product_class_id' => 'required|exists:product_classes,id',
             'type' => 'in:simple,configurable',
+            'product_class_id' => 'required_without:product_class_code|exists:product_classes,id',
+            'product_class_code' => 'required_without:product_class_id|exists:product_classes,code',
             'product_brand_id' => 'numeric|exists:product_brands,id',
+            'product_brand_code' => 'exists:product_brands,code',
             'short_description' => 'required|max:255',
-            //'product_type_id' => 'required|exists:product_types,id',
-            //'price' => 'required|numeric|min:1',
             //'is_service' => 'required|boolean',
 
             'categories' => 'array',
             'categories.*' => 'numeric|exists:product_categories,id',
+
+            'categories_code' => 'required_without:categories|array',
+            'categories_code.*' => 'exists:product_categories,code',
             
-            'warehouse_validation.*.special_price' => 'numeric|min:1',
-            'warehouse_validation.*.special_price_from' => 'date_format:d-m-Y|before:special_price_to',
-            'warehouse_validation.*.special_price_to' => 'date_format:d-m-Y|after:special_price_from',
+            
 
             'warehouse' => 'required',
             'warehouse_array' => 'required|array',
             'warehouse_validation.*.code' => 'required|exists:product_inventory_sources,code',
             'warehouse_validation.*.stock' => 'required|numeric',
             'warehouse_validation.*.price' => 'required|numeric',
-            'warehouse_validation.*.shipping_type' => 'required|exists:shipping_methods,id',
+            'warehouse_validation.*.shipping_type' => 'required|array',
+            'warehouse_validation.*.shipping_type.*' => 'exists:shipping_methods,id',
+
+            'warehouse_validation.*.special_price' => 'numeric|min:1',
+            'warehouse_validation.*.special_price_from' => 'date_format:d-m-Y|before:special_price_to',
+            'warehouse_validation.*.special_price_to' => 'date_format:d-m-Y|after:special_price_from',
 
             'extra_attributes_array' => 'array',
             'extra_attributes_validation.*.code' => 'required_with:extra_attributes',
@@ -96,21 +102,38 @@ class ProductRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => 'nombre',
+            'name' => 'name',
             'sku' => 'SKU',
-            'url_key' => 'Url Key',
-            'currency_id' => 'moneda',
-            'company_id' => 'negocio',
-            'product_class_id' => 'clase de producto',
-            'super_attributes' => 'super atributos',
-            'categories' => 'categoria',
+            'url_key' => 'url_key',
+            'currency_id' => 'currency_id',
+            'company_id' => 'company_id',
+            'product_class_id' => 'product_class_id',
+            'product_class_code' => 'product_class_code',
+            'product_brand_id' => 'product_brand_id',
+            'product_brand_code' => 'product_brand_code',
+            'super_attributes' => 'super_attributes',
+            'categories' => 'categories',
+            'categories_code' => 'categories_code', 
+    
+            'warehouse' => 'warehouse',
+            'warehouse_array' => 'warehouse',
+            'warehouse_validation.*.code' => 'warehouse.*.code',
+            'warehouse_validation.*.stock' => 'warehouse.*.stock',
+            'warehouse_validation.*.price' => 'warehouse.*.price',
+            'warehouse_validation.*.shipping_type' => 'warehouse.*.shipping_type',
+            'warehouse_validation.*.special_price' => 'warehouse.*.special_price',
+            'warehouse_validation.*.special_price_from' => 'warehouse.*.special_price_from',
+            'warehouse_validation.*.special_price_to' => 'warehouse.*.special_price_to',
         ];
     }
 
     public function messages()
     {
         return [
-            '*.required*' => 'Es necesario completar el campo :attribute.',
+            'product_class_code.required_without' => 'Si el campo product_class_id no esta presente, debe indicar el campo product_class_code',
+            'product_class_id.required_without' => 'Si el campo product_class_code no esta presente, debe indicar el campo product_class_id',
+            '*.required' => 'Es necesario completar el campo :attribute.',
+            '*.*.*.required' => 'Es necesario completar el campo :attribute.',
             '*.exists' => 'El id del atributo :attribute es invalido o no existe',
             '*.*.exists' => 'El id del atributo :attribute es invalido o no existe',
         ];

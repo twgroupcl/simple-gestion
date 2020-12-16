@@ -20,6 +20,14 @@ class ProductInventorySourceController extends Controller
 
         $error = false;
         $errorMessage = '';
+
+        $sellerAddress = [
+            [
+                'street' => $request['street'],
+                'number' => $request['number'],
+                'commune_id' => $request['commune_id'],
+            ]
+        ];
         
         try {
 
@@ -47,9 +55,11 @@ class ProductInventorySourceController extends Controller
                 'visible_name' => $request['name'],
                 'name' => $request['contact_name'],
                 'seller_category_id' => 1,
+                'addresses_data' => $sellerAddress,
                 'password' => $request['code'],
                 'status' => $request['status'] ?? 1,
                 'company_id' => auth()->user()->companies->first()->id,
+                'is_approved' => 1,
             ]);
 
             // Create branch
@@ -89,6 +99,22 @@ class ProductInventorySourceController extends Controller
     public function show(Request $request)
     {
         $productInventorySource = ProductInventorySource::find($request['id']);
+
+        if (!$productInventorySource) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'El warehouse indicado no existe'
+        ],  404);
+
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => $productInventorySource,
+        ], 200);
+    }
+
+    public function showByCode(Request $request)
+    {
+        $productInventorySource = ProductInventorySource::where('code', $request['code'])->first();
 
         if (!$productInventorySource) return response()->json([ 
             'status' => 'error', 

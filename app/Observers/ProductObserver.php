@@ -73,6 +73,7 @@ class ProductObserver
         $product->super_attributes()->detach();
         $product->inventories()->detach();
         $product->categories()->detach();
+        $product->shipping_methods()->detach();
 
         // Delete image references and files
         DB::table('product_images')->where('product_id', $product->id)->delete();
@@ -107,13 +108,17 @@ class ProductObserver
         $disk = 'public';
         $attribute_name = 'images_json';
 
-        if(is_string($product->images_json)) {
+        if (is_string($product->images_json)) {
             $valueDecode = json_decode($product->images_json, true);
         } else {
             $valueDecode = $product->images_json ?? [];
         }
 
-        $oldValueDecode = json_decode($product->getOriginal('images_json'), true);
+        if (is_string($product->getOriginal('images_json'))) {
+            $oldValueDecode = json_decode($product->getOriginal('images_json'), true);
+        } else {
+            $oldValueDecode = $product->getOriginal('images_json') ?? [];
+        }
 
         $images = [];
         $oldImages = [];

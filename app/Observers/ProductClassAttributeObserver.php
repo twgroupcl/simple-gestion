@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Models\ProductAttribute;
+use Illuminate\Support\Facades\DB;
 use App\Models\ProductClassAttribute;
 
 class ProductClassAttributeObserver
@@ -27,6 +29,22 @@ class ProductClassAttributeObserver
     public function updating(ProductClassAttribute $productClassAttribute)
     {
         $productClassAttribute->removeEmptyOptions();
+    }
+
+    /**
+     * Handle the product class attribute "deleting" event.
+     *
+     * @param  \App\ProductClassAttribute  $productClassAttribute
+     * @return void
+     */
+    public function deleting(ProductClassAttribute $productClassAttribute)
+    {
+        $productsWithAttribute = ProductAttribute::where('product_class_attribute_id', $productClassAttribute->id)->get();
+        $productWithSuperAttribute = DB::table('product_super_attributes')->where('product_class_attribute_id', $productClassAttribute->id)->get();
+        
+        if ($productsWithAttribute->count() || $productWithSuperAttribute->count()) {
+            abort(401, 'No puedes eliminar un atributo que esta siendo utilizada por un producto');
+        }
     }
 
     /**

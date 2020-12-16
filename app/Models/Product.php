@@ -16,7 +16,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 class Product extends Model
 {
     use CrudTrait;
-    use SoftDeletes;
+    //use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -728,78 +728,86 @@ class Product extends Model
 
     public function setPriceAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['price'] = $value;
 
             return true;
         }
 
-        $this->attributes['price'] = sanitizeNumber($value);
+        $this->attributes['price'] = $this->sanitizeNumber($value);
     }
 
     public function setSpecialPriceAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['special_price'] = null;
 
             return true;
         }
 
-        $this->attributes['special_price'] = sanitizeNumber($value);
+        $this->attributes['special_price'] = $this->sanitizeNumber($value);
     }
 
     public function setCostAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['cost'] = null;
 
             return true;
         }
 
-        $this->attributes['cost'] = sanitizeNumber($value);
+        $this->attributes['cost'] = $this->sanitizeNumber($value);
     }
 
     public function setWidthAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['width'] = null;
 
             return true;
         }
 
-        $this->attributes['width'] = sanitizeNumber($value);
+        $this->attributes['width'] = $this->sanitizeNumber($value);
     }
 
     public function setHeightAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['height'] = null;
 
             return true;
         }
 
-        $this->attributes['height'] = sanitizeNumber($value);
+        $this->attributes['height'] = $this->sanitizeNumber($value);
     }
 
     public function setDepthAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['depth'] = null;
 
             return true;
         }
 
-        $this->attributes['depth'] = sanitizeNumber($value);
+        $this->attributes['depth'] = $this->sanitizeNumber($value);
     }
 
     public function setWeightAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value === '') {
             $this->attributes['weight'] = null;
 
             return true;
         }
 
-        $this->attributes['weight'] = sanitizeNumber($value);
+        $this->attributes['weight'] = $this->sanitizeNumber($value);
+    }
+
+    function sanitizeNumber($number)
+    {
+        //$number = str_replace('.', '', $number);
+        $number = str_replace(',', '.', $number);
+
+        return $number;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductClassRequest extends FormRequest
@@ -28,6 +29,12 @@ class ProductClassRequest extends FormRequest
         return [
             'name' => 'required|min:1|max:255',
             'status' => 'required',
+            'code' => [
+                'required',
+                Rule::unique('product_classes')->where( function($query) {
+                    return $query->where('id', '!=', request('id'));
+                }),
+            ]
         ];
     }
 

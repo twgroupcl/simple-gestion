@@ -80,6 +80,9 @@ $product = $item->product;
                                     </option>
                                 @endforeach
                             </select>
+                            @if (!count($shippingMethods))
+                                <span style="font-size: 13px;">Envio no disponible para la comuna seleccionada.</span>
+                            @endif
                         </div>
                     @endif
                 @endif
