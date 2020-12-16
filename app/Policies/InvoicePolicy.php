@@ -30,6 +30,25 @@ class InvoicePolicy
         return $invoice->invoice_status == Invoice::STATUS_TEMPORAL;
     }
 
+    public function doDownloadPDF(User $user, Invoice $invoice)
+    {
+        return $this->doShowTempDocument($user, $invoice) ||
+                $invoice->invoice_status == Invoice::STATUS_SEND;
+    }
+
+    public function doEdit(User $user, Invoice $invoice)
+    {
+        $status = $invoice->invoice_status;
+        return $status == Invoice::STATUS_TEMPORAL || $status == Invoice::STATUS_DRAFT;
+    }
+
+    public function doDeleteDocument(User $user, Invoice $invoice)
+    {
+        $status = $invoice->invoice_status;
+
+        return $status == Invoice::STATUS_DRAFT || $status == Invoice::STATUS_TEMPORAL;
+    }
+
     public function showAllInvoices(User $user)
     {
         // it doesn't make sense
