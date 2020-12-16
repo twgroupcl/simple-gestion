@@ -66,7 +66,7 @@
                 </div>
             </div> --}}
             <div class="col-md-12 mb-4">
-                <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
+                <!-- <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" /> -->
 
                 {{-- <div class="widget pb-2 mb-2">
                     <h3 class="widget-title text-dark pb-1">Organizan</h3>
@@ -201,14 +201,14 @@
                             <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
                             <li class="widget-list-item mr-4"><a class="widget-list-link" href="{{ route('customer.support') }}">Servicio al cliente</a></li>
                         </ul>
-                        <span class="font-size-md text-light"><a href="mailto:contigopyme@crcpvalpo.cl">contigopyme@crcpvalpo.cl</a></span>
+                        <!-- <span class="font-size-md text-light"><a href="mailto:contigopyme@crcpvalpo.cl">contigopyme@crcpvalpo.cl</a></span> -->
                     </div>
                 </div>
                 <div class="col-md-6 text-center text-md-right mb-4">
                     <div class="mb-3">
                         {{-- <a class="social-btn sb-light sb-twitter ml-2 mb-2" href="#"><i class="czi-twitter"></i></a> --}}
-                        <a class="social-btn sb-light sb-facebook ml-2 mb-2" href="https://www.facebook.com/Contigopymecl-100648024754209" target="_blank"><i class="czi-facebook"></i></a>
-                        <a class="social-btn sb-light sb-instagram ml-2 mb-2" href="https://www.instagram.com/contigopymecl/" target="_blank"><i class="czi-instagram" target="_blank"></i></a>
+                        <!-- <a class="social-btn sb-light sb-facebook ml-2 mb-2" href="https://www.facebook.com/Contigopymecl-100648024754209" target="_blank"><i class="czi-facebook"></i></a>
+                        <a class="social-btn sb-light sb-instagram ml-2 mb-2" href="https://www.instagram.com/contigopymecl/" target="_blank"><i class="czi-instagram" target="_blank"></i></a> -->
                         {{-- <a class="social-btn sb-light sb-pinterest ml-2 mb-2" href="#"><i class="czi-pinterest"></i></a>
                         <a class="social-btn sb-light sb-youtube ml-2 mb-2" href="#"><i class="czi-youtube"></i></a> --}}
                     </div>

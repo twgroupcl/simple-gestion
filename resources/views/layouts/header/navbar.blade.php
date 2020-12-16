@@ -5,7 +5,13 @@
     <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
     <div class="navbar-sticky bg-dark">
         <div class="navbar navbar-expand-lg navbar-dark">
-            <div class="container"><a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;"><img width="100" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a><a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;"><img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" /></a>
+            <div class="container">
+                <!-- <a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;">
+                    <img width="100" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" />
+                </a>
+                <a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;">
+                    <img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" />
+                </a> -->
             
                 <!-- Search-->
                 @if($header)

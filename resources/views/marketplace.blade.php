@@ -5,7 +5,7 @@
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
 
-<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
+<!-- <div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
         <img src="{{ asset('img/home/hero-slider/banner-navidad-general.png') }}" alt="Contigo Pyme Navidad">
         <img src="{{ asset('img/home/hero-slider/banner_navidad.png') }}" alt="Contigo Pyme Banner Navidad">
@@ -13,7 +13,7 @@
         <img src="{{ asset('img/home/hero-slider/banner-02.png') }}" alt="Contigo Pyme Banner 2">
         <img src="{{ asset('img/home/hero-slider/banner-03.png') }}" alt="Contigo Pyme Banner 3">
     </div>
-</div>
+</div> -->
 
 
 <div class="d-block d-sm-none">
