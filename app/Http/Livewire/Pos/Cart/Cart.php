@@ -4,14 +4,17 @@ namespace App\Http\Livewire\Pos\Cart;
 
 use App\Models\Currency;
 use App\Models\Customer;
+use App\Models\Invoice;
+use App\Models\InvoiceType;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\Product;
-use App\Models\SalesBox;
 use App\Models\Seller;
 use Backpack\Settings\app\Models\Setting;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Cart extends Component
@@ -173,6 +176,7 @@ class Cart extends Component
                 'event' => 'Nueva orden generada',
             ]);
 
+            $this->emitInvoice($order);
 
             $this->clearCart();
             $this->emit('sales.updateOrders');
@@ -191,5 +195,53 @@ class Cart extends Component
         $this->total = 0;
         $this->subtotal = 0;
         $this->cash = 0;
+    }
+
+    public function emitInvoice(Order $order)
+    {
+        DB::beginTransaction();
+        try {
+
+            $invoiceType = InvoiceType::firstOrCreate(
+                ['name' => "Boleta electrónica"],
+                ['country_id' => 43, 'code' => 41],
+            );
+
+            $order_items = $order->order_items->map(function ($item) {
+                $item->price = currencyFormat($item->price, 'CLP', false);
+                $item->sub_total = currencyFormat($item->sub_total, 'CLP', false);
+                $item->total = currencyFormat($item->total, 'CLP', false);
+                $item->discount = 0;
+                $item->discount_type = 'percentage';
+                $item->is_custom = true;
+                $item->additional_tax_id = 0;
+                $item->additional_tax_amount = 0;
+                $item->additional_tax_total = 0;
+                return $item;
+            })->toJson();
+
+            $invoice = new Invoice($order->toArray());
+            $invoice->items_data = $order_items;
+            $invoice->invoice_type_id = $invoiceType->id;
+            $invoice->tax_type = '';
+            unset($invoice->expiry_date);
+            $invoice->save();
+
+            Invoice::withoutEvents(function () use ($invoice, $order) {
+                $invoice->orders()->attach($order->id);
+                $invoice->customer()->associate($this->customer);
+                $invoice->total = $order->total;
+                $invoice->save();
+            });
+
+            DB::commit();
+
+            return $invoice;
+
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return false;
+        }
     }
 }
