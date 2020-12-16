@@ -39,7 +39,7 @@ class InvoiceRequest extends FormRequest
             'discount_percent' => 'gte:0,lte:100', 
             'discount_amount' => 'gte:0',
             'customer_id' => 'required|exists:customers,id', 
-            'address_id' => 'required|exists:customer_addresses,id',
+            //'address_id' => 'required|exists:customer_addresses,id',
             'expiry_date' => $expiryDateRules,
             // 'name' => 'required|min:5|max:255'
         ];
