@@ -107,9 +107,9 @@ class Cart extends Component
         // $this->emit('payment.updated');
     }
 
-    public function setCustomer(Customer $customer)
+    public function setCustomer(Customer $customer, array $wildcard = null)
     {
-        $this->customer = $customer;
+        $this->customer = session()->get('user.pos.selectedCustomer');
     }
 
     public function confirmPayment($cash)

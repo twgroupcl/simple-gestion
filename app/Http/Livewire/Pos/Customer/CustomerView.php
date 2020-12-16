@@ -64,6 +64,6 @@ class CustomerView extends Component
             'user.pos.isSelectedCustomerWildcard' => isset($wilcard),
         ]);
 
-        $this->emit('customerSelected', $customer->id);
+        $this->emit('customerSelected', $customer->id, $wilcard);
     }
 }
