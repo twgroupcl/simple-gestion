@@ -127,27 +127,28 @@
     </div>
 </section>
 
-@if($banners[1]['path_web'] && $banners[1]['status'])
-<section class="container mt-4 mb-grid-gutter">
-    <div class="rounded-lg py-4">
-        <div class="row align-items-center">
-            <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
-                <img src="{{url($banners[1]['path_web'])}}" alt="{{$banners[1]['name']}}">
-            </div>    
-            @if(!is_null($banners[1]['path_mobile']))
-                <div class="col-md-12 d-block d-sm-none">
-                    <img src="{{url($banners[1]['path_mobile'])}}" alt="{{$banners[1]['name']}}" class="w-100">
-                </div>
-            @else
-                <div class="col-md-12 d-none d-block d-sm-none">
+@if(count($banners) > 0)
+    @if($banners[1]['path_web'] && $banners[1]['status'])
+    <section class="container mt-4 mb-grid-gutter">
+        <div class="rounded-lg py-4">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
                     <img src="{{url($banners[1]['path_web'])}}" alt="{{$banners[1]['name']}}">
-                </div>
-            @endif
+                </div>    
+                @if(!is_null($banners[1]['path_mobile']))
+                    <div class="col-md-12 d-block d-sm-none">
+                        <img src="{{url($banners[1]['path_mobile'])}}" alt="{{$banners[1]['name']}}" class="w-100">
+                    </div>
+                @else
+                    <div class="col-md-12 d-none d-block d-sm-none">
+                        <img src="{{url($banners[1]['path_web'])}}" alt="{{$banners[1]['name']}}">
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    @endif
 @endif
-
 <!-- Promo banner-->
 {{-- <section class="container mt-4 mb-grid-gutter">
     <div class="bg-faded-info rounded-lg py-4">
@@ -209,50 +210,54 @@
         </div>
     </section>
 -->
-{{$banners[2]['status']}}
-@if($banners[2]['status'] == 'Activo' || $banners[3]['status'] == 'Activo')
-<section class="container mt-4 mb-grid-gutter">
-    <div class="rounded-lg py-4">
-        <div class="row text-center">
-            @if($banners[2]['path_web'] && $banners[3]['path_web'])
-                <div class="col-md-6 pb-3">
-                    <img src="{{url($banners[2]['path_web'])}}" alt="{{$banners[2]['name']}}" class="img-fluid border-radious-3">
-                </div>
-                <div class="col-md-6 pb-3">
-                    <img src="{{url($banners[3]['path_web'])}}" alt="{{$banners[3]['name']}}" class="img-fluid border-radious-3">
-                </div>
-            @else
-                @php
-                    $imgPath = ($banners[2]['path_web'])?$banners[2]['path_web']:$banners[3]['path_web'];   
-                @endphp
-                <div class="col-md-12 pb-3">
-                    <img src="{{url($imgPath)}}" class="img-fluid border-radious-3">
-                </div>
-            @endif
+
+@if(count($banners) > 0)
+    @if($banners[2]['status'] == 'Activo' || $banners[3]['status'] == 'Activo')
+    <section class="container mt-4 mb-grid-gutter">
+        <div class="rounded-lg py-4">
+            <div class="row text-center">
+                @if($banners[2]['path_web'] && $banners[3]['path_web'])
+                    <div class="col-md-6 pb-3">
+                        <img src="{{url($banners[2]['path_web'])}}" alt="{{$banners[2]['name']}}" class="img-fluid border-radious-3">
+                    </div>
+                    <div class="col-md-6 pb-3">
+                        <img src="{{url($banners[3]['path_web'])}}" alt="{{$banners[3]['name']}}" class="img-fluid border-radious-3">
+                    </div>
+                @else
+                    @php
+                        $imgPath = ($banners[2]['path_web'])?$banners[2]['path_web']:$banners[3]['path_web'];   
+                    @endphp
+                    <div class="col-md-12 pb-3">
+                        <img src="{{url($imgPath)}}" class="img-fluid border-radious-3">
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    @endif
 @endif
 
-@if($banners[4]['path_web'] && $banners[4]['status'])
-<section class="container mt-4 mb-grid-gutter">
-    <div class="rounded-lg py-4">
-        <div class="row align-items-center">
-            <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
-                <img src="{{url($banners[4]['path_web'])}}" alt="{{$banners[4]['name']}}">
-            </div>    
-            @if(!is_null($banners[4]['path_mobile']))
-                <div class="col-md-12 d-block d-sm-none">
-                    <img src="{{url($banners[4]['path_mobile'])}}" alt="{{$banners[4]['name']}}" class="w-100">
-                </div>
-            @else
-                <div class="col-md-12 d-none d-block d-sm-none">
+@if(count($banners) > 0)
+    @if($banners[4]['path_web'] && $banners[4]['status'])
+    <section class="container mt-4 mb-grid-gutter">
+        <div class="rounded-lg py-4">
+            <div class="row align-items-center">
+                <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
                     <img src="{{url($banners[4]['path_web'])}}" alt="{{$banners[4]['name']}}">
-                </div>
-            @endif
+                </div>    
+                @if(!is_null($banners[4]['path_mobile']))
+                    <div class="col-md-12 d-block d-sm-none">
+                        <img src="{{url($banners[4]['path_mobile'])}}" alt="{{$banners[4]['name']}}" class="w-100">
+                    </div>
+                @else
+                    <div class="col-md-12 d-none d-block d-sm-none">
+                        <img src="{{url($banners[4]['path_web'])}}" alt="{{$banners[4]['name']}}">
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    @endif
 @endif
 
 <!-- YouTube feed-->
