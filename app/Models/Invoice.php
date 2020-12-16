@@ -166,6 +166,11 @@ class Invoice extends Model
         return $this->hasMany(InvoiceItem::class);
     }
 
+    public function address()
+    {
+        return $this->belongsTo(CustomerAddress::class)->withTrashed();
+    }
+
     public function invoice_type()
     {
         return $this->belongsTo(InvoiceType::class);
