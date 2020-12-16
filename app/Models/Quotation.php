@@ -124,7 +124,7 @@ class Quotation extends Model
 
     public function address()
     {
-        return $this->belongsTo(CustomerAddress::class);
+        return $this->belongsTo(CustomerAddress::class)->withTrashed();
     }
 
     public function seller()
