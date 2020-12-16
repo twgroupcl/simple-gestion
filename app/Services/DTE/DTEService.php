@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\DTE;
 
 use \App\Models\Invoice;
 use \GuzzleHttp\{
@@ -32,7 +32,9 @@ class DTEService
         $url = $this->url . '/dte/documentos/emitir?normalizar=1&formato=json&links=0&email=0';
         $method = 'POST';
 
-        $data = $this->processInvoice(33, $invoice);
+        $dte = DTEFactory::init($invoice->invoice_type->code, $invoice);
+
+        $data = $dte->toArray();
         
         $headers = $this->headers;
         return self::exec($url, $data, $headers, $method);
@@ -60,8 +62,8 @@ class DTEService
     public function deleteTemporalDocument(Invoice $invoice)
     {
         $method = 'GET';
-        $customerUid = self::rutWithoutDV($invoice->uid);
-        $sellerUid = self::rutWithoutDV($invoice->seller->uid);
+        $customerUid = rutWithoutDV($invoice->uid);
+        $sellerUid = rutWithoutDV($invoice->seller->uid);
 
         $url = $this->url . '/dte/dte_tmps/eliminar/' .
             $customerUid . '/' .
@@ -77,8 +79,8 @@ class DTEService
     public function getPDF(Invoice $invoice)
     {
         $method = 'GET';
-        $customerUid = self::rutWithoutDV($invoice->uid); 
-        $sellerUid = self::rutWithoutDV($invoice->seller->uid);
+        $customerUid = rutWithoutDV($invoice->uid); 
+        $sellerUid = rutWithoutDV($invoice->seller->uid);
         $url = $this->url . '/dte/dte_tmps/pdf/' . 
             $customerUid . '/' .
             $invoice->invoice_type->code . '/' . 
@@ -90,25 +92,6 @@ class DTEService
         return self::exec($url, [], $headers, $method);
     }
 
-    public static function sanitizeRUT($uid)
-    {
-        return str_replace('.', '', $uid);
-    }
-
-    public static function rutWithoutDV($uid)
-    {
-        $uid = self::sanitizeRUT($uid);
-
-        $pos = strpos($uid, '-');
-
-        if(!$pos) {
-            return $uid;
-        }
-    
-        $uid = substr($uid, 0, $pos);
-
-        return $uid;
-    }
 
     public static function exec($url, $data = [], array $headers =[], $method = null) : GuzzleResponse
     {
@@ -136,44 +119,5 @@ class DTEService
             ddd($e);
         }
     }
-
-    private function processInvoice(int $typeDTE, Invoice $invoice)
-    {
-        $seller = $invoice->seller;
-        $customerAddress = $invoice->address;
-        //dd($customerAddress, $invoice);
     
-        $items = $invoice->invoice_items;
-        $itemsDTE = [];
-
-        foreach ($items as $item) {
-            $itemsDTE[] = [
-                'NmbItem' => $item->name,
-                'QtyItem' => $item->qty,
-                'PrcItem' => isset($item->custom_price) ? $item->custom_price : $item->price
-            ];
-        }
-
-        return [
-            'Encabezado' => [
-                'IdDoc' => [
-                    'TipoDTE' => $typeDTE,
-                ],
-                'Emisor' => [
-                    'RUTEmisor' => self::sanitizeRUT($seller->uid),
-                ],
-                'Receptor' => [
-                    'RUTRecep' => self::sanitizeRUT($invoice->uid),
-                    'RznSocRecep' => $invoice->first_name . ' ' . $invoice->last_name,
-                    'GiroRecep' => 'Informática', // this is required in 33
-                    'DirRecep' => $customerAddress->street . ' ' . $customerAddress->number . 
-                                !empty($customerAddress->subnumber) ? 
-                                    $customerAddress->subnumber : 
-                                    '',
-                    'CmnaRecep' => $customerAddress->commune->name,
-                ],
-            ],
-            'Detalle' => $itemsDTE
-        ];
-    }
 }

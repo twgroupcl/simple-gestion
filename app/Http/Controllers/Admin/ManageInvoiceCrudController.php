@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Invoice, InvoiceType, CustomerAddress};
-use App\Services\DTEService;
+use App\Services\DTE\DTEService;
 /**
  * Class InvoiceCrudController
  * @package App\Http\Controllers\Admin
