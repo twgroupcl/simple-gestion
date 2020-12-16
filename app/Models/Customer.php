@@ -127,6 +127,11 @@ class Customer extends Model
         return $this->belongsTo(BusinessActivity::class);
     }
 
+    public function addresses_with_deletes()
+    {
+        return $this->hasMany(CustomerAddress::class, 'customer_id', 'id')->withTrashed();
+    }
+
     public function addresses()
     {
         return $this->hasMany(CustomerAddress::class);
