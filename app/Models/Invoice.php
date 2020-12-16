@@ -44,6 +44,8 @@ class Invoice extends Model
         'uid',
         'first_name',
         'last_name',
+        //'address_data',
+        //'prepare_address',
         'address_id',
         'email',
         'email_sent',
@@ -94,7 +96,8 @@ class Invoice extends Model
 
     protected $casts = [
         'items_data' => 'array',
-        'json_value' => 'array'
+        'json_value' => 'array',
+       // 'address_data' => 'array',
     ];
 
     /*
@@ -163,14 +166,14 @@ class Invoice extends Model
         return $this->hasMany(InvoiceItem::class);
     }
 
+    public function address()
+    {
+        return $this->belongsTo(CustomerAddress::class)->withTrashed();
+    }
+
     public function invoice_type()
     {
         return $this->belongsTo(InvoiceType::class);
-    }
-
-    public function address()
-    {
-        return $this->belongsTo(CustomerAddress::class);
     }
 
     public function bank()
@@ -203,10 +206,27 @@ class Invoice extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    /*
+     * DEPRECATED 
+    public function getPrepareAddressAttribute()
+    {
+        $customerAddress = json_decode($this->address_data, true);
+        if (is_array($customerAddress)) {
+            return $customerAddress['id'];
+        }
+        return null;
+    }*/
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
-    */
+     */
+
+    /*public function setPrepareAddressAttribute($id)
+    {
+        $customerAddress = CustomerAddress::find($id);
+        $this->address_data = json_encode($customerAddress->toArray());
+    }*/
+
 }
