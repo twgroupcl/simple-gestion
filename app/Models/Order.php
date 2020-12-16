@@ -6,7 +6,9 @@ use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\Seller;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Order extends Model
 {
@@ -66,7 +68,16 @@ class Order extends Model
     {
         return $this->hasMany(OrderPayment::class);
     }
-    /*
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function invoices()
+    {
+        return $this->belongsToMany(Invoice::class, 'invoice_order');
+    }    /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
@@ -160,6 +171,11 @@ class Order extends Model
             return $this->order_items()->get();
         }
 
+    }
+
+    public function getInvoiceAttribute()
+    {
+        return $this->invoices->first();
     }
 
     /*
