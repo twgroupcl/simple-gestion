@@ -74,6 +74,20 @@ class HomeController extends Controller
         return view('shop-grid', compact('render', 'data'));
     }
 
+    public function getProductsByCategorySlug(Request $request)
+    {
+        $categoryId = ProductCategory::where('slug', $request->category)->first()->id ?? null;
+        
+        if (is_null($categoryId)) {
+            $categoryId = ProductCategory::find($request->category)->id ?? null;
+        }
+
+        $render = ['view' => 'searchCategory'];
+        $data = ['category' => $categoryId];
+
+        return view('shop-grid', compact('render', 'data'));
+    }
+
     public function getSeller(Request $request)
     {
         $seller = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
