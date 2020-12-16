@@ -33,6 +33,7 @@ class CustomerSupportCrudController extends CrudController
         CRUD::setModel(\App\Models\CustomerSupport::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/customersupport');
         CRUD::setEntityNameStrings('caso', 'casos');
+        $this->crud->enableExportButtons();
     }
 
     /**
@@ -57,7 +58,7 @@ class CustomerSupportCrudController extends CrudController
             'label' => 'Vendedor',
             'entity' => 'seller',
             'attribute' => 'name',
-        ],);
+        ]);
 
         CRUD::addColumn([
             'name' => 'contact_type_description',
