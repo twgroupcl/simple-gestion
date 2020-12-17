@@ -199,12 +199,13 @@ class Cart extends Component
 
     public function emitInvoice(Order $order)
     {
+        $currentSeller = Seller::where('user_id', backpack_user()->id)->first();
         DB::beginTransaction();
         try {
 
             $invoiceType = InvoiceType::firstOrCreate(
                 ['name' => "Boleta electrónica"],
-                ['country_id' => 43, 'code' => 41],
+                ['country_id' => 43, 'code' => 41], // 41 => exenta, 39 => afecta(con impuestos)
             );
 
             $order_items = $order->order_items->map(function ($item) {
@@ -221,10 +222,11 @@ class Cart extends Component
             })->toJson();
 
             $invoice = new Invoice($order->toArray());
+            $invoice->seller_id = $currentSeller->id;
             $invoice->items_data = $order_items;
             $invoice->invoice_type_id = $invoiceType->id;
             $invoice->tax_type = '';
-            unset($invoice->expiry_date);
+            $invoice->invoice_date = now();
             $invoice->save();
 
             Invoice::withoutEvents(function () use ($invoice, $order) {
