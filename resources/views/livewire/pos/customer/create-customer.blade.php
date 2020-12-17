@@ -1,4 +1,4 @@
-<form wire:ignore.self wire:submit.prevent="createCustomer">
+<form wire:ignore.self>
     <div class="modal-content">
         <div class="modal-header">
             <h3>Nuevo cliente</h3>
@@ -80,12 +80,64 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="street">Calle</label>
+                                <input wire:model="street" class="form-control @error('street') is-invalid @enderror" type="text" name="street" id="street" placeholder="Nombre" value="{{ old('street') }}" required>
+                                @error('street')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="number">Número</label>
+                                <input wire:model="number" class="form-control @error('number') is-invalid @enderror" type="text" name="number" id="number" placeholder="Nombre" value="{{ old('number') }}" required>
+                                @error('number')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="subnumber">Casa/Dpto/Oficina</label>
+                                <input wire:model="subnumber" class="form-control @error('subnumber') is-invalid @enderror" type="text" name="subnumber" id="subnumber" placeholder="Nombre" value="{{ old('subnumber') }}" required>
+                                @error('subnumber')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div wire:init="loadCommunes" class="col-sm-12">
+                            <div class="form-group">
+                                <label for="commune_id">Comuna</label>
+                                <select wire:model="commune_id" t class="custom-select @error('subnumber') is-invalid @enderror" name="commune_id" id="commune_id" required>
+                                    @foreach ($communes as $id => $commune)
+                                        <option wire:key="{{ $loop->index }}" value="{{ $id }}">{{ $commune }}</option>
+                                    @endforeach
+                                </select>
+                                @error('commune_id')
+                                <small class="text-danger" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </small>
+                                @enderror
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button wire:click="createCustomer" class="btn btn-primary" type="submit">
-                Registrar
+            <button wire:click="createNewCustomer" class="btn btn-primary" type="button">
+                Registrar Cliente
+            </button>
+            <button wire:click="createWildcardCustomer" class="btn btn-outline-primary" type="button">
+                Cliente Comodín
             </button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                 Cerrar

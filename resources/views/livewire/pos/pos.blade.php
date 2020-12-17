@@ -217,6 +217,10 @@
             $('#showCustomerModal').appendTo("body").modal('show');
         }
 
+        window.addEventListener('hideCustomerModal', event => {
+            $('#showCustomerModal').appendTo("body").modal('hide');
+        })
+
         $("#showCustomerModal").on('hidden.bs.modal', function() {
             $('#showCustomerModal').appendTo("body").modal('hide');
         });

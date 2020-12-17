@@ -52,7 +52,7 @@ class CustomerView extends Component
         }
     }
 
-    public function selectCustomer(Customer $customer = null, $wilcard = null)
+    public function selectCustomer(Customer $customer = null, $wilcard = null, int $addressId = null)
     {
         if ($wilcard) {
             $customer->fill($wilcard);
@@ -62,6 +62,7 @@ class CustomerView extends Component
         session()->put([
             'user.pos.selectedCustomer' => $customer,
             'user.pos.isSelectedCustomerWildcard' => isset($wilcard),
+            'user.pos.selectedCustomerAddress' => $addressId,
         ]);
 
         $this->emit('customerSelected', $customer->id, $wilcard);

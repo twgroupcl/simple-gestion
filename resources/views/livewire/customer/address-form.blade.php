@@ -29,7 +29,7 @@
                             <input class="form-control" type="text" wire:model="address.subnumber" name="subnumber" id="address-company">
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div wire:load="loadCommunes" class="col-sm-6">
                         <div class="form-group">
                             <label for="commune_id">Comuna <span class="text-danger">*</span></label>
                             <select class="custom-select" name="commune_id" id="commune_id" required>

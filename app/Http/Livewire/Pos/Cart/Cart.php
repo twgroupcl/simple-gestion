@@ -25,6 +25,7 @@ class Cart extends Component
     public $total = 0;
     public $qty = 0;
     public $customer = null;
+    public $customerAddressId;
     protected $listeners = [
         'add-product-cart:post' => 'addProduct',
         'remove-from-cart:post' => 'remove',
@@ -110,6 +111,7 @@ class Cart extends Component
     public function setCustomer(Customer $customer, array $wildcard = null)
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
+        $this->customerAddressId = session()->get('user.pos.selectedCustomerAddress');
     }
 
     public function confirmPayment($cash)
@@ -190,7 +192,11 @@ class Cart extends Component
 
     protected function clearCart(){
         //Clear cart
-        session()->put(['user.pos.cart' => null]);
+        session()->put([
+            'user.pos.cart' => null,
+            'user.pos.selectedCustomer' => null,
+            'user.pos.selectedCustomerAddress' => null,
+        ]);
         $this->products = [];
         $this->total = 0;
         $this->subtotal = 0;
@@ -222,6 +228,7 @@ class Cart extends Component
             })->toJson();
 
             $invoice = new Invoice($order->toArray());
+            $invoice->address_id = $this->customerAddressId;
             $invoice->seller_id = $currentSeller->id;
             $invoice->items_data = $order_items;
             $invoice->invoice_type_id = $invoiceType->id;
@@ -242,7 +249,7 @@ class Cart extends Component
 
         } catch (Exception $e) {
             DB::rollback();
-
+dd($e->getMessage());
             return false;
         }
     }
