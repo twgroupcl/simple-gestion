@@ -37,6 +37,10 @@ class Invoice extends Model
     // public $timestamps = false;
     // protected $guarded = ['id'];
     protected $fillable = [
+        'customer_id',
+        'currency_id',
+        'customer_business_activity_id',
+        'company_id',
         'uid',
         'first_name',
         'last_name',
@@ -64,9 +68,6 @@ class Invoice extends Model
         'discount_percent',
         'discount_total',
         //'dte_code',
-        'customer_id',
-        'currency_id',
-        'customer_business_activity_id',
         'expiry_date',
         'payment_method',
         'seller_business_activity_id',
@@ -185,6 +186,11 @@ class Invoice extends Model
     public function tax()
     {
         return $this->belongsTo(Tax::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
     /*
     |--------------------------------------------------------------------------

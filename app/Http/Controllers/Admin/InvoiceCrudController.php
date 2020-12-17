@@ -6,7 +6,7 @@ use App\Http\Requests\InvoiceRequest;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Models\{Tax, Invoice, InvoiceType, CustomerAddress, Seller};
+use App\Models\{Tax, Invoice, InvoiceType, CustomerAddress, Seller, Company};
 use App\Services\DTEService;
 /**
  * Class InvoiceCrudController
@@ -21,6 +21,7 @@ class InvoiceCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    protected $emitter;
     protected $seller;
 
     /**
@@ -33,17 +34,25 @@ class InvoiceCrudController extends CrudController
         CRUD::setModel(\App\Models\Invoice::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/invoice');
         CRUD::setEntityNameStrings('documento electrónico', 'documentos electrónicos');
-        $this->seller = Seller::where('user_id', backpack_user()->id)->first();
-        if (! backpack_user()->can('showAllInvoices')) {
-            $this->crud->addClause('where', 'seller_id', $this->seller->id);
+        $this->seller = Seller::where('user_id', backpack_user()->id);
+        if ($this->seller->exists()) {
+            $this->seller = $this->seller->first();
+            if (! backpack_user()->can('showAllInvoices')) {
+                $this->crud->addClause('where', 'seller_id', $this->seller->id);
+            }
+
+            $this->crud->denyAccess('show');
+
+            if ($this->seller->is_approved !== Seller::STATUS_ACTIVE) {
+                $this->crud->denyAccess(['create', 'update', 'delete']);
+            }
+        } else {
+            $this->seller = null;
         }
 
-        $this->crud->denyAccess('show');
-
-        if (!empty($this->seller) && $this->seller->is_approved !== Seller::STATUS_ACTIVE) {
-            $this->crud->denyAccess(['create', 'update', 'delete']);
-        }
-
+        $company = backpack_user()->current()->company->id;
+        $this->emitter = Company::find($company);
+        $this->crud->addClause('where', 'company_id', $company);
         // if dte is real, deny delete
         if ($this->crud->getCurrentOperation() === 'delete' && $this->crud->getCurrentEntry()->invoice_status === Invoice::STATUS_SEND) {
             $this->crud->denyAccess(['delete']);

@@ -2,16 +2,18 @@
 
 namespace App\Policies;
 
-use App\Models\{Invoice, Seller};
+use App\Models\{Invoice, Seller, Company};
 use App\User;
 
 class InvoicePolicy
 {
     public function before($user, $ability)
     {
-        if ($user->hasRole('Vendedor marketplace')) {
+        if ($user->hasRole('Vendedor marketplace') || $user->hasRole('Administrador negocio')) {
             $seller = Seller::where('user_id', $user->id)->first();
-            if ($seller->is_approved != Seller::STATUS_ACTIVE) {
+            $company = $user->current()->company->id;
+            $company = Company::find($company);
+            if ((!empty($seller) && $seller->is_approved != Seller::STATUS_ACTIVE) || $company->status != 1){
                 return false;
             }
         }
@@ -29,7 +31,8 @@ class InvoicePolicy
 
     public function manageInvoice(User $user, Invoice $invoice) 
     {
-        if ($user->hasRole('Vendedor marketplace') && $invoice->seller->user_id === $user->id ) {
+        //if ($user->hasRole('Vendedor marketplace') && $invoice->seller->user_id === $user->id ) {
+        if ($invoice->company->id === $user->current()->company->id) {
             return true;
         }
 

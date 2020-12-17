@@ -66,7 +66,7 @@ class DTEService
         }
 
         $data = [
-            'emisor' => rutWithoutDV($invoice->seller->uid),
+            'emisor' => rutWithoutDV($invoice->company->uid),
             'receptor' => rutWithoutDV($invoice->uid), // without DV
             'dte' => $invoice->invoice_type->code, // required type
             'codigo' => $invoice->dte_code
@@ -81,7 +81,7 @@ class DTEService
     {
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid);
-        $sellerUid = rutWithoutDV($invoice->seller->uid);
+        $sellerUid = rutWithoutDV($invoice->company->uid);
 
         $url = $this->url . '/dte/dte_tmps/eliminar/' .
             $customerUid . '/' .
@@ -98,7 +98,7 @@ class DTEService
     {
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid); 
-        $sellerUid = rutWithoutDV($invoice->seller->uid);
+        $sellerUid = rutWithoutDV($invoice->company->uid);
         $url = $this->url . '/dte/dte_emitidos/pdf/' .
             $invoice->invoice_type->code . '/' . 
             $invoice->folio . '/' .
@@ -114,7 +114,7 @@ class DTEService
     {
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid); 
-        $sellerUid = rutWithoutDV($invoice->seller->uid);
+        $sellerUid = rutWithoutDV($invoice->company->uid);
         $url = $this->url . '/dte/dte_tmps/pdf/' . 
             $customerUid . '/' .
             $invoice->invoice_type->code . '/' . 
@@ -137,7 +137,7 @@ class DTEService
         $method = 'GET';
         $url = $this->url . '/dte/admin/dte_folios/info/' .
             $invoice->invoice_type->code . '/' .
-            rutWithoutDV($invoice->seller->uid);
+            rutWithoutDV($invoice->company->uid);
 
         $headers = $this->headers;
 
