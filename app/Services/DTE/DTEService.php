@@ -99,11 +99,12 @@ class DTEService
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid); 
         $sellerUid = rutWithoutDV($invoice->company->uid);
-        $url = $this->url . '/dte/dte_tmps/pdf/' . 
-            $customerUid . '/' .
+
+        $url = $this->url . '/dte/dte_emitidos/pdf/' .
             $invoice->invoice_type->code . '/' . 
-            $invoice->dte_code . '/' .
-            $sellerUid . '?cotizacion=0&papelContinuo=0&compress=0';
+            $invoice->folio . '/' .
+            $sellerUid . 
+            '?papelContinuo=0&copias_tributarias=1&copias_cedibles=1&cedible=0&compress=0&base64=0';
 
         $headers = $this->headers;
 
