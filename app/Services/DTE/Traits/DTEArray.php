@@ -56,11 +56,12 @@ trait DTEArray
                     'RUTRecep' => sanitizeRUT($this->invoice->uid),
                     'RznSocRecep' => $this->invoice->first_name . ' ' . $this->invoice->last_name,
                     'GiroRecep' => 'Informática', // this is required in 33
-                    'DirRecep' => $customerAddress->street . ' ' . $customerAddress->number . 
-                                !empty($customerAddress->subnumber) ? 
-                                    $customerAddress->subnumber : 
-                                    '',
-                    'CmnaRecep' => $customerAddress->commune->name,
+                    'DirRecep' => isset($customerAddress)
+                                    ? $customerAddress->street . ' ' . $customerAddress->number . $customerAddress->subnumber ?? ''
+                                    : '',
+                    'CmnaRecep' => isset($customerAddress)
+                                    ? $customerAddress->commune->name
+                                    : '',
                 ],
                 /*'Totales' => [
                     'TpoMoneda' => !empty($this->invoice->currency) ? $this->invoice->currency->code : 'CLP',
