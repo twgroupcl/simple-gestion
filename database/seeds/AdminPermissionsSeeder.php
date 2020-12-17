@@ -32,6 +32,11 @@ class AdminPermissionsSeeder extends Seeder
                 'name'       => 'order.admin',
                 'guard_name'   => 'web',
             ),
+            4 => 
+            array (
+                'name'       => 'dashboard.admin',
+                'guard_name'   => 'web',
+            ),
         ));        
     }
 }

@@ -54,7 +54,9 @@ Route::get('/home', 'Frontend\HomeController@index')->name('home');
 
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
 Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
-Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
+//Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
+Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategorySlug')->name('category.products');
+
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });

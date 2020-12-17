@@ -28,7 +28,9 @@
     </a>
     <div class="card-body py-2">
         <h3 class="product-title font-size-sm"><a href="{{ url('seller-shop').'/'.$product->seller->id }}">{{ $product->seller->visible_name }}</a></h3>
-        <a class="product-meta d-block font-size-xs pb-1" href="{{ url('search-products/'.$product->categories[0]->id) }}">{{ $product->showCategory() }}</a>
+        @if ($product->categories->count())
+        <a class="product-meta d-block font-size-xs pb-1" href="{{ route('category.products', $product->categories[0]->slug) }}">{{ $product->showCategory() }}</a>
+        @endif
         <h3 class="product-title font-size-sm"><a href="{{ route('product',['slug' => $product->url_key]) }}">{{ $product->name }}</a></h3>
         {{-- <h3 class="product-title font-size-sm"><a href="{{route('product',['slug' => $product->url_key])}}" @if(strlen($product->name) > 80) data-toggle="tooltip" data-placement="top" title="{{ $product->name }}" @endif>{{ substr($product->name, 0, 80) }} @if(strlen($product->name) > 80) ... @endif</a></h3> --}}
         <div class="d-flex justify-content-between">

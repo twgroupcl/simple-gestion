@@ -44,7 +44,7 @@
                         </a>
                         <div class="card-body py-2">
                             <h3 class="product-title font-size-sm"><a href="{{ 'seller-shop/' . $products->seller->id }}">{{ $products->seller->visible_name }}</a></h3>
-                            <a class="product-meta d-block font-size-xs pb-1" href="{{ url('search-products/'.$products->categories[0]->id) }}">{{ $products->showCategory() }}</a>
+                            <a class="product-meta d-block font-size-xs pb-1" href="{{ route('category.products', $product->categories[0]->slug) }}">{{ $products->showCategory() }}</a>
                             <h3 class="product-title font-size-sm"><a href="{{ route('product',['slug' => $products->url_key]) }}">{{ $products->name }}</a></h3>
                             <div class="d-flex justify-content-between">
                                 <div class="product-price">
@@ -191,7 +191,7 @@
             <div class="widget">
                 <h3 class="widget-title">{{$category->name}}</h3>
                 @livewire('products.products-general',['idCategory'=>$category->id])
-                <p class="mb-0">...</p><a class="font-size-sm" href="{{url('search-products/'.$category->id)}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                <p class="mb-0">...</p><a class="font-size-sm" href="{{ route('category.products', $category->slug) }}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
             </div>
         </div>
         @endforeach
