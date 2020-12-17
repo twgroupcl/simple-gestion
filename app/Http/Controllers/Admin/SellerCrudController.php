@@ -783,7 +783,8 @@ class SellerCrudController extends CrudController
                 ],
             ]);
 
-            if (!$this->crud->getCurrentEntry()->subscription_data) {
+
+            if ( $this->crud->getCurrentEntry() && !$this->crud->getCurrentEntry()->subscription_data) {
                 CRUD::addField([
                     'name' => 'plan_id',
                     'label' => 'Plan',
