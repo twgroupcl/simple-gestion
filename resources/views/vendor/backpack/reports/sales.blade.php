@@ -1,7 +1,8 @@
 
 @php
 
-$isAdmin = backpack_user()->hasRole('Super admin');
+$isAdmin = backpack_user()->hasRole('Super admin') || backpack_user()->hasRole('Supervisor Marketplace');
+
 
 Widget::add()->to('after_content')->type('div')->class('row')->content([
     Widget::add([
