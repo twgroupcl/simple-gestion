@@ -813,7 +813,7 @@ class OrderCrudController extends CrudController
                 return response()->json('Esta orden no ha emitido ninguna boleta', 200);
             }
 
-            return $this->exportPDF($invoice);
+            return redirect()->to('admin/invoice/'.$invoice->id.'/send-temporary-document');
 
         } catch (Exception $e) {
             logger($e->getMessage());
