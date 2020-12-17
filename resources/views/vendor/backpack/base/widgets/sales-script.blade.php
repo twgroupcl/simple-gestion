@@ -63,7 +63,6 @@
             $('#seller-select2').change(() => {
                 var data = $("#seller-select2 option:selected").val();
                 filters.seller = data;
-                console.log(data);
                 this.refreshData();
             })
 
@@ -137,7 +136,21 @@
                             titleAttr: 'Excel',
                             className: 'btn btn-app export excel',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5]
+                                columns: [0, 1, 2, 3, 4, 5],
+                                    format: {
+                                        body: function(data, row, column, node) {
+                                            if (typeof data !== 'undefined') {
+                                                if (data != null) {
+                                                    if (column == 4 || column ==5) { //column with percent
+                                                        if (data !== '') {
+                                                           data = data.toString().replace( /[$,]/g, '' )
+                                                        }
+                                                    }
+                                                    return data;
+                                                }
+                                            }
+                                        }
+                                    }
                             },
                         },
                         {
