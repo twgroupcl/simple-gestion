@@ -50,6 +50,7 @@ trait DTEArray
                 ],
                 'Emisor' => [
                     'RUTEmisor' => sanitizeRUT($emitter->uid),
+                    'CdgVendedor' =>  isset($this->invoice->seller_id) ? $this->invoice->seller->visible_name : false,
                 ],
                 'Receptor' => [
                     'RUTRecep' => sanitizeRUT($this->invoice->uid),
