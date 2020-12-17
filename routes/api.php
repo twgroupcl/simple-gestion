@@ -56,7 +56,10 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.products.update-price');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
-    
+   
+    Route::get('/products/{id}', 'Api\v1\ProductController@show')
+        ->name('api.products.show');
+
     
 
     // Product Brand
