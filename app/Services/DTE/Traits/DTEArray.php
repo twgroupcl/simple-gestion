@@ -14,7 +14,7 @@ trait DTEArray
 
         $itemsDTE = $this->prepareItems();
 
-        $globalDiscounts = null;
+        $globalDiscounts = false;
         if ($this->invoice->discount_percent > 0) {
             $globalDiscounts = [
                 'TpoMov' => 'D',
