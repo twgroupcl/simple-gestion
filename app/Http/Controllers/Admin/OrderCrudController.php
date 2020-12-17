@@ -40,6 +40,7 @@ class OrderCrudController extends CrudController
         $this->crud->denyAccess('create');
         $this->crud->denyAccess('show');
         $this->crud->denyAccess('delete');
+        $this->crud->enableExportButtons();
 
         $this->admin = false;
         $this->userSeller = null;
@@ -149,6 +150,8 @@ class OrderCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->customFilters();
     }
 
     /**
@@ -788,14 +791,60 @@ class OrderCrudController extends CrudController
         ]);
         */
 
-
-
-
-
         CRUD::addField([
             'name' => 'support_data_script',
             'type' => 'order.support_data_script',
             'tab' => 'Items',
         ]);
+    }
+
+    private function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'rut',
+            'label' => 'RUT',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'uid', 'LIKE', '%' . $value . '%');
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'created_at',
+            'type'  => 'date',
+            'label' => 'Fecha'
+        ],
+        false,
+        function($value) {
+            logger($value);
+            $this->crud->addClause('whereDate', 'created_at', $value);
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'first_name',
+            'label' => 'Cliente nombre',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'first_name', 'LIKE', '%' . $value . '%');
+        });
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'last_name',
+            'label' => 'Cliente apellido',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'last_name', 'LIKE', '%' . $value . '%');
+        });
+        CRUD::addFilter([
+            'type'  => 'select2',
+            'name'  => 'status',
+            'label' => 'Estado',
+        ],  function () {
+            return [
+              1 => 'Pendiente',
+              2 => 'Pagada',
+              3 => 'Completa',
+            ];
+          }, function ($value) {
+            $this->crud->addClause('where', 'status', $value );
+        });
     }
 }

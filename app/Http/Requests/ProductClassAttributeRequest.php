@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductClassAttributeRequest extends FormRequest
@@ -27,7 +28,10 @@ class ProductClassAttributeRequest extends FormRequest
     {
         return [
             'name' => 'required|min:1|max:255',
-            'code' => 'required',
+            'code' => [
+                'required',
+                Rule::unique('product_class_attributes', 'json_attributes->code')->ignore($this->id),
+            ],
             'type_attribute' => 'required',
             'product_class_id' => 'required',
             'json_options' => function ($attribute, $value, $fail) {

@@ -48,10 +48,18 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::delete('/products/{warehouse}/{sku}', 'Api\v1\ProductController@delete')
         ->middleware(['auth.jwt', 'permission:product.delete'])
         ->name('api.products.delete');
+    Route::get('/products/{warehouse}/{sku}', 'Api\v1\ProductController@showBySkuAndWarehouse')
+        ->name('api.products.show-by-sku');
+    Route::post('/products/{warehouse}/{sku}/stock', 'Api\v1\ProductController@updateStock')
+        ->name('api.products.update-stock');
+    Route::post('/products/{warehouse}/{sku}/price', 'Api\v1\ProductController@updatePrice')
+        ->name('api.products.update-price');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
-    Route::get('/products/sku/{sku}', 'Api\v1\ProductController@showBySku')
-        ->name('api.products.show-by-sku');
+   
+    Route::get('/products/{id}', 'Api\v1\ProductController@show')
+        ->name('api.products.show');
+
     
 
     // Product Brand

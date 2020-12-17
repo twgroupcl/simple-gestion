@@ -159,7 +159,8 @@ class ProductService
                     'meta_title' => $request['meta_title'],
                     'meta_keywords' => $request['meta_keywords'],
                     'meta_description' => $request['meta_description'],
-                    
+
+                    'is_approved' => 1,
                     'status' => $request['status'] ?? 1,
                     'seller_id' => $sellerId,
                     'company_id' => $companyId,
@@ -226,6 +227,7 @@ class ProductService
         $warehouse = ProductInventorySource::where('code', $warehouseCode)->first();
         if (!$warehouse) return [ 'status' => false, 'message' => 'El codigo de la bodega (' . $warehouseCode . ') no existe'];
 
+        // @todo the user must have a seller associate
         $seller = $warehouse->branch->users->first()->seller;
         if (!$seller) return [ 'status' => false, 'message' => 'El codigo de la bodega (' . $warehouseCode . ') no tiene asociado un vendedor'];
 
