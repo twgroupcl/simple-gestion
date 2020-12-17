@@ -193,7 +193,7 @@ class InvoiceCrudController extends CrudController
         ]);
 
         if (backpack_user()->hasRole('Administrador negocio') && !empty($this->seller)) {
-            $this->sellerId = $this->seller->id;
+            $seller = $this->seller->id;
             CRUD::addField([
                 'label' => 'Vendedor',
                 'name' => 'seller_id',
@@ -201,7 +201,7 @@ class InvoiceCrudController extends CrudController
                 'placeholder' => 'Selecciona un vendedor',
                 'model' => 'App\Models\Seller',
                 'attribute' => 'name',
-                'default' => $this->sellerId, 
+                'default' => $sellerId, 
                 'wrapper' => [
                     'class' => 'form-group col-md-6',
                 ],
