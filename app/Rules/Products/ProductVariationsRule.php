@@ -73,10 +73,10 @@ class ProductVariationsRule implements Rule
             [
                 'image' => new ImagesProductRule(1024, 1024, 700000),
                 'price'  => ['required', new NumericCommaRule()],
-                'width'  => ['sometimes', 'required', new NumericCommaRule()],
-                'height'  => ['sometimes', 'required', new NumericCommaRule()],
-                'depth'  => ['sometimes', 'required', new NumericCommaRule()],
-                'weight'  => ['sometimes', 'required', new NumericCommaRule()],
+                'width'  => ['sometimes', 'required', new NumericCommaRule(0)],
+                'height'  => ['sometimes', 'required', new NumericCommaRule(0)],
+                'depth'  => ['sometimes', 'required', new NumericCommaRule(0)],
+                'weight'  => ['sometimes', 'required', new NumericCommaRule(0)],
                 'special_price'  => new NumericCommaRule(),
                 /* 'special_price_from' => RuleMethods::requiredIf($variant->special_price > 1),
                 'special_price_to' => [RuleMethods::requiredIf($variant->special_price > 1), 'after:special_price_from'], */

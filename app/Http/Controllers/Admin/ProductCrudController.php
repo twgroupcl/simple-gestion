@@ -602,6 +602,7 @@ class ProductCrudController extends CrudController
                 'name' => 'weight',
                 'label' => 'Peso',
                 'type' => 'product.number_format',
+                'default' => 0,
                 'suffix' => 'kg',
                 'tab' => 'Precio y envío',
                 'attributes' => [
@@ -617,6 +618,7 @@ class ProductCrudController extends CrudController
                 'label' => 'Alto',
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
+                'default' => 0,
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -631,6 +633,7 @@ class ProductCrudController extends CrudController
                 'label' => 'Ancho',
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
+                'default' => 0,
                 'tab' => 'Precio y envío',
                 'attributes' => [
                     'step' => 'any',
@@ -646,6 +649,7 @@ class ProductCrudController extends CrudController
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
                 'tab' => 'Precio y envío',
+                'default' => 0,
                 'attributes' => [
                     'step' => 'any',
                 ],
@@ -925,6 +929,7 @@ class ProductCrudController extends CrudController
                 'label' => "Peso",
                 'name' => "weight",
                 'type' => 'product.number_format',
+                'default' => 0,
                 'suffix' => 'kg',
                 'wrapper' => [
                     'class' => 'col-md-3 form-group required',
@@ -938,6 +943,7 @@ class ProductCrudController extends CrudController
                 'name' => "height",
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
+                'default' => 0,
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
@@ -950,6 +956,7 @@ class ProductCrudController extends CrudController
                 'name' => "width",
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
+                'default' => 0,
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
@@ -962,6 +969,7 @@ class ProductCrudController extends CrudController
                 'name' => "depth",
                 'type' => 'product.number_format',
                 'suffix' => 'cm',
+                'default' => 0,
                 'wrapper' => [
                     'class' => 'col-lg col-md-12 col-sm-12 form-group required',
                 ],
