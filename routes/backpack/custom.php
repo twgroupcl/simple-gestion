@@ -104,5 +104,6 @@ Route::group([
    
 
     Route::crud('reservationrequest', 'ReservationRequestCrudController');
+    Route::crud('inventory', 'InventoryCrudController');
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
 }); // this should be the absolute last line of this file
