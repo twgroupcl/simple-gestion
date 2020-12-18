@@ -1053,6 +1053,34 @@ class ProductCrudController extends CrudController
      * Get and filter a list of configurable attributes depending of the product class
      *
      */
+    public function getProductByCurrentCompany(Request $request) {
+        $company = backpack_user()->current()->company->id;
+
+        $search_term = $request->input('q');
+        $form = collect($request->input('form'))->pluck('value', 'name');
+        $options = Product::query();
+
+        if ($request->has('keys')) {
+            return Product::findMany($request->input('keys'));
+        }
+
+        if (isset($company)) {
+            $options = $options->where('company_id', $company);
+        }
+
+        // Filter by search term
+        if ($search_term) {
+            $results = $options->whereRaw('LOWER(name) like ?', '%'.strtolower($search_term).'%')->paginate(10);
+        } else {
+            $results = $options->paginate(10);
+        }
+        return $options->paginate(10);
+    }
+
+    /**
+     * Get and filter a list of configurable attributes depending of the product class
+     *
+     */
     public function getProductBySeller(Request $request) {
         $search_term = $request->input('q');
         $form = collect($request->input('form'))->pluck('value', 'name');

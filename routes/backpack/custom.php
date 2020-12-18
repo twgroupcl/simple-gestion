@@ -82,6 +82,7 @@ Route::group([
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');
+    Route::get('api/products/get-by-current-company', 'ProductCrudController@getProductByCurrentCompany');
     Route::post('api/getPlans', 'PlansCrudController@getPlans');
     Route::post('api/getPlanById', 'PlansCrudController@getPlanById');
     Route::get('/api/timeblocks/get-by-service', 'TimeBlockCrudController@getTimeblocksByService');
