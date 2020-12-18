@@ -35,7 +35,7 @@ class CustomerCrudController extends CrudController
         CRUD::setEntityNameStrings('cliente', 'clientes');
 
         $this->crud->denyAccess('show');
-
+        $this->crud->enableExportButtons();
         $this->getExtras();
     }
 
@@ -94,7 +94,43 @@ class CustomerCrudController extends CrudController
             'label' => 'Segmento',
             'attribute' => 'name',
         ]);
+        CRUD::addColumn([
+            'name' => 'phone',
+            'type' => 'text',
+            'label' => 'Teléfono',
+        ]);
 
+        CRUD::addColumn([
+            'name' => 'cellphone',
+            'type' => 'text',
+            'label' => 'Teléfono móvil',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'addresses_data_first_street',
+            'type'        => 'text',
+            'label' => 'Calle',
+
+
+        ]);
+        CRUD::addColumn([
+            'name' => 'addresses_data_first_number',
+            'type'        => 'text',
+            'label' => 'Nro.',
+
+        ]);
+        CRUD::addColumn([
+            'name' => 'addresses_data_first_sub_number',
+            'type'        => 'text',
+            'label' => 'Casa/Dpto/Oficina',
+
+        ]);
+        CRUD::addColumn([
+            'name' => 'addresses_data_first_commune',
+            'type' => 'text',
+            'label' => 'Comuna',
+
+        ]);
         CRUD::addColumn([
             'name' => 'status_description',
             'type' => 'text',
@@ -209,25 +245,25 @@ class CustomerCrudController extends CrudController
             ],
         ]);
 
-        // CRUD::addField([
-        //     'name' => 'password',
-        //     'type' => 'password',
-        //     'label' => 'Contraseña',
-        //     'tab' => 'General',
-        //     'wrapper' => [
-        //         'class' => 'form-group col-6',
-        //     ],
-        // ]);
+        CRUD::addField([
+            'name' => 'password',
+            'type' => 'password',
+            'label' => 'Contraseña',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-6',
+            ],
+        ]);
 
-        // CRUD::addField([
-        //     'name' => 'password_confirmation',
-        //     'type' => 'password',
-        //     'label' => 'Repetir contraseña',
-        //     'tab' => 'General',
-        //     'wrapper' => [
-        //         'class' => 'form-group col-6',
-        //     ],
-        // ]);
+        CRUD::addField([
+            'name' => 'password_confirmation',
+            'type' => 'password',
+            'label' => 'Repetir contraseña',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-6',
+            ],
+        ]);
 
         CRUD::addField([
             'name' => 'notes',

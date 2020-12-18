@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\User;
 use App\Scopes\CompanyBranchScope;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\CustomAttributeRelations;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\User;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Freshwork\ChileanBundle\Rut;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Hash;
 
 class Customer extends Model
 {
@@ -21,7 +21,7 @@ class Customer extends Model
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
-    */
+     */
 
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
@@ -71,7 +71,7 @@ class Customer extends Model
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
-    */
+     */
 
     protected static function boot()
     {
@@ -84,7 +84,7 @@ class Customer extends Model
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
-    */
+     */
 
     public function company()
     {
@@ -120,13 +120,13 @@ class Customer extends Model
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
-    */
+     */
 
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
     |--------------------------------------------------------------------------
-    */
+     */
 
     public function getStatusDescriptionAttribute()
     {
@@ -172,11 +172,60 @@ class Customer extends Model
         return $rutFormatter->format();
     }
 
+    public function getAddressesDataFirstStreetAttribute()
+    {
+        $firstStreet = null;
+        $firstAddress = $this->addresses()->first();
+
+        if (!is_null($firstAddress)) {
+
+            $firstStreet = $firstAddress->street;
+
+        }
+        return $firstStreet;
+    }
+
+    public function getAddressesDataFirstNumberAttribute()
+    {
+        $firstNumber = null;
+        $firstAddress = $this->addresses()->first();
+
+        if (!is_null($firstAddress)) {
+
+            $firstNumber = $firstAddress->number;
+
+        }
+        return $firstNumber;
+    }
+    public function getAddressesDataFirstSubNumberAttribute()
+    {
+        $firstSubNumber = null;
+        $firstAddress = $this->addresses()->first();
+
+        if (!is_null($firstAddress)) {
+
+            $firstSubNumber = $firstAddress->subnumber;
+
+        }
+        return $firstSubNumber;
+    }
+    public function getAddressesDataFirstCommuneAttribute()
+    {
+        $communeName = null;
+        $firstAddress = $this->addresses()->first();
+
+        if (!is_null($firstAddress)) {
+            if (isset($firstAddress->commune)) {
+                $communeName = $firstAddress->commune->name;
+            }
+        }
+        return $communeName;
+    }
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
-    */
+     */
 
     public function setPasswordAttribute($value)
     {
