@@ -267,7 +267,7 @@ class InvoiceCrudController extends CrudController
                     'model' => 'App\Models\Product',
                     'placeholder' => 'Selecciona un producto',
                     'attribute' => 'name',
-                    'data_source' => url('admin/api/products/getBySeller'),
+                    'data_source' => url('admin/api/products/get-by-current-company'),
                     'minimum_input_length' => 0,
                     'include_all_form_fields'  => true,
                     'dependencies'  => ['seller_id'],

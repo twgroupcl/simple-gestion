@@ -170,6 +170,21 @@ class Quotation extends Model
             case self::STATUS_DRAFT: 
                 return 'Borrador';
                 break;
+            case self::STATUS_REJECTED:
+                return 'Rechazado';
+                break;
+            case self::STATUS_ACCEPTED:
+                return 'Aceptado';
+                break;
+            case self::STATUS_EXPIRED:
+                return 'Activa';
+                break;
+            case self::STATUS_VIEWED:
+                return 'Visto';
+                break;
+            case self::STATUS_SENT:
+                return 'Enviado';
+                break;
             default: 
                 return 'Otro';
                 break;

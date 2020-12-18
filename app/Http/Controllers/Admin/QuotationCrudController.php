@@ -52,6 +52,7 @@ class QuotationCrudController extends CrudController
     {
         // Export PDF option
         $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
+        $this->crud->addButtonFromView('line', 'Crear documento electrónico temporal', 'quotation.to_invoice', 'beginning');
 
         CRUD::addColumn([
             'label' => '#',
@@ -94,8 +95,16 @@ class QuotationCrudController extends CrudController
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Activa') {
+                    if ($column['text'] == 'Activa' || $column['text'] == 'Aceptado') {
                         return 'badge badge-success';
+                    }
+                   
+                    if ($column['text'] === 'Rechazado') {
+                        return 'badge badge-danger';
+                    }
+                    
+                    if ($column['text'] == 'Visto') {
+                        return 'badge badge-info';
                     }
                     return 'badge badge-default';
                 },
@@ -251,7 +260,7 @@ class QuotationCrudController extends CrudController
                     'model' => 'App\Models\Product',
                     'placeholder' => 'Selecciona un producto',
                     'attribute' => 'name',
-                    'data_source' => url('admin/api/products/getBySeller'),
+                    'data_source' => url('admin/api/products/get-by-current-company'),
                     'minimum_input_length' => 0,
                     'include_all_form_fields'  => true,
                     'dependencies'  => ['seller_id'],
@@ -453,8 +462,8 @@ class QuotationCrudController extends CrudController
                 Quotation::STATUS_REJECTED => 'Rechazado',
             ],
             'attributes' => [
-                'readonly' => true,
-                'disabled' => true,
+                //'readonly' => true,
+                //'disabled' => true,
             ],
             'type' => 'select2_from_array',
             'wrapperAttributes' => [
