@@ -52,6 +52,7 @@ class QuotationCrudController extends CrudController
     {
         // Export PDF option
         $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
+        $this->crud->addButtonFromView('line', 'Crear documento electrónico temporal', 'quotation.to_invoice', 'beginning');
 
         CRUD::addColumn([
             'label' => '#',
