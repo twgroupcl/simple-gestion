@@ -144,7 +144,7 @@ class Customer extends Model
 
     public function getIsCompanyDescriptionAttribute()
     {
-        switch ($this->is_user_defined) {
+        switch ($this->is_company) {
             case $this::IS_COMPANY:
                 return 'Jurídica';
                 break;
