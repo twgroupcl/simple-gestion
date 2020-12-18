@@ -2,6 +2,8 @@
 
 namespace App\Services\DTE;
 
+use Illuminate\Support\Facades\Validator;
+use App\Rules\RutRule;
 use \App\Models\Invoice;
 use \GuzzleHttp\{
     Psr7\Response as GuzzleResponse,
@@ -152,6 +154,83 @@ class DTEService
         }
 
         return false;
+    }
+
+    public function getSalesReport(string $emitterRut, string $period)
+    {
+        
+        $rutRule = new RutRule();
+        $validator = \Validator::make([
+            'emitter' => $emitterRut,
+        ], [
+            'emitter' => $rutRule
+        ]);
+        
+        if ($validator->fails()) {
+            throw new \Exception('Error, invalid RUT');
+        }
+
+        $method = 'POST';
+        $url = $this->url . '/dte/dte_emitidos/buscar/' . rutWithoutDV($emitterRut);
+
+        $headers = $this->headers;
+
+        $data = [
+         	'receptor'=> null,
+            'razon_social'=> null,
+            'dte'=> null,
+            'folio'=> null,
+            'fecha'=> null,
+            'total'=> null,
+            'usuario'=> null,
+            'fecha_desde'=> null,
+            'fecha_hasta'=> null,
+            'total_desde'=> null,
+            'total_hasta'=> null,
+            'sucursal_sii'=> null,
+            'periodo' => $period,
+            'receptor_evento'=> null,
+            'cedido'=> null,
+        ];
+
+        $response = self::exec($url, $data, $headers, $method);
+
+        return $response;
+    }
+
+    public function getDataEmittedDocument(Invoice $invoice) : GuzzleResponse
+    {
+        $method = 'GET';
+
+        $url = $this->url . '/dte/dte_emitidos/info/' .
+            $invoice->invoice_type->code . '/' .
+            $invoice->folio . '/' . 
+            rutWithoutDV($invoice->company->uid) . 
+            '?getXML=0&getDetalle=0&getDatosDte=1&getTed=0&getResolucion=0&getEmailEnviados=0';
+
+        $headers = $this->headers;
+
+        $response = self::exec($url, [], $headers, $method);
+
+        return $response;
+    }
+
+    public function getDataEmittedDocumentUnstructure($typeCode, $folio, $rutEmitter) : GuzzleResponse
+    {
+        $method = 'GET';
+
+        $url = $this->url . '/dte/dte_emitidos/info/' .
+            $typeCode. '/' .
+            $folio . '/' . 
+            rutWithoutDV($rutEmitter) . 
+            '?getXML=0&getDetalle=0&getDatosDte=1&getTed=0&getResolucion=0&getEmailEnviados=0';
+
+        $headers = $this->headers;
+
+        $response = self::exec($url, [], $headers, $method);
+
+        return $response;
+
     }
 
     public static function exec($url, $data = [], array $headers =[], $method = null) : GuzzleResponse
