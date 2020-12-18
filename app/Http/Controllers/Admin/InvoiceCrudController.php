@@ -207,7 +207,7 @@ class InvoiceCrudController extends CrudController
                 ],
                 'tab' => 'General',
                 'options' => (function ($query) use($sellerId) {
-                    return $query->where('user_id', $this->sellerId)->get();
+                    return $query->where('id', $sellerId)->get();
                 })
             ]);
 
