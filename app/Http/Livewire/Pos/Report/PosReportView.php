@@ -61,7 +61,7 @@ class PosReportView extends Component
         if ($this->salesBox) {
             $this->orders = $this->salesBox->logs()->whereHas('order', function ($query) {
                 $query->where('event', 'Nueva orden generada');
-            })->get()->map(function ($item) {
+            })->latest()->limit(10)->get()->map(function ($item) {
                 return $item->order;
             });
         }
