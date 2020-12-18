@@ -213,7 +213,7 @@ class Cart extends Component
 
             $invoiceType = InvoiceType::firstOrCreate(
                 ['name' => "Boleta electrónica"],
-                ['country_id' => 43, 'code' => 41], // 41 => exenta, 39 => afecta(con impuestos)
+                ['country_id' => 43, 'code' => 39], // 41 => exenta, 39 => afecta(con impuestos)
             );
 
             $order_items = $order->order_items->map(function ($item) {

@@ -34,12 +34,12 @@
                     </li>
                     <li class="list-group-item">
                         <div class="text-muted font-weight-bold">Detalles del cliente</div>
-                        <div class="text-danger m-0">{{ $order->first_name }}</div>
-                        <div class="m-0">{{ $order->email }}</div>
+                        <div class="text-danger m-0">{{ $selectedOrder->first_name }}</div>
+                        <div class="m-0">{{ $selectedOrder->email }}</div>
                     </li>
                 </ul>
                 <div class="card-body">
-                    <a target="_blanck" href="{{ route('order.invoice', ['order' => $order->id]) }}" class="btn btn-success">Imprimir Boleta</a>
+                    <a target="_blanck" href="{{ route('order.invoice', ['order' => $selectedOrder->id]) }}" class="btn btn-success">Imprimir Boleta</a>
                 </div>
             </div>
         </div>
