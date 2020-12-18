@@ -171,7 +171,11 @@
 </div>
 
 </div>
-
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
+    <div class="modal-dialog modal-lg">
+        @livewire('pos.customer.create-address-form')
+    </div>
+</div>
 <div wire:ignore.self class="modal fade" id="showCustomerModal" tabindex="-1" role="dialog"
     aria-labelledby="createCustomerModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -219,6 +223,14 @@
 
         window.addEventListener('hideCustomerModal', event => {
             $('#showCustomerModal').appendTo("body").modal('hide');
+        })
+
+        window.addEventListener('showAddressModal', event => {
+            $('#modalSelectAddress').appendTo("body").modal('show');
+        })
+
+        window.addEventListener('hideAddressModal', event => {
+            $('#modalSelectAddress').appendTo("body").modal('hide');
         })
 
         $("#showCustomerModal").on('hidden.bs.modal', function() {

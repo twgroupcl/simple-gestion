@@ -33,6 +33,7 @@ class Cart extends Component
         'quantityUpdated' => 'updateQuantity',
         'customerSelected' => 'setCustomer',
         'cart.confirmPayment' => 'confirmPayment',
+        'addressSelected' => 'updateAddress',
     ];
 
     public function mount()
@@ -111,7 +112,7 @@ class Cart extends Component
     public function setCustomer(Customer $customer, array $wildcard = null)
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
-        $this->customerAddressId = session()->get('user.pos.selectedCustomerAddress');
+        $this->customerAddressId = null;
     }
 
     public function confirmPayment($cash)
@@ -252,5 +253,10 @@ class Cart extends Component
 dd($e->getMessage());
             return false;
         }
+    }
+
+    public function updateAddress($addressId)
+    {
+        $this->customerAddressId = $addressId;
     }
 }
