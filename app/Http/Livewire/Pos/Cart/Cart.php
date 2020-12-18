@@ -53,7 +53,7 @@ class Cart extends Component
             $this->products = [];
         }
         if (session()->get('user.pos.selectedCustomer')) {
-            $this->customer = Customer::find(session()->get('user.pos.selectedCustomer')->id);
+            $this->customer = session()->get('user.pos.selectedCustomer');
         }
     }
     public function render()
@@ -109,14 +109,15 @@ class Cart extends Component
         // $this->emit('payment.updated');
     }
 
-    public function setCustomer(Customer $customer, array $wildcard = null)
+    public function setCustomer(Customer $customer, array $wildcard = null, $addressId = null)
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
-        $this->customerAddressId = null;
+        $this->customerAddressId = $addressId;
     }
 
     public function confirmPayment($cash)
     {
+        $this->customer = session()->get('user.pos.selectedCustomer');
         if ($cash >= $this->total) {
             $currency = Currency::where('code', Setting::get('default_currency'))->firstOrFail();
             //Make order
@@ -238,6 +239,14 @@ class Cart extends Component
             $invoice->save();
 
             Invoice::withoutEvents(function () use ($invoice, $order) {
+                $invoice->uid = $order->uid;
+                $invoice->first_name = $order->first_name;
+                $invoice->last_name = $order->last_name;
+                $invoice->email = $order->email;
+                $invoice->phone = $order->phone;
+                $invoice->cellphone = $order->cellphone;
+                $invoice->address_id = $this->customerAddressId;
+
                 $invoice->orders()->attach($order->id);
                 $invoice->customer()->associate($this->customer);
                 $invoice->total = $order->total;
@@ -250,7 +259,7 @@ class Cart extends Component
 
         } catch (Exception $e) {
             DB::rollback();
-dd($e->getMessage());
+            dd($e->getMessage());
             return false;
         }
     }

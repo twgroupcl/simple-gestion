@@ -1,7 +1,7 @@
 
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">inside de {{ session()->get('user.pos.selectedCustomer', false)->first_name }}</h4>
+            <h4 class="modal-title" id="myModalLabel">Direcciones de {{ optional(session()->get('user.pos.selectedCustomer', false))->first_name }}</h4>
         </div>
         @if ($showForm)
             <div class="modal-body row">
