@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ProductCategory;
+use App\Models\ProductInventorySource;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -28,6 +30,12 @@ class InventoryCrudController extends CrudController
         CRUD::setModel(\App\Models\Product::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/inventory');
         CRUD::setEntityNameStrings('inventario', 'inventarios');
+
+        $this->crud->denyAccess('show');
+        $this->crud->denyAccess('update');
+        $this->crud->denyAccess('create');
+        $this->crud->denyAccess('delete');
+        $this->crud->enableExportButtons();
     }
 
     /**
@@ -38,13 +46,47 @@ class InventoryCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'categories',
+            'label' => 'Categoria',
+            'priority' => 3,
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'sku',
+            'label' => 'SKU',
+            'priority' => 1,
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+            'priority' => 1,
+        ]);
+
+        foreach (ProductInventorySource::all() as $inventory) {
+            CRUD::addColumn([
+                'name' => 'inventory_' . $inventory->id,
+                'label' => $inventory->name,
+                'type'  => 'model_function',
+                'function_name' => 'getQtyInInventory', // the method in your Model
+                'function_parameters' => [$inventory->id], // pass one/more parameters to that method
+                'priority' => 2,
+            ]);
+        }
+
+        $this->crud->addFilter([
+            'name'  => 'status',
+            'type'  => 'dropdown',
+            'label' => 'Estado'
+          ], [
+            0 => 'Inactivo',
+            1 => 'Activo',
+          ], function($value) {
+            $this->crud->addClause('where', 'status', $value);
+          });
+
+        $this->customFilters();
     }
 
     /**
@@ -75,5 +117,20 @@ class InventoryCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    private function customFilters()
+    {
+        $this->crud->addFilter([
+            'name'  => 'category_id',
+            'type'  => 'select2',
+            'label' => 'Categoria'
+        ], function() {
+            return ProductCategory::all()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('whereHas', 'categories', function($query) use ($value) {
+                $query->where('id', $value);
+            });
+        });
     }
 }
