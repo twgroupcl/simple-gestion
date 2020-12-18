@@ -94,8 +94,16 @@ class QuotationCrudController extends CrudController
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Activa') {
+                    if ($column['text'] == 'Activa' || $column['text'] == 'Aceptado') {
                         return 'badge badge-success';
+                    }
+                   
+                    if ($column['text'] === 'Rechazado') {
+                        return 'badge badge-danger';
+                    }
+                    
+                    if ($column['text'] == 'Visto') {
+                        return 'badge badge-info';
                     }
                     return 'badge badge-default';
                 },
@@ -453,8 +461,8 @@ class QuotationCrudController extends CrudController
                 Quotation::STATUS_REJECTED => 'Rechazado',
             ],
             'attributes' => [
-                'readonly' => true,
-                'disabled' => true,
+                //'readonly' => true,
+                //'disabled' => true,
             ],
             'type' => 'select2_from_array',
             'wrapperAttributes' => [
