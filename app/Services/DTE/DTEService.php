@@ -156,6 +156,28 @@ class DTEService
         return false;
     }
 
+    /**
+     * Get the updated status of the DTE
+     * 
+     */
+    public function getDteUpdatedStatus(Invoice $invoice)
+    {
+        $method = 'GET';
+
+        $url = $this->url . '/dte/dte_emitidos/actualizar_estado/' .
+            $invoice->invoice_type->code . '/' .
+            $invoice->folio . '/' . 
+            rutWithoutDV($invoice->company->uid) . 
+            '?usarWebservice=1';
+
+        $headers = $this->headers;
+
+        $response = self::exec($url, [], $headers, $method);
+
+        dd($response->getBody()->getContents());
+        return $response;
+    }
+
     public function getSalesReport(string $emitterRut, string $period)
     {
         
