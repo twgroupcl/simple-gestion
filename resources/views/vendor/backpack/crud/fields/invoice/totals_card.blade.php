@@ -259,7 +259,7 @@
                 let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
                 
                 let subTotalValue = (price * itemQty) 
-                let totalValue = ( (price * itemQty) - discountItem)
+                let totalValue = getRounded(( (price * itemQty) - discountItem))
                 
                 subTotal.val(formatWithComma(totalValue))
 
@@ -287,11 +287,11 @@
             let items = $('div[data-repeatable-holder="items_data"]').children()
             let itemsData = calculateItemsData(items)
 
-            let subTotalGeneral = itemsData.totalValue
+            let subTotalGeneral = getRounded(itemsData.totalValue)
             
-            let totalDiscountGlobal = itemsData.totalDiscountGlobal
-            let totalVaxItems = itemsData.totalVaxItem
-            let totalVaxGeneral = itemsData.totalVaxGeneral
+            let totalDiscountGlobal = getRounded(itemsData.totalDiscountGlobal)
+            let totalVaxItems = getRounded(itemsData.totalVaxItem)
+            let totalVaxGeneral = getRounded(itemsData.totalVaxGeneral)
 
             if (invoiceType === 'H') { //TO DO Honorarios??
                 $('input[name="tax_amount"]').val( (-1) * totalVaxGeneral)
@@ -357,10 +357,18 @@
             if (typeof number == 'number') {
                 number = parseFloat(number).toFixed(2);
             }
-            number = number.toString()
+            
+            number = parseFloat(number).toFixed(0)
+            //number = number.toString()
             number = number.replace('.', ',')
             number = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             return number;
+        }
+
+        function getRounded(value) {
+            var result = parseFloat(value);
+            result = Math.round(result);
+            return result;
         }
 
 
