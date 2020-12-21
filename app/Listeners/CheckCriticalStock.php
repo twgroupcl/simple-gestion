@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Models\Product;
+use App\Mail\CriticalStockAlert;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -26,12 +28,14 @@ class CheckCriticalStock
      */
     public function handle($event)
     {
-        $product = Product::findOrFail($event->productId);
+        $product = Product::find($event->productId);
+
+        if (!$product) return false;
 
         $sendAlert = !$product->haveSufficientQuantity($product->critical_stock);
 
         if ($sendAlert) {
-            dd('alert was send');
+            Mail::to($product->seller->email)->send(new CriticalStockAlert($product));
         }
     }
 }
