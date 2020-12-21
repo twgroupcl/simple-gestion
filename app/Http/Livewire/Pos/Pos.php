@@ -26,7 +26,12 @@ class Pos extends Component
 
     public function mount()
     {
-        $this->seller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        $this->seller = Seller::where('user_id', backpack_user()->id)->first();
+
+        if (is_null($this->seller) || $this->seller->is_approved !== $this->seller::REVIEW_STATUS_APPROVED) {
+            abort(403);
+        }
+
         $this->setView('productList');
     }
 

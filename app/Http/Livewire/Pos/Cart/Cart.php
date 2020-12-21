@@ -234,7 +234,6 @@ class Cart extends Component
             $invoice->seller_id = $currentSeller->id;
             $invoice->items_data = $order_items;
             $invoice->invoice_type_id = $invoiceType->id;
-            $invoice->tax_type = '';
             $invoice->invoice_date = now();
             $invoice->save();
 
