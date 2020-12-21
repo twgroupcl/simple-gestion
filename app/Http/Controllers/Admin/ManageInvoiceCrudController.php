@@ -157,6 +157,32 @@ class ManageInvoiceCrudController extends CrudController
 
     }
 
+    public function updateDteStatus(Request $request, Invoice $invoice)
+    {
+        $service = new DTEService();
+        $response = $service->getDteUpdatedStatus($invoice);
+        
+        if ($response->getStatusCode() != 200) {
+            \Alert::add('warning', 'Hubo algun problema al consultar el estado del documento.')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        $dteStatusResponse =  json_decode($response->getBody()->getContents(), true);
+        
+        $dteStatus = [
+            'track_id' => $dteStatusResponse["track_id"] ?? '',
+            'revision_estado' =>  $dteStatusResponse["revision_estado"] ?? '',
+            'revision_detalle' => $dteStatusResponse["revision_detalle"] ?? '',
+        ];
+
+        $invoice->dte_status = $dteStatus;
+
+        $invoice->updateWithoutEvents();
+
+        \Alert::add('success', 'Estado del documento actualizado correctamente.')->flash();
+        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+    }
+
     public function issueCreditNote(Request $request, Invoice $invoice)
     {
         if (!isset($invoice->dte_code)) {

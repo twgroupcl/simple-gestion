@@ -174,7 +174,6 @@ class DTEService
 
         $response = self::exec($url, [], $headers, $method);
 
-        dd($response->getBody()->getContents());
         return $response;
     }
 

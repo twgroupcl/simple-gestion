@@ -27,5 +27,15 @@
                 </p>
             </div>
         </div>
+        @if ($invoice->dte_status)
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    <strong>Estado del documento:</strong>
+                    {{ $invoice->dte_status['revision_detalle'] }}
+                </p>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
