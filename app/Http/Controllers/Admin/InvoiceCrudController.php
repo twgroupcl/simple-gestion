@@ -53,7 +53,7 @@ class InvoiceCrudController extends CrudController
         $company = backpack_user()->current()->company->id; 
         $company = Company::find($company);
         $this->emitter = $company;
-        $this->crud->addClause('where', 'company_id', $company);
+        $this->crud->addClause('where', 'company_id', $company->id);
 
         $this->crud->denyAccess('show');
 
