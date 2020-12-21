@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\InvoiceRequest;
+use App\Http\Requests\{ InvoiceRequest, DteSalesReport };
+use App\Exports\DteSalesReportExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Tax, Invoice, InvoiceType, CustomerAddress, Seller, Company};
-use App\Services\DTEService;
+use App\Services\DTE\DTEService;
 /**
  * Class InvoiceCrudController
  * @package App\Http\Controllers\Admin
@@ -58,6 +60,89 @@ class InvoiceCrudController extends CrudController
         // if dte is real, deny delete
         if ($this->crud->getCurrentOperation() === 'delete' && $this->crud->getCurrentEntry()->invoice_status === Invoice::STATUS_SEND) {
             $this->crud->denyAccess(['delete']);
+        }
+    }
+
+    protected function setupDteSalesReportRoutes($segment, $routeName, $controller)
+    {
+        \Route::get($segment.'/dte_sales_report', [
+            'as'        => $routeName.'.getDteSalesReport',
+            'uses'      => $controller.'@getDteSalesReportForm',
+            'operation' => 'salesreport',
+        ]);
+
+        \Route::post($segment.'/dte_sales_report', [
+            'as'        => $routeName.'.postDteSalesReport',
+            'uses'      => $controller.'@postDteSalesReportForm',
+            'operation' => 'salesreport',
+        ]);
+    }
+
+    public function getDteSalesReportForm()
+    {
+        $this->crud->setOperation('Salesreport');
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = 'Generar reporte de ventas';
+        return view('vendor.backpack.reports.dte_sales_report', $this->data);
+    }
+
+    public function postDteSalesReportForm(DteSalesReport $request )
+    {
+        $company = backpack_user()->current()->company->id;
+        $company = Company::find($company);
+        $uid = $company->uid;
+
+        $dte = new DTEService();
+        $response = $dte->getSalesReport($uid, $request->period_year . $request->period_month);
+        
+        if ($response->getStatusCode() === 200) {
+            $salesReport = json_decode($response->getBody()->getContents(), true);
+
+            $documentsWCN = \Arr::where($salesReport, function ($value, $key) {
+                return $value['dte'] != 61;
+            });
+
+            $creditNotes = \Arr::where($salesReport, function ($value, $key) {
+                return $value['dte'] === 61;
+            });
+
+            $array = [];
+
+            foreach ($creditNotes as $document) {
+
+                $moreData = $dte->getDataEmittedDocumentUnstructure($document['dte'], $document['folio'], $uid);
+                if ($moreData->getStatusCode() !== 200) {
+                    \Alert::warning('Lo sentimos, no se pudo generar el reporte')->flas();
+                    return \Redirect::to($this->crud->route . '/dte_sales_report');
+                }
+                $response = $moreData->getBody()->getContents();
+                $moreData = json_decode($response, true);
+                $moreData = $moreData['datos_dte']['Referencia'];
+
+                $documentsWCN = \Arr::where($documentsWCN, function ($value, $key) use ($moreData) {
+                    return $value['folio'] != $moreData['FolioRef'] && $value['dte'] == $moreData['TpoDocRef'];
+                });
+            }
+
+            foreach ($documentsWCN as &$document) {
+                $moreData = $dte->getDataEmittedDocumentUnstructure($document['dte'], $document['folio'], $uid);
+                if ($moreData->getStatusCode() !== 200) {
+                    \Alert::warning('Lo sentimos, no se pudo generar el reporte')->flas();
+                    return \Redirect::to($this->crud->route . '/dte_sales_report');
+                }
+                $response = $moreData->getBody()->getContents();
+                $moreData = json_decode($response, true);
+                $moreData = $moreData['datos_dte'];
+
+                $totals = $moreData['Encabezado']['Totales'];
+                $document['net'] = $totals['MntNeto']; 
+                $document['tax'] = array_key_exists('IVA', $totals) ? $totals['IVA'] : ''; 
+
+            }
+
+            $report = new DteSalesReportExport($documentsWCN);
+            return Excel::download($report, 'sales_report.xlsx');
+
         }
     }
 
