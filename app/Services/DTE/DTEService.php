@@ -5,6 +5,7 @@ namespace App\Services\DTE;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\RutRule;
 use \App\Models\Invoice;
+use App\Models\Company;
 use \GuzzleHttp\{
     Psr7\Response as GuzzleResponse,
     Client
@@ -19,9 +20,15 @@ class DTEService
 
     public function __construct()
     {
+        $company = Company::findOrFail(session('user')['current']['company']['id']);
+
+        if (!$company->dte_token) {
+            abort(400, 'La empresa no tiene asignado un token DTE');
+        }
+
         $this->client = new \GuzzleHttp\Client();
         $this->url = config('dte.url') . '/api';
-        $this->token = config('dte.api_token');
+        $this->token = $company->dte_token;
         $this->headers = [
             'Authorization' => 'Basic ' . $this->token,
             'Content-Type' => 'application/json',
