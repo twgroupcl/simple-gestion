@@ -117,6 +117,11 @@
         @can('productinventorysource.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productinventorysource') }}'><i class='nav-icon la la-warehouse'></i> Bodegas</a></li>
         @endcan
+
+        @can('inventory.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('inventory') }}'><i class='nav-icon la la-warehouse'></i> Inventarios</a></li>
+        @endcan
+
 	</ul>
 </li>
 @endcanany

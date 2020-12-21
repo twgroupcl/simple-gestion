@@ -485,6 +485,19 @@ class Product extends Model
         return $this->categories()->first()->name;
     }
 
+    public function getQtyInInventory($productInventorySourceId)
+    {
+        $inventories = $this->inventories;
+
+        $inventory = $this->inventories->where('id', $productInventorySourceId);
+
+        if (!$inventory->count()) {
+            return 0;
+        }
+
+        return $inventory->first()->pivot->qty;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | HELPERS
@@ -514,6 +527,8 @@ class Product extends Model
             return [0, 0];
         }
     }
+
+    
 
     /*
     |--------------------------------------------------------------------------
