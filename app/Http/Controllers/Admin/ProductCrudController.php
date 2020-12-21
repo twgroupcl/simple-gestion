@@ -73,7 +73,7 @@ class ProductCrudController extends CrudController
         $this->crud->enableBulkActions();
 
         // If not admin, show only user products
-        if(!$this->admin) {
+        if (!$this->admin) {
             $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
         } else {
             $this->crud->addButtonFromView('bottom', 'bulk_delete', 'product.bulk_delete', 'beginning');

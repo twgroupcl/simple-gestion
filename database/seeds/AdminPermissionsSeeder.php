@@ -32,6 +32,16 @@ class AdminPermissionsSeeder extends Seeder
                 'name'       => 'order.admin',
                 'guard_name'   => 'web',
             ),
+            4 => 
+            array (
+                'name'       => 'inventory.admin',
+                'guard_name'   => 'web',
+            ),
+            5 => 
+            array (
+                'name'       => 'inventory.list',
+                'guard_name'   => 'web',
+            ),
         ));        
     }
 }
