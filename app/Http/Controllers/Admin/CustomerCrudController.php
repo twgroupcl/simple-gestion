@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Cruds\BaseCrudFields;
+use App\Http\Requests\CustomerRequest;
 use App\Models\Bank;
+use App\Models\BankAccountType;
+use App\Models\BusinessActivity;
 use App\Models\Commune;
 use App\Models\ContactType;
-use App\Cruds\BaseCrudFields;
-use App\Models\BankAccountType;
 use App\Models\CustomerSegment;
-use App\Models\BusinessActivity;
-use App\Http\Requests\CustomerRequest;
 use App\Traits\HasCustomAttributes;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -35,7 +35,7 @@ class CustomerCrudController extends CrudController
         CRUD::setEntityNameStrings('cliente', 'clientes');
 
         $this->crud->denyAccess('show');
-
+        $this->crud->enableExportButtons();
         $this->getExtras();
     }
 
@@ -96,6 +96,43 @@ class CustomerCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
+            'name' => 'phone',
+            'type' => 'text',
+            'label' => 'Teléfono',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'cellphone',
+            'type' => 'text',
+            'label' => 'Teléfono móvil',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'addresses_data_first_street',
+            'type' => 'text',
+            'label' => 'Calle',
+
+        ]);
+        CRUD::addColumn([
+            'name' => 'addresses_data_first_number',
+            'type' => 'text',
+            'label' => 'Nro.',
+
+        ]);
+        CRUD::addColumn([
+            'name' => 'addresses_data_first_sub_number',
+            'type' => 'text',
+            'label' => 'Casa/Dpto/Oficina',
+
+        ]);
+        CRUD::addColumn([
+            'name' => 'addresses_data_first_commune',
+            'type' => 'text',
+            'label' => 'Comuna',
+
+        ]);
+
+        CRUD::addColumn([
             'name' => 'status_description',
             'type' => 'text',
             'label' => 'Estado',
@@ -109,6 +146,7 @@ class CustomerCrudController extends CrudController
                 },
             ],
         ]);
+        $this->customFilters();
     }
 
     /**
@@ -137,7 +175,7 @@ class CustomerCrudController extends CrudController
             'type' => 'checkbox',
             'tab' => 'General',
             'wrapper' => [
-                'class' => 'form-group col-auto'
+                'class' => 'form-group col-auto',
             ],
         ]);
 
@@ -147,11 +185,11 @@ class CustomerCrudController extends CrudController
             'type' => 'checkbox',
             'tab' => 'General',
             'wrapper' => [
-                'class' => 'form-group col-9 is_foreing_field'
+                'class' => 'form-group col-9 is_foreing_field',
             ],
             'attributes' => [
-                'class' => 'is_foreign_checkbox'
-            ]
+                'class' => 'is_foreign_checkbox',
+            ],
         ]);
 
         CRUD::addField([
@@ -164,7 +202,7 @@ class CustomerCrudController extends CrudController
             ],
             'attributes' => [
                 'id' => 'rut_field',
-            ]
+            ],
         ]);
 
         CRUD::addField([
@@ -372,9 +410,9 @@ class CustomerCrudController extends CrudController
         ]);
 
         Crud::addField([
-            'name'  => 'banks_data',
+            'name' => 'banks_data',
             'label' => 'Cuentas',
-            'type'  => 'repeatable',
+            'type' => 'repeatable',
             'default' => '{}',
             'fields' => [
                 [
@@ -408,7 +446,7 @@ class CustomerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'RUT',
                     'wrapper' => [
-                        'class' => 'form-group col-md-4'
+                        'class' => 'form-group col-md-4',
                     ],
                 ],
                 [
@@ -416,7 +454,7 @@ class CustomerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'Nombre',
                     'wrapper' => [
-                        'class' => 'form-group col-md-4'
+                        'class' => 'form-group col-md-4',
                     ],
                 ],
                 [
@@ -424,7 +462,7 @@ class CustomerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'Apellido',
                     'wrapper' => [
-                        'class' => 'form-group col-md-4'
+                        'class' => 'form-group col-md-4',
                     ],
                 ],
                 [
@@ -432,7 +470,7 @@ class CustomerCrudController extends CrudController
                     'type' => 'email',
                     'label' => 'Email',
                     'wrapper' => [
-                        'class' => 'form-group col-md-6'
+                        'class' => 'form-group col-md-6',
                     ],
                 ],
                 [
@@ -440,7 +478,7 @@ class CustomerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'Teléfono',
                     'wrapper' => [
-                        'class' => 'form-group col-md-6'
+                        'class' => 'form-group col-md-6',
                     ],
                 ],
             ],
@@ -449,9 +487,9 @@ class CustomerCrudController extends CrudController
         ]);
 
         Crud::addField([
-            'name'  => 'contacts_data',
+            'name' => 'contacts_data',
             'label' => 'Contactos',
-            'type'  => 'repeatable',
+            'type' => 'repeatable',
             'default' => '{}',
             'fields' => [
                 [
@@ -468,7 +506,7 @@ class CustomerCrudController extends CrudController
                     'type' => 'text',
                     'label' => 'URL',
                     'wrapper' => [
-                        'class' => 'form-group col-md-6'
+                        'class' => 'form-group col-md-6',
                     ],
                 ],
             ],
@@ -511,7 +549,68 @@ class CustomerCrudController extends CrudController
         ]);
 
         CRUD::field('email')->attributes([
-            'readonly' => 'readonly'
+            'readonly' => 'readonly',
         ]);
+    }
+
+    /**
+     * Add filters in list view
+     *
+     * @return void
+     */
+    private function customFilters()
+    {
+
+        CRUD::addFilter([
+            'type' => 'select2',
+            'name' => 'customer_segment_id',
+            'label' => 'Segmento',
+        ], function () {
+            return CustomerSegment::pluck('name', 'id')->toArray();
+
+        }, function ($value) {
+            $this->crud->addClause('where', 'customer_segment_id', '=', $value);
+        });
+
+        CRUD::addFilter([
+            'type' => 'select2',
+            'name' => 'addresses_data_first_commune',
+            'label' => 'Comuna',
+        ], function () {
+            return Commune::orderBy('name')->pluck('name', 'id')->toArray();
+
+        }, function ($value) {
+            $this->crud->addClause('whereHas', 'addresses', function ($query) use ($value) {
+                $query->where('commune_id', $value);
+            });
+        });
+
+        CRUD::addFilter([
+            'type' => 'select2',
+            'name' => 'is_company',
+            'label' => 'Tipo',
+        ], function () {
+            return [
+                1 => 'Jurídica',
+                0 => 'Natural',
+            ];
+
+        }, function ($value) {
+            $this->crud->addClause('where', 'is_company', '=', $value);
+        });
+        CRUD::addFilter([
+            'type' => 'select2',
+            'name' => 'status',
+            'label' => 'Estado',
+        ], function () {
+            return [
+                1 => 'Activa',
+                0 => 'Inactiva',
+            ];
+
+        }, function ($value) {
+            $this->crud->addClause('where', 'status', '=', $value);
+        });
+
     }
 }
