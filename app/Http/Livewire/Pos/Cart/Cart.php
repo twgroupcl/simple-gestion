@@ -4,14 +4,17 @@ namespace App\Http\Livewire\Pos\Cart;
 
 use App\Models\Currency;
 use App\Models\Customer;
+use App\Models\Invoice;
+use App\Models\InvoiceType;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\Product;
-use App\Models\SalesBox;
 use App\Models\Seller;
 use Backpack\Settings\app\Models\Setting;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Cart extends Component
@@ -22,6 +25,7 @@ class Cart extends Component
     public $total = 0;
     public $qty = 0;
     public $customer = null;
+    public $customerAddressId;
     protected $listeners = [
         'add-product-cart:post' => 'addProduct',
         'remove-from-cart:post' => 'remove',
@@ -29,6 +33,7 @@ class Cart extends Component
         'quantityUpdated' => 'updateQuantity',
         'customerSelected' => 'setCustomer',
         'cart.confirmPayment' => 'confirmPayment',
+        'addressSelected' => 'updateAddress',
     ];
 
     public function mount()
@@ -48,7 +53,7 @@ class Cart extends Component
             $this->products = [];
         }
         if (session()->get('user.pos.selectedCustomer')) {
-            $this->customer = Customer::find(session()->get('user.pos.selectedCustomer')->id);
+            $this->customer = session()->get('user.pos.selectedCustomer');
         }
     }
     public function render()
@@ -104,13 +109,15 @@ class Cart extends Component
         // $this->emit('payment.updated');
     }
 
-    public function setCustomer(Customer $customer)
+    public function setCustomer(Customer $customer, array $wildcard = null, $addressId = null)
     {
-        $this->customer = $customer;
+        $this->customer = session()->get('user.pos.selectedCustomer');
+        $this->customerAddressId = $addressId;
     }
 
     public function confirmPayment($cash)
     {
+        $this->customer = session()->get('user.pos.selectedCustomer');
         if ($cash >= $this->total) {
             $currency = Currency::where('code', Setting::get('default_currency'))->firstOrFail();
             //Make order
@@ -173,6 +180,7 @@ class Cart extends Component
                 'event' => 'Nueva orden generada',
             ]);
 
+            $this->emitInvoice($order);
 
             $this->clearCart();
             $this->emit('sales.updateOrders');
@@ -186,10 +194,78 @@ class Cart extends Component
 
     protected function clearCart(){
         //Clear cart
-        session()->put(['user.pos.cart' => null]);
+        session()->put([
+            'user.pos.cart' => null,
+            'user.pos.selectedCustomer' => null,
+            'user.pos.selectedCustomerAddress' => null,
+        ]);
         $this->products = [];
         $this->total = 0;
         $this->subtotal = 0;
         $this->cash = 0;
+    }
+
+    public function emitInvoice(Order $order)
+    {
+        $currentSeller = Seller::where('user_id', backpack_user()->id)->first();
+        DB::beginTransaction();
+        try {
+
+            $invoiceType = InvoiceType::firstOrCreate(
+                ['name' => "Boleta electrónica"],
+                ['country_id' => 43, 'code' => 39], // 41 => exenta, 39 => afecta(con impuestos)
+            );
+
+            $order_items = $order->order_items->map(function ($item) {
+                $item->price = currencyFormat($item->price, 'CLP', false);
+                $item->sub_total = currencyFormat($item->sub_total, 'CLP', false);
+                $item->total = currencyFormat($item->total, 'CLP', false);
+                $item->discount = 0;
+                $item->discount_type = 'percentage';
+                $item->is_custom = true;
+                $item->additional_tax_id = 0;
+                $item->additional_tax_amount = 0;
+                $item->additional_tax_total = 0;
+                return $item;
+            })->toJson();
+
+            $invoice = new Invoice($order->toArray());
+            $invoice->address_id = $this->customerAddressId;
+            $invoice->seller_id = $currentSeller->id;
+            $invoice->items_data = $order_items;
+            $invoice->invoice_type_id = $invoiceType->id;
+            $invoice->tax_type = '';
+            $invoice->invoice_date = now();
+            $invoice->save();
+
+            Invoice::withoutEvents(function () use ($invoice, $order) {
+                $invoice->uid = $order->uid;
+                $invoice->first_name = $order->first_name;
+                $invoice->last_name = $order->last_name;
+                $invoice->email = $order->email;
+                $invoice->phone = $order->phone;
+                $invoice->cellphone = $order->cellphone;
+                $invoice->address_id = $this->customerAddressId;
+
+                $invoice->orders()->attach($order->id);
+                $invoice->customer()->associate($this->customer);
+                $invoice->total = $order->total;
+                $invoice->save();
+            });
+
+            DB::commit();
+
+            return $invoice;
+
+        } catch (Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+            return false;
+        }
+    }
+
+    public function updateAddress($addressId)
+    {
+        $this->customerAddressId = $addressId;
     }
 }

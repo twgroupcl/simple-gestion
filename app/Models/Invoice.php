@@ -195,6 +195,11 @@ class Invoice extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'invoice_order');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -216,6 +221,11 @@ class Invoice extends Model
         }
         return null;
     }*/
+
+    public function getOrderAttribute()
+    {
+        return $this->orders->first();
+    }
 
     /*
     |--------------------------------------------------------------------------

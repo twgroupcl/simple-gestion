@@ -7,9 +7,15 @@ use App\Models\Commune;
 use App\Models\OrderItem;
 use App\Models\ShippingMethod;
 use App\Http\Requests\OrderRequest;
+use App\Models\Invoice;
+use App\Models\Order;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
+
 /**
  * Class OrderCrudController
  * @package App\Http\Controllers\Admin
@@ -797,5 +803,36 @@ class OrderCrudController extends CrudController
             'type' => 'order.support_data_script',
             'tab' => 'Items',
         ]);
+    }
+
+    public function toInvoice(Request $request, Order $order)
+    {
+        try {
+            $invoice = $order->invoice;
+            if (! $invoice) {
+                return response()->json('Esta orden no ha emitido ninguna boleta', 200);
+            }
+
+            return redirect()->to('admin/invoice/'.$invoice->id.'/send-temporary-document');
+
+        } catch (Exception $e) {
+            logger($e->getMessage());
+            return response()->json('Woops, tenemos problemas generando la factura', 500);
+        }
+    }
+
+    public function exportPDF(Invoice $invoice)
+    {
+        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('templates.orders.export_pdf', [
+            'invoice' => $invoice,
+            'due_date' => new Carbon($invoice->expiry_date),
+            'creation_date'=> new Carbon($invoice->quotation_date),
+            'title' => $invoice->title,
+            'now' => New Carbon(),
+        ]);
+
+        $pdf->getDomPDF()->set_option("isPhpEnabled", true);
+
+        return $pdf->stream('invoice.pdf');
     }
 }

@@ -26,6 +26,13 @@
                 <li class="list-group-item"><strong>RUT:</strong> {{ $selectedCustomer->uid }}</li>
                 <li class="list-group-item"><strong>Teléfono:</strong> {{ $selectedCustomer->phone }}</li>
                 <li class="list-group-item"><strong>Celular:</strong> {{ $selectedCustomer->cellphone }}</li>
+                @if (! session()->get('user.pos.isSelectedCustomerWildcard', false))
+                    @if ($selectedAddress)
+                        <li class="list-group-item"><strong>Dirección:</strong> <button wire:click="selectAddress" class="btn btn-link">{{ $selectedAddress->street }}</button></li>
+                    @elseif ($showAddressOption)
+                        <li class="list-group-item"><strong>Dirección:</strong> <button wire:click="selectAddress" class="btn btn-link">Elegir dirección (opcional)</button></li>
+                    @endif
+                @endif
                 </ul>
                 <div class="card-body">
                     @if (! session()->get('user.pos.isSelectedCustomerWildcard', false))

@@ -68,6 +68,7 @@ Route::group([
 
     /** invoice **/
     Route::crud('invoice', 'InvoiceCrudController');
+    Route::get('order/{order}/to-invoice', 'OrderCrudController@toInvoice')->name('order.invoice');
     Route::get('quotation/{quotation}/to-invoice', 'QuotationCrudController@toInvoice');
     Route::get('invoice/{invoice}/send-temporary-document', 'ManageInvoiceCrudController@sendTemporaryDocument');
     Route::get('invoice/{invoice}/create-real-document', 'ManageInvoiceCrudController@createRealDocument');
@@ -78,6 +79,7 @@ Route::group([
     Route::get('invoice-type/{invoiceType}/get-code', 'InvoiceTypeCrudController@getCode');
     Route::crud('payments', 'PaymentsCrudController');
     Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
+
     // API routes
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
