@@ -87,6 +87,7 @@ class Invoice extends Model
         'bank_account_type_id',
         'bank_number_account',
         'way_to_payment',
+        'dte_status',
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -97,6 +98,7 @@ class Invoice extends Model
     protected $casts = [
         'items_data' => 'array',
         'json_value' => 'array',
+        'dte_status' => 'array',
        // 'address_data' => 'array',
     ];
 
