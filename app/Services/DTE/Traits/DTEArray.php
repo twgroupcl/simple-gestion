@@ -18,14 +18,14 @@ trait DTEArray
         if ($this->invoice->discount_percent > 0) {
             $globalDiscounts = [
                 'TpoMov' => 'D',
-                'ValorDR' => $this->invoice->discount_percent,
+                'ValorDR' => round($this->invoice->discount_percent, 2),
                 'TpoValor' => '%'
             ];
         } else if ($this->invoice->discount_amount > 0) {
             $globalDiscounts = [
                 //Discount, by default Recharge
                 'TpoMov' => 'D', //discount D o recharge R
-                'ValorDR' => $this->invoice->discount_amount,
+                'ValorDR' => round($this->invoice->discount_amount, 2),
                 'TpoValor' => '$',
                 //'IndExeDR' => 1 // Afecta a productos exentos
             ]; 
