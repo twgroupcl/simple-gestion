@@ -96,7 +96,7 @@ class QuotationCrudController extends CrudController
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Activa' || $column['text'] == 'Aceptado') {
+                    if ($column['text'] == 'Activa' || $column['text'] == 'Aceptado' || $column['text'] == 'Emitido') {
                         return 'badge badge-success';
                     }
                    
@@ -592,6 +592,9 @@ class QuotationCrudController extends CrudController
             $invoice->items_data = json_encode($invoice->items_data);
             unset($invoice->expiry_date);
             $invoice->save();
+
+            $quotation->quotation_status = Quotation::STATUS_ISSUED;
+            $quotation->updateWithoutEvents(); 
 
             //foreach ($quotation->quotation_items as $item) {
             //    $invoiceItem = new InvoiceItem($item->toArray());

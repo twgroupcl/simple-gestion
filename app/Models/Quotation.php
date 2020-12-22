@@ -27,6 +27,8 @@ class Quotation extends Model
     const STATUS_EXPIRED = 'EXPIRADO';
     const STATUS_ACCEPTED = 'ACEPTADO';
     const STATUS_REJECTED = 'RECHAZADO';
+    const STATUS_ISSUED = 'EMITIDO';
+    const STATUS_INVOICED = 'FACTURADO';
 
     protected $table = 'quotations';
     // protected $primaryKey = 'id';
@@ -185,6 +187,12 @@ class Quotation extends Model
                 break;
             case self::STATUS_SENT:
                 return 'Enviado';
+                break;
+            case self::STATUS_ISSUED;
+                return 'Emitido';
+                break;
+            case self::STATUS_INVOICED;
+                return 'Facturado';
                 break;
             default: 
                 return 'Otro';
