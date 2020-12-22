@@ -13,21 +13,21 @@ use App\Models\Product;
             </span>
         </div>
         <div class="col-12 text-center">
-            <a href="#" onclick="changeViewMode('productList')"
+            <a href="#"
                 class=" link-pos text-white">
                 <i class=" las la-calculator" style="font-size: 32px;"></i>
                 <h6>POS</h6>
             </a>
         </div>
         <div class="col-12 text-center">
-            <a href="#" onclick="changeViewMode('salesReport', 'orderDetail')"
+            <a href="#"
                 class=" link-sale text-white">
                 <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
                 <h6>SALES</h6>
             </a>
         </div>
         <div class="col-12 text-center">
-            <a href="#" onclick="changeViewMode('selectCustomer')"
+            <a href="#"
                 class="link-customer text-white">
                 <i class="las la-user" style="font-size: 32px;"></i>
                 <h6>CUSTOMER</h6>
@@ -49,10 +49,14 @@ use App\Models\Product;
             <i class="las la-bars menu-mobile" style="font-size: 32px;"></i>
         </div>
         <div class="col-8 p-0 text-center">
-            <form class="form-inline">
+            <form class="form-inline search-products">
                 <input id="search" class="form-control w-100" type="search" placeholder="Buscar producto"
                     aria-label="Search">
            </form>
+           <form class="form-inline search-customers" style="display: none;">
+            <input id="search-customers" class="form-control w-100" type="search" placeholder="Buscar cliente"
+                aria-label="Search">
+       </form>
         </div>
         <div class="col-2 p-0">
             <span class="las la-shopping-cart" style="font-size:32px;">
@@ -67,7 +71,14 @@ use App\Models\Product;
 </div>
 </div>
 
-<div class="main-content h-50">
+{{-- Customer view --}}
+<div class="customer-view h-50" style="display: none;">
+    <div id="selectCustomer">@livewire('pos.customer.customer-view')</div>
+</div>
+{{-- Main view products --}}
+{{-- Payment view --}}
+@include('livewire.pos.partials.payment')
+<div class="main-view h-50">
     <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
     </div>
 </div>
@@ -346,6 +357,22 @@ use App\Models\Product;
         $("#search").on("keyup", () => filter($("#search")));
         $("#search").on("search", () => filter($("#search")));
 
+
+        //  //Customer search
+
+        //  const filter = searchCustomer=> {
+        //     let value = searchCustomer.val().toLowerCase();
+        //     $(".customer-item").filter(function() {
+        //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        //     });
+        // }
+
+
+        // $("#search-customers").on("keyup", () => filter($("#search-customers")));
+        // $("#search-customers").on("searchCustomer", () => filter($("#search-customers")));
+
+
+
         spanCash = $('.total-cash')
         spanChange = $('.total-change')
         totalCart = $('.total-cart')
@@ -412,28 +439,6 @@ use App\Models\Product;
         }
 
 
-        //Menu actions
-
-        $('.link-pos').click(function() {
-            $('.main-view').show();
-            $('.customer-view').hide();
-            $('.sales-view').hide();
-
-
-        });
-
-        $('.link-sale').click(function() {
-
-            $('.sales-view').show();
-            $('.main-view').hide();
-            $('.customer-view').hide();
-        });
-
-        $('.link-customer').click(function() {
-            $('.customer-view').show();
-            $('.main-view').hide();
-            $('.sales-view').hide();
-        });
 
         $('#btn-pay').click(function() {
             $('.payment-view').show();
@@ -453,17 +458,77 @@ use App\Models\Product;
         @handheld
             $('header').hide()
             $('footer').hide()
+            $('.menu-content').hide()
             $('.container-fluid').addClass('p-1')
 
-            $('.menu-content').hide()
+
             $('.menu-mobile').click(function(){
-
                     $('.menu-content').show()
-
             })
+
+            $('.close-mobile-menu').click(function(){
+                $('.menu-content').hide()
+            })
+
+
+        //Menu actions
+
+        $('.link-pos').click(function() {
+            $('.main-view').show();
+            $('.customer-view').hide();
+            $('.sales-view').hide();
+            $('.menu-content').hide()
+
+
+        });
+
+        $('.link-sale').click(function() {
+            $('.sales-view').show();
+            $('.main-view').hide();
+            $('.customer-view').hide();
+            $('.menu-content').hide()
+        });
+
+        $('.link-customer').click(function() {
+            $('.customer-view').show();
+            $('.main-view').hide();
+            $('.sales-view').hide();
+            $('.menu-content').hide()
+
+            //change search
+            $('.search-customers').show();
+            $('.search-products').hide();
+        });
+
         @elsehandheld
             $('header').show()
             $('footer').show()
+             //Menu actions
+
+        $('.link-pos').click(function() {
+            $('.main-view').show();
+            $('.customer-view').hide();
+            $('.sales-view').hide();
+            //change search
+            $('.search-customers').hide();
+            $('.search-products').show();
+
+
+        });
+
+        $('.link-sale').click(function() {
+
+            $('.sales-view').show();
+            $('.main-view').hide();
+            $('.customer-view').hide();
+        });
+
+        $('.link-customer').click(function() {
+            $('.customer-view').show();
+            $('.main-view').hide();
+            $('.sales-view').hide();
+        });
+
         @endhandheld
 
     </script>

@@ -65,3 +65,15 @@
     text-align: center;
     line-height: 1.25rem;
 }
+
+.menu-content{
+    position: absolute;
+    top:0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    z-index:9999;
+    background: rgba(72, 98, 163, 0.9);
+    -webkit-transition: 0.3s ease;
+    transition: 0.3s ease;
+}

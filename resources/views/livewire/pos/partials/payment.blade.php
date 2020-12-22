@@ -1,3 +1,33 @@
+@handheld
+<div class="col-12 payment-view" style="display: none;">
+    <div class="row">
+        <div class="col-12"><i class="la la-close float-right" id="close-payment"></i></div>
+    </div>
+    @if (isset($customer))
+        <div class="row p-0 ">
+            <div class="col-6">
+                <h5 class="card-title"> {{ $customer->first_name }} {{ $customer->last_name }}</h5>
+            </div>
+            <div class="col-3">
+                <p class="card-text"> {{ $customer->email }}</p>
+            </div>
+            <div class="col-3">
+                <p class="card-text"> {{ $customer->uid }}</p>
+            </div>
+
+
+
+
+        </div>
+    @endif
+    <div class="row">
+        <div class="card col-md-12 text-center">
+            <h4 class="text-info">Pago en efectivo</h4>
+        </div>
+    </div>
+</div>
+
+@elsehandheld
 <div class="col-11 payment-view" style="display: none;">
     <div class="row">
         <div class="col-12"><i class="la la-close float-right" id="close-payment"></i></div>
@@ -96,3 +126,4 @@
         </div>
     </div>
 </div>
+@endhandheld
