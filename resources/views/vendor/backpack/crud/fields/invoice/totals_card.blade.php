@@ -289,7 +289,7 @@
 
             let subTotalGeneral = getRounded(itemsData.totalValue)
             
-            let totalDiscountGlobal = getRounded(itemsData.totalDiscountGlobal)
+            let totalDiscountGlobal = getTruncated(itemsData.totalDiscountGlobal)
             let totalVaxItems = getRounded(itemsData.totalVaxItem)
             let totalVaxGeneral = getRounded(itemsData.totalVaxGeneral)
 
@@ -368,6 +368,12 @@
         function getRounded(value) {
             var result = parseFloat(value);
             result = Math.round(result);
+            return result;
+        }
+
+        function getTruncated(value) {
+            var result = parseFloat(value);
+            result = Math.trunc(result);
             return result;
         }
 
@@ -486,4 +492,20 @@
         })
 
     </script> 
+@endpush
+
+@push('after_styles')
+<style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
 @endpush
