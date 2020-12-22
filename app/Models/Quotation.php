@@ -75,6 +75,7 @@ class Quotation extends Model
         'business_activity_id',
         'address_id',
         'branch_id',
+        'invoice_type_id',
     ];
     // protected $hidden = [];
     protected $dates = [
