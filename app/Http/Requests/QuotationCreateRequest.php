@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use App\Http\Requests\Request;
 use App\Rules\NumericCommaRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -49,6 +50,15 @@ class QuotationCreateRequest extends FormRequest
             'items_data' => function($attribute, $value, $fail) {
                 $items = json_decode($value, true);
                 if ( !count($items) ) return $fail('Debes añadir por lo menos un producto / servicio.');
+
+                foreach($items as $item) {
+                    if ($item['product_id']) {
+                        $product = Product::find($item['product_id']); 
+                        if (!$product->haveSufficientQuantity($item['qty'])) {
+                            return $fail('No tienes suficiente stock del producto "' . $product->name .'"');
+                        }
+                    }
+                }
             }
         ];
     }

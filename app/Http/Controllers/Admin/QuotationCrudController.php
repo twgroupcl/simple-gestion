@@ -231,7 +231,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'type' => 'select2_from_array',
-            'options' => InvoiceType::all()->pluck('name','id')->sort(),
+            'options' => InvoiceType::active()->pluck('name','id')->sort(),
             'attribute' => 'invoice_type_id',
             'name' => 'invoice_type_id',
             'label' => 'Tipo de documento',
@@ -591,6 +591,9 @@ class QuotationCrudController extends CrudController
             $invoice = new Invoice($quotation->toArray());
             $invoice->items_data = json_encode($invoice->items_data);
             unset($invoice->expiry_date);
+            $json_value = $invoice->json_value;
+            $json_value['quotation_id'] = $quotation->id;
+            $invoice->json_value = $json_value;
             $invoice->save();
 
             $quotation->quotation_status = Quotation::STATUS_ISSUED;

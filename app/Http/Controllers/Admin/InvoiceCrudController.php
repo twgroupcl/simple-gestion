@@ -329,7 +329,7 @@ class InvoiceCrudController extends CrudController
 
         CRUD::addField([
             'type' => 'select2_from_array',
-            'options' => InvoiceType::all()->pluck('name','id')->sort(),
+            'options' => InvoiceType::active()->pluck('name','id')->sort(),
             'attribute' => 'name',
             'name' => 'invoice_type_id',
             'allows_null' => true,
@@ -338,6 +338,17 @@ class InvoiceCrudController extends CrudController
             'wrapper' => [
                 'class' => 'form-group col-md-3',
             ]
+        ]);
+
+        CRUD::addField([
+            'type' => 'text',
+            'store_in' => 'json_value',
+            'name' => 'quotation_id',
+            'fake' => true,
+            'wrapper' => [
+                'style' => 'display:none',
+            ],
+            'tab' => 'General',
         ]);
 
         CRUD::addField([
