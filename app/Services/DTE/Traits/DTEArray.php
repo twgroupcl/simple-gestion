@@ -57,7 +57,7 @@ trait DTEArray
                     'RznSocRecep' => $this->invoice->first_name . ' ' . $this->invoice->last_name,
                     'GiroRecep' => 'Informática', // this is required in 33
                     'DirRecep' => isset($customerAddress)
-                                    ? $customerAddress->street . ' ' . $customerAddress->number . $customerAddress->subnumber ?? ''
+                                    ? 'Calle: ' . $customerAddress->street . '. Numero: ' . $customerAddress->number . $customerAddress->subnumber ?? ''
                                     : '',
                     'CmnaRecep' => isset($customerAddress)
                                     ? $customerAddress->commune->name
