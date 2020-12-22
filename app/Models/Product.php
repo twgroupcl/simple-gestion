@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTime;
 use Exception;
 use DateInterval;
+use App\Models\Quotation;
 use Illuminate\Support\Str;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\DB;
@@ -417,10 +418,15 @@ class Product extends Model
             return $result;
         }
 
-        // Total qty on inventories
-        foreach ($this->inventories as $inventory) {
-            $qtyInventory = $inventory->pivot->qty;
-            $total += $qtyInventory;
+       $total += $this->totalQtyOnInventories();
+
+        // Qty in accepted quotations
+        $itemsInQuotations = QuotationItem::whereHas('quotation', function ($query) {
+            return $query->where('quotation_status', Quotation::STATUS_ACCEPTED);
+        })->where('product_id', $this->id)->get();
+
+        foreach($itemsInQuotations as $item) {
+            $total -= $item->qty;
         }
 
         // Qty in pending orders
@@ -430,6 +436,18 @@ class Product extends Model
         } */
 
         return $qty <= $total ? true : false;
+    }
+
+    public function totalQtyOnInventories()
+    {
+        $total = 0;
+
+        foreach ($this->inventories as $inventory) {
+            $qtyInventory = $inventory->pivot->qty;
+            $total += $qtyInventory;
+        }
+
+        return $total;
     }
 
     public function updateInventory($qty, $inventorySourceId)
