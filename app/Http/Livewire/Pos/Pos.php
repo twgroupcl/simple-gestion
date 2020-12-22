@@ -45,7 +45,12 @@ class Pos extends Component
 
     public function mount()
     {
-        $this->seller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        $this->seller = Seller::where('user_id', backpack_user()->id)->first();
+
+        if (is_null($this->seller) || $this->seller->is_approved !== $this->seller::REVIEW_STATUS_APPROVED) {
+            abort(403);
+        }
+
         $this->products = $this->getProducts();
         //$this->setView('productList');
         $this->validateBox();
@@ -71,7 +76,6 @@ class Pos extends Component
 
     public function render()
     {
-
         return view('livewire.pos.pos');
     }
 
