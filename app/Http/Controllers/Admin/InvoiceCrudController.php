@@ -681,6 +681,7 @@ class InvoiceCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
         if ($this->crud->getCurrentEntry()->invoice_status == Invoice::STATUS_TEMPORAL) {
             \Alert::add('warning', 'El documento temporal se eliminará si guarda cambios');
         }
