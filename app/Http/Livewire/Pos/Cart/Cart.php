@@ -17,8 +17,6 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-use function GuzzleHttp\json_decode;
-
 class Cart extends Component
 {
     public $products;
