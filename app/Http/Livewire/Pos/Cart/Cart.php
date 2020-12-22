@@ -21,7 +21,7 @@ class Cart extends Component
 {
     public $products;
     public $subtotal = 0;
-    public $discount = 0;
+    public $discount = null;
     public $total = 0;
     public $qty = 0;
     public $customer = null;
@@ -63,7 +63,8 @@ class Cart extends Component
 
     public function addProduct(Product $product)
     {
-        $this->products = collect($this->products)->keyBy('product.id')->all();
+        $this->products = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+
         isset($this->products[$product->id]['qty'])
         ? $this->products[$product->id]['qty'] += 1
         : $this->products[$product->id]['qty'] = 1;
@@ -76,7 +77,8 @@ class Cart extends Component
 
     public function remove($productId)
     {
-        $this->products = collect($this->products)->keyBy('product.id')->all();
+        $this->products = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+
         unset($this->products[$productId]);
         $this->calculateAmounts();
     }
@@ -90,7 +92,11 @@ class Cart extends Component
             return $product['product']['real_price'] * $product['qty'];
         });
 
-        $this->total = $this->subtotal - $this->discount;
+        if ($this->discount > $this->subtotal) {
+            $this->discount = $this->subtotal;
+        }
+
+        $this->total = (float) $this->subtotal - (float) $this->discount;
 
         $cart['products'] = $this->products;
         $cart['subtotal'] = $this->subtotal;
@@ -155,6 +161,7 @@ class Cart extends Component
             }
 
             $order->sub_total = $this->subtotal;
+            $order->discount_total = $this->discount;
             $order->total = $this->total;
 
             $order->save();
@@ -203,6 +210,7 @@ class Cart extends Component
         ]);
         $this->products = [];
         $this->total = 0;
+        $this->discount = null;
         $this->subtotal = 0;
         $this->cash = 0;
     }
@@ -223,7 +231,7 @@ class Cart extends Component
                 $item->sub_total = currencyFormat($item->sub_total, 'CLP', false);
                 $item->total = currencyFormat($item->total, 'CLP', false);
                 $item->discount = 0;
-                $item->discount_type = 'percentage';
+                $item->discount_type = 'amount';
                 $item->is_custom = true;
                 $item->additional_tax_id = 0;
                 $item->additional_tax_amount = 0;
@@ -247,6 +255,9 @@ class Cart extends Component
                 $invoice->phone = $order->phone;
                 $invoice->cellphone = $order->cellphone;
                 $invoice->address_id = $this->customerAddressId;
+                $invoice->discount_amount = $order->discount_total;
+                $invoice->discount_total = $order->discount_total;
+                $invoice->total = $order->total;
 
                 $invoice->orders()->attach($order->id);
                 $invoice->customer()->associate($this->customer);
@@ -268,5 +279,10 @@ class Cart extends Component
     public function updateAddress($addressId)
     {
         $this->customerAddressId = $addressId;
+    }
+
+    public function updatedDiscount()
+    {
+        $this->calculateAmounts();
     }
 }
