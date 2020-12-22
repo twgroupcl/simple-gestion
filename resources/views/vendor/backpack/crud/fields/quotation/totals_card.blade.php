@@ -100,6 +100,40 @@
 @push('after_scripts')
     <script>
 
+        function getCodeDTE(id) {
+            if (id.length <= 0) {
+                return 'asd';
+            }
+
+            var type = invoiceTypeArray.filter( item => {
+                return item.id == id
+            })
+
+            if (type.length === 0) return;
+
+            return type[0]['code'];
+        }
+
+        function changeTaxType() {
+            let invoiceTypeCode =  getCodeDTE($('select[name="invoice_type_id"]').val()).toString();
+            let taxType;
+
+            switch (invoiceTypeCode) {
+                case '33':
+                case '39':
+                    taxType = 'A'
+                    break;
+                case 'H':
+                    taxType = 'H'
+                    break;
+                default:
+                    taxType = 'E'
+                    break;
+            }
+            console.log('aqui', taxType, invoiceTypeCode, $('select[name="invoice_type_id"]').val())
+            $('select[name="tax_type"]').val(taxType).trigger('change')
+        }
+
         function getTaxValue() {
             switch ($('select[name="tax_type"]').val()) {
                 case 'A':
@@ -265,7 +299,6 @@
 
 
         function calculateTotals() {
-
             let items = $('div[data-repeatable-holder="items_data"]').children()
             let itemsData = calculateItemsData(items)
 
@@ -379,6 +412,11 @@
             checkTypeTax();
             calculateTotals();
         });
+
+        $(document).on('change', 'select[name="invoice_type_id"]', function () {
+            changeTaxType();
+            calculateTotals();
+        });
     
         $(document).on('keyup', 'input[data-repeatable-input-name="qty"]', function () {
             calculateTotals();
@@ -465,4 +503,20 @@
         })
 
     </script> 
+@endpush
+
+@push('after_styles')
+<style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
 @endpush

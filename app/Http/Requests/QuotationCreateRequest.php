@@ -83,7 +83,11 @@ class QuotationCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            '*.required*' => 'Es necesario completar el campo :attribute.',
+            '*.string' => 'El campo :attribute debe ser texto',
+            '*.date' => 'El campo :attribute debe ser de tipo fecha',
+            '*.unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
+            '*.exists' => 'No se pudo encontrar una relación con el campo :attribute.',
         ];
     }
 

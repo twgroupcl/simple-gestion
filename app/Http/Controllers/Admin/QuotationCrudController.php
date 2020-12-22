@@ -6,10 +6,11 @@ use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Customer;
 use App\Models\Quotation;
-use App\Models\{Invoice, InvoiceItem};
+use App\Models\InvoiceType;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Models\CustomerAddress;
+use App\Models\{Invoice, InvoiceItem};
 use App\Http\Requests\QuotationRequest;
 use App\Http\Requests\QuotationCreateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -134,6 +135,14 @@ class QuotationCrudController extends CrudController
         $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'current_tab', 'save_action']);
 
         CRUD::addField([
+            'type' => 'custom_js_data',
+            'name' => 'custom_data_for_invoice_type',
+            'data' => InvoiceType::all()->toArray(),
+            'variable_name' => 'invoiceTypeArray',
+            'tab' => 'General',
+        ]);
+        
+        CRUD::addField([
             'label' => 'Cliente',
             'name' => 'customer_id',
             'type' => 'relationship',
@@ -215,7 +224,19 @@ class QuotationCrudController extends CrudController
             'model' => 'App\Models\Seller',
             'attribute' => 'name',
             'wrapper' => [
-                'class' => 'form-group col-md-6',
+                'class' => 'form-group col-md-3',
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => InvoiceType::all()->pluck('name','id')->sort(),
+            'attribute' => 'invoice_type_id',
+            'name' => 'invoice_type_id',
+            'label' => 'Tipo de documento',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
             ],
             'tab' => 'General',
         ]);
@@ -426,6 +447,7 @@ class QuotationCrudController extends CrudController
             'default' => 'A',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-12',
+                'style' => 'display:none',
             ],
             'tab' => 'General',
         ]);
