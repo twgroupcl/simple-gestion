@@ -65,7 +65,7 @@ class Cart extends Component
 
     public function addProduct(Product $product)
     {
-        $this->products = json_decode(session()->get('user.pos.cart', []), true)['products'] ?? [];
+        $this->products = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
 
         isset($this->products[$product->id]['qty'])
         ? $this->products[$product->id]['qty'] += 1
@@ -79,7 +79,7 @@ class Cart extends Component
 
     public function remove($productId)
     {
-        $this->products = json_decode(session()->get('user.pos.cart', []), true)['products'] ?? [];
+        $this->products = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
 
         unset($this->products[$productId]);
         $this->calculateAmounts();

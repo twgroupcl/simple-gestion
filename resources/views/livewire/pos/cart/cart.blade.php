@@ -4,7 +4,7 @@
         Cart
         @if (!is_null($products))
 
-            @foreach (json_decode(session()->get('user.pos.cart', []), true)['products'] ?? [] as $id => $product)
+            @foreach (json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [] as $id => $product)
                 @livewire('pos.cart.item', ['item' => $id, 'qty' => $product['qty'] ], key($id))
             @endforeach
         @endif
