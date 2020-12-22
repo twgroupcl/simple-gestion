@@ -2,18 +2,51 @@
 use App\Models\Product;
 @endphp
 <div class="content" wire:ignore.self>
-    {{-- Header --}}
 
-    {{-- Sidebar}}
-    {{-- Content --}}
-    {{-- Footer --}}
 @handheld
+{{-- Menu --}}
+<div class="menu-content h-100">
+    <div class="row ">
+        <div class="col-12 text-right">
+            <span class="close-mobile-menu m-2">
+                <i class="las la-times text-white" style="font-size:32px;"></i>
+            </span>
+        </div>
+        <div class="col-12 text-center">
+            <a href="#" onclick="changeViewMode('productList')"
+                class=" link-pos text-white">
+                <i class=" las la-calculator" style="font-size: 32px;"></i>
+                <h6>POS</h6>
+            </a>
+        </div>
+        <div class="col-12 text-center">
+            <a href="#" onclick="changeViewMode('salesReport', 'orderDetail')"
+                class=" link-sale text-white">
+                <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
+                <h6>SALES</h6>
+            </a>
+        </div>
+        <div class="col-12 text-center">
+            <a href="#" onclick="changeViewMode('selectCustomer')"
+                class="link-customer text-white">
+                <i class="las la-user" style="font-size: 32px;"></i>
+                <h6>CUSTOMER</h6>
+            </a>
+        </div>
 
+        <div class="col-12 text-center">
+            <a href="/admin" class="text-white ">
+                <i class="las la-sign-out-alt" style="font-size: 32px;"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
 {{-- Header --}}
 <div class="header-pos">
     <div class="row mb-2">
         <div class="col-2 text-center">
-            <i class="las la-bars" style="font-size: 32px;"></i>
+            <i class="las la-bars menu-mobile" style="font-size: 32px;"></i>
         </div>
         <div class="col-8 p-0 text-center">
             <form class="form-inline">
@@ -421,6 +454,13 @@ use App\Models\Product;
             $('header').hide()
             $('footer').hide()
             $('.container-fluid').addClass('p-1')
+
+            $('.menu-content').hide()
+            $('.menu-mobile').click(function(){
+
+                    $('.menu-content').show()
+
+            })
         @elsehandheld
             $('header').show()
             $('footer').show()
