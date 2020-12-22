@@ -63,6 +63,7 @@ class Cart extends Component
 
     public function addProduct(Product $product)
     {
+        $this->products = collect($this->products)->keyBy('product.id')->all();
         isset($this->products[$product->id]['qty'])
         ? $this->products[$product->id]['qty'] += 1
         : $this->products[$product->id]['qty'] = 1;
@@ -75,6 +76,7 @@ class Cart extends Component
 
     public function remove($productId)
     {
+        $this->products = collect($this->products)->keyBy('product.id')->all();
         unset($this->products[$productId]);
         $this->calculateAmounts();
     }
