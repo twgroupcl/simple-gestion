@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-3">
                 <p><strong>Total: </strong>
-                    {{$invoice->total}}
+                    {{ currencyFormat($invoice->total, defaultCurrency(), true) }}
                 </p>
             </div>
             <div class="col-md-3">
