@@ -17,6 +17,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
+use function GuzzleHttp\json_decode;
+
 class Cart extends Component
 {
     public $products;
@@ -63,7 +65,8 @@ class Cart extends Component
 
     public function addProduct(Product $product)
     {
-        $this->products = collect($this->products)->keyBy('product.id')->all();
+        $this->products = json_decode(session()->get('user.pos.cart', []), true)['products'] ?? [];
+
         isset($this->products[$product->id]['qty'])
         ? $this->products[$product->id]['qty'] += 1
         : $this->products[$product->id]['qty'] = 1;
@@ -76,7 +79,8 @@ class Cart extends Component
 
     public function remove($productId)
     {
-        $this->products = collect($this->products)->keyBy('product.id')->all();
+        $this->products = json_decode(session()->get('user.pos.cart', []), true)['products'] ?? [];
+
         unset($this->products[$productId]);
         $this->calculateAmounts();
     }
