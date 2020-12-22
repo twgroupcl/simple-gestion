@@ -1,187 +1,91 @@
+@php
+use App\Models\Product;
+@endphp
 <div class="content" wire:ignore.self>
-    @livewire('pos.navbar')
+    {{-- Header --}}
 
+    {{-- Sidebar}}
+    {{-- Content --}}
+    {{-- Footer --}}
+@handheld
+
+{{-- Header --}}
+<div class="header-pos">
+    <div class="row mb-2">
+        <div class="col-2 text-center">
+            <i class="las la-bars" style="font-size: 32px;"></i>
+        </div>
+        <div class="col-8 p-0 text-center">
+            <form class="form-inline">
+                <input id="search" class="form-control w-100" type="search" placeholder="Buscar producto"
+                    aria-label="Search">
+           </form>
+        </div>
+        <div class="col-2 p-0">
+            <span class="las la-shopping-cart" style="font-size:32px;">
+            @if ($cartproducts) <span
+                class="custom-badge badge-cart-view">{{ count($cartproducts) }}</span>
+            @else
+            <span
+                class="custom-badge">0</span>
+            @endif
+        </span>
+    </div>
+</div>
+</div>
+
+<div class="main-content h-50">
+    <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
+    </div>
+</div>
+<div class="pay-content h-25">
+    <div class="row fixed-bottom">
+        <div class="col-6 p-1">
+            <button class="btn btn-danger btn-block btn-customer">
+                @if (session()->get('user.pos.selectedCustomer'))
+                    {{ session()->get('user.pos.selectedCustomer')->first_name }}
+                    {{ session()->get('user.pos.selectedCustomer')->last_name }}
+                @else
+                    Seleccionar Cliente
+                @endif
+            </button>
+        </div>
+        <div class="col-6 p-1 ">
+            <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar
+            </button>
+        </div>
+    </div>
+
+</div>
+@elsehandheld
+
+
+{{-- Header --}}
+<div class="header-pos">
     <div class="row">
-        <div class="col-1">
-            <div class="bg-light border-right" id="sidebar-wrapper">
-                <ul class="pos-list-group list-group-flush">
-                    <li class="pos-list-group-item text-center my-auto">
-                        <a href="#" onclick="changeViewMode('productList')""
-                            class=" list-group-item-action link-pos ">
-                            <i class=" las la-calculator" style="font-size: 32px;"></i>
-                            <br>
-                            POS
-                        </a>
-                    </li>
-                    <li class="pos-list-group-item text-center  my-auto"><a href="#"
-                            onclick="changeViewMode('salesReport', 'orderDetail')"
-                             class="list-group-item-action link-sale">
-                            <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
-                            <br>
-                            Sales</a></li>
-                    <li class="pos-list-group-item text-center"><a href="#" onclick="changeViewMode('selectCustomer')"
-                            class="list-group-item-action  link-customer">
-                            <i class="las la-user" style="font-size: 32px;"></i>
-                            Customer</a></li>
-
-                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
-                            <i class="las la-cash-register" style="font-size: 32px;"></i>
-                            <br>
-                            Cashier</a></li>
-                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
-                            <i class="las la-boxes" style="font-size: 32px;"></i>
-                            <br>
-                            Products</a></li>
-                    <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
-                            <i class="las la-cog" style="font-size: 32px;"></i>
-                            <br>
-                            Setting</a></li>
-                </ul>
-
-
-
+        <div class="col-4">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="boxSwitch" wire:model="checked">
+                <label class="custom-control-label" for="boxSwitch"
+                    style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">{{ $checked ? 'Caja abierta' : 'Caja cerrada' }}
+                </label>
             </div>
+            @isset($saleBox->opened_at)
+                <strong
+                    class="text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</strong>
+            @endisset
         </div>
-
-        <div class="col-11 payment-view">
-            <div class="row">
-                <div class="col-12"><i class="la la-close float-right" id="close-payment"></i></div>
-            </div>
-            <div class="row  ">
-                <div class='card text-left col-md-12'>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="">
-                                <div class="card-body">
-                                    {{-- <h5 class="card-title">
-                                        {{ $selectedCustomer->first_name }}
-                                    </h5>
-                                    <p class="card-text">{{ $selectedCustomer->email }}</p>
-                                    <p class="card-text">{{ $selectedCustomer->uid }}</p>
-                                    --}}
-                                    <h5 class="card-title"><span class="customer-firstname"></span> <span
-                                            class="customer-lastname"></span></h5>
-                                    <p class="card-text"><span class="customer-email"></span></p>
-                                    <p class="card-text"><span class="customer-uid"></span></p>
-                                </div>
-                                {{-- <a href="#" class="btn btn-outline-primary mb-3">Pago
-                                    en efectivo</a> --}}
-                                {{-- <a href="#" class="btn btn-outline-primary mb-3">Pago
-                                    con transbank</a> --}}
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="card col-md-12 text-center">
-                    <h4 class="text-info">Pago en efectivo</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="card col-md-6">
-                    <div class='card-body'>
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <h4>Total</h4>
-                            </div>
-                            <div class="col-6 text-danger text-right">
-                                <h4><span class="total-cart"></span></h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6  text-left">
-                                <h4>Efectivo</h4>
-                            </div>
-                            <div class="col-6 text-danger text-right">
-                                <h4><span class="total-cash"></span></h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6  text-left ">
-                                <h4>Cambio</h4>
-                            </div>
-                            <div class="col-6 text-danger text-right">
-                                <h4> <span class="total-change"></span></h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card col-md-6">
-                    {{-- <div class='card-body'>
-                        <input class='input' id='display' disabled>
-                    </div> --}}
-                    <div class='card-body'>
-                        <table class='table table-sm table-borderless'>
-                            <tbody>
-                                <tr>
-                                    <td><button class='btn btn-lg' onclick='chr("7")'>7</button></td>
-                                    <td><button class='btn btn-lg' onclick='chr("8")'>8</button></td>
-                                    <td><button class='btn btn-lg' onclick='chr("9")'>9</button></td>
-                                </tr>
-                                <tr>
-                                    <td><button class='btn btn-lg' onclick='chr("4")'>4</button></td>
-                                    <td><button class='btn btn-lg' onclick='chr("5")'>5</button></td>
-                                    <td><button class='btn btn-lg' onclick='chr("6")'>6</button></td>
-                                </tr>
-                                <tr>
-                                    <td><button class='btn btn-lg' onclick='chr("1")'>1</button></td>
-                                    <td><button class='btn btn-lg' onclick='chr("2")'>2</button></td>
-                                    <td><button class='btn btn-lg' onclick='chr("3")'>3</button></td>
-                                </tr>
-                                <tr>
-
-
-                                    <td><button class='btn btn-lg' onclick='chr("C")'>C</button></td>
-                                    <td><button class='btn btn-lg' onclick='chr("0")'>0</button></td>
-                                    <td><button class='btn btn-lg' onclick='chr("<<")'><i
-                                                class="las la-backspace"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class='card-body'>
-                        <button class="btn btn-danger btn-block " id="confirm-pay" disabled>Confirmar pago
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-11" id="salesReport" style="display: none;">
-            <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
-        </div>
-
-        <div class="col-md-7 col-12 main-view" id="left-main-view">
-            <div class="position-relative overflow-auto vh-100">
-                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
-                </div>
-                <div id="selectCustomer" style="display: none;">@livewire('pos.customer.customer-view')</div>
-                <div id="paymentView" style="display: none;">@livewire('pos.payment.payment-view', ['seller' =>
-                    $seller, 'view' => $viewMode])</div>
-            </div>
-        </div>
-        <div class="col-md-4 col-12 main-view">
-            <div id="cartView" class="position-relative overflow-hidden vh-100">
-                @livewire('pos.cart.cart')
-            </div>
-        </div>
+        <div class="col-4"></div>
+        <div class="col-4"></div>
     </div>
 </div>
 
-</div>
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
-    <div class="modal-dialog modal-lg">
-        @livewire('pos.customer.create-address-form')
-    </div>
-</div>
-<div wire:ignore.self class="modal fade" id="showCustomerModal" tabindex="-1" role="dialog"
-    aria-labelledby="createCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        @livewire('pos.customer.create-customer')
-    </div>
-</div>
+{{-- Content --}}
+
+{{-- Payment view --}}
+@include('livewire.pos.partials.payment')
+
+
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     id="modal-confirm-pay">
     <div class="modal-dialog modal-sm">
@@ -199,10 +103,168 @@
         </div>
     </div>
 </div>
+<div class="row ">
+    {{-- Sidebar--}}
+    <div class="col-1">
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <ul class="pos-list-group list-group-flush">
+                <li class="pos-list-group-item text-center my-auto">
+                    <a href="#" class=" list-group-item-action link-pos ">
+                        <i class=" las la-calculator" style="font-size: 32px;"></i>
+                        <br>
+                        POS
+                    </a>
+                </li>
+                <li class="pos-list-group-item text-center  my-auto"><a href="#"
+                        class="list-group-item-action link-sale">
+                        <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
+                        <br>
+                        Sales</a></li>
+                <li class="pos-list-group-item text-center"><a href="#" class="list-group-item-action  link-customer">
+                        <i class="las la-user" style="font-size: 32px;"></i>
+                        Customer</a></li>
 
-<div class="alert" role="alert" id="result"></div>
-@livewire('pos.sales-box', ['seller' => $seller])
+                <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                        <i class="las la-cash-register" style="font-size: 32px;"></i>
+                        <br>
+                        Cashier</a></li>
+                <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                        <i class="las la-boxes" style="font-size: 32px;"></i>
+                        <br>
+                        Products</a></li>
+                <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                        <i class="las la-cog" style="font-size: 32px;"></i>
+                        <br>
+                        Setting</a></li>
+            </ul>
+
+
+
+        </div>
+    </div>
+    {{-- Customer view --}}
+    <div class="col-11 customer-view" style="display: none;">
+        <div id="selectCustomer">@livewire('pos.customer.customer-view')</div>
+    </div>
+    {{-- Salesbox --}}
+    <div class="col-11 sales-view" style="display: none;">
+        <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
+    </div>
+
+    <div class="col-11 main-view">
+        <div class="row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="col-7 text-center pt-1 pb-1">
+                        <form class="form-inline">
+                            <input id="search" class="form-control w-100" type="search" placeholder="Buscar producto"
+                                aria-label="Search">
+                            {{-- <button class="btn btn-outline-info my-2 my-sm-0"
+                                type="submit">Buscar</button> --}}
+                        </form>
+                    </div>
+                </div>
+                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="h-100">
+                    <div class="col-12 h-50 overflow-auto">
+                        @if (!is_null($cartproducts))
+                            @foreach ($cartproducts as $id => $cartproduct)
+                                @php
+                                $product = Product::whereId($id)->first();
+                                $qty = $cartproduct['qty'];
+                                @endphp
+                                @if ($product)
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <h6 class="product-title font-size-base mb-2"><a
+                                                    href="{{ route('product', ['slug' => $product->url_key]) }}"
+                                                    target="_blank">{{ $product->name }}</a></h6>
+                                        </div>
+                                        <div class="col-3">
+                                            <a wire:click="removeProductCart( {{ $id }})" href="#"><i
+                                                    class="la la-trash"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <a @if ($qty <= 1) class="disabled-link"
+                                @endif wire:click="updateQty({{ $id }},-1)">
+                                <i class="la la-minus-circle"></i>
+                                </a>
+                    </div>
+                    <div class="col-md-2 text-center">{{ $qty }}</div>
+                    <div class="col-md-1">
+                        <a wire:click="updateQty({{ $id }},1)"><i class="la la-plus-circle"></i></a>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <small><strong>{{ currencyFormat($product->real_price ?? 0, 'CLP', true) }}</strong> por
+                            unidad</small>
+                    </div>
+                    <div class="col-md-3  text-right">
+                        <small><strong>{{ currencyFormat($product->real_price * $qty ?? 0, 'CLP', true) }}</strong>
+                        </small>
+                    </div>
+                    @endif
+                    @endforeach
+                    @endif
+                </div>
+            </div>
+            <div class=" col-12  h-50">
+                <div class='row col-md-12 p-0 m-0'>
+                    <div class="col-md-6 border border-dark">
+                        <div class="border-right-0"> SubTotal</div>
+                    </div>
+                    <div class="col-md-6 border border-dark">
+                        <div class="  text-right">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</div>
+                    </div>
+                </div>
+                <div class='row col-md-12 p-0 m-0'>
+                    <div class="col-md-6 border border-dark">
+                        <div class="  border-top-0 border-bottom-0 border-right-0"> Descuento</div>
+                    </div>
+                    <div class="col-md-6 border border-dark">
+                        <div class="  border-top-0 border-bottom-0 text-right">
+                            {{ currencyFormat($discount ?? 0, 'CLP', true) }}
+                        </div>
+                    </div>
+                </div>
+                <div class='row col-md-12 p-0 m-0'>
+                    <div class="col-md-6 border border-dark">
+                        <div class="  border-right-0"> Total</div>
+                    </div>
+                    <div class="col-md-6 border border-dark">
+                        <div class=" text-right">{{ currencyFormat($total ?? 0, 'CLP', true) }}</div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <button class="btn btn-danger btn-block btn-customer">
+                            @if (session()->get('user.pos.selectedCustomer'))
+                                {{ session()->get('user.pos.selectedCustomer')->first_name }}
+                                {{ session()->get('user.pos.selectedCustomer')->last_name }}
+                            @else
+                                Seleccionar Cliente
+                            @endif
+                        </button>
+
+                        <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+</div>
+{{-- Footer --}}
+@endhandheld
+</div>
+
+
+
 
 @push('after_scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/currencyformatter.js/2.2.0/currencyFormatter.min.js"
@@ -238,6 +300,19 @@
         });
 
 
+        //Product search
+
+        const filter = search => {
+            let value = search.val().toLowerCase();
+            $(".product-cart").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        }
+
+
+        $("#search").on("keyup", () => filter($("#search")));
+        $("#search").on("search", () => filter($("#search")));
+
         spanCash = $('.total-cash')
         spanChange = $('.total-change')
         totalCart = $('.total-cart')
@@ -251,16 +326,9 @@
 
         $('.payment-view').hide();
 
-        //$('.customer-view').hide();
+        // Calc
         function chr(value) {
-
-            // totalCart = $('.total-cart')
-            // spanCash = $('.total-cash')
-            // spanChange = $('.total-change')
-
-
             tmpTotalCart = clearCurrency(totalCart)
-
             tmpCash = clearCurrency(spanCash)
 
             switch (value) {
@@ -311,25 +379,52 @@
         }
 
 
+        //Menu actions
+
         $('.link-pos').click(function() {
             $('.main-view').show();
-            $('.payment-view').hide();
-            $('#cartView').show();
+            $('.customer-view').hide();
+            $('.sales-view').hide();
+
+
         });
 
         $('.link-sale').click(function() {
-            $('.main-view').show();
-            $('.payment-view').hide();
 
-            $('#cartView').hide();
-            $('#orderDetail').hide();
+            $('.sales-view').show();
+            $('.main-view').hide();
+            $('.customer-view').hide();
         });
 
         $('.link-customer').click(function() {
-            $('.payment-view').hide();
-            $('.main-view').show();
-
+            $('.customer-view').show();
+            $('.main-view').hide();
+            $('.sales-view').hide();
         });
+
+        $('#btn-pay').click(function() {
+            $('.payment-view').show();
+            $('.main-view').hide();
+        });
+
+        $('#close-payment').click(function() {
+            $('.main-view').show();
+            $('.payment-view').hide();
+        });
+
+        $('.btn-customer').click(function() {
+            $('.customer-view').show();
+            $('.main-view').hide();
+        });
+
+        @handheld
+            $('header').hide()
+            $('footer').hide()
+            $('.container-fluid').addClass('p-1')
+        @elsehandheld
+            $('header').show()
+            $('footer').show()
+        @endhandheld
 
     </script>
 
@@ -337,50 +432,6 @@
 
     <script>
         document.addEventListener('livewire:load', function() {
-
-
-
-
-            $('#btn-pay').click(async function() {
-
-
-
-
-                customer = await @this.getSelectedCustomer()
-
-                tmpTotalCart = await @this.getTotalCart()
-
-                customer = JSON.parse(customer)
-
-
-
-                if (customer != null) {
-
-                    //show customer
-                    $('.customer-firstname').text(customer.first_name)
-                    $('.customer-lastname').text(customer.last_name)
-                    $('.customer-email').text(customer.email)
-                    $('.customer-uid').text(customer.uid)
-
-                }
-
-
-                totalCart.text(tmpTotalCart)
-
-                $('.main-view').hide();
-                $('.payment-view').show();
-
-
-
-            });
-
-
-            $('#close-payment').click(function() {
-                $('.main-view').show();
-                $('.payment-view').hide();
-            });
-
-
 
             const modalConfirm = function(callback) {
 
@@ -408,9 +459,9 @@
                     totalCash = totalCash.replace(/\./g, '')
                     totalCash = parseFloat(totalCash)
 
-                    await @this.updateCash(totalCash)
+                    await @this.confirmPayment(totalCash)
                     $('.payment-view').hide();
-                    // $('.customer-view').hide();
+
                 }
             });
         })

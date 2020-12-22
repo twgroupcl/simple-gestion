@@ -26,6 +26,7 @@ class Product extends Component
 
     public function shareProductInModal()
     {
+
         if (! $this->productHasConfigurableDetail()) {
             $this->addToCart();
             return;
