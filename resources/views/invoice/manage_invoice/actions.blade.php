@@ -79,7 +79,7 @@
 @endphp
 @endcan
 
-
+@can('doUpdateDocumentStatus', $invoice)
 @php
     Widget::add([
         'type' => 'view',
@@ -89,7 +89,7 @@
         ]
     ]);
 @endphp
-
+@endcan
 
 @can('doDownloadRealPDF', $invoice)
 @php

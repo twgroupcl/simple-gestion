@@ -371,7 +371,23 @@
             return result;
         }
 
-
+        function checkTypeTax() {
+            switch (invoiceType){
+                case '33':
+                case '39':
+                case 'H':
+                    $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                        $(this).prop('disabled', false);
+                    })
+                    break;
+                default:
+                    $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                        $(this).val(0).trigger('change');
+                        $(this).prop('disabled', true);
+                    })
+                    break;
+            }
+        }
 
 
         /**********************************************
@@ -382,6 +398,7 @@
 
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
             calculateTotals();
+            checkTypeTax()
         });
     
         $(document).on('keyup', 'input[data-repeatable-input-name="qty"]', function () {
@@ -461,6 +478,7 @@
 
         $(document).ready( function() {
             calculateTotals();
+            checkTypeTax();
         })
 
     </script> 

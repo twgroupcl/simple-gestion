@@ -142,8 +142,9 @@
             let taxIdField = item.find('.tax_id_field')
             let taxPercentField = item.find('.tax_percent_item')
             let taxTotalField = item.find('.tax_total_item')
+            let taxType = $('select[name="tax_type"]').val();
 
-            if  (taxIdField.val() == 0) { 
+            if  (taxIdField.val() == 0 || taxType == 'E') { 
                 taxPercentField.val(0)
                 taxAmountField.val(0)
                 taxTotalField.val(0)
@@ -352,6 +353,19 @@
             return result;
         }
 
+        function checkTypeTax() {
+            if ($('select[name="tax_type"]').val() == 'E') {
+                $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                    $(this).val(0).trigger('change');
+                    $(this).prop('disabled', true);
+                })
+            } else {
+                $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                    $(this).prop('disabled', false);
+                })
+            }
+        }
+
 
 
 
@@ -362,6 +376,7 @@
         ***********************************************/
 
         $(document).on('change', 'select[name="tax_type"]', function () {
+            checkTypeTax();
             calculateTotals();
         });
     
@@ -441,6 +456,7 @@
         });
 
         $(document).ready( function() {
+            checkTypeTax();
             calculateTotals();
         })
 

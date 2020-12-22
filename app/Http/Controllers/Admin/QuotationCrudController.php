@@ -263,7 +263,7 @@ class QuotationCrudController extends CrudController
                     'data_source' => url('admin/api/products/get-by-current-company'),
                     'minimum_input_length' => 0,
                     'include_all_form_fields'  => true,
-                    'dependencies'  => ['seller_id'],
+                    //'dependencies'  => ['seller_id'],
                     'wrapper' => [
                         'class' => 'form-group col-md-3 product-select',
                     ],
