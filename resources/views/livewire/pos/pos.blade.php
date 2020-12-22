@@ -147,6 +147,11 @@ use App\Models\Product;
         </div>
     </div>
 </div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
+    <div class="modal-dialog modal-lg">
+        @livewire('pos.customer.create-address-form')
+    </div>
+</div>
 <div class="row ">
     {{-- Sidebar--}}
     <div class="col-1">
@@ -270,9 +275,7 @@ use App\Models\Product;
                         <div class="  border-top-0 border-bottom-0 border-right-0"> Descuento</div>
                     </div>
                     <div class="col-md-6 border border-dark">
-                        <div class="  border-top-0 border-bottom-0 text-right">
-                            {{ currencyFormat($discount ?? 0, 'CLP', true) }}
-                        </div>
+                        <input wire:model="discount" type="number" name="discount" id="discount" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
                     </div>
                 </div>
                 <div class='row col-md-12 p-0 m-0'>
@@ -305,6 +308,7 @@ use App\Models\Product;
 </div>
 {{-- Footer --}}
 @endhandheld
+</div>
 </div>
 
 
@@ -572,4 +576,17 @@ use App\Models\Product;
         })
 
     </script>
+@endpush
+
+@push('after_styles')
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
+    </style>
 @endpush
