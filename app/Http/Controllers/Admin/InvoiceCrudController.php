@@ -218,6 +218,7 @@ class InvoiceCrudController extends CrudController
             'name' => 'customer_id',
             'type' => 'relationship',
             'entity' => 'customer',
+            'attribute' => 'full_name_with_uid',
             'placeholder' => 'Selecciona un cliente',
             'wrapper' => [
                 'class' => 'form-group col-md-6',

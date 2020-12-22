@@ -196,6 +196,15 @@ class Customer extends Model
         return $this->first_name;
     }
 
+    public function getFullNameWithUidAttribute()
+    {
+        if (!empty($this->last_name)) {
+            return $this->uid . ' - ' . $this->first_name . ' ' . $this->last_name;
+        }
+
+        return $this->uid . ' - ' . $this->first_name;
+    }
+
     public function getUidAttribute()
     {
         if ($this->is_foreign) return $this->attributes['uid'];
