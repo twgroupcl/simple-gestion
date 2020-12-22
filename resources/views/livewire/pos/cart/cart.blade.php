@@ -27,7 +27,7 @@
                 <div class="  border-top-0 border-bottom-0 border-right-0"> Descuento</div>
             </div>
             <div class="col-md-6 border border-dark">
-                <input type="number" name="discount" id="discount" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
+                <input wire:model="discount" type="number" name="discount" id="discount" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
                 {{-- <div class="  border-top-0 border-bottom-0 text-right">
                     {{ currencyFormat($discount ?? 0, 'CLP', true) }}
                 </div> --}}

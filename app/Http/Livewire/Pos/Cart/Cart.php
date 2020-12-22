@@ -23,7 +23,7 @@ class Cart extends Component
 {
     public $products;
     public $subtotal = 0;
-    public $discount = 0;
+    public $discount = null;
     public $total = 0;
     public $qty = 0;
     public $customer = null;
@@ -94,7 +94,11 @@ class Cart extends Component
             return $product['product']['real_price'] * $product['qty'];
         });
 
-        $this->total = $this->subtotal - $this->discount;
+        if ($this->discount > $this->subtotal) {
+            $this->discount = $this->subtotal;
+        }
+
+        $this->total = (float) $this->subtotal - (float) $this->discount;
 
         $cart['products'] = $this->products;
         $cart['subtotal'] = $this->subtotal;
@@ -207,6 +211,7 @@ class Cart extends Component
         ]);
         $this->products = [];
         $this->total = 0;
+        $this->discount = null;
         $this->subtotal = 0;
         $this->cash = 0;
     }
@@ -272,5 +277,10 @@ class Cart extends Component
     public function updateAddress($addressId)
     {
         $this->customerAddressId = $addressId;
+    }
+
+    public function updatedDiscount()
+    {
+        $this->calculateAmounts();
     }
 }
