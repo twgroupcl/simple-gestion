@@ -329,7 +329,7 @@ class InvoiceCrudController extends CrudController
 
         CRUD::addField([
             'type' => 'select2_from_array',
-            'options' => InvoiceType::all()->pluck('name','id'),
+            'options' => InvoiceType::all()->pluck('name','id')->sort(),
             'attribute' => 'name',
             'name' => 'invoice_type_id',
             'allows_null' => true,

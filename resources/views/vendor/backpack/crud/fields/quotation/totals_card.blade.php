@@ -384,6 +384,10 @@
             calculateTotals();
         });
 
+        $(document).on('blur', 'input[data-repeatable-input-name="qty"]', function () {
+            calculateTotals();
+        });
+
         $(document).on('keyup', 'input[data-repeatable-input-name="price"]', function () {
             let removeDots = $(this).val().replace(/\./g, ',')
             $(this).val(removeDots)
