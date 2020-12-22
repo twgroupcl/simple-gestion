@@ -42,7 +42,7 @@ class ProductCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Product::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/product');
-        CRUD::setEntityNameStrings('producto', 'productos');
+        CRUD::setEntityNameStrings('item', 'items');
 
         $this->crud->denyAccess('show');
         $this->crud->allowAccess('bulkApprove');
@@ -109,12 +109,12 @@ class ProductCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'product_class',
-            'label' => 'Clase de producto',
+            'label' => 'Clase de item',
             'type' => 'relationship',
         ]);
         CRUD::addColumn([
             'name' => 'product_type',
-            'label' => 'Tipo de producto',
+            'label' => 'Tipo de item',
             'type' => 'relationship',
         ]);
 
@@ -159,7 +159,7 @@ class ProductCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'name',
-            'label' => 'Nombre del producto',
+            'label' => 'Nombre del item',
             'type' => 'text',
         ]);
 
@@ -207,10 +207,10 @@ class ProductCrudController extends CrudController
 
 
         CRUD::addField([
-            'label'       => "Clase de producto",
+            'label'       => "Clase de item",
             'type'        => "select2_from_ajax",
             'name'        => 'product_class_id',
-            'placeholder' => 'Selecciona la clase de producto',
+            'placeholder' => 'Selecciona la clase de item',
             'entity'      => 'product_class',
             'attribute'   => "name",
             'data_source' => url("admin/api/productclass/get"),
@@ -228,11 +228,11 @@ class ProductCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'label' => 'Tipo de producto',
+            'label' => 'Tipo de item',
             'name' => 'product_type_id',
             'type' => 'relationship',
             'entity' => 'product_type',
-            'placeholder' => 'Selecciona un tipo de producto',
+            'placeholder' => 'Selecciona un tipo de item',
         ]);
 
         CRUD::addField([
