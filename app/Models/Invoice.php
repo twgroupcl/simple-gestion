@@ -143,6 +143,25 @@ class Invoice extends Model
         return $invoice;
     }
 
+    
+    public function reduceInventoryOfItems()
+    {
+        if (!$this->invoice_items->count()) return true;
+
+        foreach ($this->invoice_items as $item) {
+            if ($item->product_id) {
+                if (!$inventory = $item->product->inventories->first()) continue;
+
+                $qtyOnStock = $item->product->getQtyInInventory($inventory->id);
+                $newTotal = $qtyOnStock - $item->qty;
+                $item->product->updateInventory($newTotal, $inventory->id);
+            }
+        }
+
+        return true;
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
