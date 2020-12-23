@@ -55,7 +55,7 @@ trait DTEArray
                 'Receptor' => [
                     'RUTRecep' => sanitizeRUT($this->invoice->uid),
                     'RznSocRecep' => $this->invoice->first_name . ' ' . $this->invoice->last_name,
-                    'GiroRecep' => 'Informática', // this is required in 33
+                    'GiroRecep' => $this->invoice->business_activity->name ?? 'General', // this is required in 33
                     'DirRecep' => isset($customerAddress)
                                     ? 'Calle: ' . $customerAddress->street . '. Numero: ' . $customerAddress->number . $customerAddress->subnumber ?? ''
                                     : '',

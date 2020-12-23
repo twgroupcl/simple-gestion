@@ -221,6 +221,11 @@ class Invoice extends Model
     {
         return $this->belongsToMany(Order::class, 'invoice_order');
     }
+
+    public function business_activity()
+    {
+        return $this->belongsTo(BusinessActivity::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

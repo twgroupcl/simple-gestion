@@ -289,7 +289,7 @@ class InvoiceCrudController extends CrudController
                 'attribute' => 'name',
                 'default' => $sellerId, 
                 'wrapper' => [
-                    'class' => 'form-group col-md-6',
+                    'class' => 'form-group col-md-3',
                 ],
                 'tab' => 'General',
                 'options' => (function ($query) use($sellerId) {
@@ -306,11 +306,35 @@ class InvoiceCrudController extends CrudController
                 'model' => 'App\Models\Seller',
                 'attribute' => 'name',
                 'wrapper' => [
-                    'class' => 'form-group col-md-6',
+                    'class' => 'form-group col-md-3',
                 ],
                 'tab' => 'General',
             ]);
         }
+
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => InvoiceType::active()->pluck('name','id')->sort(),
+            'attribute' => 'name',
+            'name' => 'invoice_type_id',
+            'allows_null' => true,
+            'label' => 'Tipo de documento',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'business_activity_id',
+            'label' => 'Giro',
+            'type' => 'relationship',
+            'placeholder' => 'Seleccionar giro',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ]
+        ]);
 
         CRUD::addField([
             'label' => 'Identificador de documento',
@@ -325,19 +349,6 @@ class InvoiceCrudController extends CrudController
                 'class' => 'form-group col-md-3',
             ],
             'tab' => 'General',
-        ]);
-
-        CRUD::addField([
-            'type' => 'select2_from_array',
-            'options' => InvoiceType::active()->pluck('name','id')->sort(),
-            'attribute' => 'name',
-            'name' => 'invoice_type_id',
-            'allows_null' => true,
-            'label' => 'Tipo de documento',
-            'tab' => 'General',
-            'wrapper' => [
-                'class' => 'form-group col-md-3',
-            ]
         ]);
 
         CRUD::addField([
