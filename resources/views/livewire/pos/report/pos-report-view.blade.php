@@ -39,7 +39,7 @@
                     </li>
                 </ul>
                 <div class="card-body">
-                    <a target="_blanck" href="{{ route('order.invoice', ['order' => $selectedOrder->id]) }}" class="btn btn-success">Imprimir Boleta</a>
+                    <a target="_blanck" href="{{ route('order.invoice', ['order' => $selectedOrder->id , 'tipoPapel'=> 57]) }}" class="btn btn-success">Imprimir Boleta</a>
                 </div>
             </div>
         </div>

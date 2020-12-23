@@ -107,6 +107,8 @@ use App\Models\Product;
 {{-- Main view products --}}
 {{-- Payment view --}}
 @include('livewire.pos.partials.payment')
+{{-- Confirm payment view --}}
+@include('livewire.pos.partials.confirm-payment')
 <div class="main-view h-50">
     <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
     </div>
@@ -155,8 +157,7 @@ use App\Models\Product;
 
 {{-- Content --}}
 
-{{-- Payment view --}}
-@include('livewire.pos.partials.payment')
+
 
 <div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
     <div class="modal-dialog modal-lg">
@@ -236,7 +237,12 @@ use App\Models\Product;
     <div class="col-11 sales-view" style="display: none;">
         <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
     </div>
-
+    {{-- Payment view --}}
+    @include('livewire.pos.partials.payment')
+    {{-- Confirm payment view --}}
+    @include('livewire.pos.partials.confirm-payment')
+    {{-- Confirm payment view --}}
+    @include('livewire.pos.partials.final-payment')
     <div class="col-11 main-view">
         <div class="row">
             <div class="col-8">
@@ -393,7 +399,7 @@ use App\Models\Product;
 
         // Calc
         function chr(value) {
-            console.log(value)
+
             tmpTotalCart = clearCurrency(totalCart)
             tmpCash = clearCurrency(spanCash)
 
@@ -448,7 +454,15 @@ use App\Models\Product;
 
 
 
+        $("#confirm-pay").click( function() {
+            $('.confirm-payment-view').show();
+            $('.payment-view').hide();
+        });
 
+        $(".close-confirm-payment").click( function() {
+            $('.confirm-payment-view').hide();
+            $('.payment-view').show();
+        });
 
 
 
@@ -587,7 +601,7 @@ use App\Models\Product;
 
             const modalConfirm = function(callback) {
 
-                $("#confirm-pay").on("click", function() {
+                $("#confirm-payment").on("click", function() {
                     confirmPayment()
                     // $("#modal-confirm-pay").appendTo("body").modal('show');
                 });
@@ -625,8 +639,10 @@ use App\Models\Product;
                     totalCash = totalCash.replace(/\./g, '')
                     totalCash = parseFloat(totalCash)
 
-                    await @this.confirmPayment(totalCash)
+                    //await @this.confirmPayment(totalCash)
                     $('.payment-view').hide();
+                    $('.confirm-payment-view').hide();
+                    $('.final-payment-view').show();
             }
         })
 
