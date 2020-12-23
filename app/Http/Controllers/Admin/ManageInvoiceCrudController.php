@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Exception;
+use App\Models\Product;
 use App\Models\Quotation;
 use Illuminate\Http\Request;
 use App\Services\DTE\DTEService;
@@ -126,10 +127,21 @@ class ManageInvoiceCrudController extends CrudController
         if (!isset($invoice->dte_code)) {
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
-        //check if emisor have folios. "disponibles >0 "
 
+        // Check inventory of items
+        foreach($invoice->invoice_items as $item) {
+            if ($item['product_id']) {
+                $product = Product::find($item['product_id']); 
+                if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
+                    \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
+                    return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+                }
+            }
+        }
+        
         $service = new DTEService();
-
+        
+        // Check if emisor have folios. "disponibles >0 "
         if (!$service->foliosAvailables($invoice)) {
             \Alert::add('warning', 'No hay folios disponibles')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
@@ -147,6 +159,13 @@ class ManageInvoiceCrudController extends CrudController
             
             $invoice->updateWithoutEvents();
 
+            // Reduce inventory
+            try {
+                $invoice->reduceInventoryOfItems();
+            } catch (Exception $exception) {
+                \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
+            }
+
             if ($invoice->invoice_status === Invoice::STATUS_SEND && $invoice->way_to_payment === 2) {
                 $payment = Payments::insertDataInvoices($invoice);
             }
@@ -155,7 +174,7 @@ class ManageInvoiceCrudController extends CrudController
                 $quotation = Quotation::find($invoice->json_value['quotation_id']);
                 if ($quotation) {
                     $quotation->quotation_status = Quotation::STATUS_INVOICED;
-                    $quotaiton->updateWithoutEvents();
+                    $quotation->updateWithoutEvents();
                 }
             }
 
