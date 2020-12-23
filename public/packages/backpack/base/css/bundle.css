@@ -90,3 +90,8 @@
     -webkit-transition: 0.3s ease;
     transition: 0.3s ease;
 }
+.product-name{
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
