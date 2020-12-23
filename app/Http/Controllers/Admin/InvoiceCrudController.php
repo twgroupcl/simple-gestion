@@ -36,6 +36,7 @@ class InvoiceCrudController extends CrudController
         CRUD::setModel(\App\Models\Invoice::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/invoice');
         CRUD::setEntityNameStrings('documento electrónico', 'documentos electrónicos');
+        $this->crud->enableExportButtons();
         
         $this->seller = Seller::where('user_id', backpack_user()->id);
         if ($this->seller->exists()) {
@@ -164,6 +165,13 @@ class InvoiceCrudController extends CrudController
         );
 
         CRUD::addColumn([
+            'label' => 'Fecha de emision',
+            'name' => 'invoice_date',
+            'type' => 'date',
+            'format' => 'L',
+        ]);
+
+        CRUD::addColumn([
             'name' => 'first_name',
             'label' => 'Nombre / Razón Soc.'
         ]);
@@ -181,6 +189,15 @@ class InvoiceCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'folio'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'total',
+            'label' => 'Total',
+            'type' => 'number',
+            'prefix'        => '$',
+            'decimals'      => 0,
+            'thousands_sep' => ' ',
         ]);
 
 
