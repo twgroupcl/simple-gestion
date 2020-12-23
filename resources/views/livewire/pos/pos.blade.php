@@ -158,8 +158,13 @@ use App\Models\Product;
 {{-- Payment view --}}
 @include('livewire.pos.partials.payment')
 
+<div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
+    <div class="modal-dialog modal-lg">
+        @livewire('pos.customer.create-address-form', [], key(time().'address'.$seller->id))
+    </div>
+</div>
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     id="modal-confirm-pay">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -262,9 +267,7 @@ use App\Models\Product;
                                 <div class="  border-top-0 border-bottom-0 border-right-0"> Descuento</div>
                             </div>
                             <div class="col-md-6 border border-dark">
-                                <div class="  border-top-0 border-bottom-0 text-right">
-                                    {{ currencyFormat($discount ?? 0, 'CLP', true) }}
-                                </div>
+                                <input wire:model="discount" type="number" name="discount" id="discount" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
                             </div>
                         </div>
                         <div class='row col-md-12 p-0 m-0'>
@@ -297,6 +300,7 @@ use App\Models\Product;
 </div>
 {{-- Footer --}}
 @endhandheld
+</div>
 </div>
 
 
@@ -577,7 +581,8 @@ use App\Models\Product;
             const modalConfirm = function(callback) {
 
                 $("#confirm-pay").on("click", function() {
-                    $("#modal-confirm-pay").appendTo("body").modal('show');
+                    confirmPayment()
+                    // $("#modal-confirm-pay").appendTo("body").modal('show');
                 });
 
                 $("#modal-btn-yes").on("click", function() {
@@ -601,11 +606,35 @@ use App\Models\Product;
                     totalCash = parseFloat(totalCash)
 
                     await @this.confirmPayment(totalCash)
+                    // Livewire.emit('confirmPayment', totalCash)
                     $('.payment-view').hide();
 
                 }
             });
+
+            const confirmPayment = async() => {
+                let totalCash = $('.total-cash').text()
+                    totalCash = totalCash.replace('$', '')
+                    totalCash = totalCash.replace(/\./g, '')
+                    totalCash = parseFloat(totalCash)
+
+                    await @this.confirmPayment(totalCash)
+                    $('.payment-view').hide();
+            }
         })
 
     </script>
+@endpush
+
+@push('after_styles')
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
+    </style>
 @endpush

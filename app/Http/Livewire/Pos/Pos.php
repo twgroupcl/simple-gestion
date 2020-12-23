@@ -15,6 +15,7 @@ use App\Models\InvoiceType;
 use App\Models\OrderPayment;
 use Illuminate\Support\Facades\DB;
 use Backpack\Settings\app\Models\Setting;
+use Exception;
 
 class Pos extends Component
 {
@@ -34,18 +35,24 @@ class Pos extends Component
     public $customer = null;
     public $customerAddressId;
     public $subtotal = 0;
-    public $discount = 0;
+    public $discount = null;
     public $total = 0;
     protected $listeners = [
         'viewModeChanged' => 'setView',
         'add-product-cart:post' => 'addProduct',
         'customerSelected' => 'setCustomer',
+        'confirmPayment' => 'confirmPayment',
 
     ];
 
     public function mount()
     {
-        $this->seller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
+        $this->seller = Seller::where('user_id', backpack_user()->id)->first();
+
+        if (is_null($this->seller) || $this->seller->is_approved !== $this->seller::REVIEW_STATUS_APPROVED) {
+            abort(403);
+        }
+
         $this->products = $this->getProducts();
         //$this->setView('productList');
         $this->validateBox();
@@ -72,7 +79,6 @@ class Pos extends Component
 
     public function render()
     {
-
         return view('livewire.pos.pos');
     }
 
@@ -119,6 +125,7 @@ class Pos extends Component
             }
 
             $order->sub_total = $this->subtotal;
+            $order->discount_total = $this->discount;
             $order->total = $this->total;
 
             $order->save();
@@ -166,6 +173,7 @@ class Pos extends Component
         ]);
         $this->cartproducts = [];
         $this->total = 0;
+        $this->discount = null;
         $this->subtotal = 0;
         $this->cash = 0;
     }
@@ -309,7 +317,7 @@ class Pos extends Component
                 $item->sub_total = currencyFormat($item->sub_total, 'CLP', false);
                 $item->total = currencyFormat($item->total, 'CLP', false);
                 $item->discount = 0;
-                $item->discount_type = 'percentage';
+                $item->discount_type = 'amount';
                 $item->is_custom = true;
                 $item->additional_tax_id = 0;
                 $item->additional_tax_amount = 0;
@@ -322,7 +330,6 @@ class Pos extends Component
             $invoice->seller_id = $currentSeller->id;
             $invoice->items_data = $order_items;
             $invoice->invoice_type_id = $invoiceType->id;
-            $invoice->tax_type = '';
             $invoice->invoice_date = now();
             $invoice->save();
 
@@ -334,6 +341,9 @@ class Pos extends Component
                 $invoice->phone = $order->phone;
                 $invoice->cellphone = $order->cellphone;
                 $invoice->address_id = $this->customerAddressId;
+                $invoice->discount_amount = $order->discount_total;
+                $invoice->discount_total = $order->discount_total;
+                $invoice->total = $order->total;
 
                 $invoice->orders()->attach($order->id);
                 $invoice->customer()->associate($this->customer);
@@ -352,4 +362,13 @@ class Pos extends Component
         }
     }
 
+    public function updateAddress($addressId)
+    {
+        $this->customerAddressId = $addressId;
+    }
+
+    public function updatedDiscount()
+    {
+        $this->calculateAmounts();
+    }
 }

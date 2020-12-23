@@ -77,9 +77,9 @@
                 <li class="list-group-item"><strong>Celular:</strong> {{ $selectedCustomer->cellphone }}</li>
                 @if (! session()->get('user.pos.isSelectedCustomerWildcard', false))
                     @if ($selectedAddress)
-                        <li class="list-group-item"><strong>Dirección:</strong> <button wire:click="selectAddress" class="btn btn-link">{{ $selectedAddress->street }}</button></li>
+                        <li class="list-group-item"><strong>Dirección:</strong> <button wire:click="$emit('showAddressForm', {{ optional($selectedCustomer)->id }})" class="btn btn-link">{{ $selectedAddress->street }}</button></li>
                     @elseif ($showAddressOption)
-                        <li class="list-group-item"><strong>Dirección:</strong> <button wire:click="selectAddress" class="btn btn-link">Elegir dirección (opcional)</button></li>
+                        <li class="list-group-item"><strong>Dirección:</strong> <button wire:click="$emit('showAddressForm', {{ optional($selectedCustomer)->id }})" class="btn btn-link">Elegir dirección (opcional)</button></li>
                     @endif
                 @endif
                 </ul>

@@ -4,13 +4,11 @@
         Cart
         @if (!is_null($products))
 
-            @foreach ($products as $id => $product)
+            @foreach (json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [] as $id => $product)
                 @livewire('pos.cart.item', ['item' => $id, 'qty' => $product['qty'] ], key($id))
             @endforeach
         @endif
     </div>
-
-
 
     <div class=" col-12  h-50">
 
@@ -27,9 +25,10 @@
                 <div class="  border-top-0 border-bottom-0 border-right-0"> Descuento</div>
             </div>
             <div class="col-md-6 border border-dark">
-                <div class="  border-top-0 border-bottom-0 text-right">
+                <input wire:model="discount" type="number" name="discount" id="discount" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
+                {{-- <div class="  border-top-0 border-bottom-0 text-right">
                     {{ currencyFormat($discount ?? 0, 'CLP', true) }}
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class='row col-md-12 p-0 m-0'>
@@ -76,3 +75,16 @@
 </div>
 </div>
 </div>
+
+@push('after_styles')
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance:textfield; /* Firefox */
+        }
+    </style>
+@endpush
