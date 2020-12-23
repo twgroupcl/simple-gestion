@@ -72,6 +72,7 @@ Route::group([
     Route::get('quotation/{quotation}/to-invoice', 'QuotationCrudController@toInvoice');
     Route::get('invoice/{invoice}/send-temporary-document', 'ManageInvoiceCrudController@sendTemporaryDocument');
     Route::get('invoice/{invoice}/create-real-document', 'ManageInvoiceCrudController@createRealDocument');
+    Route::get('invoice/{invoice}/update-dte-status', 'ManageInvoiceCrudController@updateDteStatus')->name('dte.update.status');
     Route::get('invoice/{invoice}/delete-temporary-document', 'ManageInvoiceCrudController@deleteTemporaryDocument');
     Route::get('invoice/{invoice}/to-manage', 'ManageInvoiceCrudController@index');
     Route::get('invoice/{invoice}/get-pdf', 'ManageInvoiceCrudController@getPDF');
@@ -107,5 +108,6 @@ Route::group([
    
 
     Route::crud('reservationrequest', 'ReservationRequestCrudController');
+    Route::crud('inventory', 'InventoryCrudController');
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
 }); // this should be the absolute last line of this file

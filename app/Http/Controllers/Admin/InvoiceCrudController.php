@@ -36,6 +36,7 @@ class InvoiceCrudController extends CrudController
         CRUD::setModel(\App\Models\Invoice::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/invoice');
         CRUD::setEntityNameStrings('documento electrónico', 'documentos electrónicos');
+        $this->crud->enableExportButtons();
         
         $this->seller = Seller::where('user_id', backpack_user()->id);
         if ($this->seller->exists()) {
@@ -53,7 +54,7 @@ class InvoiceCrudController extends CrudController
         $company = backpack_user()->current()->company->id; 
         $company = Company::find($company);
         $this->emitter = $company;
-        $this->crud->addClause('where', 'company_id', $company);
+        $this->crud->addClause('where', 'company_id', $company->id);
 
         $this->crud->denyAccess('show');
 
@@ -164,6 +165,13 @@ class InvoiceCrudController extends CrudController
         );
 
         CRUD::addColumn([
+            'label' => 'Fecha de emision',
+            'name' => 'invoice_date',
+            'type' => 'date',
+            'format' => 'L',
+        ]);
+
+        CRUD::addColumn([
             'name' => 'first_name',
             'label' => 'Nombre / Razón Soc.'
         ]);
@@ -181,6 +189,15 @@ class InvoiceCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'folio'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'total',
+            'label' => 'Total',
+            'type' => 'number',
+            'prefix'        => '$',
+            'decimals'      => 0,
+            'thousands_sep' => ' ',
         ]);
 
 
@@ -218,6 +235,7 @@ class InvoiceCrudController extends CrudController
             'name' => 'customer_id',
             'type' => 'relationship',
             'entity' => 'customer',
+            'attribute' => 'full_name_with_uid',
             'placeholder' => 'Selecciona un cliente',
             'wrapper' => [
                 'class' => 'form-group col-md-6',
@@ -288,7 +306,7 @@ class InvoiceCrudController extends CrudController
                 'attribute' => 'name',
                 'default' => $sellerId, 
                 'wrapper' => [
-                    'class' => 'form-group col-md-6',
+                    'class' => 'form-group col-md-3',
                 ],
                 'tab' => 'General',
                 'options' => (function ($query) use($sellerId) {
@@ -305,11 +323,35 @@ class InvoiceCrudController extends CrudController
                 'model' => 'App\Models\Seller',
                 'attribute' => 'name',
                 'wrapper' => [
-                    'class' => 'form-group col-md-6',
+                    'class' => 'form-group col-md-3',
                 ],
                 'tab' => 'General',
             ]);
         }
+
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => InvoiceType::active()->pluck('name','id')->sort(),
+            'attribute' => 'name',
+            'name' => 'invoice_type_id',
+            'allows_null' => true,
+            'label' => 'Tipo de documento',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'business_activity_id',
+            'label' => 'Giro',
+            'type' => 'relationship',
+            'placeholder' => 'Seleccionar giro',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
+            ]
+        ]);
 
         CRUD::addField([
             'label' => 'Identificador de documento',
@@ -327,16 +369,14 @@ class InvoiceCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'type' => 'select2_from_array',
-            'options' => InvoiceType::all()->pluck('name','id'),
-            'attribute' => 'name',
-            'name' => 'invoice_type_id',
-            'allows_null' => true,
-            'label' => 'Tipo de documento',
-            'tab' => 'General',
+            'type' => 'text',
+            'store_in' => 'json_value',
+            'name' => 'quotation_id',
+            'fake' => true,
             'wrapper' => [
-                'class' => 'form-group col-md-3',
-            ]
+                'style' => 'display:none',
+            ],
+            'tab' => 'General',
         ]);
 
         CRUD::addField([
@@ -681,6 +721,7 @@ class InvoiceCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
         if ($this->crud->getCurrentEntry()->invoice_status == Invoice::STATUS_TEMPORAL) {
             \Alert::add('warning', 'El documento temporal se eliminará si guarda cambios');
         }

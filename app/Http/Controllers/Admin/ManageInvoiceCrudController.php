@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\InvoiceRequest;
+use Exception;
+use App\Models\Product;
+use App\Models\Quotation;
 use Illuminate\Http\Request;
+use App\Services\DTE\DTEService;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\InvoiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Invoice, InvoiceType, CustomerAddress, Payments};
-use App\Services\DTE\DTEService;
-use Illuminate\Support\Facades\Gate;
 
 /**
  * Class InvoiceCrudController
@@ -101,11 +104,15 @@ class ManageInvoiceCrudController extends CrudController
         if (!isset($invoice->dte_code)) {
             return redirect('index');
         }
+        
+        $tipoPapel = $request->input('tipoPapel') ?? 0;
+        
         $service = new DTEService();
+        
         if (isset($invoice->folio)) {
-            $response = $service->getRealPDF($invoice);
+            $response = $service->getRealPDF($invoice, $tipoPapel);
         } else {
-            $response = $service->getTemporalPDF($invoice);
+            $response = $service->getTemporalPDF($invoice, $tipoPapel);
         }
 
         $pdfContent = $response->getBody()->getContents();
@@ -124,10 +131,21 @@ class ManageInvoiceCrudController extends CrudController
         if (!isset($invoice->dte_code)) {
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
-        //check if emisor have folios. "disponibles >0 "
 
+        // Check inventory of items
+        foreach($invoice->invoice_items as $item) {
+            if ($item['product_id']) {
+                $product = Product::find($item['product_id']); 
+                if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
+                    \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
+                    return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+                }
+            }
+        }
+        
         $service = new DTEService();
-
+        
+        // Check if emisor have folios. "disponibles >0 "
         if (!$service->foliosAvailables($invoice)) {
             \Alert::add('warning', 'No hay folios disponibles')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
@@ -145,16 +163,57 @@ class ManageInvoiceCrudController extends CrudController
             
             $invoice->updateWithoutEvents();
 
+            // Reduce inventory
+            try {
+                $invoice->reduceInventoryOfItems();
+            } catch (Exception $exception) {
+                \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
+            }
+
             if ($invoice->invoice_status === Invoice::STATUS_SEND && $invoice->way_to_payment === 2) {
                 $payment = Payments::insertDataInvoices($invoice);
             }
-            #ddd($contentResponse, $response);
+
+            if (!empty($invoice->json_value['quotation_id'])) {
+                $quotation = Quotation::find($invoice->json_value['quotation_id']);
+                if ($quotation) {
+                    $quotation->quotation_status = Quotation::STATUS_INVOICED;
+                    $quotation->updateWithoutEvents();
+                }
+            }
+
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
         }
 
         \Alert::add('warning', 'Hubo algun problema al generar el documento.')->flash();
         return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
 
+    }
+
+    public function updateDteStatus(Request $request, Invoice $invoice)
+    {
+        $service = new DTEService();
+        $response = $service->getDteUpdatedStatus($invoice);
+        
+        if ($response->getStatusCode() != 200) {
+            \Alert::add('warning', 'Hubo algun problema al consultar el estado del documento. Intentalo mas tarde')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        $dteStatusResponse =  json_decode($response->getBody()->getContents(), true);
+        
+        $dteStatus = [
+            'track_id' => $dteStatusResponse["track_id"] ?? '',
+            'revision_estado' =>  $dteStatusResponse["revision_estado"] ?? '',
+            'revision_detalle' => $dteStatusResponse["revision_detalle"] ?? '',
+        ];
+
+        $invoice->dte_status = $dteStatus;
+
+        $invoice->updateWithoutEvents();
+
+        \Alert::add('success', 'Estado del documento actualizado correctamente.')->flash();
+        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
     }
 
     public function issueCreditNote(Request $request, Invoice $invoice)

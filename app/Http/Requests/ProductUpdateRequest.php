@@ -36,7 +36,7 @@ class ProductUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:255',
+            'name' => 'required|min:1|max:255',
             'sku' => [
                 'required',
                 Rule::unique('products')->where( function($query) {
@@ -52,11 +52,11 @@ class ProductUpdateRequest extends FormRequest
                 new SlugRule(),
             ],
             //'currency_id' => 'required',
-            'price' => [ new NumericCommaRule() ],
-            'width' => [ new NumericCommaRule() ],
-            'height' => [ new NumericCommaRule() ],
-            'depth' => [ new NumericCommaRule() ],
-            'weight' => [ new NumericCommaRule() ],
+            'price' => [ new NumericCommaRule(0) ],
+            'width' => [ new NumericCommaRule(0) ],
+            'height' => [ new NumericCommaRule(0) ],
+            'depth' => [ new NumericCommaRule(0) ],
+            'weight' => [ new NumericCommaRule(0) ],
             'seller_id' => 'required',
             'status' => 'required',
             'categories' => 'required',
@@ -137,6 +137,8 @@ class ProductUpdateRequest extends FormRequest
     {
         return [
             '*.required*' => 'Es necesario completar el campo :attribute.',
+            'name.min' => 'El campo :attribute requiere como minimo :min caracteres',
+            'name.max' => 'El campo :attribute requiere como maximo :max caracteres',
         ];
     }
 

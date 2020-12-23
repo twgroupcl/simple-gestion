@@ -175,7 +175,7 @@ class Customer extends Model
 
     public function getIsCompanyDescriptionAttribute()
     {
-        switch ($this->is_user_defined) {
+        switch ($this->is_company) {
             case $this::IS_COMPANY:
                 return 'Jurídica';
                 break;
@@ -196,6 +196,15 @@ class Customer extends Model
         return $this->first_name;
     }
 
+    public function getFullNameWithUidAttribute()
+    {
+        if (!empty($this->last_name)) {
+            return $this->uid . ' - ' . $this->first_name . ' ' . $this->last_name;
+        }
+
+        return $this->uid . ' - ' . $this->first_name;
+    }
+
     public function getUidAttribute()
     {
         if ($this->is_foreign) return $this->attributes['uid'];
@@ -208,6 +217,56 @@ class Customer extends Model
     public function getCustomerSegmentNameAttribute()
     {
         return $this->customer_segment->name ?? '';
+    }
+
+    public function getAddressesDataFirstStreetAttribute()
+    {
+        $firstStreet = null;
+        $firstAddress = $this->addresses()->first();
+
+        if (!is_null($firstAddress)) {
+
+            $firstStreet = $firstAddress->street;
+
+        }
+        return $firstStreet;
+    }
+
+    public function getAddressesDataFirstNumberAttribute()
+    {
+        $firstNumber = null;
+        $firstAddress = $this->addresses()->first();
+
+        if (!is_null($firstAddress)) {
+
+            $firstNumber = $firstAddress->number;
+
+        }
+        return $firstNumber;
+    }
+    public function getAddressesDataFirstSubNumberAttribute()
+    {
+        $firstSubNumber = null;
+        $firstAddress = $this->addresses()->first();
+
+        if (!is_null($firstAddress)) {
+
+            $firstSubNumber = $firstAddress->subnumber;
+
+        }
+        return $firstSubNumber;
+    }
+    public function getAddressesDataFirstCommuneAttribute()
+    {
+        $communeName = null;
+        $firstAddress = $this->addresses()->first();
+
+        if (!is_null($firstAddress)) {
+            if (isset($firstAddress->commune)) {
+                $communeName = $firstAddress->commune->name;
+            }
+        }
+        return $communeName;
     }
 
     /*

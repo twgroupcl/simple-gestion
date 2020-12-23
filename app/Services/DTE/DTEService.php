@@ -5,6 +5,7 @@ namespace App\Services\DTE;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\RutRule;
 use \App\Models\Invoice;
+use App\Models\Company;
 use \GuzzleHttp\{
     Psr7\Response as GuzzleResponse,
     Client
@@ -19,9 +20,15 @@ class DTEService
 
     public function __construct()
     {
+        $company = Company::findOrFail(backpack_user()->current()->company->id);
+
+        if (!$company->dte_token) {
+            abort(400, 'La empresa no tiene asignado un token DTE');
+        }
+
         $this->client = new \GuzzleHttp\Client();
         $this->url = config('dte.url') . '/api';
-        $this->token = config('dte.api_token');
+        $this->token = $company->dte_token;
         $this->headers = [
             'Authorization' => 'Basic ' . $this->token,
             'Content-Type' => 'application/json',
@@ -96,7 +103,7 @@ class DTEService
         return self::exec($url, [], $headers, $method);
     }
 
-    public function getRealPDF(Invoice $invoice)
+    public function getRealPDF(Invoice $invoice, $tipoPapel = 0)
     {
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid); 
@@ -106,14 +113,14 @@ class DTEService
             $invoice->invoice_type->code . '/' . 
             $invoice->folio . '/' .
             $sellerUid . 
-            '?papelContinuo=0&copias_tributarias=1&copias_cedibles=1&cedible=0&compress=0&base64=0';
+            '?papelContinuo=' . $tipoPapel . '&copias_tributarias=1&copias_cedibles=1&cedible=0&compress=0&base64=0';
 
         $headers = $this->headers;
 
         return self::exec($url, [], $headers, $method);
     }
 
-    public function getTemporalPDF(Invoice $invoice)
+    public function getTemporalPDF(Invoice $invoice, $tipoPapel = 0)
     {
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid); 
@@ -122,7 +129,7 @@ class DTEService
             $customerUid . '/' .
             $invoice->invoice_type->code . '/' . 
             $invoice->dte_code . '/' .
-            $sellerUid . '?cotizacion=0&papelContinuo=0&compress=0';
+            $sellerUid . '?cotizacion=0&papelContinuo=' . $tipoPapel . '&compress=0';
 
         $headers = $this->headers;
 
@@ -154,6 +161,27 @@ class DTEService
         }
 
         return false;
+    }
+
+    /**
+     * Get the updated status of the DTE
+     * 
+     */
+    public function getDteUpdatedStatus(Invoice $invoice)
+    {
+        $method = 'GET';
+
+        $url = $this->url . '/dte/dte_emitidos/actualizar_estado/' .
+            $invoice->invoice_type->code . '/' .
+            $invoice->folio . '/' . 
+            rutWithoutDV($invoice->company->uid) . 
+            '?usarWebservice=1';
+
+        $headers = $this->headers;
+
+        $response = self::exec($url, [], $headers, $method);
+
+        return $response;
     }
 
     public function getSalesReport(string $emitterRut, string $period)

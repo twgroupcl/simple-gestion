@@ -87,6 +87,7 @@ class Invoice extends Model
         'bank_account_type_id',
         'bank_number_account',
         'way_to_payment',
+        'dte_status',
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -97,6 +98,7 @@ class Invoice extends Model
     protected $casts = [
         'items_data' => 'array',
         'json_value' => 'array',
+        'dte_status' => 'array',
        // 'address_data' => 'array',
     ];
 
@@ -140,6 +142,25 @@ class Invoice extends Model
         $invoice->dte_code = $array['dte_code'];
         return $invoice;
     }
+
+    
+    public function reduceInventoryOfItems()
+    {
+        if (!$this->invoice_items->count()) return true;
+
+        foreach ($this->invoice_items as $item) {
+            if ($item->product_id) {
+                if (!$inventory = $item->product->inventories->first()) continue;
+
+                $qtyOnStock = $item->product->getQtyInInventory($inventory->id);
+                $newTotal = $qtyOnStock - $item->qty;
+                $item->product->updateInventory($newTotal, $inventory->id);
+            }
+        }
+
+        return true;
+    }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -199,6 +220,11 @@ class Invoice extends Model
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'invoice_order');
+    }
+
+    public function business_activity()
+    {
+        return $this->belongsTo(BusinessActivity::class);
     }
     /*
     |--------------------------------------------------------------------------

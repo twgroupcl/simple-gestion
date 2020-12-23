@@ -18,14 +18,14 @@ trait DTEArray
         if ($this->invoice->discount_percent > 0) {
             $globalDiscounts = [
                 'TpoMov' => 'D',
-                'ValorDR' => $this->invoice->discount_percent,
+                'ValorDR' => round($this->invoice->discount_percent, 2),
                 'TpoValor' => '%'
             ];
         } else if ($this->invoice->discount_amount > 0) {
             $globalDiscounts = [
                 //Discount, by default Recharge
                 'TpoMov' => 'D', //discount D o recharge R
-                'ValorDR' => $this->invoice->discount_amount,
+                'ValorDR' => round($this->invoice->discount_amount, 2),
                 'TpoValor' => '$',
                 //'IndExeDR' => 1 // Afecta a productos exentos
             ]; 
@@ -55,9 +55,9 @@ trait DTEArray
                 'Receptor' => [
                     'RUTRecep' => sanitizeRUT($this->invoice->uid),
                     'RznSocRecep' => $this->invoice->first_name . ' ' . $this->invoice->last_name,
-                    'GiroRecep' => 'Informática', // this is required in 33
+                    'GiroRecep' => $this->invoice->business_activity->name ?? 'General', // this is required in 33
                     'DirRecep' => isset($customerAddress)
-                                    ? $customerAddress->street . ' ' . $customerAddress->number . $customerAddress->subnumber ?? ''
+                                    ? 'Calle: ' . $customerAddress->street . '. Numero: ' . $customerAddress->number . $customerAddress->subnumber ?? ''
                                     : '',
                     'CmnaRecep' => isset($customerAddress)
                                     ? $customerAddress->commune->name

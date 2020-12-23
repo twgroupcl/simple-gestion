@@ -6,10 +6,11 @@ use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Customer;
 use App\Models\Quotation;
-use App\Models\{Invoice, InvoiceItem};
+use App\Models\InvoiceType;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Models\CustomerAddress;
+use App\Models\{Invoice, InvoiceItem};
 use App\Http\Requests\QuotationRequest;
 use App\Http\Requests\QuotationCreateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -95,7 +96,10 @@ class QuotationCrudController extends CrudController
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Activa' || $column['text'] == 'Aceptado') {
+                    if ($column['text'] == 'Activa' || 
+                        $column['text'] == 'Aceptado' || 
+                        $column['text'] == 'Emitido' ||
+                        $column['text'] == 'Facturado') {
                         return 'badge badge-success';
                     }
                    
@@ -134,10 +138,19 @@ class QuotationCrudController extends CrudController
         $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'current_tab', 'save_action']);
 
         CRUD::addField([
+            'type' => 'custom_js_data',
+            'name' => 'custom_data_for_invoice_type',
+            'data' => InvoiceType::all()->toArray(),
+            'variable_name' => 'invoiceTypeArray',
+            'tab' => 'General',
+        ]);
+        
+        CRUD::addField([
             'label' => 'Cliente',
             'name' => 'customer_id',
             'type' => 'relationship',
             'entity' => 'customer',
+            'attribute' => 'full_name_with_uid',
             'placeholder' => 'Selecciona un cliente',
             'wrapper' => [
                 'class' => 'form-group col-md-6',
@@ -214,7 +227,19 @@ class QuotationCrudController extends CrudController
             'model' => 'App\Models\Seller',
             'attribute' => 'name',
             'wrapper' => [
-                'class' => 'form-group col-md-6',
+                'class' => 'form-group col-md-3',
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
+            'type' => 'select2_from_array',
+            'options' => InvoiceType::active()->pluck('name','id')->sort(),
+            'attribute' => 'invoice_type_id',
+            'name' => 'invoice_type_id',
+            'label' => 'Tipo de documento',
+            'wrapper' => [
+                'class' => 'form-group col-md-3',
             ],
             'tab' => 'General',
         ]);
@@ -263,7 +288,7 @@ class QuotationCrudController extends CrudController
                     'data_source' => url('admin/api/products/get-by-current-company'),
                     'minimum_input_length' => 0,
                     'include_all_form_fields'  => true,
-                    'dependencies'  => ['seller_id'],
+                    //'dependencies'  => ['seller_id'],
                     'wrapper' => [
                         'class' => 'form-group col-md-3 product-select',
                     ],
@@ -425,6 +450,7 @@ class QuotationCrudController extends CrudController
             'default' => 'A',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-12',
+                'style' => 'display:none',
             ],
             'tab' => 'General',
         ]);
@@ -568,7 +594,13 @@ class QuotationCrudController extends CrudController
             $invoice = new Invoice($quotation->toArray());
             $invoice->items_data = json_encode($invoice->items_data);
             unset($invoice->expiry_date);
+            $json_value = $invoice->json_value;
+            $json_value['quotation_id'] = $quotation->id;
+            $invoice->json_value = $json_value;
             $invoice->save();
+
+            $quotation->quotation_status = Quotation::STATUS_ISSUED;
+            $quotation->updateWithoutEvents(); 
 
             //foreach ($quotation->quotation_items as $item) {
             //    $invoiceItem = new InvoiceItem($item->toArray());
