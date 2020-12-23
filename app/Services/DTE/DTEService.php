@@ -20,7 +20,7 @@ class DTEService
 
     public function __construct()
     {
-        $company = Company::findOrFail(session('user')['current']['company']['id']);
+        $company = Company::findOrFail(backpack_user()->current()->company->id);
 
         if (!$company->dte_token) {
             abort(400, 'La empresa no tiene asignado un token DTE');
