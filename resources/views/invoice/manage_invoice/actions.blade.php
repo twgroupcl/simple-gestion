@@ -41,12 +41,28 @@
             'class' => 'mr-1 mb-2',
         ]
     ]);
+
+    Widget::add([
+        'type' => 'view',
+        'view' => 'invoice.manage_invoice.get_temporal_pdf_57',
+        'wrapper' => [
+            'class' => 'mr-1 mb-2',
+        ]
+    ]);
 @endphp
 @elsecan('doDownloadRealPDF', $invoice)
 @php
     Widget::add([
         'type' => 'view',
         'view' => 'invoice.manage_invoice.get_real_pdf',
+        'wrapper' => [
+            'class' => 'mr-1 mb-2',
+        ]
+    ]);
+
+    Widget::add([
+        'type' => 'view',
+        'view' => 'invoice.manage_invoice.get_real_pdf_57',
         'wrapper' => [
             'class' => 'mr-1 mb-2',
         ]

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -42,6 +43,20 @@ class InvoiceRequest extends FormRequest
             'address_id' => 'required|exists:customer_addresses,id',
             'expiry_date' => $expiryDateRules,
             // 'name' => 'required|min:5|max:255'
+
+            'items_data' => function($attribute, $value, $fail) {
+                $items = json_decode($value, true);
+                if ( !count($items) ) return $fail('Debes añadir por lo menos un producto / servicio.');
+
+                foreach($items as $item) {
+                    if ($item['product_id']) {
+                        $product = Product::find($item['product_id']); 
+                        if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $this->id)) {
+                            return $fail('No tienes suficiente stock del producto "' . $product->name .'"');
+                        }
+                    }
+                }
+            }
         ];
     }
 

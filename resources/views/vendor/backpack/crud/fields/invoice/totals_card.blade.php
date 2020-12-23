@@ -415,6 +415,15 @@
             calculateTotals();
         });
 
+        $(document).on('blur', 'input[data-repeatable-input-name="discount"]', function (event) {
+            let field = $(event.target);
+            let type = field.parent().find('.discount_type').val()
+            if (field.val() > 100 && type == 'percentage') {
+                field.val(100);
+            }
+            calculateTotals();
+        });
+
         $(document).on('keyup', 'input[data-repeatable-input-name="price"]', function () {
             let removeDots = $(this).val().replace(/\./g, ',')
             $(this).val(removeDots)
@@ -433,7 +442,11 @@
 
         $(document).on('keyup', 'input[name="discount_amount_field"]', function () {
             let removeDots = $(this).val().replace(/\./g, ',')
-            $(this).val(removeDots)
+            if (removeDots > 100) {
+                $(this).val(100)    
+            } else {
+                $(this).val(removeDots)
+            }
             calculateTotals();
         });
 
@@ -446,6 +459,11 @@
         });
 
         $(document).on('change', 'select[data-repeatable-input-name="discount_type"]', function () {
+            let field = $(event.target);
+            let amount = field.parent().parent().find('input[data-repeatable-input-name="discount"]')
+            if (amount.val() > 100 && field.val() == 'percentage') {
+                amount.val(100)
+            }
             calculateTotals();
         });
 

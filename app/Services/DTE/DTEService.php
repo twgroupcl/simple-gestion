@@ -103,7 +103,7 @@ class DTEService
         return self::exec($url, [], $headers, $method);
     }
 
-    public function getRealPDF(Invoice $invoice)
+    public function getRealPDF(Invoice $invoice, $tipoPapel = 0)
     {
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid); 
@@ -113,14 +113,14 @@ class DTEService
             $invoice->invoice_type->code . '/' . 
             $invoice->folio . '/' .
             $sellerUid . 
-            '?papelContinuo=0&copias_tributarias=1&copias_cedibles=1&cedible=0&compress=0&base64=0';
+            '?papelContinuo=' . $tipoPapel . '&copias_tributarias=1&copias_cedibles=1&cedible=0&compress=0&base64=0';
 
         $headers = $this->headers;
 
         return self::exec($url, [], $headers, $method);
     }
 
-    public function getTemporalPDF(Invoice $invoice)
+    public function getTemporalPDF(Invoice $invoice, $tipoPapel = 0)
     {
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid); 
@@ -129,7 +129,7 @@ class DTEService
             $customerUid . '/' .
             $invoice->invoice_type->code . '/' . 
             $invoice->dte_code . '/' .
-            $sellerUid . '?cotizacion=0&papelContinuo=0&compress=0';
+            $sellerUid . '?cotizacion=0&papelContinuo=' . $tipoPapel . '&compress=0';
 
         $headers = $this->headers;
 

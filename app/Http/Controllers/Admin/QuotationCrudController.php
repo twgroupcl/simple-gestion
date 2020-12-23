@@ -96,7 +96,10 @@ class QuotationCrudController extends CrudController
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Activa' || $column['text'] == 'Aceptado' || $column['text'] == 'Emitido') {
+                    if ($column['text'] == 'Activa' || 
+                        $column['text'] == 'Aceptado' || 
+                        $column['text'] == 'Emitido' ||
+                        $column['text'] == 'Facturado') {
                         return 'badge badge-success';
                     }
                    
