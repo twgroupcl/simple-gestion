@@ -1,11 +1,40 @@
-@php
+{{-- @php
 use App\Models\Product;
-@endphp
-<div class="content" id="pos" wire:ignore.self>
+@endphp --}}
+<div class="content" wire:ignore.self>
 
 @handheld
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+    id="modal-confirm-pay">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Confirmar</h4>
+            </div>
+            <div class="modal-body">
+                <p>Este proceso generará una nueva orden y una factura electrónica.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal-btn-yes">Si</button>
+                <button type="button" class="btn btn-default" id="modal-btn-no">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cart-view" style="display: none;">
+    <div class="row">
+        <div class="col-12"><i class="la la-close float-right close-cart-view"></i></div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @include('livewire.pos.partials.cart')
+        </div>
+    </div>
+
+</div>
 {{-- Menu --}}
-<div class="menu-content h-100">
+<div class="menu-content h-100" style="display: none;">
     <div class="row ">
         <div class="col-12 text-right">
             <span class="close-mobile-menu m-2">
@@ -59,9 +88,9 @@ use App\Models\Product;
        </form>
         </div>
         <div class="col-2 p-0">
-            <span class="las la-shopping-cart" style="font-size:32px;">
+            <span class="las la-shopping-cart mobile-cart-view" style="font-size:32px;">
             @if ($cartproducts) <span
-                class="custom-badge badge-cart-view">{{ count($cartproducts) }}</span>
+                class="custom-badge badge-cart-view" >{{ count($cartproducts) }}</span>
             @else
             <span
                 class="custom-badge">0</span>
@@ -82,7 +111,7 @@ use App\Models\Product;
     <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
     </div>
 </div>
-<div class="pay-content h-25">
+<div class="cart-buttons h-25">
     <div class="row fixed-bottom">
         <div class="col-6 p-1">
             <button class="btn btn-danger btn-block btn-customer">
@@ -152,6 +181,7 @@ use App\Models\Product;
         </div>
     </div>
 </div>
+
 <div class="row ">
     {{-- Sidebar--}}
     <div class="col-1">
@@ -217,93 +247,55 @@ use App\Models\Product;
                 </div>
             </div>
             <div class="col-4">
-                <div class="h-100">
+                <div class="vh-100">
                     <div class="col-12 h-50 overflow-auto">
-                        @if (!is_null($cartproducts))
-                            @foreach ($cartproducts as $id => $cartproduct)
-                                @php
-                                $product = Product::whereId($id)->first();
-                                $qty = $cartproduct['qty'];
-                                @endphp
-                                @if ($product)
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <h6 class="product-title font-size-base mb-2"><a
-                                                    href="{{ route('product', ['slug' => $product->url_key]) }}"
-                                                    target="_blank">{{ $product->name }}</a></h6>
-                                        </div>
-                                        <div class="col-3">
-                                            <a wire:click="removeProductCart( {{ $id }})" href="#"><i
-                                                    class="la la-trash"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <a @if ($qty <= 1) class="disabled-link"
-                                @endif wire:click="updateQty({{ $id }},-1)">
-                                <i class="la la-minus-circle"></i>
-                                </a>
+                        @include('livewire.pos.partials.cart')
                     </div>
-                    <div class="col-md-2 text-center">{{ $qty }}</div>
-                    <div class="col-md-1">
-                        <a wire:click="updateQty({{ $id }},1)"><i class="la la-plus-circle"></i></a>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <small><strong>{{ currencyFormat($product->real_price ?? 0, 'CLP', true) }}</strong> por
-                            unidad</small>
-                    </div>
-                    <div class="col-md-3  text-right">
-                        <small><strong>{{ currencyFormat($product->real_price * $qty ?? 0, 'CLP', true) }}</strong>
-                        </small>
-                    </div>
-                    @endif
-                    @endforeach
-                    @endif
-                </div>
-            </div>
-            <div class=" col-12  h-50">
-                <div class='row col-md-12 p-0 m-0'>
-                    <div class="col-md-6 border border-dark">
-                        <div class="border-right-0"> SubTotal</div>
-                    </div>
-                    <div class="col-md-6 border border-dark">
-                        <div class="  text-right">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</div>
-                    </div>
-                </div>
-                <div class='row col-md-12 p-0 m-0'>
-                    <div class="col-md-6 border border-dark">
-                        <div class="  border-top-0 border-bottom-0 border-right-0"> Descuento</div>
-                    </div>
-                    <div class="col-md-6 border border-dark">
-                        <input wire:model="discount" type="number" name="discount" id="discount" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
-                    </div>
-                </div>
-                <div class='row col-md-12 p-0 m-0'>
-                    <div class="col-md-6 border border-dark">
-                        <div class="  border-right-0"> Total</div>
-                    </div>
-                    <div class="col-md-6 border border-dark">
-                        <div class=" text-right">{{ currencyFormat($total ?? 0, 'CLP', true) }}</div>
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <button class="btn btn-danger btn-block btn-customer">
-                            @if (session()->get('user.pos.selectedCustomer'))
-                                {{ session()->get('user.pos.selectedCustomer')->first_name }}
-                                {{ session()->get('user.pos.selectedCustomer')->last_name }}
-                            @else
-                                Seleccionar Cliente
-                            @endif
-                        </button>
 
-                        <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar
-                        </button>
+
+                    <div class=" col-12  h-50">
+                        <div class='row col-md-12 p-0 m-0'>
+                            <div class="col-md-6 border border-dark">
+                                <div class="border-right-0"> SubTotal</div>
+                            </div>
+                            <div class="col-md-6 border border-dark">
+                                <div class="  text-right">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</div>
+                            </div>
+                        </div>
+                        <div class='row col-md-12 p-0 m-0'>
+                            <div class="col-md-6 border border-dark">
+                                <div class="  border-top-0 border-bottom-0 border-right-0"> Descuento</div>
+                            </div>
+                            <div class="col-md-6 border border-dark">
+                                <input wire:model="discount" type="number" name="discount" id="discount" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
+                            </div>
+                        </div>
+                        <div class='row col-md-12 p-0 m-0'>
+                            <div class="col-md-6 border border-dark">
+                                <div class="  border-right-0"> Total</div>
+                            </div>
+                            <div class="col-md-6 border border-dark">
+                                <div class=" text-right">{{ currencyFormat($total ?? 0, 'CLP', true) }}</div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <button class="btn btn-danger btn-block btn-customer">
+                                    @if (session()->get('user.pos.selectedCustomer'))
+                                        {{ session()->get('user.pos.selectedCustomer')->first_name }}
+                                        {{ session()->get('user.pos.selectedCustomer')->last_name }}
+                                    @else
+                                        Seleccionar Cliente
+                                    @endif
+                                </button>
+
+                                <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 </div>
 </div>
 {{-- Footer --}}
@@ -383,15 +375,18 @@ use App\Models\Product;
         confirmPay = $('#confirm-pay')
 
 
+
         spanCash.text('$0')
         spanChange.text('$0')
 
         confirmPay.prop("disabled", true);
 
+
         $('.payment-view').hide();
 
         // Calc
         function chr(value) {
+            console.log(value)
             tmpTotalCart = clearCurrency(totalCart)
             tmpCash = clearCurrency(spanCash)
 
@@ -444,20 +439,12 @@ use App\Models\Product;
 
 
 
-        $('#btn-pay').click(function() {
-            $('.payment-view').show();
-            $('.main-view').hide();
-        });
 
-        $('#close-payment').click(function() {
-            $('.main-view').show();
-            $('.payment-view').hide();
-        });
 
-        $('.btn-customer').click(function() {
-            $('.customer-view').show();
-            $('.main-view').hide();
-        });
+
+
+
+
 
         @handheld
             $('header').hide()
@@ -465,73 +452,122 @@ use App\Models\Product;
             $('.menu-content').hide()
             $('.container-fluid').addClass('p-1')
 
+            $('.btn-customer').click(function() {
+                $('.customer-view').show();
+                $('.main-view').hide();
+
+            });
+
+            $('#btn-pay').click(function() {
+                $('.payment-view').show();
+                $('.main-view').hide();
+                $('.cart-buttons').hide();
+            });
+
+            $('#close-payment').click(function() {
+                $('.main-view').show();
+                $('.payment-view').hide();
+                $('.cart-buttons').show();
+            });
 
             $('.menu-mobile').click(function(){
-                    $('.menu-content').show()
+               $('.menu-content').show()
             })
 
             $('.close-mobile-menu').click(function(){
-                $('.menu-content').hide()
+               $('.menu-content').hide()
+            })
+
+            $('.mobile-cart-view').click(function(){
+               $('.cart-view').show()
+               $('.main-view').hide()
+               $('.header-pos').hide()
             })
 
 
-        //Menu actions
-
-        $('.link-pos').click(function() {
-            $('.main-view').show();
-            $('.customer-view').hide();
-            $('.sales-view').hide();
-            $('.menu-content').hide()
+            $('.close-cart-view').click(function(){
+               $('.cart-view').hide()
+               $('.main-view').show()
+               $('.header-pos').show()
+            })
 
 
-        });
+            //Menu actions
 
-        $('.link-sale').click(function() {
-            $('.sales-view').show();
-            $('.main-view').hide();
-            $('.customer-view').hide();
-            $('.menu-content').hide()
-        });
+            $('.link-pos').click(function() {
+                $('.main-view').show();
+                $('.customer-view').hide();
+                $('.sales-view').hide();
+                $('.menu-content').hide()
+                //change search
+                $('.search-customers').hide();
+                $('.search-products').show();
 
-        $('.link-customer').click(function() {
-            $('.customer-view').show();
-            $('.main-view').hide();
-            $('.sales-view').hide();
-            $('.menu-content').hide()
 
-            //change search
-            $('.search-customers').show();
-            $('.search-products').hide();
-        });
+            });
+
+            $('.link-sale').click(function() {
+                $('.sales-view').show();
+                $('.main-view').hide();
+                $('.customer-view').hide();
+                $('.menu-content').hide()
+            });
+
+            $('.link-customer').click(function() {
+                $('.customer-view').show();
+                $('.main-view').hide();
+                $('.sales-view').hide();
+                $('.menu-content').hide()
+
+                //change search
+                $('.search-customers').show();
+                $('.search-products').hide();
+            });
 
         @elsehandheld
             $('header').show()
             $('footer').show()
              //Menu actions
 
-        $('.link-pos').click(function() {
-            $('.main-view').show();
-            $('.customer-view').hide();
-            $('.sales-view').hide();
-            //change search
-            $('.search-customers').hide();
-            $('.search-products').show();
+            $('.link-pos').click(function() {
+                $('.main-view').show();
+                $('.customer-view').hide();
+                $('.sales-view').hide();
+                //change search
+                $('.search-customers').hide();
+                $('.search-products').show();
 
 
-        });
+            });
 
-        $('.link-sale').click(function() {
+            $('.link-sale').click(function() {
 
-            $('.sales-view').show();
-            $('.main-view').hide();
-            $('.customer-view').hide();
-        });
+                $('.sales-view').show();
+                $('.main-view').hide();
+                $('.customer-view').hide();
+            });
 
-        $('.link-customer').click(function() {
-            $('.customer-view').show();
-            $('.main-view').hide();
-            $('.sales-view').hide();
-        });
+            $('.link-customer').click(function() {
+                $('.customer-view').show();
+                $('.main-view').hide();
+                $('.sales-view').hide();
+            });
+
+            $('.btn-customer').click(function() {
+                $('.customer-view').show();
+                $('.main-view').hide();
+            });
+
+            $('#close-payment').click(function() {
+                $('.main-view').show();
+                $('.payment-view').hide();
+            });
+
+            $('#btn-pay').click(function() {
+                $('.payment-view').show();
+                $('.main-view').hide();
+            });
+
 
         @endhandheld
 
