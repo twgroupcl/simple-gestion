@@ -5,7 +5,9 @@ namespace App\Models;
 use DateTime;
 use Exception;
 use DateInterval;
+use App\Models\Invoice;
 use App\Models\Quotation;
+use App\Models\InvoiceItem;
 use Illuminate\Support\Str;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\DB;
@@ -400,32 +402,65 @@ class Product extends Model
         return $attributes;
     }
 
-    public function haveSufficientQuantity($qty)
+    /**
+     * Check if the product have sufficient quantity on stock
+     * 
+     * @param $qty quantity of unit to check on stock
+     * @param $modelToIgnore the name of the Model to ignore
+     * @param $ignoreEntryId id of the entry that will be ignore
+     * 
+     * @return boolean
+     * 
+     */
+    public function haveSufficientQuantity($qty, $modelToIgnore = null, $ignoreEntryId = null)
     {
         $total = 0;
 
-        // If the product dont use inventory, just return true
         if (!$this->use_inventory_control) {
             return true;
         }
 
-        // If configurable product, check inventory on children products
+        // If  is a configurable product, check stock on children products
         if ($this->product_type->id == self::PRODUCT_TYPE_CONFIGURABLE) {
             $result = false;
+
             foreach ($this->children as $children) {
                 if ($children->haveSufficientQuantity($qty)) $result = true;
             }
+
             return $result;
         }
 
        $total += $this->totalQtyOnInventories();
 
-        // Qty in accepted quotations
+        // Total qty on accepted quotations
         $itemsInQuotations = QuotationItem::whereHas('quotation', function ($query) {
             return $query->where('quotation_status', Quotation::STATUS_ACCEPTED);
-        })->where('product_id', $this->id)->get();
+        })->where('product_id', $this->id);
 
-        foreach($itemsInQuotations as $item) {
+        if ($modelToIgnore == 'Quotation' && !is_null($ignoreEntryId)) {
+            $itemsInQuotations->where('quotation_id', '!=', $ignoreEntryId);
+        }
+
+        $itemsInQuotations = $itemsInQuotations->get();
+
+        foreach ($itemsInQuotations as $item) {
+            $total -= $item->qty;
+        }
+
+        // Total qty on temporal or draft invoices
+        $itemsInInvoices = InvoiceItem::whereHas('invoice', function ($query) {
+            return $query->where('invoice_status', Invoice::STATUS_TEMPORAL)
+                        ->orWhere('invoice_status', Invoice::STATUS_DRAFT);
+        })->where('product_id', $this->id);
+
+        if ($modelToIgnore == 'Invoice' && !is_null($ignoreEntryId)) {
+            $itemsInInvoices->where('invoice_id', '!=', $ignoreEntryId);
+        }
+
+        $itemsInInvoices = $itemsInInvoices->get();
+
+        foreach ($itemsInInvoices as $item) {
             $total -= $item->qty;
         }
 
