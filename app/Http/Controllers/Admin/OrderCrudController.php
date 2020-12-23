@@ -813,7 +813,11 @@ class OrderCrudController extends CrudController
                 return response()->json('Esta orden no ha emitido ninguna boleta', 200);
             }
 
-            return redirect()->to('admin/invoice/'.$invoice->id.'/send-temporary-document');
+            //return redirect()->to('admin/invoice/'.$invoice->id.'/send-temporary-document');
+            return redirect()->route('invoice.generate-temp-real-document', [
+                'invoice' => $invoice,
+                'tipoPapel' => $request->input('tipoPapel') 
+                ]);
 
         } catch (Exception $e) {
             logger($e->getMessage());
