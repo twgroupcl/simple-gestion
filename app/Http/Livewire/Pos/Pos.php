@@ -260,7 +260,11 @@ class Pos extends Component
             return $product['real_price'] * $product['qty'];
         });
 
-        $this->total = $this->subtotal - $this->discount;
+        if ($this->discount > $this->subtotal) {
+            $this->discount = $this->subtotal;
+        }
+
+        $this->total = (float) $this->subtotal - (float) $this->discount;
 
         $cart['products'] = $this->cartproducts;
         $cart['subtotal'] = $this->subtotal;

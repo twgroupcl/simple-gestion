@@ -267,7 +267,7 @@ use App\Models\Product;
                                 <div class="  border-top-0 border-bottom-0 border-right-0"> Descuento</div>
                             </div>
                             <div class="col-md-6 border border-dark">
-                                <input wire:model="discount" type="number" name="discount" id="discount" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
+                                <input wire:model="discount" type="number" name="discount" id="discount" placeholder="0" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
                             </div>
                         </div>
                         <div class='row col-md-12 p-0 m-0'>
