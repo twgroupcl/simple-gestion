@@ -104,11 +104,15 @@ class ManageInvoiceCrudController extends CrudController
         if (!isset($invoice->dte_code)) {
             return redirect('index');
         }
+        
+        $tipoPapel = $request->input('tipoPapel') ?? 0;
+        
         $service = new DTEService();
+        
         if (isset($invoice->folio)) {
-            $response = $service->getRealPDF($invoice);
+            $response = $service->getRealPDF($invoice, $tipoPapel);
         } else {
-            $response = $service->getTemporalPDF($invoice);
+            $response = $service->getTemporalPDF($invoice, $tipoPapel);
         }
 
         $pdfContent = $response->getBody()->getContents();

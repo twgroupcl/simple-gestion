@@ -120,7 +120,7 @@ class DTEService
         return self::exec($url, [], $headers, $method);
     }
 
-    public function getTemporalPDF(Invoice $invoice)
+    public function getTemporalPDF(Invoice $invoice, $tipoPapel = 0)
     {
         $method = 'GET';
         $customerUid = rutWithoutDV($invoice->uid); 
@@ -129,7 +129,7 @@ class DTEService
             $customerUid . '/' .
             $invoice->invoice_type->code . '/' . 
             $invoice->dte_code . '/' .
-            $sellerUid . '?cotizacion=0&papelContinuo=0&compress=0';
+            $sellerUid . '?cotizacion=0&papelContinuo=' . $tipoPapel . '&compress=0';
 
         $headers = $this->headers;
 
