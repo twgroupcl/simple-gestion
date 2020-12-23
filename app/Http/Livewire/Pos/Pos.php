@@ -51,18 +51,19 @@ class Pos extends Component
         $this->validateBox();
 
         //Check if exist session cart
-        // if (session()->get('user.pos.cart')) {
-        //     dd('con sesion');
-        // }else{
+        if (session()->get('user.pos.cart')) {
+            $tmpCart = json_decode(session()->get('user.pos.cart'));
 
-        //     $this->cart =  (array)[
-        //         'products'=>[],
-        //         'total'=>0,
-        //         'subtotal'=>0,
+            $tmpProducts = $tmpCart->products;
+            $this->cartproducts = [];
 
-        //     ];
-
-        // }
+            foreach ($tmpProducts as $product) {
+                $this->cartproducts[$product->product->id]['qty'] = $product->qty;
+                $this->cartproducts[$product->product->id]['product'] = (array) $product->product;
+                $this->cartproducts[$product->product->id]['real_price'] = $product->real_price;
+            }
+            $this->calculateAmounts();
+        }
 
         if (session()->get('user.pos.selectedCustomer')) {
             $this->customer = session()->get('user.pos.selectedCustomer');

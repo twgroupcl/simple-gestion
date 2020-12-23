@@ -37,8 +37,9 @@ class CustomerView extends Component
     {
         $this->customers = Customer::where(DB::raw("CONCAT(`first_name`, ' ', `last_name`)"), 'LIKE', "%{$this->search}%")
                                     ->orWhere('uid', 'LIKE', "%{$this->search}%")
-                                    ->where('email', '!=', 'cliente_generico@twgroup.com')
-                                    ->paginate(10);
+                                    ->where('email', '!=', 'cliente_generico@twgroup.com')->get();
+                                   // ->paginate(10);
+
     }
 
     public function showCustomer(Customer $customer)
