@@ -160,7 +160,14 @@ use App\Models\Product;
 
 <div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
     <div class="modal-dialog modal-lg">
-        @livewire('pos.customer.create-address-form', [], key(time().'address'.$seller->id))
+        @livewire('pos.customer.create-address-form', [], key(time().'.address.'.$seller->id))
+    </div>
+</div>
+
+<div wire:ignore.self class="modal fade" id="showCustomerModal" tabindex="-1" role="dialog"
+    aria-labelledby="createCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        @livewire('pos.customer.create-customer', [], key(time().'.customer.'.$seller->id))
     </div>
 </div>
 
