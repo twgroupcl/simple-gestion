@@ -54,7 +54,7 @@ class QuotationCreateRequest extends FormRequest
                 foreach($items as $item) {
                     if ($item['product_id']) {
                         $product = Product::find($item['product_id']); 
-                        if (!$product->haveSufficientQuantity($item['qty'])) {
+                        if (!$product->haveSufficientQuantity($item['qty'], 'Quotation', $this->id)) {
                             return $fail('No tienes suficiente stock del producto "' . $product->name .'"');
                         }
                     }

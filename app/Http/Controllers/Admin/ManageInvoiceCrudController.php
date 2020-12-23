@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\InvoiceRequest;
+use Exception;
+use App\Models\Quotation;
 use Illuminate\Http\Request;
+use App\Services\DTE\DTEService;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\InvoiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Invoice, InvoiceType, CustomerAddress, Payments};
-use App\Services\DTE\DTEService;
-use Illuminate\Support\Facades\Gate;
 
 /**
  * Class InvoiceCrudController
@@ -148,7 +150,15 @@ class ManageInvoiceCrudController extends CrudController
             if ($invoice->invoice_status === Invoice::STATUS_SEND && $invoice->way_to_payment === 2) {
                 $payment = Payments::insertDataInvoices($invoice);
             }
-            #ddd($contentResponse, $response);
+
+            if (!empty($invoice->json_value['quotation_id'])) {
+                $quotation = Quotation::find($invoice->json_value['quotation_id']);
+                if ($quotation) {
+                    $quotation->quotation_status = Quotation::STATUS_INVOICED;
+                    $quotaiton->updateWithoutEvents();
+                }
+            }
+
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
         }
 
@@ -163,7 +173,7 @@ class ManageInvoiceCrudController extends CrudController
         $response = $service->getDteUpdatedStatus($invoice);
         
         if ($response->getStatusCode() != 200) {
-            \Alert::add('warning', 'Hubo algun problema al consultar el estado del documento.')->flash();
+            \Alert::add('warning', 'Hubo algun problema al consultar el estado del documento. Intentalo mas tarde')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
