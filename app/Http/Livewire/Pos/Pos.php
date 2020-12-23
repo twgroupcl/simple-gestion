@@ -41,6 +41,7 @@ class Pos extends Component
         'viewModeChanged' => 'setView',
         'add-product-cart:post' => 'addProduct',
         'customerSelected' => 'setCustomer',
+        'confirmPayment' => 'confirmPayment',
 
     ];
 

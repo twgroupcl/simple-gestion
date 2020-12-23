@@ -1,7 +1,7 @@
 @php
 use App\Models\Product;
 @endphp
-<div class="content" wire:ignore.self>
+<div class="content" id="pos" wire:ignore.self>
 
 @handheld
 {{-- Menu --}}
@@ -129,8 +129,13 @@ use App\Models\Product;
 {{-- Payment view --}}
 @include('livewire.pos.partials.payment')
 
+<div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
+    <div class="modal-dialog modal-lg">
+        @livewire('pos.customer.create-address-form', [], key(time().'address'.$seller->id))
+    </div>
+</div>
 
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+<div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     id="modal-confirm-pay">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -145,11 +150,6 @@ use App\Models\Product;
                 <button type="button" class="btn btn-default" id="modal-btn-no">No</button>
             </div>
         </div>
-    </div>
-</div>
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
-    <div class="modal-dialog modal-lg">
-        @livewire('pos.customer.create-address-form')
     </div>
 </div>
 <div class="row ">
@@ -545,7 +545,8 @@ use App\Models\Product;
             const modalConfirm = function(callback) {
 
                 $("#confirm-pay").on("click", function() {
-                    $("#modal-confirm-pay").appendTo("body").modal('show');
+                    confirmPayment()
+                    // $("#modal-confirm-pay").appendTo("body").modal('show');
                 });
 
                 $("#modal-btn-yes").on("click", function() {
@@ -569,10 +570,21 @@ use App\Models\Product;
                     totalCash = parseFloat(totalCash)
 
                     await @this.confirmPayment(totalCash)
+                    // Livewire.emit('confirmPayment', totalCash)
                     $('.payment-view').hide();
 
                 }
             });
+
+            const confirmPayment = async() => {
+                let totalCash = $('.total-cash').text()
+                    totalCash = totalCash.replace('$', '')
+                    totalCash = totalCash.replace(/\./g, '')
+                    totalCash = parseFloat(totalCash)
+
+                    await @this.confirmPayment(totalCash)
+                    $('.payment-view').hide();
+            }
         })
 
     </script>
