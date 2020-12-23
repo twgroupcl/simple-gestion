@@ -155,11 +155,16 @@ class InventoryCrudController extends CrudController
             0 => 'Sin inventario',
             1 => 'Con inventario',
           ], function($value) {
+            if ($value == 0) {
+                $this->crud->addClause('whereDoesntHave', 'inventories', function ($query) use ($value) {
+                    return $query->where('qty', '!=', 0);
+                });
+            } else {
+                $this->crud->addClause('whereHas', 'inventories', function ($query) use ($value) {
+                    return $query->where('qty', '!=', 0);
+                });
+            }
             
-            $this->crud->addClause('whereHas', 'inventories', function ($query) use ($value) {
-                $filterLogic = $value == 0 ? '=' : '!=';
-                return $query->where('qty', $filterLogic, 0);
-            });
         });
 
         $this->crud->addFilter([

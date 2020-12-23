@@ -240,4 +240,103 @@ class ManageInvoiceCrudController extends CrudController
         return redirect()->to('admin/invoice/' . $creditNote->id . '/edit');
         
     }
+
+    public function generateTemporalAndRealDocument(Request $request, Invoice $invoice)
+    {
+        $tipoPapel = $request->input('tipoPapel') ?? 0;
+
+        if ($invoice->folio) {
+            return redirect()->route('invoice.get-pdf', ['invoice' => $invoice, 'tipoPapel' => $tipoPapel]);
+        }
+
+        if (! isset($invoice->invoice_type)) {
+            \Alert::add('danger', 'No ha determinado el tipo de documento')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        // Check inventory of items
+        foreach($invoice->invoice_items as $item) {
+            if ($item['product_id']) {
+                $product = Product::find($item['product_id']); 
+                if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
+                    \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
+                    return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+                }
+            }
+        }
+
+        $service = new DTEService();
+
+        // Check if emisor have folios. "disponibles >0 "
+        if (!$service->foliosAvailables($invoice)) {
+            \Alert::add('warning', 'No hay folios disponibles')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        if (!$invoice->dte_code) {
+            $response = $service->tempDocument($invoice);
+            
+            if ($response->getStatusCode() === 200) {
+                $content = json_decode($response->getBody()->getContents(), true);
+                $code = array_key_exists('codigo', $content) ? $content['codigo'] : null;
+
+                if (empty($content) || empty($code)) {
+                    //@todo problem with values ??? decimals in number_format
+                    \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
+                    return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+                }
+
+                $invoice->invoice_status = Invoice::STATUS_TEMPORAL;
+                $invoice->dte_code = $code;
+                $invoice->updateWithoutEvents();
+
+                \Alert::add('success', 'Se ha enviado el documento tempora con éxito')->flash();
+            } else {
+                \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
+                return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+            }
+        }
+
+        if (!isset($invoice->dte_code)) {
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        $response = $service->generateDTE($invoice);
+
+        if ($response->getStatusCode() === 200) {
+            $contentResponse = $response->getBody()->getContents();
+            $contentResponse = json_decode($contentResponse, true);
+
+            if (array_key_exists('folio', $contentResponse)) {
+                $invoice->folio = $contentResponse['folio'];
+                $invoice->invoice_status = Invoice::STATUS_SEND;
+            }
+            
+            $invoice->updateWithoutEvents();
+
+            // Reduce inventory
+            try {
+                $invoice->reduceInventoryOfItems();
+            } catch (Exception $exception) {
+                \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
+            }
+
+            if ($invoice->invoice_status === Invoice::STATUS_SEND && $invoice->way_to_payment === 2) {
+                $payment = Payments::insertDataInvoices($invoice);
+            }
+
+            if (!empty($invoice->json_value['quotation_id'])) {
+                $quotation = Quotation::find($invoice->json_value['quotation_id']);
+                if ($quotation) {
+                    $quotation->quotation_status = Quotation::STATUS_INVOICED;
+                    $quotation->updateWithoutEvents();
+                }
+            }
+
+           return redirect()->route('invoice.get-pdf', ['invoice' => $invoice, 'tipoPapel' => $tipoPapel]);
+        }
+
+        \Alert::add('warning', 'Hubo algun problema al generar el documento.')->flash();
+        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+    }
 }
