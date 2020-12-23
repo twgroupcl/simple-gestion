@@ -30,7 +30,7 @@ class ProductCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:255',
+            'name' => 'required|min:1|max:255',
             'categories' => 'required',
             'sku' => [
                 'required',
@@ -100,6 +100,8 @@ class ProductCreateRequest extends FormRequest
     {
         return [
             '*.required*' => 'Es necesario completar el campo :attribute.',
+            '*.min' => 'El campo :attribute requiere como minimo :min caracteres',
+            '*.max' => 'El campo :attribute requiere como maximo :max caracteres',
         ];
     }
 }

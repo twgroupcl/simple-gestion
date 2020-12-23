@@ -259,7 +259,7 @@
                 let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
                 
                 let subTotalValue = (price * itemQty) 
-                let totalValue = ( (price * itemQty) - discountItem)
+                let totalValue = getRounded(( (price * itemQty) - discountItem))
                 
                 subTotal.val(formatWithComma(totalValue))
 
@@ -287,11 +287,11 @@
             let items = $('div[data-repeatable-holder="items_data"]').children()
             let itemsData = calculateItemsData(items)
 
-            let subTotalGeneral = itemsData.totalValue
+            let subTotalGeneral = getRounded(itemsData.totalValue)
             
-            let totalDiscountGlobal = itemsData.totalDiscountGlobal
-            let totalVaxItems = itemsData.totalVaxItem
-            let totalVaxGeneral = itemsData.totalVaxGeneral
+            let totalDiscountGlobal = getTruncated(itemsData.totalDiscountGlobal)
+            let totalVaxItems = getRounded(itemsData.totalVaxItem)
+            let totalVaxGeneral = getRounded(itemsData.totalVaxGeneral)
 
             if (invoiceType === 'H') { //TO DO Honorarios??
                 $('input[name="tax_amount"]').val( (-1) * totalVaxGeneral)
@@ -357,13 +357,43 @@
             if (typeof number == 'number') {
                 number = parseFloat(number).toFixed(2);
             }
-            number = number.toString()
+            
+            number = parseFloat(number).toFixed(0)
+            //number = number.toString()
             number = number.replace('.', ',')
             number = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             return number;
         }
 
+        function getRounded(value) {
+            var result = parseFloat(value);
+            result = Math.round(result);
+            return result;
+        }
 
+        function getTruncated(value) {
+            var result = parseFloat(value);
+            result = Math.trunc(result);
+            return result;
+        }
+
+        function checkTypeTax() {
+            switch (invoiceType){
+                case '33':
+                case '39':
+                case 'H':
+                    $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                        $(this).prop('disabled', false);
+                    })
+                    break;
+                default:
+                    $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                        $(this).val(0).trigger('change');
+                        $(this).prop('disabled', true);
+                    })
+                    break;
+            }
+        }
 
 
         /**********************************************
@@ -374,9 +404,14 @@
 
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
             calculateTotals();
+            checkTypeTax()
         });
     
         $(document).on('keyup', 'input[data-repeatable-input-name="qty"]', function () {
+            calculateTotals();
+        });
+
+        $(document).on('blur', 'input[data-repeatable-input-name="qty"]', function () {
             calculateTotals();
         });
 
@@ -453,7 +488,24 @@
 
         $(document).ready( function() {
             calculateTotals();
+            checkTypeTax();
         })
 
     </script> 
+@endpush
+
+@push('after_styles')
+<style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
 @endpush

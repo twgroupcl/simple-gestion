@@ -36,7 +36,7 @@ class ProductUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:255',
+            'name' => 'required|min:1|max:255',
             'sku' => [
                 'required',
                 Rule::unique('products')->where( function($query) {
@@ -137,6 +137,8 @@ class ProductUpdateRequest extends FormRequest
     {
         return [
             '*.required*' => 'Es necesario completar el campo :attribute.',
+            'name.min' => 'El campo :attribute requiere como minimo :min caracteres',
+            'name.max' => 'El campo :attribute requiere como maximo :max caracteres',
         ];
     }
 

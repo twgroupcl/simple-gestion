@@ -53,7 +53,7 @@ class InvoiceCrudController extends CrudController
         $company = backpack_user()->current()->company->id; 
         $company = Company::find($company);
         $this->emitter = $company;
-        $this->crud->addClause('where', 'company_id', $company);
+        $this->crud->addClause('where', 'company_id', $company->id);
 
         $this->crud->denyAccess('show');
 
@@ -218,6 +218,7 @@ class InvoiceCrudController extends CrudController
             'name' => 'customer_id',
             'type' => 'relationship',
             'entity' => 'customer',
+            'attribute' => 'full_name_with_uid',
             'placeholder' => 'Selecciona un cliente',
             'wrapper' => [
                 'class' => 'form-group col-md-6',
@@ -328,7 +329,7 @@ class InvoiceCrudController extends CrudController
 
         CRUD::addField([
             'type' => 'select2_from_array',
-            'options' => InvoiceType::all()->pluck('name','id'),
+            'options' => InvoiceType::active()->pluck('name','id')->sort(),
             'attribute' => 'name',
             'name' => 'invoice_type_id',
             'allows_null' => true,
@@ -337,6 +338,17 @@ class InvoiceCrudController extends CrudController
             'wrapper' => [
                 'class' => 'form-group col-md-3',
             ]
+        ]);
+
+        CRUD::addField([
+            'type' => 'text',
+            'store_in' => 'json_value',
+            'name' => 'quotation_id',
+            'fake' => true,
+            'wrapper' => [
+                'style' => 'display:none',
+            ],
+            'tab' => 'General',
         ]);
 
         CRUD::addField([
@@ -681,6 +693,7 @@ class InvoiceCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
         if ($this->crud->getCurrentEntry()->invoice_status == Invoice::STATUS_TEMPORAL) {
             \Alert::add('warning', 'El documento temporal se eliminará si guarda cambios');
         }

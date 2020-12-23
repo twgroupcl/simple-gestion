@@ -79,6 +79,18 @@
 @endphp
 @endcan
 
+@can('doUpdateDocumentStatus', $invoice)
+@php
+    Widget::add([
+        'type' => 'view',
+        'view' => 'invoice.manage_invoice.update_dte_status',
+        'wrapper' => [
+            'class' => 'mr-1 mb-2',
+        ]
+    ]);
+@endphp
+@endcan
+
 @can('doDownloadRealPDF', $invoice)
 @php
     Widget::add([

@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-3">
                 <p><strong>Total: </strong>
-                    {{$invoice->total}}
+                    {{ currencyFormat($invoice->total, defaultCurrency(), true) }}
                 </p>
             </div>
             <div class="col-md-3">
@@ -27,5 +27,23 @@
                 </p>
             </div>
         </div>
+        @if ($invoice->dte_status)
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    <strong>Estado del documento (detalle):</strong>
+                    {{ $invoice->dte_status['revision_detalle'] }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    <strong>Estado del documento (estado):</strong>
+                    {{ $invoice->dte_status['revision_estado'] }}
+                </p>
+            </div>
+        </div>
+        @endif
     </div>
 </div>

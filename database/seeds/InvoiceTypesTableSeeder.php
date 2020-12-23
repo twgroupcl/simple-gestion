@@ -116,6 +116,26 @@ class InvoiceTypesTableSeeder extends Seeder
                 'name' => 'Nota de Crédito de Exportación',
                 'updated_at' => '2020-08-22 10:46:36',
             ),
+            9 => 
+            array (
+                'code' => 39,
+                'country_id' => 43,
+                'created_at' => '2020-08-22 10:46:36',
+                'deleted_at' => NULL,
+                'description' => NULL,
+                'name' => 'Boleta electrónica',
+                'updated_at' => '2020-08-22 10:46:36',
+            ),
+            10 => 
+            array (
+                'code' => 41,
+                'country_id' => 43,
+                'created_at' => '2020-08-22 10:46:36',
+                'deleted_at' => NULL,
+                'description' => NULL,
+                'name' => 'Boleta no afecta o exenta electrónica',
+                'updated_at' => '2020-08-22 10:46:36',
+            ),
         ));
         
         

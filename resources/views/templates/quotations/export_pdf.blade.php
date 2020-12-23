@@ -261,10 +261,12 @@
                                 <td align="right" class="size-totals"><strong>Subtotal $</strong></td>
                                 <td align="right">{{ currencyFormat($quotation->sub_total, 'CLP', true)  }}</td>
                             </tr>
+                            @if ($quotation->discount_amount > 0)
                             <tr>
                                 <td align="right" class="size-totals"><strong>Descuento general $</strong></td>
                                 <td align="right">-{{ currencyFormat($quotation->discount_amount, 'CLP', true) }}</td>
                             </tr>
+                            @endif
                             @if ($quotation->tax_type == 'A')
                             <tr>
                                 <td align="right" class="size-totals"><strong>IVA $</strong></td>

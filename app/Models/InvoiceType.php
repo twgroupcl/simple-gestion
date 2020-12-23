@@ -41,6 +41,18 @@ class InvoiceType extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function scopeActive($query)
+    {
+        $activeTypes = [
+            33,
+            39,
+            41,
+            34,
+        ];
+        
+        return $query->whereIn('code', $activeTypes);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS

@@ -11,6 +11,12 @@ use Backpack\Settings\app\Models\Setting;
 
 class ProductObserver
 {
+
+    public function creating(Product $product)
+    {
+        $product->is_approved = 1;
+    }
+
     /**
      * Handle the product "created" event.
      *

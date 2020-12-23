@@ -100,6 +100,40 @@
 @push('after_scripts')
     <script>
 
+        function getCodeDTE(id) {
+            if (id.length <= 0) {
+                return 'asd';
+            }
+
+            var type = invoiceTypeArray.filter( item => {
+                return item.id == id
+            })
+
+            if (type.length === 0) return;
+
+            return type[0]['code'];
+        }
+
+        function changeTaxType() {
+            let invoiceTypeCode =  getCodeDTE($('select[name="invoice_type_id"]').val()).toString();
+            let taxType;
+
+            switch (invoiceTypeCode) {
+                case '33':
+                case '39':
+                    taxType = 'A'
+                    break;
+                case 'H':
+                    taxType = 'H'
+                    break;
+                default:
+                    taxType = 'E'
+                    break;
+            }
+            console.log('aqui', taxType, invoiceTypeCode, $('select[name="invoice_type_id"]').val())
+            $('select[name="tax_type"]').val(taxType).trigger('change')
+        }
+
         function getTaxValue() {
             switch ($('select[name="tax_type"]').val()) {
                 case 'A':
@@ -142,8 +176,9 @@
             let taxIdField = item.find('.tax_id_field')
             let taxPercentField = item.find('.tax_percent_item')
             let taxTotalField = item.find('.tax_total_item')
+            let taxType = $('select[name="tax_type"]').val();
 
-            if  (taxIdField.val() == 0) { 
+            if  (taxIdField.val() == 0 || taxType == 'E') { 
                 taxPercentField.val(0)
                 taxAmountField.val(0)
                 taxTotalField.val(0)
@@ -264,13 +299,12 @@
 
 
         function calculateTotals() {
-
             let items = $('div[data-repeatable-holder="items_data"]').children()
             let itemsData = calculateItemsData(items)
 
             let subTotalGeneral = getRounded(itemsData.totalValue)
             
-            let totalDiscountGlobal = getRounded(itemsData.totalDiscountGlobal)
+            let totalDiscountGlobal = getTruncated(itemsData.totalDiscountGlobal)
             let totalVaxItems = getRounded(itemsData.totalVaxItem)
             let totalVaxGeneral = getRounded(itemsData.totalVaxGeneral)
 
@@ -352,6 +386,25 @@
             return result;
         }
 
+        function getTruncated(value) {
+            var result = parseFloat(value);
+            result = Math.trunc(result);
+            return result;
+        }
+
+        function checkTypeTax() {
+            if ($('select[name="tax_type"]').val() == 'E') {
+                $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                    $(this).val(0).trigger('change');
+                    $(this).prop('disabled', true);
+                })
+            } else {
+                $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                    $(this).prop('disabled', false);
+                })
+            }
+        }
+
 
 
 
@@ -362,10 +415,20 @@
         ***********************************************/
 
         $(document).on('change', 'select[name="tax_type"]', function () {
+            checkTypeTax();
+            calculateTotals();
+        });
+
+        $(document).on('change', 'select[name="invoice_type_id"]', function () {
+            changeTaxType();
             calculateTotals();
         });
     
         $(document).on('keyup', 'input[data-repeatable-input-name="qty"]', function () {
+            calculateTotals();
+        });
+
+        $(document).on('blur', 'input[data-repeatable-input-name="qty"]', function () {
             calculateTotals();
         });
 
@@ -441,8 +504,25 @@
         });
 
         $(document).ready( function() {
+            checkTypeTax();
             calculateTotals();
         })
 
     </script> 
+@endpush
+
+@push('after_styles')
+<style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
 @endpush
