@@ -139,10 +139,10 @@ use App\Models\Product;
 <div class="header-pos">
     <div class="row">
         <div class="col-4">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="boxSwitch" wire:model="checked">
+            <div wire:init="validateBox" class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="boxSwitch" @if($isSaleBoxOpen) checked="true" @endif>
                 <label class="custom-control-label" for="boxSwitch"
-                    style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">{{ $checked ? 'Caja abierta' : 'Caja cerrada' }}
+                    style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">{{ $isSaleBoxOpen ? 'Caja abierta' : 'Caja cerrada' }}
                 </label>
             </div>
             @isset($saleBox->opened_at)
@@ -239,6 +239,8 @@ use App\Models\Product;
     </div>
     {{-- Payment view --}}
     @include('livewire.pos.partials.payment')
+    {{-- Sale Box --}}
+    @include('livewire.pos.partials.sale-box')
     {{-- Confirm payment view --}}
     @include('livewire.pos.partials.confirm-payment')
     {{-- Confirm payment view --}}
@@ -644,6 +646,33 @@ use App\Models\Product;
                     $('.confirm-payment-view').hide();
                     $('.final-payment-view').show();
             }
+
+            // Sales Box
+            window.addEventListener('openSaleBoxView', event => {
+                $('.sale-box').show();
+                $('.main-view').hide();
+            })
+            window.addEventListener('closeSaleBoxView', event => {
+                $('.sale-box').hide();
+                $('.main-view').show();
+            })
+
+            $("#boxSwitch").change(async () => {
+                let checkbox = event.target
+                checkbox.checked = !checkbox.checked
+
+                await @this.validateBox();
+
+                $('.sale-box').show();
+                $('.main-view').hide();
+            })
+
+            $(".close-sale-box").click( function() {
+                $('.main-view').show();
+                $('.sale-box').hide();
+                $('.cart-buttons').show();
+            });
+
         })
 
     </script>

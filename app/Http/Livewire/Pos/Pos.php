@@ -13,9 +13,11 @@ use App\Models\Customer;
 use App\Models\OrderItem;
 use App\Models\InvoiceType;
 use App\Models\OrderPayment;
+use App\Models\SalesBox;
 use Illuminate\Support\Facades\DB;
 use Backpack\Settings\app\Models\Setting;
 use Exception;
+use Illuminate\Support\Facades\Validator;
 
 class Pos extends Component
 {
@@ -28,6 +30,9 @@ class Pos extends Component
     //salebox
     public $saleBox;
     public $checked;
+    public $opening_amount;
+    public $closing_amount;
+    public $remarks;
     public $isSaleBoxOpen = false;
     // cart
     public $cart;
@@ -207,13 +212,43 @@ class Pos extends Component
         $this->isSaleBoxOpen = optional($this->saleBox)->is_opened ?? false;
 
         $this->checked = isset($this->saleBox->id);
-        // if (! $this->isSaleBoxOpen) {
-        //    // $this->showSaleBoxModal();
-        //    dd('no hay caja abierta');
-        // } else {
-        //    // $this->emit('salesBoxUpdated', $this->saleBox->id);
-        //    dd('existe caja abierta');
-        // }
+        if (! $this->isSaleBoxOpen) {
+            $this->dispatchBrowserEvent('openSaleBoxModal');
+        }
+    }
+
+    public function updateBoxDetails(SalesBox $saleBox = null)
+    {
+        $this->saleBox = $saleBox;
+
+        $this->checked = isset($this->saleBox->id);
+    }
+
+    public function openSaleBox()
+    {
+        $this->saleBox = $this->seller->sales_boxes()->create([
+            'opening_amount' => $this->opening_amount,
+            'remarks' => $this->remarks,
+            'opened_at' => now(),
+        ]);
+
+        $this->isSaleBoxOpen = true;
+        $this->opening_amount = null;
+        $this->closing_amount = null;
+        $this->remarks = null;
+        $this->updateBoxDetails($this->saleBox);
+        $this->dispatchBrowserEvent('closeSaleBoxView');
+    }
+
+    public function closeSaleBox()
+    {
+        $this->saleBox->closing_amount = $this->closing_amount;
+        $this->saleBox->closed_at = now();
+        $this->saleBox->closing_amount = $this->saleBox->calculateClosingAmount();
+        $this->saleBox->save();
+        $this->isSaleBoxOpen = false;
+        $this->updateBoxDetails($this->saleBox);
+        $this->dispatchBrowserEvent('closeSaleBoxView');
     }
 
     // Cart Operations
