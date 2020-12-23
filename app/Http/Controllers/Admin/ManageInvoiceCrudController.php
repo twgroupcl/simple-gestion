@@ -248,7 +248,7 @@ class ManageInvoiceCrudController extends CrudController
         if ($invoice->folio) {
             return redirect()->route('invoice.get-pdf', ['invoice' => $invoice, 'tipoPapel' => $tipoPapel]);
         }
-        
+
         if (! isset($invoice->invoice_type)) {
             \Alert::add('danger', 'No ha determinado el tipo de documento')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
@@ -273,26 +273,28 @@ class ManageInvoiceCrudController extends CrudController
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
-        $response = $service->tempDocument($invoice);
+        if (!$invoice->dte_code) {
+            $response = $service->tempDocument($invoice);
+            
+            if ($response->getStatusCode() === 200) {
+                $content = json_decode($response->getBody()->getContents(), true);
+                $code = array_key_exists('codigo', $content) ? $content['codigo'] : null;
 
-        if ($response->getStatusCode() === 200) {
-            $content = json_decode($response->getBody()->getContents(), true);
-            $code = array_key_exists('codigo', $content) ? $content['codigo'] : null;
+                if (empty($content) || empty($code)) {
+                    //@todo problem with values ??? decimals in number_format
+                    \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
+                    return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+                }
 
-            if (empty($content) || empty($code)) {
-                //@todo problem with values ??? decimals in number_format
+                $invoice->invoice_status = Invoice::STATUS_TEMPORAL;
+                $invoice->dte_code = $code;
+                $invoice->updateWithoutEvents();
+
+                \Alert::add('success', 'Se ha enviado el documento tempora con éxito')->flash();
+            } else {
                 \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
                 return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
             }
-
-            $invoice->invoice_status = Invoice::STATUS_TEMPORAL;
-            $invoice->dte_code = $code;
-            $invoice->updateWithoutEvents();
-
-            \Alert::add('success', 'Se ha enviado el documento tempora con éxito')->flash();
-        } else {
-            \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
-            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
         if (!isset($invoice->dte_code)) {
