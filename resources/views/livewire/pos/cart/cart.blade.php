@@ -10,8 +10,6 @@
         @endif
     </div>
 
-
-
     <div class=" col-12  h-50">
 
         <div class='row col-md-12 p-0 m-0'>

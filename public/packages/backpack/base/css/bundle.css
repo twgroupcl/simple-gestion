@@ -52,3 +52,52 @@
     text-decoration: none;
     color: grey;
 }
+.custom-badge{
+    position: absolute;
+    top: -0.3125rem;
+    right: 1.6875rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background-color: #467fd0;
+    color: #fff;
+    font-size: 0.75rem;
+    text-align: center;
+    line-height: 1.25rem;
+}
+
+.menu-content{
+    position: absolute;
+    top:0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    z-index:9999;
+    background: rgba(72, 98, 163, 0.9);
+    -webkit-transition: 0.3s ease;
+    transition: 0.3s ease;
+}
+
+
+.menu-content{
+    position: absolute;
+    top:0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    z-index:9999;
+
+    -webkit-transition: 0.3s ease;
+    transition: 0.3s ease;
+}
+.product-name{
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+.product-name-mobile{
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+

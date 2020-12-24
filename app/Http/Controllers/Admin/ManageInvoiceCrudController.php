@@ -23,8 +23,8 @@ class ManageInvoiceCrudController extends CrudController
     public function index(Invoice $invoice)
     {
         //@todo check permissions
-        Gate::authorize('manageInvoice', $invoice); 
-            
+        Gate::authorize('manageInvoice', $invoice);
+
         return view('invoice.manage_invoice.index', compact('invoice'));
     }
 
@@ -83,7 +83,7 @@ class ManageInvoiceCrudController extends CrudController
             \Alert::add('warning', 'Este no es un document emitido');
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
-        
+
         $service = new DTEService();
         $pdfContent = $response->getBody()->getContents();
 
@@ -104,11 +104,11 @@ class ManageInvoiceCrudController extends CrudController
         if (!isset($invoice->dte_code)) {
             return redirect('index');
         }
-        
+
         $tipoPapel = $request->input('tipoPapel') ?? 0;
-        
+
         $service = new DTEService();
-        
+
         if (isset($invoice->folio)) {
             $response = $service->getRealPDF($invoice, $tipoPapel);
         } else {
@@ -135,16 +135,16 @@ class ManageInvoiceCrudController extends CrudController
         // Check inventory of items
         foreach($invoice->invoice_items as $item) {
             if ($item['product_id']) {
-                $product = Product::find($item['product_id']); 
+                $product = Product::find($item['product_id']);
                 if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
                     \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
                     return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
                 }
             }
         }
-        
+
         $service = new DTEService();
-        
+
         // Check if emisor have folios. "disponibles >0 "
         if (!$service->foliosAvailables($invoice)) {
             \Alert::add('warning', 'No hay folios disponibles')->flash();
@@ -160,7 +160,7 @@ class ManageInvoiceCrudController extends CrudController
                 $invoice->folio = $contentResponse['folio'];
                 $invoice->invoice_status = Invoice::STATUS_SEND;
             }
-            
+
             $invoice->updateWithoutEvents();
 
             // Reduce inventory
@@ -194,14 +194,14 @@ class ManageInvoiceCrudController extends CrudController
     {
         $service = new DTEService();
         $response = $service->getDteUpdatedStatus($invoice);
-        
+
         if ($response->getStatusCode() != 200) {
             \Alert::add('warning', 'Hubo algun problema al consultar el estado del documento. Intentalo mas tarde')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
         $dteStatusResponse =  json_decode($response->getBody()->getContents(), true);
-        
+
         $dteStatus = [
             'track_id' => $dteStatusResponse["track_id"] ?? '',
             'revision_estado' =>  $dteStatusResponse["revision_estado"] ?? '',
@@ -238,7 +238,7 @@ class ManageInvoiceCrudController extends CrudController
         \Alert::success('Se creó una nota de crédito a partir del documento seleccionado')->flash();
 
         return redirect()->to('admin/invoice/' . $creditNote->id . '/edit');
-        
+
     }
 
     public function generateTemporalAndRealDocument(Request $request, Invoice $invoice)
@@ -257,7 +257,7 @@ class ManageInvoiceCrudController extends CrudController
         // Check inventory of items
         foreach($invoice->invoice_items as $item) {
             if ($item['product_id']) {
-                $product = Product::find($item['product_id']); 
+                $product = Product::find($item['product_id']);
                 if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
                     \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
                     return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
@@ -275,7 +275,7 @@ class ManageInvoiceCrudController extends CrudController
 
         if (!$invoice->dte_code) {
             $response = $service->tempDocument($invoice);
-            
+
             if ($response->getStatusCode() === 200) {
                 $content = json_decode($response->getBody()->getContents(), true);
                 $code = array_key_exists('codigo', $content) ? $content['codigo'] : null;
@@ -311,7 +311,7 @@ class ManageInvoiceCrudController extends CrudController
                 $invoice->folio = $contentResponse['folio'];
                 $invoice->invoice_status = Invoice::STATUS_SEND;
             }
-            
+
             $invoice->updateWithoutEvents();
 
             // Reduce inventory
