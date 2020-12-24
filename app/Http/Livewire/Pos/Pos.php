@@ -213,7 +213,7 @@ class Pos extends Component
 
         $this->checked = isset($this->saleBox->id);
         if (! $this->isSaleBoxOpen) {
-            $this->dispatchBrowserEvent('openSaleBoxModal');
+            $this->dispatchBrowserEvent('openSaleBoxView');
         }
     }
 
