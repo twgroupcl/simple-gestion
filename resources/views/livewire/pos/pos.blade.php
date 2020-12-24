@@ -145,10 +145,10 @@ use App\Models\Product;
                     style="-webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">{{ $isSaleBoxOpen ? 'Caja abierta' : 'Caja cerrada' }}
                 </label>
             </div>
-            @isset($saleBox->opened_at)
+            @if($isSaleBoxOpen && isset($saleBox->opened_at))
                 <strong
                     class="text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</strong>
-            @endisset
+            @endif
         </div>
         <div class="col-4"></div>
         <div class="col-4"></div>
