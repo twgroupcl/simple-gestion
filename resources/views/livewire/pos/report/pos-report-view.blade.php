@@ -1,16 +1,16 @@
 <div class="row col-md-12">
     <div class="col-md-4 px-0">
-        <input id="searchOrder" wire:model="search" class="form-control mr-sm-2 w-100" type="text" placeholder="Buscar orden" aria-label="Search">
+        <input id="searchOrder" class="form-control mr-sm-2 w-100 order-search" type="text" placeholder="Buscar orden" aria-label="Search">
         <div class="pt-3 pr-2">
             <div class="list-group">
                 @foreach ($orders as $order)
-                <a href="#" wire:click="selectOrder({{ $order->id }})" class=" list-group-item text-decoration-none">
+                <a href="#" wire:click="selectOrder({{ $order->id }})" class="order-list-item list-group-item text-decoration-none">
                     {{-- <div class="d-flex justify-content-between" >
                         <span class="text-danger"># {{ $order->id }} </span>
                         <span class="">{{ $order->created_at->format('j/m/Y - g:i a') }}</span>
                         <span class="font-weight-bold">{{ currencyFormat($order->total, 'CLP', true) }}</span>
                     </div> --}}
-                    <div class="row order-list-item">
+                    <div class="row">
                         <div class="col-2 text-danger order-id"># {{ $order->id }}</div>
                         <div class="col-6">{{ $order->created_at->format('j/m/Y - g:i a') }}</div>
                         <div class="col-4">{{ currencyFormat($order->total, 'CLP', true) }}</div>

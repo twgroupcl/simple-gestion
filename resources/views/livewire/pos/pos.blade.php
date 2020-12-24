@@ -167,18 +167,6 @@ use App\Models\Product;
 
 
 
-<div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
-    <div class="modal-dialog modal-lg">
-        @livewire('pos.customer.create-address-form', [], key(time().'.address.'.$seller->id))
-    </div>
-</div>
-
-<div wire:ignore.self class="modal fade" id="showCustomerModal" tabindex="-1" role="dialog"
-    aria-labelledby="createCustomerModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        @livewire('pos.customer.create-customer', [], key(time().'.customer.'.$seller->id))
-    </div>
-</div>
 
 <div wire:ignore.self class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     id="modal-confirm-pay">
@@ -324,6 +312,19 @@ use App\Models\Product;
 {{-- Footer --}}
 @endhandheld
 </div>
+<div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
+    <div class="modal-dialog modal-lg">
+        @livewire('pos.customer.create-address-form', [], key(time().'.address.'.$seller->id))
+    </div>
+</div>
+
+<div wire:ignore.self class="modal fade" id="showCustomerModal" tabindex="-1" role="dialog"
+    aria-labelledby="createCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        @livewire('pos.customer.create-customer', [], key(time().'.customer.'.$seller->id))
+    </div>
+</div>
+
 </div>
 
 
@@ -383,7 +384,7 @@ use App\Models\Product;
 
         //Order search
 
-        const filterOder = search => {
+        const filterOrder = search => {
             let value = search.val().toLowerCase();
             $(".order-list-item").filter(function() {
                 $(this).toggle($(this).find('.order-id').first().text().toLowerCase().indexOf(value) > -1)
@@ -395,6 +396,9 @@ use App\Models\Product;
 
         $(".search-customers").on("keyup", () => filterCustomer($(event.target)));
         $(".search-customers").on("search", () => filterCustomer($(event.target)));
+
+        $(".order-search").on("keyup", () => filterOrder($(event.target)));
+        $(".order-search").on("search", () => filterOrder($(event.target)));
 
 
 
