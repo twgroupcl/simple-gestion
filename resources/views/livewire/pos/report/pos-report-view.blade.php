@@ -10,8 +10,8 @@
                         <span class="">{{ $order->created_at->format('j/m/Y - g:i a') }}</span>
                         <span class="font-weight-bold">{{ currencyFormat($order->total, 'CLP', true) }}</span>
                     </div> --}}
-                    <div class="row">
-                        <div class="col-2 text-danger"># {{ $order->id }}</div>
+                    <div class="row order-list-item">
+                        <div class="col-2 text-danger order-id"># {{ $order->id }}</div>
                         <div class="col-6">{{ $order->created_at->format('j/m/Y - g:i a') }}</div>
                         <div class="col-4">{{ currencyFormat($order->total, 'CLP', true) }}</div>
                     </div>

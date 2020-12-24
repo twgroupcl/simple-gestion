@@ -373,6 +373,15 @@ use App\Models\Product;
             });
         }
 
+        //Order search
+
+        const filterOder = search => {
+            let value = search.val().toLowerCase();
+            $(".order-list-item").filter(function() {
+                $(this).toggle($(this).find('.order-id').first().text().toLowerCase().indexOf(value) > -1)
+            });
+        }
+
         $("#search").on("keyup", () => filter($("#search")));
         $("#search").on("search", () => filter($("#search")));
 
@@ -638,7 +647,7 @@ use App\Models\Product;
                     totalCash = totalCash.replace(/\./g, '')
                     totalCash = parseFloat(totalCash)
 
-                    //await @this.confirmPayment(totalCash)
+                    await @this.confirmPayment(totalCash)
                     $('.payment-view').hide();
                     $('.confirm-payment-view').hide();
                     $('.final-payment-view').show();
