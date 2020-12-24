@@ -6,7 +6,7 @@
     <div class="col-12">
     <div id="accordion">
     @foreach ($customers as $key=>$customer)
-    <div class="card mb-1">
+    <div class="card mb-1 customer-item">
       <div class="card-header" id="{{'heading-'.$key}}">
         <h5 class="mb-0">
           <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#{{'customer-'.$key}}" aria-expanded="false" aria-controls="{{'customer-'.$key}}">
@@ -18,7 +18,7 @@
       <div id="{{'customer-'.$key}}" class="collapse" aria-labelledby="{{'heading-'.$key}}" data-parent="#accordion">
         <div class="card-body">
             <div class="card-body">
-                <h5 class="card-title"> {{ "{$customer->first_name} {$customer->last_name}" }}</h5>
+                <h5 class="card-title customer-name"> {{ "{$customer->first_name} {$customer->last_name}" }}</h5>
                 <p class="card-text text-info">{{ $customer->email }}</p>
 
                 <ul class="list-group list-group-flush">
@@ -49,14 +49,14 @@
 @elsehandheld
 <div class="row col-md-12">
     <div class="col-md-6">
-        <label for="searchCustomer">Buscar cliente</label>
-        <input wire:model="search" class="form-control" type="text" id="searchCustomer" placeholder="Buscar" "Buscar">
-        <ul class="list-group list-group-flush">
+        <label for="search-customer">Buscar cliente</label>
+        <input class="form-control search-customers" type="text" id="search-customer" placeholder="Buscar">
+        <ul class="list-group list-group-flush" style="max-height: 500px; overflow-y: scroll;">
             @foreach ($customers as $key=>$customer)
-                <div wire:click="showCustomer({{ $customer->id }})" class="bg-light border-right"  wire:key="{{ $key }}">
+                <div wire:click="showCustomer({{ $customer->id }})" class="bg-light border-right customer-item"  wire:key="{{ $key }}">
                     <div class="list-group list-group-flush">
                         <a class="list-group-item list-group-item-action bg-white">
-                            <p class="text-info my-0">{{ $customer->first_name }}</p>
+                            <p class="text-info my-0 customer-name">{{ $customer->first_name }}</p>
                             <p class="my-0">{{ $customer->uid }}</p>
                         </a>
                     </div>

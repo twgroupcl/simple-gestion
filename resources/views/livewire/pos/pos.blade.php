@@ -83,7 +83,7 @@ use App\Models\Product;
                     aria-label="Search">
            </form>
            <form class="form-inline search-customers" style="display: none;">
-            <input id="search-customers" class="form-control w-100" type="search" placeholder="Buscar cliente"
+            <input class="form-control w-100 search-customers" type="search" placeholder="Buscar cliente"
                 aria-label="Search">
        </form>
         </div>
@@ -364,23 +364,20 @@ use App\Models\Product;
             });
         }
 
+        //Customer search
+
+        const filterCustomer = search => {
+            let value = search.val().toLowerCase();
+            $(".customer-item").filter(function() {
+                $(this).toggle($(this).find('.customer-name').first().text().toLowerCase().indexOf(value) > -1)
+            });
+        }
 
         $("#search").on("keyup", () => filter($("#search")));
         $("#search").on("search", () => filter($("#search")));
 
-
-        //  //Customer search
-
-        //  const filter = searchCustomer=> {
-        //     let value = searchCustomer.val().toLowerCase();
-        //     $(".customer-item").filter(function() {
-        //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        //     });
-        // }
-
-
-        // $("#search-customers").on("keyup", () => filter($("#search-customers")));
-        // $("#search-customers").on("searchCustomer", () => filter($("#search-customers")));
+        $(".search-customers").on("keyup", () => filterCustomer($(event.target)));
+        $(".search-customers").on("search", () => filterCustomer($(event.target)));
 
 
 
