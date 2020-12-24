@@ -83,15 +83,19 @@ use App\Models\Product;
                     aria-label="Search">
            </form>
            <form class="form-inline search-customers" style="display: none;">
-            <input class="form-control w-100 search-customers" type="search" placeholder="Buscar cliente"
+                <input class="form-control w-100 search-customers" type="search" placeholder="Buscar cliente"
                 aria-label="Search">
            </form>
+           <form class="form-inline search-orders" style="display: none;">
+                <input id="searchOrder" class="form-control mr-sm-2 w-100 search-orders" type="text" placeholder="Buscar orden"
+           aria-label="Search">
+        </form>
 
         </div>
         <div class="col-2 p-0">
-            <span class="las la-shopping-cart mobile-cart-view" style="font-size:32px;">
+            <span class="las la-shopping-cart " style="font-size:32px;">
             @if ($cartproducts) <span
-                class="custom-badge badge-cart-view" >{{ count($cartproducts) }}</span>
+                class="custom-badge badge-cart-view mobile-cart-view" >{{ count($cartproducts) }}</span>
             @else
             <span
                 class="custom-badge">0</span>
@@ -102,13 +106,13 @@ use App\Models\Product;
 </div>
 
 {{-- Customer view --}}
-<div class="customer-view h-50" style="display: none;">
+<div class="h-50 customer-view" style="display: none;">
     <div id="selectCustomer">@livewire('pos.customer.customer-view')</div>
 </div>
 {{-- Sale Box --}}
     @include('livewire.pos.partials.sale-box')
 {{-- Salesbox --}}
-<div class="col-11 sales-view" style="display: none;">
+<div class="col-12 sales-view" style="display: none;">
     <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
 </div>
 {{-- Payment view --}}
@@ -117,11 +121,11 @@ use App\Models\Product;
     @include('livewire.pos.partials.confirm-payment')
 {{-- Final payment view --}}
     @include('livewire.pos.partials.final-payment')
-<div class="main-view h-50">
+<div class=" h-50 main-view">
     <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
     </div>
 </div>
-<div class="cart-buttons h-25">
+<div class=" h-25 cart-buttons-view">
     <div class="row fixed-bottom">
         <div class="col-6 p-1">
             <button class="btn btn-danger btn-block btn-customer">
@@ -400,6 +404,9 @@ use App\Models\Product;
         $(".order-search").on("keyup", () => filterOrder($(event.target)));
         $(".order-search").on("search", () => filterOrder($(event.target)));
 
+        $(".search-orders").on("keyup", () => filterOrder($(event.target)));
+        $(".search-orders").on("search", () => filterOrder($(event.target)));
+
 
 
         spanCash = $('.total-cash')
@@ -472,7 +479,10 @@ use App\Models\Product;
         }
 
 
-
+        function hideAllViews(){
+            $("div[class$='-view']").hide();
+           // $('.header-pos').hide()
+        }
 
 
         $("#confirm-pay").click( function() {
@@ -503,19 +513,22 @@ use App\Models\Product;
                 $('.main-view').hide();
                 $('.search-customers').show();
                 $('.search-products').hide();
+                $('.search-orders').hide();
 
             });
 
             $('#btn-pay').click(function() {
+                hideAllViews()
                 $('.payment-view').show();
-                $('.main-view').hide();
-                $('.cart-buttons').hide();
+                //$('.main-view').hide();
+                //$('.cart-buttons').hide();
             });
 
             $('#close-payment').click(function() {
+                hideAllViews()
                 $('.main-view').show();
-                $('.payment-view').hide();
-                $('.cart-buttons').show();
+              //  $('.payment-view').hide();
+                $('.cart-buttons-view').show();
             });
 
             $('.menu-mobile').click(function(){
@@ -527,49 +540,69 @@ use App\Models\Product;
             })
 
             $('.mobile-cart-view').click(function(){
+
+
+               $('.header-pos').hide()
                $('.cart-view').show()
                $('.main-view').hide()
-               $('.header-pos').hide()
             })
 
 
             $('.close-cart-view').click(function(){
-               $('.cart-view').hide()
+                hideAllViews()
+            //    $('.cart-view').hide()
                $('.main-view').show()
-               $('.header-pos').show()
+              // $('.header-pos').show()
             })
 
 
             //Menu actions
 
             $('.link-pos').click(function() {
+                hideAllViews();
                 $('.main-view').show();
-                $('.customer-view').hide();
-                $('.sales-view').hide();
-                $('.menu-content').hide()
+                $('.cart-buttons-view').show();
+                // $('.customer-view').hide();
+                // $('.sales-view').hide();
+                // $('.menu-content').hide()
                 //change search
                 $('.search-customers').hide();
                 $('.search-products').show();
+                $('.search-orders').hide();
+
+
+                $('.menu-content').hide()
+
 
 
             });
 
             $('.link-sale').click(function() {
+                hideAllViews();
                 $('.sales-view').show();
-                $('.main-view').hide();
-                $('.customer-view').hide();
+                // $('.main-view').hide();
+                // $('.customer-view').hide();
+                // $('.menu-content').hide()
+                 //change search
+                $('.search-customers').hide();
+                $('.search-products').hide();
+                $('.search-orders').show();
                 $('.menu-content').hide()
             });
 
             $('.link-customer').click(function() {
+                hideAllViews();
                 $('.customer-view').show();
-                $('.main-view').hide();
-                $('.sales-view').hide();
-                $('.menu-content').hide()
+                // $('.main-view').hide();
+                // $('.sales-view').hide();
+                // $('.menu-content').hide()
 
                 //change search
                 $('.search-customers').show();
                 $('.search-products').hide();
+                $('.search-orders').hide();
+
+                $('.menu-content').hide()
             });
 
         @elsehandheld
@@ -578,9 +611,11 @@ use App\Models\Product;
              //Menu actions
 
             $('.link-pos').click(function() {
+                hideAllViews()
                 $('.main-view').show();
-                $('.customer-view').hide();
-                $('.sales-view').hide();
+                $('.cart-buttons-view').show();
+                // $('.customer-view').hide();
+                // $('.sales-view').hide();
                 //change search
                 $('.search-customers').hide();
                 $('.search-products').show();
@@ -589,31 +624,35 @@ use App\Models\Product;
             });
 
             $('.link-sale').click(function() {
-
+                hideAllViews()
                 $('.sales-view').show();
-                $('.main-view').hide();
-                $('.customer-view').hide();
+                // $('.main-view').hide();
+                // $('.customer-view').hide();
             });
 
             $('.link-customer').click(function() {
+                hideAllViews()
                 $('.customer-view').show();
-                $('.main-view').hide();
-                $('.sales-view').hide();
+                // $('.main-view').hide();
+                // $('.sales-view').hide();
             });
 
             $('.btn-customer').click(function() {
+                hideAllViews()
                 $('.customer-view').show();
-                $('.main-view').hide();
+                //$('.main-view').hide();
             });
 
             $('#close-payment').click(function() {
+                hideAllViews()
                 $('.main-view').show();
-                $('.payment-view').hide();
+               // $('.payment-view').hide();
             });
 
             $('#btn-pay').click(function() {
+                hideAllViews()
                 $('.payment-view').show();
-                $('.main-view').hide();
+                //$('.main-view').hide();
             });
 
 
@@ -667,10 +706,11 @@ use App\Models\Product;
                     totalCash = parseFloat(totalCash)
 
                     await @this.confirmPayment(totalCash)
-                    $('.main-view').hide();
-                    $('.cart-buttons').hide();
-                    $('.payment-view').hide();
-                    $('.confirm-payment-view').hide();
+                    hideAllViews()
+                    // $('.main-view').hide();
+                    // $('.cart-buttons').hide();
+                    // $('.payment-view').hide();
+                    // $('.confirm-payment-view').hide();
                     $('.final-payment-view').show();
             }
 
@@ -695,9 +735,10 @@ use App\Models\Product;
             })
 
             $(".close-sale-box").click( function() {
+                hideAllViews()
                 $('.main-view').show();
-                $('.sale-box').hide();
-                $('.cart-buttons').show();
+              //  $('.sale-box').hide();
+                $('.cart-buttons-view').show();
             });
 
         })
