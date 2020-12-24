@@ -18,10 +18,7 @@
                     <p class="text-uppercase font-weight-bold">Inicio: <span class="ml-2 text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</span></p>
                     <p class="text-uppercase font-weight-bold">Cierre: <span class="ml-2 text-primary">{{ now()->translatedFormat('j/m/Y - g:i a') }}</span></p>
                     <div class="text-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-primary" data-dismiss="modal">
+                        <button type="submit" class="btn btn-primary">
                             Confirmar y cerrar caja
                         </button>
                     </div>
@@ -50,9 +47,6 @@
                         @enderror
                     </div>
                     <div class="text-right">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            Cancelar
-                        </button>
                         <button type="submit" class="btn btn-primary">
                             Abrir caja
                         </button>
