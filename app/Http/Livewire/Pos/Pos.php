@@ -42,6 +42,7 @@ class Pos extends Component
     public $subtotal = 0;
     public $discount = null;
     public $total = 0;
+    public $existsOrder= null;
     protected $listeners = [
         'viewModeChanged' => 'setView',
         'add-product-cart:post' => 'addProduct',
@@ -158,6 +159,9 @@ class Pos extends Component
                 'event' => 'Nueva orden generada',
             ]);
 
+
+            $this->existsOrder = $order;
+
             $this->emitInvoice($order);
 
             $this->clearCart();
@@ -181,6 +185,7 @@ class Pos extends Component
         $this->discount = null;
         $this->subtotal = 0;
         $this->cash = 0;
+        $this->existOrder = null;
     }
 
     public function getTotalCart()

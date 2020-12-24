@@ -85,7 +85,8 @@ use App\Models\Product;
            <form class="form-inline search-customers" style="display: none;">
             <input class="form-control w-100 search-customers" type="search" placeholder="Buscar cliente"
                 aria-label="Search">
-       </form>
+           </form>
+
         </div>
         <div class="col-2 p-0">
             <span class="las la-shopping-cart mobile-cart-view" style="font-size:32px;">
@@ -104,11 +105,18 @@ use App\Models\Product;
 <div class="customer-view h-50" style="display: none;">
     <div id="selectCustomer">@livewire('pos.customer.customer-view')</div>
 </div>
-{{-- Main view products --}}
+{{-- Sale Box --}}
+    @include('livewire.pos.partials.sale-box')
+{{-- Salesbox --}}
+<div class="col-11 sales-view" style="display: none;">
+    <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
+</div>
 {{-- Payment view --}}
-@include('livewire.pos.partials.payment')
+    @include('livewire.pos.partials.payment')
 {{-- Confirm payment view --}}
-@include('livewire.pos.partials.confirm-payment')
+    @include('livewire.pos.partials.confirm-payment')
+{{-- Final payment view --}}
+    @include('livewire.pos.partials.final-payment')
 <div class="main-view h-50">
     <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
     </div>
@@ -243,7 +251,7 @@ use App\Models\Product;
     @include('livewire.pos.partials.sale-box')
     {{-- Confirm payment view --}}
     @include('livewire.pos.partials.confirm-payment')
-    {{-- Confirm payment view --}}
+    {{-- Final payment view --}}
     @include('livewire.pos.partials.final-payment')
     <div class="col-11 main-view">
         <div class="row">
@@ -426,6 +434,7 @@ use App\Models\Product;
             spanCash.text(formatCurrency(tmpCash))
             tmpCashFloat = parseFloat(tmpCash)
             tmpTotalCartFloat = parseFloat(tmpTotalCart)
+            console.log(tmpCashFloat);
 
             if (tmpCashFloat >= tmpTotalCartFloat) {
                 tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat)
@@ -471,6 +480,10 @@ use App\Models\Product;
             $('.confirm-payment-view').hide();
             $('.payment-view').show();
         });
+        $(".close-final-payment").click( function() {
+            $('.final-payment-view').hide();
+            $('.payment-view').show();
+        });
 
 
 
@@ -484,6 +497,8 @@ use App\Models\Product;
             $('.btn-customer').click(function() {
                 $('.customer-view').show();
                 $('.main-view').hide();
+                $('.search-customers').show();
+                $('.search-products').hide();
 
             });
 
@@ -648,6 +663,8 @@ use App\Models\Product;
                     totalCash = parseFloat(totalCash)
 
                     await @this.confirmPayment(totalCash)
+                    $('.main-view').hide();
+                    $('.cart-buttons').hide();
                     $('.payment-view').hide();
                     $('.confirm-payment-view').hide();
                     $('.final-payment-view').show();

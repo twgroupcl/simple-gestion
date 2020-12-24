@@ -83,7 +83,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-body">
+            <div class="fixed-bottom">
                 <button class="btn btn-danger btn-block " id="confirm-pay" disabled>Confirmar pago
                 </button>
             </div>
