@@ -95,7 +95,7 @@ class Pos extends Component
     public function confirmPayment($cash)
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
-        if ($cash >= $this->total) {
+        if ($cash >= $this->total && !is_null($this->saleBox)) {
             $currency = Currency::where('code', Setting::get('default_currency'))->firstOrFail();
             //Make order
             $order = new Order();
@@ -151,8 +151,8 @@ class Pos extends Component
 
             //Add register to box sales
             $currentSeller = Seller::firstWhere('user_id', backpack_user()->id);
-            $salebox = $currentSeller->sales_boxes()->latest()->first();
-            $salebox->logs()->create([
+
+            $this->saleBox->logs()->create([
                 'order_id' => $order->id,
                 'amount' => $order->total,
                 'event' => 'Nueva orden generada',
@@ -213,6 +213,7 @@ class Pos extends Component
 
         $this->checked = isset($this->saleBox->id);
         if (! $this->isSaleBoxOpen) {
+            $this->saleBox = null;
             $this->dispatchBrowserEvent('openSaleBoxView');
         }
     }
