@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\Quotation;
 use App\Models\InvoiceItem;
 use Illuminate\Support\Str;
+use App\Events\InventoryUpdated;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -239,6 +240,8 @@ class Product extends Model
                 $this->inventories()->updateExistingPivot($sourceInventory['id'], ['qty' => $sourceInventory['qty']]);
             }
         }
+
+        InventoryUpdated::dispatch($this->id);
     }
 
     /**
