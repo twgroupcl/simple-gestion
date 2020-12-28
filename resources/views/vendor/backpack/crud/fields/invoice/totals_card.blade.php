@@ -396,6 +396,17 @@
         }
 
 
+        function checkGiroField() {
+            let giroField = $('select[name="business_activity_id"]');
+            if (invoiceType == 39 || invoiceType == 41) {
+                giroField.val(0).trigger('change');
+                giroField.prop('disabled', true);
+            } else {
+                giroField.prop('disabled', false);
+            }
+        }
+
+
         /**********************************************
         *  
         * Event listeners
@@ -404,6 +415,7 @@
 
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
             calculateTotals();
+            checkGiroField();
             checkTypeTax()
         });
     
@@ -506,6 +518,7 @@
 
         $(document).ready( function() {
             calculateTotals();
+            checkGiroField();
             checkTypeTax();
         })
 
