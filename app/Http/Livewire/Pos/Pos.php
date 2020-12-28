@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pos;
 
+use App\Mail\PosBill;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Seller;
@@ -17,6 +18,7 @@ use App\Models\SalesBox;
 use Illuminate\Support\Facades\DB;
 use Backpack\Settings\app\Models\Setting;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class Pos extends Component
@@ -417,5 +419,10 @@ class Pos extends Component
     public function updatedDiscount()
     {
         $this->calculateAmounts();
+    }
+
+    public function sendMail(Invoice $invoice = null)
+    {
+        Mail::to($invoice->email)->send(new PosBill($invoice));
     }
 }

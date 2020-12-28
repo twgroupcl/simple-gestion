@@ -15,7 +15,9 @@
             <button class="btn btn-secondary btn-block close-final-payment">NO</button>
         </div>
         <div class="col-6">
-            <button class="btn btn-primary btn-block" >SI</button>
+            @if(!is_null($existsOrder))
+            <button wire:click="sendMail({{ optional($existsOrder)->invoice->id }})" class="btn btn-primary btn-block" >SI</button>
+            @endif
         </div>
     </div>
     <div class="row  h-25">
@@ -46,7 +48,9 @@
             <button class="btn btn-secondary btn-block close-final-payment">NO</button>
         </div>
         <div class="col-6">
-            <button class="btn btn-primary btn-block" >SI</button>
+            @if(!is_null($existsOrder))
+            <button wire:click="sendMail({{ optional($existsOrder)->invoice->id }})" class="btn btn-primary btn-block" >SI</button>
+            @endif
         </div>
     </div>
     <div class="row">
