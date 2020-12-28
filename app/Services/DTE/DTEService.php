@@ -279,10 +279,11 @@ class DTEService
             return ($response);
 
         } catch (\GuzzleHttp\Exception\ServerException $e) {
-            ddd ($e->getResponse(), $e->getResponse()->getBody()->getContents());
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            \Log::error( $e->getResponse()->getBody()->getContents());
             return $e->getResponse();
-            //ddd($e->getResponse(), $e, $request);
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            \Log::error( $e->getResponse()->getBody()->getContents());
+            return $e->getResponse();
         } catch (Exception $e) {
             ddd($e);
         }
