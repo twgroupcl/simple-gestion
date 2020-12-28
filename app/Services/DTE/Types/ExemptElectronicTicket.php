@@ -40,7 +40,9 @@ class ExemptElectronicTicket implements DocumentType
             'FchEmis' => '2020-11-30',
         ]);*/
 
-        // add Item exent
+        $array['DscRcgGlobal']['IndExeDR'] = 1;
+
+        // Add item exent
         foreach ($array['Detalle'] as $key => $item) {
             $array['Detalle'][$key]['IndExe'] = 1;
         }
