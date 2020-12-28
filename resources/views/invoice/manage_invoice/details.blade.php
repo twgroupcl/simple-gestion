@@ -31,7 +31,7 @@
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    <strong>Estado del documento (detalle):</strong>
+                    <strong>Estado del envio al SII del documento (detalle):</strong>
                     {{ $invoice->dte_status['revision_detalle'] }}
                 </p>
             </div>
@@ -39,7 +39,7 @@
         <div class="row">
             <div class="col-md-6">
                 <p>
-                    <strong>Estado del documento (estado):</strong>
+                    <strong>Estado del envio al SII del documento (estado):</strong>
                     {{ $invoice->dte_status['revision_estado'] }}
                 </p>
             </div>

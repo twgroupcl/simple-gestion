@@ -253,6 +253,23 @@ class Invoice extends Model
         return $this->orders->first();
     }
 
+    public function getStatusDescriptionAttribute()
+    {
+        switch ($this->invoice_status) {
+            case self::STATUS_DRAFT:
+                return 'Borrador';
+                break;
+            case self::STATUS_TEMPORAL:
+                return 'Doc. Temporal';
+                break;
+            case self::STATUS_SEND:
+                return 'Doc. Enviado';
+                break;
+            default:
+                break;
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
