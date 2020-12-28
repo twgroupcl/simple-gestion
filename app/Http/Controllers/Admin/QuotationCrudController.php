@@ -41,6 +41,8 @@ class QuotationCrudController extends CrudController
         CRUD::setEntityNameStrings('cotización', 'cotizaciones');
 
         $this->crud->denyAccess('show');
+
+        $this->crud->enableExportButtons();
     }
 
     /**
@@ -121,6 +123,8 @@ class QuotationCrudController extends CrudController
             'type' => 'date',
             'format' => 'L'
         ]);
+
+        $this->customFilters();
     }
 
     /**
@@ -565,14 +569,6 @@ class QuotationCrudController extends CrudController
 
         $quotation = Quotation::findOrFail($id);
 
-         /* return view('templates.quotations.export_pdf', [
-            'quotation' => $quotation,
-            'due_date' => new Carbon($quotation->expiry_date),
-            'creation_date'=> new Carbon($quotation->quotation_date),
-            'title' => 'Cotizacion',
-            'now' => New Carbon(),
-        ]);   */
-
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('templates.quotations.export_pdf', [
             'quotation' => $quotation,
             'due_date' => is_null($quotation->expiry_date) ? null : new Carbon($quotation->expiry_date),
@@ -581,7 +577,6 @@ class QuotationCrudController extends CrudController
             'now' => New Carbon(),
         ]);
 
-        //$pdf->getDomPDF()->set_option('enable_php', true);
         $pdf->getDomPDF()->set_option("isPhpEnabled", true);
 
         return $pdf->stream('invoice.pdf');
@@ -616,6 +611,46 @@ class QuotationCrudController extends CrudController
             \Alert::warning('Hubo un problema al generar el documento electrónico');
             \DB::rollback();
         }
+    }
 
+    protected function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'date_range',
+            'name'  => 'from_to',
+            'label' => 'Fecha'
+          ],
+          false,
+          function ($value) { // if the filter is active, apply these constraints
+            $dates = json_decode($value);
+            $this->crud->addClause('where', 'quotation_date', '>=', $dates->from);
+            $this->crud->addClause('where', 'quotation_date', '<=', $dates->to . ' 23:59:59');
+        });
+
+        CRUD::addFilter([
+            'name'  => 'invoice_type',
+            'type'  => 'select2',
+            'label' => 'Tipo de documento'
+        ], function() {
+            return InvoiceType::active()->get()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'invoice_type_id', $value);
+        });
+
+        CRUD::addFilter([
+            'name'  => 'status',
+            'type'  => 'dropdown',
+            'label' => 'Estado'
+          ], [
+            Quotation::STATUS_DRAFT => 'Borrador',
+            Quotation::STATUS_VIEWED => 'Enviado',
+            Quotation::STATUS_EXPIRED => 'Expirado',
+            Quotation::STATUS_ACCEPTED => 'Aceptado',
+            Quotation::STATUS_REJECTED => 'Rechazado',
+            Quotation::STATUS_ISSUED => 'Emitido',
+            Quotation::STATUS_INVOICED => 'Facturado',
+          ], function($value) {
+            $this->crud->addClause('where', 'quotation_status', $value);
+          });
     }
 }
