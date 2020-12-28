@@ -51,18 +51,14 @@
     <div class="col-md-6">
         <label for="search-customer">Buscar cliente</label>
         <input class="form-control search-customers" type="text" id="search-customer" placeholder="Buscar">
-        <ul class="list-group list-group-flush" style="max-height: 500px; overflow-y: scroll;">
-            @foreach ($customers as $key=>$customer)
-                <div wire:click="showCustomer({{ $customer->id }})" class="bg-light border-right customer-item"  wire:key="{{ $key }}">
-                    <div class="list-group list-group-flush">
-                        <a class="list-group-item list-group-item-action bg-white">
-                            <p class="text-info my-0 customer-name">{{ $customer->first_name }}</p>
-                            <p class="my-0">{{ $customer->uid }}</p>
-                        </a>
-                    </div>
-                </div>
+        <div class="list-group" style="max-height: 500px; overflow-y: scroll;">
+            @foreach ($customers as $customer)
+            <a href="#" wire:click="showCustomer({{ $customer->id }})" class="customer-item list-group-item text-decoration-none">
+                <p class="text-info my-0 customer-name">{{ $customer->first_name }}</p>
+                <p class="my-0">{{ $customer->uid }}</p>
+            </a>
             @endforeach
-        </ul>
+        </div>
     </div>
     <div class="col-md-6 mt-5">
         @if($selectedCustomer)
