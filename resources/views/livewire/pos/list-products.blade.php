@@ -1,3 +1,4 @@
+{{-- <div wire:loading wire:target="products" class="loading"></div> --}}
 <div class="container">
     <div class="row">
         @foreach ($products as $product)

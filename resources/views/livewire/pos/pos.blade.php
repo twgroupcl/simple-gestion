@@ -1,8 +1,8 @@
 {{-- @php
 use App\Models\Product;
 @endphp --}}
-<div class="content" wire:ignore.self>
 
+<div class="content" wire:ignore.self>
 @handheld
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
     id="modal-confirm-pay">
@@ -27,7 +27,7 @@ use App\Models\Product;
         <div class="col-12"><i class="la la-close float-right close-cart-view"></i></div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 card">
             @include('livewire.pos.partials.cart')
         </div>
     </div>
@@ -46,6 +46,13 @@ use App\Models\Product;
                 class=" link-pos text-white">
                 <i class=" las la-calculator" style="font-size: 32px;"></i>
                 <h6>POS</h6>
+            </a>
+        </div>
+        <div class="col-12 text-center">
+            <a href="#"
+                class=" link-box-sale text-white">
+                <i class="las la-cash-register" style="font-size: 32px;"></i></i>
+                <h6>CAJA</h6>
             </a>
         </div>
         <div class="col-12 text-center">
@@ -111,7 +118,7 @@ use App\Models\Product;
 </div>
 {{-- Sale Box --}}
     @include('livewire.pos.partials.sale-box')
-{{-- Salesbox --}}
+{{--Report Sales --}}
 <div class="col-12 sales-view" style="display: none;">
     <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
 </div>
@@ -122,13 +129,17 @@ use App\Models\Product;
 {{-- Final payment view --}}
     @include('livewire.pos.partials.final-payment')
 <div class=" h-50 main-view">
-    <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
+
+    <div id="productList">
+
+        @livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
     </div>
 </div>
 <div class=" h-25 cart-buttons-view">
     <div class="row fixed-bottom">
-        <div class="col-6 p-1">
-            <button class="btn btn-danger btn-block btn-customer">
+
+        <div class="col-6 p-1"  @if(!$isSaleBoxOpen) style="display:none;" @endif>
+            <button class="btn btn-danger btn-block btn-customer h-100">
                 @if (session()->get('user.pos.selectedCustomer'))
                     {{ session()->get('user.pos.selectedCustomer')->first_name }}
                     {{ session()->get('user.pos.selectedCustomer')->last_name }}
@@ -137,10 +148,18 @@ use App\Models\Product;
                 @endif
             </button>
         </div>
-        <div class="col-6 p-1 ">
-            <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar
+        <div class="col-6 p-1 "  @if(!$isSaleBoxOpen) style="display:none;" @endif>
+            <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif> {{ currencyFormat($total ?? 0, 'CLP', true) }} <br>
+                Pagar
             </button>
         </div>
+
+        <div class="col-12 p-4 "  @if($isSaleBoxOpen) style="display:none;" @endif>
+            <button class="btn btn-warning btn-block btn-box-sale">
+                Debe iniciar una caja para continuar operando
+            </button>
+        </div>
+
     </div>
 
 </div>
@@ -211,7 +230,7 @@ use App\Models\Product;
                         <i class="las la-user" style="font-size: 32px;"></i>
                         Customer</a></li>
 
-                <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
+                {{-- <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
                         <i class="las la-cash-register" style="font-size: 32px;"></i>
                         <br>
                         Cashier</a></li>
@@ -222,7 +241,7 @@ use App\Models\Product;
                 <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
                         <i class="las la-cog" style="font-size: 32px;"></i>
                         <br>
-                        Setting</a></li>
+                        Setting</a></li> --}}
             </ul>
 
 
@@ -294,7 +313,8 @@ use App\Models\Product;
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-12">
+                            <div class="col-12" @if(!$isSaleBoxOpen) style="display:none;" @endif>
+
                                 <button class="btn btn-danger btn-block btn-customer">
                                     @if (session()->get('user.pos.selectedCustomer'))
                                         {{ session()->get('user.pos.selectedCustomer')->first_name }}
@@ -306,6 +326,12 @@ use App\Models\Product;
 
                                 <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar
                                 </button>
+                            </div>
+                            <div class="col-12" @if($isSaleBoxOpen) style="display:none;" @endif>
+                                <button class="btn btn-warning btn-block btn-box-sale p-4">
+                                    Debe iniciar una caja para continuar operando
+                                </button>
+
                             </div>
                         </div>
                     </div>
@@ -452,7 +478,7 @@ use App\Models\Product;
             spanCash.text(formatCurrency(tmpCash))
             tmpCashFloat = parseFloat(tmpCash)
             tmpTotalCartFloat = parseFloat(tmpTotalCart)
-            console.log(tmpCashFloat);
+
 
             if (tmpCashFloat >= tmpTotalCartFloat) {
                 tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat)
@@ -515,18 +541,26 @@ use App\Models\Product;
             $('.menu-content').hide()
             $('.container-fluid').addClass('p-1')
 
+            // @if(!$isSaleBoxOpen)
+            //     hideAllViews()
+            //     $('.sale-box-view').show();
+            // @endif
+
             $('.btn-customer').click(function() {
+                hideAllViews()
                 $('.customer-view').show();
-                $('.main-view').hide();
+                //$('.main-view').hide();
                 $('.search-customers').show();
                 $('.search-products').hide();
                 $('.search-orders').hide();
+
 
             });
 
             $('#btn-pay').click(function() {
                 hideAllViews()
                 $('.payment-view').show();
+
                 //$('.main-view').hide();
                 //$('.cart-buttons').hide();
             });
@@ -559,9 +593,27 @@ use App\Models\Product;
                 hideAllViews()
             //    $('.cart-view').hide()
                $('.main-view').show()
-              // $('.header-pos').show()
+               $('.header-pos').show()
+               $('.cart-buttons-view').show();
             })
 
+            $('.btn-box-sale').click(function() {
+                hideAllViews();
+                $('.sale-box-view').show();
+
+            });
+
+            // $('.mobile-open-box').click(function() {
+            //     hideAllViews();
+            //     $('.sale-box-view').show();
+
+            // });
+
+            // $('.mobile-close-box').click(function() {
+            //     hideAllViews();
+            //     $('.main-view').show();
+            //     $('.cart-buttons-view').show();
+            // });
 
             //Menu actions
 
@@ -583,6 +635,14 @@ use App\Models\Product;
 
 
             });
+
+            $('.link-box-sale').click(function() {
+                hideAllViews();
+                $('.sale-box-view').show();
+                $('.menu-content').hide()
+            });
+
+
 
             $('.link-sale').click(function() {
                 hideAllViews();
@@ -630,6 +690,12 @@ use App\Models\Product;
 
             });
 
+            $('.link-box-sale').click(function() {
+                hideAllViews();
+                $('.sale-box-view').show();
+            });
+
+
             $('.link-sale').click(function() {
                 hideAllViews()
                 $('.sales-view').show();
@@ -661,6 +727,13 @@ use App\Models\Product;
                 $('.payment-view').show();
                 //$('.main-view').hide();
             });
+
+            $('.btn-box-sale').click(function() {
+                hideAllViews();
+                $('.sale-box-view').show();
+
+            });
+
 
 
         @endhandheld
@@ -723,12 +796,16 @@ use App\Models\Product;
 
             // Sales Box
             window.addEventListener('openSaleBoxView', event => {
-                $('.sale-box').show();
+               // hideAllViews()
+                $('.sale-box-view').show();
                 $('.main-view').hide();
+
             })
             window.addEventListener('closeSaleBoxView', event => {
-                $('.sale-box').hide();
+               // hideAllViews()
+                $('.sale-box-view').hide();
                 $('.main-view').show();
+                $('.cart-buttons-view').show();
             })
 
             $("#boxSwitch").change(async () => {
@@ -737,11 +814,11 @@ use App\Models\Product;
 
                 await @this.validateBox();
 
-                $('.sale-box').show();
+                $('.sale-box-view').show();
                 $('.main-view').hide();
             })
 
-            $(".close-sale-box").click( function() {
+            $(".close-sale-box-view").click( function() {
                 hideAllViews()
                 $('.main-view').show();
               //  $('.sale-box').hide();
@@ -763,5 +840,179 @@ use App\Models\Product;
         input[type=number] {
             -moz-appearance:textfield; /* Firefox */
         }
+
+
+        .loading {
+            position: fixed;
+            z-index: 999;
+            height: 2em;
+            width: 2em;
+            overflow: show;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+        /* Transparent Overlay */
+        .loading:before {
+            content: '';
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(rgba(20, 20, 20, .8), rgba(0, 0, 0, .8));
+            background: -webkit-radial-gradient(rgba(20, 20, 20, .8), rgba(0, 0, 0, .8));
+        }
+        /* :not(:required) hides these rules from IE9 and below */
+        .loading:not(:required) {
+            /* hide "loading..." text */
+            font: 0/0 a;
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: 0;
+        }
+        .loading:not(:required):after {
+            content: '';
+            display: block;
+            font-size: 10px;
+            width: 1em;
+            height: 1em;
+            margin-top: -0.5em;
+            -webkit-animation: spinner 150ms infinite linear;
+            -moz-animation: spinner 150ms infinite linear;
+            -ms-animation: spinner 150ms infinite linear;
+            -o-animation: spinner 150ms infinite linear;
+            animation: spinner 150ms infinite linear;
+            border-radius: 0.5em;
+            -webkit-box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0, rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) 0 1.5em 0 0, rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) -1.5em 0 0 0, rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0, rgba(255, 255, 255, 0.75) 0 -1.5em 0 0, rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
+            box-shadow: rgba(255, 255, 255, 0.75) 1.5em 0 0 0, rgba(255, 255, 255, 0.75) 1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) 0 1.5em 0 0, rgba(255, 255, 255, 0.75) -1.1em 1.1em 0 0, rgba(255, 255, 255, 0.75) -1.5em 0 0 0, rgba(255, 255, 255, 0.75) -1.1em -1.1em 0 0, rgba(255, 255, 255, 0.75) 0 -1.5em 0 0, rgba(255, 255, 255, 0.75) 1.1em -1.1em 0 0;
+        }
+        /* Animation */
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @-moz-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @-o-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .disabled-link{
+            cursor: default;
+            pointer-events: none;
+            text-decoration: none;
+            color: grey;
+        }
+        .custom-badge{
+            position: absolute;
+            top: -0.3125rem;
+            right: 1.6875rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            background-color: #467fd0;
+            color: #fff;
+            font-size: 0.75rem;
+            text-align: center;
+            line-height: 1.25rem;
+        }
+
+        .menu-content{
+            position: absolute;
+            top:0;
+            left:0;
+            right: 0;
+            bottom: 0;
+            z-index:9999;
+            background: rgba(72, 98, 163, 0.9);
+            -webkit-transition: 0.3s ease;
+            transition: 0.3s ease;
+        }
+
+
+        .menu-content{
+            position: absolute;
+            top:0;
+            left:0;
+            right: 0;
+            bottom: 0;
+            z-index:9999;
+
+            -webkit-transition: 0.3s ease;
+            transition: 0.3s ease;
+        }
+        .product-name{
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* number of lines to show */
+            -webkit-box-orient: vertical;
+        }
+        .product-name-mobile{
+            display: -webkit-box;
+        -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
     </style>
 @endpush
