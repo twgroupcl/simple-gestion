@@ -341,6 +341,7 @@ use App\Models\Product;
 
     <script>
         var currentView = 'productList';
+        var addressModalAppended = true;
         const changeViewMode = (view, cartAlternative) => {
             $('#' + currentView).hide();
             $('#' + view).show();
@@ -355,8 +356,14 @@ use App\Models\Product;
             $('#showCustomerModal').appendTo("body").modal('hide');
         })
 
-        window.addEventListener('showAddressModal', event => {
-            $('#modalSelectAddress').appendTo("body").modal('show');
+        window.addEventListener('showAddressModal', async (event) => {
+            let modal = $('.app-body').find('#modalSelectAddress');
+            $('.app-body').find('#modalSelectAddress').remove();
+            if (addressModalAppended) {
+                addressModalAppended = false;
+                modal.appendTo('body');
+            }
+            $('#modalSelectAddress').modal('show');
         })
 
         window.addEventListener('hideAddressModal', event => {
