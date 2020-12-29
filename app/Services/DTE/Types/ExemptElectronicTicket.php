@@ -35,6 +35,10 @@ class ExemptElectronicTicket implements DocumentType
     {
         $array = $this->ttArray();
 
+        if ($this->invoice->customer->is_foreign) {
+            $array['Encabezado']['Receptor']['RUTRecep'] = Invoice::FOREIGN_RUT;
+        }
+
         // Indicar que el descuento afecta tambien a los items exentos
         $array['DscRcgGlobal']['IndExeDR'] = 1;
 

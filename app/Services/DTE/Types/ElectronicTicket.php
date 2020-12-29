@@ -29,6 +29,10 @@ class ElectronicTicket implements DocumentType
      {
         $array = $this->ttArray();
 
+        if ($this->invoice->customer->is_foreign) {
+            $array['Encabezado']['Receptor']['RUTRecep'] = Invoice::FOREIGN_RUT;
+        }
+
         // En las boletas los montos deben ser brutos (con IVA incluido)
         foreach ($array['Detalle'] as $key => $item) {
             $itemPriceWithIva  = round($array['Detalle'][$key]['PrcItem'] * 1.19, 0, PHP_ROUND_HALF_ODD);
