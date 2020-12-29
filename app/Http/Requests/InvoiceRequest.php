@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Product;
+use App\Models\InvoiceType;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -58,9 +59,13 @@ class InvoiceRequest extends FormRequest
                 }
             }
         ];
+
+        $invoiceType = InvoiceType::find($this->invoice_type_id);
         
-        if ($this->invoice_type_id != 11 && $this->invoice_type_id != 10) {
-            $rules['business_activity_id'] = 'required|exists:business_activities,id';
+        if ($invoiceType) {
+            if ($invoiceType->code != 39 && $invoiceType->code != 41) {
+                $rules['business_activity_id'] = 'required|exists:business_activities,id';
+            }
         }
 
         return $rules;

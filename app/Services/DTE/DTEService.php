@@ -74,9 +74,15 @@ class DTEService
             throw new Exception('Identifier code not exists');
         }
 
+        if ($invoice->customer->is_foreign) {
+            $customerUid = rutWithoutDV(Invoice::FOREIGN_RUT);
+        } else {
+            $customerUid = rutWithoutDV($invoice->uid);
+        }
+
         $data = [
             'emisor' => rutWithoutDV($invoice->company->uid),
-            'receptor' => rutWithoutDV($invoice->uid), // without DV
+            'receptor' => rutWithoutDV($customerUid), // without DV
             'dte' => $invoice->invoice_type->code, // required type
             'codigo' => $invoice->dte_code
         ];
@@ -89,7 +95,13 @@ class DTEService
     public function deleteTemporalDocument(Invoice $invoice)
     {
         $method = 'GET';
-        $customerUid = rutWithoutDV($invoice->uid);
+
+        if ($invoice->customer->is_foreign) {
+            $customerUid = rutWithoutDV(Invoice::FOREIGN_RUT);
+        } else {
+            $customerUid = rutWithoutDV($invoice->uid);
+        }
+
         $sellerUid = rutWithoutDV($invoice->company->uid);
 
         $url = $this->url . '/dte/dte_tmps/eliminar/' .
@@ -106,7 +118,13 @@ class DTEService
     public function getRealPDF(Invoice $invoice, $tipoPapel = 0)
     {
         $method = 'GET';
-        $customerUid = rutWithoutDV($invoice->uid); 
+
+        if ($invoice->customer->is_foreign) {
+            $customerUid = rutWithoutDV(Invoice::FOREIGN_RUT);
+        } else {
+            $customerUid = rutWithoutDV($invoice->uid);
+        }
+
         $sellerUid = rutWithoutDV($invoice->company->uid);
 
         $url = $this->url . '/dte/dte_emitidos/pdf/' .
@@ -123,7 +141,13 @@ class DTEService
     public function getTemporalPDF(Invoice $invoice, $tipoPapel = 0)
     {
         $method = 'GET';
-        $customerUid = rutWithoutDV($invoice->uid); 
+
+        if ($invoice->customer->is_foreign) {
+            $customerUid = rutWithoutDV(Invoice::FOREIGN_RUT);
+        } else {
+            $customerUid = rutWithoutDV($invoice->uid);
+        }
+
         $sellerUid = rutWithoutDV($invoice->company->uid);
         $url = $this->url . '/dte/dte_tmps/pdf/' . 
             $customerUid . '/' .
