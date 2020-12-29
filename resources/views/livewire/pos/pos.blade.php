@@ -101,12 +101,8 @@ use App\Models\Product;
         </div>
         <div class="col-2 p-0">
             <span class="las la-shopping-cart " style="font-size:32px;">
-            @if ($cartproducts) <span
-                class="custom-badge badge-cart-view mobile-cart-view" >{{ count($cartproducts) }}</span>
-            @else
             <span
-                class="custom-badge">0</span>
-            @endif
+                class="custom-badge badge-cart-view  @if($cartproducts) mobile-cart-view @endif" >{{ count($cartproducts) }}</span>
         </span>
     </div>
 </div>
