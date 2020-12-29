@@ -7,7 +7,7 @@ use App\Services\DTE\Traits\DTEArray;
 
 class ElectronicInvoice implements DocumentType
 {
-    use DTEArray;
+    use DTEArray { toArray as ttArray; }
 
     const TYPE=33;
     protected $invoice;
@@ -21,5 +21,16 @@ class ElectronicInvoice implements DocumentType
      * Override use Traits\DTEArray { toArray as ttArray; }
      * call with $this->ttArray() and override function toArray() 
     */
+
+    public function toArray()
+     {
+        $array = $this->ttArray();
+
+        if ($this->invoice->customer->is_foreign) {
+            $array['Encabezado']['Receptor']['RUTRecep'] = Invoice::FOREIGN_RUT;
+        }
+
+        return ($array);
+     }
 
 }

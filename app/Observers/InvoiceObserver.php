@@ -31,7 +31,7 @@ class InvoiceObserver
         $invoice->is_company = $invoice->customer->is_company;
         $invoice->invoice_status = Invoice::STATUS_DRAFT;
 
-        if ($invoice->invoice_type_id == 11 || $invoice->invoice_type_id == 10) {
+        if ($invoice->invoice_type->code == 39 || $invoice->invoice_type->code == 41) {
             $invoice->business_activity_id = null;
         }
     }
@@ -61,7 +61,7 @@ class InvoiceObserver
 
             $response = $service->deleteTemporalDocument($originalInvoice);
             if ($response->getStatusCode() !== 200) {
-                \Alert::add('danger', 'No es pudo cambiar el documento')->flash();
+                \Alert::add('danger', 'No se pudo cambiar el documento')->flash();
                 return false;
             }
 
@@ -69,7 +69,7 @@ class InvoiceObserver
             $invoice->toDraft();
         }
         
-        if ($invoice->invoice_type_id == 11 || $invoice->invoice_type_id == 10) {
+        if ($invoice->invoice_type->code == 39 || $invoice->invoice_type->code == 41) {
             $invoice->business_activity_id = null;
         }
     }
