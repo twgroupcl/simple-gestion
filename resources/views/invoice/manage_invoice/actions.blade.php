@@ -107,7 +107,7 @@
 @endphp
 @endcan
 
-@can('doDownloadRealPDF', $invoice)
+{{-- @can('doDownloadRealPDF', $invoice)
 @php
     Widget::add([
         'type' => 'view',
@@ -117,4 +117,4 @@
         ]
     ]);
 @endphp
-@endcan    
+@endcan     --}}

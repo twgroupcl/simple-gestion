@@ -148,6 +148,14 @@
                         <h4> <span class="total-change">$0</span></h4>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-6  text-left ">
+                        <h4>Propina</h4>
+                    </div>
+                    <div class="col-6 text-danger text-right">
+                        <h4> <span class="total-tip">$0</span></h4>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card col-md-6">
