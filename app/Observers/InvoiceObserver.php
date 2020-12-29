@@ -31,7 +31,7 @@ class InvoiceObserver
         $invoice->is_company = $invoice->customer->is_company;
         $invoice->invoice_status = Invoice::STATUS_DRAFT;
 
-        if ($invoice->invoice_type_id == 11 || $invoice->invoice_type_id == 10) {
+        if ($invoice->invoice_type->code == 39 || $invoice->invoice_type->code == 41) {
             $invoice->business_activity_id = null;
         }
     }
@@ -69,7 +69,7 @@ class InvoiceObserver
             $invoice->toDraft();
         }
         
-        if ($invoice->invoice_type_id == 11 || $invoice->invoice_type_id == 10) {
+        if ($invoice->invoice_type->code == 39 || $invoice->invoice_type->code == 41) {
             $invoice->business_activity_id = null;
         }
     }
