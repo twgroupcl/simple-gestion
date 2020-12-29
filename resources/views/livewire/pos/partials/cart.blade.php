@@ -2,10 +2,10 @@
 use App\Models\Product;
 @endphp
     <div class="row p-4">
-        <div class="col-8 text-center ">
+        <div class="col-6 text-center ">
             <h5> Carro</h5>
         </div>
-        <div class="col-4 text-right text-danger ">
+        <div class="col-6 text-right text-danger ">
             <h5>{{ currencyFormat($total ?? 0, 'CLP', true) }}</h6>
         </div>
     </div>
