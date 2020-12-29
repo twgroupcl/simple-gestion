@@ -31,6 +31,7 @@ class Invoice extends Model
     const STATUS_SEND = 'send';
     const PAYMENT_CASH = 1;
     const PAYMENT_CREDIT = 2;
+    const FOREIGN_RUT = '55555555-5';
 
     protected $table = 'invoices';
     // protected $primaryKey = 'id';

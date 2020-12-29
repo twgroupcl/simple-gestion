@@ -15,7 +15,7 @@ class DTEFactory
 {
     public static function init(int $type, Invoice $invoice)
     {
-        switch($type) {
+        switch ($type) {
             case 33:
                 return new ElectronicInvoice($invoice);
                 break;

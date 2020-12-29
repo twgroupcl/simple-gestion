@@ -61,7 +61,7 @@ class InvoiceObserver
 
             $response = $service->deleteTemporalDocument($originalInvoice);
             if ($response->getStatusCode() !== 200) {
-                \Alert::add('danger', 'No es pudo cambiar el documento')->flash();
+                \Alert::add('danger', 'No se pudo cambiar el documento')->flash();
                 return false;
             }
 

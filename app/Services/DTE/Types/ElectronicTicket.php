@@ -30,6 +30,7 @@ class ElectronicTicket implements DocumentType
         $array = $this->ttArray();
 
         // En las boletas los montos deben ser brutos (con IVA incluido)
+        // TODO redondear montos 
         foreach ($array['Detalle'] as $key => $item) {
             $array['Detalle'][$key]['PrcItem'] = $array['Detalle'][$key]['PrcItem'] * 1.19;
 

@@ -35,11 +35,7 @@ class ExemptElectronicTicket implements DocumentType
     {
         $array = $this->ttArray();
 
-        //$array['Encabezado']['IdDoc']['FchEmis'] = '2020-11-30';
-        /*$array['Encabezado']['IdDoc'] = array_merge($array['Encabezado']['IdDoc'], [
-            'FchEmis' => '2020-11-30',
-        ]);*/
-
+        // Indicar que el descuento afecta tambien a los items exentos
         $array['DscRcgGlobal']['IndExeDR'] = 1;
 
         // Add item exent
