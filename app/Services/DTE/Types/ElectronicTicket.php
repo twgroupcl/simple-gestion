@@ -7,7 +7,7 @@ use App\Services\DTE\Traits\DTEArray;
 
 class ElectronicTicket implements DocumentType
 {
-    use DTEArray;
+    use DTEArray { toArray as ttArray; }
 
     const TYPE=39;
     protected $invoice;
@@ -20,10 +20,25 @@ class ElectronicTicket implements DocumentType
     /*
      * Override use Traits\DTEArray { toArray as ttArray; }
      * call with $this->ttArray() and override function toArray() 
-     *
      * public function toArray() {
      *      return $this->ttArray();
      * }
      */
+
+     public function toArray()
+     {
+        $array = $this->ttArray();
+
+        // En las boletas los montos deben ser brutos (con IVA incluido)
+        foreach ($array['Detalle'] as $key => $item) {
+            $array['Detalle'][$key]['PrcItem'] = $array['Detalle'][$key]['PrcItem'] * 1.19;
+
+            if (isset($item['DescuentoMonto']) && $item['DescuentoMonto'] > 0) {
+                $array['Detalle'][$key]['DescuentoMonto'] = $array['Detalle'][$key]['DescuentoMonto'] * 1.19;
+            }
+        }
+
+        return ($array);
+     }
 
 }
