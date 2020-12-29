@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pos;
 
+use App\Mail\PosBill;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Seller;
@@ -17,6 +18,7 @@ use App\Models\SalesBox;
 use Illuminate\Support\Facades\DB;
 use Backpack\Settings\app\Models\Setting;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class Pos extends Component
@@ -278,7 +280,7 @@ class Pos extends Component
     public function addToCart(Product $product)
     {
 
-        // $product = $this->products->firstWhere('id', $idProduct);
+        $this->cartproducts = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
 
         isset($this->cartproducts[$product->id]['qty'])
         ? $this->cartproducts[$product->id]['qty'] += 1
@@ -326,6 +328,8 @@ class Pos extends Component
 
     public function removeProductCart($productId)
     {
+        $this->cartproducts = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+
         unset($this->cartproducts[$productId]);
         $this->calculateAmounts();
     }
@@ -415,5 +419,10 @@ class Pos extends Component
     public function updatedDiscount()
     {
         $this->calculateAmounts();
+    }
+
+    public function sendMail(Invoice $invoice = null)
+    {
+        Mail::to($invoice->email)->send(new PosBill($invoice));
     }
 }
