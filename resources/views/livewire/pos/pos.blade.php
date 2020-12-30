@@ -365,6 +365,7 @@ use App\Models\Product;
     <script>
         var currentView = 'productList';
         var addressModalAppended = true;
+        var boardTarget = 'cash';
         const changeViewMode = (view, cartAlternative) => {
             $('#' + currentView).hide();
             $('#' + view).show();
@@ -440,6 +441,7 @@ use App\Models\Product;
 
 
         spanCash = $('.total-cash')
+        spanTip = $('.total-tip')
         spanChange = $('.total-change')
         totalCart = $('.total-cart')
         confirmPay = $('#confirm-pay')
@@ -448,6 +450,7 @@ use App\Models\Product;
 
         spanCash.text('$0')
         spanChange.text('$0')
+        spanTip.text('$0')
 
         confirmPay.prop("disabled", true);
 
@@ -456,7 +459,23 @@ use App\Models\Product;
 
         // Calc
         function chr(value) {
+            switch (boardTarget) {
+                case 'cash':
+                    updateCash(value);
+                    break;
 
+                case 'tip':
+                    $('#calculate-tip').show();
+                    updateTip(value);
+                    break;
+
+                default:
+                    updateCash(value);
+                    break;
+            }
+        }
+
+        function updateCash(value) {
             tmpTotalCart = clearCurrency(totalCart)
             tmpCash = clearCurrency(spanCash)
 
@@ -486,6 +505,42 @@ use App\Models\Product;
                 spanChange.text(formatCurrency(0))
                 confirmPay.prop("disabled", true);
             }
+        }
+
+        function updateTip(value) {
+            tmpTip = clearCurrency(spanTip)
+
+            switch (value) {
+                case '<<':
+                    tmpTip = tmpTip.slice(0, -1)
+                    break;
+                case 'C':
+                    tmpTip = 0
+                    break;
+                default:
+                    tmpTip += value
+                    break;
+            }
+
+            spanTip.text(formatCurrency(tmpTip))
+        }
+
+        function transferTipToChange() {
+            let tmpCash = clearCurrency(spanCash);
+            let tmpTotalCart = clearCurrency(totalCart);
+
+            tmpCashFloat = parseFloat(tmpCash);
+            tmpTotalCartFloat = parseFloat(tmpTotalCart);
+
+            tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat);
+            tmpChange = calculeChange(tmpChange, tmpTip);
+
+            if (tmpChange < 0) {
+                tmpChange = 0;
+            }
+
+            spanChange.text(formatCurrency(tmpChange));
+            $('#calculate-tip').hide();
         }
 
         function formatCurrency(value) {
@@ -527,6 +582,23 @@ use App\Models\Product;
         $(".close-final-payment").click( function() {
             $('.final-payment-view').hide();
             $('.payment-view').show();
+        });
+
+        $("#tip-input").click( function() {
+            $("#cash-input").removeClass('border border-warning rounded');
+            $(this).addClass('border border-warning rounded');
+            boardTarget = 'tip';
+        });
+
+        $("#cash-input").click( function() {
+            $("#tip-input").removeClass('border border-warning rounded');
+            $(this).addClass('border border-warning rounded');
+            spanTip.text(formatCurrency(0))
+            boardTarget = 'cash';
+        });
+
+        $("#calculate-tip").click( function() {
+            transferTipToChange();
         });
 
 
