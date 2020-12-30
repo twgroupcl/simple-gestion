@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -102,6 +103,13 @@ class Quotation extends Model
         static::addGlobalScope(new CompanyBranchScope);
     }
 
+    public static function datePrefix()
+    {
+        $date = new Carbon();
+        $prefix = $date->format('Ym');
+        return $prefix;
+    }
+
     public function updateWithoutEvents(array $options=[])
     {
         return static::withoutEvents(function() use ($options) {
@@ -165,6 +173,13 @@ class Quotation extends Model
     public function getCodeAccesorAttribute()
     {
         return $this->code;
+    }
+
+    public function getCodeWithPrefixAttribute()
+    {
+        $date = new Carbon($this->quotation_date);
+        $prefix = $date->format('Ym');
+        return $prefix . $this->code;
     }
 
     public function getQuotationStatusTextAttribute() 

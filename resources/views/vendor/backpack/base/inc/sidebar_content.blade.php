@@ -133,7 +133,9 @@
         @can('quotation.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('quotation') }}'><i class='nav-icon la la-calculator'></i> Cotizaciones</a></li>
         @endcan
-
+        @can('quotations.report')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('report/quotations') }}'><i class="nav-icon las la-file-invoice"></i> Reporte cotizaciones</a></li>
+        @endcan
         @can('order.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('order') }}'><i class="nav-icon las la-file-invoice"></i> Órdenes</a></li>
         @endcan

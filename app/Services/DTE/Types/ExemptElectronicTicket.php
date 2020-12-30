@@ -40,7 +40,9 @@ class ExemptElectronicTicket implements DocumentType
         }
 
         // Indicar que el descuento afecta tambien a los items exentos
-        $array['DscRcgGlobal']['IndExeDR'] = 1;
+        if ($this->invoice->discount_percent > 0 || $this->invoice->discount_amount > 0) {
+            $array['DscRcgGlobal']['IndExeDR'] = 1;
+        }
 
         // Add item exent
         foreach ($array['Detalle'] as $key => $item) {
