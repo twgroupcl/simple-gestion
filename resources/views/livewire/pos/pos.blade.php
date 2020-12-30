@@ -465,7 +465,6 @@ use App\Models\Product;
                     break;
 
                 case 'tip':
-                    $('#calculate-tip').show();
                     updateTip(value);
                     break;
 
@@ -473,6 +472,22 @@ use App\Models\Product;
                     updateCash(value);
                     break;
             }
+        }
+
+        function showTipRow() {
+            $('#tip-input').show();
+        }
+
+        function showTipOperation() {
+            $('#calculate-tip').show();
+        }
+
+        function hideTipOperation() {
+            $('#calculate-tip').hide();
+        }
+
+        function hideTipRow() {
+            $('#tip-input').hide();
         }
 
         function updateCash(value) {
@@ -499,9 +514,11 @@ use App\Models\Product;
             if (tmpCashFloat >= tmpTotalCartFloat) {
                 tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat)
 
+                showTipRow();
                 spanChange.text(formatCurrency(tmpChange))
                 confirmPay.removeAttr('disabled');
             } else {
+                hideTipRow();
                 spanChange.text(formatCurrency(0))
                 confirmPay.prop("disabled", true);
             }
@@ -520,6 +537,12 @@ use App\Models\Product;
                 default:
                     tmpTip += value
                     break;
+            }
+
+            if (parseFloat(tmpTip) > 0) {
+                showTipOperation();
+            } else {
+                hideTipOperation();
             }
 
             spanTip.text(formatCurrency(tmpTip))
@@ -587,12 +610,15 @@ use App\Models\Product;
         $("#tip-input").click( function() {
             $("#cash-input").removeClass('border border-warning rounded');
             $(this).addClass('border border-warning rounded');
+            showTipRow();
             boardTarget = 'tip';
         });
 
         $("#cash-input").click( function() {
             $("#tip-input").removeClass('border border-warning rounded');
             $(this).addClass('border border-warning rounded');
+            updateTip('C');
+            transferTipToChange();
             spanTip.text(formatCurrency(0))
             boardTarget = 'cash';
         });

@@ -148,7 +148,7 @@
                         <h4> <span class="total-change">$0</span></h4>
                     </div>
                 </div>
-                <div class="row" id="tip-input">
+                <div class="row" id="tip-input" style="display: none">
                     <div class="col-6  text-left ">
                         <span class="h4">Propina </span><span id="calculate-tip" style="display: none">(<a href="#">Click para canjear con el cambio</a> )</span>
                     </div>
