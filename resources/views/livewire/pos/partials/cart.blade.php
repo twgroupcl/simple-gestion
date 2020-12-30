@@ -13,7 +13,7 @@ use App\Models\Product;
         <div class="col-12 p-4">
 
             @if (!is_null($cartproducts))
-                @foreach ($cartproducts as $id => $cartproduct)
+                @foreach (json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [] as $id => $cartproduct)
                     @php
                     $product = Product::whereId($id)->first();
                     $qty = $cartproduct['qty'];

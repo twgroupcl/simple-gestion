@@ -280,7 +280,7 @@ class Pos extends Component
     public function addToCart(Product $product)
     {
 
-        $this->cartproducts = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+        $this->cartproducts = $this->getCartProducts();
 
         isset($this->cartproducts[$product->id]['qty'])
         ? $this->cartproducts[$product->id]['qty'] += 1
@@ -328,7 +328,7 @@ class Pos extends Component
 
     public function removeProductCart($productId)
     {
-        $this->cartproducts = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+        $this->cartproducts = $this->getCartProducts();
 
         unset($this->cartproducts[$productId]);
         $this->calculateAmounts();
@@ -349,6 +349,10 @@ class Pos extends Component
         $this->customerAddressId = $addressId;
     }
 
+    public function getCartProducts()
+    {
+        return json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+    }
 
     public function emitInvoice(Order $order)
     {
