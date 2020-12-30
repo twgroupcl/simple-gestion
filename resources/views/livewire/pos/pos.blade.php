@@ -59,14 +59,14 @@ use App\Models\Product;
             <a href="#"
                 class=" link-sale text-white">
                 <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
-                <h6>SALES</h6>
+                <h6>VENTAS</h6>
             </a>
         </div>
         <div class="col-12 text-center">
             <a href="#"
                 class="link-customer text-white">
                 <i class="las la-user" style="font-size: 32px;"></i>
-                <h6>CUSTOMER</h6>
+                <h6>CLIENTES</h6>
             </a>
         </div>
 
@@ -222,10 +222,10 @@ use App\Models\Product;
                         class="list-group-item-action link-sale">
                         <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
                         <br>
-                        Sales</a></li>
+                        VENTAS</a></li>
                 <li class="pos-list-group-item text-center"><a href="#" class="list-group-item-action  link-customer">
                         <i class="las la-user" style="font-size: 32px;"></i>
-                        Customer</a></li>
+                        CLIENTES</a></li>
 
                 {{-- <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
                         <i class="las la-cash-register" style="font-size: 32px;"></i>

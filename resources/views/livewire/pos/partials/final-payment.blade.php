@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="row h-25">
-        <div class="col-12"><h5 class="text-info text-center"> <i class="las la-envelope" style="font-size: 32px;"></i>Enviar la factura por correo </h5></div>
+        <div class="col-12"><h5 class="text-info text-center"> <i class="las la-envelope" style="font-size: 32px;"></i>Enviar la boleta por correo </h5></div>
         <div class="col-6">
             <button class="btn btn-secondary btn-block close-final-payment">NO</button>
         </div>
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="row  h-25">
-        <div class="col-12"><h5 class="text-info text-center"><i class="las la-print" style="font-size: 32px;"></i>Imprimir factura </h5></div>
+        <div class="col-12"><h5 class="text-info text-center"><i class="las la-print" style="font-size: 32px;"></i>Imprimir boleta </h5></div>
         <div class="col-6">
             <button class="btn btn-secondary btn-block close-final-payment">NO</button>
         </div>
