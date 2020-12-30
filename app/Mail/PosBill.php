@@ -31,6 +31,7 @@ class PosBill extends Mailable
      */
     public function build()
     {
-        return $this->view('maileclipse::templates.invoice');
+        return $this->subject('Comprobante de compra')
+                    ->view('maileclipse::templates.invoice');
     }
 }
