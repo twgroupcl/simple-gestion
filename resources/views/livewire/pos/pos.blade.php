@@ -883,7 +883,9 @@ use App\Models\Product;
                     totalCash = totalCash.replace(/\./g, '')
                     totalCash = parseFloat(totalCash)
 
-                    await @this.confirmPayment(totalCash)
+                let tip = clearCurrency(spanTip)
+
+                    await @this.confirmPayment(totalCash, tip)
                     hideAllViews()
                     // $('.main-view').hide();
                     // $('.cart-buttons').hide();

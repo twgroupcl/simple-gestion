@@ -95,7 +95,7 @@ class Pos extends Component
         $this->viewMode = $view;
     }
 
-    public function confirmPayment($cash)
+    public function confirmPayment($cash, $tip = null)
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
         if ($cash >= $this->total && !is_null($this->saleBox)) {
@@ -111,6 +111,14 @@ class Pos extends Component
             $order->cellphone = $this->customer->cellphone;
             $order->currency_id = $currency->id;
             $order->customer_id = $this->customer->id;
+
+            if (!is_null($tip) && (int) $tip > 0) {
+                $order->json_value = json_encode([
+                    'tip' => $tip,
+                    'addressShipping' => '',
+                    'addressInvoice' => '',
+                ]);
+            }
 
             $order->status = 1; //initiated
             $order->save();
