@@ -552,14 +552,17 @@ use App\Models\Product;
             let tmpCash = clearCurrency(spanCash);
             let tmpTotalCart = clearCurrency(totalCart);
 
-            tmpCashFloat = parseFloat(tmpCash);
-            tmpTotalCartFloat = parseFloat(tmpTotalCart);
+            let tmpCashFloat = parseFloat(tmpCash);
+            let tmpTotalCartFloat = parseFloat(tmpTotalCart);
 
-            tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat);
+            let tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat);
             tmpChange = calculeChange(tmpChange, tmpTip);
 
             if (tmpChange < 0) {
+                spanTip.text(Math.abs(tmpChange))
                 tmpChange = 0;
+            } else {
+                spanTip.text('$0')
             }
 
             spanChange.text(formatCurrency(tmpChange));
