@@ -255,7 +255,7 @@ class QuotationCrudController extends CrudController
             'prefix' => '#',
             'default' => Quotation::withTrashed()->orderBy('created_at')->get()->last() 
                 ? intval(Quotation::withTrashed()->orderBy('created_at')->get()->last()->code) + 1 
-                : 1,
+                : Quotation::datePrefix() . '1',
             'attributes' => [
                 'readonly' => true,
             ],
@@ -565,8 +565,8 @@ class QuotationCrudController extends CrudController
         return $customer->addresses_with_deletes()->paginate(100);
     }
 
-    public function exportPDF($id) {
-
+    public function exportPDF($id) 
+    {
         $quotation = Quotation::findOrFail($id);
 
         $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('templates.quotations.export_pdf', [
@@ -579,7 +579,23 @@ class QuotationCrudController extends CrudController
 
         $pdf->getDomPDF()->set_option("isPhpEnabled", true);
 
-        return $pdf->stream('invoice.pdf');
+        return $pdf->stream('cotización ' . $quotation->code . '.pdf');
+    }
+
+    public function duplicate($id)
+    {
+        $quotation = Quotation::findOrFail($id);
+
+        $newQuotation = new Quotation($quotation->toArray());
+        $newQuotation->items_data = $quotation->items_data;
+        $newQuotation->quotation_status = Quotation::STATUS_DRAFT;
+
+        unset($newQuotation->expiry_date);
+        unset($newQuotation->code);
+        
+        $newQuotation->save();
+
+        return redirect('admin/quotation/' . $newQuotation->id . '/edit');
     }
 
     public function toInvoice(Request $request, Quotation $quotation)

@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
@@ -210,12 +211,26 @@ class QuotationObserver
     {
         $lastQuotation = Quotation::withTrashed()->where('branch_id', $quotation->branch_id)->orderBy('created_at')->get()->last();
 
-        $lastCode = $lastQuotation ? intval($lastQuotation->code) + 1 : 1;
+        $lastCode = $lastQuotation ? intval($lastQuotation->code) : 1;
+
+        $date = new Carbon();
+        $prefix = $date->format('Ym');
+
+        // Check if has the date prefix
+        if (strlen((string) $lastCode) > 6) {
+            $number = substr((string) $lastCode, 6);
+            $number = (int) $number + 1;
+            $lastCode = $prefix . $number;
+        } else {
+            $lastCode = $prefix . $lastCode;
+        }
 
         $verification = Quotation::withTrashed()->where([ 'code' => $lastCode, 'branch_id' => $quotation->branch_id ])->get();
 
         while ( $verification->count() ) {
-            $lastCode++;
+            $number = substr((string) $lastCode, 6);
+            $number = (int) $number + 1;
+            $lastCode = $prefix . $number;
             $verification = Quotation::withTrashed()->where([ 'code' => $lastCode, 'branch_id' => $quotation->branch_id ])->get();
         }
 

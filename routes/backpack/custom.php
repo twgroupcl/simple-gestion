@@ -61,6 +61,7 @@ Route::group([
     // Quotations
     Route::crud('quotation', 'QuotationCrudController');
     Route::get('quotation/{id}/export', 'QuotationCrudController@exportPDF');
+    Route::get('quotation/{id}/duplicate', 'QuotationCrudController@duplicate');
     Route::post('quotation/addresses', 'QuotationCrudController@addresses');
     Route::get('report/quotations', 'Report\QuotationsReportController@index')->name('report.quotations');
     Route::get('report/quotations/load-data', 'Report\QuotationsReportController@loadData')->name('report.quotations.load-data');
