@@ -54,9 +54,9 @@ class InvoicePolicy
     public function doUpdateDocumentStatus(User $user, Invoice $invoice)
     {
         return isset($invoice->folio) &&
-                $invoice->invoice_status == Invoice::STATUS_SEND &&
+                $invoice->invoice_status == Invoice::STATUS_SEND; /*  &&
                 $invoice->invoice_type->code != 41 && // boleta
-                $invoice->invoice_type->code != 39;   // boleta
+                $invoice->invoice_type->code != 39;   // boleta */
     }
 
     public function doDownloadTemporalPDF(User $user, Invoice $invoice)

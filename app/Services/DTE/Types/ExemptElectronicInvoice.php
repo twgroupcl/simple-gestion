@@ -35,6 +35,10 @@ class ExemptElectronicInvoice implements DocumentType
     {
         $array = $this->ttArray();
 
+        if ($this->invoice->customer->is_foreign) {
+            $array['Encabezado']['Receptor']['RUTRecep'] = Invoice::FOREIGN_RUT;
+        }
+
         //$array['Encabezado']['IdDoc']['FchEmis'] = '2020-11-30';
         /*$array['Encabezado']['IdDoc'] = array_merge($array['Encabezado']['IdDoc'], [
             'FchEmis' => '2020-11-30',

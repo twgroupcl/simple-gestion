@@ -200,6 +200,32 @@ class InvoiceCrudController extends CrudController
             'thousands_sep' => ' ',
         ]);
 
+        CRUD::addColumn([
+            'name' => 'status_description',
+            'label' => 'Estado',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    switch ($column['text']) {
+                        case 'Borrador':
+                            return 'badge badge-secondary';
+                            break;
+                        case 'Doc. Temporal':
+                            return 'badge badge-info';
+                            break;
+                        case 'Doc. Enviado':
+                            return 'badge badge-success';
+                            break;
+                        default:
+                            return '';
+                            break;
+                    }
+                },
+            ],
+        ]);
+
+        $this->customFilters();
+
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -800,6 +826,44 @@ class InvoiceCrudController extends CrudController
             'store_in' => 'json_value'
         ]);
 
+    }
+
+
+    protected function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'date_range',
+            'name'  => 'from_to',
+            'label' => 'Fecha'
+          ],
+          false,
+          function ($value) { // if the filter is active, apply these constraints
+            $dates = json_decode($value);
+            $this->crud->addClause('where', 'invoice_date', '>=', $dates->from);
+            $this->crud->addClause('where', 'invoice_date', '<=', $dates->to . ' 23:59:59');
+        });
+
+        CRUD::addFilter([
+            'name'  => 'invoice_type',
+            'type'  => 'select2',
+            'label' => 'Tipo de documento'
+        ], function() {
+            return InvoiceType::active()->get()->sortBy('name')->pluck('name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'invoice_type_id', $value);
+        });
+
+        CRUD::addFilter([
+            'name'  => 'status',
+            'type'  => 'dropdown',
+            'label' => 'Estado'
+          ], [
+            'draft' => 'Borrador',
+            'temporal' => 'Doc. Temporal',
+            'send' => 'Doc. Enviado',
+          ], function($value) {
+            $this->crud->addClause('where', 'invoice_status', $value);
+          });
     }
 
 }

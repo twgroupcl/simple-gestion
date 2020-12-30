@@ -31,6 +31,7 @@ class Invoice extends Model
     const STATUS_SEND = 'send';
     const PAYMENT_CASH = 1;
     const PAYMENT_CREDIT = 2;
+    const FOREIGN_RUT = '55555555-5';
 
     protected $table = 'invoices';
     // protected $primaryKey = 'id';
@@ -251,6 +252,23 @@ class Invoice extends Model
     public function getOrderAttribute()
     {
         return $this->orders->first();
+    }
+
+    public function getStatusDescriptionAttribute()
+    {
+        switch ($this->invoice_status) {
+            case self::STATUS_DRAFT:
+                return 'Borrador';
+                break;
+            case self::STATUS_TEMPORAL:
+                return 'Doc. Temporal';
+                break;
+            case self::STATUS_SEND:
+                return 'Doc. Enviado';
+                break;
+            default:
+                break;
+        }
     }
 
     /*

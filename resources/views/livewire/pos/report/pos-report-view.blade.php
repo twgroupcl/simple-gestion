@@ -70,7 +70,7 @@
                         <div class="row">
                             <div class="col-2 text-danger order-id"># {{ $order->id }}</div>
                             <div class="col-6">{{ $order->created_at->format('j/m/Y - g:i a') }}</div>
-                            <div class="col-4">{{ currencyFormat($order->total, 'CLP', true) }}</div>
+                            <div class="col-4 text-right">{{ currencyFormat($order->total, 'CLP', true) }}</div>
                         </div>
                     </a>
                 @endforeach

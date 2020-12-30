@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Product;
+use App\Models\InvoiceType;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,7 +33,7 @@ class InvoiceRequest extends FormRequest
             $expiryDateRules = 'required|date|after_or_equal:invoice_date';
         } 
 
-        return [
+        $rules =  [
             'invoice_type_id' => 'required|exists:invoice_types,id',
             'total' => 'gte:0',
             'invoice_date' => 'date',
@@ -58,6 +59,16 @@ class InvoiceRequest extends FormRequest
                 }
             }
         ];
+
+        $invoiceType = InvoiceType::find($this->invoice_type_id);
+        
+        if ($invoiceType) {
+            if ($invoiceType->code != 39 && $invoiceType->code != 41) {
+                $rules['business_activity_id'] = 'required|exists:business_activities,id';
+            }
+        }
+
+        return $rules;
     }
 
     /**
@@ -76,6 +87,7 @@ class InvoiceRequest extends FormRequest
             'expiry_date' => 'fecha de vencimiento',
             'invoice_type_id' => 'tipo de documento',
             'address_id' => 'dirección',
+            'business_activity_id' => 'giro',
         ];
     }
 

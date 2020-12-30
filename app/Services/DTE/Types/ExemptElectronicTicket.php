@@ -35,12 +35,14 @@ class ExemptElectronicTicket implements DocumentType
     {
         $array = $this->ttArray();
 
-        //$array['Encabezado']['IdDoc']['FchEmis'] = '2020-11-30';
-        /*$array['Encabezado']['IdDoc'] = array_merge($array['Encabezado']['IdDoc'], [
-            'FchEmis' => '2020-11-30',
-        ]);*/
+        if ($this->invoice->customer->is_foreign) {
+            $array['Encabezado']['Receptor']['RUTRecep'] = Invoice::FOREIGN_RUT;
+        }
 
-        // add Item exent
+        // Indicar que el descuento afecta tambien a los items exentos
+        $array['DscRcgGlobal']['IndExeDR'] = 1;
+
+        // Add item exent
         foreach ($array['Detalle'] as $key => $item) {
             $array['Detalle'][$key]['IndExe'] = 1;
         }
