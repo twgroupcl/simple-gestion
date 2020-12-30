@@ -303,13 +303,13 @@ class DTEService
             return ($response);
 
         } catch (\GuzzleHttp\Exception\ServerException $e) {
-            \Log::error( $e->getResponse()->getBody()->getContents());
+            \Log::error( $e->getResponse()->getBody()->getContents(), ['user' => auth()->user()]);
             return $e->getResponse();
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            \Log::error( $e->getResponse()->getBody()->getContents());
+            \Log::error( $e->getResponse()->getBody()->getContents(), ['user' => auth()->user()]);
             return $e->getResponse();
-        } catch (Exception $e) {
-            ddd($e);
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage(), ['user' => auth()->user()]);
         }
     }
     
