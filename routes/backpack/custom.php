@@ -57,9 +57,13 @@ Route::group([
     Route::crud('productinventory', 'ProductInventoryCrudController');
     Route::crud('shippingmethod', 'ShippingMethodCrudController');
     Route::crud('paymentmethod', 'PaymentMethodCrudController');
+
+    // Quotations
     Route::crud('quotation', 'QuotationCrudController');
     Route::get('quotation/{id}/export', 'QuotationCrudController@exportPDF');
     Route::post('quotation/addresses', 'QuotationCrudController@addresses');
+    Route::get('report/quotations', 'Report\QuotationsReportController@index')->name('report.quotations');
+    Route::get('report/quotations/load-data', 'Report\QuotationsReportController@loadData')->name('report.quotations.load-data');
 
     //CHART routes
     Route::get('charts/daily-sales', 'Charts\DailySalesChartController@response')->name('charts.daily-sales.index');
