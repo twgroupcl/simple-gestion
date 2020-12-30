@@ -559,7 +559,7 @@ use App\Models\Product;
             tmpChange = calculeChange(tmpChange, tmpTip);
 
             if (tmpChange < 0) {
-                spanTip.text(Math.abs(tmpChange))
+                spanTip.text(formatCurrency(Math.abs(tmpChange)))
                 tmpChange = 0;
             } else {
                 spanTip.text('$0')
