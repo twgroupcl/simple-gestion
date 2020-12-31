@@ -132,7 +132,7 @@
                         <h4><span class="total-cart">{{ currencyFormat($total ?? 0, 'CLP', true) }}</span></h4>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row border border-warning rounded" id="cash-input">
                     <div class="col-6  text-left">
                         <h4>Efectivo</h4>
                     </div>
@@ -148,12 +148,12 @@
                         <h4> <span class="total-change">$0</span></h4>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="tip-input" style="display: none">
                     <div class="col-6  text-left ">
-                        <h4>Propina</h4>
+                        <span class="h4">Propina </span><span id="calculate-tip" style="display: none">(<a href="#">Click para canjear con el cambio</a> )</span>
                     </div>
                     <div class="col-6 text-danger text-right">
-                        <h4> <span class="total-tip">$0</span></h4>
+                        <h4><span class="total-tip">{{ currencyFormat(0, 'CLP', true) }}</span></h4>
                     </div>
                 </div>
             </div>

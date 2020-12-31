@@ -95,7 +95,7 @@ class Pos extends Component
         $this->viewMode = $view;
     }
 
-    public function confirmPayment($cash)
+    public function confirmPayment($cash, $tip = null)
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
         if ($cash >= $this->total && !is_null($this->saleBox)) {
@@ -111,6 +111,14 @@ class Pos extends Component
             $order->cellphone = $this->customer->cellphone;
             $order->currency_id = $currency->id;
             $order->customer_id = $this->customer->id;
+
+            if (!is_null($tip) && (int) $tip > 0) {
+                $order->json_value = json_encode([
+                    'tip' => $tip,
+                    'addressShipping' => '',
+                    'addressInvoice' => '',
+                ]);
+            }
 
             $order->status = 1; //initiated
             $order->save();
@@ -280,7 +288,7 @@ class Pos extends Component
     public function addToCart(Product $product)
     {
 
-        $this->cartproducts = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+        $this->cartproducts = $this->getCartProducts();
 
         isset($this->cartproducts[$product->id]['qty'])
         ? $this->cartproducts[$product->id]['qty'] += 1
@@ -328,7 +336,7 @@ class Pos extends Component
 
     public function removeProductCart($productId)
     {
-        $this->cartproducts = json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+        $this->cartproducts = $this->getCartProducts();
 
         unset($this->cartproducts[$productId]);
         $this->calculateAmounts();
@@ -349,6 +357,10 @@ class Pos extends Component
         $this->customerAddressId = $addressId;
     }
 
+    public function getCartProducts()
+    {
+        return json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
+    }
 
     public function emitInvoice(Order $order)
     {

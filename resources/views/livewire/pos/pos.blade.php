@@ -59,14 +59,14 @@ use App\Models\Product;
             <a href="#"
                 class=" link-sale text-white">
                 <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
-                <h6>SALES</h6>
+                <h6>VENTAS</h6>
             </a>
         </div>
         <div class="col-12 text-center">
             <a href="#"
                 class="link-customer text-white">
                 <i class="las la-user" style="font-size: 32px;"></i>
-                <h6>CUSTOMER</h6>
+                <h6>CLIENTES</h6>
             </a>
         </div>
 
@@ -222,10 +222,10 @@ use App\Models\Product;
                         class="list-group-item-action link-sale">
                         <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
                         <br>
-                        Sales</a></li>
+                        VENTAS</a></li>
                 <li class="pos-list-group-item text-center"><a href="#" class="list-group-item-action  link-customer">
                         <i class="las la-user" style="font-size: 32px;"></i>
-                        Customer</a></li>
+                        CLIENTES</a></li>
 
                 {{-- <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
                         <i class="las la-cash-register" style="font-size: 32px;"></i>
@@ -285,7 +285,7 @@ use App\Models\Product;
 
 
                     <div class=" col-12  h-50">
-                        <div class='row col-md-12 p-0 m-0'>
+                        {{-- <div class='row col-md-12 p-0 m-0'>
                             <div class="col-md-6 border border-dark">
                                 <div class="border-right-0"> SubTotal</div>
                             </div>
@@ -300,7 +300,7 @@ use App\Models\Product;
                             <div class="col-md-6 border border-dark">
                                 <input wire:model="discount" type="number" name="discount" id="discount" placeholder="0" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
                             </div>
-                        </div>
+                        </div> --}}
                         <div class='row col-md-12 p-0 m-0'>
                             <div class="col-md-6 border border-dark">
                                 <div class="  border-right-0"> Total</div>
@@ -365,6 +365,7 @@ use App\Models\Product;
     <script>
         var currentView = 'productList';
         var addressModalAppended = true;
+        var boardTarget = 'cash';
         const changeViewMode = (view, cartAlternative) => {
             $('#' + currentView).hide();
             $('#' + view).show();
@@ -440,6 +441,7 @@ use App\Models\Product;
 
 
         spanCash = $('.total-cash')
+        spanTip = $('.total-tip')
         spanChange = $('.total-change')
         totalCart = $('.total-cart')
         confirmPay = $('#confirm-pay')
@@ -448,6 +450,7 @@ use App\Models\Product;
 
         spanCash.text('$0')
         spanChange.text('$0')
+        spanTip.text('$0')
 
         confirmPay.prop("disabled", true);
 
@@ -456,7 +459,38 @@ use App\Models\Product;
 
         // Calc
         function chr(value) {
+            switch (boardTarget) {
+                case 'cash':
+                    updateCash(value);
+                    break;
 
+                case 'tip':
+                    updateTip(value);
+                    break;
+
+                default:
+                    updateCash(value);
+                    break;
+            }
+        }
+
+        function showTipRow() {
+            $('#tip-input').show();
+        }
+
+        function showTipOperation() {
+            $('#calculate-tip').show();
+        }
+
+        function hideTipOperation() {
+            $('#calculate-tip').hide();
+        }
+
+        function hideTipRow() {
+            $('#tip-input').hide();
+        }
+
+        function updateCash(value) {
             tmpTotalCart = clearCurrency(totalCart)
             tmpCash = clearCurrency(spanCash)
 
@@ -480,12 +514,59 @@ use App\Models\Product;
             if (tmpCashFloat >= tmpTotalCartFloat) {
                 tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat)
 
+                showTipRow();
                 spanChange.text(formatCurrency(tmpChange))
                 confirmPay.removeAttr('disabled');
             } else {
+                hideTipRow();
                 spanChange.text(formatCurrency(0))
                 confirmPay.prop("disabled", true);
             }
+        }
+
+        function updateTip(value) {
+            tmpTip = clearCurrency(spanTip)
+
+            switch (value) {
+                case '<<':
+                    tmpTip = tmpTip.slice(0, -1)
+                    break;
+                case 'C':
+                    tmpTip = 0
+                    break;
+                default:
+                    tmpTip += value
+                    break;
+            }
+
+            if (parseFloat(tmpTip) > 0) {
+                showTipOperation();
+            } else {
+                hideTipOperation();
+            }
+
+            spanTip.text(formatCurrency(tmpTip))
+        }
+
+        function transferTipToChange() {
+            let tmpCash = clearCurrency(spanCash);
+            let tmpTotalCart = clearCurrency(totalCart);
+
+            let tmpCashFloat = parseFloat(tmpCash);
+            let tmpTotalCartFloat = parseFloat(tmpTotalCart);
+
+            let tmpChange = calculeChange(tmpCashFloat, tmpTotalCartFloat);
+            tmpChange = calculeChange(tmpChange, tmpTip);
+
+            if (tmpChange < 0) {
+                spanTip.text(formatCurrency(Math.abs(tmpChange)))
+                tmpChange = 0;
+            } else {
+                spanTip.text('$0')
+            }
+
+            spanChange.text(formatCurrency(tmpChange));
+            $('#calculate-tip').hide();
         }
 
         function formatCurrency(value) {
@@ -527,6 +608,26 @@ use App\Models\Product;
         $(".close-final-payment").click( function() {
             $('.final-payment-view').hide();
             $('.payment-view').show();
+        });
+
+        $("#tip-input").click( function() {
+            $("#cash-input").removeClass('border border-warning rounded');
+            $(this).addClass('border border-warning rounded');
+            showTipRow();
+            boardTarget = 'tip';
+        });
+
+        $("#cash-input").click( function() {
+            $("#tip-input").removeClass('border border-warning rounded');
+            $(this).addClass('border border-warning rounded');
+            updateTip('C');
+            transferTipToChange();
+            spanTip.text(formatCurrency(0))
+            boardTarget = 'cash';
+        });
+
+        $("#calculate-tip").click( function() {
+            transferTipToChange();
         });
 
 
@@ -782,7 +883,9 @@ use App\Models\Product;
                     totalCash = totalCash.replace(/\./g, '')
                     totalCash = parseFloat(totalCash)
 
-                    await @this.confirmPayment(totalCash)
+                let tip = clearCurrency(spanTip)
+
+                    await @this.confirmPayment(totalCash, tip)
                     hideAllViews()
                     // $('.main-view').hide();
                     // $('.cart-buttons').hide();
