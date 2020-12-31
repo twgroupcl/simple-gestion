@@ -55,6 +55,7 @@ class QuotationCrudController extends CrudController
     {
         // Export PDF option
         $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
+        $this->crud->addButtonFromView('line', 'duplicate', 'quotation.duplicate', 'begining');
         $this->crud->addButtonFromView('line', 'Crear documento electrónico temporal', 'quotation.to_invoice', 'beginning');
 
         CRUD::addColumn([
@@ -594,7 +595,7 @@ class QuotationCrudController extends CrudController
         unset($newQuotation->code);
         
         $newQuotation->save();
-
+        \Alert::add('success', 'Cotización duplicada con exito')->flash();
         return redirect('admin/quotation/' . $newQuotation->id . '/edit');
     }
 

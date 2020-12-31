@@ -257,6 +257,14 @@ class InvoiceCrudController extends CrudController
         $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'current_tab', 'save_action']);
 
         CRUD::addField([
+            'type' => 'custom_js_data',
+            'name' => 'custom_data_for_invoice_type',
+            'data' => InvoiceType::all()->toArray(),
+            'variable_name' => 'invoiceTypeArray',
+            'tab' => 'General',
+        ]);
+        
+        CRUD::addField([
             'label' => 'Cliente',
             'name' => 'customer_id',
             'type' => 'relationship',

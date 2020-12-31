@@ -106,7 +106,7 @@
                 return;
             }
 
-            var code = '';
+            /* var code = '';
             $.ajax({
                 url: '/admin/invoice-type/' + id + '/get-code',
                 async: false,
@@ -115,7 +115,15 @@
                 }
             });
 
-            return code;
+            return code; */
+
+            var type = invoiceTypeArray.filter( item => {
+                return item.id == id
+            })
+
+            if (type.length === 0) return;
+
+            return type[0]['code'].toString();
         }
 
         function getTaxValue() {
@@ -378,19 +386,24 @@
         }
 
         function checkTypeTax() {
+            
             switch (invoiceType){
                 case '33':
-                case '39':
                 case 'H':
-                    $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
-                        $(this).prop('disabled', false);
-                    })
+                console.log('33')
+                    disableItemTaxFields(false)
+                    disableGlobalDiscountField(false)
+                    break;
+                case '39':
+                case '41':
+                console.log('41')
+                    disableItemTaxFields(true)
+                    disableGlobalDiscountField(true)
                     break;
                 default:
-                    $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
-                        $(this).val(0).trigger('change');
-                        $(this).prop('disabled', true);
-                    })
+                console.log('default')
+                    disableItemTaxFields(true)
+                    disableGlobalDiscountField(false)
                     break;
             }
         }
@@ -406,12 +419,39 @@
             }
         }
 
+        function disableItemTaxFields (status) {
+            $('select[data-repeatable-input-name="additional_tax_id"]').each(function () {
+                if ($(this).prop('disabled') == status ) {
+                    return;
+                }
+
+                $(this).val(0).trigger('change');
+                $(this).prop('disabled', status);
+            })
+        }
+
+        function disableGlobalDiscountField (status) {
+            if ($('input[name="discount_amount_field"]').prop('readonly') == status ) {
+                return 0
+            }
+
+            $('input[name="discount_amount"]').val(0)
+            $('input[name="discount_percent"]').val(0)
+            $('input[name="discount_amount_field"]').val(0);
+            document.querySelector('#total-discount-field').innerText = 0
+
+            $('input[name="discount_amount_field"]').prop('readonly', status)
+        }
+
 
         /**********************************************
         *  
         * Event listeners
         *
         ***********************************************/
+        $(document).on('click', '.add-repeatable-element-button', function () {
+            checkTypeTax();
+        })
 
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
             calculateTotals();
