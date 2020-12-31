@@ -35,7 +35,7 @@ class ElectronicTicket implements DocumentType
 
         // En las boletas los montos deben ser brutos (con IVA incluido)
         foreach ($array['Detalle'] as $key => $item) {
-            $itemPriceWithIva  = round($array['Detalle'][$key]['PrcItem'] * 1.19, 0, PHP_ROUND_HALF_ODD);
+            $itemPriceWithIva  = round($array['Detalle'][$key]['PrcItem'] * 1.19, 2, PHP_ROUND_HALF_ODD);
             $array['Detalle'][$key]['PrcItem'] = $itemPriceWithIva;
 
             if (isset($item['DescuentoMonto']) && $item['DescuentoMonto'] > 0) {

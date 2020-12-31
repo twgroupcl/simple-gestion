@@ -26,6 +26,13 @@
                     {{$invoice->dte_code ?? "S/código"}}
                 </p>
             </div>
+            @if ($invoice->folio)
+            <div class="col-md-6">
+                <p><strong>Folio: </strong>
+                    {{$invoice->folio}}
+                </p>
+            </div>
+            @endif
         </div>
         @if ($invoice->dte_status)
         <div class="row">
