@@ -78,8 +78,8 @@ class QuotationCrudController extends CrudController
 
         CRUD::addColumn([
             'label' => 'Cliente',
-            'name' => 'customer',
-            'type' => 'relationship',
+            'name' => 'customerWithUid',
+            'type' => 'text',
         ]);
 
         CRUD::addColumn([

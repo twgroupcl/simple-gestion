@@ -175,6 +175,11 @@ class Quotation extends Model
         return $this->code;
     }
 
+    public function getCustomerWithUidAttribute()
+    {
+        return $this->customer->fullNameWithUid;
+    }
+
     public function getCodeWithPrefixAttribute()
     {
         $date = new Carbon($this->quotation_date);
