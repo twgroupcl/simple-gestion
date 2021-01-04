@@ -24,10 +24,10 @@ class QuotationObserver
         $quotation->email = $quotation->customer->email;
         $quotation->phone = $quotation->customer->phone;
         $quotation->cellphone = $quotation->customer->cellphone;
+        $quotation->is_company = $quotation->customer->is_company;
 
         $quotation->code = $this->generateUniqueCodeByBranch($quotation);
 
-        $quotation->is_company = $quotation->customer->is_company;
     }
 
 
@@ -51,6 +51,7 @@ class QuotationObserver
         $quotation->email = $quotation->customer->email;
         $quotation->phone = $quotation->customer->phone;
         $quotation->cellphone = $quotation->customer->cellphone;
+        $quotation->is_company = $quotation->customer->is_company;
     }
 
     /**
