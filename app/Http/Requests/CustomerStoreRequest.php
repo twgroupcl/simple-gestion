@@ -5,9 +5,10 @@ namespace App\Http\Requests;
 use App\Rules\RutRule;
 use App\Rules\PhoneRule;
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomerRequest extends FormRequest
+class CustomerStoreRequest extends FormRequest
 {
     private $prepareData = [
         'activities_data',
@@ -31,6 +32,7 @@ class CustomerRequest extends FormRequest
             }
 
             $this->merge([
+                'uid' => str_replace('.', '', $this->uid),
                 $attrName.'_validation' => $forValidation,
             ]);
         }
@@ -58,10 +60,18 @@ class CustomerRequest extends FormRequest
         $phoneRule = new PhoneRule;
 
         $rules =  [
-            'uid' => ['required', 'string', $rutRule],
+            'uid' => [
+                'required',
+                'string',
+                'unique:customers,uid',
+                $rutRule ],
             'first_name' => 'required|string',
             'last_name' => 'string|nullable',
-            'email' => 'required|email',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')
+            ],
             'phone' => ['nullable', $phoneRule],
             'cellphone' => ['nullable', $phoneRule],
             'customer_segment_id' => 'required|exists:customer_segments,id',
@@ -104,6 +114,8 @@ class CustomerRequest extends FormRequest
         if ($this->is_foreign) {
             $rules['cellphone'] = ['required', $phoneRule];
         }
+
+
 
         return $rules;
     }
