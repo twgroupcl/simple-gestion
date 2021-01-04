@@ -24,10 +24,10 @@ class QuotationObserver
         $quotation->email = $quotation->customer->email;
         $quotation->phone = $quotation->customer->phone;
         $quotation->cellphone = $quotation->customer->cellphone;
+        $quotation->is_company = $quotation->customer->is_company;
 
         $quotation->code = $this->generateUniqueCodeByBranch($quotation);
 
-        $quotation->is_company = $quotation->customer->is_company;
     }
 
 
@@ -40,6 +40,18 @@ class QuotationObserver
     public function created(Quotation $quotation)
     {
         $this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'BORRADOR', 'set_item_status' => 'pending']);
+    }
+
+    public function updating(Quotation $quotation)
+    {
+        // Update quotation customer info
+        $quotation->uid = $quotation->customer->uid;
+        $quotation->first_name = $quotation->customer->first_name;
+        $quotation->last_name = $quotation->customer->last_name;
+        $quotation->email = $quotation->customer->email;
+        $quotation->phone = $quotation->customer->phone;
+        $quotation->cellphone = $quotation->customer->cellphone;
+        $quotation->is_company = $quotation->customer->is_company;
     }
 
     /**
