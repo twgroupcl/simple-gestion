@@ -42,6 +42,17 @@ class QuotationObserver
         $this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'BORRADOR', 'set_item_status' => 'pending']);
     }
 
+    public function updating(Quotation $quotation)
+    {
+        // Update quotation customer info
+        $quotation->uid = $quotation->customer->uid;
+        $quotation->first_name = $quotation->customer->first_name;
+        $quotation->last_name = $quotation->customer->last_name;
+        $quotation->email = $quotation->customer->email;
+        $quotation->phone = $quotation->customer->phone;
+        $quotation->cellphone = $quotation->customer->cellphone;
+    }
+
     /**
      * Handle the quotation "updated" event.
      *
