@@ -262,35 +262,35 @@
                     <tbody>
                             <tr>
                                 <td align="right" class="size-totals"><strong>Subtotal $</strong></td>
-                                <td align="right">{{ currencyFormat($quotation->sub_total, 'CLP', true)  }}</td>
+                                <td align="right">{{ currencyFormat($quotation->sub_total, 'CLP', false)  }}</td>
                             </tr>
                             @if ($quotation->discount_amount > 0)
                             <tr>
                                 <td align="right" class="size-totals"><strong>Descuento general $</strong></td>
-                                <td align="right">-{{ currencyFormat($quotation->discount_amount, 'CLP', true) }}</td>
+                                <td align="right">-{{ currencyFormat($quotation->discount_amount, 'CLP', false) }}</td>
                             </tr>
                             @endif
                             @if ($quotation->tax_type == 'A')
                             <tr>
                                 <td align="right" class="size-totals"><strong>IVA $</strong></td>
-                                <td align="right">{{ currencyFormat($quotation->tax_amount, 'CLP', true) }}</td>
+                                <td align="right">{{ currencyFormat($quotation->tax_amount, 'CLP', false) }}</td>
                             </tr>  
                             @endif
                             @if ($quotation->tax_type == 'H')
                             <tr>
                                 <td align="right" class="size-totals"><strong>Retencion $</strong></td>
-                                <td align="right">-{{ currencyFormat($quotation->tax_amount, 'CLP', true) }}</td>
+                                <td align="right">-{{ currencyFormat($quotation->tax_amount, 'CLP', false) }}</td>
                             </tr>      
                             @endif
                             @if ($quotation->has_tax_per_item)
                             <tr>
                                 <td align="right" class="size-totals"><strong>Impuestos adic. $</strong></td>
-                                <td align="right">{{ currencyFormat($quotation->tax_specific, 'CLP', true) }}</td>
+                                <td align="right">{{ currencyFormat($quotation->tax_specific, 'CLP', false) }}</td>
                             </tr>
                             @endif
                             <tr>
                                 <td align="right" class="size-totals"><strong>Total $</strong></td>
-                                <td align="right" class="gray">{{ currencyFormat($quotation->total, 'CLP', true) }}</td>
+                                <td align="right" class="gray">{{ currencyFormat($quotation->total, 'CLP', false) }}</td>
                             </tr>
                     </tbody>
                 </table>
