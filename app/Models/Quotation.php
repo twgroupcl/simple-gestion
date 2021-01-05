@@ -205,6 +205,15 @@ class Quotation extends Model
         return $prefix . $this->code;
     }
 
+    public function getIsRecurringAccesorAttribute()
+    {
+        if ($this->is_recurring) {
+            return 'Si';
+        } else {
+            return 'No';
+        }
+    }
+
     public function getQuotationStatusTextAttribute() 
     {
         switch ($this->quotation_status) {

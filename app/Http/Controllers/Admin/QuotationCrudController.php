@@ -56,11 +56,11 @@ class QuotationCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        // Export PDF option
         $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
         $this->crud->addButtonFromView('line', 'extra_options', 'quotation.extra_options', 'begining');
         //$this->crud->addButtonFromView('line', 'duplicate', 'quotation.duplicate', 'begining');
         //$this->crud->addButtonFromView('line', 'Crear documento electrónico temporal', 'quotation.to_invoice', 'beginning');
+        $this->crud->removeButton('delete');
 
         CRUD::addColumn([
             'label' => '#',
@@ -84,16 +84,6 @@ class QuotationCrudController extends CrudController
             'label' => 'Cliente',
             'name' => 'customerWithUid',
             'type' => 'text',
-        ]);
-
-        CRUD::addColumn([
-            'label' => 'Total',
-            'name' => 'total',
-            'type' => 'number',
-            'dec_point' => ',',
-            'thousands_sep' => '.',
-            'decimals' => 0,
-            'prefix' => '$' // @todo change symbol depending on the currency
         ]);
 
         CRUD::addColumn([
@@ -127,6 +117,33 @@ class QuotationCrudController extends CrudController
             'name' => 'expiry_date',
             'type' => 'date',
             'format' => 'L'
+        ]);
+
+        CRUD::addColumn([
+            'label' => 'Es recurrente',
+            'name' => 'is_recurring_accesor',
+            'type' => 'text',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Si') {
+                        return 'badge badge-info';
+                    } else {
+                        return 'badge badge-secondary';
+                    }
+
+                },
+            ],
+        ]);
+
+        CRUD::addColumn([
+            'label' => 'Total',
+            'name' => 'total',
+            'type' => 'number',
+            'dec_point' => ',',
+            'thousands_sep' => '.',
+            'decimals' => 0,
+            'prefix' => '$' // @todo change symbol depending on the currency
         ]);
 
         $this->customFilters();
