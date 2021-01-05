@@ -41,6 +41,9 @@ class QuotationCrudController extends CrudController
         CRUD::setEntityNameStrings('cotización', 'cotizaciones');
 
         $this->crud->denyAccess('show');
+        $this->crud->allowAccess('export_pdf');
+        $this->crud->allowAccess('generate_dte');
+        $this->crud->allowAccess('duplicate');
 
         $this->crud->enableExportButtons();
     }
@@ -55,8 +58,9 @@ class QuotationCrudController extends CrudController
     {
         // Export PDF option
         $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
-        $this->crud->addButtonFromView('line', 'duplicate', 'quotation.duplicate', 'begining');
-        $this->crud->addButtonFromView('line', 'Crear documento electrónico temporal', 'quotation.to_invoice', 'beginning');
+        $this->crud->addButtonFromView('line', 'extra_options', 'quotation.extra_options', 'begining');
+        //$this->crud->addButtonFromView('line', 'duplicate', 'quotation.duplicate', 'begining');
+        //$this->crud->addButtonFromView('line', 'Crear documento electrónico temporal', 'quotation.to_invoice', 'beginning');
 
         CRUD::addColumn([
             'label' => '#',
