@@ -82,8 +82,11 @@
         font-size: 12px;
         text-align: right;
         margin-right: 15px;
-        margin-top: 35px;
-        
+        margin-top: 35px;   
+    }
+
+    pre {
+        white-space: pre-wrap;
     }
 
     /* .page-break {
