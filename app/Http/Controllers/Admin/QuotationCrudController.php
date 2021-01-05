@@ -447,6 +447,16 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'check_group_start_row',
+            'type' => 'group_start',
+            'label' => '',
+            'wrapperAttributes' => [
+                'class' => 'row'
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
             'name' => 'tax_type',
             'label' => 'Impuesto',
             'type' => 'select2_from_array',
@@ -504,6 +514,116 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'is_recurring',
+            'label' => 'Cotizacion recurrente',
+            'type' => 'checkbox',
+            'tab' => 'General',
+            'attributes' => [
+                'class' => 'is_recurring_check'
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'start_date',
+            'label' => 'Fecha de inicio',
+            'type' => 'date',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-4 form-group recurring_group',
+                'id' => 'start_date_field'
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data'
+        ]);
+        
+        CRUD::addField([
+            'name' => 'repeat_number',
+            'label' => 'Repetir cada',
+            'type' => 'number',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-3 form-group recurring_group',
+                'id' => 'repeat_number_field',
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data'
+        ]);
+        
+        CRUD::addField([
+            'name' => 'repeat_every',
+            'label' => '',
+            'type' => 'select2_from_array',
+            'options' => [
+                'days' => 'Dias',
+                'weeks' => 'Semanas',
+                'months' => 'Meses',
+                'years' => 'Años',
+            ],
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-5 form-group mt-2 recurring_group',
+                'id' => 'repeat_every_field',
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data',
+        ]);
+
+        CRUD::addField([
+            'name' => 'end_type',
+            'label' => 'Termina',
+            'type' => 'select2_from_array',
+            'options' => [
+                'never' => 'Nunca',
+                'date' => 'Seleccionar fecha',
+                'repetition' => 'Despues de __ Repeticiones',
+            ],
+            'wrapper' => [
+                'class' => 'col-md-7 form-group recurring_group',
+            ],
+            'attributes' => [
+                'id' => 'end_type_field',
+            ],
+            'tab' => 'General',
+            'fake' => true,
+            'store_in' => 'recurring_data',
+        ]);
+
+        CRUD::addField([
+            'name' => 'end_date',
+            'label' => '',
+            'type' => 'date',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-5 form-group mt-2 recurring_group',
+                'id' => 'end_date_field',
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data',
+        ]);
+
+        CRUD::addField([
+            'name' => 'end_after_reps',
+            'label' => '',
+            'type' => 'number',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-5 form-group mt-2 recurring_group',
+                'id' => 'end_after_reps_field',
+            ],
+            'attributes' => [
+                'placeholder' => 'Numero de repeticiones',
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data',
+        ]);
+
+        CRUD::addField([
+            'name' => 'check_group_end_row',
+            'type' => 'group_end',
+            'tab' => 'General',
+        ]);
+        
+        CRUD::addField([
             'name' => 'check_group_end',
             'type' => 'group_end',
             'tab' => 'General',
@@ -537,6 +657,11 @@ class QuotationCrudController extends CrudController
                 'class' => 'form-group col-md-12'
             ],
             'tab' => 'Adicional',
+        ]);
+
+        CRUD::addField([
+            'type' => 'quotation.recurring_group_scripts',
+            'name' => 'recurring_group_scripts',
         ]);
     }
 
