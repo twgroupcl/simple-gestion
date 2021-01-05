@@ -662,6 +662,7 @@ class QuotationCrudController extends CrudController
         CRUD::addField([
             'type' => 'quotation.recurring_group_scripts',
             'name' => 'recurring_group_scripts',
+            'tab' => 'General',
         ]);
     }
 
@@ -674,6 +675,25 @@ class QuotationCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        $quotation = $this->crud->getModel()->find($this->crud->getCurrentEntryId());
+
+        if ($quotation->quotation_status == Quotation::STATUS_ACCEPTED) {
+            $this->crud->modifyField('is_recurring', [
+                'attributes' => [
+                    'class' => 'is_recurring_check',
+                    'disabled' => true,
+                ]
+            ]);
+
+            $this->crud->modifyField('start_date', [
+                'attributes' => [
+                    'readonly' => true,
+                ],
+            ]);
+        }
+        
+
+        
     }
 
     public function addresses(Request $request)

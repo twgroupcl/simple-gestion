@@ -79,7 +79,10 @@ class Quotation extends Model
         'address_id',
         'branch_id',
         'invoice_type_id',
+        'is_recurring',
+        'recurring_data',
     ];
+
     // protected $hidden = [];
     protected $dates = [
         'quotation_date',
@@ -88,6 +91,11 @@ class Quotation extends Model
     protected $casts = [
         'items_data' => 'array',
         'json_value' => 'array',
+        'recurring_data' => 'array',
+    ];
+
+    protected $fakeColumns = [
+        'recurring_data',
     ];
 
     /*
@@ -151,6 +159,16 @@ class Quotation extends Model
     public function tax()
     {
         return $this->belongsTo(Tax::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Quotation::class, 'parent_id');
+    }
+
+    public function childrens()
+    {
+        return $this->hasMany(Quotation::class, 'parent_id');
     }
 
     /*
