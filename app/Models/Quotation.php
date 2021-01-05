@@ -218,7 +218,7 @@ class Quotation extends Model
                 return 'Aceptado';
                 break;
             case self::STATUS_EXPIRED:
-                return 'Activa';
+                return 'Expirado';
                 break;
             case self::STATUS_VIEWED:
                 return 'Visto';
