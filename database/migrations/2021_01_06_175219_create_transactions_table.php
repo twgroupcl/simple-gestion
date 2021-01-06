@@ -28,6 +28,7 @@ class CreateTransactionsTable extends Migration
             $table->string('document_model')->nullable()->comment('Identifies the document model');
             $table->text('note')->nullable()->comment('notes or observations');
             $table->longText('json_value')->nullable()->comment('auxiliar column for more fields');
+            $table->longText('json_transaction_details')->nullable()->comment('solution for backpack relationship repeatables');
             $table->timestamps();
         });
 
