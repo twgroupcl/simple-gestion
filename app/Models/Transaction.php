@@ -34,6 +34,10 @@ class Transaction extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function transaction_type()
+    {
+        return $this->belongsTo(TransactionType::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

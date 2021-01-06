@@ -58,13 +58,25 @@ class TransactionCrudController extends CrudController
     {
         CRUD::setValidation(TransactionRequest::class);
 
-        CRUD::setFromDb(); // fields
+        //CRUD::setFromDb(); // fields
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
+        CRUD::addField([
+            'name' => 'transaction_type_id',
+            'type' => 'relationship',
+            'label' => 'Tipo de transacción',
+            'entity' => 'transaction_type',
+            'model' => 'App\Models\TransactionType',
+            'inline_create' => [ 'entity' => 'transactiontype' ], 
+            'ajax' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ]
+        ]);
     }
 
     /**
