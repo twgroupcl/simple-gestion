@@ -4,6 +4,38 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
+@if($sliders)
+<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
+    <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        @foreach ($sliders as $slider)
+            @if($slider->link)
+                <a href={{$slider->link}} target="_blank">
+                    <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" class="img w-100">
+                </a>
+            @else
+                <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}"  class="img w-100">
+            @endif
+
+        @endforeach
+    </div>
+</div>
+
+<div class="d-block d-sm-none">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+            @foreach ($sliders as $slider)
+                @if($slider->link)
+                    <a href={{$slider->link}}>
+                        <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                    </a>
+                @else
+                <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                @endif
+            @endforeach
+        </div>
+    </div>
+</div>
+@else
 
 <div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
@@ -15,9 +47,9 @@
     </div>
 </div>
 
-
 <div class="d-block d-sm-none">
     <div class="cz-carousel cz-dots-enabled">
+
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
             <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad-general.png') }}" alt="Contigo Pyme Navidad">
             <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad.png') }}" alt="Contigo Pyme Banner 1">
@@ -29,6 +61,7 @@
         </div>
     </div>
 </div>
+@endif
 
 @if(count($featuredProducts) > 3)
     <section class="container mt-5 mb-grid-gutter">

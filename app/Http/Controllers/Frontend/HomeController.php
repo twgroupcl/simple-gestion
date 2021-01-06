@@ -10,6 +10,7 @@ use App\Models\FaqAnswer;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
+use App\Models\Slider;
 use App\Services\ProductFilterService;
 
 class HomeController extends Controller
@@ -39,7 +40,10 @@ class HomeController extends Controller
             4 => $banner4
         ];
 
-        return view('marketplace', compact('categories','featuredProducts','banners'));
+        $sliders = Slider::where('status','=','1')->orderBy('order')->get();
+
+
+        return view('marketplace', compact('categories','featuredProducts','banners','sliders'));
     }
 
     public function getAllProducts()

@@ -18,9 +18,10 @@ class CreateSlidersTable extends Migration
             $table->string('name');
             $table->string('path_web');
             $table->string('path_mobile')->nullable();
-            $table->integer('order');
+            $table->integer('order')->nullable();
             $table->date('visible_from')->nullable();
             $table->date('visible_to')->nullable();
+            $table->string('link')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
         });

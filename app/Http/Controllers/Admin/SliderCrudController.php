@@ -47,13 +47,13 @@ class SliderCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'path_web',
-            'type' => 'text',
+            'type' => 'image',
             'label' => 'Ruta Slider Web',
         ]);
 
         CRUD::addColumn([
             'name' => 'path_mobile',
-            'type' => 'text',
+            'type' => 'image',
             'label' => 'Ruta Slider Móvil',
         ]);
 
@@ -93,7 +93,7 @@ class SliderCrudController extends CrudController
         CRUD::addField([
             'name' => 'path_web',
             'type' => 'image',
-            'label' => 'Slider Web (Reconmendable: 1350x180)',
+            'label' => 'Slider Web (Reconmendable: 1700x400)',
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-6'
@@ -103,7 +103,7 @@ class SliderCrudController extends CrudController
         CRUD::addField([
             'name' => 'path_mobile',
             'type' => 'image',
-            'label' => 'Slider Mobile (Reconmendable: 350x150)',
+            'label' => 'Slider Móvile (Reconmendable: 376x241)',
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-6'
@@ -132,6 +132,14 @@ class SliderCrudController extends CrudController
             'label' => 'Orden',
             'wrapper' => [
                 'class' => 'form-group col-md-6'
+            ],
+        ]);
+        CRUD::addField([
+            'name' => 'link',
+            'type' => 'text',
+            'label' => 'Enlace',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
             ],
         ]);
         CRUD::addField([
