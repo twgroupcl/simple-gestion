@@ -32,18 +32,20 @@ class QuotationService {
      */
     public function generateRecurrentQuotations(Carbon $date = null, $quotationsArrayId = null)
     {
-        if (is_null($date)) $date = new Carbon();
+        if ($date === null) $date = new Carbon();
 
         // Buscar todas las cotizaciones recurrentes con estado aprobada
         $quotations = Quotation::where([
                 'quotation_status' => Quotation::STATUS_ACCEPTED, 
-                'is_recurring' => true ])->with('childrens');
+                'is_recurring' => true ])
+                ->with('childrens');
         
-        if (!is_null($quotationsArrayId) && !empty($quotationsArrayId)) {
+        if ($quotationsArrayId !== null && !empty($quotationsArrayId)) {
             $quotations = $quotations->whereIn('id', $quotationsArrayId);
         }
 
         $quotations = $quotations->get();
+
         foreach ($quotations as $quotation) {
 
             DB::beginTransaction();
@@ -52,18 +54,18 @@ class QuotationService {
                 $recurringData = $quotation->recurring_data;
 
                 // Verificar criterio de parada
-                // Si el criterio de parada se cumple, cambiar el estado de la cotizacion
                 if ($recurringData['end_type'] === 'date') {
                     $endDate = new Carbon($recurringData['end_date']);
-                    if ($date > $endDate) {
-                        $quotation->quotation_status = 'Completada'; // Que estado cambiar?
+
+                    if ($date->startOfDay() > $endDate->startOfDay()) {
+                        $quotation->quotation_status = Quotation::STATUS_COMPLETED;
                         $quotation->updateWithoutEvents();
                         DB::commit();
                         continue;
                     }
                 } else if ($recurringData['end_type'] === 'repetition') {
                     if (intval($recurringData['end_after_reps']) <= $quotation->childrens->count()) {
-                        $quotation->quotation_status = 'Completada'; // Que estado cambiar?
+                        $quotation->quotation_status = Quotation::STATUS_COMPLETED;
                         $quotation->updateWithoutEvents();
                         DB::commit();
                         continue;
@@ -86,11 +88,13 @@ class QuotationService {
 
                 // Si la comprobacion anterior es true, crear una nueva cotizacion hija
                 $newQuotation = new Quotation($quotation->toArray());
+                $newQuotation->quotation_date = $date;
                 $newQuotation->parent_id = $quotation->id;
                 $newQuotation->items_data = $quotation->items_data;
                 $newQuotation->is_recurring = false;
-                $newQuotation->quotation_status = Quotation::STATUS_DRAFT;
+                $newQuotation->quotation_status = Quotation::STATUS_PENDING_PAYMENT;
 
+                // TODO revisar que otros campos eliminar
                 unset($newQuotation->expiry_date);
                 unset($newQuotation->code);
                 unset($newQuotation->recurring_data);
@@ -99,10 +103,21 @@ class QuotationService {
                 $newQuotation->save();
 
                 // Modificar "next due date" de la cotizacion padre sumando el ciclo de recurrencia
-                // TODO: verificar el nuevo next due date, para que la cotizacion pueda cambiar a completada
-                // sin necesidad de esperar al proximo next due date para que ocurra la verificacion
                 $newNextDueDate = $nextDueDate->add(intval($recurringData['repeat_number']), $recurringData['repeat_every']);
                 $quotation->next_due_date = $newNextDueDate;
+
+
+                // Comparar nueva next due date con el parametro de parada
+                if ($recurringData['end_type'] === 'date') {
+                    if ($newNextDueDate->startOfDay() > $endDate->startOfDay()) {
+                        $quotation->quotation_status = Quotation::STATUS_COMPLETED;
+                    }
+                } else if ($recurringData['end_type'] === 'repetition') {
+                    if (intval($recurringData['end_after_reps']) <= ($quotation->childrens->count() + 1)) {
+                        $quotation->quotation_status = Quotation::STATUS_COMPLETED;
+                    }
+                }
+                
                 $quotation->updateWithoutEvents();
 
                 DB::commit();
@@ -126,9 +141,6 @@ class QuotationService {
         return $exits;
     }
 
-    // Al pasar cotizacion recurrente a "aprobada" se debe verificar que la fecha de inicio de recurrencia sea
-    // mayor o igual a la fecha actual. Si es igual a la fecha actual, generar una cotizacion hija y actualizar next due date
-    // Una cotizacion recurrente en estado aprobada no puede cambiar parametros de recurrencia
 
 }
 
