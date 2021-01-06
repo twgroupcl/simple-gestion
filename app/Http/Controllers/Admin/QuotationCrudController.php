@@ -96,6 +96,7 @@ class QuotationCrudController extends CrudController
                     if ($column['text'] == 'Activa' || 
                         $column['text'] == 'Aceptado' || 
                         $column['text'] == 'Emitido' ||
+                        $column['text'] == 'Completado' ||
                         $column['text'] == 'Facturado') {
                         return 'badge badge-success';
                     }
@@ -717,9 +718,27 @@ class QuotationCrudController extends CrudController
                 ],
             ]);
         }
-        
 
-        
+        if ($quotation->quotation_status == Quotation::STATUS_COMPLETED) {
+            $this->crud->modifyField('is_recurring', [
+                'attributes' => [
+                    'class' => 'is_recurring_check',
+                    'disabled' => true,
+                ]
+            ]);
+
+            $this->crud->modifyField('start_date', [
+                'attributes' => [
+                    'readonly' => true,
+                ],
+            ]);
+
+            $this->crud->modifyField('quotation_status', [
+                'attributes' => [
+                    'disabled' => true,
+                ],
+            ]);
+        }
     }
 
     public function addresses(Request $request)

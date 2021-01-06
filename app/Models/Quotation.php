@@ -248,6 +248,9 @@ class Quotation extends Model
             case self::STATUS_PENDING_PAYMENT;
                 return 'Pago pendiente';
                 break;
+            case self::STATUS_COMPLETED;
+                return 'Completado';
+                break;
             default: 
                 return 'Otro';
                 break;
