@@ -1,5 +1,5 @@
 @handheld
-<div class="col-12 final-payment-view vh-100" style="display: none;">
+<div class="col-12 vh-100 final-payment-view " style="display: none;">
     <div class="row">
         <div class="col-12"><i class="la la-close float-right close-final-payment" ></i></div>
     </div>
@@ -27,13 +27,13 @@
         </div>
         <div class="col-6">
             @if(!is_null($existsOrder))
-            <a target="_blanck" href="{{ route('order.invoice', ['order' => $existsOrder->id , 'tipoPapel'=> 57]) }}" class="btn btn-primary btn-block ">Si</a>
+            <a target="_blanck" href="{{ route('order.invoice', ['order' => $existsOrder->id , 'tipoPapel'=> 75]) }}" class="btn btn-primary btn-block ">Si</a>
             @endif
         </div>
     </div>
 </div>
 @elsehandheld
-<div class="col-11 final-payment-view h-100" style="display: none;">
+<div class="col-11  h-100 final-payment-view" style="display: none;">
     <div class="row">
         <div class="col-12"><i class="la la-close float-right close-final-payment" ></i></div>
     </div>
@@ -61,7 +61,7 @@
         <div class="col-6">
             {{-- <button class="btn btn-primary btn-block" >SI</button> --}}
             @if(isset($existsOrder))
-            <a target="_blanck" href="{{ route('order.invoice', ['order' => $existsOrder->id ]) }}" class="btn btn-primary btn-block ">Si</a>
+            <a target="_blanck" href="{{ route('order.invoice', ['order' => $existsOrder->id, 'tipoPapel'=> 75 ]) }}" class="btn btn-primary btn-block ">Si</a>
             @endif
         </div>
     </div>

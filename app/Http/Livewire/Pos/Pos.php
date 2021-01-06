@@ -168,14 +168,14 @@ class Pos extends Component
                 'amount' => $order->total,
                 'event' => 'Nueva orden generada',
             ]);
-
+            $this->emit('sales.updateOrders');
 
             $this->existsOrder = $order;
 
             $this->emitInvoice($order);
 
             $this->clearCart();
-            $this->emit('sales.updateOrders');
+
             $this->emit('showToast', 'Cobro realizado', 'Cobro registrado.', 3000, 'info');
 
         } else {
