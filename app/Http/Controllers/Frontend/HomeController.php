@@ -77,7 +77,7 @@ class HomeController extends Controller
     public function getProductsByCategorySlug(Request $request)
     {
         $categoryId = ProductCategory::where('slug', $request->category)->first()->id ?? null;
-        
+
         if (is_null($categoryId)) {
             $categoryId = ProductCategory::find($request->category)->id ?? null;
         }

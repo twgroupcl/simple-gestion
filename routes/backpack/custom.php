@@ -96,9 +96,9 @@ Route::group([
     Route::crud('payments', 'PaymentsCrudController');
     Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
 
+
+    Route::crud('slider', 'SliderCrudController');
 }); // this should be the absolute last line of this file
-//Payment
-Route::post('admin/payment/subscription/result', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionResultPayment')->name('payment.result');
 Route::post('admin/payment/subscription/detail/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionDetailPayment')->name('payment.detail');
 Route::post('/send-email-subscription', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@sendEmailSubscription');
 

@@ -59,7 +59,7 @@
                                                         {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }}
                                                     </small></del>
                                                 @else
-                                                    <span class="text-accent">  
+                                                    <span class="text-accent">
                                                         {{ currencyFormat($products->getRealPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getRealPriceRange()[1], defaultCurrency(), true) }}
                                                     </span>
                                                     <del class="font-size-sm text-muted"><small>
@@ -76,8 +76,8 @@
                                                     {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getPriceRange()[1], defaultCurrency(), true) }}
                                                     @endif
                                                 </span>
-                                            </div> 
-                                        @endif  
+                                            </div>
+                                        @endif
                                     @else
                                         <div class="product-price">
                                             @if($products->special_price)
@@ -131,7 +131,8 @@
         <div class="row align-items-center">
             <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
                 <img src="{{url($banners[1]['path_web'])}}" alt="{{$banners[1]['name']}}">
-            </div>    
+
+            </div>
             @if(!is_null($banners[1]['path_mobile']))
                 <div class="col-md-12 d-block d-sm-none">
                     <img src="{{url($banners[1]['path_mobile'])}}" alt="{{$banners[1]['name']}}" class="w-100">
@@ -205,8 +206,8 @@
         </div>
     </section>
 -->
-{{$banners[2]['status']}}
-@if($banners[2]['status'] == 'Activo' || $banners[3]['status'] == 'Activo')
+
+@if($banners[2]['status'] || $banners[3]['status'])
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row text-center">
@@ -219,7 +220,7 @@
                 </div>
             @else
                 @php
-                    $imgPath = ($banners[2]['path_web'])?$banners[2]['path_web']:$banners[3]['path_web'];   
+                    $imgPath = ($banners[2]['path_web'])?$banners[2]['path_web']:$banners[3]['path_web'];
                 @endphp
                 <div class="col-md-12 pb-3">
                     <img src="{{url($imgPath)}}" class="img-fluid border-radious-3">
@@ -236,7 +237,7 @@
         <div class="row align-items-center">
             <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
                 <img src="{{url($banners[4]['path_web'])}}" alt="{{$banners[4]['name']}}">
-            </div>    
+            </div>
             @if(!is_null($banners[4]['path_mobile']))
                 <div class="col-md-12 d-block d-sm-none">
                     <img src="{{url($banners[4]['path_mobile'])}}" alt="{{$banners[4]['name']}}" class="w-100">

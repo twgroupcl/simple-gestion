@@ -51,6 +51,19 @@ class Banners extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getStatusDescriptionAttribute()
+    {
+        switch ($this->status) {
+            case $this::STATUS_ACTIVE:
+                return 'Activo';
+                break;
+            case $this::STATUS_INACTIVE:
+                return 'Inactivo';
+                break;
+            default:
+                break;
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
@@ -126,5 +139,5 @@ class Banners extends Model
         }
     }
 
-   
+
 }
