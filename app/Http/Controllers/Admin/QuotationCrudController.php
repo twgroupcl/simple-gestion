@@ -107,6 +107,7 @@ class QuotationCrudController extends CrudController
                     if ($column['text'] == 'Visto') {
                         return 'badge badge-info';
                     }
+
                     return 'badge badge-default';
                 },
             ],
@@ -517,11 +518,15 @@ class QuotationCrudController extends CrudController
             'label' => 'Estado cotización',
             'options' => [
                 Quotation::STATUS_DRAFT => 'Borrador',
+                Quotation::STATUS_PENDING_PAYMENT => 'Pago Pendiente',
                 Quotation::STATUS_SENT => 'Enviado',
                 Quotation::STATUS_VIEWED => 'Visto',
                 Quotation::STATUS_EXPIRED => 'Expirado',
                 Quotation::STATUS_ACCEPTED => 'Aceptado',
+                Quotation::STATUS_COMPLETED => 'Completado',
                 Quotation::STATUS_REJECTED => 'Rechazado',
+                Quotation::STATUS_ISSUED => 'Emitido',
+                Quotation::STATUS_INVOICED => 'Facturado',
             ],
             'attributes' => [
                 //'readonly' => true,
