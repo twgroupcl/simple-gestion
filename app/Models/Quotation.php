@@ -31,6 +31,10 @@ class Quotation extends Model
     const STATUS_ISSUED = 'EMITIDO';
     const STATUS_INVOICED = 'FACTURADO';
 
+    // Special status for recurring quotations
+    const STATUS_COMPLETED = 'COMPLETADO';
+    const STATUS_PENDING_PAYMENT = 'PAGO_PENDIENTE';
+
     protected $table = 'quotations';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
@@ -240,6 +244,9 @@ class Quotation extends Model
                 break;
             case self::STATUS_INVOICED;
                 return 'Facturado';
+                break;
+            case self::STATUS_PENDING_PAYMENT;
+                return 'Pago pendiente';
                 break;
             default: 
                 return 'Otro';
