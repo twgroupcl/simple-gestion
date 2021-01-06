@@ -199,3 +199,5 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('transactiontype') }}'><i class='nav-icon la la-question'></i> Tipos de transacciones</a></li>
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('accountingaccount') }}'><i class='nav-icon la la-question'></i> Cuentas contables</a></li>
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('transactiondetail') }}'><i class='nav-icon la la-question'></i> Detalles de movimientos</a></li>
