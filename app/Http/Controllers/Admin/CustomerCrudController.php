@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Cruds\BaseCrudFields;
-use App\Http\Requests\CustomerRequest;
 use App\Models\Bank;
-use App\Models\BankAccountType;
-use App\Models\BusinessActivity;
 use App\Models\Commune;
 use App\Models\ContactType;
+use App\Cruds\BaseCrudFields;
+use App\Models\BankAccountType;
 use App\Models\CustomerSegment;
+use App\Models\BusinessActivity;
 use App\Traits\HasCustomAttributes;
+use App\Http\Requests\CustomerRequest;
+use App\Http\Requests\CustomerStoreRequest;
+use App\Http\Requests\CustomerUpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -157,7 +159,7 @@ class CustomerCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(CustomerRequest::class);
+        CRUD::setValidation(CustomerStoreRequest::class);
 
         //CRUD::setFromDb(); // fields
 
@@ -542,6 +544,7 @@ class CustomerCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        CRUD::setValidation(CustomerUpdateRequest::class);
 
         CRUD::field('uid')->attributes([
             'readonly' => 'readonly',
