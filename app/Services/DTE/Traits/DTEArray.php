@@ -92,7 +92,8 @@ trait DTEArray
                 'PrcItem' => isset($item->custom_price) ? 
                     round($item->custom_price, 2, PHP_ROUND_HALF_ODD) : 
                     round($item->price, 2, PHP_ROUND_HALF_ODD),
-                'DscItem' => empty($item->description) ? false : $item->description,
+                // DscItem - Desactivado porque se imprime con formato incorrecto
+                //'DscItem' => empty($item->description) ? false : $item->description,
                 'CodImpAdic' => !empty($item->additional_tax) ? $item->additional_tax->code : false,
 
             ];
