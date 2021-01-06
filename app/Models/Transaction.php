@@ -38,7 +38,11 @@ class Transaction extends Model
     {
         return $this->belongsTo(TransactionType::class);
     }
-
+    
+    public function accounting_account()
+    {
+        return $this->belongsTo(AccountingAccount::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

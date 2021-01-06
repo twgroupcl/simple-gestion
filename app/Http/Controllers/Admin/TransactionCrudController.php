@@ -75,6 +75,30 @@ class TransactionCrudController extends CrudController
             'ajax' => true,
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
+            ],
+            'placeholder' => 'Seleccione un tipo de transacción...'
+        ]);
+
+        CRUD::addField([
+            'name' => 'date',
+            'type' => 'date',
+            'label' => 'Fecha de movimiento',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'accounting_account_id',
+            'type' => 'relationship',
+            'label' => 'Cuenta contable',
+            'model' => 'App\Models\AccountingAccount',
+            'entity' => 'accounting_account',
+            'inline_create' => [ 'entity' => 'accountingaccount' ],
+            'ajax' => true,
+            'placeholder' => 'Seleccione un tipo de cuenta cont...',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
             ]
         ]);
     }
