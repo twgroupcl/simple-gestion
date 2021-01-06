@@ -197,3 +197,5 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bankaccount') }}'><i class='nav-icon la la-question'></i> Cuentas bancarias</a></li>
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('transactiontype') }}'><i class='nav-icon la la-question'></i> Tipos de transacciones</a></li>
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('accountingaccount') }}'><i class='nav-icon la la-question'></i> Cuentas contables</a></li>
