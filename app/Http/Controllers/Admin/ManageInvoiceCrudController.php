@@ -49,7 +49,7 @@ class ManageInvoiceCrudController extends CrudController
             $invoice->invoice_status = Invoice::STATUS_TEMPORAL;
             $invoice->dte_code = $code;
             $invoice->updateWithoutEvents();
-            \Alert::add('success', 'Se ha enviado el documento con éxito')->flash();
+            //\Alert::add('success', 'Se ha enviado el documento con éxito')->flash();
         } else {
             \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
         }
@@ -182,6 +182,7 @@ class ManageInvoiceCrudController extends CrudController
                 }
             }
 
+            \Alert::add('success', 'Documento enviado al SII')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
         }
 
