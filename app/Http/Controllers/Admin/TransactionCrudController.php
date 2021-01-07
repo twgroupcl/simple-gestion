@@ -20,20 +20,6 @@ class TransactionCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 
-    public function fetchTransaction_type()
-    {
-        return $this->fetch(\App\Models\TransactionType::class);
-    }
-
-    public function fetchAccounting_account()
-    {
-        return $this->fetch(\App\Models\AccountingAccount::class);
-    }
-
-    public function fetchBank_account()
-    {
-        return $this->fetch(\App\Models\BankAccount::class);
-    }
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
@@ -99,6 +85,8 @@ class TransactionCrudController extends CrudController
             'name' => 'transaction_type_id',
             'minimum_input_length' => 0,
             'type' => 'relationship',
+            'include_all_form_fields'  => true, 
+            'dependencies' => [ 'payment_or_expense' ],
             'label' => 'Tipo de transacción',
             'entity' => 'transaction_type',
             'attribute' => 'name',
@@ -199,5 +187,37 @@ class TransactionCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+
+    /*
+     *
+     * FETCH METHODS
+     *
+     */
+
+    public function fetchTransaction_type()
+    {
+        $form = collect(request()->input('form'))->pluck('value','name');
+        $is_payment = $form['payment_or_expense'];
+        return $this->fetch([
+            'model' => \App\Models\TransactionType::class,
+            'searchable_attributes' => ['name', 'code'],
+            'paginate' => 10,
+            'query' => function ($model) use ($is_payment) {
+                return $model->where('is_payment', $is_payment);
+            }
+        ]);
+        //return $this->fetch(\App\Models\TransactionType::class);
+    }
+
+    public function fetchAccounting_account()
+    {
+        return $this->fetch(\App\Models\AccountingAccount::class);
+    }
+
+    public function fetchBank_account()
+    {
+        return $this->fetch(\App\Models\BankAccount::class);
     }
 }
