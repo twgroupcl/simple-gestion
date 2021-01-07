@@ -34,6 +34,15 @@ class BankAccount extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function account_type()
+    {
+        return $this->belongsTo(BankAccountType::class);
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

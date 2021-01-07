@@ -44,13 +44,20 @@ class BankAccountCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'account_number',
+            'label' => 'Número de cuenta',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'account_type',
+            'label' => 'Tipo',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'bank',
+            'label' => 'Banco',
+        ]);
     }
 
     /**
@@ -63,13 +70,46 @@ class BankAccountCrudController extends CrudController
     {
         CRUD::setValidation(BankAccountRequest::class);
 
-        CRUD::setFromDb(); // fields
+        CRUD::addField([
+            'name' => 'account_number',
+            'label' => 'Número de cuenta',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
+            ]
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+            'name' => 'account_type_id',
+            'label' => 'Tipo',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'bank',
+            'label' => 'Banco',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'owner_uid',
+            'label' => 'RUT',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-4',
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'owner_name',
+            'label' => 'Nombre y apellido',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-4',
+            ]
+        ]);
+
     }
 
     /**
