@@ -94,18 +94,18 @@ class QuotationCrudController extends CrudController
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
                     if ($column['text'] == 'Activa' || 
-                        $column['text'] == 'Aceptado' || 
-                        $column['text'] == 'Emitido' ||
-                        $column['text'] == 'Completado' ||
-                        $column['text'] == 'Facturado') {
+                        $column['text'] == 'Aceptada' || 
+                        $column['text'] == 'Emitida' ||
+                        $column['text'] == 'Completada' ||
+                        $column['text'] == 'Facturada') {
                         return 'badge badge-success';
                     }
                    
-                    if ($column['text'] === 'Rechazado') {
+                    if ($column['text'] === 'Rechazada') {
                         return 'badge badge-danger';
                     }
                     
-                    if ($column['text'] == 'Visto') {
+                    if ($column['text'] == 'Vista') {
                         return 'badge badge-info';
                     }
 
@@ -703,6 +703,14 @@ class QuotationCrudController extends CrudController
     {
         $this->setupCreateOperation();
         $quotation = $this->crud->getModel()->find($this->crud->getCurrentEntryId());
+
+        if ($quotation->parent) {
+            $this->crud->modifyField('quotation_status', [
+                'attributes' => [
+                    'disabled' => true,
+                ],
+            ]);
+        }
 
         if ($quotation->quotation_status == Quotation::STATUS_ACCEPTED) {
             $this->crud->modifyField('is_recurring', [

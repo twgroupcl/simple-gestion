@@ -33,6 +33,7 @@ class Quotation extends Model
 
     // Special status for recurring quotations
     const STATUS_COMPLETED = 'COMPLETADO';
+    const STATUS_CANCELED = 'CANCELADO';
     const STATUS_PENDING_PAYMENT = 'PAGO_PENDIENTE';
 
     protected $table = 'quotations';
@@ -225,31 +226,34 @@ class Quotation extends Model
                 return 'Borrador';
                 break;
             case self::STATUS_REJECTED:
-                return 'Rechazado';
+                return 'Rechazada';
                 break;
             case self::STATUS_ACCEPTED:
-                return 'Aceptado';
+                return 'Aceptada';
                 break;
             case self::STATUS_EXPIRED:
-                return 'Expirado';
+                return 'Expirada';
                 break;
             case self::STATUS_VIEWED:
-                return 'Visto';
+                return 'Vista';
                 break;
             case self::STATUS_SENT:
-                return 'Enviado';
+                return 'Enviada';
                 break;
             case self::STATUS_ISSUED;
-                return 'Emitido';
+                return 'Emitida';
                 break;
             case self::STATUS_INVOICED;
-                return 'Facturado';
+                return 'Facturada';
                 break;
             case self::STATUS_PENDING_PAYMENT;
                 return 'Pago pendiente';
                 break;
             case self::STATUS_COMPLETED;
-                return 'Completado';
+                return 'Completada';
+                break;
+            case self::STATUS_CANCELED;
+                return 'Cancelada';
                 break;
             default: 
                 return 'Otro';
