@@ -833,6 +833,16 @@ class QuotationCrudController extends CrudController
     protected function customFilters()
     {
         CRUD::addFilter([
+            'name'  => 'customer_name',
+            'type'  => 'select2',
+            'label' => 'Cliente'
+        ], function() {
+            return Customer::all()->pluck('full_name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'customer_id', $value);
+        });
+        
+        CRUD::addFilter([
             'type'  => 'date_range',
             'name'  => 'from_to',
             'label' => 'Fecha'
