@@ -141,6 +141,11 @@ class Quotation extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function firstCompany()
+    {
+        return $this->branch->companies->first();
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);

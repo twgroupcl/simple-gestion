@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Log;
 
 class QuotationService {
 
+    /**
+     * Generate a export PDF for a quotation
+     * 
+     * @param Quotation $quotation
+     * @return Stream 
+     */
     public function generatePDF($quotation) 
     {
         $pdf = \PDF::loadView('templates.quotations.pdf_export', [
@@ -72,6 +78,8 @@ class QuotationService {
                     }
                 }
 
+                $this->sendMailIfQuotationCloseToExpire($quotation, $date);
+
                 // Ver la fecha indicada en "next due date" y verificar que sea igual a la fecha actual
                 $nextDueDate = new Carbon($quotation->next_due_date);
 
@@ -86,7 +94,7 @@ class QuotationService {
                     continue;
                 }
 
-                // Si la comprobacion anterior es true, crear una nueva cotizacion hija
+                // Crear una nueva cotizacion hija
                 $newQuotation = new Quotation($quotation->toArray());
                 $newQuotation->quotation_date = $date;
                 $newQuotation->parent_id = $quotation->id;
@@ -141,6 +149,52 @@ class QuotationService {
         return $exits;
     }
 
+    /**
+     * Returns the remaining days from the specified date until a recurring quotation reaches its expiration date 
+     * 
+     * @param Quotation $quotation
+     * @param Carbon $date
+     * @return Int 
+     */
+    public function daysUntilQuotationExpires(Quotation $quotation, Carbon $date = null )
+    {
+        if ($date === null) $date = new Carbon();
+
+        if ($quotation->recurring_data['end_type'] === 'never') return 0;
+
+        if ($quotation->recurring_data['end_type'] === 'date') {
+            $endDate = new Carbon($quotation->recurring_data['end_date']);
+            return $date->startOfDay()->diffInDays($endDate->startOfDay());
+        }
+
+        if ($quotation->recurring_data['end_type'] === 'repetition') {
+            $endDate = new Carbon($quotation->recurring_data['start_date']);
+            
+            for ($i = 0; $i < $quotation->recurring_data['end_after_reps']; $i++) {
+                $endDate->add(intval($quotation->recurring_data['repeat_number']), $quotation->recurring_data['repeat_every']);
+            }
+
+            return $date->startOfDay()->diffInDays($endDate->startOfDay());
+        }
+    }
+
+    /**
+     * Check if a recurring quotation is close to expiring according to the configuration of the company and send 
+     * an email if the above is true
+     * 
+     * @param Quotation $quotation
+     * @param Carbon $date
+     * @return void
+     */
+    public function sendMailIfQuotationCloseToExpire(Quotation $quotation, Carbon $date = null)
+    {
+        if ($date === null) $date = new Carbon();
+
+        if ($this->daysUntilQuotationExpires($quotation, $date) === $quotation->firstCompany()->days_before_quotation_expires 
+            && $quotation->firstCompany()->days_before_quotation_expires !== 0) {
+                dd('send mail');
+        }
+    }
 
 }
 
