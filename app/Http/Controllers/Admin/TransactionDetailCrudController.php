@@ -30,7 +30,7 @@ class TransactionDetailCrudController extends CrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transactiondetail');
         CRUD::setEntityNameStrings('detalle de transacción', 'detalles de transacciones');
         
-        $this->crud->denyAccess('show');
+        $this->crud->denyAccess(['show', 'update', 'delete']);
     }
 
     /**
@@ -41,13 +41,16 @@ class TransactionDetailCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'value',
+            'label' => 'Monto',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'transaction_id',
+            'label' => 'Identificador de transacción',
+        ]);
     }
 
     /**
