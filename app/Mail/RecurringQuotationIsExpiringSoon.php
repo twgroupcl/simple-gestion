@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use Carbon\Carbon;
 use App\Models\Quotation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -34,10 +35,11 @@ class RecurringQuotationIsExpiringSoon extends Mailable
         $this->rejectedText = '';
 
         $this->company = $quotation->firstCompany() ?? null;
-        
+        $nextDueDate = new Carbon($quotation->next_due_date);
         $this->title= 'Tu suscripción está por finalizar';
-        $this->text = 'Estimado cliente, te informamos que tu suscripción está cercana a unos días de finalizar. <br><br>
-                       En el botón de abajo podrás acceder a una página donde encontraras los detalles de tu 
+        $this->text = 'Estimado cliente, te informamos que tu suscripción está cercana a unos días de finalizar. La fecha de
+                       de tu proxima facturación es '. $nextDueDate->format('d-m-Y') .'. <br><br>
+                       En el botón de abajo podrás acceder a una página donde encontrarás los detalles de tu 
                        suscripción y la opción de terminarla en caso de que no desees continuar con nuestro servicio.';
 
         $this->buttonText = 'Ver detalles';
