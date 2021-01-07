@@ -41,7 +41,7 @@ class TransactionObserver
                     'value' => $detail['value'],
                     'transaction_id' => $transaction->id
                 ];
-                TransactionDetail::create($detail);
+                TransactionDetail::create($props);
             }
         }
     }

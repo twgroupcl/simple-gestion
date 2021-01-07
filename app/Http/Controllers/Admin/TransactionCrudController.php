@@ -6,6 +6,7 @@ use App\Http\Requests\TransactionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{ Invoice, Transaction };
+use Carbon\Carbon;
 
 /**
  * Class TransactionCrudController
@@ -120,6 +121,8 @@ class TransactionCrudController extends CrudController
         CRUD::addField([
             'name' => 'date',
             'type' => 'date',
+            'format' => 'L',
+            'value' => $this->crud->getCurrentEntry() ? Carbon::create($this->crud->getCurrentEntry()->date) : null,
             'label' => 'Fecha de movimiento',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
