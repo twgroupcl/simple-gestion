@@ -29,6 +29,9 @@ class SliderCrudController extends CrudController
         CRUD::setModel(\App\Models\Slider::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/slider');
         CRUD::setEntityNameStrings('slider', 'sliders');
+
+
+        $this->crud->denyAccess('show');
     }
 
     /**
@@ -93,7 +96,7 @@ class SliderCrudController extends CrudController
         CRUD::addField([
             'name' => 'path_web',
             'type' => 'image',
-            'label' => 'Slider Web (Reconmendable: 1700x400)',
+            'label' => 'Slider Web (Tamaño: 1700x400 px)',
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-6'
@@ -103,7 +106,7 @@ class SliderCrudController extends CrudController
         CRUD::addField([
             'name' => 'path_mobile',
             'type' => 'image',
-            'label' => 'Slider Móvile (Reconmendable: 376x241)',
+            'label' => 'Slider Móvil (Tamaño: 376x241 px)',
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-6'

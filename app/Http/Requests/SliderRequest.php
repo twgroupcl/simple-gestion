@@ -27,15 +27,15 @@ class SliderRequest extends FormRequest
      */
     public function rules()
     {
-        $imageWebRule = new SliderRule(1701,1401,1500000);
-        $imageMobileRule = new SliderRule(377,242,1500000);
+        $imageWebRule = new SliderRule(1700,400,1500000);
+        $imageMobileRule = new SliderRule(376,241,1500000);
         return [
                 'name' => 'required|string',
                 'path_web' => [
                     'required',
                     'string',
                     $imageWebRule],
-                'path_mobile' => $imageMobileRule
+                'path_mobile' => ['nullable',$imageMobileRule]
 
         ];
     }

@@ -49,19 +49,35 @@ $today =  Carbon::now();
             @if( ($slider->visible_from ? $today->gte( $slider->visible_from):true) && ($slider->visible_to ? $today->lte($slider->visible_to): true) )
                     @if($slider->link)
                         <a href={{$slider->link}} target="_blank">
-                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                            @if(!is_null($slider->path_mobile))
+                                <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                            @else
+                                <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                            @endif
                         </a>
                     @else
-                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" >
+                        @if(!is_null($slider->path_mobile))
+                            <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                        @else
+                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                        @endif
                     @endif
                 @endif
             @else
                 @if($slider->link)
                     <a href={{$slider->link}} target="_blank">
-                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                        @if(!is_null($slider->path_mobile))
+                            <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                        @else
+                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                        @endif
                     </a>
                 @else
-                    <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" >
+                    @if(!is_null($slider->path_mobile))
+                        <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                    @else
+                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                    @endif
                 @endif
             @endif
         @endforeach

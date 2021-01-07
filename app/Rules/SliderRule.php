@@ -41,11 +41,12 @@ class SliderRule implements Rule
                 return false;
             }
 
-            if ( ($image->width() >= $this->width) || ($image->height() >= $this->height) ) {
+            if ( ($image->width() != $this->width) || ($image->height() != $this->height) ) {
 
                 $this->message = 'Las dimensiones de la imagen no son correctas. El máximo permitido es de '. $this->width ." x " . $this->height;
                 return false;
             }
+
 
             return true;
          }
