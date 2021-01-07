@@ -101,6 +101,7 @@ class TransactionCrudController extends CrudController
                 1 => 'Abono',
                 0 => 'Cargo',
             ],
+            'value' => $this->crud->getCurrentEntry()->transaction_type->is_payment ?? null,
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
@@ -110,6 +111,7 @@ class TransactionCrudController extends CrudController
         CRUD::addField([
             'name' => 'transaction_type_id',
             'minimum_input_length' => 0,
+            'allows_null' => true,
             'type' => 'relationship',
             'include_all_form_fields'  => true, 
             'dependencies' => [ 'payment_or_expense' ],

@@ -56,7 +56,7 @@ class TransactionTypeCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'payment_or_expense_show',
-            'label' => 'Abono|Gasto',
+            'label' => 'Abono | Gasto',
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
