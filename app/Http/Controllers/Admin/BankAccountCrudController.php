@@ -32,6 +32,8 @@ class BankAccountCrudController extends CrudController
         CRUD::setEntityNameStrings('cuenta bancaria', 'cuentas bancarias');
         $company = backpack_user()->current()->company;
         $this->crud->addClause('where', 'company_id', $company->id);
+        
+        $this->crud->denyAccess('show');
     }
 
     /**

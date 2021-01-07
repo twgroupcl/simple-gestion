@@ -29,6 +29,8 @@ class TransactionDetailCrudController extends CrudController
         CRUD::setModel(\App\Models\TransactionDetail::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transactiondetail');
         CRUD::setEntityNameStrings('detalle de transacción', 'detalles de transacciones');
+        
+        $this->crud->denyAccess('show');
     }
 
     /**

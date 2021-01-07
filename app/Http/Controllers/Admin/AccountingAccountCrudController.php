@@ -32,6 +32,7 @@ class AccountingAccountCrudController extends CrudController
         CRUD::setEntityNameStrings('cuenta contable', 'cuentas contables');
         $company = backpack_user()->current()->company;
         $this->crud->addClause('where', 'company_id', $company->id);
+        $this->crud->denyAccess('show');
     }
 
     /**

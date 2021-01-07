@@ -32,6 +32,7 @@ class TransactionTypeCrudController extends CrudController
         CRUD::setEntityNameStrings('tipo de movimiento', 'tipos de movimientos');
         $company = backpack_user()->current()->company;
         $this->crud->addClause('where', 'company_id', $company->id);
+        $this->crud->denyAccess('show');
     }
 
     /**
