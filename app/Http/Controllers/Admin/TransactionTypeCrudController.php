@@ -95,13 +95,13 @@ class TransactionTypeCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'is_payment',
-            'label' => '¿Es abono?'
+            'name' => 'description',
+            'label' => 'Descripción',
         ]);
 
         CRUD::addField([
-            'name' => 'description',
-            'label' => 'Descripción',
+            'name' => 'is_payment',
+            'label' => '¿Es abono?'
         ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
