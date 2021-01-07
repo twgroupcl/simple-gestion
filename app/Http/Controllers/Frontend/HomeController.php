@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Carbon\Carbon;
 use App\Models\Seller;
+use App\Models\Slider;
 use App\Models\Banners;
 use App\Models\Product;
 use App\Models\FaqTopic;
@@ -10,7 +12,6 @@ use App\Models\FaqAnswer;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
-use App\Models\Slider;
 use App\Services\ProductFilterService;
 
 class HomeController extends Controller
@@ -40,7 +41,15 @@ class HomeController extends Controller
             4 => $banner4
         ];
 
-        $sliders = Slider::where('status','=','1')->orderBy('order')->get();
+        $today =  Carbon::now();//->format('Y-m-d');
+
+        $sliders = Slider::where('status','=','1')
+            // ->orWhere(function($query) use ($today){
+            //     $query->whereDate('visible_from','>=',$today)
+            //     ->whereDate('visible_to','<=',$today)
+            //     ->where('status','=','1');
+            // })
+        ->orderBy('order')->get();
 
 
         return view('marketplace', compact('categories','featuredProducts','banners','sliders'));

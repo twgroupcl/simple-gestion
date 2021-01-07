@@ -90,6 +90,11 @@ class CustomerController extends Controller
 
         $token = Str::random(60);
 
+        $isSeller = DB::table('sellers')->where('email', $request->email);
+        if ($isSeller->count() > 0) {
+            return redirect()->route('backpack.auth.password.reset');
+        }
+
         DB::table('password_resets')->insert(
             ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
         );
