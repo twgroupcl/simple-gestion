@@ -18,7 +18,22 @@ class TransactionCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 
+    public function fetchTransaction_type()
+    {
+        return $this->fetch(\App\Models\TransactionType::class);
+    }
+
+    public function fetchAccounting_account()
+    {
+        return $this->fetch(\App\Models\AccountingAccount::class);
+    }
+
+    public function fetchBank_account()
+    {
+        return $this->fetch(\App\Models\BankAccount::class);
+    }
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
@@ -65,11 +80,28 @@ class TransactionCrudController extends CrudController
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
+
+        CRUD::addField([
+            'name' => 'payment_or_expense',
+            'type' => 'select_from_array',
+            'label' => 'Cargo/Abono',
+            'options' => [
+                'Cargo',
+                'Abono',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        //depends on type payment/expense
         CRUD::addField([
             'name' => 'transaction_type_id',
+            'minimum_input_length' => 0,
             'type' => 'relationship',
             'label' => 'Tipo de transacción',
             'entity' => 'transaction_type',
+            'attribute' => 'name',
             'model' => 'App\Models\TransactionType',
             'inline_create' => [ 'entity' => 'transactiontype' ], 
             'ajax' => true,
@@ -94,12 +126,67 @@ class TransactionCrudController extends CrudController
             'label' => 'Cuenta contable',
             'model' => 'App\Models\AccountingAccount',
             'entity' => 'accounting_account',
-            'inline_create' => [ 'entity' => 'accountingaccount' ],
+            'attribute' => 'code',
+            'minimum_input_length' => 0,
+            'inline_create' => [ 
+                'entity' => 'accountingaccount' 
+            ],
             'ajax' => true,
             'placeholder' => 'Seleccione un tipo de cuenta cont...',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'json_transaction_details',
+            'type' => 'repeatable',
+            'label' => 'Detalle',
+            'fields' => [
+                [
+                    'name' => 'value',
+                    'type' => 'number',
+                    'prefix' => '$',
+                    'label' => 'Monto/Valor',
+                ]
+            ],
+            'new_item_label' => 'Agregar detalle',
+        ]);
+
+        CRUD::addField([
+            'name' => 'document_identifier',
+            'label' => 'Documento relacionado',
+            'type' => 'select2_from_array',
+            'options' => [
+                2 => 'DTE1',
+                12 => 'DTE2',
+                3 => 'DTE3',
+                10 => 'other document',
             ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'notes',
+            'label' => 'Detalle de movimiento',
+            'type' => 'textarea',
+        ]);
+
+        CRUD::addField([
+            'name' => 'bank_account_id',
+            'type' => 'relationship',
+            'label' => 'Cuenta afectada',
+            'model' => 'App\Models\BankAccount',
+            'entity' => 'bank_account',
+            'attribute' => 'account_number',
+            'minimum_input_length' => 0,
+            'inline_create' => [ 
+                'entity' => 'bankaccount' 
+            ],
+            'ajax' => true,
+            'placeholder' => 'Seleccione la cuenta bancaria relacionada...',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
         ]);
     }
 

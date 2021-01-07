@@ -43,6 +43,11 @@ class Transaction extends Model
     {
         return $this->belongsTo(AccountingAccount::class);
     }
+
+    public function bank_account()
+    {
+        return $this->belongsTo(BankAccount::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
