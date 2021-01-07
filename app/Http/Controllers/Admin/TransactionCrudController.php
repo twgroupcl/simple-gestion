@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\TransactionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Models\{ Invoice, Transaction };
 
 /**
  * Class TransactionCrudController
@@ -27,7 +28,7 @@ class TransactionCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Transaction::class);
+        CRUD::setModel(Transaction::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transaction');
         CRUD::setEntityNameStrings('movimiento', 'movimientos');
     }
@@ -72,8 +73,8 @@ class TransactionCrudController extends CrudController
             'type' => 'select_from_array',
             'label' => 'Cargo/Abono',
             'options' => [
-                'Cargo',
-                'Abono',
+                1 => 'Abono',
+                0 => 'Cargo',
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
@@ -141,16 +142,34 @@ class TransactionCrudController extends CrudController
             'new_item_label' => 'Agregar detalle',
         ]);
 
+        // select document
         CRUD::addField([
-            'name' => 'document_identifier',
-            'label' => 'Documento relacionado',
+            'name' => 'document_type',
+            'label' => 'Tipo de documento relacionado',
+            'allows_null' => true,
             'type' => 'select2_from_array',
             'options' => [
-                2 => 'DTE1',
-                12 => 'DTE2',
-                3 => 'DTE3',
-                10 => 'other document',
-            ]
+                1 => 'DTE',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
+        //script show or not dtes
+        CRUD::addField([
+            'name' => 'script_show_dtes',
+            'type' => 'transactions.script_show_dtes',
+            'field' => 'document_identifier',
+            'dependency' => 'document_type'
+        ]);
+
+        $dtes = Invoice::where('invoice_status', Invoice::STATUS_SEND)->get()->pluck('to_string', 'id')->toArray();
+        CRUD::addField([
+            'label' => 'Seleccione el documento según su folio',
+            'name' => 'document_identifier',
+            'type' => 'select2_from_array',
+            'options' => $dtes,
         ]);
 
         CRUD::addField([
@@ -199,13 +218,16 @@ class TransactionCrudController extends CrudController
     public function fetchTransaction_type()
     {
         $form = collect(request()->input('form'))->pluck('value','name');
-        $is_payment = $form['payment_or_expense'];
+        $is_payment = isset($form['payment_or_expense']) ? $form['payment_or_expense'] : null;
         return $this->fetch([
             'model' => \App\Models\TransactionType::class,
             'searchable_attributes' => ['name', 'code'],
             'paginate' => 10,
             'query' => function ($model) use ($is_payment) {
-                return $model->where('is_payment', $is_payment);
+                if (isset($is_payment))
+                    return $model->where('is_payment', $is_payment);
+                else 
+                    return $model;
             }
         ]);
         //return $this->fetch(\App\Models\TransactionType::class);

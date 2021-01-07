@@ -90,6 +90,10 @@ class Invoice extends Model
         'way_to_payment',
         'dte_status',
     ];
+    public function getToStringAttribute()
+    {
+        return $this->invoice_type->name . ' - ' . $this->title . ' (' . $this->folio . ')';
+    }
     // protected $hidden = [];
     // protected $dates = [];
     protected $fakeColumns = [
