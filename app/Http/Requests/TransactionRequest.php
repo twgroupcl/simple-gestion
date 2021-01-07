@@ -4,9 +4,14 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TransactionRequest extends FormRequest
 {
+     private $prepareData = [
+        'json_transaction_details',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,8 +30,20 @@ class TransactionRequest extends FormRequest
      */
     public function rules()
     {
+        $documentTypeRules = [];
+        if (request()['document_type'] == 1) {
+            $documentTypeRules = 'required|exists:invoices,id';
+
+        }
         return [
-            // 'name' => 'required|min:5|max:255'
+            'date' => 'required|date',
+            'transaction_type_id' => 'required|exists:transaction_types,id',
+            'json_transaction_details' => 'required',
+            'bank_account_id' => 'required|exists:bank_accounts,id',
+            'accounting_account_id' => 'required|exists:accounting_accounts,id',
+            'payment_or_expense' => ['required', Rule::in([0,1])],
+            'json_transaction_details_validation.*.value' => 'required|numeric|digits_between:0,10',
+            'document_identifier' => $documentTypeRules,
         ];
     }
 
@@ -38,7 +55,12 @@ class TransactionRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'date' => 'fecha de movimiento',
+            'json_transaction_details' => 'detalle',
+            'accounting_account_id' => 'cuenta contable',
+            'bank_account_id' => 'cuenta afectada',
+            'transaction_type_id' => 'tipo de transacción',
+            'json_transaction_details_validation.*.value' => 'valor',
         ];
     }
 
@@ -50,7 +72,31 @@ class TransactionRequest extends FormRequest
     public function messages()
     {
         return [
+            'required' => 'Revise el campo :attribute, es necesario que lo complete',
+            'exists' => 'Revise el campo :attribute, parece estar mal.',
+            'numeric' => 'El campo :attribute es numérico',
+            'digits_between' => 'El número del campo ":attribute" tiene más de :max dígitos'
             //
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        foreach ($this->prepareData as $attrName) {
+            if (empty($this->$attrName)) {
+                return;
+            }
+
+            $validation = json_decode($this->$attrName);
+            $forValidation = [];
+
+            foreach ($validation as $attrs) {
+                $forValidation[] = (array) $attrs;
+            }
+
+            $this->merge([
+                $attrName.'_validation' => $forValidation,
+            ]);
+        }
     }
 }
