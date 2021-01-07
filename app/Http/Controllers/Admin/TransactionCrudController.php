@@ -61,6 +61,13 @@ class TransactionCrudController extends CrudController
             'label' => 'Tipo de transacción'
         ]);
 
+        CRUD::addColumn([
+            'name' => 'date',
+            'label' => 'Fecha de movimiento',
+            'type' => 'date',
+            'format' => 'L',
+        ]);
+
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
@@ -162,6 +169,10 @@ class TransactionCrudController extends CrudController
             'new_item_label' => 'Agregar detalle',
         ]);
 
+        $documentType = null;
+        if ($this->crud->getCurrentEntry() !== null && isset($this->crud->getCurrentEntry()->document_identifier)) {
+            $documentType = 1;
+        }
         // select document
         CRUD::addField([
             'name' => 'document_type',
@@ -171,6 +182,7 @@ class TransactionCrudController extends CrudController
             'options' => [
                 1 => 'DTE',
             ],
+            'value' => $documentType,
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
