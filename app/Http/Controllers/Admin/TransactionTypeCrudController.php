@@ -30,6 +30,8 @@ class TransactionTypeCrudController extends CrudController
         CRUD::setModel(\App\Models\TransactionType::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transactiontype');
         CRUD::setEntityNameStrings('tipo de movimiento', 'tipos de movimientos');
+        $company = backpack_user()->current()->company;
+        $this->crud->addClause('where', 'company_id', $company->id);
     }
 
     /**

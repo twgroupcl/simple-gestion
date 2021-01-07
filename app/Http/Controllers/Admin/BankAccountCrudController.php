@@ -30,6 +30,8 @@ class BankAccountCrudController extends CrudController
         CRUD::setModel(\App\Models\BankAccount::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/bankaccount');
         CRUD::setEntityNameStrings('cuenta bancaria', 'cuentas bancarias');
+        $company = backpack_user()->current()->company;
+        $this->crud->addClause('where', 'company_id', $company->id);
     }
 
     /**
