@@ -43,7 +43,21 @@ class AccountingAccountCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+
+        CRUD::addColumn([
+            'name' => 'code',
+            'label' => 'Código',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'number',
+            'label' => 'Número',
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -62,8 +76,25 @@ class AccountingAccountCrudController extends CrudController
     {
         CRUD::setValidation(AccountingAccountRequest::class);
 
-        CRUD::setFromDb(); // fields
+        CRUD::addField([
+            'name' => 'code',
+            'label' => 'Código',
+        ]);
 
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre descriptivo',
+        ]);
+
+        CRUD::addField([
+            'name' => 'number',
+            'label' => 'Número',
+        ]);
+
+        CRUD::addField([
+            'name' => 'description',
+            'label' => 'Descripción',
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
