@@ -43,13 +43,35 @@ class TransactionTypeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'name' => 'code',
+            'label' => 'Código'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'name',
+            'label' => 'Nombre',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'payment_or_expense_show',
+            'label' => 'Abono|Gasto',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] === 'Abono') {
+                        return 'badge badge-success';
+                    }
+
+                    if ($column['text'] === 'Gasto') {
+                        return 'badge badge-danger';
+                    }
+
+                }
+            ]
+        ]);
+
     }
 
     /**
@@ -62,8 +84,25 @@ class TransactionTypeCrudController extends CrudController
     {
         CRUD::setValidation(TransactionTypeRequest::class);
 
-        CRUD::setFromDb(); // fields
+        CRUD::addField([
+            'name' => 'code',
+            'label' => 'Código',
+        ]);
 
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre descriptivo'
+        ]);
+
+        CRUD::addField([
+            'name' => 'is_payment',
+            'label' => '¿Es abono?'
+        ]);
+
+        CRUD::addField([
+            'name' => 'description',
+            'label' => 'Descripción',
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
