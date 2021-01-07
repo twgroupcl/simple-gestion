@@ -101,7 +101,8 @@ class QuotationCrudController extends CrudController
                         return 'badge badge-success';
                     }
                    
-                    if ($column['text'] === 'Rechazada') {
+                    if ($column['text'] === 'Rechazada' ||
+                        $column['text'] === 'Cancelada') {
                         return 'badge badge-danger';
                     }
                     
@@ -520,14 +521,15 @@ class QuotationCrudController extends CrudController
             'options' => [
                 Quotation::STATUS_DRAFT => 'Borrador',
                 Quotation::STATUS_PENDING_PAYMENT => 'Pago Pendiente',
-                Quotation::STATUS_SENT => 'Enviado',
-                Quotation::STATUS_VIEWED => 'Visto',
-                Quotation::STATUS_EXPIRED => 'Expirado',
-                Quotation::STATUS_ACCEPTED => 'Aceptado',
-                Quotation::STATUS_COMPLETED => 'Completado',
-                Quotation::STATUS_REJECTED => 'Rechazado',
-                Quotation::STATUS_ISSUED => 'Emitido',
-                Quotation::STATUS_INVOICED => 'Facturado',
+                Quotation::STATUS_SENT => 'Enviad',
+                Quotation::STATUS_VIEWED => 'Vist',
+                Quotation::STATUS_EXPIRED => 'Expirad',
+                Quotation::STATUS_ACCEPTED => 'Aceptad',
+                Quotation::STATUS_COMPLETED => 'Completad',
+                Quotation::STATUS_REJECTED => 'Rechazad',
+                Quotation::STATUS_ISSUED => 'Emitid',
+                Quotation::STATUS_INVOICED => 'Facturad',
+                Quotation::STATUS_CANCELED => 'Cancelada',
             ],
             'attributes' => [
                 //'readonly' => true,

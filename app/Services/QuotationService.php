@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use App\Models\Quotation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RecurringQuotationIsExpiringSoon;
 
 class QuotationService {
 
@@ -150,11 +152,43 @@ class QuotationService {
     }
 
     /**
-     * Returns the remaining days from the specified date until a recurring quotation reaches its expiration date 
+     * Returns the remaining days from the specified date until a recurring quotation reaches its next due date 
      * 
      * @param Quotation $quotation
      * @param Carbon $date
      * @return Int 
+     */
+    public function daysUntilQuotationNextDueDate(Quotation $quotation, Carbon $date = null )
+    {
+        if ($date === null) $date = new Carbon();
+
+        $nextDueDate = new Carbon($quotation->next_due_date);
+
+        return $date->startOfDay()->diffInDays($nextDueDate->startOfDay());
+    }
+
+    /**
+     * Check if a recurring quotation is close to expiring according to the configuration of the company and send 
+     * an email if the above is true
+     * 
+     * @param Quotation $quotation
+     * @param Carbon $date
+     * @return void
+     */
+    public function sendMailIfQuotationCloseToExpire(Quotation $quotation, Carbon $date = null)
+    {
+        if ($date === null) $date = new Carbon();
+
+        $daysUntilExpires = $this->daysUntilQuotationNextDueDate($quotation, $date);
+        $companyDaysBeforeParam = $quotation->firstCompany()->days_before_quotation_expires;
+
+        if ($daysUntilExpires ===  $companyDaysBeforeParam && $companyDaysBeforeParam !== 0) {
+            Mail::to($quotation->customer->email)->send(new RecurringQuotationIsExpiringSoon($quotation));
+        }
+    }
+
+    /**
+     * Not in used
      */
     public function daysUntilQuotationExpires(Quotation $quotation, Carbon $date = null )
     {
@@ -175,24 +209,6 @@ class QuotationService {
             }
 
             return $date->startOfDay()->diffInDays($endDate->startOfDay());
-        }
-    }
-
-    /**
-     * Check if a recurring quotation is close to expiring according to the configuration of the company and send 
-     * an email if the above is true
-     * 
-     * @param Quotation $quotation
-     * @param Carbon $date
-     * @return void
-     */
-    public function sendMailIfQuotationCloseToExpire(Quotation $quotation, Carbon $date = null)
-    {
-        if ($date === null) $date = new Carbon();
-
-        if ($this->daysUntilQuotationExpires($quotation, $date) === $quotation->firstCompany()->days_before_quotation_expires 
-            && $quotation->firstCompany()->days_before_quotation_expires !== 0) {
-                dd('send mail');
         }
     }
 
