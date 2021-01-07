@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\{ InvoiceRequest, DteSalesReport };
-use App\Exports\DteSalesReportExport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Services\DTE\DTEService;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DteSalesReportExport;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Requests\{ InvoiceRequest, DteSalesReport };
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Tax, Invoice, InvoiceType, CustomerAddress, Seller, Company};
-use App\Services\DTE\DTEService;
 /**
  * Class InvoiceCrudController
  * @package App\Http\Controllers\Admin
@@ -719,11 +720,11 @@ class InvoiceCrudController extends CrudController
         $this->crud->addSaveAction([
             'name' => 'save_and_manage',
             'redirect' => function($crud, $request, $itemId) {
-                return $crud->route . '/'. $itemId . '/to-manage';
+                return route('invoice.generate-temp-document', [ 'invoice' => $itemId]);
             }, // what's the redirect URL, where the user will be taken after saving?
 
             // OPTIONAL:
-            'button_text' => 'Guardar y gestionar', // override text appearing on the button
+            'button_text' => 'Guardar y previsualizar', // override text appearing on the button
             // You can also provide translatable texts, for example:
             // 'button_text' => trans('backpack::crud.save_action_one'),
             'visible' => function($crud) {
@@ -734,6 +735,9 @@ class InvoiceCrudController extends CrudController
             }, // override http_referrer_url
             'order' => 1, // change the order save actions are in
         ]);
+
+        $this->crud->removeSaveActions(['save_and_back','save_and_edit', 'save_and_new']);
+
         /*
         CRUD::addField([
             'name' => 'preface',
@@ -839,6 +843,16 @@ class InvoiceCrudController extends CrudController
 
     protected function customFilters()
     {
+        CRUD::addFilter([
+            'name'  => 'customer_name',
+            'type'  => 'select2',
+            'label' => 'Cliente'
+        ], function() {
+            return Customer::all()->pluck('full_name', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'customer_id', $value);
+        });
+        
         CRUD::addFilter([
             'type'  => 'date_range',
             'name'  => 'from_to',

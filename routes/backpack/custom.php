@@ -75,7 +75,7 @@ Route::group([
     Route::crud('invoice', 'InvoiceCrudController');
     Route::get('order/{order}/to-invoice', 'OrderCrudController@toInvoice')->name('order.invoice');
     Route::get('quotation/{quotation}/to-invoice', 'QuotationCrudController@toInvoice');
-    Route::get('invoice/{invoice}/send-temporary-document', 'ManageInvoiceCrudController@sendTemporaryDocument');
+    Route::get('invoice/{invoice}/send-temporary-document', 'ManageInvoiceCrudController@sendTemporaryDocument')->name('invoice.generate-temp-document');
     Route::get('invoice/{invoice}/create-real-document', 'ManageInvoiceCrudController@createRealDocument');
     Route::get('invoice/{invoice}/generate-temp-and-real-document', 'ManageInvoiceCrudController@generateTemporalAndRealDocument')->name('invoice.generate-temp-real-document');
     Route::get('invoice/{invoice}/update-dte-status', 'ManageInvoiceCrudController@updateDteStatus')->name('dte.update.status');
