@@ -9,9 +9,9 @@ use App\Http\Controllers\Controller;
 
 class QuotationController extends Controller
 {
-    public function endRecurringView(Request $request, Company $company, Quotation $quotation)
+    public function details(Request $request, Company $company, Quotation $quotation)
     {
-        return view('quotation.recurring.terminate', compact('company', 'quotation'));
+        return view('quotation.recurring.details', compact('company', 'quotation'));
     }
 
     public function endRecurring(Request $request, Company $company, Quotation $quotation)

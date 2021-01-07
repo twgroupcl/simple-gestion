@@ -106,5 +106,5 @@ Route::post('/{company}/attendance/post', 'Frontend\AttendanceController@post')-
 Route::get('/{company}/reservation/request', 'Frontend\ReservationRequestController@request')->name('reservation-request.index');
 Route::post('/{company}/reservation/request', 'Frontend\ReservationRequestController@store')->name('reservation-request.store');
 
-Route::get('/{company}/quotation/recurring/{quotation}/terminate', 'Frontend\QuotationController@endRecurringView')->name('quotation.recurring.terminate');
+Route::get('/{company}/quotation/recurring/{quotation}/details', 'Frontend\QuotationController@details')->name('quotation.recurring.details');
 Route::post('/{company}/quotation/recurring/{quotation}/terminate', 'Frontend\QuotationController@endRecurring')->name('quotation.recurring.terminate.post');

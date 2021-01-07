@@ -1,17 +1,15 @@
 @php
-    if ($quotation->recurring_data['end_type'] === 'date') {
-        $date = new Carbon\Carbon($quotation->recurring_data['end_date']);
-    }
+    $date = new Carbon\Carbon($quotation->next_due_date);
 @endphp
 
 @extends('layouts.gym.base')
 
 @section('title')
-    Terminar cotizacion recurrente
+    Detalles de tu subscripción
 @endsection
 
 @section('header-title')
-Terminar Suscripción
+Detalles de tu subscripción
 @endsection
 
 @section('content')
@@ -24,9 +22,7 @@ Terminar Suscripción
                     <div class="col">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><b>Cliente</b>: {{ $quotation->customer->first_name }} {{ $quotation->customer->last_name }}</li>
-                            @if ($quotation->recurring_data['end_type'] === 'date')
-                            <li class="list-group-item"><b>Fecha de finalizacion</b>: {{ $date->format('d-m-Y') }}</li>
-                            @endif
+                            <li class="list-group-item"><b>Proxima fecha de facturación</b>: {{ $date->format('d-m-Y') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -39,26 +35,28 @@ Terminar Suscripción
 
                 <div class="row mt-4">
                     <div class="col">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Producto / Servicio</th>
-                                    <th>Cant.</th>
-                                    <th>Precio</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($quotation->quotation_items as $item)
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>{{ $item->name }}</td>
-                                        <td>{{ $item->qty }}</td>
-                                        <td>{{ currencyFormat($item->price ?? 0, 'CLP', true) }}</td>
-                                        <td>{{ currencyFormat($item->sub_total ?? 0, 'CLP', true) }}</td>
+                                        <th>Producto / Servicio</th>
+                                        <th>Cant.</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($quotation->quotation_items as $item)
+                                        <tr>
+                                            <td>{{ $item->name }}</td>
+                                            <td>{{ $item->qty }}</td>
+                                            <td>{{ currencyFormat($item->price ?? 0, 'CLP', true) }}</td>
+                                            <td>{{ currencyFormat($item->sub_total ?? 0, 'CLP', true) }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -100,7 +98,7 @@ Terminar Suscripción
             @else
             <div class="col-md-10">
                 <div class="alert alert-primary">
-                    No es posible terminar esta subscripcion.
+                    Esta subscripción no se encuentra activa.
                 </div>
             </div>
             @endif
