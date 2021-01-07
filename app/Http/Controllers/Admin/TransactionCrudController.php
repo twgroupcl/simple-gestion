@@ -31,6 +31,9 @@ class TransactionCrudController extends CrudController
         CRUD::setModel(Transaction::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transaction');
         CRUD::setEntityNameStrings('movimiento', 'movimientos');
+
+        $company = backpack_user()->current()->company;
+        $this->crud->addClause('where', 'company_id', $company->id);
     }
 
     /**
@@ -41,7 +44,20 @@ class TransactionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'accounting_account',
+            'label' => 'Cuenta contable'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'bank_account',
+            'label' => 'Cuenta bancaria'
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'transaction_type',
+            'label' => 'Tipo de transacción'
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
