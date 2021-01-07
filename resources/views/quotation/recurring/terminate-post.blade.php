@@ -1,11 +1,11 @@
 @extends('layouts.gym.base')
 
 @section('title')
-    Subscripción terminada
+    Subscripción cancelada
 @endsection
 
 @section('header-title')
-Subscripción terminada
+Subscripción cancelada
 @endsection
 
 @section('content')
@@ -16,7 +16,7 @@ Subscripción terminada
                 <div class="row">
                     <div class="col">
                         <div class="alert alert-primary">
-                            Tu subscripcion ha sido terminada con exito. Si deseas comenzar una nueva subscripción en 
+                            Tu subscripcion ha sido cancelada con exito. Si deseas comenzar una nueva subscripción en 
                             el futuro, dirígete a nuestra sucursal mas cercana.
                         </div>
                     </div>

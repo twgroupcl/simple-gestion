@@ -89,7 +89,7 @@ Detalles de tu subscripción
                             id="form"
                         >
                             @csrf
-                            <button class="btn btn-danger btn-block" type="submit" id="enviar-form">Terminar suscripción ahora</button>
+                            <button class="btn btn-danger btn-block" type="submit" id="enviar-form">Cancelar suscripción ahora</button>
                         </form>
                     </div>
                 </div>
@@ -120,13 +120,13 @@ Detalles de tu subscripción
 
         // Confirmation alert
         Swal.fire({
-            title: 'Terminar subscripción',
-            text: '¿Estas seguro que deseas terminar tu subscripción?',
+            title: 'Cancelar subscripción',
+            text: '¿Estas seguro que deseas cancelar tu subscripción?',
             icon: 'warning',
             showConfirmButton: true,
             showCancelButton: true,
-            confirmButtonText: 'Terminar',
-            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Si, cancelar',
+            cancelButtonText: 'No, volver atras',
             confirmButtonColor: '#f9464e',
             cancelButtonColor: 'gray',
         }).then( value => {
