@@ -87,7 +87,7 @@ class BankAccountCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'bank',
+            'name' => 'bank_id',
             'label' => 'Banco',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
