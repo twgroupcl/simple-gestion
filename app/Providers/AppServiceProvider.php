@@ -15,6 +15,8 @@ use App\Models\CommuneShippingMethod;
 use App\Models\ProductClassAttribute;
 use App\Models\SalesBox;
 use App\Models\Transaction;
+use App\Models\BankAccount;
+use App\Models\AccountingAccount;
 use App\Observers\OrderObserver;
 use App\Observers\SellerObserver;
 use App\Observers\ProductObserver;
@@ -27,6 +29,8 @@ use App\Observers\CommuneShippingMethodObserver;
 use App\Observers\ProductClassAttributeObserver;
 use App\Observers\SalesBoxObserver;
 use App\Observers\TransactionObserver;
+use App\Observers\BankAccountObserver;
+use App\Observers\AccountingAccountObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -63,5 +67,7 @@ class AppServiceProvider extends ServiceProvider
         CommuneShippingMethod::observe(CommuneShippingMethodObserver::class);
         SalesBox::observe(SalesBoxObserver::class);
         Transaction::observe(TransactionObserver::class);
+        AccountingAccount::observe(AccountingAccountObserver::class);
+        BankAccount::observe(BankAccountObserver::class);
     }
 }
