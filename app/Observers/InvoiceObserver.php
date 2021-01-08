@@ -125,7 +125,7 @@ class InvoiceObserver
                         'price' => $item['price'],
                         'qty' => $item['qty'],
                         'sub_total' => $item['sub_total'],
-                        'is_custom' => $item['is_custom'],
+                        'is_custom' => (boolean) $item['is_custom'],
                         'discount_percent' => $item['discount_percent'],
                         'discount_amount' => $item['discount_amount'],
                         'discount_total' => $item['discount_total'],

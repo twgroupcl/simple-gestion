@@ -249,6 +249,7 @@ class Customer extends Model
         }
         return $firstNumber;
     }
+
     public function getAddressesDataFirstSubNumberAttribute()
     {
         $firstSubNumber = null;
@@ -261,6 +262,7 @@ class Customer extends Model
         }
         return $firstSubNumber;
     }
+    
     public function getAddressesDataFirstCommuneAttribute()
     {
         $communeName = null;

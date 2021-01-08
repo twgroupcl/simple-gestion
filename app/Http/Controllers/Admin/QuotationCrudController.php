@@ -837,7 +837,7 @@ class QuotationCrudController extends CrudController
             'type'  => 'select2',
             'label' => 'Cliente'
         ], function() {
-            return Customer::all()->pluck('full_name', 'id')->toArray();
+            return Customer::all()->pluck('full_name_with_uid', 'id')->toArray();
         }, function($value) {
             $this->crud->addClause('where', 'customer_id', $value);
         });
