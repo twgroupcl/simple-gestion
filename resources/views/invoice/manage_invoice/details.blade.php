@@ -10,7 +10,7 @@
 <div class="container-fluid animated fadeIn card">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <p><strong>Nombre: </strong>
                     {{$invoice->first_name}}
                 </p>
@@ -27,13 +27,11 @@
             </div>
         </div>
         <div class="row">
-            @if ($invoice->folio)
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <p><strong>Folio: </strong>
-                    {{$invoice->folio}}
+                    {{$invoice->folio ?? 'Documento aun no enviado al SII'}}
                 </p>
             </div>
-            @endif
             <div class="col-md-6">
                 <p><strong>Código de documento: </strong>
                     {{$invoice->dte_code ?? "S/código"}}

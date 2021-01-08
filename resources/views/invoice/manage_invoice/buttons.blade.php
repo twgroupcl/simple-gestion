@@ -11,10 +11,11 @@
 @include('invoice.manage_invoice.go_to_edit')
 @endcan --}}
 
-@can('doDownloadTemporalPDF', $invoice)
+{{-- @can('doDownloadTemporalPDF', $invoice)
 @include('invoice.manage_invoice.get_temporal_pdf')
+@endcan --}}
 
-@elsecan('doDownloadRealPDF', $invoice)
+@can('doDownloadRealPDF', $invoice)
 @include('invoice.manage_invoice.get_real_pdf')
 @endcan
 
