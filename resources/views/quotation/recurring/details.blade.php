@@ -81,7 +81,7 @@ Detalles de tu subscripción
                     </div>
                 </div>
 
-                <div class="row justify-content-center mt-3 mb-3">
+                {{-- <div class="row justify-content-center mt-3 mb-3">
                     <div class="col-md-6">
                         <form 
                             action="{{ route('quotation.recurring.terminate.post', ['quotation' => $quotation, 'company' => $company ]) }}" 
@@ -92,7 +92,7 @@ Detalles de tu subscripción
                             <button class="btn btn-danger btn-block" type="submit" id="enviar-form">Cancelar suscripción ahora</button>
                         </form>
                     </div>
-                </div>
+                </div> --}}
             </div>
             
             @else

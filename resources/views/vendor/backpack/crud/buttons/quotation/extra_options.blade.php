@@ -5,13 +5,13 @@
     <div class="dropdown-menu">
         @if ($crud->hasAccess('generate_dte') && !($entry->quotation_status === 'EMITIDO' || $entry->quotation_status === 'FACTURADO'))
         <a href="{{ url($crud->route.'/'.$entry->getKey().'/to-invoice') }} " target="_blank" class="dropdown-item">
-          <i class="la la-edit" style="color: #8c8ef6 !important"></i>Generar DTE
+          <i class="la la-receipt" style="color: #8c8ef6 !important"></i>Generar DTE
         </a>
         @endif
         
         @if ($crud->hasAccess('duplicate'))
         <a href="{{ url($crud->route.'/'.$entry->getKey().'/duplicate') }} " target="_blank" class="dropdown-item">
-          <i class="la la-edit" style="color: #8c8ef6 !important"></i>Duplicar
+          <i class="la la-copy" style="color: #8c8ef6 !important"></i>Duplicar
         </a>
         @endif
 

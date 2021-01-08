@@ -1,5 +1,5 @@
 <div class="row">
-    <h3>Detalles de la factura:</h3>
+    <h3>Detalles del documento:</h3>
 </div>
 
 @foreach (Alert::getMessages() as $type => $messages)
@@ -27,18 +27,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-                <p><strong>Código de documento: </strong>
-                    {{$invoice->dte_code ?? "S/código"}}
-                </p>
-            </div>
             @if ($invoice->folio)
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <p><strong>Folio: </strong>
                     {{$invoice->folio}}
                 </p>
             </div>
             @endif
+            <div class="col-md-6">
+                <p><strong>Código de documento: </strong>
+                    {{$invoice->dte_code ?? "S/código"}}
+                </p>
+            </div>
         </div>
         @if ($invoice->dte_status)
         <div class="row">
