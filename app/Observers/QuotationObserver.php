@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
-use App\Services\Quiotations\QuotationService;
+use App\Services\QuotationService;
 
 class QuotationObserver
 {

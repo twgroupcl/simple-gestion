@@ -2,8 +2,8 @@
 
 namespace App\Console;
 
+use App\Services\QuotationService;
 use Illuminate\Console\Scheduling\Schedule;
-use App\Services\Quiotations\QuotationService;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
