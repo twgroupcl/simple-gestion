@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Banners extends Model
+class Slider extends Model
 {
     use CrudTrait;
 
@@ -16,10 +16,11 @@ class Banners extends Model
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
+
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
 
-    protected $table = 'banners';
+    protected $table = 'sliders';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -50,7 +51,6 @@ class Banners extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-
     public function getStatusDescriptionAttribute()
     {
         switch ($this->status) {
@@ -64,11 +64,13 @@ class Banners extends Model
                 break;
         }
     }
+
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
     public function setPathWebAttribute($value)
     {
         $attribute_name = 'path_web';
@@ -94,13 +96,13 @@ class Banners extends Model
             $filename = md5($value . time()) . '.jpg';
 
             // 2. Store the image on disk.
-            \Storage::disk($disk)->put('banner-home/' . $filename, $image->stream());
+            \Storage::disk($disk)->put('slider-home/' . $filename, $image->stream());
 
             // 3. Delete the previous image, if there was one.
             $deleteFile = Str::replaceFirst('/storage/', '', $this->{$attribute_name});
             \Storage::disk($disk)->delete($deleteFile);
 
-            $this->attributes[$attribute_name] = '/storage/banner-home/'.$filename;
+            $this->attributes[$attribute_name] = '/storage/slider-home/'.$filename;
         }
     }
 
@@ -129,15 +131,13 @@ class Banners extends Model
             $filename = md5($value . time()) . '.jpg';
 
             // 2. Store the image on disk.
-            \Storage::disk($disk)->put('banner-home/' . $filename, $image->stream());
+            \Storage::disk($disk)->put('slider-home/' . $filename, $image->stream());
 
             // 3. Delete the previous image, if there was one.
             $deleteFile = Str::replaceFirst('/storage/', '', $this->{$attribute_name});
             \Storage::disk($disk)->delete($deleteFile);
 
-            $this->attributes[$attribute_name] = '/storage/banner-home/'.$filename;
+            $this->attributes[$attribute_name] = '/storage/slider-home/'.$filename;
         }
     }
-
-
 }

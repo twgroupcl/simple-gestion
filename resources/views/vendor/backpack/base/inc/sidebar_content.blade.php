@@ -46,6 +46,7 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqanswer') }}'><i class='nav-icon la la-question'></i> FaqAnswers</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqtopic') }}'><i class='nav-icon la la-question'></i> FaqTopics</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('banners') }}'><i class='nav-icon la la-question'></i> Banners</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('slider') }}'><i class='nav-icon la la-question'></i> Sliders</a></li>
 	</ul>
 </li>
 
@@ -157,3 +158,5 @@
     </ul>
 </li>
 @endcanany
+
+
