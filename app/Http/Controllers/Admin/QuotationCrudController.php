@@ -69,21 +69,21 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'label' => 'Fecha cotización',
+            'label' => 'Fecha',
             'name' => 'quotation_date',
             'type' => 'date',
             'format' => 'L'
         ]);
 
         CRUD::addColumn([
-            'label' => 'Título',
-            'name' => 'title',
-        ]);
-
-        CRUD::addColumn([
             'label' => 'Cliente',
             'name' => 'customerWithUid',
             'type' => 'text',
+        ]);
+
+        CRUD::addColumn([
+            'label' => 'Título',
+            'name' => 'title',
         ]);
 
         CRUD::addColumn([
@@ -522,8 +522,8 @@ class QuotationCrudController extends CrudController
                 Quotation::STATUS_DRAFT => 'Borrador',
                 Quotation::STATUS_PENDING_PAYMENT => 'Pago Pendiente',
                 Quotation::STATUS_SENT => 'Enviada',
-                Quotation::STATUS_VIEWED => 'Vista',
-                Quotation::STATUS_EXPIRED => 'Expirada',
+                //Quotation::STATUS_VIEWED => 'Vista',
+                //Quotation::STATUS_EXPIRED => 'Expirada',
                 Quotation::STATUS_ACCEPTED => 'Aceptada',
                 Quotation::STATUS_COMPLETED => 'Completada',
                 Quotation::STATUS_REJECTED => 'Rechazada',
@@ -865,13 +865,24 @@ class QuotationCrudController extends CrudController
         });
 
         CRUD::addFilter([
+            'name'  => 'quotation_type',
+            'type'  => 'dropdown',
+            'label' => 'Tipo de cotización'
+          ], [
+            1 => 'Solo cotizaciones recurrentes',
+          ], function($value) {
+            $this->crud->addClause('where', 'is_recurring', $value);
+          });
+
+        CRUD::addFilter([
             'name'  => 'status',
             'type'  => 'dropdown',
             'label' => 'Estado'
           ], [
             Quotation::STATUS_DRAFT => 'Borrador',
+            Quotation::STATUS_PENDING_PAYMENT => 'Pendiente de pago',
             Quotation::STATUS_VIEWED => 'Enviado',
-            Quotation::STATUS_EXPIRED => 'Expirado',
+            //Quotation::STATUS_EXPIRED => 'Expirado',
             Quotation::STATUS_ACCEPTED => 'Aceptado',
             Quotation::STATUS_REJECTED => 'Rechazado',
             Quotation::STATUS_ISSUED => 'Emitido',
