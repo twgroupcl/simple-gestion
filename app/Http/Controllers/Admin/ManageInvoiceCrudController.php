@@ -147,7 +147,7 @@ class ManageInvoiceCrudController extends CrudController
 
         // Check if emisor have folios. "disponibles >0 "
         if (!$service->foliosAvailables($invoice)) {
-            \Alert::add('warning', 'No hay folios disponibles')->flash();
+            \Alert::add('warning', 'No tienes folios disponibles para este tipo de documento')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
