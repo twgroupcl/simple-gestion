@@ -36,12 +36,14 @@ class RecurringQuotationIsExpiringSoon extends Mailable
 
         $this->company = $quotation->firstCompany() ?? null;
         $nextDueDate = new Carbon($quotation->next_due_date);
-        $this->title= 'Tu suscripción está por finalizar';
-        $this->text = 'Estimado cliente, te informamos que tu suscripción está cercana a unos días de finalizar. La fecha de
-                       de tu proxima facturación es '. $nextDueDate->format('d-m-Y') .'. <br><br>
-                       En el botón de abajo podrás acceder a una página donde encontrarás los detalles de tu 
-                       suscripción y la opción de terminarla en caso de que no desees continuar con nuestro servicio.';
-
+        $this->title= 'Confirmación Renovación Suscripción';
+        $this->email = $this->company->getBusinessAdminUsers()->first()->email ?? '';
+        $this->text = 'Hola ' . $quotation->customer->first_name . ' ' . $quotation->customer->last_name . ',<br> 
+                      te queremos agradecer por confiar en nuestros servicios. Tu suscripción está a pocos días de ser renovada, 
+                      siendo la fecha de tu próxima facturación el '. $nextDueDate->format('d-m-Y') .'.<br><br>
+                      En el botón de abajo podrás acceder a una página donde encontrarás los detalles de tu suscripción.
+                      Si decides cancelarla, comunícate directamente con nosotros al 
+                      correo ' . $this->email . ' o vía telefónica.';              
         $this->buttonText = 'Ver detalles';
         $this->buttonLink = route('quotation.recurring.details', [ 'quotation' => $quotation, 'company' => $this->company]);
         $this->logo = '';     
@@ -54,6 +56,6 @@ class RecurringQuotationIsExpiringSoon extends Mailable
      */
     public function build()
     {
-        return $this->subject('Tu suscripción está por finalizar - ' . $this->company->name)->view('maileclipse::templates.basicEmailTemplate');
+        return $this->subject('Confirmación Renovación Suscripción - ' . $this->company->name)->view('maileclipse::templates.basicEmailTemplate');
     }
 }
