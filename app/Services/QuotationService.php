@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Quiotations;
+namespace App\Services;
 
 use Exception;
 use Carbon\Carbon;
