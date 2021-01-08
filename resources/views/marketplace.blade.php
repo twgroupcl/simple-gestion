@@ -4,6 +4,87 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
+@php
+use Carbon\Carbon;
+
+$today =  Carbon::now();
+
+@endphp
+
+@if(count($sliders)>0)
+
+
+<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
+    <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        @foreach ($sliders as $slider)
+
+            @if($slider->visible_from || $slider->visible_to)
+                @if( ($slider->visible_from ? $today->gte( $slider->visible_from):true) && ($slider->visible_to ? $today->lte($slider->visible_to): true) )
+                    @if($slider->link)
+                        <a href={{$slider->link}} target="_blank">
+                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" class="img-fluid w-100">
+                        </a>
+                    @else
+                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" >
+                    @endif
+                @endif
+            @else
+                @if($slider->link)
+                    <a href={{$slider->link}} target="_blank">
+                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" class="img-fluid w-100">
+                    </a>
+                @else
+                    <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" >
+                @endif
+            @endif
+        @endforeach
+    </div>
+</div>
+
+<div class="d-block d-sm-none">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        @foreach ($sliders as $slider)
+            @if($slider->visible_from || $slider->visible_to)
+            @if( ($slider->visible_from ? $today->gte( $slider->visible_from):true) && ($slider->visible_to ? $today->lte($slider->visible_to): true) )
+                    @if($slider->link)
+                        <a href={{$slider->link}} target="_blank">
+                            @if(!is_null($slider->path_mobile))
+                                <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                            @else
+                                <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                            @endif
+                        </a>
+                    @else
+                        @if(!is_null($slider->path_mobile))
+                            <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                        @else
+                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                        @endif
+                    @endif
+                @endif
+            @else
+                @if($slider->link)
+                    <a href={{$slider->link}} target="_blank">
+                        @if(!is_null($slider->path_mobile))
+                            <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                        @else
+                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                        @endif
+                    </a>
+                @else
+                    @if(!is_null($slider->path_mobile))
+                        <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                    @else
+                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                    @endif
+                @endif
+            @endif
+        @endforeach
+        </div>
+    </div>
+</div>
+@else
 
 <div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
@@ -15,9 +96,9 @@
     </div>
 </div>
 
-
 <div class="d-block d-sm-none">
     <div class="cz-carousel cz-dots-enabled">
+
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
             <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad-general.png') }}" alt="Contigo Pyme Navidad">
             <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad.png') }}" alt="Contigo Pyme Banner 1">
@@ -29,6 +110,7 @@
         </div>
     </div>
 </div>
+@endif
 
 @if(count($featuredProducts) > 3)
     <section class="container mt-5 mb-grid-gutter">
@@ -59,7 +141,7 @@
                                                         {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }}
                                                     </small></del>
                                                 @else
-                                                    <span class="text-accent">  
+                                                    <span class="text-accent">
                                                         {{ currencyFormat($products->getRealPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getRealPriceRange()[1], defaultCurrency(), true) }}
                                                     </span>
                                                     <del class="font-size-sm text-muted"><small>
@@ -76,8 +158,8 @@
                                                     {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getPriceRange()[1], defaultCurrency(), true) }}
                                                     @endif
                                                 </span>
-                                            </div> 
-                                        @endif  
+                                            </div>
+                                        @endif
                                     @else
                                         <div class="product-price">
                                             @if($products->special_price)
@@ -131,7 +213,8 @@
         <div class="row align-items-center">
             <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
                 <img src="{{url($banners[1]['path_web'])}}" alt="{{$banners[1]['name']}}">
-            </div>    
+
+            </div>
             @if(!is_null($banners[1]['path_mobile']))
                 <div class="col-md-12 d-block d-sm-none">
                     <img src="{{url($banners[1]['path_mobile'])}}" alt="{{$banners[1]['name']}}" class="w-100">
@@ -205,8 +288,8 @@
         </div>
     </section>
 -->
-{{$banners[2]['status']}}
-@if($banners[2]['status'] == 'Activo' || $banners[3]['status'] == 'Activo')
+
+@if($banners[2]['status'] || $banners[3]['status'])
 <section class="container mt-4 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row text-center">
@@ -219,7 +302,7 @@
                 </div>
             @else
                 @php
-                    $imgPath = ($banners[2]['path_web'])?$banners[2]['path_web']:$banners[3]['path_web'];   
+                    $imgPath = ($banners[2]['path_web'])?$banners[2]['path_web']:$banners[3]['path_web'];
                 @endphp
                 <div class="col-md-12 pb-3">
                     <img src="{{url($imgPath)}}" class="img-fluid border-radious-3">
@@ -236,7 +319,7 @@
         <div class="row align-items-center">
             <div class="col-md-12 d-none d-lg-block d-md-block d-sm-block">
                 <img src="{{url($banners[4]['path_web'])}}" alt="{{$banners[4]['name']}}">
-            </div>    
+            </div>
             @if(!is_null($banners[4]['path_mobile']))
                 <div class="col-md-12 d-block d-sm-none">
                     <img src="{{url($banners[4]['path_mobile'])}}" alt="{{$banners[4]['name']}}" class="w-100">

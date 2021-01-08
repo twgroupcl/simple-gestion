@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Traits\HasCustomAttributes;
-use App\Http\Requests\BannersRequest;
+use App\Http\Requests\SliderRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+
 /**
- * Class BannersCrudController
+ * Class SliderCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class BannersCrudController extends CrudController
+class SliderCrudController extends CrudController
 {
-    use HasCustomAttributes;
-    private $admin;
-
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -25,13 +26,12 @@ class BannersCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Banners::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/banners');
-        CRUD::setEntityNameStrings('banners', 'banners');
-       // $this->crud->denyAccess('create');
-       // $this->crud->denyAccess('delete');
+        CRUD::setModel(\App\Models\Slider::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/slider');
+        CRUD::setEntityNameStrings('slider', 'sliders');
 
-       $this->admin = false;
+
+        $this->crud->denyAccess('show');
     }
 
     /**
@@ -42,13 +42,6 @@ class BannersCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-       // CRUD::setFromDb(); // columns
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
         CRUD::addColumn([
             'name' => 'name',
             'type' => 'text',
@@ -57,14 +50,14 @@ class BannersCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'path_web',
-            'type' => 'text',
-            'label' => 'Ruta Banner Web',
+            'type' => 'image',
+            'label' => 'Ruta Slider Web',
         ]);
 
         CRUD::addColumn([
             'name' => 'path_mobile',
-            'type' => 'text',
-            'label' => 'Ruta Banner Móvil',
+            'type' => 'image',
+            'label' => 'Ruta Slider Móvil',
         ]);
 
         CRUD::addColumn([
@@ -91,9 +84,8 @@ class BannersCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(BannersRequest::class);
+        CRUD::setValidation(SliderRequest::class);
 
-        //CRUD::setFromDb(); // fields
 
         CRUD::addField([
             'name' => 'name',
@@ -104,7 +96,7 @@ class BannersCrudController extends CrudController
         CRUD::addField([
             'name' => 'path_web',
             'type' => 'image',
-            'label' => 'Banner Web (Reconmendable: 1350x180)',
+            'label' => 'Slider Web (Tamaño: 1700x400 px)',
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-6'
@@ -114,24 +106,45 @@ class BannersCrudController extends CrudController
         CRUD::addField([
             'name' => 'path_mobile',
             'type' => 'image',
-            'label' => 'Banner Mobile (Reconmendable: 350x150)',
+            'label' => 'Slider Móvil (Tamaño: 376x241 px)',
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-6'
             ],
         ]);
         CRUD::addField([
-            'name'            => 'section',
-            'label'           => "Sección",
-            'type'            => 'select_from_array',
-            'options'         => ['1' => '1', '2' => '2', '3' => '3', '4'=>'4'],
-            'allows_null'     => false,
-            'allows_multiple' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-md-12',
+            'name' => 'visible_from',
+            'type' => 'date',
+            'label' => 'Visible desde ',
+            'wrapper' => [
+                'class' => 'form-group col-md-6'
             ],
         ]);
 
+        CRUD::addField([
+            'name' => 'visible_to',
+            'type' => 'date',
+            'label' => 'Visible hasta',
+            'wrapper' => [
+                'class' => 'form-group col-md-6'
+            ],
+        ]);
+        CRUD::addField([
+            'name' => 'order',
+            'type' => 'number',
+            'label' => 'Orden',
+            'wrapper' => [
+                'class' => 'form-group col-md-6'
+            ],
+        ]);
+        CRUD::addField([
+            'name' => 'link',
+            'type' => 'text',
+            'label' => 'Enlace',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
         CRUD::addField([
             'name' => 'status',
             'type' => 'checkbox',
@@ -142,11 +155,6 @@ class BannersCrudController extends CrudController
             ],
         ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
     /**

@@ -6,7 +6,7 @@ trait DTEArray
 {
     public function toArray()
     {
-        $seller = $this->invoice->seller;
+        $emitter = $this->invoice->company;
         $customerAddress = $this->invoice->address;
         //dd($customerAddress, $this->invoice);
     
@@ -14,7 +14,7 @@ trait DTEArray
 
         $itemsDTE = $this->prepareItems();
 
-        $globalDiscounts = null;
+        $globalDiscounts = false;
         if ($this->invoice->discount_percent > 0) {
             $globalDiscounts = [
                 'TpoMov' => 'D',
@@ -49,7 +49,8 @@ trait DTEArray
                     'FchVenc' => $this->invoice->expiry_date ?? false //AAAA-MM-DD
                 ],
                 'Emisor' => [
-                    'RUTEmisor' => sanitizeRUT($seller->uid),
+                    'RUTEmisor' => sanitizeRUT($emitter->uid),
+                    'CdgVendedor' => isset($this->invoice->seller_id) ? $this->invoice->seller->visible_name : false,
                 ],
                 'Receptor' => [
                     'RUTRecep' => sanitizeRUT($this->invoice->uid),

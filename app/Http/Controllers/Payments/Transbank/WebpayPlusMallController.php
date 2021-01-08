@@ -54,9 +54,9 @@ class WebpayPlusMallController extends Controller
         $this->returnUrl = $wpmConfig[3]->variable_value;
         $this->finalUrl = $wpmConfig[4]->variable_value;
 
-        //$this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
+        $this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
 
-        $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
+        //$this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
 
     }
 
@@ -151,6 +151,7 @@ class WebpayPlusMallController extends Controller
         $orderlog->event = 'Inicio de pago';
         $orderlog->save();
 
+        dd($response);
         if (!isset($response->url)) {
             $result = null;
             // return redirect()->back()->with('error', 'Ocurrió un error al generar la url de pago');

@@ -123,7 +123,7 @@ class OrderCrudController extends CrudController
             'label' => 'Email',
         ]);
 
-        CRUD::addColumn([
+        /* CRUD::addColumn([
             'name' => 'total',
             'type' => 'number',
             'label' => 'Total',
@@ -131,6 +131,14 @@ class OrderCrudController extends CrudController
             'thousands_sep' => '.',
             'decimals' => 0,
             'prefix' => '$',
+        ]); */
+
+        CRUD::addColumn([
+            'name' => 'total',
+            'label' => 'Total',
+            'type'  => 'model_function',
+            'function_name' => 'getTotal',
+            'function_parameters' => [$this->admin, $this->userSeller],
         ]);
 
         CRUD::addColumn([
@@ -567,6 +575,7 @@ class OrderCrudController extends CrudController
             $shippingOrderItems = OrderItem::where('order_id', $orderId)->get()->groupBy('shipping_id');
         }
 
+
         foreach ($shippingOrderItems as $shippingKey => $orderItems) {
 
 
@@ -617,6 +626,21 @@ class OrderCrudController extends CrudController
                     ],
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-2',
+                    ],
+                ],
+                [
+
+                    'name' => 'seller_id',
+                    'label' => 'Vendedor',
+                    'type' => 'relationship',
+                    'entity' => 'order_items.seller',
+                    'attribute' => 'visible_name',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+
+                    ],
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2 oi_seller_name',
                     ],
                 ],
                 [
@@ -846,5 +870,11 @@ class OrderCrudController extends CrudController
           }, function ($value) {
             $this->crud->addClause('where', 'status', $value );
         });
+    }
+
+    public function getSellerName($value)
+    {
+        $seller = Seller::whereId($value)->first();
+        return $seller->visible_name;
     }
 }

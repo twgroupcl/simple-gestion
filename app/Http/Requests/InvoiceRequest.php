@@ -35,7 +35,7 @@ class InvoiceRequest extends FormRequest
             'invoice_type_id' => 'required|exists:invoice_types,id',
             'total' => 'gte:0',
             'invoice_date' => 'date',
-            'seller_id' => 'required|exists:sellers,id',
+            //'seller_id' => 'required|exists:sellers,id',
             'discount_percent' => 'gte:0,lte:100', 
             'discount_amount' => 'gte:0',
             'customer_id' => 'required|exists:customers,id', 
