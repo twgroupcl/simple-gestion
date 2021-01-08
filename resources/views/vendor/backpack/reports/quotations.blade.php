@@ -26,15 +26,17 @@
         <span>Estado de la cotización</span>
         <select name="quotation-status" id="quotation-status" class="form-control">
             <option value="all">Todos</option>
-            <option value="{{ App\Models\Quotation::STATUS_DRAFT }}">BORRADOR</option>
-            <option value="{{ App\Models\Quotation::STATUS_SENT }}">ENVIADO</option>
-            <option value="{{ App\Models\Quotation::STATUS_VIEWED }}">VISTO</option>
-            <option value="{{ App\Models\Quotation::STATUS_EXPIRED }}">EXPIRADO</option>
-            <option value="{{ App\Models\Quotation::STATUS_ACCEPTED }}">ACEPTADO</option>
-            <option value="{{ App\Models\Quotation::STATUS_REJECTED }}">RECHAZADO</option>
-            <option value="{{ App\Models\Quotation::STATUS_ISSUED }}">EMITIDO</option>
-            <option value="{{ App\Models\Quotation::STATUS_INVOICED }}">FACTURADO</option>
-
+            {{-- <option value="{{ App\Models\Quotation::STATUS_EXPIRED }}">Expirada</option>
+            <option value="{{ App\Models\Quotation::STATUS_VIEWED }}">Vista</option> --}}
+            <option value="{{ App\Models\Quotation::STATUS_ACCEPTED }}">Aceptada</option>
+            <option value="{{ App\Models\Quotation::STATUS_DRAFT }}">Borrador</option>
+            <option value="{{ App\Models\Quotation::STATUS_CANCELED }}">Cancelada</option>
+            <option value="{{ App\Models\Quotation::STATUS_COMPLETED }}">Completada</option>
+            <option value="{{ App\Models\Quotation::STATUS_SENT }}">Enviada</option>
+            <option value="{{ App\Models\Quotation::STATUS_ISSUED }}">Emitida</option>
+            <option value="{{ App\Models\Quotation::STATUS_REJECTED }}">Rechazada</option>
+            <option value="{{ App\Models\Quotation::STATUS_INVOICED }}">Facturada</option>
+            <option value="{{ App\Models\Quotation::STATUS_PENDING_PAYMENT }}">Pago pendiente</option>
         </select>
     </div>
 </div>

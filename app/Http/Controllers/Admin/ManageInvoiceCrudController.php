@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use Exception;
+use App\Mail\PosBill;
 use App\Models\Product;
 use App\Models\Quotation;
 use Illuminate\Http\Request;
 use App\Services\DTE\DTEService;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\InvoiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -49,7 +51,7 @@ class ManageInvoiceCrudController extends CrudController
             $invoice->invoice_status = Invoice::STATUS_TEMPORAL;
             $invoice->dte_code = $code;
             $invoice->updateWithoutEvents();
-            \Alert::add('success', 'Se ha enviado el documento con éxito')->flash();
+            //\Alert::add('success', 'Se ha enviado el documento con éxito')->flash();
         } else {
             \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
         }
@@ -147,7 +149,7 @@ class ManageInvoiceCrudController extends CrudController
 
         // Check if emisor have folios. "disponibles >0 "
         if (!$service->foliosAvailables($invoice)) {
-            \Alert::add('warning', 'No hay folios disponibles')->flash();
+            \Alert::add('warning', 'No tienes folios disponibles para este tipo de documento')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
@@ -182,6 +184,9 @@ class ManageInvoiceCrudController extends CrudController
                 }
             }
 
+            Mail::to($invoice->email)->send(new PosBill($invoice));
+            
+            \Alert::add('success', 'Documento enviado al SII')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
         }
 

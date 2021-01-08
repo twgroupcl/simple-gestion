@@ -1,4 +1,4 @@
-@if ($crud->hasAccess('update') && !($entry->quotation_status === 'EMITIDO' || $entry->quotation_status === 'FACTURADO'))
+@if ($crud->hasAccess('update') && !($entry->quotation_status === 'EMITIDO' || $entry->quotation_status === 'FACTURADO') && !$entry->parent)
 	@if (!$crud->model->translationEnabled())
 
 	<!-- Single edit button -->

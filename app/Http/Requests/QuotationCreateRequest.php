@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\Quotation;
 use App\Http\Requests\Request;
 use App\Rules\NumericCommaRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -33,7 +34,7 @@ class QuotationCreateRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules =  [
             'seller_id' => 'required',
             'customer_id' => 'required',
             'quotation_date' => 'required',
@@ -66,6 +67,27 @@ class QuotationCreateRequest extends FormRequest
                 }
             }
         ];
+
+        if ($this->is_recurring) {
+
+            $rules['repeat_number'] = 'required|numeric|min:1';
+
+            if ($this->quotation_Status === Quotation::STATUS_ACCEPTED) {
+                $rules['start_date'] = 'date';
+            } else {
+                $rules['start_date'] = 'date|after_or_equal:today';
+            }
+
+            if ($this->end_type === 'date') {
+                $rules['end_date'] = 'required|date';
+            }
+
+            if ($this->end_type === 'repetition') {
+                $rules['end_after_reps'] = 'required|numeric|min:1';
+            }
+        }
+
+        return $rules;
     }
 
     /**
@@ -87,6 +109,13 @@ class QuotationCreateRequest extends FormRequest
             'items_data_validation.*.qty' => 'cantidad del producto / servicio',
             'items_data_validation.*.price' => 'precio del producto / servicio',
             'items_data_validation.*.total' => 'total',
+
+            // Recurring fields
+            'start_date' => 'fecha de inicio',
+            'repeat_number' => 'repetir cada',
+            'end_date' => 'fecha de fin de recurrencia',
+            'end_after_reps' => 'numero de repeticiones',
+
         ];
     }
 
@@ -98,11 +127,13 @@ class QuotationCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            '*.required*' => 'Es necesario completar el campo :attribute.',
+            '*.required*' => 'Es necesario completar el campo ":attribute".',
             '*.string' => 'El campo :attribute debe ser texto',
             '*.date' => 'El campo :attribute debe ser de tipo fecha',
             '*.unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
             '*.exists' => 'No se pudo encontrar una relación con el campo :attribute.',
+            '*.after_or_equal' => 'La fecha del campo ":attribute" debe ser igual o posterior a la fecha actual.',
+            '*.min' => 'El campo ":attribute" debe ser por lo menos :min.',
         ];
     }
 

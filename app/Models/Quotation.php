@@ -31,6 +31,11 @@ class Quotation extends Model
     const STATUS_ISSUED = 'EMITIDO';
     const STATUS_INVOICED = 'FACTURADO';
 
+    // Special status for recurring quotations
+    const STATUS_COMPLETED = 'COMPLETADO';
+    const STATUS_CANCELED = 'CANCELADO';
+    const STATUS_PENDING_PAYMENT = 'PAGO_PENDIENTE';
+
     protected $table = 'quotations';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
@@ -79,7 +84,10 @@ class Quotation extends Model
         'address_id',
         'branch_id',
         'invoice_type_id',
+        'is_recurring',
+        'recurring_data',
     ];
+
     // protected $hidden = [];
     protected $dates = [
         'quotation_date',
@@ -88,6 +96,11 @@ class Quotation extends Model
     protected $casts = [
         'items_data' => 'array',
         'json_value' => 'array',
+        'recurring_data' => 'array',
+    ];
+
+    protected $fakeColumns = [
+        'recurring_data',
     ];
 
     /*
@@ -128,6 +141,11 @@ class Quotation extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function firstCompany()
+    {
+        return $this->branch->companies->first();
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -153,6 +171,16 @@ class Quotation extends Model
         return $this->belongsTo(Tax::class);
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(Quotation::class, 'parent_id');
+    }
+
+    public function childrens()
+    {
+        return $this->hasMany(Quotation::class, 'parent_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -175,11 +203,25 @@ class Quotation extends Model
         return $this->code;
     }
 
+    public function getCustomerWithUidAttribute()
+    {
+        return $this->customer->fullNameWithUid;
+    }
+
     public function getCodeWithPrefixAttribute()
     {
         $date = new Carbon($this->quotation_date);
         $prefix = $date->format('Ym');
         return $prefix . $this->code;
+    }
+
+    public function getIsRecurringAccesorAttribute()
+    {
+        if ($this->is_recurring) {
+            return 'Si';
+        } else {
+            return 'No';
+        }
     }
 
     public function getQuotationStatusTextAttribute() 
@@ -189,25 +231,34 @@ class Quotation extends Model
                 return 'Borrador';
                 break;
             case self::STATUS_REJECTED:
-                return 'Rechazado';
+                return 'Rechazada';
                 break;
             case self::STATUS_ACCEPTED:
-                return 'Aceptado';
+                return 'Aceptada';
                 break;
             case self::STATUS_EXPIRED:
-                return 'Activa';
+                return 'Expirada';
                 break;
             case self::STATUS_VIEWED:
-                return 'Visto';
+                return 'Vista';
                 break;
             case self::STATUS_SENT:
-                return 'Enviado';
+                return 'Enviada';
                 break;
             case self::STATUS_ISSUED;
-                return 'Emitido';
+                return 'Emitida';
                 break;
             case self::STATUS_INVOICED;
-                return 'Facturado';
+                return 'Facturada';
+                break;
+            case self::STATUS_PENDING_PAYMENT;
+                return 'Pago pendiente';
+                break;
+            case self::STATUS_COMPLETED;
+                return 'Completada';
+                break;
+            case self::STATUS_CANCELED;
+                return 'Cancelada';
                 break;
             default: 
                 return 'Otro';
