@@ -123,7 +123,7 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'label' => 'Es recurrente',
+            'label' => 'Es suscripción',
             'name' => 'is_recurring_accesor',
             'type' => 'text',
             'wrapper' => [
@@ -544,7 +544,7 @@ class QuotationCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'is_recurring',
-            'label' => 'Cotizacion recurrente',
+            'label' => 'Es una suscripción (Cotizacion recurrente)',
             'type' => 'checkbox',
             'tab' => 'General',
             'attributes' => [
@@ -869,7 +869,7 @@ class QuotationCrudController extends CrudController
             'type'  => 'dropdown',
             'label' => 'Tipo de cotización'
           ], [
-            1 => 'Solo cotizaciones recurrentes',
+            1 => 'Solo suscripción (cotizaciones recurrentes)',
           ], function($value) {
             $this->crud->addClause('where', 'is_recurring', $value);
           });

@@ -59,7 +59,11 @@
         
         @can('doDownloadTemporalPDF', $invoice)
             <div class="row">
-                <embed src="http://simple-gestion.test/admin/invoice/{{ $invoice->id }}/get-pdf" type="application/pdf" width="70%" height="400px" />
+                @if ($invoice->invoice_type->code === 39 || $invoice->invoice_type->code === 41)
+                <embed src="{{ route('invoice.get-pdf', ['invoice' => $invoice, 'tipoPapel' => 57]) }}" type="application/pdf" width="70%" height="400px" />
+                @else 
+                <embed src="{{ route('invoice.get-pdf', ['invoice' => $invoice, 'tipoPapel' => 0]) }}" type="application/pdf" width="70%" height="400px" />
+                @endif
             </div>
 
             <div class="row mt-2">
