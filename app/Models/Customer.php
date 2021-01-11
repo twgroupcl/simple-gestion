@@ -83,8 +83,13 @@ class Customer extends Model
     }
 
     public function registerAttendance(int $companyId, $serviceId = null)
-    {
-        $todayAttendances = CustomerAttendance::whereDay('attendance_time', date('d'))->where('customer_id', $this->id)->get();
+    {   
+        $todayAttendances = CustomerAttendance::whereDay('attendance_time', date('d'))
+            ->whereMonth('attendance_time',  date('m'))
+            ->whereYear('attendance_time',  date('Y'))
+            ->where('customer_id', $this->id)
+            ->get();
+
         $entryNumber = $todayAttendances->count() + 1;
         $entryType = ($entryNumber % 2) ? CustomerAttendance::CHECK_IN : CustomerAttendance::CHECK_OUT;
 
@@ -244,6 +249,7 @@ class Customer extends Model
         }
         return $firstNumber;
     }
+
     public function getAddressesDataFirstSubNumberAttribute()
     {
         $firstSubNumber = null;
@@ -256,6 +262,7 @@ class Customer extends Model
         }
         return $firstSubNumber;
     }
+    
     public function getAddressesDataFirstCommuneAttribute()
     {
         $communeName = null;

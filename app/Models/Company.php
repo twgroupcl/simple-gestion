@@ -31,6 +31,7 @@ class Company extends Model
         'payment_data', 
         'check_stock_in_quotations',
         'dte_token', 
+        'days_before_quotation_expires',
         'status',
     ];
     // protected $hidden = [];

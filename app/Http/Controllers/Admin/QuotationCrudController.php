@@ -41,6 +41,9 @@ class QuotationCrudController extends CrudController
         CRUD::setEntityNameStrings('cotización', 'cotizaciones');
 
         $this->crud->denyAccess('show');
+        $this->crud->allowAccess('export_pdf');
+        $this->crud->allowAccess('generate_dte');
+        $this->crud->allowAccess('duplicate');
 
         $this->crud->enableExportButtons();
     }
@@ -53,10 +56,11 @@ class QuotationCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        // Export PDF option
         $this->crud->addButtonFromView('line', 'export', 'quotation.export', 'begining');
-        $this->crud->addButtonFromView('line', 'duplicate', 'quotation.duplicate', 'begining');
-        $this->crud->addButtonFromView('line', 'Crear documento electrónico temporal', 'quotation.to_invoice', 'beginning');
+        $this->crud->addButtonFromView('line', 'extra_options', 'quotation.extra_options', 'begining');
+        //$this->crud->addButtonFromView('line', 'duplicate', 'quotation.duplicate', 'begining');
+        //$this->crud->addButtonFromView('line', 'Crear documento electrónico temporal', 'quotation.to_invoice', 'beginning');
+        $this->crud->removeButton('delete');
 
         CRUD::addColumn([
             'label' => '#',
@@ -65,31 +69,21 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'label' => 'Fecha cotización',
+            'label' => 'Fecha',
             'name' => 'quotation_date',
             'type' => 'date',
             'format' => 'L'
         ]);
 
         CRUD::addColumn([
+            'label' => 'Cliente',
+            'name' => 'customerWithUid',
+            'type' => 'text',
+        ]);
+
+        CRUD::addColumn([
             'label' => 'Título',
             'name' => 'title',
-        ]);
-
-        CRUD::addColumn([
-            'label' => 'Cliente',
-            'name' => 'customer',
-            'type' => 'relationship',
-        ]);
-
-        CRUD::addColumn([
-            'label' => 'Total',
-            'name' => 'total',
-            'type' => 'number',
-            'dec_point' => ',',
-            'thousands_sep' => '.',
-            'decimals' => 0,
-            'prefix' => '$' // @todo change symbol depending on the currency
         ]);
 
         CRUD::addColumn([
@@ -100,19 +94,22 @@ class QuotationCrudController extends CrudController
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
                     if ($column['text'] == 'Activa' || 
-                        $column['text'] == 'Aceptado' || 
-                        $column['text'] == 'Emitido' ||
-                        $column['text'] == 'Facturado') {
+                        $column['text'] == 'Aceptada' || 
+                        $column['text'] == 'Emitida' ||
+                        $column['text'] == 'Completada' ||
+                        $column['text'] == 'Facturada') {
                         return 'badge badge-success';
                     }
                    
-                    if ($column['text'] === 'Rechazado') {
+                    if ($column['text'] === 'Rechazada' ||
+                        $column['text'] === 'Cancelada') {
                         return 'badge badge-danger';
                     }
                     
-                    if ($column['text'] == 'Visto') {
+                    if ($column['text'] == 'Vista') {
                         return 'badge badge-info';
                     }
+
                     return 'badge badge-default';
                 },
             ],
@@ -123,6 +120,33 @@ class QuotationCrudController extends CrudController
             'name' => 'expiry_date',
             'type' => 'date',
             'format' => 'L'
+        ]);
+
+        CRUD::addColumn([
+            'label' => 'Es suscripción',
+            'name' => 'is_recurring_accesor',
+            'type' => 'text',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Si') {
+                        return 'badge badge-info';
+                    } else {
+                        return 'badge badge-secondary';
+                    }
+
+                },
+            ],
+        ]);
+
+        CRUD::addColumn([
+            'label' => 'Total',
+            'name' => 'total',
+            'type' => 'number',
+            'dec_point' => ',',
+            'thousands_sep' => '.',
+            'decimals' => 0,
+            'prefix' => '$' // @todo change symbol depending on the currency
         ]);
 
         $this->customFilters();
@@ -447,6 +471,16 @@ class QuotationCrudController extends CrudController
         ]);
 
         CRUD::addField([
+            'name' => 'check_group_start_row',
+            'type' => 'group_start',
+            'label' => '',
+            'wrapperAttributes' => [
+                'class' => 'row'
+            ],
+            'tab' => 'General',
+        ]);
+
+        CRUD::addField([
             'name' => 'tax_type',
             'label' => 'Impuesto',
             'type' => 'select2_from_array',
@@ -486,11 +520,16 @@ class QuotationCrudController extends CrudController
             'label' => 'Estado cotización',
             'options' => [
                 Quotation::STATUS_DRAFT => 'Borrador',
-                Quotation::STATUS_SENT => 'Enviado',
-                Quotation::STATUS_VIEWED => 'Visto',
-                Quotation::STATUS_EXPIRED => 'Expirado',
-                Quotation::STATUS_ACCEPTED => 'Aceptado',
-                Quotation::STATUS_REJECTED => 'Rechazado',
+                Quotation::STATUS_PENDING_PAYMENT => 'Pago Pendiente',
+                Quotation::STATUS_SENT => 'Enviada',
+                //Quotation::STATUS_VIEWED => 'Vista',
+                //Quotation::STATUS_EXPIRED => 'Expirada',
+                Quotation::STATUS_ACCEPTED => 'Aceptada',
+                Quotation::STATUS_COMPLETED => 'Completada',
+                Quotation::STATUS_REJECTED => 'Rechazada',
+                Quotation::STATUS_ISSUED => 'Emitida',
+                Quotation::STATUS_INVOICED => 'Facturada',
+                Quotation::STATUS_CANCELED => 'Cancelada',
             ],
             'attributes' => [
                 //'readonly' => true,
@@ -503,6 +542,116 @@ class QuotationCrudController extends CrudController
             'tab' => 'General',
         ]);
 
+        CRUD::addField([
+            'name' => 'is_recurring',
+            'label' => 'Es una suscripción (Cotizacion recurrente)',
+            'type' => 'checkbox',
+            'tab' => 'General',
+            'attributes' => [
+                'class' => 'is_recurring_check'
+            ]
+        ]);
+
+        CRUD::addField([
+            'name' => 'start_date',
+            'label' => 'Fecha de inicio',
+            'type' => 'date',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-4 form-group recurring_group',
+                'id' => 'start_date_field'
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data'
+        ]);
+        
+        CRUD::addField([
+            'name' => 'repeat_number',
+            'label' => 'Repetir cada',
+            'type' => 'number',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-3 form-group recurring_group',
+                'id' => 'repeat_number_field',
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data'
+        ]);
+        
+        CRUD::addField([
+            'name' => 'repeat_every',
+            'label' => '',
+            'type' => 'select2_from_array',
+            'options' => [
+                'days' => 'Dias',
+                'weeks' => 'Semanas',
+                'months' => 'Meses',
+                'years' => 'Años',
+            ],
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-5 form-group mt-2 recurring_group',
+                'id' => 'repeat_every_field',
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data',
+        ]);
+
+        CRUD::addField([
+            'name' => 'end_type',
+            'label' => 'Termina',
+            'type' => 'select2_from_array',
+            'options' => [
+                'never' => 'Nunca',
+                'date' => 'Seleccionar fecha',
+                'repetition' => 'Despues de __ Repeticiones',
+            ],
+            'wrapper' => [
+                'class' => 'col-md-7 form-group recurring_group',
+            ],
+            'attributes' => [
+                'id' => 'end_type_field',
+            ],
+            'tab' => 'General',
+            'fake' => true,
+            'store_in' => 'recurring_data',
+        ]);
+
+        CRUD::addField([
+            'name' => 'end_date',
+            'label' => '',
+            'type' => 'date',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-5 form-group mt-2 recurring_group',
+                'id' => 'end_date_field',
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data',
+        ]);
+
+        CRUD::addField([
+            'name' => 'end_after_reps',
+            'label' => '',
+            'type' => 'number',
+            'tab' => 'General',
+            'wrapper' => [
+                'class' => 'col-md-5 form-group mt-2 recurring_group',
+                'id' => 'end_after_reps_field',
+            ],
+            'attributes' => [
+                'placeholder' => 'Numero de repeticiones',
+            ],
+            'fake' => true,
+            'store_in' => 'recurring_data',
+        ]);
+
+        CRUD::addField([
+            'name' => 'check_group_end_row',
+            'type' => 'group_end',
+            'tab' => 'General',
+        ]);
+        
         CRUD::addField([
             'name' => 'check_group_end',
             'type' => 'group_end',
@@ -538,6 +687,12 @@ class QuotationCrudController extends CrudController
             ],
             'tab' => 'Adicional',
         ]);
+
+        CRUD::addField([
+            'type' => 'quotation.recurring_group_scripts',
+            'name' => 'recurring_group_scripts',
+            'tab' => 'General',
+        ]);
     }
 
     /**
@@ -549,6 +704,51 @@ class QuotationCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        $quotation = $this->crud->getModel()->find($this->crud->getCurrentEntryId());
+
+        if ($quotation->parent) {
+            $this->crud->modifyField('quotation_status', [
+                'attributes' => [
+                    'disabled' => true,
+                ],
+            ]);
+        }
+
+        if ($quotation->quotation_status == Quotation::STATUS_ACCEPTED) {
+            $this->crud->modifyField('is_recurring', [
+                'attributes' => [
+                    'class' => 'is_recurring_check',
+                    'disabled' => true,
+                ]
+            ]);
+
+            $this->crud->modifyField('start_date', [
+                'attributes' => [
+                    'readonly' => true,
+                ],
+            ]);
+        }
+
+        if ($quotation->quotation_status == Quotation::STATUS_COMPLETED) {
+            $this->crud->modifyField('is_recurring', [
+                'attributes' => [
+                    'class' => 'is_recurring_check',
+                    'disabled' => true,
+                ]
+            ]);
+
+            $this->crud->modifyField('start_date', [
+                'attributes' => [
+                    'readonly' => true,
+                ],
+            ]);
+
+            $this->crud->modifyField('quotation_status', [
+                'attributes' => [
+                    'disabled' => true,
+                ],
+            ]);
+        }
     }
 
     public function addresses(Request $request)
@@ -633,6 +833,16 @@ class QuotationCrudController extends CrudController
     protected function customFilters()
     {
         CRUD::addFilter([
+            'name'  => 'customer_name',
+            'type'  => 'select2',
+            'label' => 'Cliente'
+        ], function() {
+            return Customer::all()->pluck('full_name_with_uid', 'id')->toArray();
+        }, function($value) {
+            $this->crud->addClause('where', 'customer_id', $value);
+        });
+        
+        CRUD::addFilter([
             'type'  => 'date_range',
             'name'  => 'from_to',
             'label' => 'Fecha'
@@ -655,13 +865,24 @@ class QuotationCrudController extends CrudController
         });
 
         CRUD::addFilter([
+            'name'  => 'quotation_type',
+            'type'  => 'dropdown',
+            'label' => 'Tipo de cotización'
+          ], [
+            1 => 'Solo suscripción (cotizaciones recurrentes)',
+          ], function($value) {
+            $this->crud->addClause('where', 'is_recurring', $value);
+          });
+
+        CRUD::addFilter([
             'name'  => 'status',
             'type'  => 'dropdown',
             'label' => 'Estado'
           ], [
             Quotation::STATUS_DRAFT => 'Borrador',
+            Quotation::STATUS_PENDING_PAYMENT => 'Pendiente de pago',
             Quotation::STATUS_VIEWED => 'Enviado',
-            Quotation::STATUS_EXPIRED => 'Expirado',
+            //Quotation::STATUS_EXPIRED => 'Expirado',
             Quotation::STATUS_ACCEPTED => 'Aceptado',
             Quotation::STATUS_REJECTED => 'Rechazado',
             Quotation::STATUS_ISSUED => 'Emitido',

@@ -847,11 +847,12 @@
                         <td>{{ $invoice->seller->name }}</td>
                     </tr>
 
-
+                    @if ($invoice->order)
                     <tr id="order_id">
                         <td>Nº de orden:</td>
                         <td>#{{ $invoice->order->id }}</td>
                     </tr>
+                    @endif
 
                 </tbody>
             </table>
@@ -980,12 +981,17 @@
                             <div class="spacer-mini"></div>
                         </td>
                     </tr>
-                  <tr id="sale_without_tip_amount" class="amount large">
+                  
+                    @if ($invoice->tax_amount)
+                    <tr id="sale_without_tip_amount" class="amount large">
+                        <td class="amount_name" colspan="6" style="padding: 10px 0px 10px 0px">IVA:</td>
+                        <td class="amount_value" colspan="2">{{ currencyFormat($invoice->tax_amount, 'CLP', true) }}</td>
+                    </tr>
+                    @endif
+                    <tr id="sale_without_tip_amount" class="amount large">
                         <td class="amount_name" colspan="6">TOTAL:</td>
                         <td class="amount_value" colspan="2">{{ currencyFormat($invoice->total, 'CLP', true) }}</td>
                     </tr>
-
-
                 </tbody>
             </table>
 

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
+use App\Services\QuotationService;
 
 class QuotationObserver
 {
@@ -24,10 +25,14 @@ class QuotationObserver
         $quotation->email = $quotation->customer->email;
         $quotation->phone = $quotation->customer->phone;
         $quotation->cellphone = $quotation->customer->cellphone;
-
+        $quotation->is_company = $quotation->customer->is_company;
         $quotation->code = $this->generateUniqueCodeByBranch($quotation);
 
-        $quotation->is_company = $quotation->customer->is_company;
+        if ($quotation->is_recurring) {
+            $quotation->next_due_Date = new Carbon($quotation->recurring_data['start_date']);
+        }
+
+        $this->validateRecurringFields($quotation);
     }
 
 
@@ -39,7 +44,33 @@ class QuotationObserver
      */
     public function created(Quotation $quotation)
     {
-        $this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'BORRADOR', 'set_item_status' => 'pending']);
+        //$this->syncQuotationItems($quotation, [ 'set_quotation_status' => 'BORRADOR', 'set_item_status' => 'pending']);
+        $this->syncQuotationItems($quotation, [ 'set_item_status' => 'pending']);
+        
+        if ($quotation->is_recurring) {
+            $quotationService = new QuotationService();
+            $quotationService->generateRecurrentQuotations(new Carbon(), [ $quotation->id ]);
+        }
+        
+    }
+
+    public function updating(Quotation $quotation)
+    {
+        // Update quotation customer info
+        $quotation->uid = $quotation->customer->uid;
+        $quotation->first_name = $quotation->customer->first_name;
+        $quotation->last_name = $quotation->customer->last_name;
+        $quotation->email = $quotation->customer->email;
+        $quotation->phone = $quotation->customer->phone;
+        $quotation->cellphone = $quotation->customer->cellphone;
+        $quotation->is_company = $quotation->customer->is_company;
+
+        // Dont change next due date if there is quotations generate by the parent
+        if ($quotation->is_recurring && $quotation->childrens->count() === 0) {
+            $quotation->next_due_Date = new Carbon($quotation->recurring_data['start_date']);
+        }
+        
+        $this->validateRecurringFields($quotation);
     }
 
     /**
@@ -51,6 +82,11 @@ class QuotationObserver
     public function updated(Quotation $quotation)
     {
             $this->syncQuotationItems($quotation, [ 'set_item_status' => 'pending']);
+            
+            if ($quotation->is_recurring) {
+                $quotationService = new QuotationService();
+                $quotationService->generateRecurrentQuotations(new Carbon(), [ $quotation->id ]);
+            }
     }
 
     /**
@@ -235,5 +271,10 @@ class QuotationObserver
         }
 
         return $lastCode;
+    }
+
+    public function validateRecurringFields($quotation)
+    {
+        if (!$quotation->is_recurring) $quotation->recurring_data = null;
     }
 }

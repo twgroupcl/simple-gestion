@@ -59,7 +59,7 @@ class CustomerObserver
     public function created(Customer $customer)
     {
         $this->syncAddressesWithoutDeleting($customer, true);
-        $this->sendWelcomeMail($customer);
+        //$this->sendWelcomeMail($customer);
     }
 
     public function updating(Customer $customer)

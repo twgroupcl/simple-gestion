@@ -63,7 +63,7 @@ class QuotationsReportController extends BaseController
                 'quotation_date' => $quotation_date->format('d-m-Y'),
                 'uid' => $item->uid,
                 'name' => $item->customer->full_name,
-                'quotation_status' => $item->quotation_status,
+                'quotation_status' => $item->quotation_status_text,
                 'total' => '$ ' . number_format($item->total, 0, ',', '.'),
             ];
         }
