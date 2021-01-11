@@ -136,6 +136,7 @@
                             titleAttr: 'Excel',
                             className: 'btn btn-app export excel',
                             exportOptions: {
+                                orthogonal: 'export',
                                 columns: [0, 1, 2, 3, 4, 5],
                                     format: {
                                         body: function(data, row, column, node) {
@@ -230,9 +231,14 @@
                 columnDefs: [
                     {
                         targets: 0,
-                        render: function(data) {
-                                data = '<a href="/admin/order/' + data  + '/edit">' + data + '</a>';
-                            return data;
+                        // render: function(data,type) {
+                        //     data = '<a href="/admin/order/' + data + '/edit">' + data + '</a>';
+                        //     return data;
+                        // },
+                        render: function (data, type, row) {
+                            return type === 'export' ?
+                                data:
+                                data = '<a href="/admin/order/' + data + '/edit">' + data + '</a>';
                         },
                         className: 'text-center'
                     },
