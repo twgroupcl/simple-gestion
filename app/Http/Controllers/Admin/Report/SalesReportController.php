@@ -163,10 +163,11 @@ class SalesReportController extends BaseController
                             $commissionsCategory = $orderItem->product->categories[0]->commission;
                             if (!is_null($commissionsCategory)) {
                                 $commisions = json_decode($commissionsCategory);
+                                if (isset($subscription->plan_id)) {
+                                    $currentCommission = array_search($subscription->plan_id, array_column($commisions, 'plan_id'));
 
-                                $currentCommission = array_search($subscription->plan_id, array_column($commisions, 'plan_id'));
-
-                                $commissionProduct = $commisions[$currentCommission];
+                                    $commissionProduct = $commisions[$currentCommission];
+                                }
 
 
                             }
