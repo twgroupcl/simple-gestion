@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $quotationService = new QuotationService();
             $quotationService->generateRecurrentQuotations();
-            \Log::info('Recurring Quotations Cron was execute');
+            \Log::info('Recurring Quotations Cron was executed');
         })->dailyAt('9:00');
     }
 
