@@ -543,7 +543,9 @@
                 return;
             }
 
-            var currentPrice = parseFloat($(this).select2('data')[0].price).toFixed(0);
+            var currentPrice = parseFloat($(this).select2('data')[0].price);
+            var iva = 19 * currentPrice / 119 
+            currentPrice = parseFloat(currentPrice - iva).toFixed(0)
             
             // Set price and qty 
             $(this).parent().parent().find('.price').val(currentPrice);
