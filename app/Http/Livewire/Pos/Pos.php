@@ -43,6 +43,7 @@ class Pos extends Component
     public $customerAddressId;
     public $subtotal = 0;
     public $discount = null;
+    public $taxes = 0;
     public $total = 0;
     public $existsOrder= null;
     protected $listeners = [
@@ -311,15 +312,21 @@ class Pos extends Component
             return $product['real_price'] * $product['qty'];
         });
 
-        if ($this->discount > $this->subtotal) {
-            $this->discount = $this->subtotal;
-        }
+        // if ($this->discount > $this->subtotal) {
+        //     $this->discount = $this->subtotal;
+        // }
 
-        $this->total = (float) $this->subtotal - (float) $this->discount;
+        // $this->total = (float) $this->subtotal - (float) $this->discount;
+
+        $this->total = $this->subtotal;
+        $tmptaxes = $this->subtotal * 0.19;
+        $this->subtotal -= $tmptaxes;
+        $this->taxes = $tmptaxes;
 
         $cart['products'] = $this->cartproducts;
         $cart['subtotal'] = $this->subtotal;
         $cart['discount'] = $this->discount;
+        $cart['taxes'] = $this->taxes;
         $cart['total'] = $this->total;
 
         // Save cart to session
