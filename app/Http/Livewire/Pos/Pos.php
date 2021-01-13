@@ -383,12 +383,20 @@ class Pos extends Component
             );
 
             $order_items = $order->order_items->map(function ($item) {
-                $item->price = currencyFormat($item->price, 'CLP', false);
-                $item->sub_total = currencyFormat($item->sub_total, 'CLP', false);
-                $item->total = currencyFormat($item->total, 'CLP', false);
+
+                // Since the items in the POS are assumed with IVA, we must subtract it 
+                // and make the total calculations again to save it in the invoice table
+
+                $item_iva = 19 * $item->price / 119;
+                $subtotal_iva = 19 * $item->sub_total / 119;
+                $total = (($item->price - $item_iva) * $item->qty) - $item->discount;
+
+                $item->price = currencyFormat($item->price - $item_iva, 'CLP', false);
+                $item->sub_total = currencyFormat($item->sub_total - $subtotal_iva, 'CLP', false);
+                $item->total = currencyFormat($total, 'CLP', false);
                 $item->discount = 0;
                 $item->discount_type = 'amount';
-                $item->is_custom = true;
+                $item->is_custom = false;
                 $item->additional_tax_id = 0;
                 $item->additional_tax_amount = 0;
                 $item->additional_tax_total = 0;
@@ -401,6 +409,8 @@ class Pos extends Component
             $invoice->items_data = $order_items;
             $invoice->invoice_type_id = $invoiceType->id;
             $invoice->invoice_date = now();
+            $invoice->tax_amount = 19 * $invoice->total / 119; 
+            $invoice->net = $invoice->total - $invoice->tax_amount;
             $invoice->save();
 
             Invoice::withoutEvents(function () use ($invoice, $order) {
