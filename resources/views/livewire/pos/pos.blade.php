@@ -832,7 +832,7 @@ use App\Models\Product;
                 hideAllViews()
                 $('.customer-view').show();
                 //$('.main-view').hide();
-                console.log('btn customer');
+
             });
 
             $('#close-payment').click(function() {
