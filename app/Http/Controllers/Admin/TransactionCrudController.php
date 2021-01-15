@@ -99,7 +99,8 @@ class TransactionCrudController extends CrudController
 
         CRUD::addcolumn([
             'name' => 'note',
-            'type' => 'text'
+            'type' => 'text',
+            'label' => 'Detalle de movimiento',
         ]);
 
         /**
@@ -194,13 +195,19 @@ class TransactionCrudController extends CrudController
         CRUD::addField([
             'name' => 'json_transaction_details',
             'type' => 'repeatable',
-            'label' => 'Detalle',
+            'label' => 'Desglose',
             'fields' => [
                 [
                     'name' => 'value',
                     'type' => 'number',
                     'prefix' => '$',
                     'label' => 'Monto/Valor',
+                ],
+                [
+                    'name' => 'notes',
+                    'type' => 'textarea',
+                    'label' => 'Detalle',
+
                 ]
             ],
             'new_item_label' => 'Agregar detalle',

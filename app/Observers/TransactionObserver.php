@@ -55,8 +55,10 @@ class TransactionObserver
 
                 // Sanitize numbers
                 $detail['value'] = sanitizeNumber($detail['value']);
+                $notes = array_key_exists('notes', $detail) ? $detail['notes'] : '';
                 $props = [
                     'value' => $detail['value'],
+                    'json_detail' => json_encode(['notes' => $notes]),
                     'transaction_id' => $transaction->id
                 ];
                 TransactionDetail::create($props);
