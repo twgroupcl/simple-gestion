@@ -83,12 +83,12 @@ class TransactionCrudController extends CrudController
             'format' => 'L',
         ]);
 
-        CRUD::addColumn([
+        /*CRUD::addColumn([
             'name' => 'document_identifier',
             'label' => 'Documento',
             'type' => 'model_function',
             'function_name' => 'getDocumentInfo',
-        ]);
+        ]);*/
 
         CRUD::addColumn([
             'name' => 'amount',
@@ -175,6 +175,7 @@ class TransactionCrudController extends CrudController
         CRUD::addField([
             'name' => 'accounting_account_id',
             'type' => 'relationship',
+            'allows_null' => true,
             'label' => 'Cuenta contable',
             'model' => 'App\Models\AccountingAccount',
             'entity' => 'accounting_account',

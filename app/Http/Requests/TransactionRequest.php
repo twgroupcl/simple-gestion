@@ -40,8 +40,9 @@ class TransactionRequest extends FormRequest
             'transaction_type_id' => 'required|exists:transaction_types,id',
             'json_transaction_details' => 'required',
             'bank_account_id' => 'required|exists:bank_accounts,id',
-            'accounting_account_id' => 'required|exists:accounting_accounts,id',
-            'payment_or_expense' => ['required', Rule::in([0,1])],
+            'accounting_account_id' => 'nullable|exists:accounting_accounts,id',
+            'note' => 'required|min:5',
+            //'payment_or_expense' => ['required', Rule::in([0,1])],
             'json_transaction_details_validation.*.value' => 'required|numeric|digits_between:0,10',
             'document_identifier' => $documentTypeRules,
         ];
@@ -61,6 +62,7 @@ class TransactionRequest extends FormRequest
             'bank_account_id' => 'cuenta afectada',
             'transaction_type_id' => 'tipo de transacción',
             'json_transaction_details_validation.*.value' => 'valor',
+            'note' => 'detalle de movimiento',
         ];
     }
 
@@ -75,7 +77,9 @@ class TransactionRequest extends FormRequest
             'required' => 'Revise el campo :attribute, es necesario que lo complete',
             'exists' => 'Revise el campo :attribute, parece estar mal.',
             'numeric' => 'El campo :attribute es numérico',
-            'digits_between' => 'El número del campo ":attribute" tiene más de :max dígitos'
+            'digits_between' => 'El número del campo ":attribute" tiene más de :max dígitos',
+            'min' => 'Revise el campo :attribute, debe tener más de :min de largo',
+            //
             //
         ];
     }

@@ -11,13 +11,13 @@ class TransactionObserver
         $company = backpack_user()->current()->company;
         $transaction->company_id = $company->id;
 
-        $documentType = request()['document_type'];
+        /*$documentType = request()['document_type'];
         if (isset($documentType) && isset($transaction->document_identifier)) {
             $transaction->document_model = 'App\Models\Invoice';
         } else {
             $transaction->document_model = null;
             $transaction->document_identifier = null;
-        }
+        }*/
     }
 
     public function created(Transaction $transaction)
@@ -27,13 +27,13 @@ class TransactionObserver
 
     public function updating(Transaction $transaction)
     {
-        $documentType = request()['document_type'];
+        /*$documentType = request()['document_type'];
         if (isset($documentType) && isset($transaction->document_identifier)) {
             $transaction->document_model = 'App\Models\Invoice';
         } else {
             $transaction->document_model = null;
             $transaction->document_identifier = null;
-        }
+        }*/
     }
 
     public function updated(Transaction $transaction)
