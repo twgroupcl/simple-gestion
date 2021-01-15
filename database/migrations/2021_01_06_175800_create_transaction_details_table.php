@@ -19,6 +19,9 @@ class CreateTransactionDetailsTable extends Migration
             $table->unsignedBigInteger('currency_id')->nullable()->comment('determine currency');
             $table->unsignedBigInteger('transaction_id')->comment('reference to the transaction');
             $table->longText('json_detail')->nullable()->comment('auxiliar column for more fields');
+            $table->string('document_identifier')->nullable()
+                  ->comment('Document id or code, adjunt with document_model column');
+            $table->string('document_model')->nullable()->comment('Identifies the document model');
             $table->timestamps();
         });
 

@@ -15,17 +15,17 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('transaction_type_id')
+            $table->unsignedBigInteger('transaction_type_id')->nullable()
                   ->comment('Reference to type_transactions table, identifies if is payment or expense');
             $table->unsignedBigInteger('accounting_account_id')
                   ->comment('Reference to accounting_accounts table. Identifier accounting transaction');
-            $table->string('document_identifier')->nullable()
-                  ->comment('Document id or code, adjunt with document_model column');
+            //$table->string('document_identifier')->nullable()
+            //      ->comment('Document id or code, adjunt with document_model column');
             $table->unsignedBigInteger('bank_account_id')
                   ->comment('reference to the bank account that this transaction will impact');
             $table->unsignedBigInteger('company_id')->comment('reference to the which company it belongs');
             $table->dateTime('date')->comment('time when the transaction was made');
-            $table->string('document_model')->nullable()->comment('Identifies the document model');
+            //$table->string('document_model')->nullable()->comment('Identifies the document model');
             $table->text('note')->nullable()->comment('notes or observations');
             $table->longText('json_value')->nullable()->comment('auxiliar column for more fields');
             $table->longText('json_transaction_details')->nullable()->comment('solution for backpack relationship repeatables');
