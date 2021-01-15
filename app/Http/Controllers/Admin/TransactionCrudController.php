@@ -294,9 +294,9 @@ class TransactionCrudController extends CrudController
             'paginate' => 10,
             'query' => function ($model) use ($is_payment) {
                 if (isset($is_payment))
-                    return $model->where('is_payment', $is_payment);
+                    return $model->orderBy('is_payment', 'ASC')->where('is_payment', $is_payment);
                 else 
-                    return $model;
+                    return $model->orderBy('is_payment', 'ASC');
             }
         ]);
         //return $this->fetch(\App\Models\TransactionType::class);
