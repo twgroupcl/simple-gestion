@@ -22,6 +22,7 @@ class TransactionType extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $appends = ['string_for_select'];
 
     /*
     |--------------------------------------------------------------------------
@@ -49,6 +50,15 @@ class TransactionType extends Model
     public function getPaymentOrExpenseShowAttribute()
     {
         return $this->is_payment ? 'Abono' : 'Gasto';
+    }
+    public function getStringForSelectAttribute()
+    {
+        $type = 'Cargo';
+        if ($this->is_payment) {
+            $type = 'Abono';
+        }
+
+        return $this->name . ' - ' . $type;
     }
 
     /*

@@ -151,7 +151,7 @@ class TransactionCrudController extends CrudController
             'dependencies' => [ 'payment_or_expense' ],
             'label' => 'Tipo de movimiento',
             'entity' => 'transaction_type',
-            'attribute' => 'name',
+            'attribute' => 'string_for_select',
             'model' => 'App\Models\TransactionType',
             'inline_create' => [ 'entity' => 'transactiontype' ], 
             'ajax' => true,
@@ -287,16 +287,12 @@ class TransactionCrudController extends CrudController
     public function fetchTransaction_type()
     {
         $form = collect(request()->input('form'))->pluck('value','name');
-        $is_payment = isset($form['payment_or_expense']) ? $form['payment_or_expense'] : null;
         return $this->fetch([
             'model' => \App\Models\TransactionType::class,
             'searchable_attributes' => ['name', 'code'],
             'paginate' => 10,
-            'query' => function ($model) use ($is_payment) {
-                if (isset($is_payment))
-                    return $model->orderBy('is_payment', 'ASC')->where('is_payment', $is_payment);
-                else 
-                    return $model->orderBy('is_payment', 'ASC');
+            'query' => function ($model) {
+                return $model->orderBy('is_payment', 'ASC');
             }
         ]);
         //return $this->fetch(\App\Models\TransactionType::class);
