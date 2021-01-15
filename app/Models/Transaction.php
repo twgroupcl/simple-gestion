@@ -28,6 +28,29 @@ class Transaction extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getDocumentInfo()
+    {
+        $model = $this->document_model;
+        $documentId = $this->document_identifier;
+
+        $document = $model::find($documentId);
+        $details = $document->invoice_type->name;
+        if (isset($document->folio)) {
+            $details .= ' F' . $document->folio;
+        }
+        $details .= ' ' . $document->title;
+
+        return $details;
+    }
+
+    public function getTotalAmount()
+    {
+        $amount = 0;
+        $amount = $this->transaction_details->sum('value');
+
+        return $amount;
+
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -47,6 +70,11 @@ class Transaction extends Model
     public function bank_account()
     {
         return $this->belongsTo(BankAccount::class);
+    }
+
+    public function transaction_details()
+    {
+        return $this->hasMany(TransactionDetail::class);
     }
     /*
     |--------------------------------------------------------------------------

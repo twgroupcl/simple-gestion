@@ -44,6 +44,19 @@ class BankAccountCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+
+        $this->crud->addFilter([
+          'type'  => 'date_range',
+          'name'  => 'from_to',
+          'label' => 'Date range'
+        ],
+        false,
+        function ($value) { 
+          // $dates = json_decode($value);
+          // $this->crud->addClause('where', 'date', '>=', $dates->from);
+          // $this->crud->addClause('where', 'date', '<=', $dates->to . ' 23:59:59');
+        });
+
         CRUD::addColumn([
             'name' => 'account_number',
             'label' => 'Número de cuenta',

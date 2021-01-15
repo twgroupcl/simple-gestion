@@ -46,6 +46,19 @@ class TransactionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+        $this->crud->addFilter([
+          'type'  => 'date_range',
+          'name'  => 'date',
+          'label' => 'Rango - Fecha de movimiento'
+        ],
+        false,
+        function ($value) {
+          $dates = json_decode($value);
+          $this->crud->addClause('where', 'date', '>=', $dates->from);
+          $this->crud->addClause('where', 'date', '<=', $dates->to . ' 23:59:59');
+        });
+
         CRUD::addColumn([
             'name' => 'accounting_account',
             'label' => 'Cuenta contable'
@@ -53,7 +66,9 @@ class TransactionCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'bank_account',
-            'label' => 'Cuenta bancaria'
+            'label' => 'Cuenta bancaria',
+            'type' => 'relationship',
+            'attribute' => 'account_number'
         ]);
 
         CRUD::addColumn([
@@ -66,6 +81,20 @@ class TransactionCrudController extends CrudController
             'label' => 'Fecha de movimiento',
             'type' => 'date',
             'format' => 'L',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'document_identifier',
+            'label' => 'Documento',
+            'type' => 'model_function',
+            'function_name' => 'getDocumentInfo',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'amount',
+            'label' => 'Monto total',
+            'type' => 'model_function',
+            'function_name' => 'getTotalAmount',
         ]);
 
         /**
