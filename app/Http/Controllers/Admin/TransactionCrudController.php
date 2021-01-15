@@ -73,7 +73,7 @@ class TransactionCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'transaction_type',
-            'label' => 'Tipo de transacción'
+            'label' => 'Tipo de movimiento'
         ]);
 
         CRUD::addColumn([
@@ -95,6 +95,11 @@ class TransactionCrudController extends CrudController
             'label' => 'Monto total',
             'type' => 'model_function',
             'function_name' => 'getTotalAmount',
+        ]);
+
+        CRUD::addcolumn([
+            'name' => 'note',
+            'type' => 'text'
         ]);
 
         /**
@@ -121,7 +126,7 @@ class TransactionCrudController extends CrudController
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
-
+/*
         CRUD::addField([
             'name' => 'payment_or_expense',
             'type' => 'select_from_array',
@@ -134,7 +139,7 @@ class TransactionCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-6',
             ],
-        ]);
+        ]);*/
 
         //depends on type payment/expense
         CRUD::addField([
@@ -144,7 +149,7 @@ class TransactionCrudController extends CrudController
             'type' => 'relationship',
             'include_all_form_fields'  => true, 
             'dependencies' => [ 'payment_or_expense' ],
-            'label' => 'Tipo de transacción',
+            'label' => 'Tipo de movimiento',
             'entity' => 'transaction_type',
             'attribute' => 'name',
             'model' => 'App\Models\TransactionType',
@@ -200,11 +205,12 @@ class TransactionCrudController extends CrudController
             'new_item_label' => 'Agregar detalle',
         ]);
 
-        $documentType = null;
-        if ($this->crud->getCurrentEntry() !== null && isset($this->crud->getCurrentEntry()->document_identifier)) {
+        //$documentType = null;
+        /*if ($this->crud->getCurrentEntry() !== null && isset($this->crud->getCurrentEntry()->document_identifier)) {
             $documentType = 1;
-        }
+        }*/
         // select document
+        /*
         CRUD::addField([
             'name' => 'document_type',
             'label' => 'Tipo de documento relacionado',
@@ -234,9 +240,9 @@ class TransactionCrudController extends CrudController
             'type' => 'select2_from_array',
             'options' => $dtes,
         ]);
-
+         */
         CRUD::addField([
-            'name' => 'notes',
+            'name' => 'note',
             'label' => 'Detalle de movimiento',
             'type' => 'textarea',
         ]);
