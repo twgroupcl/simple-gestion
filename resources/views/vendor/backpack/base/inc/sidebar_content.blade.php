@@ -191,18 +191,3 @@
     </ul>
 </li>
 @endcanany
-
-@canany(['conciliation'])
-<li class="nav-item nav-dropdown">
-    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-question"></i> Conciliación</a>
-    <ul class="nav-dropdown-items">
-        @can('transaction.list')
-            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('transaction') }}'><i class='nav-icon la la-question'></i> Movimientos</a></li>
-            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bankaccount') }}'><i class='nav-icon la la-question'></i> Cuentas bancarias</a></li>
-            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('transactiontype') }}'><i class='nav-icon la la-question'></i> Tipos de transacciones</a></li>
-            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('accountingaccount') }}'><i class='nav-icon la la-question'></i> Cuentas contables</a></li>
-            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('transactiondetail') }}'><i class='nav-icon la la-question'></i> Detalles de movimientos</a></li>
-        @endcan
-    </ul>
-</li>
-@endcanany
