@@ -3,8 +3,8 @@
     $amountField = $field['amount_field'];
 @endphp
 @include('crud::fields.inc.wrapper_start')
-<label for="total_amounts"> Total: </label>
-<input id="total_amounts" class="form-group" name="total_amounts" />
+<label for="total_amounts"> Total detalle: </label>
+<input id="total_amounts" class="form-control col-md-4" readonly name="total_amounts" />
 @include('crud::fields.inc.wrapper_end')
 @push('crud_fields_scripts')
 <!--<script src="{{asset('js/jquery-number.min.js')}}" >-->
