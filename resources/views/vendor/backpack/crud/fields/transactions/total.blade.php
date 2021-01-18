@@ -7,33 +7,20 @@
 <input id="total_amounts" class="form-control col-md-4" readonly name="total_amounts" />
 @include('crud::fields.inc.wrapper_end')
 @push('crud_fields_scripts')
-<!--<script src="{{asset('js/jquery-number.min.js')}}" >-->
+<script src="{{asset('js/jquery-number.min.js')}}" > </script>
 
 <script>
 var amountFieldName = "{{$amountField}}";
-function showSelect(select, value, expected) {
-    if (value == expected) {
-        select.next(".select2-container").show();
-        select.parent().find('label').show();
-    } else {
-        select.next(".select2-container").hide();
-        select.parent().find('label').hide();
-    }
-}
-
 function calculate() {
-    amountFields = $('[data-repeatable-input-name="'+amountFieldName+'"]')
     var total = 0;
+    amountFields = $('[data-repeatable-input-name="'+amountFieldName+'"]')
     amountFields.each(function (index){
-        if (this.value == "" || isNaN(this.value)) {
-            $(this).val(0)
-        }
         total += parseDecimal(this.value)
 
     })
     var totalField = $('#total_amounts');
     //totalField.val(total)
-    totalField.val(formatWithComma(total))
+    totalField.val(formatNumber(total))
 }
 
 function parseDecimal(number) {
@@ -45,22 +32,14 @@ function parseDecimal(number) {
     number = number.replace(',', '.')
     return parseFloat(number);
 }
-
-function formatWithComma(number) {
-    if (typeof number == 'number') {
-        number = parseFloat(number).toFixed(2);
-    }
-
-    number = parseFloat(number).toFixed(0)
-    //number = number.toString()
-    number = number.replace('.', ',')
-    number = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    return number;
+function formatNumber(number) {
+        return $.number(number, 0, ',', '.');
 }
 
 function setOnChangeAmounts() {
     amountFields = $('[data-repeatable-input-name="'+amountFieldName+'"]')
     amountFields.each(function (index) {
+            $(this).number(true, 0, ',', '.')
         $(this).on('change', function() {
             calculate()
          })
