@@ -199,7 +199,7 @@ class TransactionCrudController extends CrudController
             'fields' => [
                 [
                     'name' => 'value',
-                    'type' => 'number',
+                    'type' => 'text',
                     'prefix' => '$',
                     'label' => 'Monto/Valor',
                 ],
@@ -211,6 +211,13 @@ class TransactionCrudController extends CrudController
                 ]
             ],
             'new_item_label' => 'Agregar detalle',
+        ]);
+
+        CRUD::addField([
+            'name' => 'total_amounts',
+            'type' => 'transactions.total',
+            'repeatable_field' => 'json_transaction_details',
+            'amount_field' => 'value',
         ]);
 
         //$documentType = null;
