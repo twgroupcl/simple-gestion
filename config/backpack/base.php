@@ -215,6 +215,8 @@ return [
         App\Http\Middleware\CheckIfAdmin::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
+        App\Http\Middleware\CheckIfSellerActive::class,
+        //App\Http\Middleware\CheckIfCustomerActive::class,
     ],
 
     // Alias for that middleware
