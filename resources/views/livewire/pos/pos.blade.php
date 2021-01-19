@@ -301,12 +301,32 @@ use App\Models\Product;
                                 <input wire:model="discount" type="number" name="discount" id="discount" placeholder="0" class="bg-light text-right" style="width: 100%; outline: none; border-width:0px; -webkit-appearance: none; margin: 0;">
                             </div>
                         </div> --}}
+                        @if($total > 0)
+                        <div class='row col-md-12 p-0 m-0'>
+                            <div class="col-md-6 border border-dark">
+                                <div class="  border-right-0"> Subtotal</div>
+                            </div>
+                            <div class="col-md-6 border border-dark">
+                                <div class=" text-right">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</div>
+                            </div>
+                        </div>
+                        @endif
+                        @if($total > 0)
+                        <div class='row col-md-12 p-0 m-0'>
+                            <div class="col-md-6 border border-dark">
+                                <div class="  border-right-0"> Impuestos</div>
+                            </div>
+                            <div class="col-md-6 border border-dark">
+                                <div class=" text-right">{{ currencyFormat($taxes ?? 0, 'CLP', true) }}</div>
+                            </div>
+                        </div>
+                        @endif
                         <div class='row col-md-12 p-0 m-0'>
                             <div class="col-md-6 border border-dark">
                                 <div class="  border-right-0"> Total</div>
                             </div>
                             <div class="col-md-6 border border-dark">
-                                <div class=" text-right">{{ currencyFormat($total ?? 0, 'CLP', true) }}</div>
+                                <div class=" text-right">{{ currencyFormat(($total ) ?? 0, 'CLP', true) }}</div>
                             </div>
                         </div>
                         <div class="row mt-2">

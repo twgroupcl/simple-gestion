@@ -23,7 +23,7 @@
     <div class="row">
         <div class="col-12"><h5 class="text-info text-center">Este proceso generará una nueva orden y una factura electrónica.</h5></div>
     </div>
-    <div class="row fixed-bottom">
+    <div class="row mt-5">
         <div class="col-6">
             <button class="btn btn-secondary btn-block close-confirm-payment">NO</button>
         </div>

@@ -55,6 +55,15 @@ class InvoiceObserver
      */
     public function updating(Invoice $invoice)
     {
+        // Store customer address
+        $invoice->uid = $invoice->customer->uid;
+        $invoice->first_name = $invoice->customer->first_name;
+        $invoice->last_name = $invoice->customer->last_name;
+        $invoice->email = $invoice->customer->email;
+        $invoice->phone = $invoice->customer->phone;
+        $invoice->cellphone = $invoice->customer->cellphone;
+
+        
         if ($invoice->invoice_status == Invoice::STATUS_TEMPORAL) {
             $service = new DTEService();
             $originalInvoice = Invoice::toObject($invoice->getOriginal());

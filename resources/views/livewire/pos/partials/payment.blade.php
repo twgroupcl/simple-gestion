@@ -25,6 +25,26 @@
     <div class="row">
 
         <div class="col-12 text-danger text-right">
+            @if($total > 0)
+            <div class="row p-0">
+                <div class="col-6 text-left">
+                    <h4>Subtotal</h4>
+                </div>
+                <div class="col-6 text-danger text-right">
+                    <h4><span class="total-cart">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</span></h4>
+                </div>
+            </div>
+            @endif
+            @if($total > 0)
+            <div class="row p-0">
+                <div class="col-6 text-left">
+                    <h4>Impuestos</h4>
+                </div>
+                <div class="col-6 text-danger text-right">
+                    <h4><span class="total-cart">{{ currencyFormat($taxes ?? 0, 'CLP', true) }}</span></h4>
+                </div>
+            </div>
+            @endif
             <div class="row p-0">
                 <div class="col-6 text-left">
                     <h4>Total</h4>

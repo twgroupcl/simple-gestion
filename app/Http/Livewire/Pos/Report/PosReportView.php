@@ -65,5 +65,6 @@ class PosReportView extends Component
                 return $item->order;
             });
         }
+
     }
 }
