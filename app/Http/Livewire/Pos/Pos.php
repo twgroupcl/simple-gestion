@@ -319,9 +319,11 @@ class Pos extends Component
         // $this->total = (float) $this->subtotal - (float) $this->discount;
 
         $this->total = $this->subtotal;
-        $tmptaxes = $this->subtotal * 0.19;
-        $this->subtotal -= $tmptaxes;
+        $tmptaxes = ($this->total * 19) / 119;
+        $this->subtotal = $this->total - $tmptaxes;
         $this->taxes = $tmptaxes;
+        //$this->total += $tmptaxes;
+
 
         $cart['products'] = $this->cartproducts;
         $cart['subtotal'] = $this->subtotal;

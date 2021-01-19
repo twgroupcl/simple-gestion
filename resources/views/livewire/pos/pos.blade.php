@@ -103,7 +103,7 @@ use App\Models\Product;
             <span class="las la-shopping-cart " style="font-size:32px;">
 
             <span
-                class="custom-badge badge-cart-view  @if( !empty($cartproducts)) mobile-cart-view @endif" > {{ empty($cartproducts)?0:count($cartproducts) }}</span>
+                class="custom-badge badge-cart-view  "  @if( !empty($cartproducts)) id="mobile-cart-view" @endif> {{ empty($cartproducts)?0:count($cartproducts) }}</span>
         </span>
     </div>
 </div>
@@ -136,7 +136,7 @@ use App\Models\Product;
     <div class="row fixed-bottom">
 
         <div class="col-6 p-1"  @if(!$isSaleBoxOpen) style="display:none;" @endif>
-            <button class="btn btn-danger btn-block btn-customer h-100">
+            <button class="btn btn-danger btn-block  h-100" id="btn-customer">
                 @if (session()->get('user.pos.selectedCustomer'))
                     {{ session()->get('user.pos.selectedCustomer')->first_name }}
                     {{ session()->get('user.pos.selectedCustomer')->last_name }}
@@ -332,7 +332,7 @@ use App\Models\Product;
                         <div class="row mt-2">
                             <div class="col-12" @if(!$isSaleBoxOpen) style="display:none;" @endif>
 
-                                <button class="btn btn-danger btn-block btn-customer">
+                                <button class="btn btn-danger btn-block" id="btn-customer">
                                     @if (session()->get('user.pos.selectedCustomer'))
                                         {{ session()->get('user.pos.selectedCustomer')->first_name }}
                                         {{ session()->get('user.pos.selectedCustomer')->last_name }}
@@ -664,7 +664,7 @@ use App\Models\Product;
             //     $('.sale-box-view').show();
             // @endif
 
-            $('.btn-customer').click(function() {
+            $('#btn-customer').click(function() {
                 hideAllViews()
                 $('.customer-view').show();
                 //$('.main-view').hide();
@@ -698,8 +698,8 @@ use App\Models\Product;
                $('.menu-content').hide()
             })
 
-            $('.mobile-cart-view').click(function(){
-
+            $('#mobile-cart-view').click(function(){
+                hideAllViews()
 
                $('.header-pos').hide()
                $('.cart-view').show()
@@ -828,10 +828,11 @@ use App\Models\Product;
                 // $('.sales-view').hide();
             });
 
-            $('.btn-customer').click(function() {
+            $('#btn-customer').click(function() {
                 hideAllViews()
                 $('.customer-view').show();
                 //$('.main-view').hide();
+
             });
 
             $('#close-payment').click(function() {
