@@ -137,7 +137,7 @@ class CardGeneral extends Component
             ->when($product_search, function ($query) use ($product_search) {
                 return $query->where('name', 'LIKE', '%' . $product_search . '%')
                 ->orWhere('sku', 'LIKE', '%' . $product_search . '%')
-                ->orWhere('attributes_json->attribute-1', 'LIKE', '%' . $product_search . '%')
+                ->orWhere(\DB::raw("lower(JSON_EXTRACT(attributes_json,'$.". '"' ."attribute-1". '"' ."'))"), "LIKE", "%".strtolower($product_search)."%")
                 ->orWhereHas('product_brands', function ($q) use ($product_search) {
                     $q->where('name', 'LIKE', '%' . $product_search . '%');
                 });
@@ -156,9 +156,9 @@ class CardGeneral extends Component
         // Current price
         $baseQuery->selectRaw('*');
         $baseQuery->selectRaw('(CASE
-        WHEN special_price IS null THEN price
-        ELSE special_price END)  
-        AS current_price');
+            WHEN special_price IS null THEN price
+            ELSE special_price END)  
+            AS current_price');
             
         // Filter
         $filterService = new ProductFilterService();
