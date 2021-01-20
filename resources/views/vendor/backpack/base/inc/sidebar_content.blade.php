@@ -61,6 +61,17 @@
 </li>
 @endhasanyrole
 
+@hasanyrole('Supervisor Marketplace')
+<li class="nav-item nav-dropdown">
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-gear"></i> CMS</a>
+	<ul class="nav-dropdown-items">
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('banners') }}'><i class='nav-icon la la-question'></i> Banners</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('slider') }}'><i class='nav-icon la la-question'></i> Sliders</a></li>
+	</ul>
+</li>
+
+@endhasanyrole
+
 @canany(['customer.list'])
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-user"></i> Clientes</a>
