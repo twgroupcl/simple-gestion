@@ -147,7 +147,7 @@ class CustomerObserver
 
             Mail::send('vendor.maileclipse.templates.welcomeCustomer', $data, function ($message) use ($customer) {
                 $message->to($customer->email);
-                $message->subject('Bienvenido a Filsa Virtual');
+                $message->subject('Bienvenido a Prolibro S.A.');
                 $message->attach(public_path('pdf/TERMINOS_Y_CONDICIONES_SITIO_WEB_FILSA.pdf'), [
                     'as' => 'TERMINOS_Y_CONDICIONES_SITIO_WEB_FILSA.pdf',
                     'mime' => 'application/pdf',

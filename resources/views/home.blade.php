@@ -7,7 +7,7 @@
         <link rel="stylesheet" media="screen" href="{{ asset('css/theme.css') }}">
 
 
-        <title>Filsa Virtual</title>
+        <title>Prolibro S.A.</title>
         <style>
             body,
             html {

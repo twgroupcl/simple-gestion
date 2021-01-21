@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- SEO Meta Tags-->
-    <meta name="description" content="Filsa Virtual - Libros y Lecturas">
+    <meta name="description" content="Prolibro S.A. - Libros y Lecturas">
     <meta name="keywords" content="e-commerce, marketplace, twgroup, filsa">
     <meta name="author" content="TWGroup">
     <!-- Viewport-->
