@@ -368,6 +368,7 @@ class InvoiceCrudController extends CrudController
                 'label' => 'Vendedor',
                 'name' => 'seller_id',
                 'type' => 'select2',
+                'allows_null' => true,
                 'placeholder' => 'Selecciona un vendedor',
                 'model' => 'App\Models\Seller',
                 'attribute' => 'name',

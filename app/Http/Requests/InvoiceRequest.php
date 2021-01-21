@@ -34,7 +34,7 @@ class InvoiceRequest extends FormRequest
             $expiryDateRules = 'required|date|after_or_equal:invoice_date';
         } 
 
-        $sellerRules = 'required|exists:sellers,id';
+        $sellerRules = 'nullable|exists:sellers,id';
         if (Seller::where('user_id', backpack_user()->id)->exists()) {
             //set seller in observer
             $sellerRules = '';
