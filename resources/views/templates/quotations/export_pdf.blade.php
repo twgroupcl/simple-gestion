@@ -148,8 +148,8 @@
             <p>
                 <p class="p-estrecho">{{ $quotation->first_name }} {{ $quotation->last_name }}</p>
                 <p class="p-estrecho">{{ $quotation->uid }} </p>
-                <p class="p-estrecho">{{ $quotation->customer->addresses->first()->street }} {{ $quotation->customer->addresses->first()->number }}</p>
-                <p class="p-estrecho">{{ $quotation->address->commune->name }}</p>
+                @if ($quotation->customer->addresses->count() > 0)<p class="p-estrecho">{{ $quotation->customer->addresses->first()->street }} {{ $quotation->customer->addresses->first()->number }}</p> @endif
+                @if (!empty($quotation->address))<p class="p-estrecho">{{ $quotation->address->commune->name }}</p> @endif
                 <p class="p-estrecho">@if ($quotation->phone) Teléfono: {{  $quotation->phone  }} @endif</p>
             </p>
         </td>
