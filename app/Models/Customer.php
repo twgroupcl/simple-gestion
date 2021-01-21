@@ -106,6 +106,16 @@ class Customer extends Model
         return $attendance;
     }
 
+    public function hasUnpaidQuotations()
+    {
+        $unpaidQuotations = Quotation::where([
+            'customer_id' => $this->id, 
+            'quotation_status' => Quotation::STATUS_PENDING_PAYMENT
+            ])->get();
+
+        return $unpaidQuotations->count() > 0;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
