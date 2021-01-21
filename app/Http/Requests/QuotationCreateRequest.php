@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Company;
 use App\Models\Product;
 use App\Models\Quotation;
+use App\Models\InvoiceType;
 use App\Http\Requests\Request;
 use App\Rules\NumericCommaRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -41,7 +42,6 @@ class QuotationCreateRequest extends FormRequest
             //'expiry_date' => 'after:quotation_date',
             'total' => 'numeric|min:1',
             'title' => 'required',
-            'address_id' => 'required',
 
             // Order items data
             'items_data_validation.*.name' => 'required',
@@ -69,7 +69,6 @@ class QuotationCreateRequest extends FormRequest
         ];
 
         if ($this->is_recurring) {
-
             $rules['repeat_number'] = 'required|numeric|min:1';
 
             if ($this->quotation_Status === Quotation::STATUS_ACCEPTED) {
@@ -84,6 +83,14 @@ class QuotationCreateRequest extends FormRequest
 
             if ($this->end_type === 'repetition') {
                 $rules['end_after_reps'] = 'required|numeric|min:1';
+            }
+        }
+
+        $invoiceType = InvoiceType::find($this->invoice_type_id);
+        
+        if ($invoiceType) {
+            if ($invoiceType->code != 39 && $invoiceType->code != 41) {
+                $rules['address_id'] = 'required|exists:customer_addresses,id';
             }
         }
 

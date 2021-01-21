@@ -58,10 +58,10 @@ trait DTEArray
                     'GiroRecep' => $this->invoice->business_activity->name ?? 'General', // this is required in 33
                     'DirRecep' => isset($customerAddress)
                                     ? 'Calle: ' . $customerAddress->street . '. Numero: ' . $customerAddress->number . $customerAddress->subnumber ?? ''
-                                    : '',
+                                    : false,
                     'CmnaRecep' => isset($customerAddress)
                                     ? $customerAddress->commune->name
-                                    : '',
+                                    : false,
                 ],
                 /*'Totales' => [
                     'TpoMoneda' => !empty($this->invoice->currency) ? $this->invoice->currency->code : 'CLP',
