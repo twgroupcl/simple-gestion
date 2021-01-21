@@ -33,6 +33,9 @@ class TransactionTypeCrudController extends CrudController
         $company = backpack_user()->current()->company;
         $this->crud->addClause('where', 'company_id', $company->id);
         $this->crud->denyAccess('show');
+        if (!backpack_user()->hasPermissionTo('conciliation')) {
+            $this->crud->denyAccess(['list', 'create', 'update']);
+        }
     }
 
     /**

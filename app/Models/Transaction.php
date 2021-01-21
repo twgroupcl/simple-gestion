@@ -48,7 +48,7 @@ class Transaction extends Model
         $amount = 0;
         $amount = $this->transaction_details->sum('value');
 
-        return $amount;
+        return currencyFormat($amount, 'CLP');
 
     }
 
