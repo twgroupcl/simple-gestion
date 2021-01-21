@@ -74,7 +74,9 @@ class ProductCrudController extends CrudController
 
         // If not admin, show only user products
         if (!$this->admin) {
-            $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
+            // contigopyme intrusion $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
+            $company = backpack_user()->current()->company;
+            $this->crud->addClause('where', 'company_id', $company->id);
         } else {
             $this->crud->addButtonFromView('bottom', 'bulk_delete', 'product.bulk_delete', 'beginning');
             $this->crud->addButtonFromView('bottom', 'bulk_reject', 'product.bulk_reject', 'beginning');
