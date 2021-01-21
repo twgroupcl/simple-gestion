@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Product;
+use App\Models\Seller;
 use App\Models\InvoiceType;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
@@ -33,11 +34,17 @@ class InvoiceRequest extends FormRequest
             $expiryDateRules = 'required|date|after_or_equal:invoice_date';
         } 
 
+        $sellerRules = 'required|exists:sellers,id';
+        if (Seller::where('user_id', backpack_user()->id)->exists()) {
+            //set seller in observer
+            $sellerRules = '';
+        }
+
         $rules =  [
             'invoice_type_id' => 'required|exists:invoice_types,id',
             'total' => 'gte:0',
             'invoice_date' => 'date',
-            'seller_id' => 'required|exists:sellers,id',
+            'seller_id' => $sellerRules,
             'discount_percent' => 'gte:0,lte:100', 
             'discount_amount' => 'gte:0',
             'customer_id' => 'required|exists:customers,id', 

@@ -41,11 +41,11 @@ class InvoiceCrudController extends CrudController
         
         $this->seller = Seller::where('user_id', backpack_user()->id);
         if ($this->seller->exists()) {
-            $this->seller= $this->seller->first();
+            $this->seller = $this->seller->first();
             if (! backpack_user()->can('showAllInvoices')) {
                 $this->crud->addClause('where', 'seller_id', $this->seller->id);
             }
-            if ($this->seller->is_approved !== Seller::STATUS_ACTIVE) {
+            if ($this->seller->is_approved != Seller::STATUS_ACTIVE) {
                 $this->crud->denyAccess(['create', 'update', 'delete']);
             }
         } else {
@@ -330,16 +330,30 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        if (backpack_user()->hasRole('Administrador negocio') && !empty($this->seller)) {
-            $sellerId = $this->seller->id;
+        if (!empty($this->seller)) {
+            //$sellerId = $this->seller->id;
+            // set seller in observer
             CRUD::addField([
+                'label' => 'Venedor',
+                'name' => 'seller_name',
+                'type' => 'text',
+                'value' => $this->seller->name,
+                'attributes' => [
+                    'readonly' => true,
+                ],
+                'tab' => 'General',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ]);
+            /*CRUD::addField([
                 'label' => 'Vendedor',
                 'name' => 'seller_id',
                 'type' => 'select2',
                 'placeholder' => 'Selecciona un vendedor',
                 'model' => 'App\Models\Seller',
                 'attribute' => 'name',
-                'default' => $sellerId, 
+                'value' => $sellerId, 
                 'wrapper' => [
                     'class' => 'form-group col-md-3',
                 ],
@@ -347,7 +361,7 @@ class InvoiceCrudController extends CrudController
                 'options' => (function ($query) use($sellerId) {
                     return $query->where('id', $sellerId)->get();
                 })
-            ]);
+            ]);*/
 
         } else {
             CRUD::addField([

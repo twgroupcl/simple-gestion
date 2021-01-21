@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Invoice;
 use App\Models\Payments;
 use App\Models\InvoiceItem;
+use App\Models\Seller;
 use App\Services\DTE\DTEService;
 
 class InvoiceObserver
@@ -30,6 +31,12 @@ class InvoiceObserver
         $invoice->company_id = backpack_user()->current()->company->id;
         $invoice->is_company = $invoice->customer->is_company;
         $invoice->invoice_status = Invoice::STATUS_DRAFT;
+
+        //set seller
+        $seller = Seller::where('user_id', backpack_user()->id);
+        if ($seller->exists()) {
+            $invoice->seller_id = $seller->first()->id;
+        }
 
         if ($invoice->invoice_type->code == 39 || $invoice->invoice_type->code == 41) {
             $invoice->business_activity_id = null;
@@ -63,6 +70,11 @@ class InvoiceObserver
         $invoice->phone = $invoice->customer->phone;
         $invoice->cellphone = $invoice->customer->cellphone;
 
+        //set seller
+        $seller = Seller::where('user_id', backpack_user()->id);
+        if ($seller->exists()) {
+            $invoice->seller_id = $seller->first()->id;
+        }
         
         if ($invoice->invoice_status == Invoice::STATUS_TEMPORAL) {
             $service = new DTEService();
