@@ -33,7 +33,7 @@ class SellerStoreRequest extends FormRequest
             'uid' => ['required', 'unique:sellers,uid', 'string', $rutRule],
             'name' => 'required|string',
             'visible_name' => 'required|string',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'phone' => ['nullable', $phoneRule],
             'web' => 'nullable|string',
             'seller_category_id' => 'required|exists:seller_categories,id',
@@ -88,7 +88,7 @@ class SellerStoreRequest extends FormRequest
             'required' => 'Es necesario completar el campo :attribute.',
             'string' => 'El campo :attribute debe ser texto',
             'date' => 'El campo :attribute debe ser de tipo fecha',
-            'unique' => 'El campo :attribute ya está siendo utilizado por otra tienda.',
+            'unique' => 'El campo :attribute ya está siendo utilizado por otra tienda o cliente.',
             'exists' => 'No se pudo encontrar una relación con el campo :attribute.',
         ];
     }
