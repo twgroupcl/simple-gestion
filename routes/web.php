@@ -55,32 +55,32 @@ Route::post('/send-email-admin', 'Frontend\CustomerController@sendMailSubscripti
 Route::get('/seller/register', 'Frontend\SellerController@index')->name('seller.sign');
 Route::post('/seller/register', 'Frontend\SellerController@store')->name('seller.frontend.store');
 
-//Route::get('/home', 'Frontend\HomeController@index')->name('home');
-Route::get('/home', function () {
+Route::get('/home', 'Frontend\HomeController@index')->name('home');
+/*Route::get('/home', function () {
     return view('home');
-});
+});*/
 
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
 
-//Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
-Route::get('/search-products/{category}/{product}', function () {
+Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
+/*Route::get('/search-products/{category}/{product}', function () {
     return view('home');
-});
+});*/
 
-//Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
-Route::get('/search-products/{category}', function () {
+Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
+/*Route::get('/search-products/{category}', function () {
     return view('home');
-});
+});*/
 
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });
 Route::get('/shop-grid/', 'Frontend\HomeController@getProductsByCategory');
 
-//Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
-Route::get('/seller-shop/{id}', function () {
+Route::get('/seller-shop/{id}', 'Frontend\HomeController@getSeller');
+/*Route::get('/seller-shop/{id}', function () {
     return view('home');
-});
+});*/
 
 Route::get('/shop/{slug}', 'Frontend\HomeController@getSellerBySlug')->name('seller-slug');
 Route::get('/faq', 'Frontend\HomeController@getFaq');
@@ -105,10 +105,10 @@ Route::redirect('/login', '/customer/login')->name('login');
 
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping-cart');
 
-//Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
-Route::get('/checkout', function () {
+Route::get('/checkout', 'Frontend\CheckoutController@index')->name('checkout');
+/*Route::get('/checkout', function () {
     return view('home');
-});
+});*/
 
 Route::get('/filter-products', 'Frontend\HomeController@filterProducts');
 
