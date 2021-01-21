@@ -30,7 +30,20 @@ class ProductObserver
             $administrators = Setting::get('administrator_email');
             $recipients = explode(';', $administrators);
             foreach ($recipients as $key => $recipient) {
-                Mail::to($recipient)->send(new ProductCreated($product, $product->seller->visible_name));
+                try {
+                    Mail::to($recipient)->send(new ProductCreated($product, $product->seller->visible_name));
+                } catch (\Exception $e) {
+                    \Log::error($e->getMessage());
+                }
+            }
+
+            $businessOwners = $product->company->getBusinessAdminUsers();
+            foreach ($businessOwners as $adminUser) {
+                try {
+                    Mail::to($adminUser->email)->send(new ProductCreated($product, $product->seller->visible_name));
+                } catch (\Exception $e) {
+                    \Log::error($e->getMessage());
+                }
             }
         }
     }
