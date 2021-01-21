@@ -4,12 +4,17 @@ namespace App\Http\Requests;
 
 use App\Models\Product;
 use App\Models\Seller;
+use App\Rules\NumericCommaRule;
 use App\Models\InvoiceType;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class InvoiceRequest extends FormRequest
 {
+    private $prepareData = [
+        'items_data',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -51,6 +56,12 @@ class InvoiceRequest extends FormRequest
             'address_id' => 'required|exists:customer_addresses,id',
             'expiry_date' => $expiryDateRules,
             // 'name' => 'required|min:5|max:255'
+            //
+            // Order items data
+            'items_data_validation.*.name' => 'required',
+            'items_data_validation.*.qty' => 'required',
+            'items_data_validation.*.price' => ['required', new NumericCommaRule()],
+            'items_data_validation.*.total' => 'required',
 
             'items_data' => function($attribute, $value, $fail) {
                 $items = json_decode($value, true);
@@ -95,6 +106,11 @@ class InvoiceRequest extends FormRequest
             'invoice_type_id' => 'tipo de documento',
             'address_id' => 'dirección',
             'business_activity_id' => 'giro',
+            // Order items data
+            'items_data_validation.*.name' => 'nombre del producto / servicio',
+            'items_data_validation.*.qty' => 'cantidad del producto / servicio',
+            'items_data_validation.*.price' => 'precio del producto / servicio',
+            'items_data_validation.*.total' => 'total',
         ];
     }
 
@@ -109,5 +125,22 @@ class InvoiceRequest extends FormRequest
             'gte' => 'El campo :attribute debe ser mayor o igual a 0',
             'required' => 'Verifique el campo :attribute, es necesario que lo complete',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        foreach ($this->prepareData as $attrName) {
+            if (empty($this->$attrName)) {
+                return;
+            }
+            $validation = json_decode($this->$attrName);
+            $forValidation = [];
+            foreach ($validation as $attrs) {
+                $forValidation[] = (array) $attrs;
+            }
+            $this->merge([
+                $attrName.'_validation' => $forValidation,
+            ]);
+        }
     }
 }
