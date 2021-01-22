@@ -1,11 +1,11 @@
 
-@can('canCreateTempDocument', $invoice)
+@if ($invoice->invoice_status == App\Models\Invoice::STATUS_DRAFT)
 @include('invoice.manage_invoice.create_temporary_document')
-@endcan
+@endif
 
-@can('doShowTempDocument', $invoice)
+@if ($invoice->invoice_status == App\Models\Invoice::STATUS_TEMPORAL)
 @include('invoice.manage_invoice.create_real_document')
-@endcan
+@endif
 
 {{-- @can('doEdit', $invoice)
 @include('invoice.manage_invoice.go_to_edit')
@@ -15,18 +15,18 @@
 @include('invoice.manage_invoice.get_temporal_pdf')
 @endcan --}}
 
-@can('doDownloadRealPDF', $invoice)
+@if (isset($invoice->folio) && $invoice->invoice_status == App\Models\Invoice::STATUS_SEND)
 @include('invoice.manage_invoice.get_real_pdf')
-@endcan
+@endif
 
 
 {{-- @can('doDeleteDocument', $invoice)
 @include('invoice.manage_invoice.delete_temporary_document')
 @endcan --}}
 
-@can('doUpdateDocumentStatus', $invoice)
+@if (isset($invoice->folio) && $invoice->invoice_status == App\Models\Invoice::STATUS_SEND)
 @include('invoice.manage_invoice.update_dte_status')
-@endcan
+@endif
 
 {{-- Foother --}}
 <div style="height: 150px"></div>
