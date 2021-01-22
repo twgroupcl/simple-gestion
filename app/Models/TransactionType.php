@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Scopes\CompanyBranchScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class TransactionType extends Model
 {
     use CrudTrait;
+    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -29,6 +32,14 @@ class TransactionType extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new CompanyBranchScope);
+    }
+
 
     /*
     |--------------------------------------------------------------------------

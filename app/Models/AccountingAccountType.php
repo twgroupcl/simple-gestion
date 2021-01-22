@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Scopes\CompanyBranchScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AccountingAccountType extends Model
 {
     use CrudTrait;
+    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +31,12 @@ class AccountingAccountType extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function boot()
+    {
+        parent::boot();
 
+        static::addGlobalScope(new CompanyBranchScope);
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
