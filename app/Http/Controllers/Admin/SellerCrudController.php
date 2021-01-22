@@ -6,18 +6,19 @@ use App\Models\Bank;
 
 use App\Models\Seller;
 
+use App\Models\Commune;
 use App\Models\ContactType;
 use App\Cruds\BaseCrudFields;
 use App\Models\PaymentMethod;
 use App\Models\SellerCategory;
 use App\Models\ShippingMethod;
+use Illuminate\Support\Carbon;
 use App\Models\BankAccountType;
 use App\Models\BusinessActivity;
 use App\Traits\HasCustomAttributes;
 use App\Http\Requests\SellerStoreRequest;
 use App\Http\Requests\SellerUpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use App\Models\Commune;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
@@ -107,6 +108,13 @@ class SellerCrudController extends CrudController
             'type' => 'relationship',
             'label' => 'Categoría',
             'attribute' => 'name',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'created_at_format',
+            'type' => 'text',
+            'label' => 'Fecha de inscripción',
+
         ]);
 
         CRUD::addColumn([
@@ -707,7 +715,38 @@ class SellerCrudController extends CrudController
                 'default' => 0,
                 'inline' => true,
                 'tab' => 'Administrador',
-                'wrapperAttributes' => [
+                'wrapper' => [
+                    'class' => 'form-group col-md-6',
+                ],
+            ]);
+            // $createAt = $this->crud->getCurrentEntry()->created_at;
+            // $inscriptionDate = $createAt->format('d/m/Y');
+            CRUD::addField([
+                'name' => 'created_at_format',
+                'label' => 'Fecha de inscripción',
+                'type' => 'text',
+                'tab' => 'Administrador',
+                'wrapper' => [
+                    'class' => 'form-group col-md-6',
+                ],
+                'attributes' => [
+                    'readonly' => 'readonly',
+                ],
+            ]);
+
+            CRUD::addField([
+                'name' => 'is_approved',
+                'label' => 'Aprobado',
+                'type' => 'radio',
+                'options' => [
+                    0 => 'En revisión',
+                    1 => 'Aprobado',
+                    2 => 'Rechazado',
+                ],
+                'default' => 0,
+                'inline' => true,
+                'tab' => 'Administrador',
+                'wrapper' => [
                     'class' => 'form-group col-md-12',
                 ],
             ]);

@@ -78,11 +78,11 @@ class Seller extends Model
         'company_id',
         'slug',
     ];
-    
+
     protected $hidden = [
         'password'
     ];
-    
+
     // protected $dates = [];
     protected $casts = [
         'addresses_data' => 'array',
@@ -132,7 +132,7 @@ class Seller extends Model
 
         if (!$shippingConfig) {
             $shippingConfig = CommuneShippingMethod::where([ 'seller_id' => $this->id, 'is_global' => 1 ])->first();
-            
+
             if (!$shippingConfig) {
                 return [];
             }
@@ -258,6 +258,11 @@ class Seller extends Model
         }
 
         return '';
+    }
+
+    public function getCreatedAtFormatAttribute()
+    {
+        return $this->created_at->format('d/m/Y');
     }
 
     /*
