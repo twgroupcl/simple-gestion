@@ -10,6 +10,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\CustomerAttendance;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
 class AttendanceController extends Controller
 {
@@ -45,6 +46,12 @@ class AttendanceController extends Controller
         
         $typeCheckIn = CustomerAttendance::CHECK_IN;
         $typeCheckOut = CustomerAttendance::CHECK_OUT;
+
+        if ($customer->hasUnpaidQuotations()) {
+            Session::flash('unpaid', 'Estimado cliente:
+            Según nuestros registros, tu plan no está vigente. Te rogamos ponerte en contacto con el administrador para 
+            gestionar el pago pendiente.');
+        }
 
         return view('attendance.post', compact('attendance', 'typeCheckIn', 'typeCheckOut', 'company'));
     }

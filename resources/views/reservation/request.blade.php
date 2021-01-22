@@ -12,6 +12,15 @@ Solicitar reserva
 <div class="row px-0 mx-0 content">
     <div class="col-lg-8 col-md-12 inner-content">
         <div class="row mt-4 justify-content-center">
+            
+            @if( session('unpaid'))
+            <div class="col-md-8">
+                <div class="alert alert-warning">
+                    {{ session('unpaid') }}
+                </div>
+            </div>
+            @endif
+
             @if (session('success'))
             <div class="col-md-8">
                 <div class="alert alert-success">

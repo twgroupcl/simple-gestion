@@ -804,11 +804,12 @@ class QuotationCrudController extends CrudController
         \DB::beginTransaction();
         try {
             $invoice = new Invoice($quotation->toArray());
+            $invoice->company_id = $quotation->branch->companies->first()->id;
             $invoice->items_data = json_encode($invoice->items_data);
-            unset($invoice->expiry_date);
             $json_value = $invoice->json_value;
             $json_value['quotation_id'] = $quotation->id;
             $invoice->json_value = $json_value;
+            unset($invoice->expiry_date);
             $invoice->save();
 
             $quotation->quotation_status = Quotation::STATUS_ISSUED;

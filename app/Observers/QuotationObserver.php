@@ -171,7 +171,7 @@ class QuotationObserver
                         'additional_tax_total' => $item['additional_tax_total'],
                         'total' => $item['total'],
                         'currency_id' => $quotation->currency_id,
-                        'seller_id' => $quotation->seller_id,
+                        'seller_id' => $quotation->seller_id ?? null,
                     ];
 
                     if ( isset($options['set_item_status']) ) $props['item_status'] = $options['set_item_status'];
@@ -197,7 +197,7 @@ class QuotationObserver
                         'sub_total' => $item['sub_total'], 
                         'is_custom' => false,
                         'parent_id' => $product->parent_id,
-                        'seller_id' => $quotation->seller_id,
+                        'seller_id' => $quotation->seller_id ?? null,
                         'discount_percent' => $item['discount_percent'],
                         'discount_amount' => $item['discount_amount'],
                         'discount_total' => $item['discount_total'],

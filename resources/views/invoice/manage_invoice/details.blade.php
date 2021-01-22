@@ -57,7 +57,8 @@
         </div>
         @endif
         
-        @can('doDownloadTemporalPDF', $invoice)
+        @if (($invoice->invoice_status == App\Models\Invoice::STATUS_TEMPORAL) || (isset($invoice->folio) &&
+              $invoice->invoice_status == App\Models\Invoice::STATUS_SEND))
             <div class="row">
                 @if ($invoice->invoice_type->code === 39 || $invoice->invoice_type->code === 41)
                 <embed src="{{ route('invoice.get-pdf', ['invoice' => $invoice, 'tipoPapel' => 57]) }}" type="application/pdf" width="70%" height="400px" />
@@ -66,6 +67,7 @@
                 @endif
             </div>
 
+            @if ($invoice->invoice_status == App\Models\Invoice::STATUS_TEMPORAL)
             <div class="row mt-2">
                 <div class="col">
                     <a href="{{ url('admin/invoice/'.$invoice->id.'/edit') }}" class="" > 
@@ -73,6 +75,7 @@
                     </a>
                 </div>
             </div>
-        @endcan
+            @endif
+        @endif
     </div>
 </div>

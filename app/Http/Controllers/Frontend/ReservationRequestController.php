@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ReservationRequestCreated;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Session;
 
 class ReservationRequestController extends Controller
 {
@@ -73,6 +74,12 @@ class ReservationRequestController extends Controller
         }
 
         Mail::to($customer->email)->send(new ReservationRequestCreated(2, $reservation));
+
+        if ($customer->hasUnpaidQuotations()) {
+            Session::flash('unpaid', 'Estimado cliente:
+            Según nuestros registros, tu plan no está vigente. Te rogamos ponerte en contacto con el administrador para 
+            gestionar el pago pendiente.');
+        }
 
         return redirect()->route('reservation-request.index', ['company' => $company])->with('success', 'Tu solicitud fue recibida con éxito. Nos comunicaremos contigo en la brevedad posible.');
     }

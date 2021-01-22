@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
+use App\Cruds\BaseCrudFields;
 use Illuminate\Http\Request;
 use App\Services\DTE\DTEService;
 use Maatwebsite\Excel\Facades\Excel;
@@ -41,11 +42,11 @@ class InvoiceCrudController extends CrudController
         
         $this->seller = Seller::where('user_id', backpack_user()->id);
         if ($this->seller->exists()) {
-            $this->seller= $this->seller->first();
+            $this->seller = $this->seller->first();
             if (! backpack_user()->can('showAllInvoices')) {
                 $this->crud->addClause('where', 'seller_id', $this->seller->id);
             }
-            if ($this->seller->is_approved !== Seller::STATUS_ACTIVE) {
+            if ($this->seller->is_approved != Seller::STATUS_ACTIVE) {
                 $this->crud->denyAccess(['create', 'update', 'delete']);
             }
         } else {
@@ -55,7 +56,7 @@ class InvoiceCrudController extends CrudController
         $company = backpack_user()->current()->company->id; 
         $company = Company::find($company);
         $this->emitter = $company;
-        $this->crud->addClause('where', 'company_id', $company->id);
+        // use scope $this->crud->addClause('where', 'company_id', $company->id);
 
         $this->crud->denyAccess('show');
 
@@ -253,7 +254,7 @@ class InvoiceCrudController extends CrudController
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
           
-        //$this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
         $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'current_tab', 'save_action']);
 
@@ -330,16 +331,30 @@ class InvoiceCrudController extends CrudController
             'tab' => 'General',
         ]);
 
-        if (backpack_user()->hasRole('Administrador negocio') && !empty($this->seller)) {
-            $sellerId = $this->seller->id;
+        if (!empty($this->seller)) {
+            //$sellerId = $this->seller->id;
+            // set seller in observer
             CRUD::addField([
+                'label' => 'Venedor',
+                'name' => 'seller_name',
+                'type' => 'text',
+                'value' => $this->seller->name,
+                'attributes' => [
+                    'readonly' => true,
+                ],
+                'tab' => 'General',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ]);
+            /*CRUD::addField([
                 'label' => 'Vendedor',
                 'name' => 'seller_id',
                 'type' => 'select2',
                 'placeholder' => 'Selecciona un vendedor',
                 'model' => 'App\Models\Seller',
                 'attribute' => 'name',
-                'default' => $sellerId, 
+                'value' => $sellerId, 
                 'wrapper' => [
                     'class' => 'form-group col-md-3',
                 ],
@@ -347,13 +362,14 @@ class InvoiceCrudController extends CrudController
                 'options' => (function ($query) use($sellerId) {
                     return $query->where('id', $sellerId)->get();
                 })
-            ]);
+            ]);*/
 
         } else {
             CRUD::addField([
                 'label' => 'Vendedor',
                 'name' => 'seller_id',
                 'type' => 'select2',
+                'allows_null' => true,
                 'placeholder' => 'Selecciona un vendedor',
                 'model' => 'App\Models\Seller',
                 'attribute' => 'name',

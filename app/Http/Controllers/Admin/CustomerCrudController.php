@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Bank;
 use App\Models\Commune;
+use App\Models\Customer;
+use App\Models\Quotation;
 use App\Models\ContactType;
 use App\Cruds\BaseCrudFields;
 use App\Models\BankAccountType;
@@ -108,6 +110,24 @@ class CustomerCrudController extends CrudController
             'type' => 'text',
             'label' => 'Teléfono móvil',
         ]);
+
+        CRUD::addColumn([
+            'name'  => 'unpaidStatus',
+            'label' => 'Pagos pendientes', // Table column heading
+            'type'  => 'model_function',
+            'function_name' => 'getUnpaidWithLink',
+            'priority' => 1,
+            'limit' => 300, // Limit the number of characters shown
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'No') {
+                        return 'badge badge-success';
+                    }
+                    return 'badge badge-warning';
+                },
+            ],
+         ]);
 
         CRUD::addColumn([
             'name' => 'addresses_data_first_street',
@@ -601,6 +621,7 @@ class CustomerCrudController extends CrudController
         }, function ($value) {
             $this->crud->addClause('where', 'is_company', '=', $value);
         });
+
         CRUD::addFilter([
             'type' => 'select2',
             'name' => 'status',
@@ -613,6 +634,24 @@ class CustomerCrudController extends CrudController
 
         }, function ($value) {
             $this->crud->addClause('where', 'status', '=', $value);
+        });
+
+        CRUD::addFilter([
+            'type' => 'select2',
+            'name' => 'unpaid',
+            'label' => 'Pagos pendientes',
+        ], function () {
+            return [
+                1 => 'Mostrar clientes con pagos pendientes',
+            ];
+
+        }, function ($value) {
+
+            $clientsWithUnpaidments = Customer::whereHas('quotations', function ($query) {
+                return $query->where('quotation_status', Quotation::STATUS_PENDING_PAYMENT);
+            })->get()->pluck('id');
+
+            $this->crud->addClause('whereIn', 'id', $clientsWithUnpaidments);
         });
 
     }
