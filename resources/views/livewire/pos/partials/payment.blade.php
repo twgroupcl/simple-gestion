@@ -31,7 +31,7 @@
                     <h4>Subtotal</h4>
                 </div>
                 <div class="col-6 text-danger text-right">
-                    <h4><span class="total-cart">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</span></h4>
+                    <h4><span class="subtotal-cart">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</span></h4>
                 </div>
             </div>
             @endif
@@ -41,7 +41,7 @@
                     <h4>Impuestos</h4>
                 </div>
                 <div class="col-6 text-danger text-right">
-                    <h4><span class="total-cart">{{ currencyFormat($taxes ?? 0, 'CLP', true) }}</span></h4>
+                    <h4><span class="taxes-cart">{{ currencyFormat($taxes ?? 0, 'CLP', true) }}</span></h4>
                 </div>
             </div>
             @endif
@@ -144,6 +144,22 @@
     <div class="row">
         <div class="card col-md-6">
             <div class='card-body'>
+                <div class="row">
+                    <div class="col-6 text-left">
+                        <h4>Total</h4>
+                    </div>
+                    <div class="col-6 text-danger text-right">
+                        <h4><span class="subtotal-cart">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</span></h4>
+                    </div>
+                </div>
+                <div class="row p-0">
+                    <div class="col-6 text-left">
+                        <h4>Impuestos</h4>
+                    </div>
+                    <div class="col-6 text-danger text-right">
+                        <h4><span class="taxes-cart">{{ currencyFormat($taxes ?? 0, 'CLP', true) }}</span></h4>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-6 text-left">
                         <h4>Total</h4>

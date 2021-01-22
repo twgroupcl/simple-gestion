@@ -1,5 +1,5 @@
 @handheld
-<div class="row ">
+<div class="row">
     <div class="col-12 text-center">
         <h6>Clientes</h6>
     </div>

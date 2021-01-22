@@ -295,7 +295,7 @@ class ManageInvoiceCrudController extends CrudController
                 $invoice->dte_code = $code;
                 $invoice->updateWithoutEvents();
 
-                \Alert::add('success', 'Se ha enviado el documento tempora con éxito')->flash();
+                \Alert::add('success', 'Se ha enviado el documento temporal con éxito')->flash();
             } else {
                 \Alert::add('warning', 'Hubo un problema al enviar el documento')->flash();
                 return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);

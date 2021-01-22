@@ -71,7 +71,7 @@ class QuotationCreateRequest extends FormRequest
         if ($this->is_recurring) {
             $rules['repeat_number'] = 'required|numeric|min:1';
 
-            if ($this->quotation_Status === Quotation::STATUS_ACCEPTED) {
+            if ($this->quotation_status === Quotation::STATUS_ACCEPTED) {
                 $rules['start_date'] = 'date';
             } else {
                 $rules['start_date'] = 'date|after_or_equal:today';

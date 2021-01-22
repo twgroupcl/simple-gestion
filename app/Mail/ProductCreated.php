@@ -17,6 +17,7 @@ class ProductCreated extends Mailable
     public $rejectedText;
     public $buttonText, $buttonLink;
     public $logo;
+    public $company;
 
     /**
      * Create a new message instance.
@@ -25,12 +26,13 @@ class ProductCreated extends Mailable
      */
     public function __construct(Product $product, $seller)
     {
+        $this->company = $product->company;
         $this->rejectedText = '';
         $this->title= 'Un nuevo producto ha sido creado';
-        $this->text = 'La tienda <strong>' . $seller . '</strong> ha publicado el siguiente producto: <strong>' . $product->name . '</strong>.<br><br> Puedes acceder al panel de administrador para aprobarlo o rechazarlo.';
+        $this->text = 'El venedor <strong>' . $seller . '</strong> ha agregado el siguiente producto: <strong>' . $product->name . '</strong>.<br><br> Puedes acceder al panel de administrador para ver los detalles.';
         $this->buttonText = 'Ir al panel';
         $this->buttonLink = config('app.url') . '/admin';
-        $this->logo = 'img/logo-pyme.png';
+        $this->logo = '';
     }
 
     /**
@@ -40,6 +42,6 @@ class ProductCreated extends Mailable
      */
     public function build()
     {
-        return $this->subject('Un nuevo producto ha sido creado')->view('maileclipse::templates.basicEmailTemplate');
+        return $this->subject('Un nuevo producto ha sido creado - '. $this->company->name)->view('maileclipse::templates.basicEmailTemplate');
     }
 }
