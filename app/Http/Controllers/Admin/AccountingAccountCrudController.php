@@ -95,11 +95,25 @@ class AccountingAccountCrudController extends CrudController
             'name' => 'description',
             'label' => 'Descripción',
         ]);
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+
+        CRUD::addField([
+            'name' => 'accounting_account_type',
+            'label' => 'Tipo',
+            'placeholder' => 'Seleccione un tipo de cuenta contable',
+            'minimum_input_length' => 0,
+            'allows_null' => true,
+            'type' => 'relationship',
+            'include_all_form_fields'  => true, 
+            'entity' => 'accounting_account_type',
+            'attribute' => 'name',
+            'model' => 'App\Models\AccountingAccountType',
+            'inline_create' => [ 'entity' => 'accountingaccounttype' ], 
+            'ajax' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6',
+            ],
+        ]);
+
     }
 
     /**
@@ -112,4 +126,10 @@ class AccountingAccountCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    public function fetchAccounting_account_type()
+    {
+        return $this->fetch(\App\Models\AccountingAccountType::class);
+    }
+
 }

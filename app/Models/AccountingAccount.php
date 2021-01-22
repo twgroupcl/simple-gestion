@@ -34,6 +34,10 @@ class AccountingAccount extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function accounting_account_type()
+    {
+        return $this->belongsTo(AccountingAccountType::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
