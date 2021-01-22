@@ -36,7 +36,7 @@ class QuotationCreateRequest extends FormRequest
     public function rules()
     {
         $rules =  [
-            'seller_id' => 'required',
+            //'seller_id' => 'required',
             'customer_id' => 'required',
             'quotation_date' => 'required',
             //'expiry_date' => 'after:quotation_date',
