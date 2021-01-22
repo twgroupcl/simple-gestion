@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
