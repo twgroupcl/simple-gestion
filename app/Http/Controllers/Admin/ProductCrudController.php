@@ -73,11 +73,12 @@ class ProductCrudController extends CrudController
         $this->crud->enableBulkActions();
 
         // If not admin, show only user products
-        if (!$this->admin) {
+        //if (!$this->admin) {
             // contigopyme intrusion $this->crud->addClause('where', 'seller_id', '=', $this->userSeller->id);
-            $company = backpack_user()->current()->company;
-            $this->crud->addClause('where', 'company_id', $company->id);
-        } else {
+            //$company = backpack_user()->current()->company;
+            // use scope $this->crud->addClause('where', 'company_id', $company->id);
+        //} else {
+        if ($this->admin) {
             $this->crud->addButtonFromView('bottom', 'bulk_delete', 'product.bulk_delete', 'beginning');
             $this->crud->addButtonFromView('bottom', 'bulk_reject', 'product.bulk_reject', 'beginning');
             $this->crud->addButtonFromView('bottom', 'bulk_approve', 'product.bulk_approve', 'beginning');
