@@ -116,6 +116,15 @@ class Customer extends Model
         return $unpaidQuotations->count() > 0;
     }
 
+    public function getUnpaidWithLink()
+    {
+        if ($this->hasUnpaidQuotations()) {
+            return '<a href="quotation?status=PAGO_PENDIENTE&customer_name=' . $this->id . '">Si</a>';
+        } else {
+            return 'No';
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -160,6 +169,11 @@ class Customer extends Model
     public function attendances()
     {
         return $this->hasMany(CustomerAttendance::class);
+    }
+
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class);
     }
 
     /*

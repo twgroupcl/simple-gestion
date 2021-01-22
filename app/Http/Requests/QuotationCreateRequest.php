@@ -42,6 +42,7 @@ class QuotationCreateRequest extends FormRequest
             //'expiry_date' => 'after:quotation_date',
             'total' => 'numeric|min:1',
             'title' => 'required',
+            'invoice_type_id' => 'required',
 
             // Order items data
             'items_data_validation.*.name' => 'required',
@@ -110,6 +111,7 @@ class QuotationCreateRequest extends FormRequest
             'quotation_date' => 'fecha de creacion',
             'expiry_date' => 'fecha de vencimiento',
             'total' => 'monto total',
+            'invoice_type_id' => 'tipo de documento',
 
             // Order items data
             'items_data_validation.*.name' => 'nombre del producto / servicio',
