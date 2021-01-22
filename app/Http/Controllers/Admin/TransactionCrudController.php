@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\TransactionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Illuminate\Http\Request;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{ Invoice, Transaction };
 use Carbon\Carbon;
@@ -213,9 +214,11 @@ class TransactionCrudController extends CrudController
             ],
         ]);
 
+
+        $dtes = Invoice::all()->pluck('title', 'id')->toArray();
         CRUD::addField([
             'name' => 'json_transaction_details',
-            'type' => 'repeatable',
+            'type' => 'transactions.repeatable',
             'label' => 'Desglose',
             'fields' => [
                 [
@@ -223,13 +226,93 @@ class TransactionCrudController extends CrudController
                     'type' => 'text',
                     'prefix' => '$',
                     'label' => 'Monto/Valor',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-6',
+                    ],
                 ],
+                [
+                    'label' => 'Documento',
+                    'name' => 'document_identifier',
+                    'type' => 'transactions.select2_custom',
+                    'model' => 'App\Models\Invoice',
+                    'placeholder' => 'Selecciona un documento',
+                    'attribute' => 'title',
+                    'data_source' => url('admin/api/transaction/get-documents-by-company'),
+                    'minimum_input_length' => 0,
+                    'include_all_form_fields'  => true,
+                    //'dependencies'  => ['seller_id'],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-3 document-select',
+                    ],
+                    'attributes' => [
+                        'class' => 'form-control document-id-field'
+                    ]
+                ],
+                [
+                    'label' => 'Documento',
+                    'name' => 'name',
+                    'type' => 'text',
+                    'wrapper' => [
+                        'class' => 'form-group col-md-3 custom-document-name',
+                        'style' => 'display:none',
+                    ],
+                    'attributes' => [
+                        'placeholder' => 'Nombre del producto o servicio',
+                        'class' => 'form-control document-name-field'
+                    ],
+                ],
+                //[
+                //    'label' => 'Producto / Servicio',
+                //    'name' => 'name',
+                //    'type' => 'text',
+                //    'wrapper' => [
+                //        'class' => 'form-group col-md-3 custom-product-name',
+                //        'style' => 'display:none',
+                //    ],
+                //    'attributes' => [
+                //        'placeholder' => 'Nombre del producto o servicio',
+                //        'class' => 'form-control product-name-field'
+                //    ],
+                //],
+
+                //[
+                //    'name' => 'document_identifier',
+                //    'label' => 'Número de documento',
+                //    'type' => 'select2_from_array',
+                //    'options' => $dtes,
+                //    'allows_null' => true,
+                //    'placeholder' => 'Seleccione un documento...',
+                //    'wrapperAttributes' => [
+                //        'class' => 'form-group col-md-6',
+                //    ],
+                //],
+                [
+                    'label' => 'Es un producto/servicio personalizado',
+                    'name' => 'is_custom',
+                    'type' => 'checkbox',
+                    'attributes' => [
+                        'class' => 'checkbox-is-custom',
+                    ],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-3',
+                    ],
+                ],
+                //[
+                //    'name' => 'is_custom_document',
+                //    'type' => 'checkbox',
+                //    'attributes' => [
+                //        'class' => 'checkbox-is-custom',
+                //    ],
+                //    'label' => 'Introducir un documento manualmente',
+                //    'wrapperAttributes' => [
+                //        'class' => 'form-group col-md-6 offset-6',
+                //    ],
+                //],
                 [
                     'name' => 'notes',
                     'type' => 'textarea',
                     'label' => 'Detalle',
-
-                ]
+                ],
             ],
             'new_item_label' => 'Agregar detalle',
         ]);
@@ -343,4 +426,33 @@ class TransactionCrudController extends CrudController
     {
         return $this->fetch(\App\Models\BankAccount::class);
     }
+
+    /**
+     * Get and filter a list of configurable attributes depending of the product class
+     *
+     */
+    public function getDocumentsByCompany(Request $request) {
+        $company = backpack_user()->current()->company->id;
+
+        $search_term = $request->input('q');
+        $form = collect($request->input('form'))->pluck('value', 'name');
+        $options = Invoice::query();
+
+        if ($request->has('keys')) {
+            return Invoice::findMany($request->input('keys'));
+        }
+
+        if (isset($company)) {
+            $options = $options->where('company_id', $company);
+        }
+
+        // Filter by search term
+        if ($search_term) {
+            $results = $options->whereRaw('LOWER(title) like ?', '%'.strtolower($search_term).'%')->paginate(10);
+        } else {
+            $results = $options->paginate(10);
+        }
+        return $options->paginate(10);
+    }
+
 }
