@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
+use App\Cruds\BaseCrudFields;
 use Illuminate\Http\Request;
 use App\Services\DTE\DTEService;
 use Maatwebsite\Excel\Facades\Excel;
@@ -55,7 +56,7 @@ class InvoiceCrudController extends CrudController
         $company = backpack_user()->current()->company->id; 
         $company = Company::find($company);
         $this->emitter = $company;
-        $this->crud->addClause('where', 'company_id', $company->id);
+        // use scope $this->crud->addClause('where', 'company_id', $company->id);
 
         $this->crud->denyAccess('show');
 
@@ -253,7 +254,7 @@ class InvoiceCrudController extends CrudController
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
           
-        //$this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
         $this->crud->setOperationSetting('saveAllInputsExcept', ['_token', '_method', 'http_referrer', 'current_tab', 'save_action']);
 

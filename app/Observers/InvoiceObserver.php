@@ -28,7 +28,7 @@ class InvoiceObserver
         $invoice->cellphone = $invoice->customer->cellphone;
 
         // emitter data
-        $invoice->company_id = backpack_user()->current()->company->id;
+        // use basefields $invoice->company_id = backpack_user()->current()->company->id;
         $invoice->is_company = $invoice->customer->is_company;
         $invoice->invoice_status = Invoice::STATUS_DRAFT;
 
