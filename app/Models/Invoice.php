@@ -107,6 +107,8 @@ class Invoice extends Model
        // 'address_data' => 'array',
     ];
 
+    protected $appends = ['description_for_select'];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -252,6 +254,20 @@ class Invoice extends Model
         }
         return null;
     }*/
+
+    public function getDescriptionForSelectAttribute()
+    {
+        $string = '';
+
+        if (isset($this->title)) {
+            $string = $this->title . ' - ';
+        }
+
+        $string .=  $this->invoice_type->name . ' - ' . currencyFormat($this->total, 'CLP', true);
+
+        return $string;
+
+    }
 
     public function getOrderAttribute()
     {

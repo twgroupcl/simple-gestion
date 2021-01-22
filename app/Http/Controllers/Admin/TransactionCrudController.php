@@ -236,7 +236,7 @@ class TransactionCrudController extends CrudController
                     'type' => 'transactions.select2_custom',
                     'model' => 'App\Models\Invoice',
                     'placeholder' => 'Selecciona un documento',
-                    'attribute' => 'title',
+                    'attribute' => 'description_for_select',
                     'data_source' => url('admin/api/transaction/get-documents-by-company'),
                     'minimum_input_length' => 0,
                     'include_all_form_fields'  => true,
