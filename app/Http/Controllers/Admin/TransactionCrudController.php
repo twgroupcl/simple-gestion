@@ -94,6 +94,24 @@ class TransactionCrudController extends CrudController
         ]);*/
 
         CRUD::addColumn([
+            'name' => 'payment_or_expense',
+            'label' => 'Cargo/Gasto',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] === 'Abono') {
+                        return 'badge badge-success';
+                    }
+
+                    if ($column['text'] === 'Gasto') {
+                        return 'badge badge-danger';
+                    }
+
+                }
+            ]
+        ]);
+
+        CRUD::addColumn([
             'name' => 'amount',
             'label' => 'Monto total',
             'type' => 'model_function',

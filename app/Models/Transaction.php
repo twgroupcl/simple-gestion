@@ -87,6 +87,10 @@ class Transaction extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+    public function getPaymentOrExpenseAttribute()
+    {
+        return $this->transaction_type->is_payment ? "Abono" : "Gasto";
+    }
 
     /*
     |--------------------------------------------------------------------------
