@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\TransactionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Illuminate\Http\Request;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{ Invoice, Transaction };
+use App\Exports\TransactionExport;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Class TransactionCrudController
@@ -41,6 +44,26 @@ class TransactionCrudController extends CrudController
         $this->crud->addClause('where', 'company_id', $company->id);
     }
 
+    protected function setupExportRoutes($segment, $routeName, $controller)
+    {
+        \Route::get($segment.'/export', [
+            'as'        => $routeName.'.getExport',
+            'uses'      => $controller.'@getExportForm',
+            'operation' => 'export',
+        ]);
+    }
+    protected function getExportForm(bool $persist = false)
+    {
+        $this->crud->hasAccessOrFail('list');
+        $this->crud->setOperation('Export');
+
+        $date = now();
+        $fileName = 'movimientos_'. $date->format('Y-m-d') . '.xlsx';
+        $excel = new TransactionExport();
+
+        return Excel::download($excel, $fileName);
+    }
+
     /**
      * Define what happens when the List operation is loaded.
      * 
@@ -49,7 +72,8 @@ class TransactionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->enableExportButtons();
+        CRUD::addButtonFromView('top', 'transactions.export', 'transactions.export', 'end');
+        //$this->crud->enableExportButtons();
         $this->crud->addFilter([
           'type'  => 'date_range',
           'name'  => 'date',
@@ -92,6 +116,24 @@ class TransactionCrudController extends CrudController
             'type' => 'model_function',
             'function_name' => 'getDocumentInfo',
         ]);*/
+
+        CRUD::addColumn([
+            'name' => 'payment_or_expense',
+            'label' => 'Cargo/Gasto',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] === 'Abono') {
+                        return 'badge badge-success';
+                    }
+
+                    if ($column['text'] === 'Gasto') {
+                        return 'badge badge-danger';
+                    }
+
+                }
+            ]
+        ]);
 
         CRUD::addColumn([
             'name' => 'amount',
@@ -195,9 +237,11 @@ class TransactionCrudController extends CrudController
             ],
         ]);
 
+
+        $dtes = Invoice::all()->pluck('title', 'id')->toArray();
         CRUD::addField([
             'name' => 'json_transaction_details',
-            'type' => 'repeatable',
+            'type' => 'transactions.repeatable',
             'label' => 'Desglose',
             'fields' => [
                 [
@@ -205,13 +249,57 @@ class TransactionCrudController extends CrudController
                     'type' => 'text',
                     'prefix' => '$',
                     'label' => 'Monto/Valor',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-6',
+                    ],
+                ],
+                [
+                    'label' => 'Documento',
+                    'name' => 'document_identifier',
+                    'type' => 'transactions.select2_custom',
+                    'model' => 'App\Models\Invoice',
+                    'placeholder' => 'Selecciona un documento',
+                    'attribute' => 'description_for_select',
+                    'data_source' => url('admin/api/transaction/get-documents-by-company'),
+                    'minimum_input_length' => 0,
+                    'include_all_form_fields'  => true,
+                    //'dependencies'  => ['seller_id'],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-6 document-select',
+                    ],
+                    'attributes' => [
+                        'class' => 'form-control document-id-field'
+                    ]
+                ],
+                [
+                    'label' => 'Documento',
+                    'name' => 'document_name',
+                    'type' => 'text',
+                    'wrapper' => [
+                        'class' => 'form-group col-md-6 custom-document-name',
+                        'style' => 'display:none',
+                    ],
+                    'attributes' => [
+                        'placeholder' => 'Nombre o identificador del documento',
+                        'class' => 'form-control document-name-field'
+                    ],
+                ],
+                [
+                    'label' => 'Es un producto/servicio personalizado',
+                    'name' => 'is_custom',
+                    'type' => 'checkbox',
+                    'attributes' => [
+                        'class' => 'checkbox-is-custom',
+                    ],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-6 offset-6',
+                    ],
                 ],
                 [
                     'name' => 'notes',
                     'type' => 'textarea',
                     'label' => 'Detalle',
-
-                ]
+                ],
             ],
             'new_item_label' => 'Agregar detalle',
         ]);
@@ -325,4 +413,33 @@ class TransactionCrudController extends CrudController
     {
         return $this->fetch(\App\Models\BankAccount::class);
     }
+
+    /**
+     * Get and filter a list of configurable attributes depending of the product class
+     *
+     */
+    public function getDocumentsByCompany(Request $request) {
+        $company = backpack_user()->current()->company->id;
+
+        $search_term = $request->input('q');
+        $form = collect($request->input('form'))->pluck('value', 'name');
+        $options = Invoice::query();
+
+        if ($request->has('keys')) {
+            return Invoice::findMany($request->input('keys'));
+        }
+
+        if (isset($company)) {
+            $options = $options->where('company_id', $company);
+        }
+
+        // Filter by search term
+        if ($search_term) {
+            $results = $options->whereRaw('LOWER(title) like ?', '%'.strtolower($search_term).'%')->paginate(10);
+        } else {
+            $results = $options->paginate(10);
+        }
+        return $options->paginate(10);
+    }
+
 }

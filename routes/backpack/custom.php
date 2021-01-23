@@ -117,8 +117,10 @@ Route::group([
     Route::crud('inventory', 'InventoryCrudController');
 //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
     Route::crud('transaction', 'TransactionCrudController');
+    Route::get('api/transaction/get-documents-by-company', 'TransactionCrudController@getDocumentsByCompany');
     Route::crud('bankaccount', 'BankAccountCrudController');
     Route::crud('transactiontype', 'TransactionTypeCrudController');
     Route::crud('accountingaccount', 'AccountingAccountCrudController');
     Route::crud('transactiondetail', 'TransactionDetailCrudController');
+    Route::crud('accountingaccounttype', 'AccountingAccountTypeCrudController');
 }); // this should be the absolute last line of this file
