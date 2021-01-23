@@ -7,7 +7,9 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{ Invoice, Transaction };
+use App\Exports\TransactionExport;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Class TransactionCrudController
@@ -42,6 +44,26 @@ class TransactionCrudController extends CrudController
         $this->crud->addClause('where', 'company_id', $company->id);
     }
 
+    protected function setupExportRoutes($segment, $routeName, $controller)
+    {
+        \Route::get($segment.'/export', [
+            'as'        => $routeName.'.getExport',
+            'uses'      => $controller.'@getExportForm',
+            'operation' => 'export',
+        ]);
+    }
+    protected function getExportForm(bool $persist = false)
+    {
+        $this->crud->hasAccessOrFail('list');
+        $this->crud->setOperation('Export');
+
+        $date = now();
+        $fileName = 'movimientos_'. $date->format('Y-m-d') . '.xlsx';
+        $excel = new TransactionExport();
+
+        return Excel::download($excel, $fileName);
+    }
+
     /**
      * Define what happens when the List operation is loaded.
      * 
@@ -50,7 +72,8 @@ class TransactionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->enableExportButtons();
+        CRUD::addButtonFromView('top', 'transactions.export', 'transactions.export', 'end');
+        //$this->crud->enableExportButtons();
         $this->crud->addFilter([
           'type'  => 'date_range',
           'name'  => 'date',
