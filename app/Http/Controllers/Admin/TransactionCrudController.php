@@ -242,7 +242,7 @@ class TransactionCrudController extends CrudController
                     'include_all_form_fields'  => true,
                     //'dependencies'  => ['seller_id'],
                     'wrapper' => [
-                        'class' => 'form-group col-md-3 document-select',
+                        'class' => 'form-group col-md-6 document-select',
                     ],
                     'attributes' => [
                         'class' => 'form-control document-id-field'
@@ -250,42 +250,17 @@ class TransactionCrudController extends CrudController
                 ],
                 [
                     'label' => 'Documento',
-                    'name' => 'name',
+                    'name' => 'document_name',
                     'type' => 'text',
                     'wrapper' => [
-                        'class' => 'form-group col-md-3 custom-document-name',
+                        'class' => 'form-group col-md-6 custom-document-name',
                         'style' => 'display:none',
                     ],
                     'attributes' => [
-                        'placeholder' => 'Nombre del producto o servicio',
+                        'placeholder' => 'Nombre o identificador del documento',
                         'class' => 'form-control document-name-field'
                     ],
                 ],
-                //[
-                //    'label' => 'Producto / Servicio',
-                //    'name' => 'name',
-                //    'type' => 'text',
-                //    'wrapper' => [
-                //        'class' => 'form-group col-md-3 custom-product-name',
-                //        'style' => 'display:none',
-                //    ],
-                //    'attributes' => [
-                //        'placeholder' => 'Nombre del producto o servicio',
-                //        'class' => 'form-control product-name-field'
-                //    ],
-                //],
-
-                //[
-                //    'name' => 'document_identifier',
-                //    'label' => 'Número de documento',
-                //    'type' => 'select2_from_array',
-                //    'options' => $dtes,
-                //    'allows_null' => true,
-                //    'placeholder' => 'Seleccione un documento...',
-                //    'wrapperAttributes' => [
-                //        'class' => 'form-group col-md-6',
-                //    ],
-                //],
                 [
                     'label' => 'Es un producto/servicio personalizado',
                     'name' => 'is_custom',
@@ -294,20 +269,9 @@ class TransactionCrudController extends CrudController
                         'class' => 'checkbox-is-custom',
                     ],
                     'wrapper' => [
-                        'class' => 'form-group col-md-3',
+                        'class' => 'form-group col-md-6 offset-6',
                     ],
                 ],
-                //[
-                //    'name' => 'is_custom_document',
-                //    'type' => 'checkbox',
-                //    'attributes' => [
-                //        'class' => 'checkbox-is-custom',
-                //    ],
-                //    'label' => 'Introducir un documento manualmente',
-                //    'wrapperAttributes' => [
-                //        'class' => 'form-group col-md-6 offset-6',
-                //    ],
-                //],
                 [
                     'name' => 'notes',
                     'type' => 'textarea',

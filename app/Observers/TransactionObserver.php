@@ -2,7 +2,11 @@
 
 namespace App\Observers;
 
-use App\Models\{ Transaction, TransactionDetail };
+use App\Models\{
+    Transaction,
+    TransactionDetail,
+    Invoice,
+};
 
 class TransactionObserver
 {
@@ -56,13 +60,43 @@ class TransactionObserver
                 // Sanitize numbers
                 $detail['value'] = sanitizeNumber($detail['value']);
                 $notes = array_key_exists('notes', $detail) ? $detail['notes'] : '';
+
+                $documentArray = $this->resolveDocumentIdentifier($detail);
                 $props = [
                     'value' => $detail['value'],
+                    'document_identifier' => $documentArray['document_identifier'],
+                    'document_model' => $documentArray['document_model'],
                     'json_detail' => json_encode(['notes' => $notes]),
                     'transaction_id' => $transaction->id
                 ];
                 TransactionDetail::create($props);
             }
         }
+    }
+
+    /**
+     * Determine document identifier and model
+     */
+    private function resolveDocumentIdentifier($detail) : array
+    {
+        $array = [
+            'document_identifier' => null,
+            'document_model' => null,
+        ];
+
+        if (!$detail['is_custom']) {
+            $document = Invoice::find($detail['document_identifier']);
+
+            if (isset($document)) {
+                $array['document_identifier'] = $document->id;
+                $array['document_model'] = Invoice::class;
+            }
+            return $array;
+        }
+
+        $array['document_identifier'] = $detail['document_name'];
+
+        return $array;
+
     }
 }
