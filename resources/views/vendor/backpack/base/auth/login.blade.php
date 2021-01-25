@@ -22,7 +22,7 @@
 @section('content')
 <div class="row text-center">
     <div class="col-12 mt-2">
-        <img  src="{{ asset('img/filsa/banner-filsa.jpg') }}" class="img-fluid w-75 box-shadow border border-secondary border-r-20"/>
+        <img  src="{{ asset('img/prolibro/logo-prolibro.png') }}" class="img-fluid w-50 "/>
     </div>
 </div>
     <div class="row justify-content-center">

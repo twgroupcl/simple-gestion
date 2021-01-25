@@ -32,7 +32,8 @@ class BulkUploadMail extends Mailable
         $this->text = 'La libreria <strong>' . $seller . '</strong> ha publicado <strong>' . $nroProducts . '</strong> libros utilizando la carga masiva.<br><br> Puedes acceder al panel de administrador para aprobarlos o rechazarlos.';
         $this->buttonText = 'Ir al panel';
         $this->buttonLink = config('app.url') . '/admin';
-        $this->logo = 'img/filsa-banner.jpg';
+        $this->logo = 'img/prolibro/logo-prolibro.png';
+
     }
 
     /**

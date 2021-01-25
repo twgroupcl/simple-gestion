@@ -92,7 +92,7 @@ class CustomerObserver
                 return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
             }
             $currency = Currency::where('id',$plan->currency)->first();
-            
+
             $dataEmail = [
                 'seller' => $customer->name,
                 'plan' => $plan->name,
@@ -101,7 +101,7 @@ class CustomerObserver
                 'start_date' => $subscription_data['starts_at'],
                 'end_date' => $subscription_data['ends_at']
             ];
-    
+
             $emailsAdministrator = explode(';', Setting::get('administrator_email'));
             array_push($emailsAdministrator, $customer->email);
             //$this->sendMailSuscription($dataEmail,$emailsAdministrator);
@@ -137,7 +137,7 @@ class CustomerObserver
     {
         try {
             $data = [
-                'logo' => asset('img/filsa-banner.jpg'),
+                'logo' => asset('img/prolibro/logo-prolibro.png'),
                 'title' => 'Te damos la bienvenida '.$customer->first_name,
                 'text' => 'Explora la cantidad de libros que tenemos para ti.',
                 'rejectedText' => '',

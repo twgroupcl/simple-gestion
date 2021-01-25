@@ -28,7 +28,7 @@ class SellerChangeStatus extends Mailable
         $this->rejectedText = '';
         if ($seller->getReviewStatus() == 'Aprobado') {
             $this->title = '¡Buenas noticias!';
-            $this->text = 'Felicitaciones <strong>' . $seller->visible_name . '</strong>, hemos habilitado la cuenta de tu tienda.<br /><br />Para iniciar sesión haz click en el botón "Ingresar a mi tienda" e ingresa tus datos.<br /><br /><strong>Email:</strong> ' .$seller->email . '<br /><strong>Contraseña:</strong> (RUT empresa sin puntos, ej: 11222333-4)<br /><br />Recuerde cualquier consulta escribir a filsavirtual@prolibro.cl o llamar a  226720348.';
+            $this->text = 'Felicitaciones <strong>' . $seller->visible_name . '</strong>, hemos habilitado la cuenta de tu tienda.<br /><br />Para iniciar sesión haz click en el botón "Ingresar a mi tienda" e ingresa tus datos.<br /><br /><strong>Email:</strong> ' .$seller->email . '<br /><strong>Contraseña:</strong> (RUT empresa sin puntos, ej: 11222333-4)<br /><br />Recuerde cualquier consulta escribir prolibro@prolibro.cl.';
 
             $this->buttonText = 'Ingresar a mi tienda';
             $this->buttonLink = config('app.url') . '/admin';
@@ -44,7 +44,7 @@ class SellerChangeStatus extends Mailable
             $this->buttonLink = config('app.url');
         }
 
-        $this->logo = 'img/filsa-banner.jpg';
+        $this->logo = 'img/prolibro/logo-prolibro.png';
     }
 
     /**

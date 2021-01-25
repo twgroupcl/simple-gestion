@@ -145,15 +145,15 @@ use App\Models\Product;
                                             </tbody>
                                         </table> --}}
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#ffffff">
+                                            cellspacing="0" cellpadding="0" bgcolor="#6a9eb8">
                                             <tbody>
                                                 {{-- <tr style="padding-top:15px;">
                                                     <td> <br><br> </td>
                                                 </tr> --}}
-                                                {{-- <tr style="padding-top:15px;">
+                                                <tr style="padding-top:15px;">
                                                     <td  valign="top"> <img src="{{ asset($logo) }}" alt="" width="" height="" />
                                                     </td>
-                                                </tr> --}}
+                                                </tr>
                                                 {{-- <tr>
                                                     <td style="font-size: 30px; text-align: center;"><img
                                                         src="{{ asset('img/logos/filsa-logo.png') }}"

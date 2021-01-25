@@ -132,7 +132,7 @@ class OrderUpdated extends Mailable
                 }
             }
         }
-        $this->logo = 'img/filsa-banner.jpg';
+        $this->logo = 'img/prolibro/logo-prolibro.png';
     }
 
     /**

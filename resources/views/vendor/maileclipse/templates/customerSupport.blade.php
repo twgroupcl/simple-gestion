@@ -156,9 +156,9 @@ use App\Models\Product;
                                                 </tr>
                                                 <tr>
                                                     <td style="font-size: 30px; text-align: center;"><img
-                                                        src="{{ asset('img/logos/filsa-logo.png') }}"
+                                                        src="{{ asset('img/prolibro/logo-prolibro.png') }}"
                                                         width="150px"
-                                                        alt="Camara de libro" />
+                                                        alt="Prolibro" />
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -199,7 +199,7 @@ use App\Models\Product;
                                                                     <td style="text-align: left; color: #FFFFFF;">
                                                                         <br>
                                                                         Saludos,<br>
-                                                                        Equipo Filsa<br><br>
+                                                                        Equipo Prolibro<br><br>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
