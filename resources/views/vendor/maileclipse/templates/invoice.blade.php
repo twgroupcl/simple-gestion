@@ -844,7 +844,7 @@
 
                     <tr id="customer_id">
                         <td>Nombre vendedor:</td>
-                        <td>{{ $invoice->seller->name }}</td>
+                        <td>{{ $invoice->seller->name ?? '' }}</td>
                     </tr>
 
                     @if ($invoice->order)
