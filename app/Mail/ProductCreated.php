@@ -30,7 +30,8 @@ class ProductCreated extends Mailable
         $this->text = 'La tienda <strong>' . $seller . '</strong> ha publicado el siguiente libro: <strong>' . $product->name . '</strong>.<br><br> Puedes acceder al panel de administrador para aprobarlo o rechazarlo.';
         $this->buttonText = 'Ir al panel';
         $this->buttonLink = config('app.url') . '/admin';
-        $this->logo = 'img/filsa-banner.jpg';
+        $this->logo = 'img/prolibro/logo-prolibro.png';
+
     }
 
     /**
