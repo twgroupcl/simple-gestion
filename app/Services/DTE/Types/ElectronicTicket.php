@@ -3,6 +3,7 @@
 namespace App\Services\DTE\Types;
 
 use App\Models\Invoice;
+use App\Models\Product;
 use App\Services\DTE\Traits\DTEArray;
 
 class ElectronicTicket implements DocumentType
@@ -27,7 +28,7 @@ class ElectronicTicket implements DocumentType
 
      public function toArray()
      {
-        $array = $this->ttArray();
+        $array = $this->ttArray(true);
 
         if ($this->invoice->customer->is_foreign) {
             $array['Encabezado']['Receptor']['RUTRecep'] = Invoice::FOREIGN_RUT;
@@ -35,13 +36,24 @@ class ElectronicTicket implements DocumentType
 
         // En las boletas los montos deben ser brutos (con IVA incluido)
         foreach ($array['Detalle'] as $key => $item) {
-            $itemPriceWithIva  = round($array['Detalle'][$key]['PrcItem'] * 1.19, 2, PHP_ROUND_HALF_ODD);
+
+            // Si la boleta fue creada desde el POS, obtenemos el precio de los items directamente
+            // desde la BD para evitar errores de redondeo con el IVA. Si fue creada desde el CRUD
+            // de invoices o cotizaciones, aplicamos el calculo del IVA al precio unitario
+            if (isset($this->invoice->json_value['source']) && $this->invoice->json_value['source'] === 'pos' && $item['ItemCodigo']) {
+                $itemPriceWithIva = Product::find($item['ItemCodigo'])->real_price;
+            } else {
+                $itemPriceWithIva  = round($array['Detalle'][$key]['PrcItem'] * 1.19, 2, PHP_ROUND_HALF_ODD);
+            }
+            
             $array['Detalle'][$key]['PrcItem'] = $itemPriceWithIva;
 
             if (isset($item['DescuentoMonto']) && $item['DescuentoMonto'] > 0) {
                 $discountWIthIva = round($array['Detalle'][$key]['DescuentoMonto'] * 1.19, 0, PHP_ROUND_HALF_ODD);
                 $array['Detalle'][$key]['DescuentoMonto'] = $discountWIthIva;
             }
+
+            unset($array['Detalle'][$key]['ItemCodigo']);
         }
 
         return ($array);

@@ -4,7 +4,7 @@ namespace App\Services\DTE\Traits;
 
 trait DTEArray
 {
-    public function toArray()
+    public function toArray($includeItemCod = false)
     {
         $emitter = $this->invoice->company;
         $customerAddress = $this->invoice->address;
@@ -12,7 +12,7 @@ trait DTEArray
     
         $itemsDTE = [];
 
-        $itemsDTE = $this->prepareItems();
+        $itemsDTE = $this->prepareItems($includeItemCod);
 
         $globalDiscounts = false;
         if ($this->invoice->discount_percent > 0) {
@@ -76,7 +76,7 @@ trait DTEArray
         ];
     }
 
-    private function prepareItems() {
+    private function prepareItems($includeItemCod) {
         $items = $this->invoice->invoice_items;
         $itemsDTE= [];
 
@@ -97,6 +97,8 @@ trait DTEArray
                 'CodImpAdic' => !empty($item->additional_tax) ? $item->additional_tax->code : false,
 
             ];
+
+            if ($includeItemCod) $itemArray['ItemCodigo'] = $item->product_id ?? null;
 
             if ($item->discount_amount > 0) {
                 $itemArray = array_merge($itemArray, [

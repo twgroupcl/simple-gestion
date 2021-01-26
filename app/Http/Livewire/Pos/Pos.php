@@ -411,6 +411,7 @@ class Pos extends Component
             $invoice->invoice_date = now();
             $invoice->tax_amount = 19 * $invoice->total / 119; 
             $invoice->net = $invoice->total - $invoice->tax_amount;
+            $invoice->json_value = ['source' => 'pos'];
             $invoice->save();
 
             Invoice::withoutEvents(function () use ($invoice, $order) {
