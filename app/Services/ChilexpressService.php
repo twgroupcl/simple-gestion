@@ -7,7 +7,8 @@ use GuzzleHttp\Client;
 class ChilexpressService
 {
 	private $client;
-	private $sandboxUrl = 'https://qaservices.wschilexpress.com/rating/api/v1.0/rates/courier';
+	//private $sandboxUrl = 'https://qaservices.wschilexpress.com/rating/api/v1.0/rates/courier';
+	private $sandboxUrl = 'https://testservices.wschilexpress.com/rating/api/v1.0/rates/courier';
 
 	public function __construct()
 	{
@@ -22,7 +23,8 @@ class ChilexpressService
 				'headers' => [
 					'Content-Type' => 'application/json',
 					'Cache-Control' => 'no-cache',
-					'Ocp-Apim-Subscription-Key' => '058a8ce59e4b44888c35134e0b7a6245',
+					//'Ocp-Apim-Subscription-Key' => '058a8ce59e4b44888c35134e0b7a6245',
+					'Ocp-Apim-Subscription-Key' => 'f767358f953f4feb8020e44deee43b6b',
 				],
 			]);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
