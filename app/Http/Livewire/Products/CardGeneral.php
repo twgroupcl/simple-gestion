@@ -121,7 +121,6 @@ class CardGeneral extends Component
 
         $baseQuery =  ModelsProduct::where('status', '=', '1')
             ->where('parent_id', '=', null)
-            ->whereNotNull('is_approved')
             ->where('is_approved', '=', '1')
             ->with('categories')
             ->whereHas('seller', function ($query) {
