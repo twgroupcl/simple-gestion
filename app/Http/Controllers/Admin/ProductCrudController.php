@@ -58,12 +58,12 @@ class ProductCrudController extends CrudController
         $this->userSeller = null;
 
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace|Admin filsa|Supervisor de libros')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace|Admin prolibros|Supervisor de libros')) {
             $this->admin = true;
             $this->crud->enableExportButtons();
             $this->crud->allowAccess('bulkApprove');
             $this->crud->allowAccess('bulkReject');
-           
+
         } else {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
         }
@@ -147,7 +147,7 @@ class ProductCrudController extends CrudController
             'type' => 'relationship',
         ]);
 
-        
+
 
         CRUD::addColumn([
             'name' => 'is_approved_text',
@@ -244,7 +244,7 @@ class ProductCrudController extends CrudController
             'placeholder' => 'Selecciona la clase de producto',
             'entity'      => 'product_class',
             'attribute'   => "name",
-            'default'     => ProductClass::where('code', 'book')->first() 
+            'default'     => ProductClass::where('code', 'book')->first()
                                 ? ProductClass::where('code', 'book')->first()->id
                                 : 0,
             'data_source' => url("admin/api/productclass/get"),
@@ -417,7 +417,7 @@ class ProductCrudController extends CrudController
             $this->setInventoryFields($product);
         }
 
-        
+
 
         // SEO fields
         $this->setSeoFields();
@@ -1263,8 +1263,8 @@ class ProductCrudController extends CrudController
         $request->session()->forget('bulk_upload_data');
         $request->session()->forget('bulk_upload_temp_images_path');
 
-        return view('admin.products.bulk-upload', [ 
-            'admin' => $this->admin, 
+        return view('admin.products.bulk-upload', [
+            'admin' => $this->admin,
             'userSeller' => $this->userSeller,
             'sellers' => Seller::all()->sortBy('visible_name', SORT_NATURAL|SORT_FLAG_CASE),
         ]);
@@ -1291,7 +1291,7 @@ class ProductCrudController extends CrudController
         } else {
             $request->session()->forget('bulk_upload_data');
         }
-    
+
         return view('admin.products.bulk-upload-preview', compact('result', 'seller', 'admin'));
     }
 
@@ -1302,11 +1302,11 @@ class ProductCrudController extends CrudController
         DB::beginTransaction();
 
         $result = $bulkUploadService->storeProducts(
-            $request->session()->get('bulk_upload_data'), 
+            $request->session()->get('bulk_upload_data'),
             $request['seller_id'],
             $request->session()->get('bulk_upload_temp_images_path')
         );
-        
+
         if (!$result['status']) {
             DB::rollBack();
 

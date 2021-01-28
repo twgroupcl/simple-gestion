@@ -133,6 +133,9 @@
                         <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
                             <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid w-100">
                         </a>
+                        <a href="http://www.radiovalparaiso.cl/" target="_blank" class="border border-white">
+                            <img src="{{ asset('img/prolibro/banner-radio-valparaiso.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid w-100">
+                        </a>
 
 
                     </div>
@@ -152,8 +155,8 @@
                 <img src="{{ asset('img/prolibro/partner-mercurio.jpg') }}" alt="Banner Mercurio" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <a href="https://www.cooperativa.cl/" target="_blank">
-                    <img src="{{ asset('img/filsa/cooperativa.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+                <a href="https://www.radiovalparaiso.cl/" target="_blank">
+                    <img src="{{ asset('img/prolibro/partner-valparaiso.jpg') }}" alt="Banner Radio Valparaiso" class="img-fluid w-50">
                 </a>
             </div>
         </div>

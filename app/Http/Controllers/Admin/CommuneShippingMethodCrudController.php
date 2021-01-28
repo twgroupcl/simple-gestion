@@ -36,11 +36,11 @@ class CommuneShippingMethodCrudController extends CrudController
 
         $this->crud->denyAccess('show');
         $this->crud->enableDetailsRow();
-        
+
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace|Admin filsa')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace|Admin prolibros')) {
             $this->admin = true;
 
             $this->crud->enableExportButtons();
@@ -93,8 +93,8 @@ class CommuneShippingMethodCrudController extends CrudController
             'name' => 'commune',
             'label' => 'Comuna',
             'type' => 'relationship',
-        ]);    
-        
+        ]);
+
         $this->customFilters();
     }
 

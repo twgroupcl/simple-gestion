@@ -132,7 +132,7 @@ class OrderUpdated extends Mailable
                 }
             }
         }
-        $this->logo = 'img/prolibro/logo-prolibro.png';
+        $this->logo = 'img/prolibro/prolibro-mail.jpg';
     }
 
     /**
@@ -144,8 +144,8 @@ class OrderUpdated extends Mailable
     {
         if($this->receiver === 1) {
             return $this->subject($this->subject)->view('maileclipse::templates.orderEmailTemplate')
-            ->attach(public_path('pdf/TERMINOS_Y_CONDICIONES_SITIO_WEB_FILSA.pdf'), [
-                'as' => 'TERMINOS_Y_CONDICIONES_SITIO_WEB_FILSA.pdf',
+            ->attach(public_path('pdf/TERMINO_Y_CONDICIONES_PLATAFORMA_MARKETPLACE_WWW.PROLIBRO.CL.pdf'), [
+                'as' => 'TERMINO_Y_CONDICIONES_PLATAFORMA_MARKETPLACE_WWW.PROLIBRO.CL.pdf',
                 'mime' => 'application/pdf',
            ]);
         } else {

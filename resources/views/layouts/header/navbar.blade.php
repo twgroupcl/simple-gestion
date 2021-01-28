@@ -111,7 +111,7 @@
                     <!-- Primary menu-->
                     <ul class="navbar-nav">
                         <li class="nav-item active"><a class="nav-link" href="{{ url('/home') }}">Inicio</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="{{ url('/about-us') }}">Prolibro S.A.</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{{ url('/about-us') }}">Prolibro</a></li>
                         <li class="nav-item active"><a class="nav-link" href="https://camaradellibro.cl/wp-content/uploads/2020/12/Programa-FilsaVirtual-v.2.pdf" target="_blank" >Programa Cultural</a></li>
                         {{-- <li class="nav-item dropdown active"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Inicio</a>
                             <ul class="dropdown-menu">

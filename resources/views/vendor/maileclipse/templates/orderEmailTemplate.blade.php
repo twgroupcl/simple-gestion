@@ -145,7 +145,7 @@ use App\Models\Product;
                                             </tbody>
                                         </table> --}}
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#6a9eb8">
+                                            cellspacing="0" cellpadding="0" bgcolor="#ffffff">
                                             <tbody>
                                                 {{-- <tr style="padding-top:15px;">
                                                     <td> <br><br> </td>

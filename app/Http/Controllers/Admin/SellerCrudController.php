@@ -49,7 +49,7 @@ class SellerCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace|Admin filsa|Supervisor de libros')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace|Admin prolibros|Supervisor de libros')) {
             $this->admin = true;
 
             $this->crud->enableExportButtons();
@@ -582,7 +582,7 @@ class SellerCrudController extends CrudController
             'type' => 'text',
             'label' => 'Slug',
             'tab' => 'SEO',
-            'prefix' => 'https://www.filsavirtual.cl/shop/',
+            'prefix' => 'https://www.prolibro.cl/shop/',
             'hint' => 'Esta sera el enlace que los visitantes pueden utilizar para acceder a los libros de tu libreria',
             'wrapper' => [
                 'class' => 'form-group col-md-12'
