@@ -72,13 +72,15 @@ if (!function_exists('currencyFormat')) {
     /**
      * Price format
      *
-     * @param string $value amount
+     * @param string|null $value amount
      * @param string $currency currency code (currencies table)
      * @param bool $symbol return amount with symbol or not
      * @return string price formatted
      */
-    function currencyFormat(string $value, string $currency, bool $symbol = false): string
+    function currencyFormat($value, string $currency, bool $symbol = false): string
     {
+        if ($value === null) $value = 0;
+
         $currency = Cache::remember('articles', 30, function () use ($currency) {
             return Currency::where('code', $currency)->firstOrFail();
         });
