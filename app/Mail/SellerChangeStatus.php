@@ -44,7 +44,7 @@ class SellerChangeStatus extends Mailable
             $this->buttonLink = config('app.url');
         }
 
-        $this->logo = 'img/prolibro/logo-prolibro.png';
+        $this->logo = 'img/prolibro/prolibro-mail.jpg';
     }
 
     /**

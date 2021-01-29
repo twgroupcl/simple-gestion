@@ -3,7 +3,7 @@
 @push('before_styles')
 <style>
     body{
-        background-color: #2eb4fa !important;
+        background-color: #1fa0da !important;
     }
     .box-shadow{
         -webkit-box-shadow: 3px 3px 6px -2px rgba(97,97,97,1) !important;
@@ -22,7 +22,7 @@
 @section('content')
 <div class="row text-center">
     <div class="col-12 mt-2">
-        <img  src="{{ asset('img/prolibro/logo-prolibro.png') }}" class="img-fluid w-50 "/>
+        <img  src="{{ asset('img/prolibro/prolibro-login.jpg') }}" class="img-fluid w-50 "/>
     </div>
 </div>
     <div class="row justify-content-center">

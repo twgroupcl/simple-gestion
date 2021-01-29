@@ -66,7 +66,7 @@
                 </div>
             </div> --}}
             <div class="col-md-12 mb-4">
-                <!-- 
+                <!--
                     <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
                  -->
                 <div class="row">
@@ -84,15 +84,18 @@
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
                             <div class="d-flex flex-wrap">
-                                <div class="col-6 mb-2 text-center">
-                                    <img class="img-fluid w-50" src="{{ asset('img/filsa/logo-ministerio-cultura.png') }}" alt="Ministerio de Cultura" />
+                                <div class="col-4 mb-2 text-center">
+                                    <img class="img-fluid w-75" src="{{ asset('img/prolibro/patroc-cultura.jpg') }}" alt="Ministerio de Cultura" />
                                 </div>
-                                <div class="col-6 mb-2 text-center">
-                                    <img class="img-fluid w-50" src="{{ asset('img/filsa/municipalidad-santiago.jpg') }}" alt="Municipalidad Santiago" />
+                                <div class="col-4 mb-2 text-center">
+                                    <img class="img-fluid w-75" src="{{ asset('img/prolibro/patroc-mun-vina.jpg') }}" alt="Municipalidad Viña del Mar" />
+                                </div>
+                                <div class="col-4 mb-2 text-center">
+                                    <img class="img-fluid w-75" src="{{ asset('img/prolibro/patroc-seremi.jpg') }}" alt="Ministerio de las Culturas, las Artes y el Patrimionio" />
                                 </div>
                             </div>
                         </div>
-                    </div>   
+                    </div>
                 </div>
                 {{-- <div class="widget pb-2 mb-4">
                     <h3 class="widget-title text-light pb-1">Stay informed</h3>
@@ -194,7 +197,7 @@
                             -->
                                 <li class="widget-list-item mr-3 d-none d-lg-block d-md-block d-sm-block"><a class="widget-list-link" href="{{ url('about-us') }}">Quienes somos</a></li>
                                 <li class="widget-list-item mr-1 d-block d-sm-none"><a class="widget-list-link" href="{{ url('about-us') }}">Quienes somos</a></li>
-                                <li class="widget-list-item mr-3 d-none d-lg-block d-md-block d-sm-block"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li> 
+                                <li class="widget-list-item mr-3 d-none d-lg-block d-md-block d-sm-block"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
                                 <li class="widget-list-item mr-1 d-block d-sm-none"><a class="widget-list-link" href="{{ url('terms-conditions') }}">Términos y condiciones</a></li>
                                 <li class="widget-list-item"><a class="widget-list-link" href="{{ route('customer.support') }}">Servicio al cliente</a></li>
                         </ul>
