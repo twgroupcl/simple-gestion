@@ -61,7 +61,7 @@ $title = 'Error '.$error_number;
             <hr>
         </div>
 
-        <img src="{{ asset('img/filsa/filsa_virtual.png') }}" alt="Prolibro S.A." />
+        <img src="{{ asset('img/prolibro/logo-prolibro.png') }}" alt="Prolibro S.A." />
 
         <div class="error_title text-muted">
             @yield('title')
