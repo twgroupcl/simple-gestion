@@ -214,7 +214,7 @@ use App\Models\Product;
                                                         style="text-align: left; color: #000000;">
                                                     <p>
                                                         Estimado cliente,<br/> le confirmamos la recepción de su pedido y el respectivo pago, por favor verifique su dirección y los detalles del pedido para garantizar que reciba su despacho sin contratiempos.<br />
-                                                        Muchas gracias por su compra de libros.<br/>
+                                                        Muchas gracias por su compra.<br/>
                                                         Para consultas dirigirse a página de inicio, sección: Servicio al Cliente.
                                                     </p>
 
