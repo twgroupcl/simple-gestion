@@ -40,7 +40,7 @@ class CommuneShippingMethodCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace|Admin prolibros')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador negocio|Supervisor Marketplace|Admin prolibro')) {
             $this->admin = true;
 
             $this->crud->enableExportButtons();

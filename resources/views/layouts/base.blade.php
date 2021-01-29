@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- SEO Meta Tags-->
     <meta name="description" content="Prolibro S.A. - Libros y Lecturas">
-    <meta name="keywords" content="e-commerce, marketplace, twgroup, filsa">
+    <meta name="keywords" content="e-commerce, marketplace, twgroup, prolibro">
     <meta name="author" content="TWGroup">
     <!-- Viewport-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
