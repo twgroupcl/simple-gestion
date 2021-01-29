@@ -49,7 +49,7 @@ class SellerCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace|Admin prolibros|Supervisor de libros')) {
+        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace|Admin prolibro|Supervisor de libros')) {
             $this->admin = true;
 
             $this->crud->enableExportButtons();

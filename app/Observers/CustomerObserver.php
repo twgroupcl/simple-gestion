@@ -137,7 +137,7 @@ class CustomerObserver
     {
         try {
             $data = [
-                'logo' => asset('img/prolibro/logo-prolibro.png'),
+                'logo' => asset('img/prolibro/prolibro-mail.jpg'),
                 'title' => 'Te damos la bienvenida '.$customer->first_name,
                 'text' => 'Explora la cantidad de libros que tenemos para ti.',
                 'rejectedText' => '',
@@ -148,8 +148,8 @@ class CustomerObserver
             Mail::send('vendor.maileclipse.templates.welcomeCustomer', $data, function ($message) use ($customer) {
                 $message->to($customer->email);
                 $message->subject('Bienvenido a Prolibro S.A.');
-                $message->attach(public_path('pdf/TERMINOS_Y_CONDICIONES_SITIO_WEB_FILSA.pdf'), [
-                    'as' => 'TERMINOS_Y_CONDICIONES_SITIO_WEB_FILSA.pdf',
+                $message->attach(public_path('pdf/TERMINOS_Y_CONDICIONES_PLATAFORMA_MARKETPLACE_WWW.PROLIBRO.CL'), [
+                    'as' => 'TERMINOS_Y_CONDICIONES_PLATAFORMA_MARKETPLACE_WWW.PROLIBRO.CL',
                     'mime' => 'application/pdf',
                ]);
             });
