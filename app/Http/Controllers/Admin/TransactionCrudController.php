@@ -36,7 +36,7 @@ class TransactionCrudController extends CrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transaction');
         CRUD::setEntityNameStrings('movimiento', 'movimientos');
         $this->crud->denyAccess('show');
-        if (!backpack_user()->hasPermissionTo('conciliation')) {
+        if (!backpack_user()->hasPermissionTo('accouting')) {
             $this->crud->denyAccess(['list', 'create', 'update']);
         }
 
