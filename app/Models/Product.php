@@ -581,6 +581,11 @@ class Product extends Model
         return $this->hasMany(ProductAttribute::class, 'product_id');
     }
 
+    public function product_class_attributes()
+    {
+        return $this->belongsToMany(ProductClassAttribute::class, 'product_attributes');
+    }
+
     public function super_attributes()
     {
         return $this->belongsToMany(ProductClassAttribute::class, 'product_super_attributes');

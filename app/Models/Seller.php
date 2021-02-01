@@ -225,6 +225,10 @@ class Seller extends Model
         return $this->hasMany(CommuneShippingMethod::class);
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

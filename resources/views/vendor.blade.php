@@ -56,7 +56,28 @@
                             <br>
                         @endif
                     -->
-                    @if($sellerAdress)
+                    @if($seller->addresses)
+                        @php
+                            $sellerAddress = $seller->addresses[0];
+                        @endphp
+                        <h6>Dirección</h6>
+                        @if($sellerAddress->commune)
+                            <p class="font-size-ms text-muted mb-0">Comuna: {{$sellerAddress->commune->name}}</p>
+                        @endif
+                        @if($sellerAddress->street)
+                            <p class="font-size-ms text-muted mb-0">Calle: {{$sellerAddress->street}}</p>
+                        @endif
+                        @if($sellerAddress->number)
+                            <p class="font-size-ms text-muted mb-0">Número: {{$sellerAddress->number}}</p>
+                        @endif
+                        @if($sellerAddress->subnumber)
+                            <p class="font-size-ms text-muted mb-0">Casa/Dpto/Oficina: {{$sellerAddress->subnumber}}</p>
+                        @endif
+                        <br>
+                    @endif
+
+                    {{--
+                        @if($sellerAdress)
                         <h6>Dirección</h6>
                         @if($sellerAdress->commune_id)
                             <p class="font-size-ms text-muted mb-0">Comuna: {{$sellerAdress->commune->name}}</p>
@@ -72,7 +93,7 @@
                         @endif
                         <br>
                     @endif
-
+                --}}
                     @if($seller->web)
                         <h6>Web</h6>
                         <a 
@@ -116,7 +137,7 @@
                         @livewire('sorting-products', [ 'showFrom' => 'vendor'])
                     </div>
                     <div class="cz-sidebar rounded-lg box-shadow-lg" id="shop-sidebar">
-                        @livewire('filters')
+                        @livewire('filters', ['products' => $seller->products])
                     </div>
                     <!--
                         <h6>Contacts</h6>
@@ -157,7 +178,7 @@
                     </div>
                 -->
                 <div class="pt-2 px-4 pl-lg-0 pr-xl-5">
-                    <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-left border-bottom">Libros<span class="badge badge-secondary font-size-sm text-body align-middle ml-2">{{ $countProduct }}</span></h2>
+                    <h2 class="h3 pt-2 pb-4 mb-4 text-center text-sm-left border-bottom">Libros<span class="badge badge-secondary font-size-sm text-body align-middle ml-2">{{ $seller->products_count}}</span></h2>
                     <!-- Toolbar-->
                     <!--
                         <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
