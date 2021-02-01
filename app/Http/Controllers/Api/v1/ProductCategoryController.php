@@ -107,4 +107,30 @@ class ProductCategoryController extends Controller
             'data' => $ProductCategories,
         ], 200);
     }
+
+    public function delete(Request $request)
+    {
+        $productCategory = ProductCategory::where('code', $request['code'])->first();
+
+        if (!$productCategory) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'La categoria indicada no existe'
+        ],  404);
+
+        try {
+            $productCategory->forceDelete();
+        } catch (\Exception $e) {
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'Ocurrio un error intentando eliminar la categoria. Posiblemente la categoria este siendo usada',
+                'error_message' => $e->getMessage(),
+            ],  404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Categoria elminada',
+            'data' => $productCategory,
+        ], 200);
+    }
 }

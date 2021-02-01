@@ -98,6 +98,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/categories', 'Api\v1\ProductCategoryController@store')
         ->middleware(['auth.jwt', 'permission:productcategory.create'])
         ->name('api.categories.store');
+    Route::delete('/categories/code/{code}', 'Api\v1\ProductCategoryController@delete')
+        ->middleware(['auth.jwt', 'permission:productcategory.delete'])
+        ->name('api.categories.code-delete');
     Route::get('/categories/{id}', 'Api\v1\ProductCategoryController@show')
         ->name('api.categories.show');
     Route::get('/categories/code/{code}', 'Api\v1\ProductCategoryController@showByCode')
