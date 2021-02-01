@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\User;
 use App\Models\Cart;
+use App\Models\Branch;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\CartItem;
@@ -38,7 +39,6 @@ class CompanyController extends Controller
             foreach ($products as $product) {
                 $product->delete();
             }
-            
     
             $brands = ProductBrand::all();
             foreach ($brands as $brand) {
@@ -74,6 +74,13 @@ class CompanyController extends Controller
                 DB::table('branch_users')->where('user_id', $user->id)->delete();
                 DB::table('company_users')->where('user_id', $user->id)->delete();
                 $user->forceDelete();
+            }
+
+            $branchs = Branch::whereNotIn('id', [1, 2, 3, 4])->get();
+            foreach ($branchs as $branch) {
+                DB::table('branch_companies')->where('branch_id', $branch->id)->delete();
+                DB::table('branch_users')->where('branch_id', $branch->id)->delete();
+                $branch->forceDelete();
             }
         } catch (\Exception $e) {
             DB::rollBack();

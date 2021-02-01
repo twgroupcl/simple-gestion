@@ -29,7 +29,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group([ 'prefix' => '/v1'], function() {
 
     // Reset DB
-    // Route::get('/tools/reset/55491335135', 'Api\v1\CompanyController@reset');
+    Route::get('/tools/reset/55491335135', 'Api\v1\CompanyController@reset');
 
     // Login
     Route::post('/login', 'Api\v1\AuthController@authenticate');
@@ -78,7 +78,7 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.brands.store');
     Route::delete('/brands/code/{code}', 'Api\v1\ProductBrandController@delete')
         ->middleware(['auth.jwt', 'permission:productbrand.delete'])
-        ->name('api.brands.store');
+        ->name('api.brands.code-delete');
     Route::get('/brands/{id}', 'Api\v1\ProductBrandController@show')
         ->name('api.brands.show');
     Route::get('/brands/code/{code}', 'Api\v1\ProductBrandController@showByCode')
@@ -132,6 +132,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/warehouses', 'Api\v1\ProductInventorySourceController@store')
         ->middleware(['auth.jwt', 'permission:productinventorysource.create'])
         ->name('api.warehouses.store');
+    Route::delete('/warehouses/code/{code}', 'Api\v1\ProductInventorySourceController@delete')
+        ->middleware(['auth.jwt', 'permission:productinventorysource.delete'])
+        ->name('api.warehouses.code-delete');
     Route::get('/warehouses/{id}', 'Api\v1\ProductInventorySourceController@show')
         ->name('api.warehouses.show');
     Route::get('/warehouses/code/{code}', 'Api\v1\ProductInventorySourceController@showByCode')
