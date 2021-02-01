@@ -1,7 +1,7 @@
 
 @php
 
-$isAdmin = backpack_user()->hasAnyRole('Super admin|Admin filsa|Contador filsa');
+$isAdmin = backpack_user()->hasAnyRole('Super admin|Admin prolibro|Contador prolibro');
 
 Widget::add()->to('after_content')->type('div')->class('row')->content([
     Widget::add([
