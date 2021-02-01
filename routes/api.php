@@ -76,6 +76,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/brands', 'Api\v1\ProductBrandController@store')
         ->middleware(['auth.jwt', 'permission:productbrand.create'])
         ->name('api.brands.store');
+    Route::delete('/brands/code/{code}', 'Api\v1\ProductBrandController@delete')
+        ->middleware(['auth.jwt', 'permission:productbrand.delete'])
+        ->name('api.brands.store');
     Route::get('/brands/{id}', 'Api\v1\ProductBrandController@show')
         ->name('api.brands.show');
     Route::get('/brands/code/{code}', 'Api\v1\ProductBrandController@showByCode')

@@ -96,4 +96,30 @@ class ProductBrandController extends Controller
             'data' => $productBrands,
         ], 200);
     }
+
+    public function delete($code)
+    {
+        $productBrand = ProductBrand::where('code', $code)->first();
+
+        if (!$productBrand) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'La marca indicada no existe'
+        ],  404);
+
+        try {
+            $productBrand->forceDelete();
+        } catch (\Exception $e) {
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'Ocurrio un error intentando eliminar la marca. Posiblemente este siendo usada',
+                'error_message' => $e->getMessage(),
+            ],  404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Marca elminada',
+            'data' => $productBrand,
+        ], 200);
+    }
 }
