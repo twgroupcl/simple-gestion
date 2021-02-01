@@ -374,7 +374,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="border rounded-lg p-4 h-100">
-                                        <h2 class="woocommerce-column__title h6">Dirección de envío</h2>
+                                        <h2 class="woocommerce-column__title h6">Dirección cliente</h2>
                                         @if (isset($addressShipping))
                                             <ul class="font-size-sm list-unstyled">
                                                 <li class="woocommerce-customer-details--address d-flex">

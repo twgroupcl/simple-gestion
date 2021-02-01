@@ -144,9 +144,9 @@ class SellerObserver
             $plan = app('rinvex.subscriptions.plan')->find($subscription_data['plan_id']);
             $newSubscription = $user->newSubscription('plan', $plan);
             $plan = Plans::where('id', $newSubscription->plan_id)->first();
-            
+
             $currency = Currency::where('id',$plan->currency)->first();
-            
+
             $dataEmail = [
                 'seller' => $seller->name,
                 'plan' => $plan->name,
@@ -159,7 +159,7 @@ class SellerObserver
             $emailsAdministrator = explode(';', Setting::get('administrator_email'));
             array_push($emailsAdministrator, $seller->email);
             $this->sendMailSuscription($dataEmail,$emailsAdministrator);
-           
+
             if ($plan->price > 0) {
                 return redirect()->route('payment.subscription', ['id' => $newSubscription->id])->send();
             }

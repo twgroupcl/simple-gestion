@@ -120,7 +120,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
 <div class="title-data">
     <div class="row">
         <div class="col-12 text-center">
-            Orden de Pedido Prolibro S.A.
+            Orden de Pedido Prolibro
         </div>
     </div>
 </div>
@@ -146,7 +146,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
         <td width="50%">
             @if (isset($addressShipping))
                 <div class="direccion-facturacion-titulo">
-                    <p><strong>Dirección de envío</strong></p>
+                    <p><strong>Dirección cliente</strong></p>
                 </div>
                 <p>
                 <p class="p-estrecho">{{ $order->first_name . ', ' . $order->last_name }}</p>

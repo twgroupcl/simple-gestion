@@ -231,15 +231,15 @@ class CustomerController extends Controller
     {
         $request = request();
         $planId = (!empty($idPlan))?$idPlan:$request->plan_id;
-            
+
         $user = User::find(auth()->user()->id);
         $plan = app('rinvex.subscriptions.plan')->find($planId);
         $newSubscription = $user->newSubscription('plan', $plan);
-        
+
         if ($plan->price > 0) {
             return redirect()->route('payment.customer.subscription', ['id' => $newSubscription->id])->send();
         }
-        
+
     }
 
     public function sendMailSubscription()
@@ -269,7 +269,7 @@ class CustomerController extends Controller
         }
     }
 
-    
+
     public function support(Request $request)
     {
         return view('customer.support');
@@ -290,13 +290,13 @@ class CustomerController extends Controller
         ];
 
         $requestValidated = array_merge($requestValidated, $arrJsonValues);
-        
+
         $ticket = CustomerSupport::create($requestValidated);
         //$ticket->json_value = json_encode($arrJsonValues);
         //$ticket->save();
         try {
             Mail::to($request->email)
-                ->cc($cc)
+                ->bcc($cc)
                 ->send(new MailCustomerSupport());
         } catch (\Exception $e) {
             \Log::warning('Correo hacia '. $request->email . ' con copia a  ' . serialize($cc) . ' ejecutado por CustomerSupportController no pudo ser enviado.');
