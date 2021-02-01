@@ -55,8 +55,10 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::get('/products/{warehouse}/{sku}', 'Api\v1\ProductController@showBySkuAndWarehouse')
         ->name('api.products.show-by-sku');
     Route::post('/products/{warehouse}/{sku}/stock', 'Api\v1\ProductController@updateStock')
+        ->middleware(['auth.jwt', 'permission:product.update'])
         ->name('api.products.update-stock');
     Route::post('/products/{warehouse}/{sku}/price', 'Api\v1\ProductController@updatePrice')
+        ->middleware(['auth.jwt', 'permission:product.update'])
         ->name('api.products.update-price');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
@@ -117,6 +119,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/product-classes', 'Api\v1\ProductClassController@store')
         ->middleware(['auth.jwt', 'permission:productclass.create'])
         ->name('api.product-classes.store');
+    Route::delete('/product-classes/code/{code}', 'Api\v1\ProductClassController@delete')
+        ->middleware(['auth.jwt', 'permission:productclass.delete'])
+        ->name('api.product-classes.code-delete');
     Route::get('/product-classes/{id}', 'Api\v1\ProductClassController@show')
         ->name('api.product-classes.show');
     Route::get('/product-classes/code/{code}', 'Api\v1\ProductClassController@showBycode')

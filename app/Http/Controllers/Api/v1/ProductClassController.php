@@ -8,6 +8,7 @@ use App\Models\ProductBrand;
 use App\Models\ProductClass;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -100,6 +101,38 @@ class ProductClassController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $productClasses,
+        ], 200);
+    }
+
+    public function delete($code)
+    {
+        $productClass = ProductClass::where('code', $code)->first();
+
+        if (!$productClass) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'El codigo de la clase no existe'
+        ],  404);
+
+        DB::beginTransaction();
+
+        try {
+            $productClass->product_class_attributes()->forceDelete();
+            $productClass->forceDelete();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'Ocurrio un error intentando eliminar la clase. Posiblemente la categoria este siendo usada',
+                'error_message' => $e->getMessage(),
+            ],  400);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Clase elminada',
+            'data' => $productClass,
         ], 200);
     }
 }
