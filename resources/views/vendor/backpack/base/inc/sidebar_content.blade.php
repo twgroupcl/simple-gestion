@@ -192,7 +192,7 @@
 </li>
 @endcanany
 
-@canany(['conciliation'])
+@canany(['accounting.list'])
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-question"></i> Contabilidad</a>
     <ul class="nav-dropdown-items">

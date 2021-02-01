@@ -32,7 +32,7 @@ class AccountingAccountTypeCrudController extends CrudController
         CRUD::setEntityNameStrings('tipo de cuenta contable', 'tipos de cuenta contable');
         $this->crud->denyAccess('show');
 
-        if (!backpack_user()->hasPermissionTo('accouting')) {
+        if (!backpack_user()->hasPermissionTo('accounting')) {
             $this->crud->denyAccess(['list', 'create', 'update']);
         }
     }

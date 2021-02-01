@@ -34,7 +34,7 @@ class BankAccountCrudController extends CrudController
         $this->crud->addClause('where', 'company_id', $company->id);
         
         $this->crud->denyAccess('show');
-        if (!backpack_user()->hasPermissionTo('conciliation')) {
+        if (!backpack_user()->hasPermissionTo('accounting')) {
             $this->crud->denyAccess(['list', 'create', 'update']);
         }
     }
