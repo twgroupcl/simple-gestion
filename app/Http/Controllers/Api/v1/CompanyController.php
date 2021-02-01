@@ -18,10 +18,16 @@ use App\Http\Controllers\Api\Controller;
 class CompanyController extends Controller
 {
 
+    public function indexReset()
+    {
+        return view('company.tool-reset');
+    }
     // Temporal method
     // Only for testing
-    public function reset()
+    public function reset(Request $request)
     {
+        if ($request['pass'] != 'adminreset') return 'Error en pass';
+
         DB::beginTransaction();
 
         try {
