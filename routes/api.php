@@ -28,6 +28,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group([ 'prefix' => '/v1'], function() {
 
+    // Reset DB
+    Route::get('/tools/reset/55491335135', 'Api\v1\CompanyController@reset');
+
     // Login
     Route::post('/login', 'Api\v1\AuthController@authenticate');
     Route::get('/test', 'Api\v1\AuthController@test')->middleware('auth.jwt');;
