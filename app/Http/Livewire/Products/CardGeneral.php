@@ -124,7 +124,8 @@ class CardGeneral extends Component
             ->where('is_approved', '=', '1')
             ->with('categories')
             ->whereHas('seller', function ($query) {
-                return $query->where('is_approved', '=', '1');
+                return $query->where('is_approved', '=', '1')
+                             ->where('status', 1);
             })
             ->when($category_id, function ($query) use ($category_id) {
                 if ($category_id != 0) {
@@ -135,11 +136,13 @@ class CardGeneral extends Component
                 return $query;
             })
             ->when($product_search, function ($query) use ($product_search) {
-                return $query->where('name', 'LIKE', '%' . $product_search . '%')
-                ->orWhere('sku', 'LIKE', '%' . $product_search . '%')
-                ->orWhere(\DB::raw("lower(JSON_EXTRACT(attributes_json,'$.". '"' ."attribute-1". '"' ."'))"), "LIKE", "%".strtolower($product_search)."%")
-                ->orWhereHas('product_brands', function ($q) use ($product_search) {
-                    $q->where('name', 'LIKE', '%' . $product_search . '%');
+                return $query->where(function($query) use ($product_search) {
+                    $query->where('name', 'LIKE', '%' . $product_search . '%')
+                    ->orWhere('sku', 'LIKE', '%' . $product_search . '%')
+                    ->orWhere(\DB::raw("lower(JSON_EXTRACT(attributes_json,'$.". '"' ."attribute-1". '"' ."'))"), "LIKE", "%".strtolower($product_search)."%")
+                    ->orWhereHas('product_brands', function ($q) use ($product_search) {
+                        $q->where('name', 'LIKE', '%' . $product_search . '%');
+                    });
                 });
             })
             ->when($seller_id, function ($query) use ($seller_id) {
