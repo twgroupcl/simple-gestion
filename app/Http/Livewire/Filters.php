@@ -45,7 +45,7 @@ class Filters extends Component
 
                 $query->where('status', 1)->orderBy('name', 'ASC');
 
-            }])->pluck('product_brands', 'product_brands.id')->flatten();
+            }])->pluck('product_brands', 'product_brands.id')->flatten()->filter();
 
         } else {
 
@@ -70,7 +70,7 @@ class Filters extends Component
                            });
                 }
 
-            ])->pluck('product_class_attributes', 'product_class_attributes.id')->flatten();
+            ])->pluck('product_class_attributes', 'product_class_attributes.id')->flatten()->filter();
 
         } else {
             $this->attributes = ProductClassAttribute::where('json_options','<>','[]')
