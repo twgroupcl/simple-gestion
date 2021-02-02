@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@php
+    $termsAndConditions = url('pdf/TERMINOS_Y_CONDICIONES_PLATAFORMA_MARKETPLACE_WWW.PROLIBRO.CL.pdf');
+@endphp
+
 @section('content')
 <!-- Page title-->
 <!-- Page Title (Light)-->
@@ -22,8 +26,14 @@
 </div>
 <!-- Page Content-->
 <div class="container py-5 mt-md-2 mb-2">
-    <div class="row" >
-        <embed src="{{ url('pdf/TERMINOS_Y_CONDICIONES_PLATAFORMA_MARKETPLACE_WWW.PROLIBRO.CL.pdf') }}" type="application/pdf" width="100%" height="600px" />
+    <div class="row">
+        <embed src="{{ $termsAndConditions }}" type="application/pdf" width="100%" height="600px" />
     </div>
+    <div class="m-5">
+        <span> Si no puede visualizar el documento: 
+            <a target="_blank" href="{{ $termsAndConditions }}" > Descargar Términos y condiciones </a>
+        </span>
+    </div>
+
 </div>
 @endsection
