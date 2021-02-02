@@ -17,7 +17,8 @@
 </div>
 
 <div class="d-block d-sm-none">
-    <div class="cz-carousel cz-dots-enabled">
+    <div class="cz-carousel">
+    <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled">
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
             <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner">
             <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
@@ -25,6 +26,7 @@
                 <img src="{{ asset('img/filsa/mobile-banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
             </a> --}}
         </div>
+    </div>
     </div>
 </div>
 <section class="container p-0">
