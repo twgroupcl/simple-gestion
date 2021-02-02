@@ -39,10 +39,14 @@ class Filters extends Component
 
     public function loadBrands() 
     {
-        if ($this->products) {
-            $this->brands = $this->products->load(['product_brands' => function($query) {
+        if (isset($this->products)) {
+
+            $this->brands = $this->products->load(['product_brands' => function ($query) {
+
                 $query->where('status', 1)->orderBy('name', 'ASC');
+
             }])->pluck('product_brands', 'product_brands.id')->flatten();
+
         } else {
 
             $this->brands = ProductBrand::where('status','=','1')
@@ -54,6 +58,7 @@ class Filters extends Component
     {
         if (isset($this->products)) {
             $this->attributes = $this->products->load([
+
                 'product_class_attributes' => function ($query) {
 
                     $query->where('json_options','<>','[]')
@@ -64,21 +69,26 @@ class Filters extends Component
                                              ->groupBy('json_value');
                            });
                 }
+
             ])->pluck('product_class_attributes', 'product_class_attributes.id')->flatten();
 
         } else {
             $this->attributes = ProductClassAttribute::where('json_options','<>','[]')
-            ->where('json_attributes->type_attribute','select')
-            ->whereHas('product_attributes', function ($query) {
-                return $query->where('json_value', '<>', '')
-                             ->where('json_value', 'NOT LIKE', "%*%")->groupBy('json_value');
-            })->get();
+                ->where('json_attributes->type_attribute','select')
+                ->whereHas('product_attributes', function ($query) {
+                    return $query->where('json_value', '<>', '')
+                                 ->where('json_value', 'NOT LIKE', "%*%")
+                                 ->groupBy('json_value');
+                })->get();
 
         }
     }
 
     public function loadCategories() 
     {
-        $this->categories = ProductCategory::with('product_class')->with('products')->orderBy('name','ASC')->get();
+        $this->categories = ProductCategory::with('product_class')
+             ->with('products')
+             ->orderBy('name','ASC')
+             ->get();
     }
 }
