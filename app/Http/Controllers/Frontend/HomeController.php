@@ -25,8 +25,11 @@ class HomeController extends Controller
 
         $sellers =  Seller::where('status', '=', '1')
         ->where('is_approved', '=', '1')
-        ->get()
-        ->shuffle();
+        ->whereHas('products', function($query) {
+            $query->where('status', 1)->where('is_approved', 1);
+        })->has('products', '>', 0)
+        ->get();
+        //->shuffle();
 
         $sellers = $sellers->split(2);
 
