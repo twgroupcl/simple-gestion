@@ -99,7 +99,7 @@
                 </div>
             </div>
             <!-- Filter by Brand-->
-            <!--
+            {{--
 
                 <div class="widget cz-filter mb-4 pb-4 border-bottom">
                     <h3 class="widget-title">Editorial</h3>
@@ -115,12 +115,12 @@
                                         value="{{$brand->id}}" 
                                         id="{{$brand->id}}">
                                     <label class="custom-control-label cz-filter-item-text"  for="{{$brand->id}}">{{$brand->name}}</label>
-                                </div>{{-- <span class="font-size-xs text-muted">{{$brand->products->count()}}</span> --}}
+                                </div>
                             </li>
                         @endforeach
                     </ul>
                 </div>
-            -->
+            --}}
             <!-- Filter by attributes -->
             <form action="">
             @foreach($attributes as $attribute)
