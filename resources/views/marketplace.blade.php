@@ -18,15 +18,15 @@
 
 <div class="d-block d-sm-none">
     <div class="cz-carousel">
-    <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled">
-        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-            <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner">
-            <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
-            {{-- <a href="https://filsaenvivo.com/" target="_blank">
-                <img src="{{ asset('img/filsa/mobile-banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
-            </a> --}}
+        <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled">
+            <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+                <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner">
+                <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
+                {{-- <a href="https://filsaenvivo.com/" target="_blank">
+                    <img src="{{ asset('img/filsa/mobile-banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
+                </a> --}}
+            </div>
         </div>
-    </div>
     </div>
 </div>
 <section class="container p-0">
@@ -76,7 +76,7 @@
         @if(count($sellers))
             <div class="row">
                 @foreach($sellers[0] as $key => $seller)
-                    <div class="col-lg-3 col-md-4 col-sm-6 px-5 mb-4" wire:key="{{ $key }}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-5 mb-4" wire:key="{{ $key }}">
                         @livewire('sellers.seller', ['seller' => $seller], key($seller->id . $key))
                     </div>
                     <hr class="d-sm-none">
@@ -116,7 +116,7 @@
         @if(count($sellers))
             <div class="row">
                 @foreach($sellers[1] as $key => $seller)
-                    <div class="col-lg-3 col-md-4 col-sm-6 px-5 mb-4" wire:key="{{ $key }}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-5 mb-4" wire:key="{{ $key }}">
                         @livewire('sellers.seller', ['seller' => $seller], key($seller->id . $key))
                     </div>
                     <hr class="d-sm-none">

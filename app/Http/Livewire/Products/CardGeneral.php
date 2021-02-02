@@ -142,6 +142,9 @@ class CardGeneral extends Component
                     ->orWhere(\DB::raw("lower(JSON_EXTRACT(attributes_json,'$.". '"' ."attribute-1". '"' ."'))"), "LIKE", "%".strtolower($product_search)."%")
                     ->orWhereHas('product_brands', function ($q) use ($product_search) {
                         $q->where('name', 'LIKE', '%' . $product_search . '%');
+                    })
+                    ->orWhereHas('seller', function ($q) use ($product_search) {
+                        $q->where('visible_name', 'LIKE', '%' . $product_search . '%');
                     });
                 });
             })
