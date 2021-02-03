@@ -28,6 +28,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group([ 'prefix' => '/v1'], function() {
 
+    // Reset DB
+    Route::get('/tools/reset', 'Api\v1\CompanyController@indexReset');
+    Route::post('/tools/reset', 'Api\v1\CompanyController@reset');
+
     // Login
     Route::post('/login', 'Api\v1\AuthController@authenticate');
     Route::get('/test', 'Api\v1\AuthController@test')->middleware('auth.jwt');;
@@ -51,8 +55,10 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::get('/products/{warehouse}/{sku}', 'Api\v1\ProductController@showBySkuAndWarehouse')
         ->name('api.products.show-by-sku');
     Route::post('/products/{warehouse}/{sku}/stock', 'Api\v1\ProductController@updateStock')
+        ->middleware(['auth.jwt', 'permission:product.update'])
         ->name('api.products.update-stock');
     Route::post('/products/{warehouse}/{sku}/price', 'Api\v1\ProductController@updatePrice')
+        ->middleware(['auth.jwt', 'permission:product.update'])
         ->name('api.products.update-price');
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
@@ -73,6 +79,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/brands', 'Api\v1\ProductBrandController@store')
         ->middleware(['auth.jwt', 'permission:productbrand.create'])
         ->name('api.brands.store');
+    Route::delete('/brands/code/{code}', 'Api\v1\ProductBrandController@delete')
+        ->middleware(['auth.jwt', 'permission:productbrand.delete'])
+        ->name('api.brands.code-delete');
     Route::get('/brands/{id}', 'Api\v1\ProductBrandController@show')
         ->name('api.brands.show');
     Route::get('/brands/code/{code}', 'Api\v1\ProductBrandController@showByCode')
@@ -95,6 +104,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/categories', 'Api\v1\ProductCategoryController@store')
         ->middleware(['auth.jwt', 'permission:productcategory.create'])
         ->name('api.categories.store');
+    Route::delete('/categories/code/{code}', 'Api\v1\ProductCategoryController@delete')
+        ->middleware(['auth.jwt', 'permission:productcategory.delete'])
+        ->name('api.categories.code-delete');
     Route::get('/categories/{id}', 'Api\v1\ProductCategoryController@show')
         ->name('api.categories.show');
     Route::get('/categories/code/{code}', 'Api\v1\ProductCategoryController@showByCode')
@@ -107,6 +119,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/product-classes', 'Api\v1\ProductClassController@store')
         ->middleware(['auth.jwt', 'permission:productclass.create'])
         ->name('api.product-classes.store');
+    Route::delete('/product-classes/code/{code}', 'Api\v1\ProductClassController@delete')
+        ->middleware(['auth.jwt', 'permission:productclass.delete'])
+        ->name('api.product-classes.code-delete');
     Route::get('/product-classes/{id}', 'Api\v1\ProductClassController@show')
         ->name('api.product-classes.show');
     Route::get('/product-classes/code/{code}', 'Api\v1\ProductClassController@showBycode')
@@ -123,6 +138,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/warehouses', 'Api\v1\ProductInventorySourceController@store')
         ->middleware(['auth.jwt', 'permission:productinventorysource.create'])
         ->name('api.warehouses.store');
+    Route::delete('/warehouses/code/{code}', 'Api\v1\ProductInventorySourceController@delete')
+        ->middleware(['auth.jwt', 'permission:productinventorysource.delete'])
+        ->name('api.warehouses.code-delete');
     Route::get('/warehouses/{id}', 'Api\v1\ProductInventorySourceController@show')
         ->name('api.warehouses.show');
     Route::get('/warehouses/code/{code}', 'Api\v1\ProductInventorySourceController@showByCode')

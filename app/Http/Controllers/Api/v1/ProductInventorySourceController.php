@@ -127,4 +127,56 @@ class ProductInventorySourceController extends Controller
             'data' => $productInventorySource,
         ], 200);
     }
+
+    public function delete($code)
+    {
+        $productInventorySource = ProductInventorySource::where('code', $code)->first();
+
+        if (!$productInventorySource) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'El codigo de warehouse indicado no existe'
+        ],  404);
+
+        DB::beginTransaction();
+
+        try {
+            $branch = $productInventorySource->branch;
+            $user = $branch->users->first();
+            $seller = $user->seller;
+            
+            // Delete warehouse
+            $productInventorySource->forceDelete();
+
+            // Delete seller
+            DB::table('shipping_method_seller_mapping')->where('seller_id', $seller->id)->delete();
+            DB::table('payment_method_seller_mapping')->where('seller_id', $seller->id)->delete();
+            DB::table('seller_addresses')->where('seller_id', $seller->id)->delete();
+            $seller->forceDelete();
+
+            // Delete user
+            DB::table('branch_users')->where('user_id', $user->id)->delete();
+            DB::table('company_users')->where('user_id', $user->id)->delete();
+            $user->forceDelete();
+
+            // Delete branch
+            DB::table('branch_companies')->where('branch_id', $branch->id)->delete();
+            $branch->delete();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'No es posible eliminar el warehouse.',
+                'error_message' => $e->getMessage(),
+            ],  400);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Warehouse elminado',
+            'data' => $productInventorySource,
+        ], 200);
+    }
 }
