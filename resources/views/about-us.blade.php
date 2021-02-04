@@ -6,14 +6,14 @@
 <div class="page-title-overlap bg-dark py-4 bg-light-blue">
     <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-2">Quienes somos</h1>
+            <h1 class="h3 text-light mb-2 ">Quienes somos</h1>
         </div>
     </div>
 </div>
 <!-- Page Content-->
-<div class="container py-5 mt-md-2 mb-2">
+<div class="container  mt-md-2 mb-2">
     <div class="row" >
-        <div class="col-12 m-5 text-center">
+        <div class="col-12 pt-5 mt-5 text-center">
             <p class="h2 text-uppercase">www.prolibro.cl</p>
             <p class="font-italic h4 text-info">"Libros y lecturas"</p>
             <br>

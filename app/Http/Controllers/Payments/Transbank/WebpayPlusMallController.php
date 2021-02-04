@@ -282,7 +282,7 @@ class WebpayPlusMallController extends Controller
             foreach ($sellers as $seller) {
                 $datasellers['email'] = $seller->email ;
                 try {
-                    Mail::to($seller->email)->cc('jorge.castro@twgroup.cl')->send(new OrderUpdated($order, 2, $seller));
+                    Mail::to($seller->email)->bcc('jorge.castro@twgroup.cl')->send(new OrderUpdated($order, 2, $seller));
                     //Create log event
                     $this->orderLoggerService->registerLog($order, 'Seller Email Sent', $datasellers);
                 } catch (Exception $ex) {

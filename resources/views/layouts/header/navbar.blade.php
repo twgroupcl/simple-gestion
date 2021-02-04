@@ -37,10 +37,10 @@
         <div class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
                 <a class="navbar-brand d-none d-sm-block m-0 flex-shrink-0 logo-principal" href="{{ url('/home') }}" >
-                    <img src="{{ asset('img/prolibro/logo-prolibro.png') }}" alt="Prolibro S.A." />
+                    <img src="{{ asset('img/prolibro/logo-prolibro.png') }}" alt="Prolibro" />
                 </a>
                 <a class="navbar-brand d-sm-none mr-2" href="{{ url('/home') }}" style="min-width: 4.625rem;">
-                    <img width="74" src="{{ asset('img/prolibro/logo-prolibro.png') }}" alt="Prolibro S.A." />
+                    <img width="74" src="{{ asset('img/prolibro/logo-prolibro.png') }}" alt="Prolibro" />
                 </a>
                 <!-- Search-->
                 @if($header)

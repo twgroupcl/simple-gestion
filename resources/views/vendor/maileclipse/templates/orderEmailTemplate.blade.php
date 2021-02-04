@@ -213,8 +213,8 @@ use App\Models\Product;
                                                     <td
                                                         style="text-align: left; color: #000000;">
                                                     <p>
-                                                        Estimado cliente,<br/> le confirmamos la recepción de su pedido y el respectivo pago, por favor verifique su dirección y los detalles del pedido para garantizar que reciba su despacho sin contratiempos.<br />
-                                                        Muchas gracias por su compra.<br/>
+                                                        Estimado cliente,<br/> le confirmamos la recepción de su pedido y el respectivo pago, por favor verifique los detalles del pedido para garantizar que reciba su compra.<br />
+                                                        Muchas gracias.<br/>
                                                         Para consultas dirigirse a página de inicio, sección: Servicio al Cliente.
                                                     </p>
 
@@ -235,7 +235,7 @@ use App\Models\Product;
                                                                     <td width="50%">
                                                                         @if ($addressShipping)
                                                                             <div class="direccion-envio-titulo">
-                                                                                <p><strong>Dirección de envío</strong>
+                                                                                <p><strong>Dirección cliente</strong>
                                                                                 </p>
                                                                             </div>
                                                                             <p>

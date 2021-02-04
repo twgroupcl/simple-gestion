@@ -147,7 +147,7 @@ class CustomerObserver
 
             Mail::send('vendor.maileclipse.templates.welcomeCustomer', $data, function ($message) use ($customer) {
                 $message->to($customer->email);
-                $message->subject('Bienvenido a Prolibro S.A.');
+                $message->subject('Bienvenido a Prolibro');
                 $message->attach(public_path('pdf/TERMINOS_Y_CONDICIONES_PLATAFORMA_MARKETPLACE_WWW.PROLIBRO.CL'), [
                     'as' => 'TERMINOS_Y_CONDICIONES_PLATAFORMA_MARKETPLACE_WWW.PROLIBRO.CL',
                     'mime' => 'application/pdf',
