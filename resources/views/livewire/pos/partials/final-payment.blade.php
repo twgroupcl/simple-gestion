@@ -66,14 +66,14 @@
         </div>
     </div> --}}
     <div class="row">
-        <div class="col-12"><h5 class="text-info text-center">Venta Realizada con exito!!! </h5>
+        <div class="col-12"><h5 class="text-info text-center">¡Venta Realizada con exito! </h5>
 
         <br>
-          <span class="text-center"> Comprobante enviado por mail </span>
+          <span class="text-center"> Comprobante enviado por correo electrónico.</span>
         <br>
         <br>
         <br>
-        <h6 class="text-center">A click en el boton <strong> Nueva Venta</strong> o presione <strong>F1</strong> para continuar.</h6>
+        <h6 class="text-center">Haga click en el botón  <strong> Nueva Venta</strong> o presione <strong>F1</strong> para continuar.</h6>
         </div>
 
         <div class="col-6">
