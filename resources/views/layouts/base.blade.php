@@ -13,7 +13,7 @@
 
     <meta name="og:title" content="{{ config('app.name', 'Laravel') }}">
     <meta name="og:description" content="Prolibro - Libros y Lecturas">
-    <meta name="og:image" content="https://www.prolibro.cl/img/prolibro/logo-prolibro.png">
+    <meta name="og:image" content="https://www.prolibro.cl/img/prolibro/facebook.jpg">
 
     <!-- Viewport-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
