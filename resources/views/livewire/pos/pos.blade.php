@@ -501,7 +501,7 @@
     {{-- Confirm payment view --}}
     @include('livewire.pos.partials.confirm-payment')
     {{-- Final payment view --}}
-    {{-- @include('livewire.pos.partials.final-payment') --}}
+    @include('livewire.pos.partials.final-payment')
     <div class="col-11 main-view">
         <div class="row">
             <div class="col-8">
@@ -552,7 +552,7 @@
                                 <span class="align-text-bottom w-100" style="border-bottom: 2px dotted #000000;"></span>
                             </div>
                             <div class="col-md-3">
-                                <div class=" text-right">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</div>
+                                <div class=" text-right"><strong>{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</strong></div>
                             </div>
                         </div>
                         @endif
@@ -566,7 +566,7 @@
                                 <span class="align-text-bottom w-100" style="border-bottom: 2px dotted #000000;"></span>
                             </div>
                             <div class="col-md-3">
-                                <div class=" text-right">{{ currencyFormat($taxes ?? 0, 'CLP', true) }}</div>
+                                <div class=" text-right"><strong>{{ currencyFormat($taxes ?? 0, 'CLP', true) }}</strong></div>
                             </div>
                         </div>
                         @endif
@@ -579,17 +579,17 @@
                                 <span class="align-text-bottom w-100" style="border-bottom: 2px dotted #000000;"></span>
                             </div>
                             <div class="col-md-3">
-                                <div class=" text-right">{{ currencyFormat(($total ) ?? 0, 'CLP', true) }}</div>
+                                <div class=" text-right"> <strong>{{ currencyFormat(($total ) ?? 0, 'CLP', true) }}</strong></div>
                             </div>
                         </div>
-                        <div class="row mt-2">
+                        <div class="row mt-1">
                             <div class="col-12" @if(!$isSaleBoxOpen) style="display:none;" @endif>
 
                                 <div  class="border border-info  rounded p-1 ">
                                     @if (session()->get('user.pos.selectedCustomer'))
                                     <div class="row">
                                         <div class="col-12">
-                                            <h3>Cliente</h3>
+                                            <h6>Cliente</h6>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -626,7 +626,7 @@
 
 
 
-                                <button class="btn btn-danger btn-block mt-1 " id="btn-pay" >Pagar (F2)
+                                <button class="btn btn-danger btn-block mt-1 " id="btn-pay" >Cobrar (F2)
                                  {{-- @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar --}}
                                 </button>
                             </div>
@@ -706,7 +706,7 @@
 
 
         //Colapse general menu
-        $(".sidebar").collapse();
+        $("body").removeClass('sidebar-lg-show');
         $("#search").focus();
 
 
@@ -745,6 +745,7 @@
             if (event.which == 117 && event.target.id != 'customer-view'){
                 console.log('aca');
                 $("#btn-customer").trigger('click');
+                $('#search-customer').focus().select();
                 return false;
             }
         });
@@ -954,8 +955,8 @@
 
 
         $("#confirm-pay").click( function() {
-            $('.confirm-payment-view').show();
-            $('.payment-view').hide();
+            $('payment-view').show();
+            $('.final-payment-view').hide();
         });
 
         $(".close-confirm-payment").click( function() {
@@ -1168,6 +1169,7 @@
             $('#btn-customer').click(function() {
                 hideAllViews()
                 $('.customer-view').show();
+                $('.search-customers').show();
                 //$('.main-view').hide();
 
             });
@@ -1202,8 +1204,9 @@
 
             const modalConfirm = function(callback) {
 
-                $("#confirm-payment").on("click", function() {
+                $("#confirm-pay").on("click", function() {
                     confirmPayment()
+                    $("#inputaCash").val(0);
                     // $("#modal-confirm-pay").appendTo("body").modal('show');
                 });
                 /*

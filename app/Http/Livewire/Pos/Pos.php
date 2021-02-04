@@ -176,7 +176,7 @@ class Pos extends Component
 
             $this->existsOrder = $order;
 
-            $this->emitInvoice($order);
+            //$this->emitInvoice($order);
 
             $this->clearCart();
 
@@ -447,7 +447,7 @@ class Pos extends Component
             dd($e->getMessage());
             return false;
         }*/
-        return redirect()->route('pos.order', ['id' => $order->id]);
+        //return redirect()->route('pos.order', ['id' => $order->id]);
     }
 
     public function updateAddress($addressId)
