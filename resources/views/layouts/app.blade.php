@@ -7,6 +7,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta name="og:title" content="{{ config('app.name', 'Laravel') }}">
+    <meta name="og:description" content="Les invitamos a recorrer la plataforma y a encontrarse con sus escritores y libros, hemos trabajado en un espacio diverso e inclusivo, donde participan empresas del mundo de la Cultura de distintas regiones de Chile.">
+    <meta name="og:image" content="https://www.prolibro.cl/img/prolibro/logo-prolibro.png">
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
