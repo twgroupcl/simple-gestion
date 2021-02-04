@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-9">
                     <h6 class="product-title font-size-base mb-2"><a
-                    href="{{ route('product', ['slug' => $product->url_key]) }}"
+                   {{--  href="{{ route('product', ['slug' => $product->url_key]) }}" --}}
                     target="_blank">{{ $product->name }}</a></h6>
                 </div>
                 <div class="col-3">

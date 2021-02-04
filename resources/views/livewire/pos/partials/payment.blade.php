@@ -146,7 +146,7 @@
             <div class='card-body'>
                 <div class="row">
                     <div class="col-6 text-left">
-                        <h4>Total</h4>
+                        <h4>Subtotal</h4>
                     </div>
                     <div class="col-6 text-danger text-right">
                         <h4><span class="subtotal-cart">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</span></h4>
@@ -168,7 +168,7 @@
                         <h4><span class="total-cart">{{ currencyFormat($total ?? 0, 'CLP', true) }}</span></h4>
                     </div>
                 </div>
-                <div class="row border border-warning rounded" id="cash-input">
+                <div class="row border border-warning rounded" >
                     <div class="col-6  text-left">
                         <h4>Efectivo</h4>
                     </div>
@@ -184,14 +184,14 @@
                         <h4> <span class="total-change">$0</span></h4>
                     </div>
                 </div>
-                <div class="row" id="tip-input" style="display: none">
+                {{-- <div class="row" id="tip-input" style="display: none">
                     <div class="col-6  text-left ">
                         <span class="h4">Propina </span><span id="calculate-tip" style="display: none">(<a href="#">Click para canjear con el cambio</a> )</span>
                     </div>
                     <div class="col-6 text-danger text-right">
                         <h4><span class="total-tip">{{ currencyFormat(0, 'CLP', true) }}</span></h4>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class="card col-md-6">
@@ -199,7 +199,7 @@
                 <input class='input' id='display' disabled>
             </div> --}}
             <div class='card-body'>
-                <table class='table table-sm table-borderless'>
+                {{-- <table class='table table-sm table-borderless'>
                     <tbody>
                         <tr>
                             <td><button class='btn btn-lg' onclick='chr("7")'>7</button></td>
@@ -225,7 +225,9 @@
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table> --}}
+
+                <input type="number"  min="0" class="w-100"  id="inputCash" value="0">
             </div>
             <div class='card-body'>
                 <button class="btn btn-danger btn-block " id="confirm-pay" disabled>Confirmar pago

@@ -28,6 +28,7 @@ class Pos extends Component
     public $products;
     public $viewMode;
     public $cash;
+    public $user;
 
     //salebox
     public $saleBox;
@@ -56,13 +57,15 @@ class Pos extends Component
 
     public function mount()
     {
+        $this->user = backpack_user();
+
         $this->seller = Seller::where('user_id', backpack_user()->id)->first();
 
         if (is_null($this->seller) || $this->seller->is_approved !== $this->seller::REVIEW_STATUS_APPROVED) {
             abort(403);
         }
 
-        $this->products = $this->getProducts();
+        //$this->products = $this->getProducts();
         //$this->setView('productList');
         $this->validateBox();
 
@@ -217,7 +220,8 @@ class Pos extends Component
         return Product::where('status', '=', '1')
             ->where('is_approved', '=', '1')
             ->where('parent_id', '=', null)
-            ->whereSellerId($this->seller->id)
+           // ->whereSellerId($this->seller->id)
+            ->limit(15)
             ->get();
     }
 
@@ -373,6 +377,8 @@ class Pos extends Component
 
     public function emitInvoice(Order $order)
     {
+
+        /*
         $currentSeller = Seller::where('user_id', backpack_user()->id)->first();
         DB::beginTransaction();
         try {
@@ -384,7 +390,7 @@ class Pos extends Component
 
             $order_items = $order->order_items->map(function ($item) {
 
-                // Since the items in the POS are assumed with IVA, we must subtract it 
+                // Since the items in the POS are assumed with IVA, we must subtract it
                 // and make the total calculations again to save it in the invoice table
 
                 $item_iva = 19 * $item->price / 119;
@@ -409,7 +415,7 @@ class Pos extends Component
             $invoice->items_data = $order_items;
             $invoice->invoice_type_id = $invoiceType->id;
             $invoice->invoice_date = now();
-            $invoice->tax_amount = 19 * $invoice->total / 119; 
+            $invoice->tax_amount = 19 * $invoice->total / 119;
             $invoice->net = $invoice->total - $invoice->tax_amount;
             $invoice->json_value = ['source' => 'pos'];
             $invoice->save();
@@ -440,7 +446,8 @@ class Pos extends Component
             DB::rollback();
             dd($e->getMessage());
             return false;
-        }
+        }*/
+        return redirect()->route('pos.order', ['id' => $order->id]);
     }
 
     public function updateAddress($addressId)

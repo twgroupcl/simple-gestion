@@ -107,11 +107,12 @@ Route::group([
     Route::crud('banners', 'BannersCrudController');
     Route::crud('customersupport', 'CustomerSupportCrudController');
     Route::crud('pos', 'PosCrudController');
+    Route::get('posorder/{id}', 'PosCrudController@posOrder')->name('pos.order');;
 
     Route::crud('customerattendance', 'CustomerAttendanceCrudController');
     Route::crud('service', 'ServiceCrudController');
     Route::crud('timeblock', 'TimeBlockCrudController');
-   
+
 
     Route::crud('reservationrequest', 'ReservationRequestCrudController');
     Route::crud('inventory', 'InventoryCrudController');
