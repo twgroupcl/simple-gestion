@@ -25,6 +25,7 @@ class ProductCategoryController extends Controller
             'slug' => new SlugRule(),
             'position' => 'numeric',
             'parent_id' => 'exists:product_categories,id',
+            'parent_code' => 'exists:product_categories,code',
             'status' => 'boolean',
 
         ]);
@@ -36,6 +37,12 @@ class ProductCategoryController extends Controller
         $slug = isset($request['slug']) 
                     ? $request['slug'] 
                     : Str::slug($request['name']);
+
+        $parentId = $request['parent_id'];
+        if (!$parentId && $request['parent_code']) {
+            $parent = ProductCategory::where('code', $request['parent_code'])->first();
+            $parentId = $parent ? $parent->id : null;
+        }
         
         try {
             $productCategory  = ProductCategory::create([
@@ -46,7 +53,7 @@ class ProductCategoryController extends Controller
                 'position' => $request['position'] ?? 0,
                 'icon' => $request['icon'],
                 'json_value' => $request['custom_attributes'],
-                'parent_id' => $request['parent_id'],
+                'parent_id' => $parentId,
                 'status' => $request['status'] ?? 1,
                 'company_id' => $user->companies->first()->id,
             ]);
@@ -60,8 +67,8 @@ class ProductCategoryController extends Controller
         
         return response()->json([
             'status' => 'success',
-            'data' => $productCategory,
             'message' => 'Marca de producto creada exitosamente',
+            'data' => $productCategory,
         ], 200);
 
     }
