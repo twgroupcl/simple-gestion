@@ -9,7 +9,12 @@
     <!-- SEO Meta Tags-->
     <meta name="description" content="Prolibro - Libros y Lecturas">
     <meta name="keywords" content="e-commerce, marketplace, twgroup, prolibro">
-    <meta name="author" content="TWGroup">
+    <meta name="author" content="Prolibro">
+
+    <meta name="og:title" content="{{ config('app.name', 'Laravel') }}">
+    <meta name="og:description" content="Prolibro - Libros y Lecturas">
+    <meta name="og:image" content="https://www.prolibro.cl/img/prolibro/logo-prolibro.png">
+
     <!-- Viewport-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon and Touch Icons-->
