@@ -92,11 +92,13 @@ class OrderItem extends Model
 
     public function scopeBySeller($query)
     {
-        if (!auth()->user() || auth()->user()->hasRole('Super admin')) {
+        $sellerUid = Seller::whereUserId(auth()->user()->id)->first();
+
+        if (!auth()->user() || auth()->user()->hasRole('Super admin') || !isset($sellerUid)) {
             return $query;
         }
 
-        return $query->where('seller_id', Seller::whereUserId(auth()->user()->id)->first()->id);
+        return $query->where('seller_id', $sellerUid->id);
     }
 
     public function scopeMostPurchased($query)
