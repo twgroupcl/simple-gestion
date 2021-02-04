@@ -11,7 +11,8 @@ class Product extends Component
     // public $data = [];
 
     protected $listeners = [
-        'addToCart'=> 'addToCart'
+        'addToCart'=> 'addToCart',
+        'product:addToCartFast'=> 'addToCartFast'
     ];
 
     public function render()
@@ -47,6 +48,12 @@ class Product extends Component
     public function addToCart()
     {
         $this->emit('add-product-cart:post', $this->product->id);
+    }
+
+    public function addToCartFast($productId)
+    {
+
+        $this->emit('add-product-cart:post', $productId);
     }
 
     public function getCurrentPrice()

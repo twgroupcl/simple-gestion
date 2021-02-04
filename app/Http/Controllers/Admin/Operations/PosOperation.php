@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin\Operations;
 
 use Illuminate\Support\Facades\Route;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Seller;
 
 trait PosOperation
 {
@@ -78,5 +82,23 @@ trait PosOperation
 
         // load the view
         return view("crud::operations.pos", $this->data);
+    }
+    public function posOrder($orderId)
+    {
+        $order = Order::where('id', $orderId)->first();
+        $currentUser = backpack_user();
+        $seller = Seller::where('user_id','=',$currentUser->id)->first();
+        $items = OrderItem::where('order_id','=', $orderId)->get();
+
+        $data = [
+            'order' => $order,
+            'seller' => $seller,
+            'items'=> $items
+        ];
+
+        $customPaper = array(0,0,867.00,283.80);
+        $pdf = PDF::loadView('order.pos_order',$data)->setPaper($customPaper, 'landscape');
+
+        return $pdf->stream('pos_order_'.$orderId.'.pdf');
     }
 }

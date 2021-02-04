@@ -22,6 +22,12 @@ class CustomerView extends Component
         'addressSelected' => 'updateAddress',
     ];
 
+    public function mount()
+    {
+        $this->filter();
+        $firstCustomer = $this->customers[0];
+        $this->selectCustomer($firstCustomer);
+    }
     public function render()
     {
         $this->filter();
@@ -41,6 +47,8 @@ class CustomerView extends Component
                                    // ->paginate(10);
 
     }
+
+
 
     public function showCustomer(Customer $customer)
     {
