@@ -18,15 +18,17 @@ class Filters extends Component
     public $min_price;
     public $max_price;
     public $filterOptions = []; 
-    
+    protected $product; 
+
     public function render()
     {
         return view('livewire.filters');
     }
 
-    public function mount()
+    public function mount($products = null)
     {
-        $this->loadCategories();
+        //$this->loadCategories();
+        $this->products = $products;
         $this->loadBrands();
         $this->loadAttributes();
     }
@@ -37,20 +39,56 @@ class Filters extends Component
 
     public function loadBrands() 
     {
-        $this->brands = ProductBrand::where('status','=','1')->with('products')->orderBy('name','ASC')->get();
+        if (isset($this->products)) {
+
+            $this->brands = $this->products->load(['product_brands' => function ($query) {
+
+                $query->where('status', 1)->orderBy('name', 'ASC');
+
+            }])->pluck('product_brands', 'product_brands.id')->flatten()->filter();
+
+        } else {
+
+            $this->brands = ProductBrand::where('status','=','1')
+                 ->with('products')->orderBy('name','ASC')->get();
+        }
     }
 
     public function loadAttributes() 
     {
-        $this->attributes = ProductClassAttribute::where('json_options','<>','[]')
-        ->where('json_attributes->type_attribute','select')
-        ->whereHas('product_attributes', function ($query) {
-            return $query->where('json_value', '<>', '')->where('json_value', 'NOT LIKE', "%*%")->groupBy('json_value');
-        })->get();
+        if (isset($this->products)) {
+            $this->attributes = $this->products->load([
+
+                'product_class_attributes' => function ($query) {
+
+                    $query->where('json_options','<>','[]')
+                          ->where('json_attributes->type_attribute','select')
+                          ->whereHas('product_attributes', function ($query) {
+                                return $query->where('json_value', '<>', '')
+                                             ->where('json_value', 'NOT LIKE', "%*%")
+                                             ->groupBy('json_value');
+                           });
+                }
+
+            ])->pluck('product_class_attributes', 'product_class_attributes.id')->flatten()->filter();
+
+        } else {
+            $this->attributes = ProductClassAttribute::where('json_options','<>','[]')
+                ->where('json_attributes->type_attribute','select')
+                ->whereHas('product_attributes', function ($query) {
+                    return $query->where('json_value', '<>', '')
+                                 ->where('json_value', 'NOT LIKE', "%*%")
+                                 ->groupBy('json_value');
+                })->get();
+
+        }
     }
 
     public function loadCategories() 
     {
-        $this->categories = ProductCategory::with('product_class')->with('products')->orderBy('name','ASC')->get();
+        $this->categories = ProductCategory::with('product_class')
+             ->with('products')
+             ->orderBy('name','ASC')
+             ->get();
     }
 }

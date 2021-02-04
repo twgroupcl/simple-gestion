@@ -25,8 +25,11 @@ class HomeController extends Controller
 
         $sellers =  Seller::where('status', '=', '1')
         ->where('is_approved', '=', '1')
-        ->get()
-        ->shuffle();
+        ->whereHas('products', function($query) {
+            $query->where('status', 1)->where('is_approved', 1);
+        })->has('products', '>', 0)
+        ->get();
+        //->shuffle();
 
         $sellers = $sellers->split(2);
 
@@ -67,12 +70,24 @@ class HomeController extends Controller
 
     public function getSeller(Request $request)
     {
-        $seller = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
-        $countProduct = Product::where('seller_id', '=', $request->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
-        $sellerAdress = SellerAddress::whereSellerId($seller->id)->with('commune')->first();
+        //$seller = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
+        $seller = Seller::where('id', '=', $request->id)
+            ->with('seller_category')
+            ->with('company')
+            ->withCount([
+                'products' => function ($query) {
+                    $query->where('parent_id', '=', null)
+                          ->where('status', '=', '1')
+                          ->where('is_approved', '=', '1');
+                }
+            ])
+            ->with('addresses.commune')->first();
+        //$countProduct = Product::where('seller_id', '=', $request->id)->where('parent_id', '=', null)->where('status', '=', '1')->where('is_approved', '=', '1')->get()->count();
+        //$sellerAdress = SellerAddress::whereSellerId($seller->id)->with('commune')->first();
         $render = ['view' => 'seller'];
         $data = $seller->id;
-        return view('vendor', compact('seller', 'countProduct','render', 'data','sellerAdress'));
+        return view('vendor', compact('seller', 'render', 'data'));
+        //return view('vendor', compact('seller', 'countProduct','render', 'data','sellerAdress'));
     }
 
     public function getSellerBySlug(Request $request)
