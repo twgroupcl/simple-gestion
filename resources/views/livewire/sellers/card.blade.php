@@ -4,12 +4,12 @@
             <img class="lazyload w-100" data-src="{{ url($seller->logo) }}" alt="">
         @else
             <img class="lazyload w-100" data-src="{{ url('/img/default/default-product-image.png') }}" alt="">
-        @endif     
+        @endif
     </a>
-    <div class="card-body py-2">
-        <h3 class="product-title font-size-sm"><a href="{{url('seller-shop/'.$seller->id)}}">{{ $seller->visible_name }}</a></h3>
+    <div class="card-body py-2 p-1">
+        <h3 class="product-title font-size-sm seller-visible-name"><a href="{{url('seller-shop/'.$seller->id)}}">{{ $seller->visible_name }}</a></h3>
         <div class="d-flex justify-content-between">
-            
+
         </div>
     </div>
     <div class="card-body card-body-hidden">
