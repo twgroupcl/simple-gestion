@@ -17338,3 +17338,15 @@ html:not([dir=rtl]) .cz-range-slider-ui.noUi-horizontal .noUi-handle {
   left: 46%;
   z-index: 1000;
 }
+
+/* Mobile */
+@media only screen and (max-width: 600px) {
+    .seller-visible-name{
+       /*  overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto; */
+        overflow: hidden;
+        white-space: normal;
+        text-overflow: ellipsis;
+    }
+}
