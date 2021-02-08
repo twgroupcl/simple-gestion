@@ -41,6 +41,7 @@ class Invoice extends Model
         'customer_id',
         'currency_id',
         'customer_business_activity_id',
+        'business_activity_id', // idem customer_business_activity_id
         'company_id',
         'uid',
         'first_name',
