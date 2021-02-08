@@ -26,6 +26,9 @@
 
 @if (isset($invoice->folio) && $invoice->invoice_status == App\Models\Invoice::STATUS_SEND)
 @include('invoice.manage_invoice.update_dte_status')
+
+@include('invoice.manage_invoice.issue_credit_note')
+
 @endif
 
 {{-- Foother --}}
