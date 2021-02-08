@@ -213,7 +213,7 @@ use App\Models\Product;
                                                     <td
                                                         style="text-align: left; color: #000000;">
                                                     <p>
-                                                        Estimado cliente,<br/> le confirmamos la recepción de su pedido y el respectivo pago, por favor verifique los detalles del pedido para garantizar que reciba su compra.<br />
+                                                        Estimado cliente,<br/> Confirmamos la recepción de su pedido y el respectivo pago, por favor verifique los detalles del pedido para garantizar que reciba su compra.<br />
                                                         Muchas gracias.<br/>
                                                         Para consultas dirigirse a página de inicio, sección: Servicio al Cliente.
                                                     </p>

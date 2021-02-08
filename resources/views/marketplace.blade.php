@@ -76,7 +76,7 @@
         @if(count($sellers))
             <div class="row">
                 @foreach($sellers[0] as $key => $seller)
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 mb-4" wire:key="{{ $key }}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 px-md-5 mb-4" wire:key="{{ $key }}">
                         @livewire('sellers.seller', ['seller' => $seller], key($seller->id . $key))
                     </div>
                     <hr class="d-sm-none">
@@ -116,7 +116,7 @@
         @if(count($sellers))
             <div class="row">
                 @foreach($sellers[1] as $key => $seller)
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 mb-4" wire:key="{{ $key }}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 px-md-5 mb-4" wire:key="{{ $key }}">
                         @livewire('sellers.seller', ['seller' => $seller], key($seller->id . $key))
                     </div>
                     <hr class="d-sm-none">
