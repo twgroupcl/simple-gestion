@@ -26,8 +26,8 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{HTTP_HOST} ^filsavirtual.cl$ [OR]
-  RewriteCond %{HTTP_HOST} ^www.filsavirtual.cl$ [OR]
-  RewriteCond %{HTTP_HOST} ^www.prolibro.cl$
+  RewriteCond %{HTTP_HOST} ^www.filsavirtual.cl$
+
   RewriteRule (.*)$ https://www.prolibro.cl/$1 [R=301,L]
 </IfModule>
 
