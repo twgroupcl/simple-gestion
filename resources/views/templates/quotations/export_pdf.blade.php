@@ -89,6 +89,14 @@
         white-space: pre-wrap;
     }
 
+    p {
+        font-size: 12px;
+    }
+
+    li {
+        font-size: 12px;
+    }
+
     /* .page-break {
             page-break-after: always;
     } */
@@ -184,16 +192,9 @@
 
 <br>
 
-  <table>
-    <tbody>
-        <tr>
-            <td>
-              {!! $quotation->preface !!}
-            </td>
-        </tr>
-    </tbody>
-  </table> 
 
+    {!! $quotation->preface !!}
+    
   <br>
 
   <table width="100%">
