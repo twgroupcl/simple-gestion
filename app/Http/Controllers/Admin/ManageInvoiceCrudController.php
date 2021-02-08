@@ -230,6 +230,7 @@ class ManageInvoiceCrudController extends CrudController
         $creditNote = new Invoice($invoice->toArray());
         $creditNote->folio = null;
         $creditNote->dte_code = null;
+        $creditNote->dte_status = null;
         $creditNoteType = InvoiceType::whereCode('61')->first();
         $creditNote->invoice_type_id = $creditNoteType->id;
         $creditNote->json_value = [
@@ -260,15 +261,18 @@ class ManageInvoiceCrudController extends CrudController
         }
 
         // Check inventory of items
-        foreach($invoice->invoice_items as $item) {
-            if ($item['product_id']) {
-                $product = Product::find($item['product_id']);
-                if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
-                    \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
-                    return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        if ($invoice->invoice_type->code != 61) {
+            foreach($invoice->invoice_items as $item) {
+                if ($item['product_id']) {
+                    $product = Product::find($item['product_id']);
+                    if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
+                        \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
+                        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+                    }
                 }
             }
         }
+        
 
         $service = new DTEService();
 
@@ -320,11 +324,14 @@ class ManageInvoiceCrudController extends CrudController
             $invoice->updateWithoutEvents();
 
             // Reduce inventory
-            try {
-                $invoice->reduceInventoryOfItems();
-            } catch (Exception $exception) {
-                \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
+            if ($invoice->invoice_type->code != 61) {
+                try {
+                    $invoice->reduceInventoryOfItems();
+                } catch (Exception $exception) {
+                    \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
+                }
             }
+            
 
             if ($invoice->invoice_status === Invoice::STATUS_SEND && $invoice->way_to_payment === 2) {
                 $payment = Payments::insertDataInvoices($invoice);

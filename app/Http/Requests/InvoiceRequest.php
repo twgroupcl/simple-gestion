@@ -33,6 +33,7 @@ class InvoiceRequest extends FormRequest
      */
     public function rules()
     {
+        $invoiceType = InvoiceType::find($this->invoice_type_id);
 
         $expiryDateRules = '';
         if (request()->way_to_payment == 2) {
@@ -63,22 +64,22 @@ class InvoiceRequest extends FormRequest
             'items_data_validation.*.price' => ['required', new NumericCommaRule()],
             'items_data_validation.*.total' => 'required',
 
-            'items_data' => function($attribute, $value, $fail) {
+            'items_data' => function($attribute, $value, $fail) use ($invoiceType) {
                 $items = json_decode($value, true);
                 if ( !count($items) ) return $fail('Debes añadir por lo menos un producto / servicio.');
 
-                foreach($items as $item) {
-                    if ($item['product_id']) {
-                        $product = Product::find($item['product_id']); 
-                        if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $this->id)) {
-                            return $fail('No tienes suficiente stock del producto "' . $product->name .'"');
+                if ($invoiceType->code != 61) {
+                    foreach($items as $item) {
+                        if ($item['product_id']) {
+                            $product = Product::find($item['product_id']); 
+                            if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $this->id)) {
+                                return $fail('No tienes suficiente stock del producto "' . $product->name .'"');
+                            }
                         }
                     }
                 }
             }
         ];
-
-        $invoiceType = InvoiceType::find($this->invoice_type_id);
         
         if ($invoiceType) {
             if ($invoiceType->code != 39 && $invoiceType->code != 41) {
