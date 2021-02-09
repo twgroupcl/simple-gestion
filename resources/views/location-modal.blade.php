@@ -18,7 +18,12 @@
             <div class="modal-body">
             <select name="commune_id" class="custom-select">
                 @foreach ($communes as $commune)
-                    <option value="{{ $commune->id }}">{{ $commune->name }}</option>
+                    <option 
+                        value="{{ $commune->id }}"
+                        @if (session()->get('commune_id') == $commune->id)
+                        selected
+                        @endif
+                    >{{ $commune->name }}</option>
                 @endforeach
             </select>
             </div>
