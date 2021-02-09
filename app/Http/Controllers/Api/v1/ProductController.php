@@ -46,6 +46,9 @@ class ProductController extends Controller
     }
 
 
+    
+
+
     public function showBySku(Request $request)
     {
         $product = Product::with('categories')

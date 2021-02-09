@@ -22,6 +22,16 @@
                 @livewire('search-navbar', [ 'query' => $product ?? '' , 'selected' => $category ?? 0])
                 <!-- Toolbar-->
                 <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
+                    <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#locationModal" data-toggle="modal" data-target="#locationModal">
+                        <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-map"></i></div>
+                        @if (session()->has('commune_name'))
+                            <div class="navbar-tool-text ml-n3"><small>Cambiar ubicacion</small>{{ session()->get('commune_name') }}</div>
+                        @else
+                            <div class="navbar-tool-text ml-n3"><small>Cambiar ubicacion</small>Desconocida</div>
+                        @endif
+                    </a>
+                </div>
+                <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
                     <a class="navbar-tool navbar-stuck-toggler" href="#"><span class="navbar-tool-tooltip">Expand menu</span>
                         <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-menu"></i></div>

@@ -6,6 +6,10 @@ use App\Models\Order;
 use App\Models\Seller;
 use App\Models\Product;
 use App\Models\Customer;
+use App\Models\Payments;
+use App\Observers\PaymentsObserver;
+use App\Models\Invoice;
+use App\Observers\InvoiceObserver;
 use App\Models\OrderItem;
 use App\Models\Quotation;
 use App\Models\ProductClass;
@@ -21,6 +25,7 @@ use App\Observers\ProductClassObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\CommuneShippingMethodObserver;
 use App\Observers\ProductClassAttributeObserver;
+use App\Payment;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,7 +57,8 @@ class AppServiceProvider extends ServiceProvider
         Quotation::observe(QuotationObserver::class);
         Order::observe(OrderObserver::class);
         OrderItem::observe(OrderItemObserver::class);
+        Payments::observe(PaymentsObserver::class);
+        Invoice::observe(InvoiceObserver::class);
         CommuneShippingMethod::observe(CommuneShippingMethodObserver::class);
-
     }
 }

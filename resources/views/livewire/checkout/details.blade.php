@@ -65,7 +65,9 @@
             <select class="custom-select" wire:model="data.address_commune_id" id="sd-commune">
                 <option value>Seleccione una comuna</option>
                 @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
-                    <option value="{{ $commune->id }}">{{ $commune->name }}</option>
+                    <option 
+                        value="{{ $commune->id }}"
+                    >{{ $commune->name }}</option>
                 @endforeach
             </select>
             @error('data.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror

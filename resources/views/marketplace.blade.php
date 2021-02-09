@@ -4,6 +4,87 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
+@php
+use Carbon\Carbon;
+
+$today =  Carbon::now();
+
+@endphp
+
+@if(count($sliders)>0)
+
+
+<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
+    <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        @foreach ($sliders as $slider)
+
+            @if($slider->visible_from || $slider->visible_to)
+                @if( ($slider->visible_from ? $today->gte( $slider->visible_from):true) && ($slider->visible_to ? $today->lte($slider->visible_to): true) )
+                    @if($slider->link)
+                        <a href={{$slider->link}} target="_blank">
+                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" class="img-fluid w-100">
+                        </a>
+                    @else
+                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" >
+                    @endif
+                @endif
+            @else
+                @if($slider->link)
+                    <a href={{$slider->link}} target="_blank">
+                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" class="img-fluid w-100">
+                    </a>
+                @else
+                    <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}" >
+                @endif
+            @endif
+        @endforeach
+    </div>
+</div>
+
+<div class="d-block d-sm-none">
+    <div class="cz-carousel cz-dots-enabled">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        @foreach ($sliders as $slider)
+            @if($slider->visible_from || $slider->visible_to)
+            @if( ($slider->visible_from ? $today->gte( $slider->visible_from):true) && ($slider->visible_to ? $today->lte($slider->visible_to): true) )
+                    @if($slider->link)
+                        <a href={{$slider->link}} target="_blank">
+                            @if(!is_null($slider->path_mobile))
+                                <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                            @else
+                                <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                            @endif
+                        </a>
+                    @else
+                        @if(!is_null($slider->path_mobile))
+                            <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                        @else
+                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                        @endif
+                    @endif
+                @endif
+            @else
+                @if($slider->link)
+                    <a href={{$slider->link}} target="_blank">
+                        @if(!is_null($slider->path_mobile))
+                            <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                        @else
+                            <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                        @endif
+                    </a>
+                @else
+                    @if(!is_null($slider->path_mobile))
+                        <img src="{{url($slider->path_mobile)}}" alt="{{$slider->name}}">
+                    @else
+                        <img src="{{url($slider->path_web)}}" alt="{{$slider->name}}">
+                    @endif
+                @endif
+            @endif
+        @endforeach
+        </div>
+    </div>
+</div>
+@else
 
 <!-- <div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
@@ -15,9 +96,9 @@
     </div>
 </div> -->
 
-
 <div class="d-block d-sm-none">
     <div class="cz-carousel cz-dots-enabled">
+
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
             <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad-general.png') }}" alt="Contigo Pyme Navidad">
             <img src="{{ asset('img/home/hero-slider/mobile-banner-navidad.png') }}" alt="Contigo Pyme Banner 1">
@@ -29,6 +110,7 @@
         </div>
     </div>
 </div>
+@endif
 
 @if(count($featuredProducts) > 0)
     <section class="container mt-5 mb-grid-gutter">
@@ -45,7 +127,7 @@
                         <div class="card-body py-2">
                             <h3 class="product-title font-size-sm"><a href="{{ 'seller-shop/' . $products->seller->id }}">{{ $products->seller->visible_name }}</a></h3>
                             @if(count($products->categories) > 0)
-                            <a class="product-meta d-block font-size-xs pb-1" href="{{ url('search-products/'.$products->categories[0]->id) }}">{{ $products->showCategory() }}</a>
+                            <a class="product-meta d-block font-size-xs pb-1" href="{{ route('category.products', $product->categories[0]->slug) }}">{{ $products->showCategory() }}</a>
                             @endif
                             <h3 class="product-title font-size-sm"><a href="{{ route('product',['slug' => $products->url_key]) }}">{{ $products->name }}</a></h3>
                             <div class="d-flex justify-content-between">
@@ -61,7 +143,7 @@
                                                         {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }}
                                                     </small></del>
                                                 @else
-                                                    <span class="text-accent">  
+                                                    <span class="text-accent">
                                                         {{ currencyFormat($products->getRealPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getRealPriceRange()[1], defaultCurrency(), true) }}
                                                     </span>
                                                     <del class="font-size-sm text-muted"><small>
@@ -78,8 +160,8 @@
                                                     {{ currencyFormat($products->getPriceRange()[0], defaultCurrency(), true) }} - {{ currencyFormat($products->getPriceRange()[1], defaultCurrency(), true) }}
                                                     @endif
                                                 </span>
-                                            </div> 
-                                        @endif  
+                                            </div>
+                                        @endif
                                     @else
                                         <div class="product-price">
                                             @if($products->special_price)
@@ -195,7 +277,7 @@
                 <div class="widget">
                     <h3 class="widget-title">{{$category->name}}</h3>
                     @livewire('products.products-general',['idCategory'=>$category->id])
-                    <p class="mb-0">...</p><a class="font-size-sm" href="{{url('search-products/'.$category->id)}}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
+                    <p class="mb-0">...</p><a class="font-size-sm" href="{{ route('category.products', $category->slug) }}">Ver más<i class="czi-arrow-right font-size-xs ml-1"></i></a>
                 </div>
             </div>
             @endforeach

@@ -63,7 +63,6 @@
             $('#seller-select2').change(() => {
                 var data = $("#seller-select2 option:selected").val();
                 filters.seller = data;
-                console.log(data);
                 this.refreshData();
             })
 
@@ -137,7 +136,22 @@
                             titleAttr: 'Excel',
                             className: 'btn btn-app export excel',
                             exportOptions: {
-                                columns: [0, 1, 2, 3, 4, 5]
+                                orthogonal: 'export',
+                                columns: [0, 1, 2, 3, 4, 5],
+                                    format: {
+                                        body: function(data, row, column, node) {
+                                            if (typeof data !== 'undefined') {
+                                                if (data != null) {
+                                                    if (column == 4 || column ==5) { //column with percent
+                                                        if (data !== '') {
+                                                           data = data.toString().replace( /[$,]/g, '' )
+                                                        }
+                                                    }
+                                                    return data;
+                                                }
+                                            }
+                                        }
+                                    }
                             },
                         },
                         {
@@ -217,9 +231,14 @@
                 columnDefs: [
                     {
                         targets: 0,
-                        render: function(data) {
-                                data = '<a href="/admin/order/' + data  + '/edit">' + data + '</a>';
-                            return data;
+                        // render: function(data,type) {
+                        //     data = '<a href="/admin/order/' + data + '/edit">' + data + '</a>';
+                        //     return data;
+                        // },
+                        render: function (data, type, row) {
+                            return type === 'export' ?
+                                data:
+                                data = '<a href="/admin/order/' + data + '/edit">' + data + '</a>';
                         },
                         className: 'text-center'
                     },

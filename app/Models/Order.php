@@ -53,6 +53,17 @@ class Order extends Model
 
     }
 
+    public function getTotal($admin,$seller)
+    {
+        if($admin){
+
+            return currencyFormat($this->total?$this->total: 0, 'CLP',true);
+        }else{
+            $totalOrder =  OrderItem::where('order_id', $this->id)->where('seller_id',  $seller->id)->groupBy('order_id')->sum('total');
+
+            return currencyFormat($totalOrder?$totalOrder: 0, 'CLP',true);
+        }
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -84,7 +95,7 @@ class Order extends Model
 
     public function scopeBySeller($query)
     {
-        if (!auth()->user() || auth()->user()->hasRole('Super admin')) {
+        if (!auth()->user() || auth()->user()->hasRole('Super admin') || auth()->user()->can('dashboard.admin')) {
             return $query;
         }
 

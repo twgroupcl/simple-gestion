@@ -83,7 +83,8 @@ class SalesReportController extends BaseController
                 )
                 ->with(['order_items.seller' => function ($query) {
                     $query->groupBy('id');
-                }])->get();
+                }])->where('status', '>', 1)
+                ->get();
 
         } else {
             $sales = Order::whereHas('order_items'
@@ -96,7 +97,8 @@ class SalesReportController extends BaseController
                     $period->last()->endOfDay()]
             )->with(['order_items.seller' => function ($query) use ($requestSellerId) {
                 $query->where('id', $requestSellerId)->groupBy('id');
-            }])->get();
+            }])->where('status', '>', 1)
+            ->get();
         }
 
         foreach ($sales as $order) {
@@ -161,10 +163,11 @@ class SalesReportController extends BaseController
                             $commissionsCategory = $orderItem->product->categories[0]->commission;
                             if (!is_null($commissionsCategory)) {
                                 $commisions = json_decode($commissionsCategory);
+                                if (isset($subscription->plan_id)) {
+                                    $currentCommission = array_search($subscription->plan_id, array_column($commisions, 'plan_id'));
 
-                                $currentCommission = array_search($subscription->plan_id, array_column($commisions, 'plan_id'));
-
-                                $commissionProduct = $commisions[$currentCommission];
+                                    $commissionProduct = $commisions[$currentCommission];
+                                }
 
 
                             }

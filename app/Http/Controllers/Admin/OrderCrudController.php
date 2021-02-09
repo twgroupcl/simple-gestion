@@ -40,6 +40,7 @@ class OrderCrudController extends CrudController
         $this->crud->denyAccess('create');
         $this->crud->denyAccess('show');
         $this->crud->denyAccess('delete');
+        $this->crud->enableExportButtons();
 
         $this->admin = false;
         $this->userSeller = null;
@@ -122,7 +123,7 @@ class OrderCrudController extends CrudController
             'label' => 'Email',
         ]);
 
-        CRUD::addColumn([
+        /* CRUD::addColumn([
             'name' => 'total',
             'type' => 'number',
             'label' => 'Total',
@@ -130,6 +131,14 @@ class OrderCrudController extends CrudController
             'thousands_sep' => '.',
             'decimals' => 0,
             'prefix' => '$',
+        ]); */
+
+        CRUD::addColumn([
+            'name' => 'total',
+            'label' => 'Total',
+            'type'  => 'model_function',
+            'function_name' => 'getTotal',
+            'function_parameters' => [$this->admin, $this->userSeller],
         ]);
 
         CRUD::addColumn([
@@ -149,6 +158,8 @@ class OrderCrudController extends CrudController
                 },
             ],
         ]);
+
+        $this->customFilters();
     }
 
     /**
@@ -564,6 +575,7 @@ class OrderCrudController extends CrudController
             $shippingOrderItems = OrderItem::where('order_id', $orderId)->get()->groupBy('shipping_id');
         }
 
+
         foreach ($shippingOrderItems as $shippingKey => $orderItems) {
 
 
@@ -614,6 +626,21 @@ class OrderCrudController extends CrudController
                     ],
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-2',
+                    ],
+                ],
+                [
+
+                    'name' => 'seller_id',
+                    'label' => 'Vendedor',
+                    'type' => 'relationship',
+                    'entity' => 'order_items.seller',
+                    'attribute' => 'visible_name',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+
+                    ],
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2 oi_seller_name',
                     ],
                 ],
                 [
@@ -788,14 +815,66 @@ class OrderCrudController extends CrudController
         ]);
         */
 
-
-
-
-
         CRUD::addField([
             'name' => 'support_data_script',
             'type' => 'order.support_data_script',
             'tab' => 'Items',
         ]);
+    }
+
+    private function customFilters()
+    {
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'rut',
+            'label' => 'RUT',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'uid', 'LIKE', '%' . $value . '%');
+        });
+
+        $this->crud->addFilter([
+            'name'  => 'created_at',
+            'type'  => 'date',
+            'label' => 'Fecha'
+        ],
+        false,
+        function($value) {
+            logger($value);
+            $this->crud->addClause('whereDate', 'created_at', $value);
+        });
+
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'first_name',
+            'label' => 'Cliente nombre',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'first_name', 'LIKE', '%' . $value . '%');
+        });
+        CRUD::addFilter([
+            'type'  => 'text',
+            'name'  => 'last_name',
+            'label' => 'Cliente apellido',
+        ], false, function ($value) {
+            $this->crud->addClause('where', 'last_name', 'LIKE', '%' . $value . '%');
+        });
+        CRUD::addFilter([
+            'type'  => 'select2',
+            'name'  => 'status',
+            'label' => 'Estado',
+        ],  function () {
+            return [
+              1 => 'Pendiente',
+              2 => 'Pagada',
+              3 => 'Completa',
+            ];
+          }, function ($value) {
+            $this->crud->addClause('where', 'status', $value );
+        });
+    }
+
+    public function getSellerName($value)
+    {
+        $seller = Seller::whereId($value)->first();
+        return $seller->visible_name;
     }
 }

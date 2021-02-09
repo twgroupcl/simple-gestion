@@ -51,8 +51,7 @@ class ProductRequest extends FormRequest
 
             'categories_code' => 'required_without:categories|array',
             'categories_code.*' => 'exists:product_categories,code',
-            
-            
+                  
 
             'warehouse' => 'required',
             'warehouse_array' => 'required|array',
@@ -61,6 +60,10 @@ class ProductRequest extends FormRequest
             'warehouse_validation.*.price' => 'required|numeric',
             'warehouse_validation.*.shipping_type' => 'required|array',
             'warehouse_validation.*.shipping_type.*' => 'exists:shipping_methods,id',
+
+            'warehouse_validation.*.special_price' => 'numeric|min:1',
+            'warehouse_validation.*.special_price_from' => 'date_format:d-m-Y|before:special_price_to',
+            'warehouse_validation.*.special_price_to' => 'date_format:d-m-Y|after:special_price_from',
 
             'warehouse_validation.*.special_price' => 'numeric|min:1',
             'warehouse_validation.*.special_price_from' => 'date_format:d-m-Y|before:special_price_to',

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Frontend\HomeController@index')->name('index');
 
+Route::post('/set-location', 'Frontend\HomeController@setLocation')->name('set-location');
 Route::get('/customer/sign', 'Frontend\CustomerController@sign')->name('customer.sign')->middleware(['guest']);
 Route::post('/customer/register', 'Frontend\CustomerController@store')->name('customer.frontend.store');
 Route::post('/customer/login', 'Frontend\CustomerController@authenticate')->name('customer.frontend.login');
@@ -54,7 +55,9 @@ Route::get('/home', 'Frontend\HomeController@index')->name('home');
 
 Route::get('/product/{slug}', 'Frontend\HomeController@productDetail')->name('product');
 Route::get('/search-products/{category}/{product}', 'Frontend\HomeController@searchProduct');
-Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
+//Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategory');
+Route::get('/search-products/{category}', 'Frontend\HomeController@getProductsByCategorySlug')->name('category.products');
+
 Route::get('/shop-list/', function () {
     return view('shop-list');
 });

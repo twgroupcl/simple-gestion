@@ -16,7 +16,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 class Product extends Model
 {
     use CrudTrait;
-    //use SoftDeletes;
+    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -619,6 +619,17 @@ class Product extends Model
         }
 
         return $query->where('seller_id', Seller::whereUserId(auth()->user()->id)->first()->id);
+    }
+
+    public function scopeByLocation($query)
+    {
+        if (!request()->session()->has('commune_id')) {
+            return $query;
+        }
+        
+        return $query->whereHas('inventories', function ($query2) {
+            return $query2->where('commune_id', '=', request()->session()->get('commune_id'));
+        });
     }
 
     /*

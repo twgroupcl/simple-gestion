@@ -52,7 +52,7 @@ class Details extends Component
             'phone' => $this->cart->phone,
             'cellphone' => $this->cart->cellphone,
             'email' => $this->cart->email,
-            'address_commune_id' => $this->cart->address_commune_id,
+            'address_commune_id' => $this->cart->address_commune_id ?? (session()->get('commune_id') ?? null),
             'address_street' => $this->cart->address_street,
             'address_number' => $this->cart->address_number,
             'address_office' => $this->cart->address_office,

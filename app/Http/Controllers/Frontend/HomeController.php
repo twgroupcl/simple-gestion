@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use Carbon\Carbon;
 use App\Models\Seller;
+use App\Models\Slider;
 use App\Models\Banners;
+use App\Models\Commune;
 use App\Models\Product;
 use App\Models\FaqTopic;
 use App\Models\FaqAnswer;
@@ -39,7 +42,18 @@ class HomeController extends Controller
             4 => $banner4
         ];
 
-        return view('marketplace', compact('categories','featuredProducts','banners'));
+        $today =  Carbon::now();//->format('Y-m-d');
+
+        $sliders = Slider::where('status','=','1')
+            // ->orWhere(function($query) use ($today){
+            //     $query->whereDate('visible_from','>=',$today)
+            //     ->whereDate('visible_to','<=',$today)
+            //     ->where('status','=','1');
+            // })
+        ->orderBy('order')->get();
+
+
+        return view('marketplace', compact('categories','featuredProducts','banners','sliders'));
     }
 
     public function getAllProducts()
@@ -74,6 +88,20 @@ class HomeController extends Controller
         return view('shop-grid', compact('render', 'data'));
     }
 
+    public function getProductsByCategorySlug(Request $request)
+    {
+        $categoryId = ProductCategory::where('slug', $request->category)->first()->id ?? null;
+
+        if (is_null($categoryId)) {
+            $categoryId = ProductCategory::find($request->category)->id ?? null;
+        }
+
+        $render = ['view' => 'searchCategory'];
+        $data = ['category' => $categoryId];
+
+        return view('shop-grid', compact('render', 'data'));
+    }
+
     public function getSeller(Request $request)
     {
         $seller = Seller::where('id', '=', $request->id)->with('seller_category')->with('company')->first();
@@ -104,5 +132,13 @@ class HomeController extends Controller
     {
         $filterService = new ProductFilterService();
         $filterService->filterByParams($request);
+    }
+
+    public function setLocation(Request $request)
+    {   
+        $commune = Commune::find($request->commune_id);
+        $request->session()->put('commune_id', $commune->id);
+        $request->session()->put('commune_name', $commune->name);
+        return redirect()->back();
     }
 }
