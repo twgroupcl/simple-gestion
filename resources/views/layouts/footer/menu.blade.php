@@ -212,8 +212,8 @@
                         {{-- <a class="social-btn sb-light sb-pinterest ml-2 mb-2" href="#"><i class="czi-pinterest"></i></a>
                         <a class="social-btn sb-light sb-youtube ml-2 mb-2" href="#"><i class="czi-youtube"></i></a> --}}
                     </div>
-
-                    <img class="d-inline-block img-fluid" width="120" src="{{ asset('img/logo-webpay.png') }}" alt="Métodos de pago" />
+                    <h6 class="text-white">Medios de Pago</h6>
+                    <img class="d-inline-block img-fluid" width="210" src="{{ asset('img/logo-webpay.png') }}" alt="Métodos de pago" />
                 </div>
             </div>
             @endif

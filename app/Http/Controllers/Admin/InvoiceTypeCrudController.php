@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\InvoiceTypeRequest;
+use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Models\InvoiceType;
 
 /**
  * Class InvoiceTypeCrudController
@@ -76,5 +78,15 @@ class InvoiceTypeCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    /**
+     * API Response with code invoice type (dte)
+     */
+    public function getCode(Request $request, InvoiceType $invoiceType) 
+    {
+
+        return $invoiceType->code;
+        
     }
 }

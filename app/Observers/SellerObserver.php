@@ -2,21 +2,22 @@
 
 namespace App\Observers;
 
-use App\Mail\NotificationSuscription;
-use App\Mail\SellerChangeStatus;
+use App\User;
+use App\Models\Plans;
+use App\Models\Seller;
+use App\Models\Currency;
 use App\Models\BranchUser;
 use App\Models\CompanyUser;
-use App\Models\Currency;
-use App\Models\PaymentMethodSeller;
-use App\Models\Seller;
 use App\Models\SellerAddress;
+use App\Mail\WelcomeSellerMail;
 use App\Models\PlanSuscription;
-use App\Models\Plans;
-use App\Models\ShippingMethodSeller;
-use App\User;
-use Backpack\Settings\app\Models\Setting;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\SellerChangeStatus;
 use Spatie\Permission\Models\Role;
+use App\Models\PaymentMethodSeller;
+use App\Models\ShippingMethodSeller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotificationSuscription;
+use Backpack\Settings\app\Models\Setting;
 
 class SellerObserver
 {
@@ -64,11 +65,7 @@ class SellerObserver
         $this->syncPaymentMethods($seller);
         $this->syncShippingMethods($seller);
         $this->syncSubscription($seller);
-
-        if ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado') {
-            Mail::to($seller)->send(new SellerChangeStatus($seller));
-        }
-
+        $this->sendSellerMail($seller);
     }
 
     public function updated(Seller $seller)
@@ -109,6 +106,33 @@ class SellerObserver
             }
         }
 
+    }
+
+    public function sendSellerMail($seller)
+    {
+        if ($seller->getReviewStatus() == 'Aprobado' || $seller->getReviewStatus() == 'Rechazado') {
+            try {
+                Mail::to($seller)->send(new SellerChangeStatus($seller));
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage());
+            }     
+        } else {
+            try {
+                Mail::to($seller->email)->send(new WelcomeSellerMail($seller, 1));
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage());
+            }
+            
+            $administrators = Setting::get('administrator_email');
+            $recipients = explode(';', $administrators);
+            foreach ($recipients as $key => $recipient) {
+                try {
+                    Mail::to($recipient)->send(new WelcomeSellerMail($seller, 2));
+                } catch (\Exception $e) {
+                    \Log::error($e->getMessage());
+                }
+            }
+        }
     }
 
     public function syncAddresses(Seller $seller)

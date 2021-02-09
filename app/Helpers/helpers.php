@@ -135,3 +135,28 @@ if (!function_exists('defaultCurrency')) {
         return $default_currency;
     }
 }
+
+
+if (!function_exists('sanitizeRUT')) {
+    function sanitizeRUT($uid)
+    {
+        return str_replace('.', '', $uid);
+    }
+}
+ 
+if (!function_exists('rutWithoutDV')) {
+    function rutWithoutDV($uid)
+    {
+        $uid = sanitizeRUT($uid);
+
+        $pos = strpos($uid, '-');
+
+        if(!$pos) {
+            return $uid;
+        }
+
+        $uid = substr($uid, 0, $pos);
+
+        return $uid;
+    }
+}

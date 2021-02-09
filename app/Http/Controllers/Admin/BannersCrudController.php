@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Traits\HasCustomAttributes;
 use App\Http\Requests\BannersRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
 /**
  * Class BannersCrudController
  * @package App\Http\Controllers\Admin
@@ -13,15 +14,13 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class BannersCrudController extends CrudController
 {
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use HasCustomAttributes;
+    private $admin;
+
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -29,13 +28,15 @@ class BannersCrudController extends CrudController
         CRUD::setModel(\App\Models\Banners::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/banners');
         CRUD::setEntityNameStrings('banners', 'banners');
-        $this->crud->denyAccess('create');
-        $this->crud->denyAccess('delete');
+       // $this->crud->denyAccess('create');
+       // $this->crud->denyAccess('delete');
+
+       $this->admin = false;
     }
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -46,7 +47,7 @@ class BannersCrudController extends CrudController
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
         CRUD::addColumn([
             'name' => 'name',
@@ -67,7 +68,7 @@ class BannersCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'name' => 'status',
+            'name' => 'status_description',
             'type' => 'text',
             'label' => 'Estado',
             'wrapper' => [
@@ -84,7 +85,7 @@ class BannersCrudController extends CrudController
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -119,6 +120,17 @@ class BannersCrudController extends CrudController
                 'class' => 'form-group col-md-6'
             ],
         ]);
+        CRUD::addField([
+            'name'            => 'section',
+            'label'           => "Sección",
+            'type'            => 'select_from_array',
+            'options'         => ['1' => '1', '2' => '2', '3' => '3', '4'=>'4'],
+            'allows_null'     => false,
+            'allows_multiple' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12',
+            ],
+        ]);
 
         CRUD::addField([
             'name' => 'status',
@@ -133,13 +145,13 @@ class BannersCrudController extends CrudController
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

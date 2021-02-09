@@ -37,11 +37,27 @@
         }
 
 
+        function clearStyles(){
+           // $('.select2-selection__clear').remove();
+          //  $('.select2-selection__arrow').remove();
+            $('.oi_seller_name').each((index, el) => {
+                spanSellerName  = $(el).find('.select2-selection__rendered');
+                $(el).find('span').remove();
+                $(el).append('<input type="text" class="form-control"  value="'+spanSellerName.text() +'" disabled>')
+            });
+            // spanSellerName  = contentSellerName.find('.select2-selection__rendered');
+            // contentSellerName.find('span').remove();
+            // contentSellerName.append('<input type="text" class="form-control"  value="'+spanSellerName.text() +'" disabled>')
+
+        }
+
+
         $(document).ready(function() {
             removeButtonDel();
             removeButtonAddItem();
             checkItemStatus();
             //orderStatus();
+            clearStyles();
         })
 
     </script>

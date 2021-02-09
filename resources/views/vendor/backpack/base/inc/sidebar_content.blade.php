@@ -46,6 +46,7 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqanswer') }}'><i class='nav-icon la la-question'></i> FaqAnswers</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('faqtopic') }}'><i class='nav-icon la la-question'></i> FaqTopics</a></li>
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('banners') }}'><i class='nav-icon la la-question'></i> Banners</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('slider') }}'><i class='nav-icon la la-question'></i> Sliders</a></li>
 	</ul>
 </li>
 
@@ -58,6 +59,17 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('attributegroup') }}'><i class='nav-icon la la-table'></i> Grupos</a></li>
 	</ul>
 </li>
+@endhasanyrole
+
+@hasanyrole('Supervisor Marketplace')
+<li class="nav-item nav-dropdown">
+	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-gear"></i> CMS</a>
+	<ul class="nav-dropdown-items">
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('banners') }}'><i class='nav-icon la la-question'></i> Banners</a></li>
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('slider') }}'><i class='nav-icon la la-question'></i> Sliders</a></li>
+	</ul>
+</li>
+
 @endhasanyrole
 
 @canany(['customer.list'])
@@ -121,7 +133,7 @@
 </li>
 @endcanany
 
-@canany(['quotation.list', 'order.list'])
+@canany(['quotation.list', 'order.list', 'invoice.list', 'payments.list'])
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Ventas</a>
 	<ul class="nav-dropdown-items">
@@ -131,6 +143,12 @@
 
         @can('order.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('order') }}'><i class="nav-icon las la-file-invoice"></i> Órdenes</a></li>
+        @endcan
+        @can('payments.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('payments') }}'><i class='nav-icon la la-dollar'></i> Pagos</a></li>
+        @endcan
+        @can('invoice.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoice') }}'><i class='nav-icon la la-file-invoice-dollar'></i> Doc. Electrónicos </a></li>
         @endcan
         @can('sales.report')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('report/sales') }}'><i class="nav-icon las la-file-invoice"></i> Reporte</a></li>
@@ -151,3 +169,5 @@
     </ul>
 </li>
 @endcanany
+
+
