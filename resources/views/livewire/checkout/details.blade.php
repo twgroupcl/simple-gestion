@@ -67,9 +67,6 @@
                 @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
                     <option 
                         value="{{ $commune->id }}"
-                        @if (session()->has('commune_id')) 
-                            {{ session()->get('commune_id') == $commune->id ? 'selected' : '' }}
-                        @endif
                     >{{ $commune->name }}</option>
                 @endforeach
             </select>
