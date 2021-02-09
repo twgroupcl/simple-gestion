@@ -7,3 +7,5 @@
 @include('layouts.footer.toolbar')
 
 @include('layouts.footer.top')
+
+@include('location-modal')

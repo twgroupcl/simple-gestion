@@ -132,4 +132,10 @@ class HomeController extends Controller
         $filterService = new ProductFilterService();
         $filterService->filterByParams($request);
     }
+
+    public function setLocation(Request $request)
+    {   
+        $request->session()->put('commune_id', $request->commune_id);
+        return redirect()->back();
+    }
 }
