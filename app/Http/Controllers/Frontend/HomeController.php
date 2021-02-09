@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Seller;
 use App\Models\Slider;
 use App\Models\Banners;
+use App\Models\Commune;
 use App\Models\Product;
 use App\Models\FaqTopic;
 use App\Models\FaqAnswer;
@@ -135,7 +136,9 @@ class HomeController extends Controller
 
     public function setLocation(Request $request)
     {   
-        $request->session()->put('commune_id', $request->commune_id);
+        $commune = Commune::find($request->commune_id);
+        $request->session()->put('commune_id', $commune->id);
+        $request->session()->put('commune_name', $commune->name);
         return redirect()->back();
     }
 }

@@ -114,7 +114,8 @@ class CardGeneral extends Component
         $this->sortingField = $this->sortingField ?? 'created_at';
         $this->sortingDirection = $this->sortingDirection ?? 'DESC';
 
-        $baseQuery =  ModelsProduct::where('status', '=', '1')
+        $baseQuery =  ModelsProduct::byLocation()
+            ->where('status', '=', '1')
             ->where('parent_id', '=', null)
             ->where('is_approved', '=', '1')
             ->with('categories')

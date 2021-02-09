@@ -39,7 +39,7 @@ class ProductInventorySource extends Model
     {
         parent::boot();
 
-        static::addGlobalScope(new CompanyBranchScope);
+        /* static::addGlobalScope(new CompanyBranchScope); */
     }
 
     /*
