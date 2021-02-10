@@ -3,11 +3,15 @@
 
 <head>
     <meta charset="utf-8">
+    @hasSection ('title')
+        @yield('title')
+    @else
     <title>{{ config('app.name', 'Laravel') }}</title>
+    @endif
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- SEO Meta Tags-->
-    <meta name="description" content="Contigo Pyme, ayudando al comercio">
+    <meta name="description" content="Covepa">
     <meta name="keywords" content="e-commerce, marketplace, crcp, twgroup">
     <meta name="author" content="TWGroup">
     <!-- Viewport-->
@@ -44,17 +48,17 @@
     @stack('styles')
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138777725-6"></script>
+    {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-138777725-6"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
         gtag('config', 'UA-138777725-6');
-    </script>
+    </script> --}}
 
     <!-- Facebook Pixel Code -->
-    <script>
+    {{-- <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -68,7 +72,7 @@
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=485391568943230&ev=PageView&noscript=1"
-    /></noscript>
+    /></noscript> --}}
     <!-- End Facebook Pixel Code -->
 </head>
 <!-- Body-->
