@@ -85,7 +85,7 @@
                                                 <span class="badge badge-warning badge-shadow position-relative">Descuento</span>
                                             @endif
                                             @if($product->new)
-                                                <span class="badge badge-info badge-shadow position-relative">Nuevo</span>
+                                                <span class="badge badge-yellow badge-shadow position-relative">Nuevo</span>
                                             @endif
                                             @if($product->product_type_id == 2)
                                                 <span class="badge badge-danger badge-shadow position-relative">Variable</span>

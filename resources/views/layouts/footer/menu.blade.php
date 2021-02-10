@@ -133,7 +133,7 @@
         </div>
     </div>
     @endif
-    <div class="pt-5 bg-darker">
+    <div class="pt-5 bg-red">
         <div class="container">
             {{-- <div class="row pb-3">
                 <div class="col-md-3 col-sm-6 mb-4">

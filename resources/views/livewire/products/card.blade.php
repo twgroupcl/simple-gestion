@@ -14,7 +14,7 @@
         @endif
         @if($product->new)
             <div class="col-lg-4 col-md-4 col-sm-4">
-                <span class="badge badge-info badge-shadow">Nuevo</span>
+                <span class="badge badge-yellow badge-shadow">Nuevo</span>
             </div>
         @endif
         @if($product->product_type_id == 2)
