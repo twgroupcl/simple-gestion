@@ -148,5 +148,8 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.warehouses.show');
     Route::get('/warehouses/code/{code}', 'Api\v1\ProductInventorySourceController@showByCode')
         ->name('api.warehouses.show-by-code');
+
+    // Commune 
+    Route::get('/communes', 'Api\v1\CommuneController@index')->name('api.commune.index');
 });
 
