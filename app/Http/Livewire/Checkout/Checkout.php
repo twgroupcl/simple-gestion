@@ -372,7 +372,7 @@ class Checkout extends Component
 
             $order->save();
 
-            return redirect()->to(route('transbank.webpayplus.mall.redirect', ['order' => $order]));
+            return redirect()->to(route('transbank.webpayplus.redirect', ['order' => $order]));
         } else {
             $this->emit('showToast', '¡Stock insuficiente!', 'Verifique la cantidad de sus productos.', 3000, 'warning');
         }
