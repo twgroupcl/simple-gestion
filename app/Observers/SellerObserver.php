@@ -118,7 +118,7 @@ class SellerObserver
             }     
         } else {
             try {
-                Mail::to($seller->email)->send(new WelcomeSellerMail($seller, 1));
+                /* Mail::to($seller->email)->send(new WelcomeSellerMail($seller, 1)); */
             } catch (\Exception $e) {
                 \Log::error($e->getMessage());
             }
@@ -127,7 +127,7 @@ class SellerObserver
             $recipients = explode(';', $administrators);
             foreach ($recipients as $key => $recipient) {
                 try {
-                    Mail::to($recipient)->send(new WelcomeSellerMail($seller, 2));
+                    /* Mail::to($recipient)->send(new WelcomeSellerMail($seller, 2)); */
                 } catch (\Exception $e) {
                     \Log::error($e->getMessage());
                 }

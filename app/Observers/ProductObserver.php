@@ -20,13 +20,13 @@ class ProductObserver
     public function created(Product $product)
     {
         //Order to admins
-        if ( !$product->parent_id ) {
+        /* if ( !$product->parent_id ) {
             $administrators = Setting::get('administrator_email');
             $recipients = explode(';', $administrators);
             foreach ($recipients as $key => $recipient) {
                 Mail::to($recipient)->send(new ProductCreated($product, $product->seller->visible_name));
             }
-        }
+        } */
     }
 
     /**

@@ -112,11 +112,9 @@ class OrderUpdated extends Mailable
                         $this->title = '¡Tu orden está pagada!';
                     }
 
-                    // “Próximamente estaremos notificando la fecha de envío” cambiar por
-                    $this->shippingMessage = '“*Por evento Cyber las fechas de envío podrían variar, estaremos notificando la fecha de envío”';
+                    $this->shippingMessage = '';
                 }else{
                     $this->title = '¡Nueva orden generada!';
-
 
                 }
                 // $this->orderItems = $order->order_items;
@@ -128,7 +126,7 @@ class OrderUpdated extends Mailable
                 }
             }
         }
-        $this->logo = 'img/logo-pyme.png';
+        $this->logo = 'img/covepa-logo.png';
     }
 
     /**

@@ -130,7 +130,7 @@ use App\Models\Product;
                             <tbody>
                                 <tr>
                                     <td align="center" valign="top">
-                                        <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
+                                        {{-- <table class="force-full-width" style="margin: 0 auto;" cellspacing="0"
                                             cellpadding="0">
                                             <tbody>
                                                 <tr>
@@ -139,7 +139,7 @@ use App\Models\Product;
                                                             alt="CRCP" /><br /><br /></td>
                                                 </tr>
                                             </tbody>
-                                        </table>
+                                        </table> --}}
                                         <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
                                             cellspacing="0" cellpadding="0" bgcolor="#f5774e">
                                             <tbody>
