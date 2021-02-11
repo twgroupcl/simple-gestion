@@ -2,7 +2,8 @@
 $product = $item->product;
 @endphp
 @if ($product)
-    <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
+    <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom @if ($product->status == 0 ) border border-danger  @endif ">
+
         <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left"><a
                 class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img
                     src="{{ url($product->getFirstImagePath()) }}" class="max-height-14 min-height-14" alt="Product"></a>
@@ -25,6 +26,11 @@ $product = $item->product;
                 </div>
                 <a class="d-inline-block text-accent font-size-ms border-left ml-2 pl-2"
                     href="{{ 'seller-shop/' . $product->seller->id }}">por {{ $product->seller->visible_name }}</a>
+                    @if ($product->status == 0 )
+                    <div class="row">
+                        <div class="col-12 alert-danger"> <strong>El libro actualmente no se encuentra disponible.<strong></div>
+                    </div>
+                    @endif
                 {{-- @if ($shippingMethods)
                     <div class="select-shipping mb-0 pt-2">
                         <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected"
