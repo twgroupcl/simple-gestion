@@ -39,7 +39,23 @@ class Filters extends Component
 
     public function loadBrands() 
     {
-        $this->brands = ProductBrand::where('status','=','1')->with('products')->orderBy('name','ASC')->get();
+        $category_id = $this->data['category'] ?? null;
+
+        $this->brands = ProductBrand::where('status','=','1')
+            ->when($category_id, function ($query) use ($category_id) {
+                return $query->whereHas('products', function ($query) use ($category_id)  {
+                    return $query->byLocation()->whereHas('categories', function ($query) use ($category_id)  {
+                        return $query->where('id', $category_id);
+                    });
+                });
+            })
+            ->when(!$category_id, function ($query) {
+                return $query->whereHas('products', function ($query) {
+                    return $query->byLocation();
+                });
+            })
+            ->with('products')
+            ->orderBy('name','ASC')->get();
     }
 
     public function loadAttributes() 

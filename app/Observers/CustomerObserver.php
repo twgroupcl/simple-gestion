@@ -102,7 +102,7 @@ class CustomerObserver
     {
         try {
             $data = [
-                'logo' => asset('img/logo-pyme.png'),
+                'logo' => asset('img/covepa-logo.png'),
                 'title' => 'Te damos la bienvenida '.$customer->first_name,
                 'text' => 'Explora la cantidad de productos que tenemos para ti.',
                 'rejectedText' => '',
@@ -112,7 +112,7 @@ class CustomerObserver
 
             Mail::send('vendor.maileclipse.templates.welcomeCustomer', $data, function ($message) use ($customer) {
                 $message->to($customer->email);
-                $message->subject('Bienvenido a Contigo Pyme');
+                $message->subject('Bienvenido a Covepa');
             });
 
         } catch (Throwable $th) {

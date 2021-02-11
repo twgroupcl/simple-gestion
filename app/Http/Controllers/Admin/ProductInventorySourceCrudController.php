@@ -87,7 +87,7 @@ class ProductInventorySourceCrudController extends CrudController
     {
         CRUD::setValidation(ProductInventorySourceRequest::class);
 
-        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
+        /* $this->crud = (new BaseCrudFields())->setBaseFields($this->crud); */
 
         //CRUD::setFromDb(); // fields
 

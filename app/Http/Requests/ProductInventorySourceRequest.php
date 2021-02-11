@@ -33,7 +33,7 @@ class ProductInventorySourceRequest extends FormRequest
                 'required',
                 Rule::unique('product_inventory_sources')->ignore($this->id),
             ],
-            'company_id' => 'required',
+            /* 'company_id' => 'required', */
             'name' => 'required|min:5|max:255',
             'commune_id' => 'required|exists:communes,id',
             'address_street' => 'required',

@@ -109,11 +109,11 @@
 <tr>
 <td align="center" valign="top">
 <table class="force-full-width" style="border-collapse: collapse; width: auto;" cellspacing="0" cellpadding="0">
-<tbody>
+{{-- <tbody>
 <tr>
 <td style="font-size: 30px; text-align: center;"><br /><img src="{{ asset('img/logos/logo-crcp.png') }}" alt="CRCP" /><br /><br /></td>
 </tr>
-</tbody>
+</tbody> --}}
 </table>
 <table class="force-full-width" style="border-collapse: collapse; height: 470px; width: 611px;" cellspacing="0" cellpadding="0" align="center" bgcolor="#4dbfbf">
 <tbody>

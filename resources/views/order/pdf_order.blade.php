@@ -251,5 +251,5 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
     </tr>
 </table>
 <div class="footer-data">
-    contigopyme.cl
+    COVEPA
 </div>

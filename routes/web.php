@@ -98,6 +98,12 @@ Route::group([
     Route::post('final', 'Payments\Transbank\WebpayPlusMallController@final')->name('transbank.final');
     Route::get('webpay/mall/download/{order}', 'Payments\Transbank\WebpayPlusMallController@download')->name('transbank.webpayplus.mall.download');
     Route::get('test/{order}', 'Payments\Transbank\WebpayPlusMallController@test')->name('transbank.test.view');
+
+    // WebPayPlus
+    Route::get('webpay/plus/{order}', 'Payments\Transbank\WebpayPlusController@redirect')->name('transbank.webpayplus.redirect');
+    Route::post('webpay/plus/response', 'Payments\Transbank\WebpayPlusController@response')->name('transbank.webpayplus.response');
+    Route::post('plus/final', 'Payments\Transbank\WebpayPlusMallController@final')->name('transbank.plus.final');
+
 });
 // Route::get('complete', function(){
 //     return view('payments.transbank.webpay.mall.complete');

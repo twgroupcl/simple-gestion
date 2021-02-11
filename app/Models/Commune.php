@@ -39,6 +39,11 @@ class Commune extends Model
     {
         return $this->belongsTo(Province::class, 'province_id');
     }
+
+    public function product_inventory_sources()
+    {
+        return $this->hasMany(ProductInventorySource::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

@@ -127,7 +127,7 @@ $today =  Carbon::now();
                         <div class="card-body py-2">
                             <h3 class="product-title font-size-sm"><a href="{{ 'seller-shop/' . $products->seller->id }}">{{ $products->seller->visible_name }}</a></h3>
                             @if(count($products->categories) > 0)
-                            <a class="product-meta d-block font-size-xs pb-1" href="{{ route('category.products', $product->categories[0]->slug) }}">{{ $products->showCategory() }}</a>
+                            <a class="product-meta d-block font-size-xs pb-1" href="{{ route('category.products', $products->categories[0]->slug) }}">{{ $products->showCategory() }}</a>
                             @endif
                             <h3 class="product-title font-size-sm"><a href="{{ route('product',['slug' => $products->url_key]) }}">{{ $products->name }}</a></h3>
                             <div class="d-flex justify-content-between">

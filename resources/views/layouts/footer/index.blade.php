@@ -8,4 +8,4 @@
 
 @include('layouts.footer.top')
 
-@include('location-modal')
+<x-location-modal/>

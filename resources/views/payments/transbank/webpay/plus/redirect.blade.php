@@ -4,7 +4,7 @@
         <div class="row mt-5">
             <div class="col-12  text-center">
 
-                <div class="display-4 text-center ">Redireccionando a WebPay Plus Mall </div>
+                <div class="display-4 text-center ">Redireccionando a WebPay Plus</div>
 
             </div>
         </div>
@@ -14,7 +14,7 @@
                     class="img-fluid w-50 mx-auto"> --}}
                 <!-- Primary spinner -->
                 <div class="spinner-grow text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">Cargando...</span>
                 </div>
             </div>
         </div>

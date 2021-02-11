@@ -49,7 +49,7 @@
                                     <!--
 
                                     <a class="btn btn-primary mt-3"
-                                        href="{{ route('transbank.webpayplus.mall.redirect', ['order' => $order]) }}">Intenta nuevamente</a>
+                                        href="{{ route('transbank.webpayplus.redirect', ['order' => $order]) }}">Intenta nuevamente</a>
                                     -->
                                     
                                 </div>

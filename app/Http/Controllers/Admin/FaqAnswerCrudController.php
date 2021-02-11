@@ -28,7 +28,7 @@ class FaqAnswerCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\FaqAnswer::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faqanswer');
-        CRUD::setEntityNameStrings('faqanswer', 'faq_answers');
+        CRUD::setEntityNameStrings('pregunta frecuente', 'preguntas frecuentes');
     }
 
     /**
@@ -39,7 +39,12 @@ class FaqAnswerCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        /* CRUD::setFromDb(); // columns */
+
+        CRUD::addColumn([
+            'label' => 'Pregunta',
+            'name' => 'question',
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -58,13 +63,33 @@ class FaqAnswerCrudController extends CrudController
     {
         CRUD::setValidation(FaqAnswerRequest::class);
 
-        CRUD::setFromDb(); // fields
+        CRUD::addField([
+            'name' => 'question',
+            'label' => 'Pregunta',
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+            'name' => 'answer',
+            'label' => 'Respuesta',
+        ]);
+
+        CRUD::addField([
+            'name' => 'faq_topic',
+            'label' => 'Topico',
+            'placeholder' => 'Seleccionar un topico',
+        ]);
+
+        CRUD::addField([
+            'name' => 'slug',
+            'label' => 'Slug',
+        ]);
+
+        CRUD::addField([
+            'name' => 'status',
+            'label' => 'Activa',
+            'type' => 'checkbox',
+            'default' => 1,
+        ]);
     }
 
     /**

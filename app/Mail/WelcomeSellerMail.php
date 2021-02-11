@@ -30,12 +30,12 @@ class WelcomeSellerMail extends Mailable
     {
         $this->receiver = $receiver;
         $this->rejectedText = '';
-        $this->logo = 'img/logo-pyme.png';
+        $this->logo = 'img/covepa-logo.png';
         if ($this->receiver === 1) {
-            $this->title = '¡Bienvenido a ContigoPYME!';
+            $this->title = '¡Bienvenido a COVEPA!';
             $this->text = 'Bienvenido <strong>' . $seller->visible_name . '</strong>, tu cuenta de vendedor ha sido creada, pero se encuentra
             en espera de aprobación.<br /><br />El administrador se pondrá en contacto contigo para solicitarte los datos necesarios 
-            para unirte a ContigoPYME. Una vez que esté todo gestionado recibirás un correo con tus datos de acceso';
+            para unirte a COVEPA. Una vez que esté todo gestionado recibirás un correo con tus datos de acceso';
             $this->buttonText = '';
             $this->buttonLink = '';
         } else if ($this->receiver === 2) {

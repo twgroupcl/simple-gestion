@@ -515,6 +515,20 @@ class Product extends Model
         }
     }
 
+    public function getShippingMethodsByCommune(int $communeId)
+    {
+        $seller = Seller::find($this->seller_id);
+        $communeShippingMethods = $seller->getAvailableShippingMethodsByCommune($communeId);
+        $shippingMethods = ShippingMethod::whereIn('code',$communeShippingMethods)->where('status', 1)->get();
+        
+        if ($this->shipping_methods->count()) {
+            $productShippingsId = $this->shipping_methods->pluck('id');
+            $shippingMethods = $shippingMethods->whereIn('id', $productShippingsId);
+        }
+
+        return $shippingMethods;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
