@@ -2,7 +2,7 @@
 $product = $item->product;
 @endphp
 @if ($product)
-    <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom @if ($product->status == 0 ) border border-danger  @endif ">
+    <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom @if ($product->status == 0 ) border rounded border-danger  @endif ">
 
         <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left"><a
                 class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img
@@ -28,7 +28,7 @@ $product = $item->product;
                     href="{{ 'seller-shop/' . $product->seller->id }}">por {{ $product->seller->visible_name }}</a>
                     @if ($product->status == 0 )
                     <div class="row">
-                        <div class="col-12 alert-danger"> <strong>El libro actualmente no se encuentra disponible.<strong></div>
+                        <div class="col-12 text-danger font-weight-bold"> El libro actualmente no se encuentra disponible.</div>
                     </div>
                     @endif
                 {{-- @if ($shippingMethods)
