@@ -26,7 +26,10 @@ class FaqAnswerRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'question' => 'required',
+            'answer' => 'required',
+            'faq_topic' => 'required',
+            'status' => 'required',
         ];
     }
 

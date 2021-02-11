@@ -28,7 +28,7 @@ class FaqTopicCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\FaqTopic::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faqtopic');
-        CRUD::setEntityNameStrings('faqtopic', 'faq_topics');
+        CRUD::setEntityNameStrings('tópico', 'tópicos');
     }
 
     /**
@@ -39,13 +39,16 @@ class FaqTopicCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'name' => 'title',
+            'label' => 'Titulo',
+        ]);
+        
+        CRUD::addColumn([
+            'name' => 'description',
+            'label' => 'Descripción',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
     }
 
     /**
@@ -58,13 +61,27 @@ class FaqTopicCrudController extends CrudController
     {
         CRUD::setValidation(FaqTopicRequest::class);
 
-        CRUD::setFromDb(); // fields
+        CRUD::addField([
+            'name' => 'title',
+            'label' => 'Titulo',
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+            'name' => 'description',
+            'label' => 'Descripción',
+        ]);
+
+        CRUD::addField([
+            'name' => 'icon',
+            'label' => 'Icono',
+            'type' => 'icon_picker',
+        ]);
+
+        CRUD::addField([
+            'name' => 'slug',
+            'label' => 'Slug',
+        ]);
+
     }
 
     /**
