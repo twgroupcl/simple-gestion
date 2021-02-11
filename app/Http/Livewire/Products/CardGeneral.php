@@ -131,7 +131,11 @@ class CardGeneral extends Component
                 return $query;
             })
             ->when($product_search, function ($query) use ($product_search) {
-                return $query->where('name', 'LIKE', '%' . $product_search . '%');
+                return $query
+                    ->where('name', 'LIKE', '%' . $product_search . '%')
+                    ->orWhereHas('brand', function ($q) use ($product_search) {
+                        $q->where('name', 'LIKE', '%' . $product_search . '%');
+                    });
             })
             ->when($seller_id, function ($query) use ($seller_id) {
                 if ($seller_id != 0) {
