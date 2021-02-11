@@ -98,7 +98,7 @@
 </li>
 @endcanany
 
-@canany(['product.list'])
+@canany(['product.list', 'productbrand.list', 'productclass.list', 'productclassattribute.list', 'productinventorysource.list'])
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-box"></i> Productos</a>
 	<ul class="nav-dropdown-items">

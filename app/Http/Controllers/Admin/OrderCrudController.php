@@ -45,26 +45,14 @@ class OrderCrudController extends CrudController
         $this->admin = false;
         $this->userSeller = null;
 
-        if (backpack_user()->hasAnyRole('Super admin|Administrador|Supervisor Marketplace')) {
+        if (backpack_user()->can('order.admin')) {
             $this->admin = true;
-        }
-
-        if (backpack_user()->hasRole('Vendedor marketplace')) {
+        } else {
             $this->userSeller = Seller::where('user_id', backpack_user()->id)->firstOrFail();
-         //   if (!$this->admin) {
-                $sellerId = $this->userSeller->id;
-
-
-                //  $this->crud->query = $this->crud->query->whereHas('order_items', function ($query) use ($value) {
-                //      $query->where('seller_id', $value);
-                //  });
-                $this->crud->addClause('whereHas', 'order_items', function($query) use ($sellerId) {
-                    $query->where('seller_id', $sellerId);
-                });
-
-
-
-          //  }
+            $sellerId = $this->userSeller->id;
+            $this->crud->addClause('whereHas', 'order_items', function($query) use ($sellerId) {
+                $query->where('seller_id', $sellerId);
+            });
         }
     }
 

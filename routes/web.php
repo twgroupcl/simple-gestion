@@ -102,7 +102,7 @@ Route::group([
     // WebPayPlus
     Route::get('webpay/plus/{order}', 'Payments\Transbank\WebpayPlusController@redirect')->name('transbank.webpayplus.redirect');
     Route::post('webpay/plus/response', 'Payments\Transbank\WebpayPlusController@response')->name('transbank.webpayplus.response');
-    Route::post('plus/final', 'Payments\Transbank\WebpayPlusMallController@final')->name('transbank.plus.final');
+    Route::post('plus/final', 'Payments\Transbank\WebpayPlusController@final')->name('transbank.plus.final');
 
 });
 // Route::get('complete', function(){
