@@ -1237,4 +1237,24 @@ class ProductCrudController extends CrudController
 
         return $entries;
     }
+
+    public function getProducts(Request $request)
+    {
+        $products= Product::where('status','=','1')
+                        ->where('is_approved','=','1')
+                        ->where('parent_id', '=', null)
+                        //->whereSellerId($this->seller->id)
+                        ->Where('deleted_at', '=', null)
+                       // ->Where('name', 'like', '%'.$searchProduct.'%')
+                       // ->orWhere('sku', '=', $searchProduct)
+
+                        ->limit(20)
+                        ->get();
+
+        if ($products == null) {
+            return response()->json(['data' => 'not found'], 404);
+        }
+
+        return $products;
+    }
 }

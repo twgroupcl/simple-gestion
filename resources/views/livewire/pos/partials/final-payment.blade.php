@@ -83,7 +83,7 @@
         <div class="col-6">
             {{-- <button class="btn btn-primary btn-block" >SI</button> --}}
             @if(isset($existsOrder))
-            <a target="_blank" href="{{ route('pos.order', ['id' => $existsOrder->id]) }}" class="btn btn-primary btn-block text-white">Imprimir boleta</a>
+            <a target="_blank" href="{{ route('order.invoice', ['order' => $existsOrder->id , 'tipoPapel'=> 75]) }}" class="btn btn-primary btn-block text-white">Imprimir boleta</a>
             @endif
         </div>
     </div>

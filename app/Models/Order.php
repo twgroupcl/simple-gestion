@@ -169,6 +169,7 @@ class Order extends Model
                 return $this->order_items()->get();
             }
         } else {
+
             return $this->order_items()->get();
         }
 

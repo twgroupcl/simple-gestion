@@ -101,7 +101,10 @@ class Pos extends Component
 
     public function confirmPayment($cash, $tip = null)
     {
+
+
         $this->customer = session()->get('user.pos.selectedCustomer');
+
         if ($cash >= $this->total && !is_null($this->saleBox)) {
             $currency = Currency::where('code', Setting::get('default_currency'))->firstOrFail();
             //Make order
@@ -176,7 +179,7 @@ class Pos extends Component
 
             $this->existsOrder = $order;
 
-            //$this->emitInvoice($order);
+            $this->emitInvoice($order);
 
             $this->clearCart();
 
@@ -378,7 +381,7 @@ class Pos extends Component
     public function emitInvoice(Order $order)
     {
 
-        /*
+
         $currentSeller = Seller::where('user_id', backpack_user()->id)->first();
         DB::beginTransaction();
         try {
@@ -388,7 +391,8 @@ class Pos extends Component
                 ['country_id' => 43, 'code' => 39], // 41 => exenta, 39 => afecta(con impuestos)
             );
 
-            $order_items = $order->order_items->map(function ($item) {
+
+            $order_items = $order->order_items()->get()->map(function ($item) {
 
                 // Since the items in the POS are assumed with IVA, we must subtract it
                 // and make the total calculations again to save it in the invoice table
@@ -408,6 +412,8 @@ class Pos extends Component
                 $item->additional_tax_total = 0;
                 return $item;
             })->toJson();
+
+
 
             $invoice = new Invoice($order->toArray());
             $invoice->address_id = $this->customerAddressId;
@@ -446,7 +452,7 @@ class Pos extends Component
             DB::rollback();
             dd($e->getMessage());
             return false;
-        }*/
+        }
         //return redirect()->route('pos.order', ['id' => $order->id]);
     }
 
