@@ -77,7 +77,7 @@
                         <!-- Product details-->
                         <div class="col-lg-5 pt-4 pt-lg-0">
                             <div class="product-details ml-auto">
-                                <span class="d-inline-block font-size-sm align-middle mt-1">Vendido por: </span><a href="{{ url('seller-shop/'.$product->seller->id) }}" class="d-inline-block font-size-sm align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</a>
+                                <span class="d-inline-block font-size-sm align-middle mt-1">Sucursal: </span><a href="{{ url('seller-shop/'.$product->seller->id) }}" class="d-inline-block font-size-sm align-middle mt-1 ml-1">{{ $product->seller->visible_name }}</a>
                             </div>
                             <div class="product-details ml-auto pb-3">
                                 @if ($product->has_special_price)
@@ -287,7 +287,7 @@
                         </div>
                         <div class="col-lg-5 col-sm-6 offset-lg-1">
                             @if (!$product->is_service)
-                                <h3 class="h6">Dimensiones de envio</h3>
+                                <h3 class="h6">Dimensiones</h3>
                                 <ul class="list-unstyled font-size-sm pb-2">
                                     <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Peso:</span><span>{{ number_format($product->weight, 2, ',', '.') }} kg</span></li>
                                     <li class="d-flex justify-content-between pb-2 border-bottom"><span class="text-muted">Alto:</span><span>{{ number_format($product->height, 2, ',', '.') }} cm</span></li>

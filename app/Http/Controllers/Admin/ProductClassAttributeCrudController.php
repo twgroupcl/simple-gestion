@@ -165,11 +165,11 @@ class ProductClassAttributeCrudController extends CrudController
             ],
         ]);
             
-        CRUD::addField([
+        /* CRUD::addField([
             'name' => 'is_required',
             'label' => 'Es requerido',
             'type' => 'checkbox',
-        ]);
+        ]); */
 
         CRUD::addField([
             'name' => 'is_configurable',
