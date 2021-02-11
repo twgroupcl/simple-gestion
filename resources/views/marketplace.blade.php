@@ -294,7 +294,7 @@ $today =  Carbon::now();
 -->
 
 @if(count($banners) > 0 && !empty($banners[2]))
-    @if($banners[2]['status'] == 'Activo' || $banners[3]['status'] == 'Activo')
+    @if($banners[2]['status'] || $banners[3]['status'])
     <section class="container mt-4 mb-grid-gutter">
         <div class="rounded-lg py-4">
             <div class="row text-center">

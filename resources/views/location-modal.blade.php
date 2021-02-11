@@ -3,10 +3,10 @@
 @endphp
 
 <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form action="{{ route('set-location') }}" method="post">
-            @csrf
+    <div class="modal-dialog modal-dialog-centered " role="document">
         <div class="modal-content">
+            <form action="{{ route('set-location') }}" method="post">
+                @csrf
             <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
                  Elige tu ubicación
@@ -29,10 +29,11 @@
             </div>
             <div class="modal-footer">
             {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <input type="submit" class="btn btn-primary" value="Aceptar" />
             </div>
-        </div>
         </form>
+        </div>
+        
     </div>
 </div>
 

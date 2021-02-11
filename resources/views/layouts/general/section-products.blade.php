@@ -143,7 +143,7 @@
         </div>
         <!-- Product-->
         <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
-            <div class="card product-card"><span class="badge badge-info badge-shadow">New</span>
+            <div class="card product-card"><span class="badge badge-yellow badge-shadow">New</span>
                 <div class="product-card-actions d-flex align-items-center"><a class="btn-action nav-link-style mr-2" href="#"><i class="czi-compare mr-1"></i>Compare</a>
                     <button class="btn-wishlist btn-sm" type="button" data-toggle="tooltip" data-placement="left" title="Add to wishlist"><i class="czi-heart"></i></button>
                 </div><a class="card-img-top d-block overflow-hidden" href="shop-single-v2.html"><img src="{{ asset('img/shop/catalog/64.jpg') }}" alt="Product"></a>

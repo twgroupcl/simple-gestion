@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@section('title')
+<title>{{ $product->name }} - {{ config('app.name', 'Laravel') }}</title>
+@endsection
+
 @section('content')
 <!-- Page title-->
 <!-- Custom page title-->

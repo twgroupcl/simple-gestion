@@ -3,15 +3,15 @@
     <!-- Topbar-->
    
     <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page.-->
-    <div class="navbar-sticky bg-dark">
+    <div class="navbar-sticky bg-yellow">
         <div class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
-                <!-- <a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;">
-                    <img width="100" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" />
+                <a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="{{ url('/') }}" style="min-width: 7rem;">
+                    <img width="100" src="{{ asset('img/covepa-logo.png') }}" alt="COVEPA" />
                 </a>
                 <a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;">
-                    <img width="74" src="{{ asset('img/logo-pyme.png') }}" alt="Contigo Pyme" />
-                </a> -->
+                    <img width="74" src="{{ asset('img/covepa-logo') }}" alt="COVEPA" />
+                </a>
             
                 <!-- Search-->
                 @if($header)
@@ -21,21 +21,22 @@
                 @endphp
                 @livewire('search-navbar', [ 'query' => $product ?? '' , 'selected' => $category ?? 0])
                 <!-- Toolbar-->
+                
                 <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
-                    <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#locationModal" data-toggle="modal" data-target="#locationModal">
-                        <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-map"></i></div>
-                        @if (session()->has('commune_name'))
-                            <div class="navbar-tool-text ml-n3"><small>Cambiar ubicacion</small>{{ session()->get('commune_name') }}</div>
-                        @else
-                            <div class="navbar-tool-text ml-n3"><small>Cambiar ubicacion</small>Desconocida</div>
-                        @endif
-                    </a>
-                </div>
-                <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"><i class="czi-menu align-middle mt-n1" style="color: black;"></i></button>
                     <a class="navbar-tool navbar-stuck-toggler" href="#"><span class="navbar-tool-tooltip">Expand menu</span>
                         <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-menu"></i></div>
                     </a>
+                    <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
+                        <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#locationModal" data-toggle="modal" data-target="#locationModal">
+                            <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-map"></i></div>
+                            @if (session()->has('commune_name'))
+                                <div class="navbar-tool-text ml-n3"><small>Cambiar ubicacion</small>{{ session()->get('commune_name') }}</div>
+                            @else
+                                <div class="navbar-tool-text ml-n3"><small>Cambiar ubicacion</small>Desconocida</div>
+                            @endif
+                        </a>
+                    </div>
                     @guest
                     {{-- <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#signin-modal" data-toggle="modal"> --}}
                     <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="{{ route('customer.sign') }}">
@@ -93,8 +94,10 @@
                     <!-- Primary menu-->
                     <ul class="navbar-nav">
                         <li class="nav-item active"><a class="nav-link" href="{{ url('/') }}">Inicio</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="{{ route('seller.sign') }}">Quiero vender</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="{{ route('customer.sign') }}">Quiero comprar</a></li>
+                        {{-- <li class="nav-item active"><a class="nav-link" href="{{ route('seller.sign') }}">Quiero vender</a></li> --}}
+                        @guest
+                        <li class="nav-item active"><a class="nav-link" href="{{ route('customer.sign') }}">Registrarse</a></li>
+                        @endguest
                         {{-- <li class="nav-item dropdown active"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Inicio</a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown position-static mb-0"><a class="dropdown-item py-2 border-bottom" href="home-fashion-store-v1.html"><span class="d-block text-heading">Fashion

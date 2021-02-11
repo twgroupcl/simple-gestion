@@ -52,7 +52,6 @@ class HomeController extends Controller
             // })
         ->orderBy('order')->get();
 
-
         return view('marketplace', compact('categories','featuredProducts','banners','sliders'));
     }
 
