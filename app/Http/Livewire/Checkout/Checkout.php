@@ -83,7 +83,7 @@ class Checkout extends Component
                 'status' => '',
                 'number' => 4,
                 'icon' => 'czi-card',
-                'prev-button' => 'Volver a método de pago',
+                'prev-button' => 'Volver a información de envío',
                 'next-button' => '',
                 'event-prev' => null,
                 'event-next' => null,
@@ -301,15 +301,23 @@ class Checkout extends Component
 
         //Check if Sufficient Products
         $sufficienQuantity = true;
+        //Check if all products active
+        $allProductsActive = false;
+        $productsNotActive = [];
+
         //Add Order Item
         foreach ($this->getItems() as $item) {
             $product = $item->product;
             if (!$product->haveSufficientQuantity($item->qty)) {
                 $sufficienQuantity = false;
             }
+            if($product->status == 0){
+                array_push($productsNotActive,$product);
+                $allProductsActive = false;
+            }
         }
 
-        if ($sufficienQuantity) {
+        if ($sufficienQuantity && $allProductsActive) {
 
             //get cart addresses ;
             $addressShipping = [
@@ -377,7 +385,15 @@ class Checkout extends Component
 
             return redirect()->to(route('transbank.webpayplus.mall.redirect', ['order' => $order]));
         } else {
-            $this->emit('showToast', '¡Stock insuficiente!', 'Verifique la cantidad de sus productos.', 3000, 'warning');
+
+            if(!$allProductsActive && count($productsNotActive)>0){
+                $product = $productsNotActive[0];
+                $this->emit('showToast', '¡Libro no disponible!', 'El libro "'. $product['name'].'" ya no se encuentra disponible. Elimínelo para continuar', 4500, 'warning');
+            }
+            if (!$sufficienQuantity) {
+                $this->emit('showToast', '¡Stock insuficiente!', 'Verifique la cantidad de sus productos.', 3000, 'warning');
+            }
+
         }
     }
 
