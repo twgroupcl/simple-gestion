@@ -156,57 +156,28 @@
                                     </div>
                                 -->
                                 <!-- Product panels-->
-                                {{-- <div class="accordion mb-4" id="productPanels">
+                                <div class="accordion mb-4" id="productPanels">
                                     <div class="card">
                                         <div class="card-header">
                                             <h3 class="accordion-heading"><a href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shippingOptions"><i class="czi-delivery text-muted lead align-middle mt-n1 mr-2"></i>Opciones de envío<span class="accordion-indicator"></span></a></h3>
                                         </div>
+                                        @if (session()->has('commune_id'))
                                         <div class="collapse show" id="shippingOptions" data-parent="#productPanels">
                                             <div class="card-body font-size-sm">
-                                                <div class="d-flex justify-content-between border-bottom pb-2">
-                                                    <div>
-                                                        <div class="font-weight-semibold text-dark">Local courier shipping</div>
-                                                        <div class="font-size-sm text-muted">2 - 4 days</div>
+                                                @foreach ($product->getShippingMethodsByCommune((int) session()->get('commune_id')) as $method)
+                                                    <div class="d-flex justify-content-between {{ !$loop->last ? 'border-bottom' : '' }} pb-2">
+                                                        <div>
+                                                            <div class="font-weight-semibold text-dark">{{ $method->title }}</div>
+                                                            {{-- <div class="font-size-sm text-muted">2 - 4 days</div> --}}
+                                                        </div>
+                                                        {{-- <div>$16.50</div> --}}
                                                     </div>
-                                                    <div>$16.50</div>
-                                                </div>
-                                                <div class="d-flex justify-content-between border-bottom py-2">
-                                                    <div>
-                                                        <div class="font-weight-semibold text-dark">UPS ground shipping</div>
-                                                        <div class="font-size-sm text-muted">4 - 6 days</div>
-                                                    </div>
-                                                    <div>$19.00</div>
-                                                </div>
-                                                <div class="d-flex justify-content-between pt-2">
-                                                    <div>
-                                                        <div class="font-weight-semibold text-dark">Local pickup from store</div>
-                                                        <div class="font-size-sm text-muted">&mdash;</div>
-                                                    </div>
-                                                    <div>$0.00</div>
-                                                </div>
+                                                @endforeach
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="accordion-heading"><a class="collapsed" href="#localStore" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="localStore"><i class="czi-location text-muted font-size-lg align-middle mt-n1 mr-2"></i>Enviar a casa<span class="accordion-indicator"></span></a></h3>
-                                        </div>
-                                        <div class="collapse" id="localStore" data-parent="#productPanels">
-                                            <div class="card-body">
-                                                <select class="custom-select">
-                                                    <option value>Selecciona tu comuna</option>
-                                                    <option value="Argentina">Argentina</option>
-                                                    <option value="Belgium">Belgium</option>
-                                                    <option value="France">France</option>
-                                                    <option value="Germany">Germany</option>
-                                                    <option value="Spain">Spain</option>
-                                                    <option value="UK">United Kingdom</option>
-                                                    <option value="USA">USA</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
+                                </div> 
                                 <!-- Sharing-->
                                 {{-- <h6 class="d-inline-block align-middle font-size-base my-2 mr-2">Share:</h6><a class="share-btn sb-twitter mr-2 my-2" href="#"><i class="czi-twitter"></i>Twitter</a><a class="share-btn sb-instagram mr-2 my-2" href="#"><i class="czi-instagram"></i>Instagram</a><a class="share-btn sb-facebook my-2" href="#"><i class="czi-facebook"></i>Facebook</a> --}}
                             </div>
