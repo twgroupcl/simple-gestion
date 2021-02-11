@@ -68,7 +68,7 @@ class CommuneShippingMethodCrudController extends CrudController
         if ($this->admin) {
             CRUD::addColumn([
                 'name' => 'seller',
-                'label' => 'Vendedor',
+                'label' => 'Sucursal',
                 'type' => 'relationship',
                 'attribute' => 'visible_name',
 
@@ -114,10 +114,10 @@ class CommuneShippingMethodCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Vendedor',
+            'label' => 'Sucursal',
             'type' => 'relationship',
             'default' => $this->userSeller ?? '',
-            'placeholder' => 'Selecciona un vendedor',
+            'placeholder' => 'Selecciona una sucursal',
             'attribute' => 'visible_name',
             'tab' => 'Configuración general',
             'wrapper' => [
@@ -496,7 +496,7 @@ class CommuneShippingMethodCrudController extends CrudController
             CRUD::addFilter([
                 'name'  => 'seller_id',
                 'type'  => 'select2',
-                'label' => 'Vendedor'
+                'label' => 'Sucursal'
             ], function() {
                 return Seller::all()->sortBy('visible_name')->pluck('visible_name', 'id')->toArray();
             }, function($value) {
