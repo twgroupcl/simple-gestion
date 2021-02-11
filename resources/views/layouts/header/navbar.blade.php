@@ -10,7 +10,7 @@
                     <img width="100" src="{{ asset('img/covepa-logo.png') }}" alt="COVEPA" />
                 </a>
                 <a class="navbar-brand d-sm-none mr-2" href="{{ url('/') }}" style="min-width: 4.625rem;">
-                    <img width="74" src="{{ asset('img/covepa-logo') }}" alt="COVEPA" />
+                    <img width="74" src="{{ asset('img/covepa-logo.png') }}" alt="COVEPA" />
                 </a>
             
                 <!-- Search-->
