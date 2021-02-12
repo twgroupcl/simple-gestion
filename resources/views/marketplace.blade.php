@@ -31,12 +31,12 @@
 </div>
 <section class="container p-0">
     <div class="col-12 text-right d-none d-sm-block">
-        <a href="https://www.facebook.com/camarachilenalibro/" target="_blank">
+        <a href="https://actividades.prolibro.cl/" target="_blank">
             <img src="{{ asset('img/filsa/boton-transmision.jpg') }}" alt="Transmision en vivo" class="w-25">
         </a>
     </div>
     <div class="col-12 text-right d-sm-none">
-        <a href="https://www.facebook.com/camarachilenalibro/" target="_blank">
+        <a href="https://actividades.prolibro.cl/" target="_blank">
             <img src="{{ asset('img/filsa/boton-transmision.jpg') }}" alt="Transmision en vivo">
         </a>
     </div>
