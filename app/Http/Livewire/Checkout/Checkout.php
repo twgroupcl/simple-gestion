@@ -302,7 +302,7 @@ class Checkout extends Component
         //Check if Sufficient Products
         $sufficienQuantity = true;
         //Check if all products active
-        $allProductsActive = false;
+        $allProductsActive = true;
         $productsNotActive = [];
 
         //Add Order Item
