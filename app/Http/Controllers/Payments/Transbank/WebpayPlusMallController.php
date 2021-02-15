@@ -56,7 +56,7 @@ class WebpayPlusMallController extends Controller
         $this->finalUrl = $wpmConfig[4]->variable_value;
 
         if (Setting::get('payment_environment') == 'INTEGRACION') {
-            $this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
+             $this->transaction = (new Webpay(Configuration::forTestingWebpayPlusMall()))->getMallNormalTransaction();
         } else {
             $this->transaction = (new Webpay($configuration))->getMallNormalTransaction();
         }
@@ -167,6 +167,7 @@ class WebpayPlusMallController extends Controller
             // return redirect()->back()->with('error', 'Ocurrió un error al generar la url de pago');
             return view('payments.transbank.webpay.mall.failed', compact('result', 'order'));
         } else {
+
             return view('payments.transbank.webpay.mall.redirect', compact('response'));
         }
     }
@@ -206,9 +207,7 @@ class WebpayPlusMallController extends Controller
         $orderlog->event = 'Resultado pago';
         $orderlog->save();
 
-        $order = Order::where('id', $this->orderId)->first();
-        $order->status = 2; //paid
-        $order->update();
+
         $finalresult = false;
         if (is_array($result->detailOutput)) {
             foreach ($result->detailOutput as $output) {
@@ -233,7 +232,10 @@ class WebpayPlusMallController extends Controller
             }
         }
         if ($finalresult) {
-
+            //Update order status
+            $order = Order::where('id', $this->orderId)->first();
+            $order->status = 2; //paid
+            $order->update();
             // Reducir invententario de product
             // Por cada item
             $orderItems = $order->order_items;
@@ -324,6 +326,10 @@ class WebpayPlusMallController extends Controller
 
             return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
         } else {
+            //Update order status
+            $order = Order::where('id', $this->orderId)->first();
+            $order->status = 4; //paid
+            $order->update();
             return view('payments.transbank.webpay.mall.failed', compact('result', 'order'));
         }
     }
