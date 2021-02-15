@@ -20,6 +20,7 @@ class Order extends Model
     const STATUS_INITIATED = 1;
     const STATUS_PAID = 2;
     const STATUS_COMPLETED = 3;
+    const STATUS_REJECT = 4;
 
     protected $table = 'orders';
     // protected $primaryKey = 'id';
@@ -121,6 +122,9 @@ class Order extends Model
                 break;
             case $this::STATUS_COMPLETED:
                 return 'Completa';
+                break;
+            case $this::STATUS_REJECT:
+                return 'Rechazada';
                 break;
             default:
                 break;

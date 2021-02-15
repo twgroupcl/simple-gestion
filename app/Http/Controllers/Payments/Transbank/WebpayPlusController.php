@@ -47,11 +47,6 @@ class WebpayPlusController extends Controller
             $wpmConfig = json_decode($this->paymentMethod->json_value);
         }
 
-        // Temporal production config
-        $prodPrivateKey = '';
-        $prodPublicKey = '';
-        $prodCommerceCode = '';
-
         $configuration = new Configuration();
 
         $configuration->setEnvironment(Setting::get('payment_environment'));
@@ -216,8 +211,6 @@ class WebpayPlusController extends Controller
         $orderlog->save();
 
         $order = Order::where('id', $this->orderId)->first();
-        $order->status = 2; //paid
-        $order->update();
         $finalresult = false;
 
         $output = $result->detailOutput;
@@ -228,6 +221,8 @@ class WebpayPlusController extends Controller
         }
 
         if ($finalresult) {
+            $order->status = 2; //paid
+            $order->update();
 
             // Reducir invententario de product
             // Por cada item
@@ -272,6 +267,8 @@ class WebpayPlusController extends Controller
 
             return view('payments.transbank.webpay.plus.complete', compact('result', 'order'));
         } else {
+            $order->status = Order::STATUS_REJECT;
+            $order->update();
             return view('payments.transbank.webpay.plus.failed', compact('result', 'order'));
         }
     }
