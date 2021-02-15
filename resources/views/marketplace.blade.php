@@ -7,7 +7,7 @@
 <div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
     <div class="cz-carousel cz-dots-enabled">
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-            <img src="{{ asset('img/prolibro/banner-principal-feria.jpg') }}" alt="Prolibro Banner">
+            {{-- <img src="{{ asset('img/prolibro/banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
             <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
             {{-- <a href="https://filsaenvivo.com/" target="_blank">
                 <img src="{{ asset('img/filsa/banner-transmision-carousel.jpg') }}" alt="Prolibro Banner" class="w-100">
@@ -20,7 +20,7 @@
     <div class="cz-carousel">
         <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled">
             <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-                <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner">
+                {{-- <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
                 {{-- <a href="https://filsaenvivo.com/" target="_blank">
                     <img src="{{ asset('img/filsa/mobile-banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
@@ -91,15 +91,28 @@
 </section>
 
 <section class="container mt-5 mb-grid-gutter">
-    <div class="rounded-lg py-4">
-        <div class="row align-items-center">
-            <div class="col-md-12">
-                <div class="d-none d-lg-block d-md-block d-sm-block">
-                    <img src="{{ asset('img/prolibro/banner-medio-prolibro.jpg') }}" alt="Banner Prolibro" class="img-fluid">
-                </div>
 
-                <div class="d-block d-sm-none">
-                    <img src="{{ asset('img/prolibro/mobile-banner-medio-prolibro.jpg') }}" alt="Banner Prolibro" class="img-fluid w-100">
+
+    <div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
+        <div class="cz-carousel cz-dots-enabled">
+            <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+                <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
+                    <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
+                </a>
+                <img src="{{ asset('img/prolibro/banner-medio-prolibro-2.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
+            </div>
+        </div>
+    </div>
+
+    <div class="d-block d-sm-none">
+        <div class="cz-carousel">
+            <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled">
+                <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}'>
+                    <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
+                        <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid ">
+                    </a>
+                    <img src="{{ asset('img/prolibro/mobile-banner-medio-prolibro-2.jpg') }}" alt="Prolibro Banner" class="img-fluid">
+
                 </div>
             </div>
         </div>
@@ -136,14 +149,10 @@
             <div class="col-md-12">
                 <div class="cz-carousel cz-dots-enabled">
                     <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-                        <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
-                            <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid w-100">
-                        </a>
                         <a href="http://www.radiovalparaiso.cl/" target="_blank" class="border border-white">
                             <img src="{{ asset('img/prolibro/banner-radio-valparaiso.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid w-100">
                         </a>
-
-
+                        <img src="{{ asset('img/prolibro/banner-medio-prolibro-2.jpg') }}" alt="Prolibro Banner" class="img-fluid">
                     </div>
                 </div>
             </div>
