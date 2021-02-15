@@ -154,6 +154,7 @@ class WebpayPlusMallController extends Controller
         $orderlog = new OrderLog();
         $orderlog->order_id = $order->id;
         $orderlog->event = 'Inicio de pago';
+        $orderlog->json_value = json_encode($response);
         $orderlog->save();
 
 
@@ -199,11 +200,10 @@ class WebpayPlusMallController extends Controller
 
         $orderlog->order_id = $this->orderId;
         $orderlog->event = 'Resultado pago';
+        $orderlog->json_value =  json_encode($data);
         $orderlog->save();
 
-        $order = Order::where('id', $this->orderId)->first();
-        $order->status = 2; //paid
-        $order->update();
+
         $finalresult = false;
         if (is_array($result->detailOutput)) {
             foreach ($result->detailOutput as $output) {
@@ -228,6 +228,11 @@ class WebpayPlusMallController extends Controller
             }
         }
         if ($finalresult) {
+
+             //Update order status
+             $order = Order::where('id', $this->orderId)->first();
+             $order->status = 2; //paid
+             $order->update();
 
             // Reducir invententario de product
             // Por cada item
@@ -270,6 +275,11 @@ class WebpayPlusMallController extends Controller
 
             return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
         } else {
+
+             //Update order status
+             $order = Order::where('id', $this->orderId)->first();
+             $order->status = 4; // Reject
+             $order->update();
             return view('payments.transbank.webpay.mall.failed', compact('result', 'order'));
         }
     }

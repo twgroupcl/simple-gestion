@@ -20,6 +20,7 @@ class Order extends Model
     const STATUS_INITIATED = 1;
     const STATUS_PAID = 2;
     const STATUS_COMPLETED = 3;
+    const STATUS_REJECT = 4;
 
     protected $table = 'orders';
     // protected $primaryKey = 'id';
@@ -53,15 +54,15 @@ class Order extends Model
 
     }
 
-    public function getTotal($admin,$seller)
+    public function getTotal($admin, $seller)
     {
-        if($admin){
+        if ($admin) {
 
-            return currencyFormat($this->total?$this->total: 0, 'CLP',true);
-        }else{
-            $totalOrder =  OrderItem::where('order_id', $this->id)->where('seller_id',  $seller->id)->groupBy('order_id')->sum('total');
+            return currencyFormat($this->total ? $this->total : 0, 'CLP', true);
+        } else {
+            $totalOrder = OrderItem::where('order_id', $this->id)->where('seller_id', $seller->id)->groupBy('order_id')->sum('total');
 
-            return currencyFormat($totalOrder?$totalOrder: 0, 'CLP',true);
+            return currencyFormat($totalOrder ? $totalOrder : 0, 'CLP', true);
         }
     }
     /*
@@ -121,6 +122,9 @@ class Order extends Model
                 break;
             case $this::STATUS_COMPLETED:
                 return 'Completa';
+                break;
+            case $this::STATUS_REJECT:
+                return 'Rechazada';
                 break;
             default:
                 break;
