@@ -232,41 +232,24 @@
             color: #827e84;
             border: 2px solid #ffffff !important;
         }
+
+        .menu-mobile{
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+        }
+
+        .mobile-menu-item{
+            display: block;
+        }
     </style>
 @endpush
 
 
 <div class="content" wire:ignore.self>
-@handheld
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
-    id="modal-confirm-pay">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Confirmar</h4>
-            </div>
-            <div class="modal-body">
-                <p>Este proceso generará una nueva orden y una factura electrónica.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal-btn-yes">Si</button>
-                <button type="button" class="btn btn-default" id="modal-btn-no">No</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="cart-view" style="display: none;">
-    <div class="row">
-        <div class="col-12"><i class="la la-close float-right close-cart-view"></i></div>
-    </div>
-    <div class="row">
-        <div class="col-12 card">
-            @include('livewire.pos.partials.cart')
-        </div>
-    </div>
-
-</div>
 {{-- Menu --}}
 <div class="menu-content h-100" style="display: none;">
     <div class="row ">
@@ -312,95 +295,12 @@
     </div>
 
 </div>
-{{-- Header --}}
-<div class="header-pos">
-    <div class="row mb-2">
-        <div class="col-2 text-center">
-            <i class="las la-bars menu-mobile" style="font-size: 32px;"></i>
-        </div>
-        <div class="col-8 p-0 text-center">
-            <form class="form-inline search-products">
-                <input id="search" class="form-control w-100" type="search" placeholder="Buscar producto"
-                    aria-label="Search">
-           </form>
-           <form class="form-inline search-customers" style="display: none;">
-                <input class="form-control w-100 search-customers" type="search" placeholder="Buscar cliente"
-                aria-label="Search">
-           </form>
-           <form class="form-inline search-orders" style="display: none;">
-                <input id="searchOrder" class="form-control mr-sm-2 w-100 search-orders" type="text" placeholder="Buscar orden"
-           aria-label="Search">
-        </form>
-
-        </div>
-        <div class="col-2 p-0">
-            <span class="las la-shopping-cart " style="font-size:32px;">
-
-            <span
-                class="custom-badge badge-cart-view  "  @if( !empty($cartproducts)) id="mobile-cart-view" @endif> {{ empty($cartproducts)?0:count($cartproducts) }}</span>
-        </span>
-    </div>
-</div>
-</div>
-
-{{-- Customer view --}}
-<div class="h-50 customer-view" style="display: none;">
-    <div id="selectCustomer">@livewire('pos.customer.customer-view')</div>
-</div>
-{{-- Sale Box --}}
-    @include('livewire.pos.partials.sale-box')
-{{--Report Sales --}}
-<div class="col-12 sales-view" style="display: none;">
-    <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
-</div>
-{{-- Payment view --}}
-    @include('livewire.pos.partials.payment')
-{{-- Confirm payment view --}}
-    @include('livewire.pos.partials.confirm-payment')
-{{-- Final payment view --}}
-    @include('livewire.pos.partials.final-payment')
-<div class=" h-50 main-view">
-
-    <div id="productList">
-
-        @livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
-    </div>
-</div>
-<div class=" h-25 cart-buttons-view">
-    <div class="row fixed-bottom">
-
-        <div class="col-6 p-1"  @if(!$isSaleBoxOpen) style="display:none;" @endif>
-            <button class="btn btn-danger btn-block  h-100" id="btn-customer">
-                @if (session()->get('user.pos.selectedCustomer'))
-                    {{ session()->get('user.pos.selectedCustomer')->first_name }}
-                    {{ session()->get('user.pos.selectedCustomer')->last_name }}
-                @else
-                    Seleccionar Cliente
-                @endif
-            </button>
-        </div>
-        <div class="col-6 p-1 "  @if(!$isSaleBoxOpen) style="display:none;" @endif>
-            <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif> {{ currencyFormat($total ?? 0, 'CLP', true) }} <br>
-                Pagar
-            </button>
-        </div>
-
-        <div class="col-12 p-4 "  @if($isSaleBoxOpen) style="display:none;" @endif>
-            <button class="btn btn-warning btn-block btn-box-sale">
-                Debe iniciar una caja para continuar operando
-            </button>
-        </div>
-
-    </div>
-
-</div>
-@elsehandheld
-
 
 {{-- Header --}}
 <div class="header-pos">
-    <div class="row">
-        <div class="col-4">
+
+    <div class="row d-none d-sm-block">
+        <div class="col-md-4 col-sm-12">
             <div wire:init="validateBox" class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="boxSwitch" @if($isSaleBoxOpen) checked="true" @endif>
                 <label class="custom-control-label" for="boxSwitch"
@@ -412,7 +312,7 @@
                     class="text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }} -  ({{$user->name}})</strong>
             @endif
         </div>
-        <div class="col-8">
+        <div class="col-md-8 d-none d-sm-block">
             <div class="row">
                 <div class="col-3"><span class=" border border-white rounder p-2 custom-key">F1 </span> (Inicio)</div>
                 <div class="col-3"><span class=" border border-white rounder p-2 custom-key">F2 </span> (Cobrar)</div>
@@ -449,9 +349,9 @@
 
 <div class="row ">
     {{-- Sidebar--}}
-    <div class="col-1">
+    <div class="col-1  d-none d-sm-block">
         <div class="bg-light border-right" id="sidebar-wrapper">
-            <ul class="pos-list-group list-group-flush">
+            <ul id="menu-pos" class="pos-list-group list-group-flush">
                 <li class="pos-list-group-item text-center my-auto">
                     <a href="#" class=" list-group-item-action link-pos ">
                         <i class=" las la-calculator" style="font-size: 32px;"></i>
@@ -487,11 +387,11 @@
         </div>
     </div>
     {{-- Customer view --}}
-    <div class="col-11 customer-view" style="display: none;">
+    <div class="col-md-11 col-12 customer-view" style="display: none;">
         <div id="selectCustomer">@livewire('pos.customer.customer-view')</div>
     </div>
     {{-- Salesbox --}}
-    <div class="col-11 sales-view" style="display: none;">
+    <div class="col-md-11 col-12 sales-view" style="display: none;">
         <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
     </div>
     {{-- Payment view --}}
@@ -502,9 +402,9 @@
     @include('livewire.pos.partials.confirm-payment')
     {{-- Final payment view --}}
     @include('livewire.pos.partials.final-payment')
-    <div class="col-11 main-view">
+    <div class="col-md-11 col-12 main-view">
         <div class="row">
-            <div class="col-8">
+            <div class="col-md-8 col-12 m-0 p-0">
                 {{-- <div class="row">
                     <div class="col-7 text-center pt-1 pb-1">
                         <form class="form-inline">
@@ -518,9 +418,9 @@
                 <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
                 </div>
             </div>
-            <div class="col-4">
-                <div class="vh-100">
-                    <div class="col-12 h-50 overflow-auto">
+            <div class="col-md-4 col-12">
+                <div id="cart-space" class="vh-100 ">
+                    <div class="col-12 h-50 overflow-auto d-none d-sm-block">
                         @include('livewire.pos.partials.cart')
                     </div>
 
@@ -570,22 +470,22 @@
                             </div>
                         </div>
                         @endif
-                        <div class='row col-md-12 p-0 m-0'>
-                            <div class="col-md-3">
+                        <div class="row col-md-12 p-0 m-0 border border-info  rounded p-1 bg-white">
+                            <div class="col-md-3 col-3">
                                 <div class="  border-right-0"> Total</div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-6">
                                 {{-- <div style="border-bottom: 2px dotted #000000;"> </div> --}}
                                 <span class="align-text-bottom w-100" style="border-bottom: 2px dotted #000000;"></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-3">
                                 <div class=" text-right"> <strong>{{ currencyFormat(($total ) ?? 0, 'CLP', true) }}</strong></div>
                             </div>
                         </div>
                         <div class="row mt-1">
                             <div class="col-12" @if(!$isSaleBoxOpen) style="display:none;" @endif>
 
-                                <div  class="border border-info  rounded p-1 ">
+                                <div  class="border border-info  rounded p-1 bg-white ">
                                     @if (session()->get('user.pos.selectedCustomer'))
                                     <div class="row">
                                         <div class="col-12">
@@ -643,7 +543,7 @@
 </div>
 </div>
 {{-- Footer --}}
-@endhandheld
+
 </div>
 <div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
     <div class="modal-dialog modal-lg">
@@ -743,7 +643,7 @@
 
             //Select customer
             if (event.which == 117 && event.target.id != 'customer-view'){
-                console.log('aca');
+
                 $("#btn-customer").trigger('click');
                 $('#search-customer').focus().select();
                 return false;
@@ -991,144 +891,7 @@
 
 
 
-        @handheld
-            $('header').hide()
-            $('footer').hide()
-            $('.menu-content').hide()
-            $('.container-fluid').addClass('p-1')
 
-            // @if(!$isSaleBoxOpen)
-            //     hideAllViews()
-            //     $('.sale-box-view').show();
-            // @endif
-
-            $('#btn-customer').click(function() {
-                hideAllViews()
-                $('.customer-view').show();
-                //$('.main-view').hide();
-                $('.search-customers').show();
-                $('.search-products').hide();
-                $('.search-orders').hide();
-
-
-            });
-
-            $('#btn-pay').click(function() {
-                hideAllViews()
-                $('.payment-view').show();
-                inputCash.focus().select();
-                //$('.main-view').hide();
-                //$('.cart-buttons').hide();
-            });
-
-            $('#close-payment').click(function() {
-                hideAllViews()
-                $('.main-view').show();
-              //  $('.payment-view').hide();
-                $('.cart-buttons-view').show();
-            });
-
-            $('.menu-mobile').click(function(){
-               $('.menu-content').show()
-            })
-
-            $('.close-mobile-menu').click(function(){
-               $('.menu-content').hide()
-            })
-
-            $('#mobile-cart-view').click(function(){
-                hideAllViews()
-
-               $('.header-pos').hide()
-               $('.cart-view').show()
-               $('.main-view').hide()
-            })
-
-
-            $('.close-cart-view').click(function(){
-                hideAllViews()
-            //    $('.cart-view').hide()
-               $('.main-view').show()
-               $('.header-pos').show()
-               $('.cart-buttons-view').show();
-            })
-
-            $('.btn-box-sale').click(function() {
-                hideAllViews();
-                $('.sale-box-view').show();
-
-            });
-
-            // $('.mobile-open-box').click(function() {
-            //     hideAllViews();
-            //     $('.sale-box-view').show();
-
-            // });
-
-            // $('.mobile-close-box').click(function() {
-            //     hideAllViews();
-            //     $('.main-view').show();
-            //     $('.cart-buttons-view').show();
-            // });
-
-            //Menu actions
-
-            $('.link-pos').click(function() {
-                hideAllViews();
-                $('.main-view').show();
-                $('.cart-buttons-view').show();
-                // $('.customer-view').hide();
-                // $('.sales-view').hide();
-                // $('.menu-content').hide()
-                //change search
-                $('.search-customers').hide();
-                $('.search-products').show();
-                $('.search-orders').hide();
-
-
-                $('.menu-content').hide()
-
-
-
-            });
-
-            $('.link-box-sale').click(function() {
-                hideAllViews();
-                $('.sale-box-view').show();
-                $('.menu-content').hide()
-            });
-
-
-
-            $('.link-sale').click(function() {
-                hideAllViews();
-                $('.sales-view').show();
-                // $('.main-view').hide();
-                // $('.customer-view').hide();
-                // $('.menu-content').hide()
-                 //change search
-                $('.search-customers').hide();
-                $('.search-products').hide();
-                $('.search-orders').show();
-                $('.menu-content').hide()
-            });
-
-            $('.link-customer').click(function() {
-                hideAllViews();
-                $('.customer-view').show();
-                // $('.main-view').hide();
-                // $('.sales-view').hide();
-                // $('.menu-content').hide()
-
-                //change search
-                $('.search-customers').show();
-                $('.search-products').hide();
-                $('.search-orders').hide();
-
-                $('.menu-content').hide()
-            });
-
-        @elsehandheld
             $('header').show()
             $('footer').show()
              //Menu actions
@@ -1136,12 +899,8 @@
             $('.link-pos').click(function() {
                 hideAllViews()
                 $('.main-view').show();
-                $('.cart-buttons-view').show();
-                // $('.customer-view').hide();
-                // $('.sales-view').hide();
-                //change search
-                $('.search-customers').hide();
-                $('.search-products').show();
+                $('.menu-content').hide()
+
 
 
             });
@@ -1149,35 +908,33 @@
             $('.link-box-sale').click(function() {
                 hideAllViews();
                 $('.sale-box-view').show();
+                $('.menu-content').hide()
             });
 
 
             $('.link-sale').click(function() {
                 hideAllViews()
                 $('.sales-view').show();
-                // $('.main-view').hide();
-                // $('.customer-view').hide();
+                $('.menu-content').hide()
             });
 
             $('.link-customer').click(function() {
                 hideAllViews()
                 $('.customer-view').show();
-                // $('.main-view').hide();
-                // $('.sales-view').hide();
+                $('.menu-content').hide()
             });
 
             $('#btn-customer').click(function() {
                 hideAllViews()
                 $('.customer-view').show();
-                $('.search-customers').show();
-                //$('.main-view').hide();
+
 
             });
 
             $('#close-payment').click(function() {
                 hideAllViews()
                 $('.main-view').show();
-               // $('.payment-view').hide();
+
             });
 
             $('#btn-pay').click(function() {
@@ -1193,7 +950,8 @@
 
             });
 
-        @endhandheld
+
+
 
     </script>
 
@@ -1286,7 +1044,62 @@
                 $('.cart-buttons-view').show();
             });
 
+
+
+
+
+
         })
+
+        //Mobile
+        document.addEventListener("DOMContentLoaded", () => {
+            Livewire.hook('component.initialized', (component) => {
+
+
+            //Update mobile
+            var mobileMQ = window.matchMedia("(max-width: 360px)")
+            function checkMobile(mq) {
+               header =$(".app-header");
+               headerMobile = $("#header-mobile");
+               cartSpace = $('#cart-space');
+               productList= $('#productList').find('.product-cart')
+
+               if (mq.matches) {
+                    cartSpace.removeClass('vh-100');
+                    cartSpace.addClass('fixed-bottom');
+                    header.hide();
+                    headerMobile.hide();
+                    productList.each(function() {
+                        console.log($(this))
+                        $(this).find("div").removeClass("h-100")
+
+                    })
+                }else{
+                    cartSpace.addClass("vh-100");
+                    cartSpace.removeClass("fixed-bottom");
+                    header.show();
+                    headerMobile.hide();
+
+                }
+            }
+
+
+            mobileMQ.addListener(checkMobile)
+            checkMobile(mobileMQ)
+
+
+            // MENU MOBILE
+            $('.menu-mobile').click(function(){
+               $('.menu-content').show()
+            })
+            $('.close-mobile-menu').click(function(){
+               $('.menu-content').hide()
+            })
+
+        })
+
+    });
+
 
     </script>
 @endpush

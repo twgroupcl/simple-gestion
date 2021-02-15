@@ -1,13 +1,15 @@
 {{-- <div wire:loading wire:target="products" class="loading"></div> --}}
 <div class="container">
     <div class="row">
-        <div class=" w-100 text-center pt-1 pb-1">
-            <form class="form-inline">
+
+
+
+        <div class="col-md-12 col-10 text-center pt-1 pb-1">
                 <input id="search" class="form-control w-100 input-search" type="search" placeholder="Buscar producto"
                     aria-label="Search" wire:model="searchProduct"  >
-                {{-- <button class="btn btn-outline-info my-2 my-sm-0"
-                    type="submit">Buscar</button> --}}
-            </form>
+        </div>
+        <div class="col-md-12 col-2 text-center pt-1 pb-1">
+           <a class="menu-mobile"> <i class="las la-bars" style="font-size: 24px;"></i></a>
         </div>
     </div>
     @if(!$productNotFound)
@@ -62,7 +64,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <h5>Agrear el producto al carro?</h5>
+          <h5>Agregar el producto al carro?</h5>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
