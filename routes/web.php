@@ -103,6 +103,7 @@ Route::group([
     Route::get('webpay/plus/{order}', 'Payments\Transbank\WebpayPlusController@redirect')->name('transbank.webpayplus.redirect');
     Route::post('webpay/plus/response', 'Payments\Transbank\WebpayPlusController@response')->name('transbank.webpayplus.response');
     Route::post('plus/final', 'Payments\Transbank\WebpayPlusController@final')->name('transbank.plus.final');
+    Route::get('webpay/mall/download/{order}', 'Payments\Transbank\WebpayPlusController@download')->name('transbank.webpayplus.mall.download');
 
 });
 // Route::get('complete', function(){
