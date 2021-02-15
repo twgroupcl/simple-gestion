@@ -328,7 +328,7 @@ class WebpayPlusMallController extends Controller
         } else {
             //Update order status
             $order = Order::where('id', $this->orderId)->first();
-            $order->status = 4; //paid
+            $order->status = 4; //Reject
             $order->update();
             return view('payments.transbank.webpay.mall.failed', compact('result', 'order'));
         }
