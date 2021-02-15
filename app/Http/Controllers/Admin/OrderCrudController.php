@@ -154,6 +154,10 @@ class OrderCrudController extends CrudController
                     if ($column['text'] == 'Pagada') {
                         return 'badge badge-success';
                     }
+
+                    if ($column['text'] == 'Rechazada') {
+                        return 'badge badge-danger';
+                    }
                     return 'badge badge-default';
                 },
             ],
@@ -547,6 +551,7 @@ class OrderCrudController extends CrudController
                 1 => 'Pendiente',
                 2 => 'Pagada',
                 3 => 'Completada',
+                4 => 'Rechazada',
             ],
             'label' => 'Estado',
             'tab' => 'General',
@@ -866,6 +871,7 @@ class OrderCrudController extends CrudController
               1 => 'Pendiente',
               2 => 'Pagada',
               3 => 'Completa',
+              4 => 'Rechaza',
             ];
           }, function ($value) {
             $this->crud->addClause('where', 'status', $value );
