@@ -3,7 +3,7 @@
     <div class="row mt-2 mb-2">
 
 
-    
+
             <div class="col-2 text-center " id="menu-mobile">
                 <i class="las la-bars menu-mobile" style="font-size: 32px;"></i>
             </div>
@@ -15,12 +15,12 @@
             </div>
             <div class="col-2 p-0 " id="cart-mobile">
                 <span class="las la-shopping-cart " style="font-size:32px;">
-    
+
                 <span
-                    class="custom-badge badge-cart-view  "  @if( !empty($cartproducts)) id="mobile-cart-view" @endif> {{ empty($cartproducts)?0:count($cartproducts) }}</span>
+                    class="custom-badge badge-cart-view  "  @if( !empty($cartproducts)) id="mobile-cart-view" @endif> {{ $cartproducts }}</span>
                 </span>
             </div>
-    
+
     </div>
     @if(!$productNotFound)
     <div class="row">

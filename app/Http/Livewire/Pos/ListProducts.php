@@ -14,7 +14,11 @@ class ListProducts extends Component
     public $showAddToCart = false;
     public $productSelected = null;
     public $productNotFound = false;
-    public $cartproducts;
+    public $cartproducts =0 ;
+    protected $listeners =[
+        'list-product-qty' => 'productsQty'
+    ];
+
 
 
     public function render()
@@ -92,5 +96,10 @@ class ListProducts extends Component
     {
         $this->dispatchBrowserEvent('showAddFastProduct');
 
+    }
+
+    public function productsQty($productsqty)
+    {
+        $this->cartproducts = $productsqty;
     }
 }

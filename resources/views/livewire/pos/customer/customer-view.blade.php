@@ -1,7 +1,7 @@
 @handheld
 <div class="row">
     <div class="col-12 text-center">
-        <h6>Clientes</h6>
+        <h4>Clientes</h4>
     </div>
     <div class="col-12">
     <div id="accordion">
@@ -10,7 +10,11 @@
       <div class="card-header" id="{{'heading-'.$key}}">
         <h5 class="mb-0">
           <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#{{'customer-'.$key}}" aria-expanded="false" aria-controls="{{'customer-'.$key}}">
-            <p class="text-info my-0"><i class="las la-user" ></i> {{ $customer->first_name }}</p>
+            <p class="text-info my-0"><i class="las la-user" ></i> {{ strtoupper($customer->first_name .','.$customer->last_name) }}
+                 @if (!session()->get('user.pos.isSelectedCustomerWildcard', false))
+                    <button wire:click="selectCustomer({{ $customer->id }})" class="btn btn-success float-right"><i class="nav-icon la la-check"></i> </button>
+                @endif
+            </p>
           </button>
         </h5>
       </div>

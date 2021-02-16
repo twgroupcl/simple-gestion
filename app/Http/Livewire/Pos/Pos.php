@@ -82,6 +82,7 @@ class Pos extends Component
                 $this->cartproducts[$product->product->id]['real_price'] = $product->real_price;
             }
             $this->calculateAmounts();
+            $this->emit('list-product-qty', count($this->cartproducts));
         }
 
         if (session()->get('user.pos.selectedCustomer')) {
@@ -307,7 +308,8 @@ class Pos extends Component
 
         $this->calculateAmounts();
         //$this->cart->emit('item.updatedCustomQty', $product->id, $this->cart->products[$product->id]['qty']);
-        
+        $this->emit('list-product-qty', count($this->cartproducts));
+
     }
 
     public function calculateAmounts()

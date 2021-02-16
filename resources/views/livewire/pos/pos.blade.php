@@ -298,7 +298,7 @@
 {{-- Cart Mobile --}}
 <div class="cart-view" style="display: none;">
     <div class="row">
-        <div class="col-12"><i class="la la-close float-right close-cart-view"></i></div>
+        <div class="col-12"><i class="la la-times-circle float-right close-cart-view" style="font-size: 32px;"></i></div>
     </div>
     <div class="row">
         <div class="col-12 card">
@@ -427,7 +427,7 @@
                 {{--        </form>
                     </div>
                 </div> --}}
-                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode , 'cartproducts'=> $cartproducts])
+                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode , 'cartproducts'=> $cartproducts ])
                 </div>
             </div>
             <div class="col-md-4 col-12">
@@ -455,7 +455,7 @@
                             </div>
                         </div> --}}
                         @if($total > 0)
-                        <div class='row col-md-12 p-0 m-0'>
+                        <div class='row col-md-12 p-0 m-0 d-none d-sm-block'>
                             <div class="col-md-3">
                                 <div class="  border-right-0"> Subtotal</div>
                             </div>
@@ -469,7 +469,7 @@
                         </div>
                         @endif
                         @if($total > 0)
-                        <div class='row col-md-12 p-0 m-0'>
+                        <div class="row col-md-12 p-0 m-0 d-none d-sm-block">
                             <div class="col-md-3">
                                 <div class="  border-right-0"> Impuestos</div>
                             </div>
@@ -500,22 +500,16 @@
                                 <div  class="border border-info  rounded p-1 bg-white ">
                                     @if (session()->get('user.pos.selectedCustomer'))
                                     <div class="row">
-                                        <div class="col-12">
-                                            <h6>Cliente</h6>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-8">
+                                            <i class="las la-user" ></i>
                                             {{ session()->get('user.pos.selectedCustomer')->first_name }}
                                             {{ session()->get('user.pos.selectedCustomer')->last_name }}
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-4">
                                             {{ session()->get('user.pos.selectedCustomer')->rut }}
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-12">
                                             {{ session()->get('user.pos.selectedCustomer')->email }}
@@ -709,11 +703,15 @@
         confirmPay = $('#confirm-pay')
         inputCash = $('#inputCash')
 
+        //For mobile
+        spanCalc = $('.total-cash')
+
 
 
         spanCash.text('$0')
         spanChange.text('$0')
         spanTip.text('$0')
+
 
         confirmPay.prop("disabled", true);
 
@@ -729,6 +727,10 @@
 
                 case 'tip':
                     updateTip(value);
+                    break;
+
+                case 'calc':
+                    updateCalc(value);
                     break;
 
                 default:
@@ -807,6 +809,48 @@
             }
 
             spanTip.text(formatCurrency(tmpTip))
+        }
+
+        function updateCalc(value) {
+            tmpTotalCart = clearCurrency(totalCart)
+            tmpCalc = clearCurrency(spanCalc)
+
+            switch (value) {
+                case '<<':
+                    if(tmpCalc.length > 2){
+                        tmpCalc = tmpCalc.slice(0, -1);
+                    }else {
+                        tmpCalc = 0;
+                    }
+                    break;
+                case 'C':
+                    tmpCalc = '$0';
+                    break;
+                default:
+                    tmpCalc += value
+                    break;
+            }
+
+
+
+            //spanCalc.text(formatCurrency(tmpCalc))
+
+
+            tmpCalcFloat = parseFloat(tmpCalc)
+            tmpTotalCartFloat = parseFloat(tmpTotalCart)
+
+            spanCalc.text(formatCurrency(tmpCalcFloat))
+
+            if (tmpCalcFloat >= tmpTotalCartFloat) {
+                tmpChange = calculeChange(tmpCalcFloat, tmpTotalCartFloat)
+
+                spanChange.text(formatCurrency(tmpChange))
+                confirmPay.removeAttr('disabled');
+            } else {
+
+                spanChange.text(formatCurrency(0))
+                confirmPay.prop("disabled", true);
+            }
         }
 
         function transferTipToChange() {
@@ -1077,6 +1121,11 @@
                cartMobile = $("#cart-mobile");
                cartSpace = $('#cart-space');
                shortCuts = $('#short-cuts');
+               panelCalc = $('#panel-calc');
+               inputCash = $('#inputCash');
+               paymentMethod = $('#payment-method');
+               cashDiv = $('#cash-div');
+               changeDiv = $('#change-div');
                productList= $('#productList').find('.product-cart')
 
                if (mq.matches) {
@@ -1091,6 +1140,26 @@
                     menuMobile.show();
                     cartMobile.show();
                     shortCuts.hide();
+                    boardTarget = 'calc';
+                    panelCalc.show();
+                    inputCash.hide();
+
+                    //Check paymentmethod
+                    paymentMethod.change(function(){
+                       currentPaymentMethod = $(this).val()
+                       if(currentPaymentMethod != 1) {
+                           panelCalc.hide()
+                           cashDiv.hide()
+                           changeDiv.hide()
+                           confirmPay.removeAttr('disabled');
+                       }else{
+                           panelCalc.show()
+                           cashDiv.show()
+                           changeDiv.show()
+                           confirmPay.prop("disabled", true);
+                       }
+                    })
+
                 }else{
                     cartSpace.addClass("vh-100");
                     cartSpace.removeClass("fixed-bottom");
@@ -1099,6 +1168,9 @@
                     menuMobile.hide();
                     cartMobile.hide();
                     shortCuts.show();
+                    boardTarget = 'cash';
+                    panelCalc.hide();
+                    inputCash.show();
 
                 }
             }
@@ -1120,7 +1192,7 @@
             $('#mobile-cart-view').click(function(){
                 hideAllViews()
                $('.cart-view').show()
-              
+
             })
 
 
