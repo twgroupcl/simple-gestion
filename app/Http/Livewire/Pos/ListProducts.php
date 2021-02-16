@@ -14,6 +14,7 @@ class ListProducts extends Component
     public $showAddToCart = false;
     public $productSelected = null;
     public $productNotFound = false;
+    public $cartproducts;
 
 
     public function render()

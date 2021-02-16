@@ -307,7 +307,7 @@ class Pos extends Component
 
         $this->calculateAmounts();
         //$this->cart->emit('item.updatedCustomQty', $product->id, $this->cart->products[$product->id]['qty']);
-
+        
     }
 
     public function calculateAmounts()

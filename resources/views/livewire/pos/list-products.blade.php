@@ -1,16 +1,26 @@
 {{-- <div wire:loading wire:target="products" class="loading"></div> --}}
 <div class="container">
-    <div class="row">
+    <div class="row mt-2 mb-2">
 
 
-
-        <div class="col-md-12 col-10 text-center pt-1 pb-1">
-                <input id="search" class="form-control w-100 input-search" type="search" placeholder="Buscar producto"
-                    aria-label="Search" wire:model="searchProduct"  >
-        </div>
-        <div class="col-md-12 col-2 text-center pt-1 pb-1">
-           <a class="menu-mobile"> <i class="las la-bars" style="font-size: 24px;"></i></a>
-        </div>
+    
+            <div class="col-2 text-center " id="menu-mobile">
+                <i class="las la-bars menu-mobile" style="font-size: 32px;"></i>
+            </div>
+            <div class="col-md-12 col-8 p-0 text-center">
+                <form class="form-inline search-products">
+                    <input id="search" class="form-control w-100 input-search" type="search" placeholder="Buscar producto"
+                        aria-label="Search"  wire:model="searchProduct">
+               </form>
+            </div>
+            <div class="col-2 p-0 " id="cart-mobile">
+                <span class="las la-shopping-cart " style="font-size:32px;">
+    
+                <span
+                    class="custom-badge badge-cart-view  "  @if( !empty($cartproducts)) id="mobile-cart-view" @endif> {{ empty($cartproducts)?0:count($cartproducts) }}</span>
+                </span>
+            </div>
+    
     </div>
     @if(!$productNotFound)
     <div class="row">

@@ -250,7 +250,7 @@
 
 <div class="content" wire:ignore.self>
 
-{{-- Menu --}}
+{{-- Menu Mobile--}}
 <div class="menu-content h-100" style="display: none;">
     <div class="row ">
         <div class="col-12 text-right">
@@ -295,6 +295,18 @@
     </div>
 
 </div>
+{{-- Cart Mobile --}}
+<div class="cart-view" style="display: none;">
+    <div class="row">
+        <div class="col-12"><i class="la la-close float-right close-cart-view"></i></div>
+    </div>
+    <div class="row">
+        <div class="col-12 card">
+            @include('livewire.pos.partials.cart')
+        </div>
+    </div>
+
+</div>
 
 {{-- Header --}}
 <div class="header-pos">
@@ -312,7 +324,7 @@
                     class="text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }} -  ({{$user->name}})</strong>
             @endif
         </div>
-        <div class="col-md-8 d-none d-sm-block">
+        <div class="col-md-8 " id="short-cuts">
             <div class="row">
                 <div class="col-3"><span class=" border border-white rounder p-2 custom-key">F1 </span> (Inicio)</div>
                 <div class="col-3"><span class=" border border-white rounder p-2 custom-key">F2 </span> (Cobrar)</div>
@@ -415,7 +427,7 @@
                 {{--        </form>
                     </div>
                 </div> --}}
-                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
+                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode , 'cartproducts'=> $cartproducts])
                 </div>
             </div>
             <div class="col-md-4 col-12">
@@ -1061,7 +1073,10 @@
             function checkMobile(mq) {
                header =$(".app-header");
                headerMobile = $("#header-mobile");
+               menuMobile = $("#menu-mobile");
+               cartMobile = $("#cart-mobile");
                cartSpace = $('#cart-space');
+               shortCuts = $('#short-cuts');
                productList= $('#productList').find('.product-cart')
 
                if (mq.matches) {
@@ -1070,15 +1085,20 @@
                     header.hide();
                     headerMobile.hide();
                     productList.each(function() {
-                        console.log($(this))
                         $(this).find("div").removeClass("h-100")
-
                     })
+
+                    menuMobile.show();
+                    cartMobile.show();
+                    shortCuts.hide();
                 }else{
                     cartSpace.addClass("vh-100");
                     cartSpace.removeClass("fixed-bottom");
                     header.show();
                     headerMobile.hide();
+                    menuMobile.hide();
+                    cartMobile.hide();
+                    shortCuts.show();
 
                 }
             }
@@ -1094,6 +1114,20 @@
             })
             $('.close-mobile-menu').click(function(){
                $('.menu-content').hide()
+            })
+
+            //CART MOBILE
+            $('#mobile-cart-view').click(function(){
+                hideAllViews()
+               $('.cart-view').show()
+              
+            })
+
+
+            $('.close-cart-view').click(function(){
+                hideAllViews()
+               $('.main-view').show()
+
             })
 
         })
