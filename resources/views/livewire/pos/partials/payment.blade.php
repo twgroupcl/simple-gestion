@@ -230,6 +230,26 @@
 
                 <input type="number"  min="0" class="w-100"  id="inputCash" value="0">
             </div>
+
+            <div class='card-body p-1'>
+                <select name="type_document_select" id="type_document_select" class="form-control form-control-lg">
+                    <option value="39">Boleta electrónica </option>
+                    <option value="33">Factura electrónica </option>
+                </select>
+            </div>
+
+            @php
+            $business_activities = App\Models\BusinessActivity::all()->sortBy('name');
+            @endphp
+
+            <div class='card-body p-1' id="business_activity_div" style="display: none">
+                <select name="" id="business_activity_select" class="form-control form-control-lg">
+                    @foreach ($business_activities as $activity)
+                        <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class='card-body p-1'>
                 <button class="btn btn-danger btn-block " id="confirm-pay" disabled>Confirmar pago
                 </button>
