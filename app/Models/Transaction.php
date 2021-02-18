@@ -60,7 +60,7 @@ class Transaction extends Model
         $amount = 0;
         $amount = $this->transaction_details->sum('value');
 
-        return currencyFormat($amount, 'CLP');
+        return currencyFormat($amount, 'CLP', true);
 
     }
 

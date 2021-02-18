@@ -87,6 +87,21 @@ class TransactionCrudController extends CrudController
         });
 
         CRUD::addColumn([
+            'name' => 'date',
+            'label' => 'Fecha de movimiento',
+            'type' => 'date',
+            'format' => 'L',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'amount',
+            'label' => 'Monto total',
+            'type' => 'model_function',
+            'function_name' => 'getTotalAmount',
+        ]);
+
+
+        CRUD::addColumn([
             'name' => 'accounting_account',
             'label' => 'Cuenta contable',
             'attribute' => 'to_string',
@@ -109,13 +124,7 @@ class TransactionCrudController extends CrudController
             'label' => 'Tipo de movimiento'
         ]);
 
-        CRUD::addColumn([
-            'name' => 'date',
-            'label' => 'Fecha de movimiento',
-            'type' => 'date',
-            'format' => 'L',
-        ]);
-
+        
         /*CRUD::addColumn([
             'name' => 'document_identifier',
             'label' => 'Documento',
@@ -139,14 +148,7 @@ class TransactionCrudController extends CrudController
 
                 }
             ]
-        ]);
-
-        CRUD::addColumn([
-            'name' => 'amount',
-            'label' => 'Monto total',
-            'type' => 'model_function',
-            'function_name' => 'getTotalAmount',
-        ]);
+        ]); 
 
         CRUD::addcolumn([
             'name' => 'note',
