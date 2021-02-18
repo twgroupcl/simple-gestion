@@ -904,4 +904,17 @@ class InvoiceCrudController extends CrudController
           });
     }
 
+    public function salesByPeriod(Request $request)
+    {
+        $invoices = Invoice::where('invoice_status', Invoice::STATUS_SEND)
+            ->whereNotNull('folio')->whereHas('invoice_type', function ($q) {
+                $q->whereIn('code', ['33', '34']);
+            })
+            ->get();
+         
+        return response()->json([
+            'count' => $invoices->count(),
+        ]);
+    }
+
 }

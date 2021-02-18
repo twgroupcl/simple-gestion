@@ -70,6 +70,15 @@ use App\User;
 					'wrapper' => ['class' => 'col-sm-12'],
 					'content' => 'Scripts',
 				],
+                [
+                    'type' => 'card_from_ajax',
+                    'url' => '/admin/api/invoice/salesbyperiod',
+                    'class'=> 'card border-0 text-white bg-dark',
+                    'content'=> [
+                        'header' => 'Ventas en el periodo',
+                        //'body' => 'algo',
+                    ],
+                ],
 				[
 					'type'    => 'most-purchased-product-categories',
 					'wrapper' => ['class' => 'col-sm-12'],
@@ -116,6 +125,12 @@ use App\User;
 						'wrapper' => ['class' => 'col-sm-12'],
 						'content' => 'Scripts',
 					],
+                    [
+                        'type' => 'card',
+                        'content'=> [
+                            'header' => 'Hola',
+                        ]
+                    ],
 					[
 						'type'    => 'most-purchased-products',
 						'wrapper' => ['class' => 'col-sm-12'],
