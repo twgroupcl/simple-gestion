@@ -88,7 +88,13 @@ class TransactionCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'accounting_account',
-            'label' => 'Cuenta contable'
+            'label' => 'Cuenta contable',
+            'attribute' => 'to_string',
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->whereHas('accounting_account', function ($q) use ($searchTerm) {
+                    $q->whereRaw('concat(code," ",name) like "%' . $searchTerm . '%"');
+                });
+            }
         ]);
 
         CRUD::addColumn([
