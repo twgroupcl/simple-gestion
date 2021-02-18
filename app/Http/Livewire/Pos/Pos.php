@@ -37,6 +37,7 @@ class Pos extends Component
     public $closing_amount;
     public $remarks;
     public $isSaleBoxOpen = false;
+
     // cart
     public $cart;
     public $cartproducts;
@@ -48,6 +49,10 @@ class Pos extends Component
     public $total = 0;
     public $totalProducts = 0;
     public $existsOrder= null;
+
+    // document
+    public $selected_type_document;
+    
     protected $listeners = [
         'viewModeChanged' => 'setView',
         'add-product-cart:post' => 'addProduct',
@@ -101,10 +106,8 @@ class Pos extends Component
         $this->viewMode = $view;
     }
 
-    public function confirmPayment($cash, $tip = null)
+    public function confirmPayment($cash, $tip = null, $typeDocument = null, $businessActivity = null)
     {
-
-
         $this->customer = session()->get('user.pos.selectedCustomer');
 
         if ($cash >= $this->total && !is_null($this->saleBox)) {
@@ -181,7 +184,7 @@ class Pos extends Component
 
             $this->existsOrder = $order;
 
-            $this->emitInvoice($order);
+            $this->emitInvoice($order, $typeDocument, $businessActivity);
 
             $this->clearCart();
 
@@ -384,7 +387,7 @@ class Pos extends Component
         return json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
     }
 
-    public function emitInvoice(Order $order)
+    public function emitInvoice(Order $order, $typeDocument, $businessActivity)
     {
 
 
@@ -392,11 +395,7 @@ class Pos extends Component
         DB::beginTransaction();
         try {
 
-            $invoiceType = InvoiceType::firstOrCreate(
-                ['name' => "Boleta electrónica"],
-                ['country_id' => 43, 'code' => 39], // 41 => exenta, 39 => afecta(con impuestos)
-            );
-
+            $invoiceType = InvoiceType::where('code', $typeDocument)->first();
 
             $order_items = $order->order_items()->get()->map(function ($item) {
 
@@ -412,7 +411,7 @@ class Pos extends Component
                 $item->total = currencyFormat($total, 'CLP', false);
                 $item->discount = 0;
                 $item->discount_type = 'amount';
-                $item->is_custom = false;
+                $item->is_custom = "0";
                 $item->additional_tax_id = 0;
                 $item->additional_tax_amount = 0;
                 $item->additional_tax_total = 0;
@@ -425,11 +424,17 @@ class Pos extends Component
             $invoice->address_id = $this->customerAddressId;
             $invoice->seller_id = $currentSeller->id;
             $invoice->items_data = $order_items;
-            $invoice->invoice_type_id = $invoiceType->id;
             $invoice->invoice_date = now();
             $invoice->tax_amount = 19 * $invoice->total / 119;
             $invoice->net = $invoice->total - $invoice->tax_amount;
             $invoice->json_value = ['source' => 'pos'];
+
+            $invoice->invoice_type_id = $invoiceType->id;
+            
+            if ($invoiceType->code == 33) {
+                $invoice->business_activity_id = $businessActivity;
+            }
+
             $invoice->save();
 
             Invoice::withoutEvents(function () use ($invoice, $order) {

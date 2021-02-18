@@ -1069,8 +1069,10 @@
                     totalCash = parseFloat(totalCash)
 
                 let tip = clearCurrency(spanTip)
+                let typeDocument = $('#type_document_select').val()
+                let businessActivity = $('#business_activity_select').val()
 
-                    await @this.confirmPayment(totalCash, tip)
+                    await @this.confirmPayment(totalCash, tip, typeDocument, businessActivity)
                     hideAllViews()
                     // $('.main-view').hide();
                     // $('.cart-buttons').hide();
@@ -1111,7 +1113,14 @@
             });
 
 
-
+            // Type document change event
+            $('#type_document_select').change(function () {
+                if (this.value == 33) {
+                    $('#business_activity_div').show()
+                } else {
+                    $('#business_activity_div').hide()
+                }
+            })
 
 
 
@@ -1121,6 +1130,12 @@
         document.addEventListener("DOMContentLoaded", () => {
             Livewire.hook('component.initialized', (component) => {
 
+            // Business Activity 
+            if ($('#type_document_select').val() == 33) {
+                $('#business_activity_div').show()
+            } else {
+                $('#business_activity_div').hide()
+            }
 
             //Update mobile
             var mobileMQ = window.matchMedia("(max-width: 360px)")
