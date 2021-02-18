@@ -1,7 +1,10 @@
-@handheld
+{{-- @handheld --}}
 <div class="row">
-    <div class="col-12 text-center">
+    <div class="col-md-12 col-10 text-center">
         <h4>Clientes</h4>
+    </div>
+    <div class="col-2 text-center d-block d-sm-none">
+        <i class="la la-times-circle float-right close-customer-view" style="font-size: 32px;"></i>
     </div>
     <div class="col-12">
     <div id="accordion">
@@ -50,7 +53,7 @@
   </div>
 </div>
 </div>
-@elsehandheld
+{{-- @elsehandheld
 <div class="row col-md-12">
     <div class="col-md-6">
         <label for="search-customer">Buscar cliente</label>
@@ -112,3 +115,4 @@
 
 </div>
 @endhandheld
+ --}}

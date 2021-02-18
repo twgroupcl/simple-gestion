@@ -46,6 +46,7 @@ class Pos extends Component
     public $discount = null;
     public $taxes = 0;
     public $total = 0;
+    public $totalProducts = 0;
     public $existsOrder= null;
     protected $listeners = [
         'viewModeChanged' => 'setView',
@@ -82,7 +83,7 @@ class Pos extends Component
                 $this->cartproducts[$product->product->id]['real_price'] = $product->real_price;
             }
             $this->calculateAmounts();
-            $this->emit('list-product-qty', count($this->cartproducts));
+            $this->totalProducts = count($this->cartproducts);
         }
 
         if (session()->get('user.pos.selectedCustomer')) {
@@ -308,7 +309,8 @@ class Pos extends Component
 
         $this->calculateAmounts();
         //$this->cart->emit('item.updatedCustomQty', $product->id, $this->cart->products[$product->id]['qty']);
-        $this->emit('list-product-qty', count($this->cartproducts));
+        $this->totalProducts = count($this->cartproducts);
+        $this->emit('list-product-qty', $this->totalProducts);
 
     }
 
@@ -358,6 +360,8 @@ class Pos extends Component
 
         unset($this->cartproducts[$productId]);
         $this->calculateAmounts();
+        $this->totalProducts = count($this->cartproducts);
+        $this->emit('list-product-qty', $this->totalProducts);
     }
 
     public function updateQty($idProduct, $qty)

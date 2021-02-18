@@ -45,9 +45,11 @@ class ListProducts extends Component
         return view('livewire.pos.list-products');
     }
 
-    public function mount(Seller $seller)
+    public function mount(Seller $seller, $cartproducts)
     {
         $this->seller = $seller;
+        $this->cartproducts = $cartproducts;
+
         //$this->products = $this->getProducts($this->searchProduct);
     }
 

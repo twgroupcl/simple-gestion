@@ -135,7 +135,7 @@
         .custom-badge{
             position: absolute;
             top: -0.3125rem;
-            right: 1.6875rem;
+            right: 0.6875rem;
             width: 1.25rem;
             height: 1.25rem;
             border-radius: 50%;
@@ -197,6 +197,16 @@
             border-top: 0px;
             border-bottom: 2px solid grey;
 
+        }
+
+        @media screen and (max-width: 480px) {
+            .input-search{
+                font-size: 24px;
+                border-left: 0px;
+                border-right: 0px;
+                border-top: 0px;
+                border-bottom: 2px solid grey;
+            }
         }
 
         .input-search input:focus{
@@ -311,8 +321,8 @@
 {{-- Header --}}
 <div class="header-pos">
 
-    <div class="row d-none d-sm-block">
-        <div class="col-md-4 col-sm-12">
+    <div class="row " id="short-cuts">
+        <div class="col-4">
             <div wire:init="validateBox" class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="boxSwitch" @if($isSaleBoxOpen) checked="true" @endif>
                 <label class="custom-control-label" for="boxSwitch"
@@ -324,7 +334,7 @@
                     class="text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }} -  ({{$user->name}})</strong>
             @endif
         </div>
-        <div class="col-md-8 " id="short-cuts">
+        <div class="col-8 " >
             <div class="row">
                 <div class="col-3"><span class=" border border-white rounder p-2 custom-key">F1 </span> (Inicio)</div>
                 <div class="col-3"><span class=" border border-white rounder p-2 custom-key">F2 </span> (Cobrar)</div>
@@ -427,7 +437,7 @@
                 {{--        </form>
                     </div>
                 </div> --}}
-                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode , 'cartproducts'=> $cartproducts ])
+                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode , 'cartproducts'=> $totalProducts ])
                 </div>
             </div>
             <div class="col-md-4 col-12">
@@ -1114,19 +1124,21 @@
 
             //Update mobile
             var mobileMQ = window.matchMedia("(max-width: 360px)")
+            header =$(".app-header");
+            headerMobile = $("#header-mobile");
+            menuMobile = $("#menu-mobile");
+            cartMobile = $("#cart-mobile");
+            cartSpace = $('#cart-space');
+            shortCuts = $('#short-cuts');
+            panelCalc = $('#panel-calc');
+            inputCash = $('#inputCash');
+            paymentMethod = $('#payment-method');
+            cashDiv = $('#cash-div');
+            changeDiv = $('#change-div');
+            productList= $('#productList').find('.product-cart')
+
             function checkMobile(mq) {
-               header =$(".app-header");
-               headerMobile = $("#header-mobile");
-               menuMobile = $("#menu-mobile");
-               cartMobile = $("#cart-mobile");
-               cartSpace = $('#cart-space');
-               shortCuts = $('#short-cuts');
-               panelCalc = $('#panel-calc');
-               inputCash = $('#inputCash');
-               paymentMethod = $('#payment-method');
-               cashDiv = $('#cash-div');
-               changeDiv = $('#change-div');
-               productList= $('#productList').find('.product-cart')
+
 
                if (mq.matches) {
                     cartSpace.removeClass('vh-100');
@@ -1197,6 +1209,11 @@
 
 
             $('.close-cart-view').click(function(){
+                hideAllViews()
+               $('.main-view').show()
+
+            })
+            $('.close-customer-view').click(function(){
                 hideAllViews()
                $('.main-view').show()
 

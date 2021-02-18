@@ -81,6 +81,7 @@ class Cart extends Component
 
         unset($this->products[$productId]);
         $this->calculateAmounts();
+
     }
 
     public function calculateAmounts()

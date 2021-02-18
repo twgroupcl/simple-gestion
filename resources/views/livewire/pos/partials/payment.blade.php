@@ -114,7 +114,7 @@
 @elsehandheld --}}
 <div class="col-12 payment-view" style="display: none;">
     <div class="row">
-        <div class="col-12"><i class="la la-times-circle float-right close-cart-view" style="font-size: 32px;"></i></div>
+        <div class="col-12"><i class="la la-times-circle float-right close-pay-view" style="font-size: 32px;"></i></div>
     </div>
     @if (isset($customer))
         <div class="row  ">

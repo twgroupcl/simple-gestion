@@ -13,11 +13,11 @@
                         aria-label="Search"  wire:model="searchProduct">
                </form>
             </div>
-            <div class="col-2 p-0 " id="cart-mobile">
+            <div class="col-2 p-0 text-center d-block d-sm-none " id="cart-mobile"  >
                 <span class="las la-shopping-cart " style="font-size:32px;">
 
                 <span
-                    class="custom-badge badge-cart-view  "  @if( !empty($cartproducts)) id="mobile-cart-view" @endif> {{ $cartproducts }}</span>
+                    class="custom-badge badge-cart-view  "  @if( $cartproducts>0) id="mobile-cart-view" @endif> {{ $cartproducts }}</span>
                 </span>
             </div>
 

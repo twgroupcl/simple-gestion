@@ -31,9 +31,9 @@
             @endif
         </a>
         <div class="card-body p-0 m-0">
-            <p class="text-center w-100 small product-name"> {{Str::limit($product->name, 20, $end='...')}}</p>
+            <p class="text-center w-100 small product-name mb-0"> {{Str::limit($product->name, 20, $end='...')}}</p>
             {{-- <p class="h5 text-center w-100">{{ currencyFormat($currentPrice, 'CLP', true) }}</p> --}}
-            <p class="h5 text-center w-100">{{ currencyFormat($currentPrice?$currentPrice : 0, 'CLP', true) }}</p>
+            <p class="h5 text-center w-100 mb-0">{{ currencyFormat($currentPrice?$currentPrice : 0, 'CLP', true) }}</p>
         </div>
         {{-- <button class="btn btn-primary btn-shadow btn-block" type="button" wire:click="addToCart">
             <i class="czi-cart font-size-lg mr-2"></i>Añadir al carro
