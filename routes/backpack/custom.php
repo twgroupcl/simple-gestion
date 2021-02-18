@@ -88,7 +88,7 @@ Route::group([
     Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
 
     // API routes
-    Route::get('api/invoice/salesbyperiod', 'InvoiceCrudController@salesByPeriod');
+    Route::post('api/invoice/salesbyperiod', 'InvoiceCrudController@salesByPeriod');
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');

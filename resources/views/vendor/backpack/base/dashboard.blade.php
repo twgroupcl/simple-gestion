@@ -70,9 +70,15 @@ use App\User;
 					'wrapper' => ['class' => 'col-sm-12'],
 					'content' => 'Scripts',
 				],
+				[
+					'type'    => 'date-range',
+					'wrapper' => ['class' => 'col-sm-12'],
+					'content' => 'Rango de fecha GENERAL',
+				],
                 [
                     'type' => 'card_from_ajax',
                     'url' => '/admin/api/invoice/salesbyperiod',
+					'wrapperClass' => 'col-md-3 most-purchased-product-categories',
                     'class'=> 'card border-0 text-white bg-dark',
                     'content'=> [
                         'header' => 'Ventas en el periodo',

@@ -1,4 +1,4 @@
-<div class="col-6">
+<div class="col-12">
 
 <div class="row col-md-12 d-flex flex-row-reverse">
     <span class="font-weight-bold">Rango de fechas</span>

@@ -17,20 +17,41 @@
 
 @push('after_scripts')
 <script>
-$.ajax({
-    url: "{{$widget['url']}}",
-    type: 'POST',
-    //data: {},
-    success: function(content) {
-            console.log(content)
-        let body = $('#body');
-        body.append('<p>' + content.count + '</p>');
-    },
-    error: function() {
 
-    }
-   //dataType: 'mycustomtype'
+$(document).ready(function() {
+    console.log("Holiwis");
+
+    $('#date-from').on('change', function() {
+        ajaxCard($(this).val(), $('#date-to').val());
+
+    });
+
+    $('#date-to').on('change', function() {
+        ajaxCard($('#date-from').val(), $(this).val());
+    });
 });
+
+function ajaxCard (from, to) {
+    $.ajax({
+        url: "{{$widget['url']}}",
+        type: 'POST',
+        data: {
+            'from': from,
+            'to': to
+        },
+        success: function(content) {
+            console.log(content)
+            let body = $('#body');
+            body.find(".content").remove();
+            body.append('<p class="content">' + content.count + '</p>');
+        },
+        error: function() {
+    
+        }
+       //dataType: 'mycustomtype'
+    });
+
+}
 </script>
 
 @endpush
