@@ -52,7 +52,7 @@ class Pos extends Component
 
     // document
     public $selected_type_document;
-    
+
     protected $listeners = [
         'viewModeChanged' => 'setView',
         'add-product-cart:post' => 'addProduct',
@@ -207,6 +207,7 @@ class Pos extends Component
         $this->discount = null;
         $this->subtotal = 0;
         $this->cash = 0;
+        $this->taxes = 0;
         $this->existOrder = null;
     }
 
@@ -313,7 +314,7 @@ class Pos extends Component
         $this->calculateAmounts();
         //$this->cart->emit('item.updatedCustomQty', $product->id, $this->cart->products[$product->id]['qty']);
         $this->totalProducts = count($this->cartproducts);
-        $this->emit('list-product-qty', $this->totalProducts);
+
 
     }
 
@@ -348,7 +349,7 @@ class Pos extends Component
         // Save cart to session
         session()->put(['user.pos.cart' => json_encode($cart)]);
 
-        // $this->emitUp('pos.updateCart');
+        $this->emit('list-product-qty', $this->totalProducts);
 
     }
 
@@ -364,7 +365,7 @@ class Pos extends Component
         unset($this->cartproducts[$productId]);
         $this->calculateAmounts();
         $this->totalProducts = count($this->cartproducts);
-        $this->emit('list-product-qty', $this->totalProducts);
+
     }
 
     public function updateQty($idProduct, $qty)
@@ -430,7 +431,7 @@ class Pos extends Component
             $invoice->json_value = ['source' => 'pos'];
 
             $invoice->invoice_type_id = $invoiceType->id;
-            
+
             if ($invoiceType->code == 33) {
                 $invoice->business_activity_id = $businessActivity;
             }

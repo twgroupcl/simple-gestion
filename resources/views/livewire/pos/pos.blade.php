@@ -207,6 +207,13 @@
                 border-top: 0px;
                 border-bottom: 2px solid grey;
             }
+            h4{
+                margin-bottom: 2px;
+                font-size: 1rem;
+            }
+            .table{
+                margin-bottom: 0px !important;
+            }
         }
 
         .input-search input:focus{
@@ -321,7 +328,7 @@
 {{-- Header --}}
 <div class="header-pos">
 
-    <div class="row " id="short-cuts">
+    <div class="row"   id="short-cuts"  style="display: none;">
         <div class="col-4">
             <div wire:init="validateBox" class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="boxSwitch" @if($isSaleBoxOpen) checked="true" @endif>
@@ -542,7 +549,7 @@
 
 
 
-                                <button class="btn btn-danger btn-block mt-1 " id="btn-pay" >Cobrar (F2)
+                                <button class="btn btn-danger btn-block mt-1 " id="btn-pay"> Cobrar (F2)
                                  {{-- @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar --}}
                                 </button>
                             </div>
@@ -1009,6 +1016,12 @@
                 inputCash.focus().select();
                 //$('.main-view').hide();
             });
+            $('#btn-pay-mobile').click(function() {
+                hideAllViews()
+                $('.payment-view').show();
+                //inputCash.focus().select();
+                //$('.main-view').hide();
+            });
 
             $('.btn-box-sale').click(function() {
                 hideAllViews();
@@ -1130,7 +1143,7 @@
         document.addEventListener("DOMContentLoaded", () => {
             Livewire.hook('component.initialized', (component) => {
 
-            // Business Activity 
+            // Business Activity
             if ($('#type_document_select').val() == 33) {
                 $('#business_activity_div').show()
             } else {
@@ -1150,6 +1163,8 @@
             paymentMethod = $('#payment-method');
             cashDiv = $('#cash-div');
             changeDiv = $('#change-div');
+            btnPay = $('#btn-pay');
+            btnCustomer = $('#btn-customer');
             productList= $('#productList').find('.product-cart')
 
             function checkMobile(mq) {
@@ -1170,6 +1185,9 @@
                     boardTarget = 'calc';
                     panelCalc.show();
                     inputCash.hide();
+                    btnPay.text('Cobrar');
+                    btnCustomer.text('Cambiar Cliente')
+
 
                     //Check paymentmethod
                     paymentMethod.change(function(){
@@ -1198,6 +1216,8 @@
                     boardTarget = 'cash';
                     panelCalc.hide();
                     inputCash.show();
+                    btnPay.text('Cobrar (F2)');
+                    btnCustomer.text(' Cambiar Cliente (F6)')
 
                 }
             }
@@ -1224,6 +1244,11 @@
 
 
             $('.close-cart-view').click(function(){
+                hideAllViews()
+               $('.main-view').show()
+
+            })
+            $('.close-pay-view').click(function(){
                 hideAllViews()
                $('.main-view').show()
 

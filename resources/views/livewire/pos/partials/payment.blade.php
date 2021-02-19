@@ -1,118 +1,5 @@
-{{-- @handheld
-<div class="col-12 payment-view" style="display: none;">
-    <div class="row">
-        <div class="col-12"><i class="la la-close float-right" id="close-payment"></i></div>
-    </div>
-    @if (isset($customer))
-        <div class="row p-0 ">
-            <div class="col-12">
-                <h5 class="card-title"> <i class="las la-user" ></i>{{ $customer->first_name }} {{ $customer->last_name }}</h5>
-            </div>
-            <div class="col-12">
-                <h6><i class="las la-at"></i> {{ $customer->email }}</h6>
-            </div>
-            <div class="col-6">
-                <h6> <i class="las la-id-card"></i>{{ $customer->uid }}</h6>
-            </div>
-            <div class=" col-6 text-center">
-                <h6 class="text-info">Pago en efectivo</h4>
-            </div>
 
-
-
-        </div>
-    @endif
-    <div class="row">
-
-        <div class="col-12 text-danger text-right">
-            @if($total > 0)
-            <div class="row p-0">
-                <div class="col-6 text-left">
-                    <h4>Subtotal</h4>
-                </div>
-                <div class="col-6 text-danger text-right">
-                    <h4><span class="subtotal-cart">{{ currencyFormat($subtotal ?? 0, 'CLP', true) }}</span></h4>
-                </div>
-            </div>
-            @endif
-            @if($total > 0)
-            <div class="row p-0">
-                <div class="col-6 text-left">
-                    <h4>Impuestos</h4>
-                </div>
-                <div class="col-6 text-danger text-right">
-                    <h4><span class="taxes-cart">{{ currencyFormat($taxes ?? 0, 'CLP', true) }}</span></h4>
-                </div>
-            </div>
-            @endif
-            <div class="row p-0">
-                <div class="col-6 text-left">
-                    <h4>Total</h4>
-                </div>
-                <div class="col-6 text-danger text-right">
-                    <h4><span class="total-cart">{{ currencyFormat($total ?? 0, 'CLP', true) }}</span></h4>
-                </div>
-            </div>
-            <div class="row p-0">
-                <div class="col-6  text-left">
-                    <h4>Efectivo</h4>
-                </div>
-                <div class="col-6 text-danger text-right">
-                    <h4><span class="total-cash">$ 0</span></h4>
-                </div>
-            </div>
-            <div class="row p-0">
-                <div class="col-6  text-left ">
-                    <h4>Cambio</h4>
-                </div>
-                <div class="col-6 text-danger text-right">
-                    <h4> <span class="total-change">$0</span></h4>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="card col-md-6">
-
-            <div class="card-body p-1">
-                <table class="table table-sm table-borderless">
-                    <tbody>
-                        <tr>
-                            <td><button class="btn btn-lg" onclick="chr('7')">7</button></td>
-                            <td><button class="btn btn-lg" onclick="chr('8')">8</button></td>
-                            <td><button class="btn btn-lg" onclick="chr('9')">9</button></td>
-                        </tr>
-                        <tr>
-                            <td><button class="btn btn-lg" onclick="chr('4')">4</button></td>
-                            <td><button class="btn btn-lg" onclick="chr('5')">5</button></td>
-                            <td><button class="btn btn-lg" onclick="chr('6')">6</button></td>
-                        </tr>
-                        <tr>
-                            <td><button class="btn btn-lg" onclick="chr('1')">1</button></td>
-                            <td><button class="btn btn-lg" onclick="chr('2')">2</button></td>
-                            <td><button class="btn btn-lg" onclick="chr('3')">3</button></td>
-                        </tr>
-                        <tr>
-
-
-                            <td><button class="btn btn-lg" onclick="chr('C')">C</button></td>
-                            <td><button class="btn btn-lg" onclick="chr('0')">0</button></td>
-                            <td><button class="btn btn-lg" onclick="chr('<<')"><i class="las la-backspace"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="fixed-bottom">
-                <button class="btn btn-danger btn-block " id="confirm-pay" disabled>Confirmar pago
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-@elsehandheld --}}
-<div class="col-12 payment-view" style="display: none;">
+<div class="col-md-11 col-12 payment-view" style="display: none;">
     <div class="row">
         <div class="col-12"><i class="la la-times-circle float-right close-pay-view" style="font-size: 32px;"></i></div>
     </div>
@@ -205,24 +92,24 @@
                 <table class='table table-sm table-borderless' id="panel-calc" style="display:none;">
                     <tbody>
                         <tr class="text-center">
-                            <td><a class='btn btn-lg' onclick='chr("7")'>7</a></td>
-                            <td><a class='btn btn-lg' onclick='chr("8")'>8</a></td>
-                            <td><a class='btn btn-lg' onclick='chr("9")'>9</a></td>
+                            <td><a class='btn ' onclick='chr("7")'>7</a></td>
+                            <td><a class='btn ' onclick='chr("8")'>8</a></td>
+                            <td><a class='btn ' onclick='chr("9")'>9</a></td>
                         </tr>
                         <tr class="text-center">
-                            <td><a class='btn btn-lg' onclick='chr("4")'>4</a></td>
-                            <td><a class='btn btn-lg' onclick='chr("5")'>5</a></td>
-                            <td><a class='btn btn-lg' onclick='chr("6")'>6</a></td>
+                            <td><a class='btn ' onclick='chr("4")'>4</a></td>
+                            <td><a class='btn ' onclick='chr("5")'>5</a></td>
+                            <td><a class='btn ' onclick='chr("6")'>6</a></td>
                         </tr>
                         <tr class="text-center">
-                            <td><a class='btn btn-lg' onclick='chr("1")'>1</a></td>
-                            <td><a class='btn btn-lg' onclick='chr("2")'>2</a></td>
-                            <td><a class='btn btn-lg' onclick='chr("3")'>3</a></td>
+                            <td><a class='btn ' onclick='chr("1")'>1</a></td>
+                            <td><a class='btn ' onclick='chr("2")'>2</a></td>
+                            <td><a class='btn ' onclick='chr("3")'>3</a></td>
                         </tr>
                         <tr class="text-center">
-                            <td><a class='btn btn-lg' onclick='chr("C")'>C</a></td>
-                            <td><a class='btn btn-lg' onclick='chr("0")'>0</a></td>
-                            <td><a class='btn btn-lg' onclick='chr("<<")'><i class="las la-backspace"></i></a>
+                            <td><a class='btn ' onclick='chr("C")'>C</a></td>
+                            <td><a class='btn ' onclick='chr("0")'>0</a></td>
+                            <td><a class='btn ' onclick='chr("<<")'><i class="las la-backspace"></i></a>
                             </td>
                         </tr>
                     </tbody>
@@ -257,4 +144,4 @@
         </div>
     </div>
 </div>
-{{-- @endhandheld --}}
+
