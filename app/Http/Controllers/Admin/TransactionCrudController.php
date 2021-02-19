@@ -74,17 +74,9 @@ class TransactionCrudController extends CrudController
     {
         CRUD::addButtonFromView('top', 'transactions.export', 'transactions.export', 'end');
         //$this->crud->enableExportButtons();
-        $this->crud->addFilter([
-          'type'  => 'date_range',
-          'name'  => 'date',
-          'label' => 'Rango - Fecha de movimiento'
-        ],
-        false,
-        function ($value) {
-          $dates = json_decode($value);
-          $this->crud->addClause('where', 'date', '>=', $dates->from);
-          $this->crud->addClause('where', 'date', '<=', $dates->to . ' 23:59:59');
-        });
+        //
+
+        $this->addFilters();
 
         CRUD::addColumn([
             'name' => 'date',
@@ -456,6 +448,44 @@ class TransactionCrudController extends CrudController
             $results = $options->paginate(10);
         }
         return $options->paginate(10);
+    }
+
+
+    /*
+     *
+     * Add filters to listview backpack
+     *
+     */
+    private function addFilters() {
+        $this->crud->addFilter([
+          'type'  => 'date_range',
+          'name'  => 'date',
+          'label' => 'Rango - Fecha de movimiento'
+        ],
+        false,
+        function ($value) {
+          $dates = json_decode($value);
+          $this->crud->addClause('where', 'date', '>=', $dates->from);
+          $this->crud->addClause('where', 'date', '<=', $dates->to . ' 23:59:59');
+        });
+
+        $this->crud->addFilter([
+          'type'  => 'select2',
+          'name'  => 'payment_or_expense',
+          'label' => 'Cargo/Gasto'
+        ],
+        function () {
+            return [
+                1 => 'Cargo',
+                0 => 'Gasto',
+            ];
+        },
+        function ($value) {
+            $this->crud->addClause('whereHas', 'transaction_type', function ($query)  use($value) {
+                $query->where('is_payment', $value);
+            
+            });
+        });
     }
 
 }
