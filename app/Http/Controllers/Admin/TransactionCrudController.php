@@ -485,6 +485,32 @@ class TransactionCrudController extends CrudController
         });
 
         $this->crud->addFilter([
+          'type'  => 'range',
+          'name'  => 'amount',
+          'label' => 'Monto'
+        ],
+        false,
+        function ($value) {
+            $range = json_decode($value);
+
+            $this->crud->query = $this->crud->query->select('transactions.*')
+                           ->leftJoin('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
+                           ->selectRaw('SUM(transaction_details.value) as total, transaction_id')
+                           ->whereNull('transaction_details.deleted_at')
+                           ->groupBy('transactions.id');
+             
+            if (isset($range->from) && $range->from != "" && isset($range->to) && $range->to != "") {
+                $this->crud->query
+                           ->havingRaw('SUM(transaction_details.value) between ' . $range->from . ' and ' . $range->to);
+            } else if (!isset($range->from) || $range->from == "") {
+                $this->crud->query->havingRaw('SUM(transaction_details.value) <= ' . $range->to);
+
+            } else if (!isset($range->to) || $range->to == "") {
+                $this->crud->query->havingRaw('SUM(transaction_details.value) >= ' . $range->from);
+            }
+        });
+
+        $this->crud->addFilter([
           'type'  => 'select2',
           'name'  => 'payment_or_expense',
           'label' => 'Cargo/Gasto'
@@ -498,7 +524,6 @@ class TransactionCrudController extends CrudController
         function ($value) {
             $this->crud->addClause('whereHas', 'transaction_type', function ($query)  use($value) {
                 $query->where('is_payment', $value);
-            
             });
         });
     }
