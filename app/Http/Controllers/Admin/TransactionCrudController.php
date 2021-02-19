@@ -470,6 +470,21 @@ class TransactionCrudController extends CrudController
         });
 
         $this->crud->addFilter([
+            'type' => 'text',
+            'name' => 'accounting_account_filter',
+            'label' => 'Plan de cuentas',
+        ],
+        false,
+        function ($value) {
+            $this->crud->addClause('whereHas', 'accounting_account', function($query) use ($value) {
+                $query->whereRaw(
+                    '(concat(code," ", name) like ?)', 
+                    [ "%{$value}%" ]
+                );
+            });
+        });
+
+        $this->crud->addFilter([
           'type'  => 'select2',
           'name'  => 'payment_or_expense',
           'label' => 'Cargo/Gasto'
