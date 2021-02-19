@@ -103,7 +103,7 @@ class TransactionCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'accounting_account',
-            'label' => 'Cuenta contable',
+            'label' => 'Plan de cuenta',
             'attribute' => 'to_string',
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->whereHas('accounting_account', function ($q) use ($searchTerm) {
@@ -230,7 +230,7 @@ class TransactionCrudController extends CrudController
             'name' => 'accounting_account_id',
             'type' => 'relationship',
             'allows_null' => true,
-            'label' => 'Cuenta contable',
+            'label' => 'Plan de cuenta',
             'model' => 'App\Models\AccountingAccount',
             'entity' => 'accounting_account',
             'attribute' => 'to_string',

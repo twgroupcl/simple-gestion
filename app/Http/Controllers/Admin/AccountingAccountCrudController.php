@@ -30,7 +30,7 @@ class AccountingAccountCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\AccountingAccount::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/accountingaccount');
-        CRUD::setEntityNameStrings('cuenta contable', 'cuentas contables');
+        CRUD::setEntityNameStrings('plan de cuenta', 'planes de cuentas');
         //$company = backpack_user()->current()->company;
         //$this->crud->addClause('where', 'company_id', $company->id);
         $this->crud->denyAccess('show');
