@@ -35,7 +35,6 @@ class TransactionExport implements FromArray, WithMapping , WithHeadings
                 }
 
                 $transactionArray[] = [
-                    'id' => $transaction->id,
                     'value' => $detail->value,
                     'document' => $dte,
                     'transaction_type' => $transaction->transaction_type->name,
@@ -60,7 +59,6 @@ class TransactionExport implements FromArray, WithMapping , WithHeadings
         return [
             // first row
             [
-                'ID',
                 'Numero de cuenta bancaria',
                 'Documento',
                 'Monto',
@@ -77,7 +75,6 @@ class TransactionExport implements FromArray, WithMapping , WithHeadings
     public function map($document): array
     {
         return [
-            $document['id'],
             $document['bank_account'],
             $document['document'],
             $document['value'],
