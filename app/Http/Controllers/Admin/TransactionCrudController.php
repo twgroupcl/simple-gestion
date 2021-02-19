@@ -87,8 +87,29 @@ class TransactionCrudController extends CrudController
         });
 
         CRUD::addColumn([
+            'name' => 'date',
+            'label' => 'Fecha de movimiento',
+            'type' => 'date',
+            'format' => 'L',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'amount',
+            'label' => 'Monto total',
+            'type' => 'model_function',
+            'function_name' => 'getTotalAmount',
+        ]);
+
+
+        CRUD::addColumn([
             'name' => 'accounting_account',
-            'label' => 'Cuenta contable'
+            'label' => 'Cuenta contable',
+            'attribute' => 'to_string',
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->whereHas('accounting_account', function ($q) use ($searchTerm) {
+                    $q->whereRaw('concat(code," ",name) like "%' . $searchTerm . '%"');
+                });
+            }
         ]);
 
         CRUD::addColumn([
@@ -103,13 +124,7 @@ class TransactionCrudController extends CrudController
             'label' => 'Tipo de movimiento'
         ]);
 
-        CRUD::addColumn([
-            'name' => 'date',
-            'label' => 'Fecha de movimiento',
-            'type' => 'date',
-            'format' => 'L',
-        ]);
-
+        
         /*CRUD::addColumn([
             'name' => 'document_identifier',
             'label' => 'Documento',
@@ -133,14 +148,7 @@ class TransactionCrudController extends CrudController
 
                 }
             ]
-        ]);
-
-        CRUD::addColumn([
-            'name' => 'amount',
-            'label' => 'Monto total',
-            'type' => 'model_function',
-            'function_name' => 'getTotalAmount',
-        ]);
+        ]); 
 
         CRUD::addcolumn([
             'name' => 'note',
@@ -225,7 +233,7 @@ class TransactionCrudController extends CrudController
             'label' => 'Cuenta contable',
             'model' => 'App\Models\AccountingAccount',
             'entity' => 'accounting_account',
-            'attribute' => 'code',
+            'attribute' => 'to_string',
             'minimum_input_length' => 0,
             'inline_create' => [ 
                 'entity' => 'accountingaccount' 
@@ -406,6 +414,14 @@ class TransactionCrudController extends CrudController
 
     public function fetchAccounting_account()
     {
+        return $this->fetch([
+            'model' => \App\Models\AccountingAccount::class, // required
+            'searchable_attributes' => ['code', 'name'],
+            'paginate' => 10, // items to show per page
+            'query' => function($model) {
+                return $model;
+            } // to filter the results that are returned
+        ]);
         return $this->fetch(\App\Models\AccountingAccount::class);
     }
 
