@@ -35,11 +35,13 @@ class TransactionExport implements FromArray, WithMapping , WithHeadings
                 }
 
                 $transactionArray[] = [
+                    'id' => $transaction->id,
                     'value' => $detail->value,
                     'document' => $dte,
                     'transaction_type' => $transaction->transaction_type->name,
                     'is_payment' => $transaction->transaction_type->is_payment ? 'Abono' : 'Gasto',
-                    'accounting_account' => $transaction->accounting_account->name ?? null,
+                    'accounting_account_description' => $transaction->accounting_account->name ?? null,
+                    'accounting_account_code' => $transaction->accounting_account->code ?? null,
                     'bank_account' => $transaction->bank_account->account_number,
                     'note' => $transaction->note,
                     'date' => $transaction->date,
@@ -58,13 +60,16 @@ class TransactionExport implements FromArray, WithMapping , WithHeadings
         return [
             // first row
             [
+                'ID',
                 'Numero de cuenta bancaria',
                 'Documento',
                 'Monto',
                 'Gasto/Abono',
                 'Tipo de transaccion',
-                'Cuenta contable',
+                'Descripcion plan de c.',
+                'Código plan de c.',
                 'Nota',
+                'Fecha',
             ],
         ];
     }
@@ -72,14 +77,16 @@ class TransactionExport implements FromArray, WithMapping , WithHeadings
     public function map($document): array
     {
         return [
+            $document['id'],
             $document['bank_account'],
             $document['document'],
             $document['value'],
             $document['transaction_type'],
             $document['is_payment'],
-            $document['accounting_account'],
-            $document['date'],
+            $document['accounting_account_description'],
+            $document['accounting_account_code'],
             $document['note'],
+            $document['date'],
         ];
     }
 }
