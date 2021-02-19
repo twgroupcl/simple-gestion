@@ -201,7 +201,7 @@
     <ul class="nav-dropdown-items">
             <li class='nav-item'><a class='nav-link' href='{{ backpack_url('transaction') }}'><i class='nav-icon la la-exchange'></i> Movimientos</a></li>
             <li class='nav-item'><a class='nav-link' href='{{ backpack_url('bankaccount') }}'><i class='nav-icon la la-bank'></i> Cuentas bancarias</a></li>
-            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('accountingaccount') }}'><i class='nav-icon la la-bars'></i> Cuentas contables</a></li>
+            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('accountingaccount') }}'><i class='nav-icon la la-bars'></i> Planes de cuentas</a></li>
             <li class='nav-item'><a class='nav-link' href='{{ backpack_url('transactiontype') }}'><i class='nav-icon la la-suitcase'></i> Tipos de transacciones</a></li>
             <li class='nav-item'><a class='nav-link' href='{{ backpack_url('accountingaccounttype') }}'><i class='nav-icon la la-suitcase'></i> Tipos de cuenta contable</a></li>
             <!--<li class='nav-item'><a class='nav-link' href='{{ backpack_url('transactiondetail') }}'><i class='nav-icon la la-question'></i> Detalles de movimientos</a></li>-->

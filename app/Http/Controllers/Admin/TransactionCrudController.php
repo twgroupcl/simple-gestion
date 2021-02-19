@@ -74,17 +74,9 @@ class TransactionCrudController extends CrudController
     {
         CRUD::addButtonFromView('top', 'transactions.export', 'transactions.export', 'end');
         //$this->crud->enableExportButtons();
-        $this->crud->addFilter([
-          'type'  => 'date_range',
-          'name'  => 'date',
-          'label' => 'Rango - Fecha de movimiento'
-        ],
-        false,
-        function ($value) {
-          $dates = json_decode($value);
-          $this->crud->addClause('where', 'date', '>=', $dates->from);
-          $this->crud->addClause('where', 'date', '<=', $dates->to . ' 23:59:59');
-        });
+        //
+
+        $this->addFilters();
 
         CRUD::addColumn([
             'name' => 'date',
@@ -103,7 +95,7 @@ class TransactionCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'accounting_account',
-            'label' => 'Cuenta contable',
+            'label' => 'Plan de cuenta',
             'attribute' => 'to_string',
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->whereHas('accounting_account', function ($q) use ($searchTerm) {
@@ -230,7 +222,7 @@ class TransactionCrudController extends CrudController
             'name' => 'accounting_account_id',
             'type' => 'relationship',
             'allows_null' => true,
-            'label' => 'Cuenta contable',
+            'label' => 'Plan de cuenta',
             'model' => 'App\Models\AccountingAccount',
             'entity' => 'accounting_account',
             'attribute' => 'to_string',
@@ -456,6 +448,84 @@ class TransactionCrudController extends CrudController
             $results = $options->paginate(10);
         }
         return $options->paginate(10);
+    }
+
+
+    /*
+     *
+     * Add filters to listview backpack
+     *
+     */
+    private function addFilters() {
+        $this->crud->addFilter([
+          'type'  => 'date_range',
+          'name'  => 'date',
+          'label' => 'Rango - Fecha de movimiento'
+        ],
+        false,
+        function ($value) {
+          $dates = json_decode($value);
+          $this->crud->addClause('where', 'date', '>=', $dates->from);
+          $this->crud->addClause('where', 'date', '<=', $dates->to . ' 23:59:59');
+        });
+
+        $this->crud->addFilter([
+            'type' => 'text',
+            'name' => 'accounting_account_filter',
+            'label' => 'Plan de cuentas',
+        ],
+        false,
+        function ($value) {
+            $this->crud->addClause('whereHas', 'accounting_account', function($query) use ($value) {
+                $query->whereRaw(
+                    '(concat(code," ", name) like ?)', 
+                    [ "%{$value}%" ]
+                );
+            });
+        });
+
+        $this->crud->addFilter([
+          'type'  => 'range',
+          'name'  => 'amount',
+          'label' => 'Monto'
+        ],
+        false,
+        function ($value) {
+            $range = json_decode($value);
+
+            $this->crud->query = $this->crud->query->select('transactions.*')
+                           ->leftJoin('transaction_details', 'transactions.id', '=', 'transaction_details.transaction_id')
+                           ->selectRaw('SUM(transaction_details.value) as total, transaction_id')
+                           ->whereNull('transaction_details.deleted_at')
+                           ->groupBy('transactions.id');
+             
+            if (isset($range->from) && $range->from != "" && isset($range->to) && $range->to != "") {
+                $this->crud->query
+                           ->havingRaw('SUM(transaction_details.value) between ' . $range->from . ' and ' . $range->to);
+            } else if (!isset($range->from) || $range->from == "") {
+                $this->crud->query->havingRaw('SUM(transaction_details.value) <= ' . $range->to);
+
+            } else if (!isset($range->to) || $range->to == "") {
+                $this->crud->query->havingRaw('SUM(transaction_details.value) >= ' . $range->from);
+            }
+        });
+
+        $this->crud->addFilter([
+          'type'  => 'select2',
+          'name'  => 'payment_or_expense',
+          'label' => 'Cargo/Gasto'
+        ],
+        function () {
+            return [
+                1 => 'Cargo',
+                0 => 'Gasto',
+            ];
+        },
+        function ($value) {
+            $this->crud->addClause('whereHas', 'transaction_type', function ($query)  use($value) {
+                $query->where('is_payment', $value);
+            });
+        });
     }
 
 }
