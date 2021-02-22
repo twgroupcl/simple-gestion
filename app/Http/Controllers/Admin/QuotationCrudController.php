@@ -893,13 +893,49 @@ class QuotationCrudController extends CrudController
           });
     }
 
+
+    /*********************************************
+     *
+     * DASHBOARD FUNCTIONS API
+     *
+     */
+
     public function byStatus(Request $request)
     {
-        $quotations = Quotation::all();
+        $fromDate = $request->input('from');
+        $toDate = $request->input('to');
 
-        dd($quotations);
+        $quotationGroups = Quotation::query();
+        if (isset($fromDate)) { 
+            $quotationGroups = $quotationGroups->where('created_at', '>=', $fromDate);
+        }
 
-        return $quotation;
+        if (isset($toDate)) { 
+            $quotationGroups = $quotationGroups->where('created_at', '<=', $toDate);
+        }
+        
+        $quotationGroups = $quotationGroups->get()->groupBy('quotation_status');
+                                      
+        $showText = "<p>";
+        foreach ($quotationGroups as $group => $quotations){
+            $showText .= '<strong>' . $group . ': </strong> ' . count($quotations) . ', ';
+            $total = $quotations->sum('total');
+            $showText .=  currencyFormat($total, 'CLP', true) . '</p>';
+            
+        }
 
+        return $showText;
+
+    }
+
+    public function generalStatus(Request $request)
+    {
+        $quotations = Quotation::where('quotation_status', 'ACEPTADO')->get();
+        $sum = $quotations->sum('total');
+
+        return '<div class="row">' .
+            '<div class="col-6 text-center"> ' . currencyFormat($sum, 'CLP', true) . '</div>'.
+            '<div class="col-6 text-center"> ' . $quotations->count() . ' </div>' .
+            '</div>';
     }
 }

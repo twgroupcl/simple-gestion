@@ -77,10 +77,10 @@ use App\User;
 				],
                 [
                     'type' => 'card_from_ajax',
-                    'name' => 'ppalgo',
+                    'name' => 'salesByPeriod',
                     'url' => '/admin/api/invoice/salesbyperiod',
-                    'attribute' => 'count',
-					'wrapperClass' => 'col-md-3 most-purchased-product-categories',
+                    //'attribute' => 'count',
+					'wrapperClass' => 'col-md-3',
                     'class'=> 'card border-0 text-white bg-dark',
                     'content'=> [
                         'header' => 'Ventas en el periodo',
@@ -88,14 +88,26 @@ use App\User;
                     ],
                 ],
                 [
-                    'name' => 'algo',
+                    'name' => 'quotationsByStatus',
                     'type' => 'card_from_ajax',
                     'url' => '/admin/api/quotation/bystatus',
                     //'attribute' => 'count',
-					'wrapperClass' => 'col-md-3 most-purchased-product-categories',
+					'wrapperClass' => 'col-md-3',
                     'class'=> 'card border-0 text-white bg-dark',
                     'content'=> [
                         'header' => 'Cotizaciones por estado',
+                        //'body' => 'algo',
+                    ],
+                ],
+                [
+                    'name' => 'generalQuotations',
+                    'type' => 'card_from_ajax',
+                    'url' => '/admin/api/quotation/generalStatus',
+                    //'attribute' => 'count',
+					'wrapperClass' => 'col-md-3',
+                    'class'=> 'card border-0 text-white bg-dark',
+                    'content'=> [
+                        'header' => 'Cotizaciones',
                         //'body' => 'algo',
                     ],
                 ],

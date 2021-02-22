@@ -28,19 +28,17 @@ $(document).ready(function() {
 
     let dateFrom = $('#date-from');
     let dateTo = $('#date-to');
-/*
     if (dateFrom) {
         dateFrom.on('change', function() {
-            "{{$widget['name']}}"($(this).val(), $('#date-to').val());
-
+            {{$functionName}}($(this).val(), $('#date-to').val());
         });
     }
     
     if (dateTo) {
         $('#date-to').on('change', function() {
-            "{{$widget['name']}}"($('#date-from').val(), $(this).val());
+            {{$functionName}}($('#date-from').val(), $(this).val());
         });
-    }*/
+    }
     {{$functionName}}(dateFrom.val(), dateTo.val());
 });
 
@@ -59,9 +57,9 @@ function {{$functionName}}(from, to) {
             success: function(content) {
                 let body = $("#body{{$widget['name']}}");
                 body.find(".content").remove();
-                body.append('<p class="content">' + (
+                body.append('<div class="content">' + (
                         "{{$attribute}}" !== "" ? content["{{$attribute}}"] : content
-                ) + '</p>');
+                ) + '</div>');
             },
             error: function(error) {
                 console.log(error)

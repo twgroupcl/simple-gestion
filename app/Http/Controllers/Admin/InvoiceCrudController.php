@@ -913,11 +913,11 @@ class InvoiceCrudController extends CrudController
 
         //@TODO validate date
         if (isset($fromDate)) {
-            $invoices = $invoices->where('date', '>=', $fromDate);
+            $invoices = $invoices->where('invoice_date', '>=', $fromDate);
         }
 
         if (isset($toDate)) {
-            $invoices = $invoices->where('date', '<=', $toDate);
+            $invoices = $invoices->where('invoice_date', '<=', $toDate);
         }
 
         $invoices = $invoices->whereNotNull('folio')->whereHas('invoice_type', function ($q) {
@@ -925,9 +925,14 @@ class InvoiceCrudController extends CrudController
             })
             ->get();
          
-        return response()->json([
+        /*return response()->json([
             'count' => $invoices->count(),
-        ]);
+        ]);*/
+        return '<div class="row">' .
+            '<div class="col-6 text-center">' . $invoices->count() . '</div>' .
+            '<div class="col-6 text-center">' . currencyFormat($invoices->sum('total'), 'CLP', true) . '</div>' .
+            '</div>';
+
     }
 
 }
