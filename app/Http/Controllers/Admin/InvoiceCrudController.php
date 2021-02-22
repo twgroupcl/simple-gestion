@@ -906,8 +906,21 @@ class InvoiceCrudController extends CrudController
 
     public function salesByPeriod(Request $request)
     {
-        $invoices = Invoice::where('invoice_status', Invoice::STATUS_SEND)
-            ->whereNotNull('folio')->whereHas('invoice_type', function ($q) {
+        $fromDate = $request->input('from');
+        $toDate = $request->input('to');
+
+        $invoices = Invoice::where('invoice_status', Invoice::STATUS_SEND);
+
+        //@TODO validate date
+        if (isset($fromDate)) {
+            $invoices = $invoices->where('date', '>=', $fromDate);
+        }
+
+        if (isset($toDate)) {
+            $invoices = $invoices->where('date', '<=', $toDate);
+        }
+
+        $invoices = $invoices->whereNotNull('folio')->whereHas('invoice_type', function ($q) {
                 $q->whereIn('code', ['33', '34']);
             })
             ->get();

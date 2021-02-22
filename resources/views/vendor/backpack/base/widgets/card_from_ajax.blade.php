@@ -21,14 +21,22 @@
 $(document).ready(function() {
     console.log("Holiwis");
 
-    $('#date-from').on('change', function() {
-        ajaxCard($(this).val(), $('#date-to').val());
+    let dateFrom = $('#date-from');
+    let dateTo = $('#date-to');
 
-    });
+    if (dateFrom) {
+        dateFrom.on('change', function() {
+            ajaxCard($(this).val(), $('#date-to').val());
 
-    $('#date-to').on('change', function() {
-        ajaxCard($('#date-from').val(), $(this).val());
-    });
+        });
+    }
+    
+    if (dateTo) {
+        $('#date-to').on('change', function() {
+            ajaxCard($('#date-from').val(), $(this).val());
+        });
+    }
+    ajaxCard(dateFrom.val(), dateTo.val());
 });
 
 function ajaxCard (from, to) {
@@ -36,8 +44,8 @@ function ajaxCard (from, to) {
         url: "{{$widget['url']}}",
         type: 'POST',
         data: {
-            'from': from,
-            'to': to
+            from,
+            to
         },
         success: function(content) {
             console.log(content)
@@ -45,7 +53,8 @@ function ajaxCard (from, to) {
             body.find(".content").remove();
             body.append('<p class="content">' + content.count + '</p>');
         },
-        error: function() {
+        error: function(error) {
+            console.log(error)
     
         }
        //dataType: 'mycustomtype'
