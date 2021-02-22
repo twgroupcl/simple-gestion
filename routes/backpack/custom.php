@@ -89,6 +89,7 @@ Route::group([
 
     // API routes
     Route::post('api/invoice/salesbyperiod', 'InvoiceCrudController@salesByPeriod');
+    Route::post('api/quotation/bystatus', 'QuotationCrudController@byStatus');
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');

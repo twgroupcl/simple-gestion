@@ -892,4 +892,14 @@ class QuotationCrudController extends CrudController
             $this->crud->addClause('where', 'quotation_status', $value);
           });
     }
+
+    public function byStatus(Request $request)
+    {
+        $quotations = Quotation::all();
+
+        dd($quotations);
+
+        return $quotation;
+
+    }
 }
