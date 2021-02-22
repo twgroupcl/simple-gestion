@@ -147,7 +147,24 @@ class ProductCrudController extends CrudController
             'type' => 'relationship',
         ]);
 
-
+        CRUD::addColumn([
+            'name' => 'status_description',
+            'label' => 'Activo',
+            'type' => 'text',
+            'wrapper' => [
+                'element' => 'span',
+                'class' => function ($crud, $column, $entry, $related_key) {
+                    switch($column['text']) {
+                        case 'Si':
+                            return 'badge badge-success';
+                            break;
+                        case 'No':
+                            return 'badge badge-default';
+                            break;
+                    }
+                },
+            ],
+        ]);
 
         CRUD::addColumn([
             'name' => 'is_approved_text',
@@ -1242,6 +1259,20 @@ class ProductCrudController extends CrudController
           ], function($value) {
               if ($value == 2) $value = null;
             $this->crud->addClause('where', 'is_approved', $value);
+          });
+
+          $this->crud->addFilter([
+            'name'  => 'status',
+            'type'  => 'dropdown',
+            'label' => 'Activo'
+          ], [
+
+
+            0 => 'No',
+            1 => 'Si',
+          ], function($value) {
+
+            $this->crud->addClause('where', 'status', $value);
           });
 
           /* $this->crud->addFilter([

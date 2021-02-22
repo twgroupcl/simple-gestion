@@ -605,7 +605,7 @@ class Product extends Model
     {
         return $this->belongsTo(ProductBrand::class,'product_brand_id');
     }
-    
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -699,6 +699,20 @@ class Product extends Model
         }
     }
 
+    public function getStatusDescriptionAttribute()
+    {
+        switch ($this->status) {
+            case $this::STATUS_INACTIVE:
+                return 'No';
+                break;
+            case $this::STATUS_ACTIVE:
+                return 'Si';
+                break;
+
+            default:
+                break;
+        }
+    }
     public function getProductTypeNameAttribute()
     {
         switch ($this->product_type_id) {
