@@ -1024,6 +1024,7 @@
             });
 
             $('.btn-box-sale').click(function() {
+                console.log('aca');
                 hideAllViews();
                 $('.sale-box-view').show();
 
@@ -1129,6 +1130,8 @@
             // Type document change event
             $('#type_document_select').change(function () {
                 if (this.value == 33) {
+                    let address = @this.getSelectedCustomerAddress()
+                    console.log(address);
                     $('#business_activity_div').show()
                 } else {
                     $('#business_activity_div').hide()

@@ -224,6 +224,18 @@ class Pos extends Component
         return json_encode($this->customer);
     }
 
+    public function getSelectedCustomerAddress()
+    {
+        $this->customer = session()->get('user.pos.selectedCustomer');
+
+        if (isset($this->customer->addresses_data)) {
+            return json_encode($this->customer->address_data);
+        }else{
+            return null;
+        }
+    }
+
+
     public function getProducts()
     {
         return Product::where('status', '=', '1')
@@ -482,4 +494,6 @@ class Pos extends Component
     {
         Mail::to($invoice->email)->send(new PosBill($invoice));
     }
+
+
 }

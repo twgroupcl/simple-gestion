@@ -168,9 +168,11 @@
 </li>
 @endcanany
 
-@hasrole('Vendedor marketplace')
+{{-- @hasrole('Vendedor marketplace') --}}
+@canany(['pos'])
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('pos') }}"><i class="la la-home nav-icon"></i>POS</a></li>
-@endhasrole
+@endcanany
+{{-- @endhasrole --}}
 
 @canany(['reservation.list'])
 <li class="nav-item nav-dropdown">
