@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Seller;
+use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ProductInventorySource;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Exports\Inventory\MassReceptionsTemplateExport;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
@@ -178,5 +181,25 @@ class InventoryCrudController extends CrudController
                 $query->where('id', $value);
             });
         });
+    }
+
+    public function massReceptionsView()
+    {
+        return view('admin/inventory/mass-receptions/index');
+    }
+
+    public function generateExcelTemplate(Request $request)
+    {
+        $fileName = 'plantilla_excel_recepciones.xls';
+
+        $options = [
+            'includeProducts' => $request->includeProducts ? true : false,
+            'replaceStock' => $request->replaceStock ? true : false,
+            'documentNumber' => $request->documentNumber ?? ' ',
+        ];
+
+        $excel = new MassReceptionsTemplateExport(backpack_user()->current()->company->id, $options);
+
+        return Excel::download($excel, $fileName);
     }
 }
