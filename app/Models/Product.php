@@ -647,6 +647,11 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function invoice_items()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
     public function custom_attributes()
     {
         return $this->hasMany(ProductAttribute::class, 'product_id');

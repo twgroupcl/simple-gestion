@@ -120,14 +120,18 @@ use App\User;
                     ],
                 ],
                 [
-                    'type' => 'table',
+                    'name' => 'Top 10 productos',
+                    'type' => 'table_ajax',
 					'wrapperClass' => 'col-md-3',
+                    'attributes' => [
+                        'sku',
+                    ],
                     'columns' => [
                         'sku',
                         'algo',
                     ],
                     'collection' => null,
-                    'url' => '/admin/api/products/top_table_dashbord',
+                    'url' => '/admin/api/product/top_table_dashboard',
                 ],
 				[
 					'type'    => 'most-purchased-product-categories',
