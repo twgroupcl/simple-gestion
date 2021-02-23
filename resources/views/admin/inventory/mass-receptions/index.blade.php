@@ -24,30 +24,49 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="replaceStock">Reemplazar stock o sumar cantidad</label>
-                            <select class="form-control" id="replaceStock" name="replaceStock">
-                              <option value="1">Reemplazar Stock</option>
-                              <option value="0">Sumar cantidad</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="replaceStock">Reemplazar stock o sumar cantidad</label>
+                                    <select class="form-control" id="replaceStock" name="replaceStock">
+                                      <option value="1">Reemplazar Stock</option>
+                                      <option value="0">Sumar cantidad</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="costPriceDate">Fecha de vigencia para precios y costos</label>
-                            <input type="date" class="form-control" id="costPriceDate" name="costPriceDate">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="priceCostDate">Fecha de vigencia para precios y costos (opcional)</label>
+                                    <input type="date" class="form-control" id="priceCostDate" name="priceCostDate">
+                                    <small class="form-text text-muted">Fecha en que se hara efectivo el cambio de los precios y costos indicados en el excel.
+                                        En caso de no indicar una fecha, el cambio se hara automaticamente para aquellos productos que haya especificado un costo/precio
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="documentNumber">Numero de documento (opcional)</label>
+                                    <input type="text" class="form-control" id="documentNumber" name="documentNumber">
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="documentNumber">Numero de documento (opcional)</label>
-                            <input type="text" class="form-control" id="documentNumber" name="documentNumber">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="1" id="includeProducts" name="includeProducts">
+                                    <label class="form-check-label" for="includeProducts">
+                                      Incluir datos de productos
+                                    </label>
+                                  </div>
+                            </div>
                         </div>
-
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="1" id="includeProducts" name="includeProducts">
-                            <label class="form-check-label" for="includeProducts">
-                              Incluir datos de productos
-                            </label>
-                          </div>
                     </div>
 
                     <div class="col-md-12 mb-4">
@@ -67,6 +86,7 @@
                 <div class="col-md-12">
                     <button class="btn btn-success">Subir archivo</button>
                 </div>
+
                 {{-- <div class="col">
                     <div class="progress">
                         <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>

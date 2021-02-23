@@ -196,6 +196,7 @@ class InventoryCrudController extends CrudController
             'includeProducts' => $request->includeProducts ? true : false,
             'replaceStock' => $request->replaceStock ? true : false,
             'documentNumber' => $request->documentNumber ?? ' ',
+            'priceCostDate' => $request->priceCostDate ?? null,
         ];
 
         $excel = new MassReceptionsTemplateExport(backpack_user()->current()->company->id, $options);
