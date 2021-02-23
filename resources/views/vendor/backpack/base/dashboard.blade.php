@@ -111,6 +111,24 @@ use App\User;
                         //'body' => 'algo',
                     ],
                 ],
+                [
+                    'type' => 'chart',
+                    'wrapperClass' => 'col-md-6 daily-sales',
+                    'controller' => \App\Http\Controllers\Admin\Charts\TopCustomersInPeriodChartController::class,
+                    'content' => [
+                        'header' => 'Top 10 de Clientes en el periodo',
+                    ],
+                ],
+                [
+                    'type' => 'table',
+					'wrapperClass' => 'col-md-3',
+                    'columns' => [
+                        'sku',
+                        'algo',
+                    ],
+                    'collection' => null,
+                    'url' => '/admin/api/products/top_table_dashbord',
+                ],
 				[
 					'type'    => 'most-purchased-product-categories',
 					'wrapper' => ['class' => 'col-sm-12'],
