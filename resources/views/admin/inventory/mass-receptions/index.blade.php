@@ -1,3 +1,5 @@
+@php $today = date('Y-m-d'); @endphp
+
 @extends(backpack_view('blank'))
 
 @section('content')
@@ -39,18 +41,6 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="priceCostDate">Fecha de vigencia para precios y costos (opcional)</label>
-                                    <input type="date" class="form-control" id="priceCostDate" name="priceCostDate">
-                                    <small class="form-text text-muted">Fecha en que se hara efectivo el cambio de los precios y costos indicados en el excel.
-                                        En caso de no indicar una fecha, el cambio se hara automaticamente para aquellos productos que haya especificado un costo/precio
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
                                     <label for="documentNumber">Numero de documento (opcional)</label>
                                     <input type="text" class="form-control" id="documentNumber" name="documentNumber">
                                 </div>
@@ -78,14 +68,17 @@
                     <h4>Paso 2: Subir archivo excel</h4>
                 </div>
 
-                <div class="form-group col-md-6 required">
-                    <label><strong>Archivo EXCEL</strong></label>
-                    <input required type="file" name="inventory_excel" value="" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
-                </div>
+                <form action="{{ route('inventory.mass-receptions.preview') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group col-md-12 required">
+                        <label><strong>Archivo EXCEL</strong></label>
+                        <input required type="file" name="inventory_excel" value="" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" >
+                    </div>
 
-                <div class="col-md-12">
-                    <button class="btn btn-success">Subir archivo</button>
-                </div>
+                    <div class="col-md-12">
+                        <button class="btn btn-success" type="submit">Subir archivo</button>
+                    </div>
+                </form>
 
                 {{-- <div class="col">
                     <div class="progress">

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ProductInventorySource;
+use App\Services\Inventory\MassReceptionsService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use App\Exports\Inventory\MassReceptionsTemplateExport;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -196,11 +197,17 @@ class InventoryCrudController extends CrudController
             'includeProducts' => $request->includeProducts ? true : false,
             'replaceStock' => $request->replaceStock ? true : false,
             'documentNumber' => $request->documentNumber ?? ' ',
-            'priceCostDate' => $request->priceCostDate ?? null,
         ];
 
-        $excel = new MassReceptionsTemplateExport(backpack_user()->current()->company->id, $options);
+        $excelTemplate = new MassReceptionsTemplateExport(backpack_user()->current()->company->id, $options);
 
-        return Excel::download($excel, $fileName);
+        return Excel::download($excelTemplate, $fileName);
+    }
+
+    public function massReceptionsPreview(Request $request)
+    {
+        $excel = $request->file('inventory_excel');
+        $massReceptionsService = new MassReceptionsService();
+        dd($massReceptionsService->convertExcelToArray($excel));
     }
 }

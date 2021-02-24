@@ -54,11 +54,6 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
             (string) $this->options['documentNumber'],
         ];
 
-        $priceCostDate = [
-            'Fecha de vigencia precios y costos',
-            $this->options['priceCostDate'],
-        ];
-
         $helpHeading = [
             ' ',
             ' ',
@@ -70,8 +65,6 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
         $principalHeading = [
             'SKU',
             'Nombre',
-            'Costo',
-            'Precio',
         ];
 
         foreach($this->productInventorySources as $inventory) {
@@ -81,7 +74,6 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
         return [
             $stock,
             $documentNumber,
-            $priceCostDate,
             $helpHeading,
             $principalHeading,
         ];
@@ -92,8 +84,6 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
         return [
             $product['sku'],
             $product['name'],
-            '',
-            '',
         ];
     }
 
@@ -101,9 +91,7 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
     {
         return [
             'A' => 29,
-            'B' => 40,
-            'C' => 10,        
-            'D' => 10,        
+            'B' => 40,   
         ];
     }
 
@@ -113,7 +101,6 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
             'includeProducts' => $options['includeProducts'] ?? false,
             'replaceStock' => $options['replaceStock'] ?? false,
             'documentNumber' => $options['documentNumber'] ?? ' ',
-            'priceCostDate' => $options['priceCostDate'] ?? ' ',
         ];
     }
 }
