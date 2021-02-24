@@ -113,12 +113,13 @@ Route::group([
     Route::crud('service', 'ServiceCrudController');
     Route::crud('timeblock', 'TimeBlockCrudController');
 
-
     Route::crud('reservationrequest', 'ReservationRequestCrudController');
+
     Route::crud('inventory', 'InventoryCrudController');
     Route::get('/inventory/mass-receptions', 'InventoryCrudController@massReceptionsView')->name('inventory.mass-receptions');
     Route::get('/inventory/mass-receptions/generate-template', 'InventoryCrudController@generateExcelTemplate')->name('inventory.mass-receptions.generate-template');
     Route::post('/inventory/mass-receptions/preview', 'InventoryCrudController@massReceptionsPreview')->name('inventory.mass-receptions.preview');
+    Route::post('/inventory/mass-receptions/store', 'InventoryCrudController@massReceptionsStore')->name('inventory.mass-receptions.store');
     
     //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
     Route::crud('transaction', 'TransactionCrudController');

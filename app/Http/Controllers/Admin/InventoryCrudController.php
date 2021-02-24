@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Seller;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ProductInventorySource;
 use App\Services\Inventory\MassReceptionsService;
@@ -184,9 +185,10 @@ class InventoryCrudController extends CrudController
         });
     }
 
-    public function massReceptionsView()
+    public function massReceptionsView(Request $request)
     {
-        return view('admin/inventory/mass-receptions/index');
+        $request->session()->forget('inventory_mass_receptions_data');
+        return view('admin.inventory.mass-receptions.index');
     }
 
     public function generateExcelTemplate(Request $request)
@@ -206,8 +208,44 @@ class InventoryCrudController extends CrudController
 
     public function massReceptionsPreview(Request $request)
     {
-        $excel = $request->file('inventory_excel');
         $massReceptionsService = new MassReceptionsService();
-        dd($massReceptionsService->convertExcelToArray($excel));
+
+        $excel = $request->file('inventory_excel');
+
+        try {
+            $arrayData = $massReceptionsService->convertExcelToArray($excel);
+        } catch (Exception $e) {
+            return redirect()->route('inventory.mass-receptions.generate-template')->with('error', 'El archivo EXCEL contiene un formato incompatible o se encuentra corrupto.');
+        }
+
+        if ($arrayData['validate']) {
+            $request->session()->put('inventory_mass_receptions_data', $arrayData);
+        } else {
+            $request->session()->forget('inventory_mass_receptions_data');
+        }
+
+        return view('admin.inventory.mass-receptions.preview', compact('arrayData'));
+    }
+
+    public function massReceptionsStore(Request $request)
+    {
+        $massReceptionsService = new MassReceptionsService();
+        $data =  $request->session()->get('inventory_mass_receptions_data');
+
+        DB::beginTransaction();
+
+        try {
+            $massReceptionsService->storeReceptions($data['products_array'], $data['options'], backpack_user()->current()->company->id);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Mass reception service error: ' . $e->getMessage());
+            return 'todo mal';
+        }
+
+        DB::commit();
+
+        //$request->session()->forget('inventory_mass_receptions_data');
+
+        return 'todo ok';
     }
 }
