@@ -2,13 +2,19 @@
 
 namespace App\Services\Inventory;
 
+use Exception;
+use App\Models\Product;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\ProductInventorySource;
 use App\Imports\ProductReceptionsImport;
 use Illuminate\Support\Facades\Validator;
 
 class MassReceptionsService {
 
     const ROW_HEADINGS = 3;
+    const ROW_TYPE_OPERATION = 0;
+    const ROW_DOCUMENT_NUMBER = 1;
 
     const COLUMN_SKU = 0;
     const COLUMN_NAME = 1;
@@ -40,6 +46,17 @@ class MassReceptionsService {
             ];
         }
 
+        $options = [
+            'typeOperation' => [
+                'value' => $rawData[self::ROW_TYPE_OPERATION][1],
+                'valid' => true,
+            ],
+            'documentNumber' => [
+                'value' => $rawData[self::ROW_DOCUMENT_NUMBER][1],
+                'valud' => true,
+            ],
+        ];
+
         // Remove the heading rows
         $rawData = array_slice($rawData, 4);
 
@@ -51,6 +68,7 @@ class MassReceptionsService {
 
             foreach ($inventories as $key => $inventory) {
                 $data['inventories'][] = [
+                    'name' => $inventory['name'],
                     'code' => $inventory['code'],
                     'value' => $value[self::COLUMN_INIT_INVENTORIES + $key],
                 ];
@@ -59,10 +77,10 @@ class MassReceptionsService {
             return $data;
         });
 
-        return $this->validate($products);
+        return $this->validate($products, $options);
     }
 
-    public function validate($data)
+    public function validate($data, $options)
     {
         $isValid = true;
         $products = [];
@@ -72,14 +90,17 @@ class MassReceptionsService {
         //$PathImagesArray = collect($tmpProducts)->pluck('path_image');
 
         $rules = [
-            'sku' => 'required|exists:products,sku',
+            'sku' => [
+                'required',
+                Rule::exists('products', 'sku')->where('use_inventory_control', true),    
+            ],
             'inventories' => 'array',
             'inventories.*.code' => 'exists:product_inventory_sources,code',
             'inventories.*.value' => 'nullable|numeric|min:1',
         ];
 
-
         $messages = [
+            'sku.exists' => 'El producto con Sku :input no existe o no usa el control de inventario',
             '*.required' => 'El campo :attribute es obligatorio',
             '*.unique' => 'El :attribute ya se encuentra registrado',
             '*.exists' => 'El valor del campo :attribute no es valido',
@@ -113,11 +134,59 @@ class MassReceptionsService {
 
             $products[] = $product;
         }
+
+        // Validate type operation
+        if (!in_array($options['typeOperation']['value'], ['[sumar]', '[reemplazar]'])) {
+            $isValid = false;
+            $options['typeOperation']['valid'] = false;
+        }
         
         return [
             'validate' => $isValid,
             'products_with_errors' => $productWithErrors,
             'products_array' => $products,
+            'options' => $options,
         ];
+    }
+
+    public function storeReceptions($products, $options, $companyId)
+    {
+        foreach ($products as  $product) {
+            foreach ($product['inventories'] as $inventoryData) {  
+
+                $inventory = ProductInventorySource::where([
+                    'code' => $inventoryData['code'],
+                    'company_id' => $companyId,
+                ])->first();
+
+                if (!$inventory) throw new Exception("Product Inventory with the code " . $inventoryData['code'] . ' and the company id ' . $companyId . ' doesnt exists');
+
+                $product = Product::where([
+                    'sku' => $product['sku'],
+                    'company_id' => $companyId,
+                ])->first();
+
+                if (!$product) throw new Exception("Product with the sku " . $product['sku'] . ' and the company id ' . $companyId . ' doesnt exists');
+
+                // Check if the product has inventory
+     /*            $hasInventory = DB::table('product_inventories')
+                    ->where([
+                        'product_inventory_source_id' => $inventory->id,
+                        'product_id' => $product->id,
+                    ])->get()
+                    ->count() 
+                        ? true 
+                        : false;
+                 */
+
+                if ($options['typeOperation']['value'] === '[sumar]') {
+                    $qtyOnStock = $product->getQtyInInventory($inventory->id);
+                    $finalQty = $qtyOnStock + $inventoryData['value'];
+                    $product->updateInventory($finalQty, $inventory->id, true);
+                } else if ($options['typeOperation']['value'] === '[reemplazar]') {
+                    $product->updateInventory((int) $inventoryData['value'], $inventory->id, true);
+                }   
+            }
+        }
     }
 }
