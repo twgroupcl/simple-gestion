@@ -48,11 +48,11 @@ class MassReceptionsService {
 
         $options = [
             'typeOperation' => [
-                'value' => $rawData[self::ROW_TYPE_OPERATION][1],
+                'value' => trim($rawData[self::ROW_TYPE_OPERATION][1]),
                 'valid' => true,
             ],
             'documentNumber' => [
-                'value' => $rawData[self::ROW_DOCUMENT_NUMBER][1],
+                'value' => trim($rawData[self::ROW_DOCUMENT_NUMBER][1]),
                 'valud' => true,
             ],
         ];
@@ -62,15 +62,15 @@ class MassReceptionsService {
 
         $products = collect($rawData)->map(function ($value) use ($inventories) {
             $data = [
-                'sku' => (string) $value[self::COLUMN_SKU],
-                'name' => (string) $value[self::COLUMN_NAME],
+                'sku' => (string) trim($value[self::COLUMN_SKU]),
+                'name' => (string) trim($value[self::COLUMN_NAME]),
             ];
 
             foreach ($inventories as $key => $inventory) {
                 $data['inventories'][] = [
                     'name' => $inventory['name'],
-                    'code' => $inventory['code'],
-                    'value' => $value[self::COLUMN_INIT_INVENTORIES + $key],
+                    'code' => trim($inventory['code']),
+                    'value' => trim($value[self::COLUMN_INIT_INVENTORIES + $key]),
                 ];
             }
 
@@ -80,14 +80,19 @@ class MassReceptionsService {
         return $this->validate($products, $options);
     }
 
+    /**
+     * Validate the data of the array and options and return the data
+     * with the result of the validation
+     * 
+     * @param array $data
+     * @param array $options
+     * @return array
+     */
     public function validate($data, $options)
     {
         $isValid = true;
         $products = [];
         $productWithErrors = 0;
-        //$tmpProducts = $this->removeEmptyRows($productsArray);
-        //$productSkus = collect($tmpProducts)->pluck('sku');
-        //$PathImagesArray = collect($tmpProducts)->pluck('path_image');
 
         $rules = [
             'sku' => [
@@ -110,12 +115,11 @@ class MassReceptionsService {
         ];
 
         $attributes = [
-            'sku' => 'ISBN',
+            'sku' => 'SKU',
             'inventories' => 'inventarios',
             'inventories.*.code' => 'codigo de inventario',
-            'inventories.*.value' => 'valor del inventario',
+            'inventories.*.value' => 'cantidad stock del inventario',
         ];
-
 
         foreach ($data as $product) {
             $product['errors'] = [];
@@ -149,7 +153,14 @@ class MassReceptionsService {
         ];
     }
 
-    public function storeReceptions($products, $options, $companyId)
+    /**
+     * Update or replace the stock on inventory of the products provided
+     * 
+     * @param array $products
+     * @param array $options
+     * @param int $companyId
+     */
+    public function storeReceptions(array $products, array $options, int $companyId)
     {
         foreach ($products as  $product) {
             foreach ($product['inventories'] as $inventoryData) {  
@@ -167,22 +178,15 @@ class MassReceptionsService {
                 ])->first();
 
                 if (!$product) throw new Exception("Product with the sku " . $product['sku'] . ' and the company id ' . $companyId . ' doesnt exists');
-
-                // Check if the product has inventory
-     /*            $hasInventory = DB::table('product_inventories')
-                    ->where([
-                        'product_inventory_source_id' => $inventory->id,
-                        'product_id' => $product->id,
-                    ])->get()
-                    ->count() 
-                        ? true 
-                        : false;
-                 */
+                
+                if ($inventoryData['value'] === null || empty($inventoryData['value'])) {
+                    continue;
+                }
 
                 if ($options['typeOperation']['value'] === '[sumar]') {
                     $qtyOnStock = $product->getQtyInInventory($inventory->id);
-                    $finalQty = $qtyOnStock + $inventoryData['value'];
-                    $product->updateInventory($finalQty, $inventory->id, true);
+                    $finalQty = $qtyOnStock + (int) $inventoryData['value'];
+                    $product->updateInventory((int) $finalQty, $inventory->id, true);
                 } else if ($options['typeOperation']['value'] === '[reemplazar]') {
                     $product->updateInventory((int) $inventoryData['value'], $inventory->id, true);
                 }   
