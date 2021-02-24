@@ -488,7 +488,14 @@ class Product extends Model
         return $total;
     }
 
-    public function updateInventory($qty, $inventorySourceId)
+    /**
+     * Update the qty of the product in the inventory 
+     * 
+     * @param int $qty
+     * @param int $inventorySourceId
+     * @param bool $attachInventory if false, an exception will be throw if the product doesnt have stock on the inventory id
+     */
+    public function updateInventory($qty, $inventorySourceId, $attachInventory = false)
     {
         // Because we also need to store the inventories in an JSON field in order to work with Backpack,
         // and the JSON field update the inventories tables through the Product Oserver we just need
@@ -500,6 +507,14 @@ class Product extends Model
 
         if ($qty < 0) {
             throw new Exception('Qty cannot be negative');
+        }
+
+        if (!$this->use_inventory_control) {
+            throw new Exception('The product doesnt not use inventory control');
+        }
+
+        if (!ProductInventorySource::find($inventorySourceId)) {
+            throw new Exception('Inventory Source ID doesnt exists');
         }
 
         $qty = intval($qty);
@@ -516,7 +531,7 @@ class Product extends Model
                 }
             }
 
-            if (!isset($variations[$position]['inventory-source-' . $inventorySourceId])) {
+            if (!isset($variations[$position]['inventory-source-' . $inventorySourceId]) && !$attachInventory) {
                 throw new Exception('The product doesnt have a inventory source with the provide ID');
             }
 
@@ -526,7 +541,7 @@ class Product extends Model
         } else {
             $inventories = $this->inventories_json;
 
-            if (!isset($inventories['inventory-source-' . $inventorySourceId])) {
+            if (!isset($inventories['inventory-source-' . $inventorySourceId]) && !$attachInventory) {
                 throw new Exception('The product doesnt have a inventory source with the provide ID');
             }
 
