@@ -25,7 +25,10 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
 
         $this->productInventorySources = ProductInventorySource::where('company_id', $companyId)->get();
         $this->products = $this->options['includeProducts'] 
-            ? Product::select('sku', 'name')->where('company_id', $companyId)->whereDoesntHave('children')->get() 
+            ? Product::select('sku', 'name')
+                ->where('company_id', $companyId)
+                ->where('use_inventory_control', true)
+                ->whereDoesntHave('children')->get() 
             : null;
     }
 
@@ -45,8 +48,8 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
     {
 
         $stock = [
-            'Suma o reemplaza stock',
-            $this->options['replaceStock'] ? '[reemplaza]' : '[suma]',
+            'Tipo de operación',
+            $this->options['replaceStock'] ? '[reemplazar]' : '[sumar]',
         ];
 
         $documentNumber = [
