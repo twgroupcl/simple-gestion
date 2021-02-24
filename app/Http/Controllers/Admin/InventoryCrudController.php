@@ -230,7 +230,8 @@ class InventoryCrudController extends CrudController
     public function massReceptionsStore(Request $request)
     {
         $massReceptionsService = new MassReceptionsService();
-        $data =  $request->session()->get('inventory_mass_receptions_data');
+        
+        $data = $request->session()->get('inventory_mass_receptions_data');
 
         DB::beginTransaction();
 
@@ -239,13 +240,18 @@ class InventoryCrudController extends CrudController
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Mass reception service error: ' . $e->getMessage());
-            return 'todo mal';
+            return redirect()->route('inventory.mass-receptions.result')->with('mass_reception_error', 'Ocurrio un error procesando la recepción de stock');
         }
 
         DB::commit();
 
-        //$request->session()->forget('inventory_mass_receptions_data');
+        $request->session()->forget('inventory_mass_receptions_data');
 
-        return 'todo ok';
+        return redirect()->route('inventory.mass-receptions.result')->with('mass_reception_success', 'Recepción de stock procesada correctamente');
+    }
+
+    public function massReceptionsResult(Request $request)
+    {
+        return view('admin.inventory.mass-receptions.result');
     }
 }
