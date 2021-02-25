@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PriceListRequest extends FormRequest
@@ -26,7 +27,11 @@ class PriceListRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|max:255',
+            'code' => [
+                'required',
+                Rule::unique('price_lists', 'code')->where('company_id', true), 
+            ],
         ];
     }
 
@@ -38,7 +43,8 @@ class PriceListRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+            'name' => 'nombre',
+            'code' => 'codigo',
         ];
     }
 
@@ -50,7 +56,8 @@ class PriceListRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            '*.required' => 'El campo :attribute es requerido',
+            '*.unique' => 'Ya existe un registro con el mismo :attribute',
         ];
     }
 }
