@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\PriceListItem;
-use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class PriceList extends Model
+
+class PriceListItem extends Model
 {
-    use CrudTrait;
-    use SoftDeletes;
+
 
     /*
     |--------------------------------------------------------------------------
@@ -19,25 +15,21 @@ class PriceList extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'price_lists';
+    protected $table = 'price_list_items';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     
     protected $fillable = [
-        'code',
-        'name',
-        'apply_on_date',
-        'intial_options',
-        'user_id',
-        'status',
-        'company_id',
+        'price_list_id',
+        'product_id',
+        'price',
+        'cost',
         'json_value',
     ];
 
     protected $casts = [
         'json_value' => 'array',
-        'initial_options' => 'array',
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -48,23 +40,11 @@ class PriceList extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new CompanyBranchScope);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function priceListItems()
-    {
-        return $this->hasMany(PriceListItem::class);
-    }
 
     /*
     |--------------------------------------------------------------------------
