@@ -39,6 +39,11 @@ class ExemptElectronicInvoice implements DocumentType
             $array['Encabezado']['Receptor']['RUTRecep'] = Invoice::FOREIGN_RUT;
         }
 
+        // Indicar que el descuento afecta tambien a los items exentos
+        if ($this->invoice->discount_percent > 0 || $this->invoice->discount_amount > 0) {
+            $array['DscRcgGlobal']['IndExeDR'] = 1;
+        }
+
         //$array['Encabezado']['IdDoc']['FchEmis'] = '2020-11-30';
         /*$array['Encabezado']['IdDoc'] = array_merge($array['Encabezado']['IdDoc'], [
             'FchEmis' => '2020-11-30',
