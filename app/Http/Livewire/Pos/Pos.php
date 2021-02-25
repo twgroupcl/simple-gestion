@@ -524,7 +524,7 @@ class Pos extends Component
 
     public function saveMovement()
     {
-        dd('ajajaja');
+
     }
 
 }
