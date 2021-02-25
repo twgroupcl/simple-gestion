@@ -25,7 +25,8 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
 
         $this->productInventorySources = ProductInventorySource::where('company_id', $companyId)->get();
         $this->products = $this->options['includeProducts'] 
-            ? Product::select('sku', 'name')
+        ? Product::select('sku', 'name', 'id')
+                ->with('inventories')
                 ->where('company_id', $companyId)
                 ->where('use_inventory_control', true)
                 ->whereDoesntHave('children')->get() 
@@ -84,10 +85,26 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
 
     public function map($product): array
     {
-        return [
+
+        $row = [
             $product['sku'],
             $product['name'],
         ];
+
+        // Include inventory qty if replaceStock is true
+        if ($this->options['replaceStock']) {
+            $inventories = collect($product['inventories']);
+            
+            foreach ($this->productInventorySources as $inventory) {
+                $temp = $inventories->where('code', $inventory->code)->first();
+
+                if ($temp) {
+                    $row[] = $temp['pivot']['qty'];
+                }
+            }
+        }
+        
+        return $row;
     }
 
     public function columnWidths(): array
