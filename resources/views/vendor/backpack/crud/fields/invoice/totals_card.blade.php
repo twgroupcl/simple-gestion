@@ -297,7 +297,7 @@
 
             let subTotalGeneral = getRounded(itemsData.totalValue)
             
-            let totalDiscountGlobal = getTruncated(itemsData.totalDiscountGlobal)
+            let totalDiscountGlobal = getRounded(itemsData.totalDiscountGlobal)
             let totalVaxItems = getRounded(itemsData.totalVaxItem)
             let totalVaxGeneral = getRounded(itemsData.totalVaxGeneral)
 
