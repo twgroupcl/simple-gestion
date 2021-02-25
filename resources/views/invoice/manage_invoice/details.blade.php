@@ -1,7 +1,3 @@
-@php
-    $invoiceId = $invoice->id;
-@endphp
-
 <div class="row">
     <h3>Detalles del documento:</h3>
 </div>
@@ -97,7 +93,7 @@
 @push('after_scripts')
 <script>
 $(document).ready(function() {
-    let id = "{{$invoiceId}}";
+    let id = "{{$invoice->id}}";
     let select = $('#select-type');
     let view = $('#show-document');
     select.on('change', function(e) {
