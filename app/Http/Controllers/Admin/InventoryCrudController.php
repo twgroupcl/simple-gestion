@@ -8,6 +8,7 @@ use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ProductInventorySource;
+use App\Models\ProductInventoryReception;
 use App\Services\Inventory\MassReceptionsService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use App\Exports\Inventory\MassReceptionsTemplateExport;
@@ -237,6 +238,15 @@ class InventoryCrudController extends CrudController
 
         try {
             $massReceptionsService->storeReceptions($data['products_array'], $data['options'], backpack_user()->current()->company->id);
+        
+            ProductInventoryReception::create([
+                'document_number' => $data['options']['documentNumber']['value'],
+                'user_id' =>  backpack_user()->id,
+                'products_data' => $data['products_array'],
+                'type_operation' => $data['options']['typeOperation']['value'],
+                'excel_path' => null,
+                'company_id' => backpack_user()->current()->company->id,
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Mass reception service error: ' . $e->getMessage());
