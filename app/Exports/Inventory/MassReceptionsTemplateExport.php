@@ -29,7 +29,9 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
                 ->with('inventories')
                 ->where('company_id', $companyId)
                 ->where('use_inventory_control', true)
-                ->whereDoesntHave('children')->get() 
+                ->whereDoesntHave('children')
+                ->orderBy('sku')
+                ->get() 
             : null;
     }
 
@@ -54,7 +56,7 @@ class MassReceptionsTemplateExport implements FromArray, WithMapping , WithHeadi
         ];
 
         $documentNumber = [
-            'Numero de documento',
+            'Número de documento',
             (string) $this->options['documentNumber'],
         ];
 
