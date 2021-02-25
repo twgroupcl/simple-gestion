@@ -65,14 +65,14 @@
 
         @if (($invoice->invoice_status == App\Models\Invoice::STATUS_TEMPORAL) || (isset($invoice->folio) &&
               $invoice->invoice_status == App\Models\Invoice::STATUS_SEND))
-        <label for="select-type" class="mr-2"> Tipo de papel </label>
-        <select class="m-2" name="format-document" id="select-type">
-            <option value="0"> Carta</option>
-            <option value="57"> 57mm </option>
-            <option value="80"> 80mm </option>
-        </select>
-        <div class="row" id="show-document">
-        </div>
+            <label for="select-type" class="mr-2"> Tipo de papel </label>
+            <select class="m-2" name="format-document" id="select-type">
+                <option value="0"> Carta</option>
+                <option value="57"> 57mm </option>
+                <option value="80"> 80mm </option>
+            </select>
+            <div class="row" id="show-document">
+            </div>
             {{--
             <div class="row">
                 @if ($invoice->invoice_type->code === 39 || $invoice->invoice_type->code === 41)
