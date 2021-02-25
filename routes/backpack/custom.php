@@ -124,4 +124,5 @@ Route::group([
     Route::crud('accountingaccount', 'AccountingAccountCrudController');
     Route::crud('transactiondetail', 'TransactionDetailCrudController');
     Route::crud('accountingaccounttype', 'AccountingAccountTypeCrudController');
+    Route::crud('pricelist', 'PriceListCrudController');
 }); // this should be the absolute last line of this file

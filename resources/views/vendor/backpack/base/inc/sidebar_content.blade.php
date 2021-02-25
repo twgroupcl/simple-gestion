@@ -209,3 +209,5 @@
 </li>
 @endcanany
 
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('pricelist') }}'><i class='nav-icon la la-question'></i> PriceLists</a></li>
