@@ -69,6 +69,7 @@ class InventoryCrudController extends CrudController
         $this->crud->addClause('whereDoesntHave', 'children');
         
         $this->crud->addButtonFromView('line', 'update-stock', 'inventory.update-stock', 'begining');
+        $this->crud->addButtonFromView('top', 'mass-receptions', 'inventory.mass-receptions', 'end');
 
         CRUD::addColumn([
             'name' => 'categories',
