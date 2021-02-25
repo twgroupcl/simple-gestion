@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class PriceList extends Model
 {
@@ -19,7 +20,22 @@ class PriceList extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
+    
+    protected $fillable = [
+        'code',
+        'name',
+        'apply_on_date',
+        'intial_options',
+        'user_id',
+        'status',
+        'company_id',
+        'json_value',
+    ];
+
+    protected $casts = [
+        'json_value' => 'array',
+        'initial_options' => 'array',
+    ];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -28,6 +44,13 @@ class PriceList extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new CompanyBranchScope);
+    }
 
     /*
     |--------------------------------------------------------------------------

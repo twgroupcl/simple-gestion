@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Cruds\BaseCrudFields;
 use App\Http\Requests\PriceListRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -28,7 +29,7 @@ class PriceListCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\PriceList::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/pricelist');
-        CRUD::setEntityNameStrings('pricelist', 'price_lists');
+        CRUD::setEntityNameStrings('lista de precio', 'listas de precios');
     }
 
     /**
@@ -39,13 +40,15 @@ class PriceListCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
+        CRUD::addColumn([
+            'label' => 'Nombre',
+            'name' => 'name',
+        ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        CRUD::addColumn([
+            'label' => 'Codigo',
+            'name' => 'code',
+        ]);
     }
 
     /**
@@ -58,13 +61,17 @@ class PriceListCrudController extends CrudController
     {
         CRUD::setValidation(PriceListRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud = (new BaseCrudFields())->setBaseFields($this->crud);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        CRUD::addField([
+            'name' => 'name',
+            'label' => 'Nombre',
+        ]);
+
+        CRUD::addField([
+            'name' => 'code',
+            'label' => 'Codigo',
+        ]);
     }
 
     /**
