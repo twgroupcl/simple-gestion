@@ -3,7 +3,7 @@
 @section('content')
     <div class="row mt-3">
         <div class="col">
-            <h3>Recepciones masivas</h3>
+            <h3>Cargar recepción desde Excel</h3>
         </div>
     </div>
 
@@ -24,10 +24,10 @@
     @endif
 
     <div class="btn-group" role="group">
-        <a href="{{ backpack_url('product') }}">
+        <a href="{{ backpack_url('inventory') }}">
         <button type="submit" class="btn btn-success">
             <span class="la la-box" role="presentation" aria-hidden="true"></span> &nbsp;
-            <span>Ir a products</span>
+            <span>Ir a inventario</span>
         </button>
         </a>
     </div>

@@ -3,7 +3,7 @@
 @section('content')
     <div class="row mt-3">
         <div class="col">
-            <h3>Recepciones masivas</h3>
+            <h3>Cargar recepción desde Excel</h3>
         </div>
     </div>
 
@@ -21,9 +21,12 @@
               <div class="col-md-12">
                 Tipo de operación: {{ $arrayData['options']['typeOperation']['value'] }}
               </div>
-              <div class="col-md-12">
-                  Numero de documento: {{ $arrayData['options']['documentNumber']['value'] }}
-              </div>
+              @if ($arrayData['options']['documentNumber']['value'])
+                <div class="col-md-12">
+                    Número de documento: {{ $arrayData['options']['documentNumber']['value'] }}
+                </div> 
+              @endif
+              
 
               @if (!$arrayData['options']['typeOperation']['valid'])
                 <div class="col-md-12">
@@ -51,7 +54,7 @@
                 Numero de productos: {{ count($arrayData['products_array']) }}
               </div>
               <div class="col-md-12">
-                  Numero numero de productos con errores: {{ $arrayData['products_with_errors'] }}
+                  Numero de productos con errores: {{ $arrayData['products_with_errors'] }}
               </div>
             </div>
         </div>

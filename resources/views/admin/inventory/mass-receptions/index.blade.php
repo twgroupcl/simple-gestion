@@ -6,7 +6,7 @@
     
     <div class="row mt-3">
         <div class="col">
-            <h3>Recepciones masivas</h3>
+            <h3>Cargar recepción desde Excel</h3>
         </div>
     </div>
 
@@ -22,7 +22,7 @@
                 <form action="{{ route('inventory.mass-receptions.generate-template') }}">
                     <div class="col-md-12">
                         <h4>Paso 1: Generar plantilla excel</h4>
-                        <p>Haz click en el boton para generar una plantilla de carga de recepciones masivas</p>
+                        <p>Haz clic en el botón para generar una plantilla de carga de recepciones / actualizaciones de stock masivas </p>
                     </div>
 
                     <div class="col-md-12">
@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <button class="btn btn-success" type="submit">Subir archivo</button>
+                        <button class="btn btn-success" type="submit">Subir archivo y ver vista previa</button>
                     </div>
                 </form>
 

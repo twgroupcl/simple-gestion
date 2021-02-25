@@ -133,7 +133,7 @@ class ProductInventorySourceCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'address_number',
-            'label' => 'Numero',
+            'label' => 'Número',
             'type' => 'text',
             'tab' => 'Ubicación',
             'wrapper' => [
