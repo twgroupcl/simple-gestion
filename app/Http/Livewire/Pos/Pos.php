@@ -15,6 +15,7 @@ use App\Models\OrderItem;
 use App\Models\InvoiceType;
 use App\Models\OrderPayment;
 use App\Models\SalesBox;
+use App\Models\SalesBoxMovement;
 use Illuminate\Support\Facades\DB;
 use Backpack\Settings\app\Models\Setting;
 use Exception;
@@ -29,14 +30,21 @@ class Pos extends Component
     public $viewMode;
     public $cash;
     public $user;
+    public $branches;
 
     //salebox
     public $saleBox;
     public $checked;
+    public $branch_id;
     public $opening_amount;
     public $closing_amount;
-    public $remarks;
+    public $remarks_open;
+    public $remarks_close;
     public $isSaleBoxOpen = false;
+
+    //movements
+    public $movement;
+    public $movements;
 
     // cart
     public $cart;
@@ -65,12 +73,21 @@ class Pos extends Component
     {
         $this->user = backpack_user();
 
+
+
         $this->seller = Seller::where('user_id', backpack_user()->id)->first();
 
         if (is_null($this->seller) || $this->seller->is_approved !== $this->seller::REVIEW_STATUS_APPROVED) {
             abort(403);
         }
 
+        $this->branches = $this->user->branches;
+        if(isset($this->branches)){
+            if(count($this->branches) > 0){
+                $this->branch_id = $this->branches->first()->id;
+            }
+        }
+        //dd($this->branches);
         //$this->products = $this->getProducts();
         //$this->setView('productList');
         $this->validateBox();
@@ -94,6 +111,8 @@ class Pos extends Component
         if (session()->get('user.pos.selectedCustomer')) {
             $this->customer = session()->get('user.pos.selectedCustomer');
         }
+
+        $this->movement = new SalesBoxMovement();
     }
 
     public function render()
@@ -228,11 +247,11 @@ class Pos extends Component
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
 
-        if (isset($this->customer->addresses_data)) {
-            return json_encode($this->customer->address_data);
-        }else{
+      /*   if (!is_null($this->customer->addresses) && count($this->customer->addresses)>0) {
+            return json_encode($this->customer->addresses);
+        }else{ */
             return null;
-        }
+       /*  } */
     }
 
 
@@ -268,16 +287,19 @@ class Pos extends Component
 
     public function openSaleBox()
     {
+
+
         $this->saleBox = $this->seller->sales_boxes()->create([
+            'branch_id' => $this->branch_id,
             'opening_amount' => $this->opening_amount,
-            'remarks' => $this->remarks,
+            'remarks_open' => $this->remarks_open,
             'opened_at' => now(),
         ]);
 
         $this->isSaleBoxOpen = true;
         $this->opening_amount = null;
         $this->closing_amount = null;
-        $this->remarks = null;
+        $this->remarks_open = null;
         $this->updateBoxDetails($this->saleBox);
         $this->dispatchBrowserEvent('closeSaleBoxView');
     }
@@ -495,5 +517,14 @@ class Pos extends Component
         Mail::to($invoice->email)->send(new PosBill($invoice));
     }
 
+    public function showSalesBoxModal()
+    {
+        $this->dispatchBrowserEvent('showSalesBoxModal');
+    }
+
+    public function saveMovement()
+    {
+        dd('ajajaja');
+    }
 
 }

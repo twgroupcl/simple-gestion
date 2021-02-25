@@ -6,7 +6,7 @@ use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class SalesBox extends Model
+class SalesBoxMovement extends Model
 {
     use CrudTrait;
 
@@ -16,7 +16,7 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'sales_boxes';
+    protected $table = 'sales_box_movements';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -30,10 +30,6 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function calculateClosingAmount()
-    {
-        return $this->logs()->sum('amount') + $this->opening_amount;
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -41,24 +37,10 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function seller()
-    {
-        return $this->belongsTo(Seller::class);
-    }
 
-    public function branch()
+    public function salebox()
     {
-        return $this->belongsTo(Branch::class);
-    }
-
-    public function logs()
-    {
-        return $this->hasMany(SalesBoxLog::class);
-    }
-
-    public function movements()
-    {
-        return $this->hasMany(SalesBoxMovement::class);
+        return $this->belongsTo(SalesBox::class);
     }
 
     /*
@@ -67,16 +49,7 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function scopeClosed($query)
-    {
-        return $query->where('closed_at', '!=', null);
-    }
 
-    public function scopeOpened($query)
-    {
-        return $query->where('opened_at', '!=', null)
-                    ->where('closed_at', null);
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -84,15 +57,6 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getIsOpenedAttribute()
-    {
-        return ($this->opened_at !== null) && ($this->closed_at === null);
-    }
-
-    public function getIsClosedAttribute()
-    {
-        return ($this->opened_at !== null) && ($this->closed_at !== null);
-    }
 
     /*
     |--------------------------------------------------------------------------

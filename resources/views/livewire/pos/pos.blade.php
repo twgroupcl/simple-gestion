@@ -261,6 +261,12 @@
         .mobile-menu-item{
             display: block;
         }
+
+        .view-shadow{
+            -webkit-box-shadow: 4px -5px 5px -1px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px -5px 5px -1px rgba(0,0,0,0.75);
+            box-shadow: 4px -5px 5px -1px rgba(0,0,0,0.75);
+        }
     </style>
 @endpush
 
@@ -388,14 +394,28 @@
                         POS
                     </a>
                 </li>
-                <li class="pos-list-group-item text-center  my-auto"><a href="#"
+                <li class="pos-list-group-item text-center  my-auto">
+                    <a href="#"
+                        class=" link-box-sale ">
+                        <i class="las la-cash-register" style="font-size: 32px;"></i>
+                        <br>
+                        CAJA
+                    </a>
+                </li>
+                <li class="pos-list-group-item text-center  my-auto">
+                    <a href="#"
                         class="list-group-item-action link-sale">
                         <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
                         <br>
-                        VENTAS</a></li>
-                <li class="pos-list-group-item text-center"><a href="#" class="list-group-item-action  link-customer">
+                        VENTAS
+                    </a>
+                </li>
+                <li class="pos-list-group-item text-center">
+                    <a href="#" class="list-group-item-action  link-customer">
                         <i class="las la-user" style="font-size: 32px;"></i>
-                        CLIENTES</a></li>
+                        CLIENTES
+                    </a>
+                </li>
 
                 {{-- <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
                         <i class="las la-cash-register" style="font-size: 32px;"></i>
@@ -425,6 +445,8 @@
     </div>
     {{-- Payment view --}}
     @include('livewire.pos.partials.payment')
+     {{-- Movements Box --}}
+     @include('livewire.pos.partials.movements-box')
     {{-- Sale Box --}}
     @include('livewire.pos.partials.sale-box')
     {{-- Confirm payment view --}}
@@ -568,7 +590,7 @@
 {{-- Footer --}}
 
 </div>
-<div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
+<div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
     <div class="modal-dialog modal-lg">
         @livewire('pos.customer.create-address-form', [], key(time().'.address.'.$seller->id))
     </div>
@@ -594,6 +616,7 @@
     <script>
         var currentView = 'productList';
         var addressModalAppended = true;
+        var salexBoxModalAppended = true;
         var boardTarget = 'cash';
         const changeViewMode = (view, cartAlternative) => {
             $('#' + currentView).hide();
@@ -608,6 +631,9 @@
         window.addEventListener('hideCustomerModal', event => {
             $('#showCustomerModal').appendTo("body").modal('hide');
         })
+
+
+
 
         window.addEventListener('showAddressModal', async (event) => {
             let modal = $('.app-body').find('#modalSelectAddress');
@@ -627,6 +653,18 @@
             $('#showCustomerModal').appendTo("body").modal('hide');
         });
 
+        /* Show modals on sales box */
+
+        window.addEventListener('showSalesBoxModal', async (event) => {
+
+            let modal = $('.app-body').find('#salesBoxModal');
+            $('.app-body').find('#salesBoxModal').remove();
+            if (salexBoxModalAppended) {
+                salexBoxModalAppended = false;
+                modal.appendTo('body');
+            }
+            //$('#salesBoxModal').modal('show');
+        })
 
         //Colapse general menu
         $("body").removeClass('sidebar-lg-show');
@@ -1040,6 +1078,7 @@
     <script>
         document.addEventListener('livewire:load', function() {
 
+            btnPay = $('#btn-pay');
             const modalConfirm = function(callback) {
 
                 $("#confirm-pay").on("click", function() {
@@ -1088,10 +1127,7 @@
 
                     await @this.confirmPayment(totalCash, tip, typeDocument, businessActivity)
                     hideAllViews()
-                    // $('.main-view').hide();
-                    // $('.cart-buttons').hide();
-                    // $('.payment-view').hide();
-                    // $('.confirm-payment-view').hide();
+
                     $('.final-payment-view').show();
             }
 
@@ -1127,16 +1163,7 @@
             });
 
 
-            // Type document change event
-            $('#type_document_select').change(function () {
-                if (this.value == 33) {
-                    let address = @this.getSelectedCustomerAddress()
-                    console.log(address);
-                    $('#business_activity_div').show()
-                } else {
-                    $('#business_activity_div').hide()
-                }
-            })
+
 
 
 
@@ -1146,12 +1173,28 @@
         document.addEventListener("DOMContentLoaded", () => {
             Livewire.hook('component.initialized', (component) => {
 
+
+
             // Business Activity
             if ($('#type_document_select').val() == 33) {
                 $('#business_activity_div').show()
             } else {
                 $('#business_activity_div').hide()
             }
+
+            // Type document change event
+            $('#type_document_select').change( function () {
+                if (this.value == 33) {
+                    let address =  @this.getSelectedCustomerAddress()
+                    if(address == null) {
+                        //btnPay.prop("disabled", true);
+                    }else{
+                        $('#business_activity_div').show()
+                    }
+                } else {
+                    $('#business_activity_div').hide()
+                }
+            })
 
             //Update mobile
             var mobileMQ = window.matchMedia("(max-width: 360px)")
