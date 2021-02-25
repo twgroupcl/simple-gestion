@@ -125,10 +125,11 @@ use App\User;
 					'wrapperClass' => 'col-md-3',
                     'attributes' => [
                         'sku',
+                        'invoice_item_total',
                     ],
                     'columns' => [
                         'sku',
-                        'algo',
+                        'invoice_item_total',
                     ],
                     'collection' => null,
                     'url' => '/admin/api/product/top_table_dashboard',

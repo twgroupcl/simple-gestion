@@ -1,11 +1,12 @@
 @php
 $columnNames = $widget['columns'];
 $collection = $widget['collection'];
-$attributes = json_encode($widget['attributes']);
+$attributes = json_encode($widget['attributes'], JSON_FORCE_OBJECT);
 $functionName = \Str::slug($widget['name'], '_');
+$url = $widget['url'];
 @endphp
 @includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_start')
-<table class="table {{ $widget['class'] ?? '' }}">
+<table class="table {{ $widget['class'] ?? '' }}" data-url="{{$url}}">
     <thead>
         <tr>
             @foreach (collect($columnNames) as $column => $value)
@@ -38,9 +39,7 @@ $(document).ready(function() {
     let dateTo = $('#date-to');
     if (dateFrom) {
         dateFrom.on('change', function() {
-            {{$functionName}}($(this).val(), $('#date-to').val());
-        });
-    }
+            {{$functionName}}($(this).val(), $('#date-to').val()); }); }
     
     if (dateTo) {
         $('#date-to').on('change', function() {
@@ -55,7 +54,8 @@ function {{$functionName}}(from, to) {
         //if ("{{$attribute}}" !== "") {
             //attribute = true;
         //}
-        console.log({{$attributes}})
+        let attributes = {!! $attributes !!}
+        //console.log({{$attributes}})
         $.ajax({
             url: "{{$widget['url']}}",
             type: 'POST',
@@ -67,7 +67,14 @@ function {{$functionName}}(from, to) {
                 let tableBody = $("#body{{$functionName}}");
                 tableBody.children().remove();
                 content.forEach(element => {
-                                    })
+                    console.log(element)
+                    let itemTable = "<tr>";
+                    for (i in attributes) {
+                        itemTable += "<td>" + element[attributes[i]] + "</td>";
+                    }
+                    itemTable += "</tr>";
+                    tableBody.append(itemTable);
+                })
                     
             },
             error: function(error) {
