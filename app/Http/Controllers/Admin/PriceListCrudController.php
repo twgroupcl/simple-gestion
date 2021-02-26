@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\PriceList;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\PriceListRequest;
@@ -145,10 +146,11 @@ class PriceListCrudController extends CrudController
         $this->setupCreateOperation();
     }
 
-    protected function modify(Request $request)
+    protected function modify($id)
     {
+        $priceList = PriceList::findOrFail($id);
 
-        return view('vendor.backpack.crud.price_list.modify');
+        return view('vendor.backpack.crud.price_list.modify', compact('priceList'));
     }
 
     protected function setupModifyRoutes($segment, $routeName, $controller)
@@ -159,5 +161,22 @@ class PriceListCrudController extends CrudController
             'operation' => 'modify',
         ]);
 
+    }
+
+    public function getProducts($priceListId)
+    {
+        $priceList = PriceList::findOrFail($priceListId);
+
+        $products = $priceList->priceListItems->map(function ($item) {
+            return [
+                'id' => $item->product->id,
+                'sku' => $item->product->sku,
+                'name' => $item->product->name,
+                'price' => $item->product->price,
+                'cost' => $item->product->cost,
+            ];
+        });
+
+        return $products;
     }
 }

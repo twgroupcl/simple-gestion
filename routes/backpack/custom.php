@@ -124,5 +124,8 @@ Route::group([
     Route::crud('accountingaccount', 'AccountingAccountCrudController');
     Route::crud('transactiondetail', 'TransactionDetailCrudController');
     Route::crud('accountingaccounttype', 'AccountingAccountTypeCrudController');
+
+    // Price List
     Route::crud('pricelist', 'PriceListCrudController');
+    Route::get('pricelist/api/{id}/products', 'PriceListCrudController@getProducts')->name('price-list.api.products');
 }); // this should be the absolute last line of this file

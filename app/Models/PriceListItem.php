@@ -45,6 +45,10 @@ class PriceListItem extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
