@@ -22,7 +22,20 @@
                 <form action="{{ route('inventory.mass-receptions.generate-template') }}">
                     <div class="col-md-12">
                         <h4>Paso 1: Generar plantilla excel</h4>
-                        <p>Haz clic en el botón para generar una plantilla de carga de recepciones / actualizaciones de stock masivas </p>
+                        <p>
+                            Haz click en el botón para descargar el formato de excel que debes completar para realizar la carga de 
+                            recepciones masiva. 
+                        </p>
+                        <p>
+                            Para rellenar la planilla debes ingresar los datos que se piden en cada columna: 
+                            sku, nombre producto y cantidad en cada bodega. Si hay algún producto o bodega en la que 
+                            no quieres hacer ningún cambio, debes dejar vacía la celda correspondiente.
+                        </p>
+                        <p>
+                            Recuerda que no debes modificar las cabeceras que encontrarás ahí o si no la carga podría fallar
+                        </p>
+                        
+                        
                     </div>
 
                     <div class="col-md-12">
@@ -34,6 +47,9 @@
                                       <option value="1">Reemplazar Stock</option>
                                       <option value="0">Sumar cantidad</option>
                                     </select>
+                                    <div class="help-block mb-4 ml-1">
+                                        Reemplazar Stock: el número que ingreses en la planilla será el número que quedará en inventario. <br>
+                                        Sumar Cantidad: el número que ingreses en la planilla se sumará a lo que actualmente hay en inventario                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -135,4 +151,15 @@
         });
     }); 
 </script>
+@endpush
+
+@push('after_styles')
+    <style>
+        .help-block {
+            margin-top: .25rem;
+            margin-bottom: .25rem;
+            color: #73818f;
+            font-size: 0.9em;
+        }
+    </style>
 @endpush
