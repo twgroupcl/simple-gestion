@@ -57,15 +57,26 @@
         </div>
         @endif
         
+        
+
         @if (($invoice->invoice_status == App\Models\Invoice::STATUS_TEMPORAL) || (isset($invoice->folio) &&
               $invoice->invoice_status == App\Models\Invoice::STATUS_SEND))
+            <label for="select-type" class="mr-2"> Tipo de papel </label>
+            <select class="m-2" name="format-document" id="select-type">
+                <option value="0"> Carta</option>
+                <option value="57"> 57mm </option>
+                <option value="80"> 80mm </option>
+            </select>
+            <div class="row" id="show-document">
+            </div>
+            {{--
             <div class="row">
                 @if ($invoice->invoice_type->code === 39 || $invoice->invoice_type->code === 41)
-                <embed src="{{ route('invoice.get-pdf', ['invoice' => $invoice, 'tipoPapel' => 57]) }}" type="application/pdf" width="70%" height="400px" />
                 @else 
                 <embed src="{{ route('invoice.get-pdf', ['invoice' => $invoice, 'tipoPapel' => 0]) }}" type="application/pdf" width="70%" height="400px" />
                 @endif
             </div>
+            --}}
 
             @if ($invoice->invoice_status == App\Models\Invoice::STATUS_TEMPORAL)
             <div class="row mt-2">
@@ -79,3 +90,21 @@
         @endif
     </div>
 </div>
+@push('after_scripts')
+<script>
+$(document).ready(function() {
+    let id = "{{$invoice->id}}";
+    let select = $('#select-type');
+    let view = $('#show-document');
+    select.on('change', function(e) {
+        view.children('embed').remove()
+        view.append(
+            '<embed src="/admin/invoice/' + id + '/get-pdf?tipoPapel='+select.val()+'" type="application/pdf" width="70%" height="400px" />'
+        )
+    })
+    view.append(
+        '<embed src="/admin/invoice/' + id + '/get-pdf?tipoPapel='+select.val()+'" type="application/pdf" width="70%" height="400px" />'
+    )
+})
+</script>
+@endpush

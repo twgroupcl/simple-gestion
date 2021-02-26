@@ -30,6 +30,10 @@ class CreditNote implements DocumentType
     {
         $array = $this->ttArray();
 
+        if ($this->invoice->customer->is_foreign) {
+            $array['Encabezado']['Receptor']['RUTRecep'] = Invoice::FOREIGN_RUT;
+        }
+
         $referenceData = is_array($this->invoice->json_value) ? 
             $this->invoice->json_value : json_decode($this->invoice->json_value, true);
 
@@ -37,6 +41,15 @@ class CreditNote implements DocumentType
 
         if ($tpoDocRef) {
             $tpoDocRef = InvoiceType::find($tpoDocRef)->code;
+        }
+        if ($tpoDocRef == 41 || $tpoDocRef == 34) {
+            foreach ($array['Detalle'] as $key => $item) {
+                $array['Detalle'][$key]['IndExe'] = 1;
+            }
+
+            if ($this->invoice->discount_percent > 0 || $this->invoice->discount_amount > 0) {
+                $array['DscRcgGlobal']['IndExeDR'] = 1;
+            }
         }
 
         $array['Referencia'] = [

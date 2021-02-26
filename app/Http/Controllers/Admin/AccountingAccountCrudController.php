@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AccountingAccountRequest;
+use Maatwebsite\Excel\Facades\Excel;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Exports\AccountingAccountExport;
 
 /**
  * Class AccountingAccountCrudController
@@ -30,7 +32,7 @@ class AccountingAccountCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\AccountingAccount::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/accountingaccount');
-        CRUD::setEntityNameStrings('cuenta contable', 'cuentas contables');
+        CRUD::setEntityNameStrings('plan de cuenta', 'planes de cuentas');
         //$company = backpack_user()->current()->company;
         //$this->crud->addClause('where', 'company_id', $company->id);
         $this->crud->denyAccess('show');
@@ -38,6 +40,27 @@ class AccountingAccountCrudController extends CrudController
         if (!backpack_user()->hasPermissionTo('accounting')) {
             $this->crud->denyAccess(['list', 'create', 'update']);
         }
+    }
+
+    protected function setupExportRoutes($segment, $routeName, $controller)
+    {
+        \Route::get($segment.'/export', [
+            'as'        => $routeName.'.getExport',
+            'uses'      => $controller.'@getExportForm',
+            'operation' => 'export',
+        ]);
+    }
+
+    protected function getExportForm(bool $persist = false)
+    {
+        $this->crud->hasAccessOrFail('list');
+        $this->crud->setOperation('Export');
+
+        $date = now();
+        $fileName = 'plan_de_cuentas_'. $date->format('Y-m-d') . '.xls';
+        $excel = new AccountingAccountExport();
+
+        return Excel::download($excel, $fileName);
     }
 
     /**
@@ -49,6 +72,7 @@ class AccountingAccountCrudController extends CrudController
     protected function setupListOperation()
     {
 
+        CRUD::addButtonFromView('top', 'transactions.export', 'transactions.export', 'end');
         CRUD::addColumn([
             'name' => 'code',
             'label' => 'Código',

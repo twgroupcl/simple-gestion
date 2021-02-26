@@ -25,6 +25,9 @@ class AccountingAccount extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $appends = [
+        'to_string',
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -62,6 +65,10 @@ class AccountingAccount extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getToStringAttribute()
+    {
+        return $this->code. " " . $this->name;
+    }
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
