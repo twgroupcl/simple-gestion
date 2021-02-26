@@ -28,7 +28,7 @@ class PriceList extends Model
         'code',
         'name',
         'apply_on_date',
-        'intial_options',
+        'initial_options',
         'user_id',
         'status',
         'company_id',
@@ -38,6 +38,10 @@ class PriceList extends Model
     protected $casts = [
         'json_value' => 'array',
         'initial_options' => 'array',
+    ];
+
+    protected $fakeColumns = [
+        'initial_options',
     ];
     // protected $hidden = [];
     // protected $dates = [];

@@ -30,8 +30,11 @@ class PriceListRequest extends FormRequest
             'name' => 'required|max:255',
             'code' => [
                 'required',
-                Rule::unique('price_lists', 'code')->where('company_id', true), 
+                Rule::unique('price_lists', 'code')->where(function ($query) {
+                    return $query->where('company_id', $this->company_id)->where('id', '!=', $this->id);
+                })
             ],
+            'initial_price_cost' => 'required',
         ];
     }
 

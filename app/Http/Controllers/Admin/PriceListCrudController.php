@@ -66,11 +66,63 @@ class PriceListCrudController extends CrudController
         CRUD::addField([
             'name' => 'name',
             'label' => 'Nombre',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
         ]);
 
         CRUD::addField([
             'name' => 'code',
             'label' => 'Codigo',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
+        ]);
+
+        CRUD::addField([   // radio
+            'name'        => 'initial_price_cost', // the name of the db column
+            'label'       => 'Precio y costo inicial de cada producto', // the input label
+            'fake' => true,
+            'store_in' => 'initial_options',
+            'type'        => 'radio',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label; 
+                'actual_price' => "Precio actual del producto",
+                'price_with_surcharge' => "Precio actual mas recargo",
+                'price_with_discount' => "Precio actual menos descuento",
+            ],
+            'hint' => 'Al crear una lista de precios, se agregara a ella cada uno de tus productos con un precio y costo predefinido. Puedes elegir utilizar el precio actual del producto, o utilizar el precio agregnado un recargo o descuento.',
+            // optional
+            //'inline'      => false, // show the radios all on the same line?
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'surcharge_percentage',
+            'label' => 'Porcentaje de recargo a aplicar',
+            'fake' => true,
+            'store_in' => 'initial_options',
+            'type' => 'number',
+            'suffix' => '%',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+                'style' => 'display:none'
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'discount_percentage',
+            'fake' => true,
+            'store_in' => 'initial_options',
+            'label' => 'Porcentaje de descuento a aplicar',
+            'type' => 'number',
+            'suffix' => '%',
+            'wrapper' => [
+                'class' => 'col-md-6 form-group',
+                'style' => 'display:none'
+            ],
         ]);
     }
 
