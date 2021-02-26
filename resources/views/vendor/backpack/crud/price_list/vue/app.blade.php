@@ -6,7 +6,7 @@
 
     <style>
         #custom-vue-app .theme--light.v-application {
-            background: black !important;
+            background: none !important;
         }
     </style>
 @endpush
@@ -60,6 +60,13 @@
             }
         };
 
+        // Excecute a callback after the DOM was render
+        function afterRender(callback) {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(callback)
+            })
+        }
+
         new Vue({
             el: '#app',
             vuetify: new Vuetify({
@@ -71,11 +78,11 @@
 
             data() {
                 return {
-                    products: [],
-                    search: '',
+                    dialog: false,
+                    search: '',             
                     headers: [
                         {
-                            text: 'Sku',
+                            text: 'SKU',
                             value: 'sku'
                         },
                         {
@@ -96,17 +103,45 @@
                             sortable: false
                         },
                     ],
-                    desserts: [{
-                        name: 'Frozen Yogurt',
-                        sku: '159',
-                        price: 6.0,
-                        cost: 24,
-                    }, ],
+                    products: [],
+                    selectedProduct: {},
                 }
             },
 
-            methods: {
+            methods: {           
+                async loadProducts() {
+                    response = await fetch("{{ route('price-list.api.products', ['id' =>  $priceList->id]) }}")
+                    response = await response.json()
+                    this.products = response.map(product => {
+                        product.changed = false
+                        return product
+                    })
+                },
 
+                openEditModal(item) {
+                    this.dialog = true
+
+                    this.selectedProduct = {
+                        id: item.id,
+                        price: item.price,
+                        cost: item.cost,
+                    }
+
+                    afterRender(() => {
+                        this.$refs.modalFieldPrice.$refs.input.focus();
+                    })
+                },
+
+                updateProduct(selectedProduct) {
+                    this.dialog = false
+                    let product = this.products.find( product => product.id == selectedProduct.id)
+                    product.price = selectedProduct.price
+                    product.cost = selectedProduct.cost
+                },
+            },
+
+            mounted() {
+                this.loadProducts();
             },
         })
 
