@@ -68,7 +68,7 @@
             @else
             <div class="product-price">
                 @if ($product->has_special_price)
-                <span class="text-accent">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
+                <span class="text-accent color-orange">{{ currencyFormat($product->special_price, defaultCurrency(), true) }}</span>
                 <del class="font-size-sm text-muted"><small>{{ currencyFormat($product->price, defaultCurrency(), true) }}</small></del>
                 @else
                 <span class="text-accent color-orange">{{ currencyFormat($product->real_price, defaultCurrency(), true) }}</span>
