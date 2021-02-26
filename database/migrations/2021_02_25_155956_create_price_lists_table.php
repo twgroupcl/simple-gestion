@@ -18,7 +18,7 @@ class CreatePriceListsTable extends Migration
             $table->string('code')->nullable();
             $table->string('name');
             $table->date('apply_on_date')->nullable();
-            $table->longText('intial_options')->nullable();
+            $table->longText('initial_options')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->boolean('status')->default(true);
             $table->foreignId('company_id')->constrained();
