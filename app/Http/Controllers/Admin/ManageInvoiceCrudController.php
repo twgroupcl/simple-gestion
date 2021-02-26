@@ -153,16 +153,38 @@ class ManageInvoiceCrudController extends CrudController
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
+        $folioService = $service->getFolioMaintainerStatus($document->type->code, $document->getEmitterRUT());
+        $folio = 0;
+        if ($folioService->getStatusCode() === 200) {
+            $contentResponse = json_decode($folioService->getBody()->getContents(), true);
+            if (isset($contentResponse) && array_key_exists('siguiente', $contentResponse)) {
+                $folio = $contentResponse['siguiente'];
+            }
+        }
+
+        if ($folio === 0) {
+            \Alert::add('warning', 'Hubo un problema al obtener el folio. Intente nuevamente.')->flash();
+            \Log::error('Se trató de obtener el folio siguiente pero el servicio falló.');
+            return redirect()->route('dte_documents.index');
+        }
+
         $response = $service->generateDTE($invoice);
         if ($response->getStatusCode() === 200) {
             $contentResponse = $response->getBody()->getContents();
             $contentResponse = json_decode($contentResponse, true);
 
-            if (array_key_exists('folio', $contentResponse)) {
+            if (
+                isset($contentResponse) && 
+                is_array($contentResponse) && 
+                array_key_exists('folio', $contentResponse)
+            ) {
                 $invoice->folio = $contentResponse['folio'];
-                $invoice->invoice_status = Invoice::STATUS_SEND;
+            } else {
+                $invoice->folio = $folio;
+                \Log::warning('La respuesta de LibreDTE no trajo el folio. Se asignará el folio ' . $folio . ' obtenido de una consulta previa');
             }
 
+            $invoice->invoice_status = Invoice::STATUS_SEND;
             $invoice->updateWithoutEvents();
 
             // Reduce inventory
