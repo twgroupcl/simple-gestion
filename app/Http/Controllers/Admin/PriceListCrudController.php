@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\PriceListRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -108,7 +109,8 @@ class PriceListCrudController extends CrudController
             'suffix' => '%',
             'wrapper' => [
                 'class' => 'col-md-6 form-group',
-                'style' => 'display:none'
+                'style' => 'display:none',
+                'id' => 'surcharge_percentage',
             ],
         ]);
 
@@ -121,8 +123,14 @@ class PriceListCrudController extends CrudController
             'suffix' => '%',
             'wrapper' => [
                 'class' => 'col-md-6 form-group',
-                'style' => 'display:none'
+                'style' => 'display:none',
+                'id' => 'discount_percentage',
             ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'price_list_custom_js',
+            'type' => 'price_list.custom_js',
         ]);
     }
 
@@ -135,5 +143,21 @@ class PriceListCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    protected function modify(Request $request)
+    {
+
+        return view('vendor.backpack.crud.price_list.modify');
+    }
+
+    protected function setupModifyRoutes($segment, $routeName, $controller)
+    {
+        \Route::get($segment.'/{id}/modify', [
+            'as'        => $routeName.'.modify',
+            'uses'      => $controller.'@modify',
+            'operation' => 'modify',
+        ]);
+
     }
 }

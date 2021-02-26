@@ -43,6 +43,7 @@ class PriceList extends Model
     protected $fakeColumns = [
         'initial_options',
     ];
+    
     // protected $hidden = [];
     // protected $dates = [];
 
