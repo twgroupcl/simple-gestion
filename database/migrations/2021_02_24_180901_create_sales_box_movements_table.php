@@ -16,6 +16,7 @@ class CreateSalesBoxMovementsTable extends Migration
         Schema::create('sales_box_movements', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sales_box_id');
+            $table->date('date');
             $table->unsignedBigInteger('movement_type_id');
             $table->decimal('amount', 12, 4)->nullable();
             $table->text('notes')->nullable();

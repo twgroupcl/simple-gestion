@@ -20,7 +20,10 @@ class SalesBoxMovement extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
+    protected $fillable = [
+        'amount',
+        'notes'
+    ];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -43,6 +46,10 @@ class SalesBoxMovement extends Model
         return $this->belongsTo(SalesBox::class);
     }
 
+    public function movementtype()
+    {
+        return $this->belongsTo(MovementType::class,'movement_type_id','id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

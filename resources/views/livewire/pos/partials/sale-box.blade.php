@@ -1,4 +1,5 @@
-<div class="col-md-11 col-12 sale-box-view " style="display: none;">
+<div class="container" data-instance="{{ $updateMovements }}">
+<div class="col-md-11 col-12 sale-box-view" style="display: none;" wire:ignore.self>
     <div class="row mt-2 mr-2">
         <div class="col-12">
             <i class="la la-times-circle float-right close-sale-box-view " style="font-size: 32px;"></i>
@@ -13,7 +14,7 @@
         </div>
         <div class="col-4">
             @if (!$isSaleBoxOpen)
-                <button type="button" class="btn btn-warning" wire:click="showSalesBoxModal" data-backdrop="false" >
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#salesBoxModal" data-backdrop="false" >
                     Abrir Caja
                 </button>
             @else
@@ -23,15 +24,38 @@
             @endif
         </div>
         <div class="col-4">
+            @if ($isSaleBoxOpen)
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#movementSalesBoxModal" data-backdrop="false">
                 Agregar Movimiento
             </button>
+            @endif
         </div>
     </div>
 
     <!-- Movements -->
+    @if(!is_null($movements))
+    <table class="table table-sm mt-1">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo Mov.</th>
+                <th>Importe</th>
+                <th>Nota</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($movements as $mov)
+            <tr>
+                <td>{{ \Carbon\Carbon::parse($mov->date)->translatedFormat('j/m/Y') }}</td>
+                <td>{{ $mov->movementtype->name }}</td>
+                <td class="text-right">{{currencyFormat(($mov->amount ) ?? 0, 'CLP', true)}}</td>
+                <td>{{$mov->notes}}</td>
+            </tr>
 
-
+            @endforeach
+        </tbody>
+    </table>
+    @endif
 
     <!-- Modals -->
     <div  wire:ignore.self  class="modal fade"  id="salesBoxModal" tabindex="-1" role="dialog" aria-labelledby="salesBoxModalLabel"
@@ -131,8 +155,8 @@
         </div>
     </div>
 
-
-    <div  wire:ignore.self  class="modal fade"  id="movementSalesBoxModal" tabindex="-1" role="dialog" aria-labelledby="movementSalesBoxModalLabel"
+    @if($isSaleBoxOpen)
+    <div    class="modal fade"  id="movementSalesBoxModal" tabindex="-1" role="dialog" aria-labelledby="movementSalesBoxModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content ">
@@ -144,7 +168,7 @@
             </div>
             <div class="modal-body">
 
-                    <form wire:submit.prevent="openSaleBox"  >
+                    <form   >
                         <div class="row g-3 align-items-center">
                             <div class="col-4">
                                 <label for="inputPassword6" class="col-form-label">Sucursal</label>
@@ -158,55 +182,73 @@
                                 <label for="openingAmount">Fecha</label>
                             </div>
                             <div class="col-8">
-
-                            </div>
-                            {{-- @error('opening_amount')
-                                <small class="text-danger" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </small>
-                            @enderror --}}
-                        </div>
-                        <div class="row g-3 align-items-center">
-                            <div class="col-4">
-                                <label for="openingAmount">Tipo de movimiento</label>
-                            </div>
-                            <div class="col-8">
-
-                            </div>
-                            {{-- @error('opening_amount')
-                                <small class="text-danger" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </small>
-                            @enderror --}}
-                        </div>
-                        <div class="row g-3 align-items-center">
-                            <div class="col-4">
-                                <label for="openingAmount">Monto de movimiento</label>
-                            </div>
-                            <div class="col-8">
-
-                            </div>
-                            @error('opening_amount')
+                                <input type="date" class="form-control" wire:model.defer="movement.date" >
+                            @error('movement.date')
                                 <small class="text-danger" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </small>
                             @enderror
+                            </div>
+
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-4">
+                                <label for="movement.movement_type_id"">Tipo de movimiento</label>
+                            </div>
+                            <div class="col-8">
+                                <select wire:model.defer="movement.movement_type_id"
+                                class="custom-select" name="movement.movement_type_id""
+                                id="movement.movement_type_id"" required>
+                                <option  value="" >Seleccione </option>
+                                @foreach ($movementtypes as $index => $movementtype)
+                                    <option wire:key="{{ $movementtype->id }}" value="{{ $movementtype->id }}">{{ $movementtype->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('movement.movement_type_id')
+                            <small class="text-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </small>
+                        @enderror
+                            </div>
+
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-4">
+                                <label id="movement.for">Monto de movimiento</label>
+                            </div>
+                            <div class="col-8">
+                                <input  type="number" step="any" min="0"
+                                class="form-control"
+                                placeholder="0"
+                                maxlength="8"
+                                wire:model.defer="movement.amount"
+                                name="movement.amount"
+                                id="movement.amount"
+                                required>
+                            @error('movement.amount')
+                                <small class="text-danger" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </small>
+                            @enderror
+                            </div>
+
+
                         </div>
                         <div class="form-group">
-                            <label for="remarks_open">Observacion</label>
-                            <textarea wire:model.defer="remarks_open"
-                                class="form-control @error('remarks_open') is-invalid @enderror" id="remarks_open"
+                            <label for="movement.notes">Notas</label>
+                            <textarea
+                                class="form-control"
+                                wire:model.defer="movement.notes"
+                                name="movement.notes"
+                                id="movement.notes"
                                 rows="3"></textarea>
-                            @error('remarks_open')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+
                         </div>
                         <div class="text-right">
-                            <button type="submit" class="btn btn-success btn-block" wire:click.prevent="saveMovement()">
-                                Guardar
-                            </button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Cerrar</button>
+                                <button type="button" wire:click="storeMovement()" class="btn btn-primary close-modal">Guardar</button>
+                            </div>
                         </div>
                     </form>
 
@@ -214,5 +256,7 @@
 
         </div>
     </div>
+</div>
+@endif
 </div>
 </div>

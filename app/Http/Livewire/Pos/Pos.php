@@ -3,24 +3,24 @@
 namespace App\Http\Livewire\Pos;
 
 use App\Mail\PosBill;
-use Carbon\Carbon;
-use App\Models\Order;
-use App\Models\Seller;
-use App\Models\Invoice;
-use App\Models\Product;
-use Livewire\Component;
 use App\Models\Currency;
 use App\Models\Customer;
-use App\Models\OrderItem;
+use App\Models\Invoice;
 use App\Models\InvoiceType;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\OrderPayment;
+use App\Models\Product;
 use App\Models\SalesBox;
 use App\Models\SalesBoxMovement;
-use Illuminate\Support\Facades\DB;
+use App\Models\Seller;
+use App\Models\MovementType;
 use Backpack\Settings\app\Models\Setting;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
+use Livewire\Component;
 
 class Pos extends Component
 {
@@ -45,6 +45,8 @@ class Pos extends Component
     //movements
     public $movement;
     public $movements;
+    public $movementtypes;
+    public $updateMovements;
 
     // cart
     public $cart;
@@ -56,7 +58,7 @@ class Pos extends Component
     public $taxes = 0;
     public $total = 0;
     public $totalProducts = 0;
-    public $existsOrder= null;
+    public $existsOrder = null;
 
     // document
     public $selected_type_document;
@@ -69,11 +71,17 @@ class Pos extends Component
 
     ];
 
+    protected $rules = [
+        'movement.date' => ['required'],
+        'movement.movement_type_id' => ['required'],
+        'movement.amount' => ['required'],
+        'movement.notes' => ['nullable'],
+
+    ];
+
     public function mount()
     {
         $this->user = backpack_user();
-
-
 
         $this->seller = Seller::where('user_id', backpack_user()->id)->first();
 
@@ -82,8 +90,8 @@ class Pos extends Component
         }
 
         $this->branches = $this->user->branches;
-        if(isset($this->branches)){
-            if(count($this->branches) > 0){
+        if (isset($this->branches)) {
+            if (count($this->branches) > 0) {
                 $this->branch_id = $this->branches->first()->id;
             }
         }
@@ -113,10 +121,19 @@ class Pos extends Component
         }
 
         $this->movement = new SalesBoxMovement();
+
+        //Load Movements
+        $this->movementtypes = MovementType::orderBy('name','asc')->get();
+
+        $this->updateMovements = 0;
+
     }
 
     public function render()
     {
+        if($this->isSaleBoxOpen){
+            $this->loadMovements();
+        }
         return view('livewire.pos.pos');
     }
 
@@ -214,7 +231,8 @@ class Pos extends Component
         }
     }
 
-    protected function clearCart(){
+    protected function clearCart()
+    {
         //Clear cart
         session()->put([
             'user.pos.cart' => null,
@@ -247,20 +265,19 @@ class Pos extends Component
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
 
-      /*   if (!is_null($this->customer->addresses) && count($this->customer->addresses)>0) {
-            return json_encode($this->customer->addresses);
+        /*   if (!is_null($this->customer->addresses) && count($this->customer->addresses)>0) {
+        return json_encode($this->customer->addresses);
         }else{ */
-            return null;
-       /*  } */
+        return null;
+        /*  } */
     }
-
 
     public function getProducts()
     {
         return Product::where('status', '=', '1')
             ->where('is_approved', '=', '1')
             ->where('parent_id', '=', null)
-           // ->whereSellerId($this->seller->id)
+        // ->whereSellerId($this->seller->id)
             ->limit(15)
             ->get();
     }
@@ -272,9 +289,12 @@ class Pos extends Component
         $this->isSaleBoxOpen = optional($this->saleBox)->is_opened ?? false;
 
         $this->checked = isset($this->saleBox->id);
-        if (! $this->isSaleBoxOpen) {
+        if (!$this->isSaleBoxOpen) {
             $this->saleBox = null;
             $this->dispatchBrowserEvent('openSaleBoxView');
+        }else{
+            $this->loadMovements();
+            //
         }
     }
 
@@ -287,7 +307,6 @@ class Pos extends Component
 
     public function openSaleBox()
     {
-
 
         $this->saleBox = $this->seller->sales_boxes()->create([
             'branch_id' => $this->branch_id,
@@ -349,7 +368,6 @@ class Pos extends Component
         //$this->cart->emit('item.updatedCustomQty', $product->id, $this->cart->products[$product->id]['qty']);
         $this->totalProducts = count($this->cartproducts);
 
-
     }
 
     public function calculateAmounts()
@@ -372,7 +390,6 @@ class Pos extends Component
         $this->subtotal = $this->total - $tmptaxes;
         $this->taxes = $tmptaxes;
         //$this->total += $tmptaxes;
-
 
         $cart['products'] = $this->cartproducts;
         $cart['subtotal'] = $this->subtotal;
@@ -425,7 +442,6 @@ class Pos extends Component
     public function emitInvoice(Order $order, $typeDocument, $businessActivity)
     {
 
-
         $currentSeller = Seller::where('user_id', backpack_user()->id)->first();
         DB::beginTransaction();
         try {
@@ -452,8 +468,6 @@ class Pos extends Component
                 $item->additional_tax_total = 0;
                 return $item;
             })->toJson();
-
-
 
             $invoice = new Invoice($order->toArray());
             $invoice->address_id = $this->customerAddressId;
@@ -522,9 +536,59 @@ class Pos extends Component
         $this->dispatchBrowserEvent('showSalesBoxModal');
     }
 
-    public function saveMovement()
+    public function storeMovement()
     {
+        /* $validated = $this->validate([
+            'movement.date' => 'required',
+            'movement.movement_type_id' => 'required',
+            'movement.amount' => 'required',
+            'movement.notes' => 'nulleable',
 
+        ]); */
+        $this->validate([
+            'movement.date' => ['required'],
+            'movement.movement_type_id' => ['required'],
+            'movement.amount' => ['required'],
+            'movement.notes' => ['nullable'],
+        ]);
+
+        //Convert date
+        $tmpDate = Carbon::parse($this->movement->date);
+
+
+        $tmpMovement = new SalesBoxMovement();
+
+        //Set sale_box_id
+        $tmpMovement->sales_box_id = $this->saleBox->id;
+        $tmpMovement->movement_type_id = $this->movement->movement_type_id;
+        $tmpMovement->date = $tmpDate;
+        $tmpMovement->amount = $this->movement->amount;
+        $tmpMovement->notes = $this->movement->notes;
+        $tmpMovement->save();
+
+
+
+
+
+        //Clear movement
+        $this->movement->date = null;
+        $this->movement->movement_type_id = null;
+        $this->movement->amount = null;
+        $this->movement->notes = null;
+
+        //Distpatch browser event
+        $this->dispatchBrowserEvent('hideMovementSalesBoxModal');
+
+        $this->loadMovements();
+
+
+
+    }
+
+    public function loadMovements()
+    {
+        $this->movements = $this->saleBox->movements;
+        $this->updateMovements +=1;
     }
 
 }

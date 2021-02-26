@@ -453,7 +453,7 @@
     @include('livewire.pos.partials.confirm-payment')
     {{-- Final payment view --}}
     @include('livewire.pos.partials.final-payment')
-    <div class="col-md-11 col-12 main-view">
+    <div class="col-md-11 col-12 main-view" wire:ignore.self >
         <div class="row">
             <div class="col-md-8 col-12 m-0 p-0">
                 {{-- <div class="row">
@@ -632,6 +632,9 @@
             $('#showCustomerModal').appendTo("body").modal('hide');
         })
 
+        window.addEventListener('hideMovementSalesBoxModal', event => {
+            $('#movementSalesBoxModal').appendTo("body").modal('hide');
+        })
 
 
 
