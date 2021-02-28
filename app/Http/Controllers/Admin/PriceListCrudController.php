@@ -165,7 +165,7 @@ class PriceListCrudController extends CrudController
 
     public function getProducts($priceListId)
     {
-        $priceList = PriceList::findOrFail($priceListId);
+        $priceList = PriceList::with('priceListItems.product')->findOrFail($priceListId);
 
         $products = $priceList->priceListItems->map(function ($item) {
             return [
