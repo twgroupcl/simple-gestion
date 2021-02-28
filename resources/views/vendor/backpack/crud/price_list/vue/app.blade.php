@@ -78,6 +78,11 @@
 
             data() {
                 return {
+                    priceList: {
+                        id: {{ $priceList->id }},
+                        name: '{{ $priceList->name }}',
+                        code: {{ $priceList->code }},
+                    },
                     dialog: false,
                     search: '',             
                     headers: [
@@ -108,6 +113,15 @@
                 }
             },
 
+            filters: {
+
+                formatNumberFilter(value) {
+                    if (value === null) return null
+                    value = Number(value)
+                    return value.toLocaleString('de-DE')
+                },
+            },
+
             methods: {           
                 async loadProducts() {
                     response = await fetch("{{ route('price-list.api.products', ['id' =>  $priceList->id]) }}")
@@ -123,8 +137,8 @@
 
                     this.selectedProduct = {
                         id: item.id,
-                        price: item.price,
-                        cost: item.cost,
+                        price: this.formatNumber(item.price),
+                        cost: this.formatNumber(item.cost),
                     }
 
                     afterRender(() => {
@@ -132,15 +146,39 @@
                     })
                 },
 
-                updateProduct(selectedProduct) {
+                updateProduct() {
                     this.dialog = false
-                    let product = this.products.find( product => product.id == selectedProduct.id)
-                    product.price = selectedProduct.price
-                    product.cost = selectedProduct.cost
+                    let product = this.products.find( product => product.id == this.selectedProduct.id)
+                    product.price = this.deformatNumber(this.selectedProduct.price)
+                    product.cost = this.deformatNumber(this.selectedProduct.cost)
                 },
+
+                formatNumber(value) {
+                    if (value === null) return null
+                    value = Number(value)
+                    return value.toLocaleString('de-DE')
+                },
+
+                deformatNumber (value) {
+                    if (value === null) return null
+                    value = value.toString()
+                    return value.replaceAll('.', '').replaceAll(',', '.')
+                }
             },
 
-            mounted() {
+           watch: {
+                'selectedProduct.price': function () {
+                    let price  = this.deformatNumber(this.selectedProduct.price)
+                    this.selectedProduct.price = this.formatNumber(price)
+                },
+
+                'selectedProduct.cost': function () {
+                    let cost  = this.deformatNumber(this.selectedProduct.cost)
+                    this.selectedProduct.cost = this.formatNumber(cost)
+                }
+            }, 
+
+            mounted: function () {
                 this.loadProducts();
             },
         })
