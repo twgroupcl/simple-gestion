@@ -28,7 +28,7 @@
                 </v-card-title>
                 <v-row class="mx-2">
                     <v-col>
-                        <v-btn color="info">Guardar</v-btn>
+                        <v-btn color="info" @click="saveChanges">Guardar</v-btn>
                     </v-col>
                 </v-row>
                 <v-data-table attach auto :headers="headers" :items="products" :search="search">

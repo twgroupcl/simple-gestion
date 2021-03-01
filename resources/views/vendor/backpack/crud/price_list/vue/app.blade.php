@@ -118,7 +118,7 @@
                 formatNumberFilter(value) {
                     if (value === null) return null
                     value = Number(value)
-                    return value.toLocaleString('de-DE')
+                    return value.toLocaleString('de-DE') // Not using 'es-ES' because bug with numbers for 4 digits
                 },
             },
 
@@ -151,12 +151,38 @@
                     let product = this.products.find( product => product.id == this.selectedProduct.id)
                     product.price = this.deformatNumber(this.selectedProduct.price)
                     product.cost = this.deformatNumber(this.selectedProduct.cost)
+                    product.changed = true
+                },
+
+                async saveChanges() {
+                    const url = "{{ route('price-list.api.update', ['id' =>  $priceList->id]) }}"
+                    
+                    const data = {
+                        name: this.priceList.name,
+                        code: this.priceList.code,
+                        products: this.products.filter( item => item.changed)
+                    }
+
+                    const options = {
+                        method: 'PUT', 
+                        body: JSON.stringify(data), 
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    }
+                    
+                    let request = await fetch(url, options)
+                    
+                    let response = request.json()
+
+                    console.log(response);
                 },
 
                 formatNumber(value) {
                     if (value === null) return null
                     value = Number(value)
-                    return value.toLocaleString('de-DE')
+                    return value.toLocaleString('de-DE') // Not using 'es-ES' because bug with numbers for 4 digits
                 },
 
                 deformatNumber (value) {

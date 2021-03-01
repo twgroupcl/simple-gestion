@@ -184,4 +184,19 @@ class PriceListCrudController extends CrudController
 
         return $products;
     }
+
+    public function updatePriceList(Request $request, $id)
+    {
+        // @todo validaciones
+        
+        $priceList = PriceList::findOrFail($id);
+        $priceList->name = $request->name;
+        $priceList->code = $request->code;
+        $priceList->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Lista de precios actualizada con exito',
+        ], 200);
+    }
 }

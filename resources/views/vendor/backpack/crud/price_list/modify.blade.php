@@ -14,7 +14,7 @@
 @endsection
 
 @section('content')
-
+    @csrf
     @include('vendor.backpack.crud.price_list.vue.template')
     {{-- <div class="row">
         <div class="col-md-12 bold-labels">

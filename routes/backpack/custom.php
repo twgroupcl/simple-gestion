@@ -127,5 +127,6 @@ Route::group([
 
     // Price List
     Route::crud('pricelist', 'PriceListCrudController');
+    Route::put('pricelist/api/{id}', 'PriceListCrudController@updatePriceList')->name('price-list.api.update');
     Route::get('pricelist/api/{id}/products', 'PriceListCrudController@getProducts')->name('price-list.api.products');
 }); // this should be the absolute last line of this file
