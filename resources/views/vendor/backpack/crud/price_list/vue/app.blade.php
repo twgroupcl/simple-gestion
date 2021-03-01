@@ -172,11 +172,20 @@
                         }
                     }
                     
-                    let request = await fetch(url, options)
-                    
-                    let response = request.json()
+                    let response = await fetch(url, options)
+                    let responseData = response.json()
 
-                    console.log(response);
+                    if (response.status != 200) {
+                        new Noty({
+                            type: "error",
+                            text: "<strong>Ocurrio un error actualizando la lista de precios.</strong>"
+                        }).show();
+                    } else {
+                        new Noty({
+                            type: "success",
+                            text: "<strong>Lista de precios actualizada correctamente.</strong>"
+                        }).show();
+                    }
                 },
 
                 formatNumber(value) {
