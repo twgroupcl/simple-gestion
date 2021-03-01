@@ -122,7 +122,7 @@ use App\User;
                 [
                     'name' => 'Top 10 productos',
                     'type' => 'table_ajax',
-					'wrapperClass' => 'col-md-3',
+                    'class' => 'col-md-6 table-striped table-hover',
                     'attributes' => [
                         'sku',
                         'invoice_item_total',
@@ -137,7 +137,7 @@ use App\User;
                 [
                     'name' => 'Mejores clientes del periodo',
                     'type' => 'table_ajax',
-					'wrapperClass' => 'col-md-3',
+                    'class' => 'col-md-6 table-striped table-hover',
                     'attributes' => [
                         'uid',
                         'full_name',
