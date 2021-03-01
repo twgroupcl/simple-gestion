@@ -7,6 +7,7 @@ use App\Models\PriceList;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
 use App\Http\Requests\PriceListRequest;
+use App\Http\Requests\PriceListUpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -90,8 +91,8 @@ class PriceListCrudController extends CrudController
         ]);
 
         CRUD::addField([   // radio
-            'name'        => 'initial_price_cost', // the name of the db column
-            'label'       => 'Precio y costo inicial de cada producto', // the input label
+            'name'        => 'initial_price', // the name of the db column
+            'label'       => 'Precio inicial de cada producto', // the input label
             'fake' => true,
             'store_in' => 'initial_options',
             'type'        => 'radio',
@@ -101,7 +102,7 @@ class PriceListCrudController extends CrudController
                 'price_with_surcharge' => "Precio actual mas recargo",
                 'price_with_discount' => "Precio actual menos descuento",
             ],
-            'hint' => 'Al crear una lista de precios, se agregara a ella cada uno de tus productos con un precio y costo predefinido. Puedes elegir utilizar el precio actual del producto, o utilizar el precio agregnado un recargo o descuento.',
+            'hint' => 'Al crear una lista de precios, se agregara a ella cada uno de tus productos con un precio. Puedes elegir utilizar el precio actual del producto, o utilizar el precio agregando un recargo o descuento.',
             // optional
             //'inline'      => false, // show the radios all on the same line?
             'wrapper' => [
@@ -110,7 +111,7 @@ class PriceListCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'surcharge_percentage',
+            'name' => 'price_surcharge_percentage',
             'label' => 'Porcentaje de recargo a aplicar',
             'fake' => true,
             'store_in' => 'initial_options',
@@ -124,7 +125,7 @@ class PriceListCrudController extends CrudController
         ]);
 
         CRUD::addField([
-            'name' => 'discount_percentage',
+            'name' => 'price_discount_percentage',
             'fake' => true,
             'store_in' => 'initial_options',
             'label' => 'Porcentaje de descuento a aplicar',
@@ -207,9 +208,9 @@ class PriceListCrudController extends CrudController
         return $products;
     }
 
-    public function updatePriceList(Request $request, $id)
+    public function updatePriceList(PriceListUpdateRequest $request, $id)
     {
-        // @todo validaciones
+        // @todo validacioonse
 
         $priceList = PriceList::with('priceListItems')->findOrFail($id);
         $priceList->name = $request->name;

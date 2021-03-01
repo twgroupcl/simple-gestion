@@ -34,7 +34,7 @@ class PriceListRequest extends FormRequest
                     return $query->where('company_id', $this->company_id)->where('id', '!=', $this->id);
                 })
             ],
-            'initial_price_cost' => 'required',
+            'initial_price' => 'required',
         ];
     }
 

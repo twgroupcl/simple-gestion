@@ -28,16 +28,14 @@ class PriceListObserver
         foreach ($products as $product) {
             $priceListItem = new PriceListItem();
             $priceListItem->product_id = $product->id;
+            $priceListItem->cost = $product->cost; 
 
-            if ($priceList->initial_options['initial_price_cost'] == 'actual_price') {
+            if ($priceList->initial_options['initial_price'] == 'actual_price') {
                 $priceListItem->price = $product->price;
-                $priceListItem->cost = $product->cost; 
-            } else if ($priceList->initial_options['initial_price_cost'] == 'price_with_surcharge') {
-                $priceListItem->price = $product->price ? round($product->price * (1 + $priceList->initial_options['surcharge_percentage'] / 100)) : null;
-                $priceListItem->cost = $product->cost ? round($product->cost * (1 + $priceList->initial_options['surcharge_percentage'] / 100)) : null; 
-            } else if ($priceList->initial_options['initial_price_cost'] == 'price_with_discount') {
-                $priceListItem->price = $product->price ? round($product->price * (1 - $priceList->initial_options['discount_percentage'] / 100)) : null;
-                $priceListItem->cost = $product->cost ? round($product->cost * (1 - $priceList->initial_options['discount_percentage'] / 100)) : null; 
+            } else if ($priceList->initial_options['initial_price'] == 'price_with_surcharge') {
+                $priceListItem->price = $product->price ? round($product->price * (1 + $priceList->initial_options['price_surcharge_percentage'] / 100)) : null;
+            } else if ($priceList->initial_options['initial_price'] == 'price_with_discount') {
+                $priceListItem->price = $product->price ? round($product->price * (1 - $priceList->initial_options['price_discount_percentage'] / 100)) : null;
             }
             
             array_push($items, $priceListItem);
