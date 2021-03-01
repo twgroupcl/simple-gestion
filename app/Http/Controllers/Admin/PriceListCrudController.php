@@ -32,6 +32,9 @@ class PriceListCrudController extends CrudController
         CRUD::setModel(\App\Models\PriceList::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/pricelist');
         CRUD::setEntityNameStrings('lista de precio', 'listas de precios');
+
+        $this->crud->allowAccess('modify');
+        $this->crud->denyAccess('update');
     }
 
     /**
@@ -42,6 +45,8 @@ class PriceListCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->addButtonFromView('line', 'modify', 'pricelist.modify', 'begining');
+
         CRUD::addColumn([
             'label' => 'Nombre',
             'name' => 'name',
