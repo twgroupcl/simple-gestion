@@ -81,7 +81,7 @@
                     priceList: {
                         id: {{ $priceList->id }},
                         name: '{{ $priceList->name }}',
-                        code: {{ $priceList->code }},
+                        code: '{{ $priceList->code }}',
                     },
                     dialog: false,
                     search: '',             
@@ -103,7 +103,7 @@
                             value: 'price'
                         },
                         {
-                            text: 'Actions',
+                            text: 'Acciones',
                             value: 'actions',
                             sortable: false
                         },
@@ -118,7 +118,7 @@
                 formatNumberFilter(value) {
                     if (value === null) return null
                     value = Number(value)
-                    return value.toLocaleString('de-DE') // Not using 'es-ES' because bug with numbers for 4 digits
+                    return value.toLocaleString('de-DE') // Not using 'es-ES' because a bug with numbers for 4 digits
                 },
             },
 
