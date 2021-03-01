@@ -50,36 +50,34 @@ $(document).ready(function() {
 });
 
 function {{$functionName}}(from, to) {
-        //let attribute = false;
-        //if ("{{$attribute}}" !== "") {
-            //attribute = true;
-        //}
-        let attributes = {!! $attributes !!}
-        //console.log({{$attributes}})
-        $.ajax({
-            url: "{{$widget['url']}}",
-            type: 'POST',
-            data: {
-                from,
-                to
-            },
-            success: function(content) {
-                let tableBody = $("#body{{$functionName}}");
-                tableBody.children().remove();
-                content.forEach(element => {
-                    let itemTable = "<tr>";
-                    for (i in attributes) {
-                        itemTable += "<td>" + element[attributes[i]] + "</td>";
-                    }
-                    itemTable += "</tr>";
-                    tableBody.append(itemTable);
-                })
-                    
-            },
-            error: function(error) {
-            }
-           //dataType: 'mycustomtype'
-        });
+    let attributes = {!! $attributes !!}
+    $.ajax({
+        url: "{{$widget['url']}}",
+        type: 'POST',
+        data: {
+            from,
+            to
+        },
+        success: function(content) {
+            let tableBody = $("#body{{$functionName}}");
+            console.log(content)
+            console.log(tableBody.children())
+            tableBody.children().remove();
+            console.log(tableBody.children())
+            content.forEach(element => {
+                let itemTable = "<tr>";
+                for (i in attributes) {
+                    itemTable += "<td>" + element[attributes[i]] + "</td>";
+                }
+                itemTable += "</tr>";
+                tableBody.append(itemTable);
+            })
+                
+        },
+        error: function(error) {
+        }
+       //dataType: 'mycustomtype'
+    });
 };
 
 </script>

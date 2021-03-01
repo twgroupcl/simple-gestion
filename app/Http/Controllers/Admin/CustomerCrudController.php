@@ -660,12 +660,29 @@ class CustomerCrudController extends CrudController
 
     public function getTopTableDashboard(Request $request)
     {
-        $customers = \App\Models\Customer::withCount('invoices')
-        ->get()->map(function ($customer) {
+        $fromDate = $request->input('from');
+        $toDate = $request->input('to');
+
+        $customers = \App\Models\Customer::whereHas('invoices', 
+            function($query) use($fromDate, $toDate) {
+                if (isset($fromDate)) {
+                    $query->where('invoice_date', '>=', $fromDate);
+                }
+
+                if (isset($toDate)) {
+                    $query->where('invoice_date', '<=', $toDate);
+                }
+            }
+        )->withCount('invoices')->get()->map(function ($customer) {
+
             $customer->buy_total = $customer->invoices->sum('total');
             $customer->full_name = $customer->full_name;
             return $customer;
-        })->sortByDesc('buy_total')->take(10)->flatten(1);
+
+        })->sortByDesc('buy_total')
+          ->take(10)
+          ->flatten(1);
+
         return response()->json($customers);
     }
 }

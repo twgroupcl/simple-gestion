@@ -1240,14 +1240,26 @@ class ProductCrudController extends CrudController
 
     public function getTopTableDashboard(Request $request)
     {
-        $products = \App\Models\Product::withCount('invoice_items')
-            ->orderBy('invoice_items_count', 'DESC')
-            ->get()
-            ->map(function ($product) {
-                $product->invoice_items_count = $product->invoice_items_count;
-                $product->invoice_item_total = $product->invoice_items->sum('total');
-                return $product;
-            })->take(10)->flatten(1);
+        $fromDate = $request->input('from');
+        $toDate = $request->input('to');
+
+        $products = \App\Models\Product::whereHas('invoice_items',
+           function ($query) use ($fromDate, $toDate){
+                if (isset($fromDate)) {
+                    $query->where('created_at', '>=', $fromDate);
+                }
+
+                if (isset($toDate)) {
+                    $query->where('created_at', '<=', $toDate);
+                }
+            }
+        )->withCount('invoice_items')->orderBy('invoice_items_count', 'DESC')
+          ->get()
+          ->map(function ($product) {
+              $product->invoice_items_count = $product->invoice_items_count;
+              $product->invoice_item_total = $product->invoice_items->sum('total');
+              return $product;
+          })->take(10)->flatten(1);
         return response()->json($products);
     }
 }
