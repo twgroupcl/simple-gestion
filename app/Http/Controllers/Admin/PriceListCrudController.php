@@ -172,8 +172,8 @@ class PriceListCrudController extends CrudController
                 'id' => $item->product->id,
                 'sku' => $item->product->sku,
                 'name' => $item->product->name,
-                'price' => $item->product->price,
-                'cost' => $item->product->cost,
+                'price' => $item->price,
+                'cost' => $item->cost,
             ];
         });
 
