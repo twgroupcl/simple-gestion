@@ -799,9 +799,8 @@ class Product extends Model
 
     public function setPriceAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value == '' || is_float($value)) {
             $this->attributes['price'] = $value;
-
             return true;
         }
 
@@ -821,7 +820,7 @@ class Product extends Model
 
     public function setCostAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value == '' || is_float($value)) {
             $this->attributes['cost'] = null;
 
             return true;
