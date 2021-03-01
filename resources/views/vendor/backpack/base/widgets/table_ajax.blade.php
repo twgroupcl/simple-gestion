@@ -60,10 +60,7 @@ function {{$functionName}}(from, to) {
         },
         success: function(content) {
             let tableBody = $("#body{{$functionName}}");
-            console.log(content)
-            console.log(tableBody.children())
             tableBody.children().remove();
-            console.log(tableBody.children())
             content.forEach(element => {
                 let itemTable = "<tr>";
                 for (i in attributes) {

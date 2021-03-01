@@ -70,6 +70,11 @@ use App\User;
 					'wrapper' => ['class' => 'col-sm-12'],
 					'content' => 'Scripts',
 				],
+                [
+					'type'    => 'script_top_customers',
+					'wrapper' => ['class' => 'col-sm-12'],
+					'content' => 'Script customer',
+				],
 				[
 					'type'    => 'date-range',
 					'wrapper' => ['class' => 'col-sm-12'],
@@ -113,7 +118,7 @@ use App\User;
                 ],
                 [
                     'type' => 'chart',
-                    'wrapperClass' => 'col-md-6 daily-sales',
+					'wrapperClass' => 'col-md-6 top-customers-in-period',
                     'controller' => \App\Http\Controllers\Admin\Charts\TopCustomersInPeriodChartController::class,
                     'content' => [
                         'header' => 'Top 10 de Clientes en el periodo',

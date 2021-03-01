@@ -41,18 +41,51 @@ class TopCustomersInPeriodChartController extends ChartController
         //    $customer->total = $customer->invoices->sum('total');
         //    return $customer;
         //})->sortBy(['total', 'DESC'])->take(10);
+        $request = request();
+        $fromDate = $request->from ?? null; 
+        $toDate = $request->to ?? null; 
+        //$customersTotal = \App\Models\Invoice::query();
+        //if (isset($fromDate)) {
+        //    $customersTotal = $customersTotal->where('invoice_date', '>=', $fromDate);
+        //}
+
+        //if (isset($toDate)) {
+        //    $customersTotal = $customersTotal->where('invoice_date', '<=', $toDate);
+        //    debug("reducir");
+        //}
+        
+        //$customersTotal = $customersTotal->with('customer')
+        //    ->select('customer_id',\DB::raw('SUM(total) as total_invoices'))
+        //    ->groupBy('customer_id')->orderBy('total_invoices', 'DESC')
+        //    ->get()->pluck('total_invoices', 'customer_id')->take(10);
+        $customers = \App\Models\Customer::whereHas('invoices', 
+            function($query) use($fromDate, $toDate) {
+                if (isset($fromDate)) {
+                    $query->where('invoice_date', '>=', $fromDate);
+                }
+
+                if (isset($toDate)) {
+                    $query->where('invoice_date', '<=', $toDate);
+                }
+            }
+        )->withCount('invoices')->get()->map(function ($customer) {
+            $customer->buy_total = $customer->invoices->sum('total');
+            $customer->full_name = $customer->full_name;
+            return $customer;
+
+        })->sortByDesc('buy_total')
+          ->pluck('buy_total', 'full_name')
+          ->take(10);
 
 
-        $customersTotal = \App\Models\Invoice::with('customer')->select('customer_id',\DB::raw('SUM(total) as total_invoices'))->groupBy('customer_id')->orderBy('total_invoices', 'DESC')->get()->pluck('total_invoices', 'customer_id')->take(10);
-
-        foreach ($customersTotal as $customerId => $total) {
-            $customerName = \App\Models\Customer::find($customerId)->first_name;
-            $this->chart->dataset($customerName, 'bar', [$total])
+        debug($customers);
+        foreach ($customers as $customerId => $total) {
+            //$customerName = \App\Models\Customer::find($customerId)->first_name;
+            $this->chart->dataset($customerId, 'bar', [$total])
                  ->color('rgba(205, 32, 31, 1)')
                  ->backgroundColor(
                      'rgba('.rand(1,255).', '.rand(1,255).', '.rand(1,255).', 0.4)'
                  );
-
         }
        
     }
