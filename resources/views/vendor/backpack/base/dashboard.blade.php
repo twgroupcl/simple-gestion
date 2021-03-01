@@ -134,6 +134,23 @@ use App\User;
                     'collection' => null,
                     'url' => '/admin/api/product/top_table_dashboard',
                 ],
+                [
+                    'name' => 'Mejores clientes del periodo',
+                    'type' => 'table_ajax',
+					'wrapperClass' => 'col-md-3',
+                    'attributes' => [
+                        'rut',
+                        'name',
+                        'amount',
+                    ],
+                    'columns' => [
+                        'RUT',
+                        'Nombre',
+                        'Monto',
+                    ],
+                    'collection' => null,
+                    'url' => '/admin/api/customer/top_table_dashboard',
+                ],
 				[
 					'type'    => 'most-purchased-product-categories',
 					'wrapper' => ['class' => 'col-sm-12'],
