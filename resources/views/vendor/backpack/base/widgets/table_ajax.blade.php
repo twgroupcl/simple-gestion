@@ -67,7 +67,6 @@ function {{$functionName}}(from, to) {
                 let tableBody = $("#body{{$functionName}}");
                 tableBody.children().remove();
                 content.forEach(element => {
-                    console.log(element)
                     let itemTable = "<tr>";
                     for (i in attributes) {
                         itemTable += "<td>" + element[attributes[i]] + "</td>";
@@ -78,7 +77,6 @@ function {{$functionName}}(from, to) {
                     
             },
             error: function(error) {
-                console.log(error)
             }
            //dataType: 'mycustomtype'
         });

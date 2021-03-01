@@ -128,8 +128,8 @@ use App\User;
                         'invoice_item_total',
                     ],
                     'columns' => [
-                        'sku',
-                        'invoice_item_total',
+                        'SKU',
+                        'Total',
                     ],
                     'collection' => null,
                     'url' => '/admin/api/product/top_table_dashboard',
