@@ -153,7 +153,7 @@ class ManageInvoiceCrudController extends CrudController
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
-        $folioService = $service->getFolioMaintainerStatus($document->type->code, $document->getEmitterRUT());
+        $folioService = $service->getFolioMaintainerStatus($invoice->invoice_type->code, $invoice->company->uid);
         $folio = 0;
         if ($folioService->getStatusCode() === 200) {
             $contentResponse = json_decode($folioService->getBody()->getContents(), true);
