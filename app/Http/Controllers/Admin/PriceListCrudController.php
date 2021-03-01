@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Product;
 use App\Models\PriceList;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
@@ -34,6 +35,7 @@ class PriceListCrudController extends CrudController
         CRUD::setEntityNameStrings('lista de precio', 'listas de precios');
 
         $this->crud->allowAccess('modify');
+        $this->crud->allowAccess('apply');
         $this->crud->denyAccess('update');
     }
 
@@ -46,6 +48,7 @@ class PriceListCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->addButtonFromView('line', 'modify', 'pricelist.modify', 'begining');
+        $this->crud->addButtonFromView('line', 'apply', 'pricelist.apply', 'begining');
 
         CRUD::addColumn([
             'label' => 'Nombre',
@@ -165,7 +168,26 @@ class PriceListCrudController extends CrudController
             'uses'      => $controller.'@modify',
             'operation' => 'modify',
         ]);
+    }
 
+    protected function setupApplyRoutes($segment, $routeName, $controller)
+    {
+        \Route::get($segment.'/{id}/apply', [
+            'as'        => $routeName.'.apply',
+            'uses'      => $controller.'@apply',
+            'operation' => 'apply',
+        ]);
+    }
+
+    public function apply($id)
+    {
+        $priceList = PriceList::with('priceListItems')->findOrFail($id);
+        foreach ($priceList->priceListItems as $item) {
+            $product = Product::find($item->product_id);
+            $product->price = $item->price ? (float) $item->price : null;
+            $product->cost = $item->cost ? (float) $item->cost : null;
+            $product->update();
+        }
     }
 
     public function getProducts($priceListId)
@@ -188,11 +210,19 @@ class PriceListCrudController extends CrudController
     public function updatePriceList(Request $request, $id)
     {
         // @todo validaciones
-        
-        $priceList = PriceList::findOrFail($id);
+
+        $priceList = PriceList::with('priceListItems')->findOrFail($id);
         $priceList->name = $request->name;
         $priceList->code = $request->code;
-        $priceList->save();
+
+        foreach ($request->products as $product) {
+            $item = $priceList->priceListItems->where('product_id', $product['id'])->first();
+            $item->price = $product['price'];
+            $item->cost = $product['cost'];
+            $item->update();
+        } 
+
+        $priceList->update();
 
         return response()->json([
             'status' => true,
