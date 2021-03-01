@@ -139,9 +139,9 @@ use App\User;
                     'type' => 'table_ajax',
 					'wrapperClass' => 'col-md-3',
                     'attributes' => [
-                        'rut',
-                        'name',
-                        'amount',
+                        'uid',
+                        'full_name',
+                        'buy_total',
                     ],
                     'columns' => [
                         'RUT',
