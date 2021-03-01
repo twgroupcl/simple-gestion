@@ -3,7 +3,7 @@
 
     let surchargeInput = $('#surcharge_percentage')
     let discountInput = $('#discount_percentage')
-    let initialPriceCostRadio = $('input[name="initial_price_cost"]')
+    let initialPriceCostRadio = $('input[name="initial_price"]')
     let radio = $('input[type="radio"]')
 
     if (initialPriceCostRadio.val() === 'actual_price') {

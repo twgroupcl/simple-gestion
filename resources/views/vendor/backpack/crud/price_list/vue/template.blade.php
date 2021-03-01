@@ -20,28 +20,42 @@
                         </v-text-field>
                     </v-col>
                 </v-row>
+
+                 {{-- Botones acciones --}}
+                <v-col>
+                    <v-btn color="success" @click="saveChanges" class="mb-3">Guardar</v-btn>
+                    <v-btn color="info" class="mb-3">Aplicar precios</v-btn>
+                    <v-btn color="grey" class="mb-3 white--text" href="{{ backpack_url('pricelist') }}">Volver</v-btn>
+                </v-col>
+
                 <v-card-title>
                     Productos
                     <v-spacer></v-spacer>
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
                     </v-text-field>
                 </v-card-title>
-                <v-row class="mx-2">
-                    <v-col>
-                        <v-btn color="success" @click="saveChanges">Guardar</v-btn>
-                    </v-col>
-                </v-row>
                 <v-data-table attach auto :headers="headers" :items="products" :search="search">
                     <template v-slot:item.cost="{ item }">
-                        @{{ item.cost | formatNumberFilter }}
+                        <div style="text-align: right">
+                            @{{ item.cost | formatNumberFilter }}
+                        </div>
                     </template>
                     <template v-slot:item.price="{ item }">
-                        @{{ item.price | formatNumberFilter }}
+                        <div style="text-align: right">
+                            @{{ item.price | formatNumberFilter }}
+                        </div>
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <v-btn color="primary" @click="openEditModal(item)">Editar</v-btn>
+                        <v-btn color="primary" @click="openEditModal(item)" small>Editar</v-btn>
                     </template>
                 </v-data-table>
+
+                {{-- Botones acciones --}}
+                <v-col>
+                    <v-btn color="success" @click="saveChanges" class="mb-3">Guardar</v-btn>
+                    <v-btn color="info" class="mb-3">Aplicar precios</v-btn>
+                    <v-btn color="grey" class="mb-3 white--text" href="{{ backpack_url('pricelist') }}">Volver</v-btn>
+                </v-col>
             </v-card>
 
             {{-- Modal editar precio y cost --}}
