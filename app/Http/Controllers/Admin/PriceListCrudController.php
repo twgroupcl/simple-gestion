@@ -204,8 +204,22 @@ class PriceListCrudController extends CrudController
     public function apply($id)
     {
         $priceList = PriceList::with('priceListItems.product')->findOrFail($id);
+
         foreach ($priceList->priceListItems as $item) {
             $product = $item->product;
+
+            // If the product is a child product, update the field
+            // variations_json on the parent to keep the json sync
+            if ($product->parent_id) {
+                $variations = collect($product->parent->variations_json);
+                $variations = $variations->map( function ($child) use ($product, $item) {
+                    if ($child['product_id'] == $product->id) $child['price'] = $item->price ? number_format($item->price, 2, ',', '') : null;
+                    return $child;
+                });
+                $product->parent->variations_json = $variations;
+                $product->parent->update();
+            }
+
             $product->price = $item->price ? (float) $item->price : null;
             $product->cost = $item->cost ? (float) $item->cost : null;
             $product->update();
