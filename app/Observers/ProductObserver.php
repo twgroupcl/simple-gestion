@@ -3,9 +3,13 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use App\Models\PriceList;
 use Illuminate\Support\Str;
 use App\Mail\ProductCreated;
+use App\Models\PriceListItem;
+use App\Models\ProductCostHistory;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProductPriceHistory;
 use Illuminate\Support\Facades\Mail;
 use Backpack\Settings\app\Models\Setting;
 
@@ -25,6 +29,17 @@ class ProductObserver
      */
     public function created(Product $product)
     {
+        if ($product->product_type->id != Product::PRODUCT_TYPE_CONFIGURABLE) {
+            $priceLists = PriceList::all();
+            foreach ($priceLists as $priceList) {
+                $item = new PriceListItem();
+                $item->product_id = $product->id;
+                $item->cost = $product->cost;
+                $item->price = $product->price;
+                $priceList->priceListItems()->save($item);
+            }
+        }     
+        
         //Order to admins
         if ( !$product->parent_id ) {
             $administrators = Setting::get('administrator_email');
@@ -56,6 +71,7 @@ class ProductObserver
      */
     public function updating(Product $product)
     {
+        $this->createHistoryRecord($product);
         $this->validateSpecialPrice($product);
         $this->validateRejectFields($product);
         $this->syncAttributes($product);
@@ -96,6 +112,11 @@ class ProductObserver
         // Delete image references and files
         DB::table('product_images')->where('product_id', $product->id)->delete();
         $product->deleteImages();
+
+        // Delete from price lists
+        DB::table('price_list_items')->where('product_id', $product->id)->delete();
+
+        //
     }
 
     /**
@@ -232,5 +253,29 @@ class ProductObserver
 
         // Update or create the attributes on the db
         $product->updateOrCreateAttributes($attributes);
-}
+    }
+
+    /**
+     * Create a history record if the price or cost was changed
+     * 
+     */
+    public function createHistoryRecord($product)
+    {
+        
+        if ($product->getOriginal('price') != $product->price) {
+            ProductPriceHistory::create([
+                'product_id' => $product->id,
+                'price' => $product->price,
+                'user_id' => backpack_user()->id ?? null,
+            ]);
+        }
+        
+        if ($product->getOriginal('cost') != $product->cost) {
+            ProductCostHistory::create([
+                'product_id' => $product->id,
+                'cost' => $product->cost,
+                'user_id' => backpack_user()->id ?? null,
+            ]);
+        }
+    }
 }

@@ -110,7 +110,7 @@ class Product extends Model
                     'sku' => Str::uuid()->toString(), // temporal sku
                     'name' => $this->name,
                     'price' => sanitizeNumber($variation['price']),
-                    'special_price' => $variation['special_price'] ? sanitizeNumber($variation['special_price']) : null,
+                    'special_price' => (isset($variation['special_price']) && !empty($variation['special_price'])) ? sanitizeNumber($variation['special_price']) : null,
                     'special_price_from' => $variation['special_price_from'] ?: null,
                     'special_price_to' => $variation['special_price_to'] ?: null,
                     'weight' => $this->is_service ? 0 : sanitizeNumber($variation['weight']),
@@ -146,7 +146,7 @@ class Product extends Model
                         'height' => $this->is_service ? 0 : sanitizeNumber($variation['height']),
                         'width' => $this->is_service ? 0 : sanitizeNumber($variation['width']),
                         'depth' => $this->is_service ? 0 : sanitizeNumber($variation['depth']),
-                        'special_price' => $variation['special_price'] ? sanitizeNumber($variation['special_price']) : null,
+                        'special_price' => (isset($variation['special_price']) && !empty($variation['special_price'])) ? sanitizeNumber($variation['special_price']) : null,
                         'special_price_from' => $variation['special_price_from'] ?: null,
                         'special_price_to' => $variation['special_price_to']?: null,
                         'inventories_json' => $inventoriesArray,
@@ -219,7 +219,8 @@ class Product extends Model
 
     public function createUpdateInventories()
     {
-        $inventories = $this->inventories_json;
+        $inventories = $this->inventories_json ?? [];
+
         $sourceInventories = [];
 
         // Extract id and qty
@@ -814,9 +815,8 @@ class Product extends Model
 
     public function setPriceAttribute($value)
     {
-        if (is_null($value) || $value == '') {
+        if (is_null($value) || $value == '' || is_float($value)) {
             $this->attributes['price'] = $value;
-
             return true;
         }
 
@@ -836,8 +836,8 @@ class Product extends Model
 
     public function setCostAttribute($value)
     {
-        if (is_null($value) || $value == '') {
-            $this->attributes['cost'] = null;
+        if (is_null($value) || $value == '' || is_float($value)) {
+            $this->attributes['cost'] = $value;
 
             return true;
         }

@@ -102,6 +102,10 @@
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productbrand') }}'><i class='nav-icon la la-tags'></i> Marcas</a></li>
         @endcan
 
+        @can('pricelists.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('pricelist') }}'><i class='nav-icon la la-list'></i>Listas de precios</a></li>
+        @endcan
+
         @can('productcategory.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('productcategory') }}'><i class='nav-icon la la-thumbtack'></i> Categorías</a></li>
         @endcan
@@ -208,4 +212,3 @@
     </ul>
 </li>
 @endcanany
-
