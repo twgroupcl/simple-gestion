@@ -46,6 +46,11 @@ class AdminPermissionsSeeder extends Seeder
             array (
                 'name'       => 'pricelists.list',
                 'guard_name'   => 'web',
+            ),
+            7 => 
+            array (
+                'name'       => 'inventory.bulk-update',
+                'guard_name'   => 'web',
             )
         ));        
     }

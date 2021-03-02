@@ -7,7 +7,9 @@ use App\Models\PriceList;
 use Illuminate\Support\Str;
 use App\Mail\ProductCreated;
 use App\Models\PriceListItem;
+use App\Models\ProductCostHistory;
 use Illuminate\Support\Facades\DB;
+use App\Models\ProductPriceHistory;
 use Illuminate\Support\Facades\Mail;
 use Backpack\Settings\app\Models\Setting;
 
@@ -69,6 +71,7 @@ class ProductObserver
      */
     public function updating(Product $product)
     {
+        $this->createHistoryRecord($product);
         $this->validateSpecialPrice($product);
         $this->validateRejectFields($product);
         $this->syncAttributes($product);
@@ -245,5 +248,29 @@ class ProductObserver
 
         // Update or create the attributes on the db
         $product->updateOrCreateAttributes($attributes);
-}
+    }
+
+    /**
+     * Create a history record if the price or cost was changed
+     * 
+     */
+    public function createHistoryRecord($product)
+    {
+        
+        if ($product->getOriginal('price') != $product->price) {
+            ProductPriceHistory::create([
+                'product_id' => $product->id,
+                'price' => $product->price,
+                'user_id' => backpack_user()->id ?? null,
+            ]);
+        }
+        
+        if ($product->getOriginal('cost') != $product->cost) {
+            ProductCostHistory::create([
+                'product_id' => $product->id,
+                'cost' => $product->cost,
+                'user_id' => backpack_user()->id ?? null,
+            ]);
+        }
+    }
 }
