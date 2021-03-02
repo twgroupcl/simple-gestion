@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Seller;
+use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ProductInventorySource;
+use App\Models\ProductInventoryReception;
+use App\Services\Inventory\MassReceptionsService;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Exports\Inventory\MassReceptionsTemplateExport;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
@@ -63,6 +69,10 @@ class InventoryCrudController extends CrudController
         $this->crud->addClause('whereDoesntHave', 'children');
         
         $this->crud->addButtonFromView('line', 'update-stock', 'inventory.update-stock', 'begining');
+
+        if (backpack_user()->can('inventory.bulk-update')) {
+            $this->crud->addButtonFromView('top', 'mass-receptions', 'inventory.mass-receptions', 'end');
+        }
 
         CRUD::addColumn([
             'name' => 'categories',
@@ -178,5 +188,88 @@ class InventoryCrudController extends CrudController
                 $query->where('id', $value);
             });
         });
+    }
+
+    public function massReceptionsView(Request $request)
+    {
+        if (!backpack_user()->can('inventory.bulk-update')) {
+            abort(401, 'No tienes permisos para acceder a esta pagina');
+        }
+
+        $request->session()->forget('inventory_mass_receptions_data');
+        return view('admin.inventory.mass-receptions.index');
+    }
+
+    public function generateExcelTemplate(Request $request)
+    {
+        $fileName = 'plantilla_excel_recepciones.xls';
+
+        $options = [
+            'includeProducts' => $request->includeProducts ? true : false,
+            'replaceStock' => $request->replaceStock ? true : false,
+            'documentNumber' => $request->documentNumber ?? ' ',
+        ];
+
+        $excelTemplate = new MassReceptionsTemplateExport(backpack_user()->current()->company->id, $options);
+
+        return Excel::download($excelTemplate, $fileName);
+    }
+
+    public function massReceptionsPreview(Request $request)
+    {
+        $massReceptionsService = new MassReceptionsService();
+
+        $excel = $request->file('inventory_excel');
+
+        try {
+            $arrayData = $massReceptionsService->convertExcelToArray($excel);
+        } catch (Exception $e) {
+            return redirect()->route('inventory.mass-receptions.generate-template')->with('error', 'El archivo EXCEL contiene un formato incompatible o se encuentra corrupto.');
+        }
+
+        if ($arrayData['validate']) {
+            $request->session()->put('inventory_mass_receptions_data', $arrayData);
+        } else {
+            $request->session()->forget('inventory_mass_receptions_data');
+        }
+
+        return view('admin.inventory.mass-receptions.preview', compact('arrayData'));
+    }
+
+    public function massReceptionsStore(Request $request)
+    {
+        $massReceptionsService = new MassReceptionsService();
+        
+        $data = $request->session()->get('inventory_mass_receptions_data');
+
+        DB::beginTransaction();
+
+        try {
+            $massReceptionsService->storeReceptions($data['products_array'], $data['options'], backpack_user()->current()->company->id);
+        
+            ProductInventoryReception::create([
+                'document_number' => $data['options']['documentNumber']['value'],
+                'user_id' =>  backpack_user()->id,
+                'products_data' => $data['products_array'],
+                'type_operation' => $data['options']['typeOperation']['value'],
+                'excel_path' => null,
+                'company_id' => backpack_user()->current()->company->id,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Mass reception service error: ' . $e->getMessage());
+            return redirect()->route('inventory.mass-receptions.result')->with('mass_reception_error', 'Ocurrio un error procesando la recepción de stock');
+        }
+
+        DB::commit();
+
+        $request->session()->forget('inventory_mass_receptions_data');
+
+        return redirect()->route('inventory.mass-receptions.result')->with('mass_reception_success', 'Recepción de stock procesada correctamente');
+    }
+
+    public function massReceptionsResult(Request $request)
+    {
+        return view('admin.inventory.mass-receptions.result');
     }
 }
