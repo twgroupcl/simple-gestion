@@ -63,7 +63,8 @@ class SellerStoreRequest extends FormRequest
         return [
             'uid' => [
                 'required', 
-                'unique:sellers,uid',
+                'unique:sellers,uid,' . $this->id . ',uid,company_id,' . $this->company_id,
+                //'unique:sellers,uid',
                 'string', 
                 $rutRule
             ],
@@ -72,7 +73,8 @@ class SellerStoreRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')
+                Rule::unique('sellers')->ignore($this->id), //this->id future refactor, delete RequestUpdate
+                //Rule::unique('users', 'email')
             ],
             'phone' => ['nullable', $phoneRule],
             'cellphone' => ['nullable', $phoneRule],
