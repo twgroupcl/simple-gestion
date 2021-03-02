@@ -821,7 +821,7 @@ class Product extends Model
     public function setCostAttribute($value)
     {
         if (is_null($value) || $value == '' || is_float($value)) {
-            $this->attributes['cost'] = null;
+            $this->attributes['cost'] = $value;
 
             return true;
         }
