@@ -219,7 +219,8 @@ class Product extends Model
 
     public function createUpdateInventories()
     {
-        $inventories = $this->inventories_json;
+        $inventories = $this->inventories_json ?? [];
+
         $sourceInventories = [];
 
         // Extract id and qty

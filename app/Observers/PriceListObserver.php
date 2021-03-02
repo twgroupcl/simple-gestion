@@ -35,7 +35,12 @@ class PriceListObserver
             } else if ($priceList->initial_options['initial_price'] == 'price_with_surcharge') {
                 $priceListItem->price = $product->price ? round($product->price * (1 + $priceList->initial_options['price_surcharge_percentage'] / 100)) : null;
             } else if ($priceList->initial_options['initial_price'] == 'price_with_discount') {
-                $priceListItem->price = $product->price ? round($product->price * (1 - $priceList->initial_options['price_discount_percentage'] / 100)) : null;
+                if ($product->price) {
+                    $final = round($product->price * (1 - $priceList->initial_options['price_discount_percentage'] / 100));
+                    $priceListItem->price = $final > 0 ? $final : 0;
+                } else {
+                    $priceListItem->price = null;
+                }
             }
             
             array_push($items, $priceListItem);
