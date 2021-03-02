@@ -53,6 +53,13 @@ class PriceListCrudController extends CrudController
         $this->crud->addButtonFromView('line', 'apply', 'pricelist.apply', 'end');
 
         CRUD::addColumn([
+            'label' => 'Fecha',
+            'name' => 'created_at',
+            'type' => 'date',
+            'format' => 'L'
+        ]);
+
+        CRUD::addColumn([
             'label' => 'Nombre',
             'name' => 'name',
         ]);
