@@ -24,7 +24,7 @@
                  {{-- Botones acciones --}}
                 <v-col>
                     <v-btn color="success" @click="saveChanges" class="mb-3">Guardar</v-btn>
-                    <v-btn color="info" class="mb-3">Aplicar precios</v-btn>
+                    {{-- <v-btn color="info" @click="dialogConfirm = true" class="mb-3">Aplicar precios</v-btn> --}}
                     <v-btn color="grey" class="mb-3 white--text" href="{{ backpack_url('pricelist') }}">Volver</v-btn>
                 </v-col>
 
@@ -34,6 +34,8 @@
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details>
                     </v-text-field>
                 </v-card-title>
+
+                {{-- Tabla --}}
                 <v-data-table attach auto :headers="headers" :items="products" :search="search">
                     <template v-slot:item.cost="{ item }">
                         <div style="text-align: right">
@@ -53,7 +55,7 @@
                 {{-- Botones acciones --}}
                 <v-col>
                     <v-btn color="success" @click="saveChanges" class="mb-3">Guardar</v-btn>
-                    <v-btn color="info" class="mb-3">Aplicar precios</v-btn>
+                    {{-- <v-btn color="info"  @click="dialogConfirm = true" class="mb-3">Aplicar precios</v-btn> --}}
                     <v-btn color="grey" class="mb-3 white--text" href="{{ backpack_url('pricelist') }}">Volver</v-btn>
                 </v-col>
             </v-card>
@@ -99,6 +101,33 @@
                         </v-btn>
                     </v-card-actions>
                 </v-card>
+            </v-dialog>
+
+            {{-- Modal confirmacion aplicar precios --}}
+            <v-dialog v-model="dialogConfirm" width="500">
+                <v-card>
+                    <v-card-title class="headline">
+                        ¿Está seguro que desea aplicar esta lista de precios?
+                    </v-card-title>
+                    <v-card-text>Al aplicar se cambiara el precio y costo de todos productos por los precios y costos designados en la lista.</v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="red darken-1"
+                        text
+                        @click="dialogConfirm = false"
+                      >
+                        Cancelar
+                      </v-btn>
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="applyPrices(); dialogConfirm = false"
+                      >
+                        Aceptar
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
             </v-dialog>
         </v-main>
     </v-app>

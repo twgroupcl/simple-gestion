@@ -84,6 +84,7 @@
                         code: '{{ $priceList->code }}',
                     },
                     dialog: false,
+                    dialogConfirm: false,
                     search: '',             
                     headers: [
                         {
@@ -152,6 +153,23 @@
                     product.price = this.deformatNumber(this.selectedProduct.price)
                     product.cost = this.deformatNumber(this.selectedProduct.cost)
                     product.changed = true
+                },
+
+                async applyPrices() {
+                    const url = "{{ route('pricelist.apply', ['id' => $priceList->id]) }}"
+                    let applyPrices = await fetch(url)
+
+                    if (applyPrices.status != 200) {
+                        new Noty({
+                            type: "error",
+                            text: "<strong>La lista de precios no pudo ser aplicada.</strong>"
+                        }).show();
+                    } else {
+                        new Noty({
+                            type: "success",
+                            text: "<strong>La lista de precios ha sido aplicada exitosamente.</strong>"
+                        }).show();
+                    }
                 },
 
                 async saveChanges() {
