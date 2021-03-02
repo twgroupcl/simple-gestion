@@ -38,6 +38,7 @@ class PriceListCrudController extends CrudController
         $this->crud->allowAccess('modify');
         $this->crud->allowAccess('apply');
         $this->crud->denyAccess('update');
+        $this->crud->denyAccess('show');
     }
 
     /**
@@ -182,9 +183,9 @@ class PriceListCrudController extends CrudController
 
     public function apply($id)
     {
-        $priceList = PriceList::with('priceListItems')->findOrFail($id);
+        $priceList = PriceList::with('priceListItems.product')->findOrFail($id);
         foreach ($priceList->priceListItems as $item) {
-            $product = Product::find($item->product_id);
+            $product = $item->product;
             $product->price = $item->price ? (float) $item->price : null;
             $product->cost = $item->cost ? (float) $item->cost : null;
             $product->update();
