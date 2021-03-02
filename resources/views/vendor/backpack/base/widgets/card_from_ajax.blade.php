@@ -24,7 +24,6 @@
 <script>
 
 $(document).ready(function() {
-    console.log("Holiwis");
 
     let dateFrom = $('#date-from');
     let dateTo = $('#date-to');
@@ -62,7 +61,6 @@ function {{$functionName}}(from, to) {
                 ) + '</div>');
             },
             error: function(error) {
-                console.log(error)
             }
            //dataType: 'mycustomtype'
         });
