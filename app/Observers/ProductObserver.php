@@ -112,6 +112,11 @@ class ProductObserver
         // Delete image references and files
         DB::table('product_images')->where('product_id', $product->id)->delete();
         $product->deleteImages();
+
+        // Delete from price lists
+        DB::table('price_list_items')->where('product_id', $product->id)->delete();
+
+        //
     }
 
     /**
