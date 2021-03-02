@@ -6,7 +6,9 @@ use App\Models\Product;
 use App\Models\PriceList;
 use Illuminate\Http\Request;
 use App\Cruds\BaseCrudFields;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\PriceListRequest;
+use App\Exports\PriceList\PriceListExport;
 use App\Http\Requests\PriceListUpdateRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -36,6 +38,7 @@ class PriceListCrudController extends CrudController
         CRUD::setEntityNameStrings('lista de precio', 'listas de precios');
 
         $this->crud->allowAccess('modify');
+        $this->crud->allowAccess('export');
         $this->crud->allowAccess('apply');
         $this->crud->denyAccess('update');
         $this->crud->denyAccess('show');
@@ -51,6 +54,7 @@ class PriceListCrudController extends CrudController
     {
         $this->crud->addButtonFromView('line', 'modify', 'pricelist.modify', 'end');
         $this->crud->addButtonFromView('line', 'apply', 'pricelist.apply', 'end');
+        $this->crud->addButtonFromView('line', 'export', 'pricelist.export', 'end');
 
         CRUD::addColumn([
             'label' => 'Fecha',
@@ -188,6 +192,15 @@ class PriceListCrudController extends CrudController
         ]);
     }
 
+    protected function setupExportRoutes($segment, $routeName, $controller)
+    {
+        \Route::get($segment.'/{id}/export', [
+            'as'        => $routeName.'.export',
+            'uses'      => $controller.'@export',
+            'operation' => 'export',
+        ]);
+    }
+
     public function apply($id)
     {
         $priceList = PriceList::with('priceListItems.product')->findOrFail($id);
@@ -199,6 +212,15 @@ class PriceListCrudController extends CrudController
         }
 
         return 1;
+    }
+
+    public function export($id)
+    {
+        $priceList = PriceList::findOrFail($id);
+        $date = now();
+        $fileName = strtolower(str_replace(' ', '_', $priceList->name)) . '_' . $date->format('Y-m-d') . '.xls';
+        $priceListExport = new PriceListExport(backpack_user()->current()->company->id, $id);
+        return Excel::download($priceListExport, $fileName);
     }
 
     public function getProducts($priceListId)
