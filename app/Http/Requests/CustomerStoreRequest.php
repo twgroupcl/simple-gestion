@@ -73,7 +73,7 @@ class CustomerStoreRequest extends FormRequest
             'email' => [
                 'required',
                 'email',
-                'unique:customers,email,' . $customerEmail . ',email,company_id,' . $companyId . ',deleted_at,NULL'
+                'unique:customers,email,' . $customerEmail . ',id,company_id,' . $companyId . ',deleted_at,NULL'
                 //Rule::unique('users', 'email')
             ],
             'phone' => ['nullable', $phoneRule],
