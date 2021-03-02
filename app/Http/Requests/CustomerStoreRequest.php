@@ -59,18 +59,22 @@ class CustomerStoreRequest extends FormRequest
         $rutRule = new RutRule($this->is_foreign ? true : false);
         $phoneRule = new PhoneRule;
 
+        $customerId = request()->id;
+        $customerEmail = request()->email;
+        $companyId = request()->company_id;
         $rules =  [
             'uid' => [
                 'required',
                 'string',
-                'unique:customers,uid',
+                'unique:customers,uid,' . $customerId . ',uid,company_id,' . $companyId . ',deleted_at,NULL',
                 $rutRule ],
             'first_name' => 'required|string',
             'last_name' => 'string|nullable',
             'email' => [
                 'required',
                 'email',
-                Rule::unique('users', 'email')
+                'unique:customers,email,' . $customerEmail . ',email,company_id,' . $companyId . ',deleted_at,NULL'
+                //Rule::unique('users', 'email')
             ],
             'phone' => ['nullable', $phoneRule],
             'cellphone' => ['nullable', $phoneRule],
