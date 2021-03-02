@@ -48,8 +48,8 @@ class PriceListCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->addButtonFromView('line', 'modify', 'pricelist.modify', 'begining');
-        $this->crud->addButtonFromView('line', 'apply', 'pricelist.apply', 'begining');
+        $this->crud->addButtonFromView('line', 'modify', 'pricelist.modify', 'end');
+        $this->crud->addButtonFromView('line', 'apply', 'pricelist.apply', 'end');
 
         CRUD::addColumn([
             'label' => 'Nombre',
@@ -189,6 +189,8 @@ class PriceListCrudController extends CrudController
             $product->cost = $item->cost ? (float) $item->cost : null;
             $product->update();
         }
+
+        return 1;
     }
 
     public function getProducts($priceListId)
