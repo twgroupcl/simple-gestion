@@ -169,6 +169,7 @@ class ManageInvoiceCrudController extends CrudController
             try {
                 $invoice->reduceInventoryOfItems();
             } catch (Exception $exception) {
+                \Log::error('Ocurrio un problema al actualizar el stock de productos: ' .  $exception->getMessage());
                 \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
             }
 
