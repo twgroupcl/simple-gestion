@@ -24,7 +24,8 @@ class SellerObserver
     {
         $seller->source = determineSource(request());
 
-        if (Setting::get('seller_create_user')) {
+        $requiredUser = request()->required_user;
+        if (Setting::get('seller_create_user') && $requiredUser == 1) {
             $user = User::create([
                 'name' => $seller->name,
                 'email' => $seller->email,

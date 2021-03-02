@@ -63,7 +63,7 @@ class SellerStoreRequest extends FormRequest
         return [
             'uid' => [
                 'required', 
-                'unique:sellers,uid,' . $this->id . ',uid,company_id,' . $this->company_id,
+                'unique:sellers,uid,' . $this->id . ',uid,company_id,' . $this->company_id . ',deleted_at,NULL',
                 //'unique:sellers,uid',
                 'string', 
                 $rutRule

@@ -77,7 +77,6 @@ class Seller extends Model
         'user_id',
         'company_id',
         'slug',
-        'required_user',
     ];
     // protected $hidden = [];
     // protected $dates = [];
