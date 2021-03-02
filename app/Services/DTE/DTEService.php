@@ -37,6 +37,21 @@ class DTEService
     }
 
     /**
+     * Get status folio maintainer
+     * @param int document type
+     * @param string company rut
+     */
+    public function getFolioMaintainerStatus(int $type, string $rut)
+    {
+        $method = 'GET';
+        $url = $this->url . '/dte/admin/dte_folios/info/' . $type . '/' . rutWithoutDV($rut);
+
+        $headers = $this->headers;
+
+        return self::exec($url, [], $headers, $method);
+    }
+
+    /**
      * Generate temp document in libredte from services
      * Require invoice with type (code ex. 33)
      *
