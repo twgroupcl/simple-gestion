@@ -39,12 +39,12 @@ use App\User;
 			// ]),
 
 			Widget::make([
-				'type' => 'progress',
-				'class'=> 'card border-0 text-white bg-dark',
-				'progressClass' => 'progress-bar',
-				'value' => $productCount,
-				'description' => 'Productos.',
-				'progress' => (int)$productCount/75*100,
+				'type' => 'card',
+				'class'=> 'card border-0 text-white bg-dark col-md-4 text-center',
+                'content' => [
+                    'header' => 'Productos disponibles',
+                    'body' => '<h3>' . $productCount . '</h3>',
+                ],
 			]),
 
 			// Widget::make([
@@ -77,46 +77,60 @@ use App\User;
 				],
 				[
 					'type'    => 'date-range',
-                    'wrapperClass' => 'col-md-6 d-flex flex-row-reverse',
+                    'wrapperClass' => [
+                        'row' => 'd-flex flex-row-reverse',
+                        'date_width' => 'col-sm-2',
+                    ],
 					'content' => [
                         'title' => 'Rango de fechas',
-                        'wrapperClass' => 'col-md-6 d-flex flex-row-reverse',
+                        'wrapperClass' => 'col-md-12 d-flex flex-row-reverse',
                     ],
 				],
                 [
-                    'type' => 'card_from_ajax',
-                    'name' => 'salesByPeriod',
-                    'url' => '/admin/api/invoice/salesbyperiod',
-                    //'attribute' => 'count',
-					'wrapperClass' => 'col-md-3',
-                    'class'=> 'card border-0 text-white bg-dark',
-                    'content'=> [
-                        'header' => 'Ventas en el periodo',
-                        //'body' => 'algo',
-                    ],
-                ],
-                [
-                    'name' => 'quotationsByStatus',
-                    'type' => 'card_from_ajax',
-                    'url' => '/admin/api/quotation/bystatus',
-                    //'attribute' => 'count',
-					'wrapperClass' => 'col-md-3',
-                    'class'=> 'card border-0 text-white bg-dark',
-                    'content'=> [
-                        'header' => 'Cotizaciones por estado',
-                        //'body' => 'algo',
-                    ],
-                ],
-                [
-                    'name' => 'generalQuotations',
-                    'type' => 'card_from_ajax',
-                    'url' => '/admin/api/quotation/generalStatus',
-                    //'attribute' => 'count',
-					'wrapperClass' => 'col-md-3',
-                    'class'=> 'card border-0 text-white bg-dark',
-                    'content'=> [
-                        'header' => 'Cotizaciones',
-                        //'body' => 'algo',
+                    'type' => 'div',
+                    'class' => 'row col-md-6',
+                    'content' => [
+                        [
+                            'type' => 'card_from_ajax',
+                            'name' => 'salesByPeriod',
+                            'url' => '/admin/api/invoice/salesbyperiod',
+                            //'attribute' => 'count',
+                            'wrapperClass' => 'col-md-6',
+                            'class'=> 'card border-0 text-white bg-dark',
+                            'content'=> [
+                                'header' => 'Ventas en el periodo',
+                                //'body' => 'algo',
+                            ],
+                        ],
+                        [
+                            'name' => 'generalQuotations',
+                            'type' => 'card_from_ajax',
+                            'url' => '/admin/api/quotation/generalStatus',
+                            //'attribute' => 'count',
+                            'wrapperClass' => 'col-md-6',
+                            'class'=> 'card border-0 text-white bg-dark',
+                            'content'=> [
+                                'header' => 'Cotizaciones',
+                                //'body' => 'algo',
+                            ],
+                        ],
+                        [
+                            'type' => 'div',
+                            'class' => 'w-100',
+                            'content' => []
+                        ],
+                        [
+                            'name' => 'quotationsByStatus',
+                            'type' => 'card_from_ajax',
+                            'url' => '/admin/api/quotation/bystatus',
+                            //'attribute' => 'count',
+                            'wrapperClass' => 'col-md-12',
+                            'class'=> 'card border-0 text-white bg-dark text-center',
+                            'content'=> [
+                                'header' => 'Cotizaciones por estado',
+                                //'body' => 'algo',
+                            ],
+                        ],
                     ],
                 ],
                 [
@@ -130,7 +144,7 @@ use App\User;
                 [
                     'name' => 'Top 10 productos',
                     'type' => 'table_ajax',
-                    'class' => 'col-md-6 table-striped table-hover',
+                    'class' => 'col-6 table-striped table-hover',
                     'attributes' => [
                         'sku',
                         'invoice_item_total',
@@ -145,7 +159,7 @@ use App\User;
                 [
                     'name' => 'Mejores clientes del periodo',
                     'type' => 'table_ajax',
-                    'class' => 'col-md-6 table-striped table-hover',
+                    'class' => 'col-6 table-striped table-hover',
                     'attributes' => [
                         'uid',
                         'full_name',
