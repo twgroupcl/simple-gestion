@@ -77,8 +77,11 @@ use App\User;
 				],
 				[
 					'type'    => 'date-range',
-					'wrapper' => ['class' => 'col-sm-12'],
-					'content' => 'Rango de fecha GENERAL',
+                    'wrapperClass' => 'col-md-6 d-flex flex-row-reverse',
+					'content' => [
+                        'title' => 'Rango de fechas',
+                        'wrapperClass' => 'col-md-6 d-flex flex-row-reverse',
+                    ],
 				],
                 [
                     'type' => 'card_from_ajax',
