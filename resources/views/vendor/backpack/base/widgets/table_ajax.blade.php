@@ -6,28 +6,31 @@ $functionName = \Str::slug($widget['name'], '_');
 $url = $widget['url'];
 @endphp
 @includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_start')
-<table class="table {{ $widget['class'] ?? '' }}" data-url="{{$url}}">
-    <thead>
-        <tr>
-            @foreach (collect($columnNames) as $column => $value)
-                @if (is_array($value))
-                    <th scope="col">{{ $value['column'] }}</th>
-                @else
-                    <th scope="col">{{ $value }}</th>
-                @endif
-            @endforeach
-        </tr>
-    </thead>
-    <tbody id="body{{$functionName}}">
-    </tbody>
-    {{--<tfoot align="right">
-		<tr>
-            @foreach (collect($attributes) as $column => $value)
-            <th></th>
-            @endforeach
-        </tr>
-	</tfoot>--}}
-</table>
+<div class="container">
+    <h4> {{$widget['name']}}</h4>
+    <table class="table {{ $widget['tableClass'] ?? '' }}" data-url="{{$url}}">
+        <thead>
+            <tr>
+                @foreach (collect($columnNames) as $column => $value)
+                    @if (is_array($value))
+                        <th scope="col">{{ $value['column'] }}</th>
+                    @else
+                        <th scope="col">{{ $value }}</th>
+                    @endif
+                @endforeach
+            </tr>
+        </thead>
+        <tbody id="body{{$functionName}}">
+        </tbody>
+        {{--<tfoot align="right">
+            <tr>
+                @foreach (collect($attributes) as $column => $value)
+                <th></th>
+                @endforeach
+            </tr>
+        </tfoot>--}}
+    </table>
+</div>
 @includeWhen(!empty($widget['wrapper']), 'backpack::widgets.inc.wrapper_end')
 
 @push('after_scripts')
