@@ -69,7 +69,10 @@ class InventoryCrudController extends CrudController
         $this->crud->addClause('whereDoesntHave', 'children');
         
         $this->crud->addButtonFromView('line', 'update-stock', 'inventory.update-stock', 'begining');
-        $this->crud->addButtonFromView('top', 'mass-receptions', 'inventory.mass-receptions', 'end');
+
+        if (backpack_user()->can('inventory.bulk-update')) {
+            $this->crud->addButtonFromView('top', 'mass-receptions', 'inventory.mass-receptions', 'end');
+        }
 
         CRUD::addColumn([
             'name' => 'categories',
@@ -189,6 +192,10 @@ class InventoryCrudController extends CrudController
 
     public function massReceptionsView(Request $request)
     {
+        if (!backpack_user()->can('inventory.bulk-update')) {
+            abort(401, 'No tienes permisos para acceder a esta pagina');
+        }
+
         $request->session()->forget('inventory_mass_receptions_data');
         return view('admin.inventory.mass-receptions.index');
     }
