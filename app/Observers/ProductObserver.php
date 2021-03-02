@@ -3,8 +3,10 @@
 namespace App\Observers;
 
 use App\Models\Product;
+use App\Models\PriceList;
 use Illuminate\Support\Str;
 use App\Mail\ProductCreated;
+use App\Models\PriceListItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Backpack\Settings\app\Models\Setting;
@@ -25,6 +27,17 @@ class ProductObserver
      */
     public function created(Product $product)
     {
+        if ($product->product_type->id != Product::PRODUCT_TYPE_CONFIGURABLE) {
+            $priceLists = PriceList::all();
+            foreach ($priceLists as $priceList) {
+                $item = new PriceListItem();
+                $item->product_id = $product->id;
+                $item->cost = $product->cost;
+                $item->price = $product->price;
+                $priceList->priceListItems()->save($item);
+            }
+        }     
+        
         //Order to admins
         if ( !$product->parent_id ) {
             $administrators = Setting::get('administrator_email');
