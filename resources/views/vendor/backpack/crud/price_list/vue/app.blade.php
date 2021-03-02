@@ -16,49 +16,10 @@
     {{-- <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script> --}}
 
-    <script src="{{ asset('js/vue.js') }}"></script>
+    <script src="{{ asset('js/vue.min.js') }}"></script>
     <script src="{{ asset('js/vuetify.min.js') }}"></script>
+    <script src="{{ asset('js/vuetify/lang-es.js') }}"></script>
     <script>
-
-        var es = {
-            close: 'Close',
-            dataIterator: {
-                pageText: '{0}-{1} de {2}',
-                noResultsText: 'Ningún resultado a mostrar',
-                loadingText: 'Loading item...'
-            },
-            dataTable: {
-                itemsPerPageText: 'Filas por página:',
-                ariaLabel: {
-                sortDescending: ': Sorted descending. Activate to remove sorting.',
-                sortAscending: ': Sorted ascending. Activate to sort descending.',
-                sortNone: ': Not sorted. Activate to sort ascending.'
-                }
-            },
-            dataFooter: {
-                itemsPerPageText: 'Elementos por página:',
-                itemsPerPageAll: 'Todos',
-                nextPage: 'Página siguiente',
-                prevPage: 'Página anterior',
-                firstPage: 'Página primera',
-                lastPage: 'Página última'
-            },
-            datePicker: {
-                itemsSelected: '{0} seleccionados'
-            },
-            noDataText: 'Ningún dato disponible',
-            carousel: {
-                prev: 'Visual previo',
-                next: 'Siguiente visual'
-            },
-            calendar: {
-                moreEvents: '{0} más'
-            },
-            fileInput: {
-                counter: '{0} files',
-                counterSize: '{0} files ({1} in total)'
-            }
-        };
 
         // Excecute a callback after the DOM was render
         function afterRender(callback) {
@@ -191,12 +152,19 @@
                     }
                     
                     let response = await fetch(url, options)
-                    let responseData = response.json()
+                    let responseData = await response.json()
 
                     if (response.status != 200) {
+                        let errors = []
+                        console.log(responseData)
+                        for (item in responseData.message) {
+                            responseData.message[item].forEach( (message) => {
+                                errors.push(message)
+                            })
+                        }
                         new Noty({
                             type: "error",
-                            text: "<strong>Ocurrio un error actualizando la lista de precios.</strong>"
+                            text: "<strong>Ocurrio un error actualizando la lista de precios.</strong><br>" +  errors.join('<br>')
                         }).show();
                     } else {
                         new Noty({

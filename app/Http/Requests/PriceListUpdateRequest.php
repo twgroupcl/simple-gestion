@@ -40,6 +40,28 @@ class PriceListUpdateRequest extends FormRequest
         ];
     }
 
+    public function attributes()
+    {
+        return [
+            'name' => 'nombre',
+            'code' => 'codigo',
+            'products.*.price' => 'precio del producto',
+            'products.*.cost' => 'costo del producto',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            '*.required*' => 'Es necesario completar el campo :attribute.',
+            '*.string' => 'El campo :attribute debe ser texto',
+            '*.date' => 'El campo :attribute debe ser de tipo fecha',
+            '*.unique' => 'El campo :attribute ya está siendo utilizado.',
+            '*.exists' => 'No se pudo encontrar una relación con el campo :attribute.',
+            '*.*.*.numeric' => 'El campo :attribute debe ser un numero.',
+        ];
+    }
+
     protected function failedValidation(Validator $validator) 
     { 
         throw new HttpResponseException(response()->json([
