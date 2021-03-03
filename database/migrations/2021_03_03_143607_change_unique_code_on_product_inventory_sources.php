@@ -27,7 +27,7 @@ class ChangeUniqueCodeOnProductInventorySources extends Migration
     public function down()
     {
         Schema::table('product_inventory_sources', function (Blueprint $table) {
-            $table->dropUnique('product_inventory_sources_ompany_id_code_unique');
+            $table->dropUnique('product_inventory_sources_company_id_code_unique');
             $table->unique('code');
         });
     }
