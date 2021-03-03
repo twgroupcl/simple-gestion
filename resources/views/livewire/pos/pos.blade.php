@@ -669,6 +669,10 @@
             //$('#salesBoxModal').modal('show');
         })
 
+        window.addEventListener('closeSaleBoxView', async (event) => {
+            $('#salesBoxModal').appendTo("body").modal('hide');
+        })
+
         //Colapse general menu
         $("body").removeClass('sidebar-lg-show');
         $("#search").focus();

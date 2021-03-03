@@ -1,4 +1,3 @@
-<div class="container" data-instance="{{ $updateMovements }}">
 <div class="col-md-11 col-12 sale-box-view" style="display: none;" wire:ignore.self>
     <div class="row mt-2 mr-2">
         <div class="col-12">
@@ -259,4 +258,4 @@
 </div>
 @endif
 </div>
-</div>
+

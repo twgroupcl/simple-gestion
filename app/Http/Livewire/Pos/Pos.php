@@ -131,9 +131,7 @@ class Pos extends Component
 
     public function render()
     {
-        if($this->isSaleBoxOpen){
-            $this->loadMovements();
-        }
+
         return view('livewire.pos.pos');
     }
 
@@ -332,6 +330,7 @@ class Pos extends Component
         $this->isSaleBoxOpen = false;
         $this->updateBoxDetails($this->saleBox);
         $this->dispatchBrowserEvent('closeSaleBoxView');
+        $this->movements = null;
     }
 
     // Cart Operations
@@ -538,13 +537,7 @@ class Pos extends Component
 
     public function storeMovement()
     {
-        /* $validated = $this->validate([
-            'movement.date' => 'required',
-            'movement.movement_type_id' => 'required',
-            'movement.amount' => 'required',
-            'movement.notes' => 'nulleable',
 
-        ]); */
         $this->validate([
             'movement.date' => ['required'],
             'movement.movement_type_id' => ['required'],
@@ -567,9 +560,6 @@ class Pos extends Component
         $tmpMovement->save();
 
 
-
-
-
         //Clear movement
         $this->movement->date = null;
         $this->movement->movement_type_id = null;
@@ -579,6 +569,7 @@ class Pos extends Component
         //Distpatch browser event
         $this->dispatchBrowserEvent('hideMovementSalesBoxModal');
 
+
         $this->loadMovements();
 
 
@@ -587,8 +578,10 @@ class Pos extends Component
 
     public function loadMovements()
     {
+        $this->saleBox->refresh();
         $this->movements = $this->saleBox->movements;
-        $this->updateMovements +=1;
+       // $this->movements = SalesBoxMovement::where('sales_box_id','=',$this->saleBox->id)->get();
+
     }
 
 }
