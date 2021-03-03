@@ -67,7 +67,7 @@ class ReservationRequestCrudController extends CrudController
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhereHas('customer', function ($q) use ($searchTerm) {
                     return $q->whereRaw('CONCAT(first_name, " ", last_name) LIKE "%' . $searchTerm . '%" ')
-                        ->OrwhereRaw('first_name like "%' . $searchTerm . '%"');
+                        ->orWhereRaw('first_name like "%' . $searchTerm . '%"');
                 });
             }
         ]);
