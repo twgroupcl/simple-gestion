@@ -97,7 +97,9 @@ class MassReceptionsService {
         $rules = [
             'sku' => [
                 'required',
-                Rule::exists('products', 'sku')->where('use_inventory_control', true),    
+                Rule::exists('products', 'sku')->where(function ($query) {
+                    return $query->where('use_inventory_control', true)->where('company_id', backpack_user()->current()->company->id);
+                }),    
             ],
             'inventories' => 'array',
             'inventories.*.code' => 'exists:product_inventory_sources,code',
