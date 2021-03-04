@@ -374,7 +374,6 @@
         ***********************************************/
         
         $('#date-from, #date-to, #quotation-status').on('change', function () {
-            filters.quotation_status = $('#quotation-status').val();
             filters.from = $('#date-from').val()
             filters.to = $('#date-to').val()
             loadData()
