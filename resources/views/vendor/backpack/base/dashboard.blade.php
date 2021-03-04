@@ -40,7 +40,7 @@ use App\User;
 
 			Widget::make([
 				'type' => 'card',
-				'class'=> 'card border-0 text-white bg-dark col-md-4 text-center',
+				'class'=> 'card border-0 text-white bg-dark col-md-6 text-center',
                 'content' => [
                     'header' => 'Productos disponibles',
                     'body' => '<h3>' . $productCount . '</h3>',
