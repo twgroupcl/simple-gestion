@@ -904,4 +904,35 @@ class InvoiceCrudController extends CrudController
           });
     }
 
+    public function salesByPeriod(Request $request)
+    {
+        $fromDate = $request->input('from');
+        $toDate = $request->input('to');
+
+        $invoices = Invoice::where('invoice_status', Invoice::STATUS_SEND);
+
+        //@TODO validate date
+        if (isset($fromDate)) {
+            $invoices = $invoices->where('invoice_date', '>=', $fromDate);
+        }
+
+        if (isset($toDate)) {
+            $invoices = $invoices->where('invoice_date', '<=', $toDate);
+        }
+
+        $invoices = $invoices->whereNotNull('folio')->whereHas('invoice_type', function ($q) {
+                $q->whereIn('code', ['33', '34']);
+            })
+            ->get();
+         
+        /*return response()->json([
+            'count' => $invoices->count(),
+        ]);*/
+        return '<div class="row">' .
+            '<div class="col-6 text-center">' . $invoices->count() . '</div>' .
+            '<div class="col-6 text-center">' . currencyFormat($invoices->sum('total'), 'CLP', true) . '</div>' .
+            '</div>';
+
+    }
+
 }

@@ -39,12 +39,12 @@ use App\User;
 			// ]),
 
 			Widget::make([
-				'type' => 'progress',
-				'class'=> 'card border-0 text-white bg-dark',
-				'progressClass' => 'progress-bar',
-				'value' => $productCount,
-				'description' => 'Productos.',
-				'progress' => (int)$productCount/75*100,
+				'type' => 'card',
+				'class'=> 'card border-0 text-white bg-dark col-md-6 text-center',
+                'content' => [
+                    'header' => 'Productos disponibles',
+                    'body' => '<h3>' . $productCount . '</h3>',
+                ],
 			]),
 
 			// Widget::make([
@@ -70,6 +70,115 @@ use App\User;
 					'wrapper' => ['class' => 'col-sm-12'],
 					'content' => 'Scripts',
 				],
+                [
+					'type'    => 'script_top_customers',
+					'wrapper' => ['class' => 'col-sm-12'],
+					'content' => 'Script customer',
+				],
+				[
+					'type'    => 'date-range',
+                    'wrapperClass' => [
+                        'row' => 'd-flex flex-row-reverse',
+                        'date_width' => 'col-sm-2',
+                    ],
+					'content' => [
+                        'title' => 'Rango de fechas',
+                        'wrapperClass' => 'col-md-12 d-flex flex-row-reverse',
+                    ],
+				],
+                [
+                    'type' => 'div',
+                    'class' => 'row col-md-6',
+                    'content' => [
+                        [
+                            'type' => 'card_from_ajax',
+                            'name' => 'salesByPeriod',
+                            'url' => '/admin/api/invoice/salesbyperiod',
+                            //'attribute' => 'count',
+                            'wrapperClass' => 'col-md-6',
+                            'class'=> 'card border-0 text-white bg-dark',
+                            'content'=> [
+                                'header' => 'Ventas en el periodo',
+                                //'body' => 'algo',
+                            ],
+                        ],
+                        [
+                            'name' => 'generalQuotations',
+                            'type' => 'card_from_ajax',
+                            'url' => '/admin/api/quotation/generalStatus',
+                            //'attribute' => 'count',
+                            'wrapperClass' => 'col-md-6',
+                            'class'=> 'card border-0 text-white bg-dark',
+                            'content'=> [
+                                'header' => 'Cotizaciones',
+                                //'body' => 'algo',
+                            ],
+                        ],
+                        [
+                            'type' => 'div',
+                            'class' => 'w-100',
+                            'content' => []
+                        ],
+                        [
+                            'name' => 'quotationsByStatus',
+                            'type' => 'card_from_ajax',
+                            'url' => '/admin/api/quotation/bystatus',
+                            //'attribute' => 'count',
+                            'wrapperClass' => 'col-md-12',
+                            'class'=> 'card border-0 text-white bg-dark text-center',
+                            'content'=> [
+                                'header' => 'Cotizaciones por estado',
+                                //'body' => 'algo',
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'chart',
+					'wrapperClass' => 'col-md-6 top-customers-in-period',
+                    'controller' => \App\Http\Controllers\Admin\Charts\TopCustomersInPeriodChartController::class,
+                    'content' => [
+                        'header' => 'Top 10 de Clientes en el periodo',
+                    ],
+                ],
+                [
+                    'name' => 'Top 10 productos',
+                    'type' => 'table_ajax',
+                    'wrapper' => [
+                        'class' => 'col-6',
+                    ],
+                    'tableClass' => 'table-striped table-hover',
+                    'attributes' => [
+                        'sku',
+                        'invoice_item_total',
+                    ],
+                    'columns' => [
+                        'SKU',
+                        'Total',
+                    ],
+                    'collection' => null,
+                    'url' => '/admin/api/product/top_table_dashboard',
+                ],
+                [
+                    'name' => 'Mejores clientes del periodo',
+                    'type' => 'table_ajax',
+                    'wrapper' => [
+                        'class' => 'col-6',
+                    ],
+                    'tableClass' => 'table-striped table-hover',
+                    'attributes' => [
+                        'uid',
+                        'full_name',
+                        'buy_total',
+                    ],
+                    'columns' => [
+                        'RUT',
+                        'Nombre',
+                        'Monto',
+                    ],
+                    'collection' => null,
+                    'url' => '/admin/api/customer/top_table_dashboard',
+                ],
 				[
 					'type'    => 'most-purchased-product-categories',
 					'wrapper' => ['class' => 'col-sm-12'],
@@ -116,6 +225,12 @@ use App\User;
 						'wrapper' => ['class' => 'col-sm-12'],
 						'content' => 'Scripts',
 					],
+                    [
+                        'type' => 'card',
+                        'content'=> [
+                            'header' => 'Hola',
+                        ]
+                    ],
 					[
 						'type'    => 'most-purchased-products',
 						'wrapper' => ['class' => 'col-sm-12'],
