@@ -144,7 +144,7 @@ class InvoiceCrudController extends CrudController
             }
 
             $report = new DteSalesReportExport($documentsWCN);
-            return Excel::download($report, 'sales_report.xlsx');
+            return Excel::download($report, 'sales_report.xls');
 
         }
 
