@@ -8,7 +8,7 @@
 
 {{-- Encabezado --}}
 <div class="mb-4">
-    <h3>Reporte de cotizaciones</h3>
+    <h3>Reporte de ventas</h3>
 </div>
 
 {{-- Filtros --}}
@@ -30,8 +30,8 @@
 
 {{-- Tabla --}}
 <div>
-    <table id="sales-by-period-report" class="w-100 table table-bordered table-striped">
-        <thead>
+    <table id="sales-by-period-report" class="w-100 table table-hover table-bordered table-striped">
+        <thead class="thead-light">
             <tr>
                 @foreach ($columns as $column)
                     <th>{{ $column }}</th>
