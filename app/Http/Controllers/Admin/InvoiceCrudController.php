@@ -149,7 +149,7 @@ class InvoiceCrudController extends CrudController
         }
 
         \Alert::add('warning', 'Hubo un problema al generar el reporte ERR != 200')->flash();
-        return redirect()->to('admin/invoice/dte_sales_report');
+        return redirect()->to($this->crud->route . '/dte_sales_report');
     }
 
     /**
