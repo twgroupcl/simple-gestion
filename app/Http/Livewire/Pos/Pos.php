@@ -54,7 +54,7 @@ class Pos extends Component
     public $customer = null;
     public $customerAddressId;
     public $subtotal = 0;
-    public $discount = null;
+    public $discount = 0;
     public $taxes = 0;
     public $total = 0;
     public $totalProducts = 0;
@@ -112,6 +112,9 @@ class Pos extends Component
                 $this->cartproducts[$product->product->id]['product'] = (array) $product->product;
                 $this->cartproducts[$product->product->id]['real_price'] = $product->real_price;
             }
+           // dd($tmpCart);
+            $this->discount = $tmpCart->discount;
+
             $this->calculateAmounts();
             $this->totalProducts = count($this->cartproducts);
         }
@@ -239,7 +242,7 @@ class Pos extends Component
         ]);
         $this->cartproducts = [];
         $this->total = 0;
-        $this->discount = null;
+        $this->discount = 0;
         $this->subtotal = 0;
         $this->cash = 0;
         $this->taxes = 0;
@@ -381,14 +384,18 @@ class Pos extends Component
         // if ($this->discount > $this->subtotal) {
         //     $this->discount = $this->subtotal;
         // }
-
-        // $this->total = (float) $this->subtotal - (float) $this->discount;
+        $tmpAmountDiscount = 0;
+        if($this->discount > 0){
+            $tmpAmountDiscount =     ((float) $this->subtotal * ((float) $this->discount / 100));
+          //  dd($this->subtotal, $tmpAmountDiscount , ((float) $this->discount / 100));
+        }
+        $this->subtotal = (float) $this->subtotal - (float) $tmpAmountDiscount;
 
         $this->total = $this->subtotal;
         $tmptaxes = ($this->total * 19) / 119;
         $this->subtotal = $this->total - $tmptaxes;
         $this->taxes = $tmptaxes;
-        //$this->total += $tmptaxes;
+       // $this->total +=  $this->taxes;
 
         $cart['products'] = $this->cartproducts;
         $cart['subtotal'] = $this->subtotal;

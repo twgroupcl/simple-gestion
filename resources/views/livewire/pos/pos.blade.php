@@ -494,7 +494,23 @@
                             </div>
                         </div> --}}
                         @if($total > 0)
-                        <div class='row col-md-12 p-0 m-0 d-none d-sm-block'>
+                        <div class="row col-md-12 p-0 m-0 p-1 bg-white">
+                            <div class="col-12 text-right ">
+                                <div class="form-group form-check mb-1">
+                                    <input type="checkbox" class="form-check-input" id="use_discount" @if($discount> 0) checked @endif>
+                                    <label class="form-check-label" for="use_discount">Aplicar descuento</label>
+                                  </div>
+                            </div>
+                            <div class="col-12 " id="amount_discount_view"  @if($discount == 0)style="display: none;" @endif>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">Dcto %</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="0" id="amount_discount" wire:model="discount" wire:change="updatedDiscount()">
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12 p-0 m-0 d-none d-sm-block p-1 bg-white">
                             <div class="col-md-3">
                                 <div class="  border-right-0"> Subtotal</div>
                             </div>
@@ -508,7 +524,7 @@
                         </div>
                         @endif
                         @if($total > 0)
-                        <div class="row col-md-12 p-0 m-0 d-none d-sm-block">
+                        <div class="row col-md-12 p-0 m-0 d-none d-sm-block p-1 bg-white">
                             <div class="col-md-3">
                                 <div class="  border-right-0"> Impuestos</div>
                             </div>
@@ -549,11 +565,11 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                   {{--  <div class="row">
                                         <div class="col-12">
                                             {{ session()->get('user.pos.selectedCustomer')->email }}
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     @endif
                                     <div class="row">
                                         <div class="col-12 text-center">
@@ -779,6 +795,16 @@
 
 
         $('.payment-view').hide();
+
+
+
+        /* amountDiscount.keyup(function(){
+            let percentajeDiscount = $(this).val()
+            tmpTotalCart = clearCurrency(totalCart)
+            console.log( tmpTotalCart * (currentDiscount/100))
+
+        }) */
+
 
         // Calc
         function chr(value) {
@@ -1202,6 +1228,27 @@
                     $('#business_activity_div').hide()
                 }
             })
+
+
+            //Discount
+
+            amountDiscountView = $('#amount_discount_view')
+            useDiscount = $('#use_discount')
+            amountDiscount = $('#amount_discount')
+
+            if(useDiscount.checked){
+                amountDiscountView.show()
+            }
+            useDiscount.change(function() {
+                        if(this.checked) {
+                            amountDiscountView.show()
+                            amountDiscount.focus();
+                        }else{
+                            amountDiscountView.hide()
+                        }
+            });
+
+
 
             //Update mobile
             var mobileMQ = window.matchMedia("(max-width: 360px)")
