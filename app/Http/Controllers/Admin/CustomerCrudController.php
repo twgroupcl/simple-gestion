@@ -70,6 +70,10 @@ class CustomerCrudController extends CrudController
             'name' => 'full_name',
             'type' => 'text',
             'label' => 'Nombre / Razón social',
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereRaw('CONCAT(first_name, " ", last_name) LIKE ?', ['%' . $searchTerm . '%'])
+                        ->orWhereRaw('first_name like ?', ['%' . $searchTerm . '%']);
+            },
         ]);
 
         CRUD::addColumn([
