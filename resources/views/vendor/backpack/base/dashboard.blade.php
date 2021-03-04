@@ -225,12 +225,6 @@ use App\User;
 						'wrapper' => ['class' => 'col-sm-12'],
 						'content' => 'Scripts',
 					],
-                    [
-                        'type' => 'card',
-                        'content'=> [
-                            'header' => 'Hola',
-                        ]
-                    ],
 					[
 						'type'    => 'most-purchased-products',
 						'wrapper' => ['class' => 'col-sm-12'],
