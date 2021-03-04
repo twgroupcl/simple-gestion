@@ -26,13 +26,6 @@
         <input type="date" class="form-control" id="date-to" name="date-to">
     </div>
 
-    {{-- Estado de cotizacion --}}
-    <div class="col-md-2 form-group">
-        <span>Estado de la cotización</span>
-        <select name="quotation-status" id="quotation-status" class="form-control">
-            <option value="all">Todos</option>
-        </select>
-    </div>
 </div>
 
 {{-- Tabla --}}
