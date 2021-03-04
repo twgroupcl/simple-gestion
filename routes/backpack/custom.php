@@ -65,6 +65,8 @@ Route::group([
     Route::post('quotation/addresses', 'QuotationCrudController@addresses');
     Route::get('report/quotations', 'Report\QuotationsReportController@index')->name('report.quotations');
     Route::get('report/quotations/load-data', 'Report\QuotationsReportController@loadData')->name('report.quotations.load-data');
+    Route::get('report/salesbyperiod', 'Report\SalesByPeriodReportController@index')->name('report.sales_by_period');
+    Route::get('report/salesbyperiod/load-data', 'Report\SalesByPeriodReportController@loadData')->name('report.sales_by_period.load-data');
 
     //CHART routes
     Route::get('charts/daily-sales', 'Charts\DailySalesChartController@response')->name('charts.daily-sales.index');
