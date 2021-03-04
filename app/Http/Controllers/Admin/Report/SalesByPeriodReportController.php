@@ -44,6 +44,7 @@ class SalesByPeriodReportController extends BaseController
     public function loadData(Request $request) {
         $fromDate = $request->input('from');
         $toDate = $request->input('to');
+        //@TODO filter NC total and NC partials
 
         $query = Invoice::whereNotNull('folio')->where('invoice_status', Invoice::STATUS_SEND);
 
