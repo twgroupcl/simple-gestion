@@ -147,6 +147,9 @@ class InvoiceCrudController extends CrudController
             return Excel::download($report, 'sales_report.xlsx');
 
         }
+
+        \Alert::add('warning', 'Hubo un problema al generar el reporte ERR != 200')->flash();
+        return redirect()->to('admin/invoice/dte_sales_report');
     }
 
     /**

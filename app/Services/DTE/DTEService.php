@@ -242,7 +242,7 @@ class DTEService
 
         $headers = $this->headers;
 
-        $data = [
+        $data = json_encode([
          	'receptor'=> null,
             'razon_social'=> null,
             'dte'=> null,
@@ -258,7 +258,7 @@ class DTEService
             'periodo' => $period,
             'receptor_evento'=> null,
             'cedido'=> null,
-        ];
+        ]);
 
         $response = self::exec($url, $data, $headers, $method);
 
