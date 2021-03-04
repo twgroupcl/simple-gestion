@@ -11,6 +11,7 @@ use App\Cruds\BaseCrudFields;
 use App\Models\BankAccountType;
 use App\Models\CustomerSegment;
 use App\Models\BusinessActivity;
+use Illuminate\Http\Request;
 use App\Traits\HasCustomAttributes;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\CustomerStoreRequest;
@@ -69,6 +70,10 @@ class CustomerCrudController extends CrudController
             'name' => 'full_name',
             'type' => 'text',
             'label' => 'Nombre / Razón social',
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereRaw('CONCAT(first_name, " ", last_name) LIKE ?', ['%' . $searchTerm . '%'])
+                        ->orWhereRaw('first_name like ?', ['%' . $searchTerm . '%']);
+            },
         ]);
 
         CRUD::addColumn([
@@ -654,5 +659,34 @@ class CustomerCrudController extends CrudController
             $this->crud->addClause('whereIn', 'id', $clientsWithUnpaidments);
         });
 
+    }
+
+
+    public function getTopTableDashboard(Request $request)
+    {
+        $fromDate = $request->input('from');
+        $toDate = $request->input('to');
+
+        $customers = \App\Models\Customer::whereHas('invoices', 
+            function($query) use($fromDate, $toDate) {
+                if (isset($fromDate)) {
+                    $query->where('invoice_date', '>=', $fromDate);
+                }
+
+                if (isset($toDate)) {
+                    $query->where('invoice_date', '<=', $toDate);
+                }
+            }
+        )->withCount('invoices')->get()->map(function ($customer) {
+
+            $customer->buy_total = $customer->invoices->sum('total');
+            $customer->full_name = $customer->full_name;
+            return $customer;
+
+        })->sortByDesc('buy_total')
+          ->take(10)
+          ->flatten(1);
+
+        return response()->json($customers);
     }
 }

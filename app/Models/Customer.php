@@ -176,6 +176,11 @@ class Customer extends Model
         return $this->hasMany(Quotation::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

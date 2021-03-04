@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\RutRule;
 use App\Rules\PhoneRule;
 use App\Http\Requests\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductInventorySourceRequest extends FormRequest
@@ -28,7 +29,12 @@ class ProductInventorySourceRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required',
+            'code' => [
+                'required',
+                Rule::unique('product_inventory_sources', 'code')->where(function ($query) {
+                    return $query->where('company_id', $this->company_id)->where('id', '!=', $this->id);
+                })
+            ],
             'company_id' => 'required',
             'name' => 'required|min:5|max:255',
             'commune_id' => 'required|exists:communes,id',

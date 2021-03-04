@@ -1238,23 +1238,28 @@ class ProductCrudController extends CrudController
         return $entries;
     }
 
-    public function getProducts(Request $request)
+    public function getTopTableDashboard(Request $request)
     {
-        $products= Product::where('status','=','1')
-                        ->where('is_approved','=','1')
-                        ->where('parent_id', '=', null)
-                        //->whereSellerId($this->seller->id)
-                        ->Where('deleted_at', '=', null)
-                       // ->Where('name', 'like', '%'.$searchProduct.'%')
-                       // ->orWhere('sku', '=', $searchProduct)
+        $fromDate = $request->input('from');
+        $toDate = $request->input('to');
 
-                        ->limit(20)
-                        ->get();
+        $products = \App\Models\Product::whereHas('invoice_items',
+           function ($query) use ($fromDate, $toDate){
+                if (isset($fromDate)) {
+                    $query->where('created_at', '>=', $fromDate);
+                }
 
-        if ($products == null) {
-            return response()->json(['data' => 'not found'], 404);
-        }
-
-        return $products;
+                if (isset($toDate)) {
+                    $query->where('created_at', '<=', $toDate);
+                }
+            }
+        )->withCount('invoice_items')->orderBy('invoice_items_count', 'DESC')
+          ->get()
+          ->map(function ($product) {
+              $product->invoice_items_count = $product->invoice_items_count;
+              $product->invoice_item_total = $product->invoice_items->sum('total');
+              return $product;
+          })->take(10)->flatten(1);
+        return response()->json($products);
     }
 }

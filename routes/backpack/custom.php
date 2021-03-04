@@ -88,6 +88,14 @@ Route::group([
     Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
 
     // API routes
+    // dashboard
+    Route::post('api/invoice/salesbyperiod', 'InvoiceCrudController@salesByPeriod');
+    Route::post('api/quotation/bystatus', 'QuotationCrudController@byStatus');
+    Route::post('api/quotation/generalStatus', 'QuotationCrudController@generalStatus');
+    Route::post('api/product/top_table_dashboard', 'ProductCrudController@getTopTableDashboard');
+    Route::post('api/customer/top_table_dashboard', 'CustomerCrudController@getTopTableDashboard');
+    Route::get('charts/top-customers-in-period', 'Charts\TopCustomersInPeriodChartController@response')->name('charts.top-customers-in-period.index');
+    ///
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
     Route::get('api/productclassattributes/get', 'ProductClassAttributeCrudController@searchConfigurableAttributes');
     Route::get('api/products/getBySeller', 'ProductCrudController@getProductBySeller');

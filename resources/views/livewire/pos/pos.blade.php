@@ -1218,12 +1218,13 @@
             // Type document change event
             $('#type_document_select').change( function () {
                 if (this.value == 33) {
-                    let address =  @this.getSelectedCustomerAddress()
+                    /* let address =  @this.getSelectedCustomerAddress()
                     if(address == null) {
                         //btnPay.prop("disabled", true);
                     }else{
                         $('#business_activity_div').show()
-                    }
+                    } */
+                    $('#business_activity_div').show()
                 } else {
                     $('#business_activity_div').hide()
                 }
