@@ -78,7 +78,6 @@ class TopCustomersInPeriodChartController extends ChartController
           ->take(10);
 
 
-        debug($customers);
         foreach ($customers as $customerId => $total) {
             //$customerName = \App\Models\Customer::find($customerId)->first_name;
             $this->chart->dataset($customerId, 'bar', [$total])
