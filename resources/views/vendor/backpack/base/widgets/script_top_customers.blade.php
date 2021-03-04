@@ -72,25 +72,46 @@
         productsChart.updateCanvas = (data, ctx) => {
             //diff = Math.abs(startDay.diff(endDay, 'days')) + 1;
             //period = [...Array(diff).keys()].map(item => moment().subtract(item, 'days').format('YYYY-MM-DD'));
+                    let chart_instance;
+                        Chart.helpers.each(Chart.instances, function(instance){
+                                    if (instance.chart.canvas.id === ctx.canvas.id && data.length > 0) {
+                                        let labels = [];
+                                        data.forEach((el) => {
+                                            labels.push(el.label)
+                                        })
+                                        //instance.data.labels = labels
+                                        instance.data.datasets = data 
+                                        instance.options.responsive = true
+                                        instance.scales.yAxes = [{ticks: {beginAtZero: true}}]
+                                        instance.maintainAspectRatio = false;
+                                        instance.update()
 
-            Chart.helpers.each(Chart.instances, function(instance){
-                if (instance.chart.canvas.id === ctx.canvas.id) {
-                    instance.destroy()
-                }
-            })
+                                    }
+                                })
 
-            if (data.length > 0) {
-
-                let myChart = new Chart(ctx, {
-                        type: data[0].type,
-                        data: {
-                            //labels: {0:"hola"},
-                            datasets: data
-                        },
-                        options: {"maintainAspectRatio":false,"scales":{"xAxes":[],"yAxes":[{"ticks":{"beginAtZero":true}}]}},
-                        plugins: []
-                });
-            }
+                    /*
+                    if (data.length > 0) {
+                                let myChart = new Chart(ctx, {
+                                            type: data[0].type,
+                                            data: {
+                                                        labels,
+                                                        datasets: data
+                                                    },
+                                            options: {
+                                                        "scales":{
+                                                                    xAxes: [                                             {
+                                                                                display: true,
+                                                                                position: 'bottom',
+                                                                                id: 'x-axis-2'
+                                                                            }],
+                                                                        "yAxes":[{"ticks":{"beginAtZero":true}}]
+                                                                },
+                                                        responsive: true,
+                                                        maintainAspectRatio: true,
+                                                    },
+                                            plugins: []
+                                        });
+                                */
         }
 
         

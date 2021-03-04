@@ -86,6 +86,5 @@ class TopCustomersInPeriodChartController extends ChartController
                      'rgba('.rand(1,255).', '.rand(1,255).', '.rand(1,255).', 0.4)'
                  );
         }
-       
     }
 }
