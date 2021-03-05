@@ -66,7 +66,7 @@ class CustomerStoreRequest extends FormRequest
             'uid' => [
                 'required',
                 'string',
-                'unique:customers,uid,' . $customerId . ',uid,company_id,' . $companyId . ',deleted_at,NULL',
+                'unique:customers,uid,' . $customerId . ',id,company_id,' . $companyId . ',deleted_at,NULL',
                 $rutRule ],
             'first_name' => 'required|string',
             'last_name' => 'string|nullable',
