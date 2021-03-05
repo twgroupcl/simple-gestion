@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Report;
 
 use Carbon\Carbon;
-use App\Models\Invoice;
+use App\Models\{ Invoice, ProductCategory};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\app\Http\Controllers\BaseController;
@@ -46,7 +46,10 @@ class SalesByCategoryReportController extends BaseController
         $toDate = $request->input('to');
         //@TODO filter NC total and NC partials
 
-        $query = Invoice::whereNotNull('folio')->where('invoice_status', Invoice::STATUS_SEND);
+        //$query = Invoice::whereNotNull('folio')->where('invoice_status', Invoice::STATUS_SEND);
+        $query = ProductCategory::whereHas('invoice_items', function($query) {
+
+        });
 
         if (!empty($fromDate)) {
             $query->where('invoice_date', '>=', $fromDate);
@@ -56,18 +59,18 @@ class SalesByCategoryReportController extends BaseController
             $query->where('invoice_date', '<=', $toDate);
         }
 
-        $data = $query->with('invoice_type')->get()->map( function ($invoice) {
-            $customInvoice = new \stdClass();
-            $customInvoice->folio = $invoice->folio;
-            $customInvoice->invoice_date = $invoice->invoice_date;
-            $customInvoice->type = $invoice->invoice_type->code;
-            $customInvoice->net = $invoice->net;
-            $customInvoice->tax_amount = $invoice->tax_amount;
-            $customInvoice->total = $invoice->total;
-            $customInvoice->customer_uid = $invoice->uid;
-            $customInvoice->customer_name = $invoice->first_name . ' ' . $invoice->last_name;
-            return $customInvoice;
-        })->toArray();
+        //$data = $query->with('invoice_type')->groupBy('invoice_')->get()->map( function ($invoice) {
+        //    $customInvoice = new \stdClass();
+        //    $customInvoice->folio = $invoice->folio;
+        //    $customInvoice->invoice_date = $invoice->invoice_date;
+        //    $customInvoice->type = $invoice->invoice_type->code;
+        //    $customInvoice->net = $invoice->net;
+        //    $customInvoice->tax_amount = $invoice->tax_amount;
+        //    $customInvoice->total = $invoice->total;
+        //    $customInvoice->customer_uid = $invoice->uid;
+        //    $customInvoice->customer_name = $invoice->first_name . ' ' . $invoice->last_name;
+        //    return $customInvoice;
+        //})->toArray();
 
         //if (!empty($request->input('status')) && $request->input('status') != 'all') {
         //    $query->where('quotation_status', $request->input('status'));
