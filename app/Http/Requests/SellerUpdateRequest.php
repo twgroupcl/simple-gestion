@@ -34,6 +34,7 @@ class SellerUpdateRequest extends FormRequest
 
             $this->merge([
                 $attrName.'_validation' => $forValidation,
+                'uid' => sanitizeRUT($this->uid),
             ]);
         }
     }
@@ -63,9 +64,7 @@ class SellerUpdateRequest extends FormRequest
             'uid' => [
                 'required', 
                 'string', 
-                Rule::unique('sellers')->where( function($query) {
-                    return $query->where('id', '!=', $this->id);
-                }),
+                'unique:sellers,uid,' . $this->id . ',id,company_id,' . $this->company_id, // not support . ',deleted_at,NULL',
                 $rutRule
             ],
             'name' => 'required|string',
@@ -196,7 +195,7 @@ class SellerUpdateRequest extends FormRequest
             '*.required*' => 'Es necesario completar el campo :attribute.',
             '*.string' => 'El campo :attribute debe ser texto',
             '*.date' => 'El campo :attribute debe ser de tipo fecha',
-            '*.unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
+            '*.unique' => 'El campo :attribute ya está siendo utilizado.',
             '*.exists' => 'No se pudo encontrar una relación con el campo :attribute.',
             'activities_data_validation.*.*.required' => 'Es necesario completar todos los campos de Giros',
             'activities_data_validation.*.*.distinct' => 'Los campos :attribute(s) no pueden estar repetidos',

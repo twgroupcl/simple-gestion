@@ -32,7 +32,7 @@ class CustomerUpdateRequest extends FormRequest
 
             $this->merge([
                 $attrName.'_validation' => $forValidation,
-                'uid' => sanitizeRUT($this->uid)
+                'uid' => sanitizeRUT($this->uid),
             ]);
         }
     }

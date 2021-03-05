@@ -63,7 +63,7 @@ class SellerStoreRequest extends FormRequest
         return [
             'uid' => [
                 'required', 
-                'unique:sellers,uid,' . $this->id . ',uid,company_id,' . $this->company_id . ',deleted_at,NULL',
+                'unique:sellers,uid,' . $this->id . ',uid,company_id,' . $this->company_id, //',deleted_at,NULL',
                 //'unique:sellers,uid',
                 'string', 
                 $rutRule
@@ -197,7 +197,7 @@ class SellerStoreRequest extends FormRequest
             '*.required*' => 'Es necesario completar el campo :attribute.',
             '*.string' => 'El campo :attribute debe ser texto',
             '*.date' => 'El campo :attribute debe ser de tipo fecha',
-            '*.unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
+            '*.unique' => 'El campo :attribute ya está siendo utilizado.',
             '*.exists' => 'No se pudo encontrar una relación con el campo :attribute.',
             'activities_data_validation.*.*.required' => 'Es necesario completar todos los campos de Giros',
             'activities_data_validation.*.*.distinct' => 'Los campos :attribute(s) no pueden estar repetidos',
