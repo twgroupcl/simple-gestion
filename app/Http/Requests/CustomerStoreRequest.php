@@ -185,7 +185,7 @@ class CustomerStoreRequest extends FormRequest
             '*.required*' => 'Es necesario completar el campo :attribute.',
             '*.string' => 'El campo :attribute debe ser texto',
             '*.date' => 'El campo :attribute debe ser de tipo fecha',
-            '*.unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
+            '*.unique' => 'El campo :attribute ya está siendo utilizado. Verifique este dato.',
             '*.exists' => 'No se pudo encontrar una relación con el campo :attribute.',
             'activities_data_validation.*.*.required' => 'Es necesario completar todos los campos de Giros',
             'activities_data_validation.*.*.distinct' => 'Los campos :attribute(s) no pueden estar repetidos',

@@ -32,6 +32,7 @@ class CustomerUpdateRequest extends FormRequest
 
             $this->merge([
                 $attrName.'_validation' => $forValidation,
+                'uid' => sanitizeRUT($this->uid)
             ]);
         }
     }
@@ -57,8 +58,17 @@ class CustomerUpdateRequest extends FormRequest
         $rutRule = new RutRule($this->is_foreign ? true : false);
         $phoneRule = new PhoneRule;
 
+        $customerId = request()->id;
+        $customerEmail = request()->email;
+        $companyId = request()->company_id;
+
         $rules =  [
-            'uid' => ['required', 'string', $rutRule],
+            'uid' => [
+                'required',
+                'unique:customers,uid,' . $customerId . ',id,company_id,' . $companyId . ',deleted_at,NULL',
+                'string',
+                $rutRule,
+            ],
             'first_name' => 'required|string',
             'last_name' => 'string|nullable',
             'email' => 'required|email',
@@ -169,7 +179,7 @@ class CustomerUpdateRequest extends FormRequest
             '*.required*' => 'Es necesario completar el campo :attribute.',
             '*.string' => 'El campo :attribute debe ser texto',
             '*.date' => 'El campo :attribute debe ser de tipo fecha',
-            '*.unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
+            '*.unique' => 'El campo :attribute ya está siendo utilizado.',
             '*.exists' => 'No se pudo encontrar una relación con el campo :attribute.',
             'activities_data_validation.*.*.required' => 'Es necesario completar todos los campos de Giros',
             'activities_data_validation.*.*.distinct' => 'Los campos :attribute(s) no pueden estar repetidos',
