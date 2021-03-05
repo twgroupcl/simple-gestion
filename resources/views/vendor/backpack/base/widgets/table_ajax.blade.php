@@ -9,7 +9,7 @@ $url = $widget['url'];
 <div class="container">
     <h4> {{$widget['name']}}</h4>
     <table class="table {{ $widget['tableClass'] ?? '' }}" data-url="{{$url}}">
-        <thead>
+        <thead class="{{$widget['tableHeadClass']}}">
             <tr>
                 @foreach (collect($columnNames) as $column => $value)
                     @if (is_array($value))
