@@ -144,9 +144,12 @@ class InvoiceCrudController extends CrudController
             }
 
             $report = new DteSalesReportExport($documentsWCN);
-            return Excel::download($report, 'sales_report.xlsx');
+            return Excel::download($report, 'sales_report.xls');
 
         }
+
+        \Alert::add('warning', 'Hubo un problema al generar el reporte ERR != 200')->flash();
+        return redirect()->to($this->crud->route . '/dte_sales_report');
     }
 
     /**
