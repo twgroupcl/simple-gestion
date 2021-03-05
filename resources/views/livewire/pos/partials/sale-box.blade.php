@@ -84,7 +84,7 @@
                             <p class="text-uppercase font-weight-bold">Monto de apertura: <span
                                     class="ml-2 text-primary">{{ currencyFormat($saleBox->opening_amount ?? 0, 'CLP', true) }}</span>
                             </p>
-                            {{-- <p class="text-uppercase font-weight-bold">Monto fin: <span class="ml-2 text-primary">{{ currencyFormat($saleBox->calculateClosingAmount() ?? 0, 'CLP', true) }}</span></p> --}}
+                            <p class="text-uppercase font-weight-bold">Monto fin: <span class="ml-2 text-primary">{{ currencyFormat($saleBox->calculateClosingAmount() ?? 0, 'CLP', true) }}</span></p>
 
                             <div class="text-right">
                                 <button type="submit" class="btn btn-primary btn-block">

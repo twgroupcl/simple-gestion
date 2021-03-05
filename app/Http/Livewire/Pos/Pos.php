@@ -95,7 +95,7 @@ class Pos extends Component
                 $this->branch_id = $this->branches->first()->id;
             }
         }
-        //dd($this->branches);
+
         //$this->products = $this->getProducts();
         //$this->setView('productList');
         $this->validateBox();
@@ -145,9 +145,12 @@ class Pos extends Component
 
     public function confirmPayment($cash, $tip = null, $typeDocument = null, $businessActivity = null)
     {
+
         $this->customer = session()->get('user.pos.selectedCustomer');
 
         if ($cash >= $this->total && !is_null($this->saleBox)) {
+
+
             $currency = Currency::where('code', Setting::get('default_currency'))->firstOrFail();
             //Make order
             $order = new Order();
@@ -228,6 +231,7 @@ class Pos extends Component
             $this->emit('showToast', 'Cobro realizado', 'Cobro registrado.', 3000, 'info');
 
         } else {
+
             $this->emit('showToast', 'Error', 'Ocurrio un error al registrar el pago.', 3000, 'error');
         }
     }
@@ -387,11 +391,11 @@ class Pos extends Component
         $tmpAmountDiscount = 0;
         if($this->discount > 0){
             $tmpAmountDiscount =     ((float) $this->subtotal * ((float) $this->discount / 100));
-          //  dd($this->subtotal, $tmpAmountDiscount , ((float) $this->discount / 100));
+
         }
         $this->subtotal = (float) $this->subtotal - (float) $tmpAmountDiscount;
 
-        $this->total = $this->subtotal;
+        $this->total = round($this->subtotal);
         $tmptaxes = ($this->total * 19) / 119;
         $this->subtotal = $this->total - $tmptaxes;
         $this->taxes = $tmptaxes;
@@ -532,6 +536,12 @@ class Pos extends Component
         $this->calculateAmounts();
     }
 
+    public function clearDiscount()
+    {
+        $this->discount = 0;
+        $this->calculateAmounts();
+    }
+
     public function sendMail(Invoice $invoice = null)
     {
         Mail::to($invoice->email)->send(new PosBill($invoice));
@@ -587,7 +597,6 @@ class Pos extends Component
     {
         $this->saleBox->refresh();
         $this->movements = $this->saleBox->movements;
-       // $this->movements = SalesBoxMovement::where('sales_box_id','=',$this->saleBox->id)->get();
 
     }
 

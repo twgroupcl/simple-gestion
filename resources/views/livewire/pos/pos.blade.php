@@ -446,7 +446,7 @@
     {{-- Payment view --}}
     @include('livewire.pos.partials.payment')
      {{-- Movements Box --}}
-     @include('livewire.pos.partials.movements-box')
+    {{--  @include('livewire.pos.partials.movements-box') --}}
     {{-- Sale Box --}}
     @include('livewire.pos.partials.sale-box')
     {{-- Confirm payment view --}}
@@ -553,28 +553,28 @@
                             <div class="col-12" @if(!$isSaleBoxOpen) style="display:none;" @endif>
 
                                 <div  class="border border-info  rounded p-1 bg-white ">
-                                    @if (session()->get('user.pos.selectedCustomer'))
+                                    @if ($customer)
                                     <div class="row">
                                         <div class="col-8">
                                             <i class="las la-user" ></i>
-                                            {{ session()->get('user.pos.selectedCustomer')->first_name }}
-                                            {{ session()->get('user.pos.selectedCustomer')->last_name }}
+                                            {{ $customer->first_name }}
+                                            {{ $customer->last_name }}
                                         </div>
                                         <div class="col-4">
-                                            {{ session()->get('user.pos.selectedCustomer')->rut }}
+                                            {{ $customer->rut }}
                                         </div>
                                     </div>
 
                                    {{--  <div class="row">
                                         <div class="col-12">
-                                            {{ session()->get('user.pos.selectedCustomer')->email }}
+                                            {{ $customer->email }}
                                         </div>
                                     </div> --}}
                                     @endif
                                     <div class="row">
                                         <div class="col-12 text-center">
                                             <button class="btn btn-info " id="btn-customer">
-                                                @if (session()->get('user.pos.selectedCustomer'))
+                                                @if ($customer)
                                                     Cambiar Cliente (F6)
                                                 @else
                                                     Seleccionar Cliente (F6)
@@ -587,7 +587,7 @@
 
 
 
-                                <button class="btn btn-danger btn-block mt-1 " id="btn-pay"> Cobrar (F2)
+                                <button class="btn btn-danger btn-block mt-1 " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar> Cobrar (F2)
                                  {{-- @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar --}}
                                 </button>
                             </div>
@@ -1237,14 +1237,15 @@
             useDiscount = $('#use_discount')
             amountDiscount = $('#amount_discount')
 
-            if(useDiscount.checked){
+           /*  if(useDiscount.checked){
                 amountDiscountView.show()
-            }
-            useDiscount.change(function() {
+            } */
+            useDiscount.change(async function() {
                         if(this.checked) {
                             amountDiscountView.show()
                             amountDiscount.focus();
                         }else{
+                            await @this.clearDiscount();
                             amountDiscountView.hide()
                         }
             });

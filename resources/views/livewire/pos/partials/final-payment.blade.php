@@ -1,4 +1,4 @@
-@handheld
+{{-- @handheld
 <div class="col-12 vh-100 final-payment-view " style="display: none;">
     <div class="row">
         <div class="col-12"><i class="la la-close float-right close-final-payment" ></i></div>
@@ -43,7 +43,7 @@
         </div>
     </div>
 </div>
-@elsehandheld
+@elsehandheld --}}
 <div class="col-11  h-100 final-payment-view" style="display: none;">
     <div class="row">
         <div class="col-12"><i class="la la-close float-right close-final-payment" ></i></div>
@@ -101,4 +101,4 @@
 
 
 </div>
-@endhandheld
+{{-- @endhandheld --}}

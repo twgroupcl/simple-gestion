@@ -1,4 +1,4 @@
-@handheld
+{{-- @handheld
 <div class="row ">
     <div class="col-12 text-center">
         <h6>Ordenes</h6>
@@ -52,7 +52,7 @@
         </div>
     </div>
 </div>
-@elsehandheld
+@elsehandheld --}}
 <div class="row col-md-12">
     <div class="col-md-4 px-0">
         <input id="searchOrder" class="form-control mr-sm-2 w-100 order-search" type="text" placeholder="Buscar orden"
@@ -134,4 +134,4 @@
         </div>
     @endisset
 </div>
-@endhandheld
+{{-- @endhandheld --}}
