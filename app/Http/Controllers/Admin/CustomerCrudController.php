@@ -536,7 +536,7 @@ class CustomerCrudController extends CrudController
             'tab' => 'Contactos',
         ]);
 
-        if (backpack_user()->hasAnyRole(['Super admin', 'Administrador negocio'])) {
+        if (backpack_user()->can('create_user_customer')) {
             CRUD::addField([
                 'name' => 'required_user',
                 'type' => 'checkbox',
