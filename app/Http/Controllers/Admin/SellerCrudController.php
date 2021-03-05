@@ -914,7 +914,7 @@ class SellerCrudController extends CrudController
 
         }
 
-        if (backpack_user()->hasAnyRole(['Super admin', 'Administrador negocio'])) {
+        if (backpack_user()->hasPermissionTo('create_user_seller')) {
             CRUD::addField([
                 'name' => 'required_user',
                 'type' => 'checkbox',

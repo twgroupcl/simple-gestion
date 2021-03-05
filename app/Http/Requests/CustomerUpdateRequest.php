@@ -30,9 +30,14 @@ class CustomerUpdateRequest extends FormRequest
                 $forValidation[] = (array) $attrs;
             }
 
+            $uid = $this->uid;
+            if ($this->is_foreign) {
+                $uid = sanitizeRUT($this->uid);
+            }
+
             $this->merge([
                 $attrName.'_validation' => $forValidation,
-                'uid' => sanitizeRUT($this->uid),
+                'uid' => $uid,
             ]);
         }
     }

@@ -31,8 +31,13 @@ class CustomerStoreRequest extends FormRequest
                 $forValidation[] = (array) $attrs;
             }
 
+            $uid = $this->uid;
+            if ($this->is_foreign) {
+                $uid = sanitizeRUT($this->uid);
+            }
+
             $this->merge([
-                'uid' => str_replace('.', '', $this->uid),
+                'uid' => $uid,
                 $attrName.'_validation' => $forValidation,
             ]);
         }
