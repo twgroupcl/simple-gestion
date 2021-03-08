@@ -5,6 +5,10 @@ use App\Models\Product;
 use App\Models\Seller;
 use App\User;
 
+    //color cards
+    $gray = 'border-dark text-dark bg-gray';
+    $white = 'border-dark text-black bg-white';
+
 	$user = backpack_user();
 	if ($user->hasRole('Vendedor marketplace')) {
 		$seller = Seller::firstWhere('user_id', $user->id);
@@ -14,7 +18,7 @@ use App\User;
 		Widget::add()->to('before_content')->type('div')->class('row')->content([
 			Widget::make([
 				'type' => 'progress',
-				'class'=> 'card border-0 text-white bg-dark',
+				'class'=> 'card border-0 text-black bg-light',
 				'progressClass' => 'progress-bar',
 				'value' => $productCount,
 				'description' => 'Productos.',
@@ -40,7 +44,7 @@ use App\User;
 
 			Widget::make([
 				'type' => 'card',
-				'class'=> 'card border-0 text-white bg-dark col-md-6 text-center',
+				'class'=> 'card col-6 text-center ' . $gray,
                 'content' => [
                     'header' => 'Productos disponibles',
                     'body' => '<h3>' . $productCount . '</h3>',
@@ -96,9 +100,9 @@ use App\User;
                             'url' => '/admin/api/invoice/salesbyperiod',
                             //'attribute' => 'count',
                             'wrapperClass' => 'col-md-6',
-                            'class'=> 'card border-0 text-white bg-dark',
+                            'class'=> 'card ' . $white,
                             'content'=> [
-                                'header' => 'Ventas en el periodo',
+                                'header' => '<strong>Ventas en el periodo</strong>',
                                 //'body' => 'algo',
                             ],
                         ],
@@ -108,9 +112,9 @@ use App\User;
                             'url' => '/admin/api/quotation/generalStatus',
                             //'attribute' => 'count',
                             'wrapperClass' => 'col-md-6',
-                            'class'=> 'card border-0 text-white bg-dark',
+                            'class'=> 'card ' . $gray,
                             'content'=> [
-                                'header' => 'Cotizaciones',
+                                'header' => '<strong>Cotizaciones</strong>',
                                 //'body' => 'algo',
                             ],
                         ],
@@ -125,9 +129,9 @@ use App\User;
                             'url' => '/admin/api/quotation/bystatus',
                             //'attribute' => 'count',
                             'wrapperClass' => 'col-md-12',
-                            'class'=> 'card border-0 text-white bg-dark text-center',
+                            'class'=> 'card text-center ' . $white,
                             'content'=> [
-                                'header' => 'Cotizaciones por estado',
+                                'header' => '<strong>Cotizaciones por estado</strong>',
                                 //'body' => 'algo',
                             ],
                         ],
@@ -147,7 +151,8 @@ use App\User;
                     'wrapper' => [
                         'class' => 'col-6',
                     ],
-                    'tableClass' => 'table-striped table-hover',
+                    'tableClass' => 'table-striped table-hover table-bordered',
+                    'tableHeadClass' => 'thead-dark',
                     'attributes' => [
                         'sku',
                         'invoice_item_total',
@@ -165,7 +170,8 @@ use App\User;
                     'wrapper' => [
                         'class' => 'col-6',
                     ],
-                    'tableClass' => 'table-striped table-hover',
+                    'tableClass' => 'table-striped table-hover table-bordered',
+                    'tableHeadClass' => 'thead-dark',
                     'attributes' => [
                         'uid',
                         'full_name',

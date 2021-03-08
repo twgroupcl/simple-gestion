@@ -239,6 +239,16 @@ class Customer extends Model
         return $this->uid . ' - ' . $this->first_name;
     }
 
+    public function getFullNameWithRawUidAttribute()
+    {
+
+        if (!empty($this->last_name)) {
+            return $this->attributes['uid'] . ' - ' . $this->first_name . ' ' . $this->last_name;
+        }
+
+        return $this->attributes['uid'] . ' - ' . $this->first_name;
+    }
+
     public function getUidAttribute()
     {
         if ($this->is_foreign) return $this->attributes['uid'];
