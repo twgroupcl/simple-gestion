@@ -25,10 +25,15 @@
     @endif
     <div class="row">
         <div class="card col-md-12 text-center mb-1">
-            <select id="payment-method" class="form-control w-100">
-                <option value="1">Efectivo</option>
-                <option value="2">Transferencia</option>
+            @if(!is_null($paymentMethods))
+            <select id="payment_method_select" class="form-control w-100" >
+                {{-- <option value="1">Efectivo</option>
+                <option value="2">Transferencia</option> --}}
+                @foreach ($paymentMethods as $paymentMethod)
+                    <option value="{{$paymentMethod->code}}">{{$paymentMethod->title}}</option>
+                @endforeach
             </select>
+            @endif
         </div>
     </div>
     <div class="row">

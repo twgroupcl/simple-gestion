@@ -15,6 +15,7 @@ use App\Models\SalesBox;
 use App\Models\SalesBoxMovement;
 use App\Models\Seller;
 use App\Models\MovementType;
+use App\Models\PaymentMethod;
 use Backpack\Settings\app\Models\Setting;
 use Carbon\Carbon;
 use Exception;
@@ -47,6 +48,10 @@ class Pos extends Component
     public $movements;
     public $movementtypes;
     public $updateMovements;
+
+
+    //Payment Methods
+    public $paymentMethods;
 
     // cart
     public $cart;
@@ -112,7 +117,7 @@ class Pos extends Component
                 $this->cartproducts[$product->product->id]['product'] = (array) $product->product;
                 $this->cartproducts[$product->product->id]['real_price'] = $product->real_price;
             }
-           // dd($tmpCart);
+
             $this->discount = $tmpCart->discount;
 
             $this->calculateAmounts();
@@ -130,6 +135,9 @@ class Pos extends Component
 
         $this->updateMovements = 0;
 
+        //Load Payment Methods;
+        $this->paymentMethods = $this->loadPaymentMethods();
+
     }
 
     public function render()
@@ -143,8 +151,9 @@ class Pos extends Component
         $this->viewMode = $view;
     }
 
-    public function confirmPayment($cash, $tip = null, $typeDocument = null, $businessActivity = null)
+    public function confirmPayment($cash, $tip = null, $typeDocument = null, $businessActivity = null, $paymentMethod = null)
     {
+
 
         $this->customer = session()->get('user.pos.selectedCustomer');
 
@@ -198,16 +207,23 @@ class Pos extends Component
 
             $order->save();
 
+
+            //Get selected payment Method
+            $selectedPaymentMethod = $this->paymentMethods->filter(function($key, $item) use ($paymentMethod) {
+
+                return $key->code === $paymentMethod ;
+            });
+
             //Register payment
             $orderpayment = new OrderPayment();
             $data = [
-                'event' => 'Cash Payment',
+                'event' => $selectedPaymentMethod->title,
                 'data' => $cash,
 
             ];
             $orderpayment->order_id = $order->id;
-            $orderpayment->method = 'cash';
-            $orderpayment->method_title = 'cash';
+            $orderpayment->method = $selectedPaymentMethod->code;
+            $orderpayment->method_title = $selectedPaymentMethod->title;
             $orderpayment->json_in = json_encode($data);
             $orderpayment->date_in = Carbon::now();
             $orderpayment->save();
@@ -598,6 +614,10 @@ class Pos extends Component
         $this->saleBox->refresh();
         $this->movements = $this->saleBox->movements;
 
+    }
+
+    public function loadPaymentMethods(){
+        return PaymentMethod::where('status',1)->orderBy('title')->get();
     }
 
 }

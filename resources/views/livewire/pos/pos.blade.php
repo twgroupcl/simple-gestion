@@ -1157,8 +1157,9 @@
                 let tip = clearCurrency(spanTip)
                 let typeDocument = $('#type_document_select').val()
                 let businessActivity = $('#business_activity_select').val()
+                let selectedPaymentMethod = $('#payment_method_select').val()
 
-                    await @this.confirmPayment(totalCash, tip, typeDocument, businessActivity)
+                    await @this.confirmPayment(totalCash, tip, typeDocument, businessActivity, selectedPaymentMethod)
                     hideAllViews()
 
                     $('.final-payment-view').show();
