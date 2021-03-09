@@ -689,6 +689,12 @@
             $('#salesBoxModal').appendTo("body").modal('hide');
         })
 
+        //Show main pos after select customer
+        window.addEventListener('showMainPos', async (event) => {
+            hideAllViews()
+            $('.main-view').show();
+        })
+
         //Colapse general menu
         $("body").removeClass('sidebar-lg-show');
         $("#search").focus();

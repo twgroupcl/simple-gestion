@@ -42,6 +42,7 @@ class Pos extends Component
     public $remarks_open;
     public $remarks_close;
     public $isSaleBoxOpen = false;
+    public $sales;
 
     //movements
     public $movement;
@@ -209,10 +210,11 @@ class Pos extends Component
 
 
             //Get selected payment Method
-            $selectedPaymentMethod = $this->paymentMethods->filter(function($key, $item) use ($paymentMethod) {
-
+            $selectedPaymentMethod = $this->paymentMethods->first(function($key, $item) use ($paymentMethod) {
                 return $key->code === $paymentMethod ;
             });
+
+
 
             //Register payment
             $orderpayment = new OrderPayment();
@@ -314,8 +316,9 @@ class Pos extends Component
             $this->saleBox = null;
             $this->dispatchBrowserEvent('openSaleBoxView');
         }else{
+            $this->loadSales();
             $this->loadMovements();
-            //
+
         }
     }
 
@@ -357,7 +360,6 @@ class Pos extends Component
     }
 
     // Cart Operations
-
     public function addProduct(Product $product)
     {
 
@@ -458,6 +460,7 @@ class Pos extends Component
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
         $this->customerAddressId = $addressId;
+        $this->dispatchBrowserEvent('showMainPos');
     }
 
     public function getCartProducts()
@@ -618,6 +621,24 @@ class Pos extends Component
 
     public function loadPaymentMethods(){
         return PaymentMethod::where('status',1)->orderBy('title')->get();
+    }
+
+    public function loadSales()
+    {
+           /*  $this->sales = $this->saleBox->logs()->whereHas('order', function ($query) {
+                $query->where('event', 'Nueva orden generada');
+            })->groupBy('order_payments.id')->get(); */
+           //$this->sales =  Order::with('order_payments')->selectRaw('order_payments.method, sum(order.total)')->groupBy('order_payments.method')->get() ;//->groupBy('order_payments.method')->get();
+           //$this->sales = DB::raw("SELECT  op.method, sum(o.total)  FROM orders o inner join order_payments op on o.id= op.order_id group by op.method" )->get();
+           //dd($this->saleBox->logs()->pluck('order_id')->filter());
+           $this->sales =DB::table('orders')
+           ->join('order_payments', 'orders.id', '=', 'order_payments.order_id')
+           ->whereIn('orders.id',$this->saleBox->logs()->pluck('order_id')->filter())
+           ->select('order_payments.method','order_payments.method_title', DB::raw('sum(orders.total) as total'))
+           ->groupBy('order_payments.method','order_payments.method_title')
+           ->get();
+           //dd($this->sales);
+
     }
 
 }

@@ -30,7 +30,29 @@
             @endif
         </div>
     </div>
+    <!-- Sales -->
+    @if(!is_null($sales))
 
+    <table class="table table-sm mt-1">
+        <thead>
+            <tr>
+                <th>Forma de pago</th>
+                <th>Importe</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($sales as $sale)
+
+            <tr>
+                <td>{{ $sale->method_title }}</td>
+                <td class="text-right">{{currencyFormat(($sale->total ) ?? 0, 'CLP', true)}}</td>
+            </tr>
+
+            @endforeach
+        </tbody>
+    </table>
+    @endif
     <!-- Movements -->
     @if(!is_null($movements))
     <table class="table table-sm mt-1">
