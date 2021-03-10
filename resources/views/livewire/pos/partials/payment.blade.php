@@ -24,16 +24,33 @@
         </div>
     @endif
     <div class="row">
-        <div class="card col-md-12 text-center mb-1">
-            @if(!is_null($paymentMethods))
-            <select id="payment_method_select" class="form-control w-100" >
-                {{-- <option value="1">Efectivo</option>
-                <option value="2">Transferencia</option> --}}
-                @foreach ($paymentMethods as $paymentMethod)
-                    <option value="{{$paymentMethod->code}}">{{$paymentMethod->title}}</option>
-                @endforeach
-            </select>
-            @endif
+        <div class="col-12 card">
+            <div class="row text-center mb-1">
+                <div class="col-12">
+                    @if(!is_null($paymentMethods))
+                    <select id="payment-method-select" class="form-control w-100" >
+                        {{-- <option value="1">Efectivo</option>
+                        <option value="2">Transferencia</option> --}}
+                        @foreach ($paymentMethods as $paymentMethod)
+                            <option value="{{$paymentMethod['code']}}">{{$paymentMethod['title']}}</option>
+                        @endforeach
+                    </select>
+                    @endif
+                </div>
+            </div>
+            <div class="row" id="payment-extra-data" style="display: none;">
+                <div class="col-4" >
+                    <input type="text" id="uid" class="form-control" placeholder="Nro Documento">
+                </div>
+                <div class="col-8">
+                    <select id="bank" class="form-control w-100" >
+                        <option value="-1">Seleccione un banco</option>
+                        @foreach($banks as $bank)
+                            <option value="{{$bank->id}}">{{$bank->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -65,7 +82,7 @@
                 </div>
                 <div class="row border border-warning rounded" id="cash-div">
                     <div class="col-8  text-left">
-                        <h4>Efectivo</h4>
+                        <h4 id="payment-method-text">Efectivo</h4>
                     </div>
                     <div class="col-4 text-danger text-right">
                         <h4><span class="total-cash">$ 0</span></h4>

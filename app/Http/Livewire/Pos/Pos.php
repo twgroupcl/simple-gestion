@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Pos;
 
 use App\Mail\PosBill;
+use App\Models\Bank;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\Invoice;
@@ -54,6 +55,9 @@ class Pos extends Component
     //Payment Methods
     public $paymentMethods;
 
+    //Banks
+    public $banks;
+
     // cart
     public $cart;
     public $cartproducts;
@@ -104,6 +108,8 @@ class Pos extends Component
 
         //$this->products = $this->getProducts();
         //$this->setView('productList');
+
+        $this->sales = null;
         $this->validateBox();
 
         //Check if exist session cart
@@ -131,6 +137,8 @@ class Pos extends Component
 
         $this->movement = new SalesBoxMovement();
 
+
+
         //Load Movements
         $this->movementtypes = MovementType::orderBy('name','asc')->get();
 
@@ -139,11 +147,14 @@ class Pos extends Component
         //Load Payment Methods;
         $this->paymentMethods = $this->loadPaymentMethods();
 
+        //Load banks
+        $this->banks = $this->loadBanks();
+
     }
 
     public function render()
     {
-
+        $this->validateBox();
         return view('livewire.pos.pos');
     }
 
@@ -210,22 +221,25 @@ class Pos extends Component
 
 
             //Get selected payment Method
-            $selectedPaymentMethod = $this->paymentMethods->first(function($key, $item) use ($paymentMethod) {
+            /* $selectedPaymentMethod = $this->paymentMethods->first(function($key, $item) use ($paymentMethod) {
                 return $key->code === $paymentMethod ;
-            });
+            }); */
 
+            $tmpSelectedPaymentMethod = array_search($paymentMethod,array_column($this->paymentMethods,'code'));
+            $selectedPaymentMethod = $this->paymentMethods[$tmpSelectedPaymentMethod];
 
+            //dd($selectedPaymentMethod['title']);
 
             //Register payment
             $orderpayment = new OrderPayment();
             $data = [
-                'event' => $selectedPaymentMethod->title,
+                'event' => $selectedPaymentMethod['title'],
                 'data' => $cash,
 
             ];
             $orderpayment->order_id = $order->id;
-            $orderpayment->method = $selectedPaymentMethod->code;
-            $orderpayment->method_title = $selectedPaymentMethod->title;
+            $orderpayment->method = $selectedPaymentMethod['code'];
+            $orderpayment->method_title = $selectedPaymentMethod['title'];
             $orderpayment->json_in = json_encode($data);
             $orderpayment->date_in = Carbon::now();
             $orderpayment->save();
@@ -314,9 +328,11 @@ class Pos extends Component
         $this->checked = isset($this->saleBox->id);
         if (!$this->isSaleBoxOpen) {
             $this->saleBox = null;
+            $this->sales = null;
             $this->dispatchBrowserEvent('openSaleBoxView');
         }else{
-            $this->loadSales();
+            $this->sales = $this->loadSales();
+
             $this->loadMovements();
 
         }
@@ -373,6 +389,7 @@ class Pos extends Component
                 $this->currentPrice
             );
         }
+
 
     }
 
@@ -620,25 +637,47 @@ class Pos extends Component
     }
 
     public function loadPaymentMethods(){
-        return PaymentMethod::where('status',1)->orderBy('title')->get();
+        //return PaymentMethod::where('status',1)->orderBy('title')->get();
+        $tmpPaymentMethods = [
+                [
+                    'code'=>'cash',
+                    'title'=> 'Efectivo'
+                ],
+                [
+                    'code'=>'transfer',
+                    'title'=> 'Transferencia'
+                ],
+                [
+                    'code'=>'checkbank',
+                    'title'=> 'Cheque'
+                ],
+                [
+                    'code'=>'creditcard',
+                    'title'=> 'Tarjeta de crédito'
+                ],
+                [
+                    'code'=>'debitcard',
+                    'title'=> 'Tarjeta de débito'
+                ],
+        ];
+        return $tmpPaymentMethods;
     }
 
     public function loadSales()
     {
-           /*  $this->sales = $this->saleBox->logs()->whereHas('order', function ($query) {
-                $query->where('event', 'Nueva orden generada');
-            })->groupBy('order_payments.id')->get(); */
-           //$this->sales =  Order::with('order_payments')->selectRaw('order_payments.method, sum(order.total)')->groupBy('order_payments.method')->get() ;//->groupBy('order_payments.method')->get();
-           //$this->sales = DB::raw("SELECT  op.method, sum(o.total)  FROM orders o inner join order_payments op on o.id= op.order_id group by op.method" )->get();
-           //dd($this->saleBox->logs()->pluck('order_id')->filter());
-           $this->sales =DB::table('orders')
+           $tmpSales =DB::table('orders')
            ->join('order_payments', 'orders.id', '=', 'order_payments.order_id')
            ->whereIn('orders.id',$this->saleBox->logs()->pluck('order_id')->filter())
            ->select('order_payments.method','order_payments.method_title', DB::raw('sum(orders.total) as total'))
            ->groupBy('order_payments.method','order_payments.method_title')
            ->get();
-           //dd($this->sales);
+           return $tmpSales;
 
+    }
+
+    public function loadBanks()
+    {
+        return Bank::all()->sortBy('name');
     }
 
 }

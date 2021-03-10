@@ -1038,74 +1038,74 @@
             transferTipToChange();
         }); */
 
+        paymentMethodText = $('#payment-method-text')
+        //Payment method change event
+            $('#payment-method-select').change(function(){
+                console.log(paymentMethodText.text())
+                let tmpPaymentMethodtext = $(this).find(":selected"). text()
+                if(tmpPaymentMethodtext != null){
+                    paymentMethodText.text(tmpPaymentMethodtext)
+                }else{
+                    paymentMethodText.text('Efectivo')
+                }
+        })
 
 
 
 
-            $('header').show()
-            $('footer').show()
+        $('header').show()
+        $('footer').show()
              //Menu actions
 
-            $('.link-pos').click(function() {
-                hideAllViews()
-                $('.main-view').show();
-                $('.menu-content').hide()
+        $('.link-pos').click(function() {
+            hideAllViews()
+            $('.main-view').show();
+            $('.menu-content').hide()
+        });
 
+        $('.link-box-sale').click(function() {
+            hideAllViews();
+            $('.sale-box-view').show();
+            $('.menu-content').hide()
+        });
 
+        $('.link-sale').click(function() {
+            hideAllViews()
+            $('.sales-view').show();
+            $('.menu-content').hide()
+        });
 
-            });
+        $('.link-customer').click(function() {
+            hideAllViews()
+            $('.customer-view').show();
+            $('.menu-content').hide()
+        });
 
-            $('.link-box-sale').click(function() {
-                hideAllViews();
-                $('.sale-box-view').show();
-                $('.menu-content').hide()
-            });
+        $('#btn-customer').click(function() {
+            hideAllViews()
+            $('.customer-view').show();
+        });
 
+        $('#close-payment').click(function() {
+            hideAllViews()
+            $('.main-view').show();
+        });
 
-            $('.link-sale').click(function() {
-                hideAllViews()
-                $('.sales-view').show();
-                $('.menu-content').hide()
-            });
+        $('#btn-pay').click(function() {
+            hideAllViews()
+            $('.payment-view').show();
+            inputCash.focus().select();
+        });
 
-            $('.link-customer').click(function() {
-                hideAllViews()
-                $('.customer-view').show();
-                $('.menu-content').hide()
-            });
+        $('#btn-pay-mobile').click(function() {
+            hideAllViews()
+            $('.payment-view').show();
+        });
 
-            $('#btn-customer').click(function() {
-                hideAllViews()
-                $('.customer-view').show();
-
-
-            });
-
-            $('#close-payment').click(function() {
-                hideAllViews()
-                $('.main-view').show();
-
-            });
-
-            $('#btn-pay').click(function() {
-                hideAllViews()
-                $('.payment-view').show();
-                inputCash.focus().select();
-                //$('.main-view').hide();
-            });
-            $('#btn-pay-mobile').click(function() {
-                hideAllViews()
-                $('.payment-view').show();
-                //inputCash.focus().select();
-                //$('.main-view').hide();
-            });
-
-            $('.btn-box-sale').click(function() {
-                console.log('aca');
-                hideAllViews();
-                $('.sale-box-view').show();
-
-            });
+        $('.btn-box-sale').click(function() {
+            hideAllViews();
+            $('.sale-box-view').show();
+        });
 
 
 
@@ -1163,7 +1163,7 @@
                 let tip = clearCurrency(spanTip)
                 let typeDocument = $('#type_document_select').val()
                 let businessActivity = $('#business_activity_select').val()
-                let selectedPaymentMethod = $('#payment_method_select').val()
+                let selectedPaymentMethod = $('#payment-method-select').val()
 
                     await @this.confirmPayment(totalCash, tip, typeDocument, businessActivity, selectedPaymentMethod)
                     hideAllViews()
@@ -1237,9 +1237,7 @@
                 }
             })
 
-
             //Discount
-
             amountDiscountView = $('#amount_discount_view')
             useDiscount = $('#use_discount')
             amountDiscount = $('#amount_discount')

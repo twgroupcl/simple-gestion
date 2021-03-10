@@ -17,7 +17,8 @@
                     Abrir Caja
                 </button>
             @else
-            <a class="btn btn-danger text-white"  data-toggle="modal" data-target="#salesBoxModal" data-backdrop="false">
+          {{--   <a class="btn btn-danger text-white"  data-toggle="modal" data-target="#salesBoxModal" data-backdrop="false"> --}}
+            <a class="btn btn-danger text-white"   data-toggle="collapse" href="#collapseCloseBox" role="button" aria-expanded="false" aria-controls="collapseCloseBox">
                 Cerrar Caja
             </a>
             @endif
@@ -30,52 +31,103 @@
             @endif
         </div>
     </div>
-    <!-- Sales -->
-    @if(!is_null($sales))
+    <div class="collapse" id="collapseCloseBox">
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="row  ">
+                    <div class="col-12 text-center">
+                        <h3>Cierre de caja</h3>
+                    </div>
+                    <div class="col-12">
+                        <p class="text-uppercase font-weight-bold">Inicio: <span
+                            class="ml-2 text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</span>
+                        </p>
+                        <p class="text-uppercase font-weight-bold">Cierre: <span
+                                class="ml-2 text-primary">{{ now()->translatedFormat('j/m/Y - g:i a') }}</span>
+                        </p>
+                        <p class="text-uppercase font-weight-bold">Usuario: <span
+                                class="ml-2 text-primary">{{ $seller->visible_name }}</span></p>
+                        <p class="text-uppercase font-weight-bold">Sucursal: <span
+                                class="ml-2 text-primary">{{ $saleBox->branch->name }}</span></p>
+                        <p class="text-uppercase font-weight-bold">Monto de apertura: <span
+                                class="ml-2 text-primary">{{ currencyFormat($saleBox->opening_amount ?? 0, 'CLP', true) }}</span>
+                        </p>
+                       {{--  <p class="text-uppercase font-weight-bold">Monto fin: <span class="ml-2 text-primary">{{ currencyFormat($saleBox->calculateClosingAmount() ?? 0, 'CLP', true) }}</span></p> --}}
 
-    <table class="table table-sm mt-1">
-        <thead>
-            <tr>
-                <th>Forma de pago</th>
-                <th>Importe</th>
+                    </div>
+                    <div class="col-12">
+                    <!-- Sales -->
+                    @if(!is_null($sales))
+                    <table class="table table-sm mt-1">
+                        <thead>
+                            <tr>
+                                <th>Forma de pago</th>
+                                <th>Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                             $totalBox = 0;
+                             $totalSale = 0;
+                            @endphp
+                            @foreach ($sales as $sale)
+                            @php
+                             $totalBox += $sale->total
+                            @endphp
+                            <tr>
+                                <td>{{ $sale->method_title }}</td>
+                                <td class="text-right">{{currencyFormat(($sale->total ) ?? 0, 'CLP', true)}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><strong>Total Caja</strong></td>
+                                <td class="text-right"><strong>{{currencyFormat(($totalBox ) ?? 0, 'CLP', true)}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Ventas</strong></td>
+                                <td class="text-right"><strong>{{currencyFormat(($totalSale ) ?? 0, 'CLP', true)}}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($sales as $sale)
-
-            <tr>
-                <td>{{ $sale->method_title }}</td>
-                <td class="text-right">{{currencyFormat(($sale->total ) ?? 0, 'CLP', true)}}</td>
-            </tr>
-
-            @endforeach
-        </tbody>
-    </table>
-    @endif
     <!-- Movements -->
     @if(!is_null($movements))
-    <table class="table table-sm mt-1">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Tipo Mov.</th>
-                <th>Importe</th>
-                <th>Nota</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($movements as $mov)
-            <tr>
-                <td>{{ \Carbon\Carbon::parse($mov->date)->translatedFormat('j/m/Y') }}</td>
-                <td>{{ $mov->movementtype->name }}</td>
-                <td class="text-right">{{currencyFormat(($mov->amount ) ?? 0, 'CLP', true)}}</td>
-                <td>{{$mov->notes}}</td>
-            </tr>
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="col-12 text-center">
+                <h3>Movimientos Efectivo</h3>
+            </div>
+            <table class="table table-sm mt-1">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo Mov.</th>
+                        <th>Importe</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($movements as $mov)
+                    <tr>
+                        <td>{{ \Carbon\Carbon::parse($mov->date)->translatedFormat('j/m/Y') }}</td>
+                        <td>{{ $mov->movementtype->name }}</td>
+                        <td class="text-right">{{currencyFormat(($mov->amount ) ?? 0, 'CLP', true)}}</td>
+                        <td>{{$mov->notes}}</td>
+                    </tr>
 
-            @endforeach
-        </tbody>
-    </table>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
     @endif
 
     <!-- Modals -->
