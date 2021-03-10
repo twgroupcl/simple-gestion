@@ -1,14 +1,26 @@
 {{-- <div wire:loading wire:target="products" class="loading"></div> --}}
 <div class="container">
-    <div class="row">
-        <div class=" w-100 text-center pt-1 pb-1">
-            <form class="form-inline">
-                <input id="search" class="form-control w-100 input-search" type="search" placeholder="Buscar producto"
-                    aria-label="Search" wire:model="searchProduct"  >
-                {{-- <button class="btn btn-outline-info my-2 my-sm-0"
-                    type="submit">Buscar</button> --}}
-            </form>
-        </div>
+    <div class="row mt-2 mb-2">
+
+
+
+            <div class="col-2 text-center " id="menu-mobile">
+                <i class="las la-bars menu-mobile" style="font-size: 32px;"></i>
+            </div>
+            <div class="col-md-12 col-8 p-0 text-center">
+                <form class="form-inline search-products">
+                    <input id="search" class="form-control w-100 input-search" type="search" placeholder="Buscar producto"
+                        aria-label="Search"  wire:model="searchProduct">
+               </form>
+            </div>
+            <div class="col-2 p-0 text-center d-block d-sm-none " id="cart-mobile"  >
+                <span class="las la-shopping-cart " style="font-size:32px;">
+
+                <span
+                    class="custom-badge badge-cart-view  "  @if( $cartproducts>0) id="mobile-cart-view" @endif> {{ $cartproducts }}</span>
+                </span>
+            </div>
+
     </div>
     @if(!$productNotFound)
     <div class="row">
@@ -62,7 +74,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <h5>Agrear el producto al carro?</h5>
+          <h5>Agregar el producto al carro?</h5>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

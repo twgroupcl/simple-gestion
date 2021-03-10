@@ -11,13 +11,17 @@ class SalesBox extends Component
     public $isSaleBoxOpen = false;
     public $openSaleBoxModal = false;
     public $seller;
+    public $branch_id;
     public $opening_amount;
     public $closing_amount;
-    public $remarks;
+    public $remarks_open;
+    public $remarks_close;
 
     protected $rules = [
+        'branch_id' => 'required',
         'opening_amount' => 'required|numeric|max:99999999.99',
-        'remarks' => 'nullable',
+        'remarks_open' => 'nullable',
+        'remarks_close' => 'nullable',
     ];
 
     protected $messages = [
@@ -50,17 +54,20 @@ class SalesBox extends Component
 
     public function openSaleBox()
     {
+
+
         $this->validate();
         $this->saleBox = $this->seller->sales_boxes()->create([
+            'branch_id' => $this->branch_id,
             'opening_amount' => $this->opening_amount,
-            'remarks' => $this->remarks,
+            'remarks_open' => $this->remarks_open,
             'opened_at' => now(),
         ]);
 
         $this->isSaleBoxOpen = true;
         $this->opening_amount = null;
         $this->closing_amount = null;
-        $this->remarks = null;
+        $this->remarks_open = null;
         $this->emit('salesBoxUpdated', $this->saleBox->id);
         $this->dispatchBrowserEvent('closeSaleBoxModal');
     }

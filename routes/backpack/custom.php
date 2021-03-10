@@ -130,7 +130,7 @@ Route::group([
     Route::post('/inventory/mass-receptions/preview', 'InventoryCrudController@massReceptionsPreview')->name('inventory.mass-receptions.preview');
     Route::post('/inventory/mass-receptions/store', 'InventoryCrudController@massReceptionsStore')->name('inventory.mass-receptions.store');
     Route::get('/inventory/mass-receptions/result', 'InventoryCrudController@massReceptionsResult')->name('inventory.mass-receptions.result');
-    
+
     //Route::get('admin/payment/subscription/test/{id}', 'App\Http\Controllers\Admin\Payments\WebPayPlusController@subscriptionTestPayment')->name('payment.test.detail');
     Route::crud('transaction', 'TransactionCrudController');
     Route::get('api/transaction/get-documents-by-company', 'TransactionCrudController@getDocumentsByCompany');

@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use App\Scopes\CompanyBranchScope;
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Scopes\CompanyBranchScope;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
-class SalesBox extends Model
+class MovementType extends Model
 {
     use CrudTrait;
+
 
     /*
     |--------------------------------------------------------------------------
@@ -16,13 +18,14 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'sales_boxes';
+    protected $table = 'movement_types';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    //protected $appends = ['string_for_select'];
 
     /*
     |--------------------------------------------------------------------------
@@ -30,10 +33,13 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function calculateClosingAmount()
+    protected static function boot()
     {
-        return $this->logs()->sum('amount') + $this->opening_amount;
+        parent::boot();
+
+        static::addGlobalScope(new CompanyBranchScope);
     }
+
 
     /*
     |--------------------------------------------------------------------------
@@ -41,58 +47,17 @@ class SalesBox extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function seller()
-    {
-        return $this->belongsTo(Seller::class);
-    }
-
-    public function branch()
-    {
-        return $this->belongsTo(Branch::class);
-    }
-
-    public function logs()
-    {
-        return $this->hasMany(SalesBoxLog::class);
-    }
-
-    public function movements()
-    {
-        return $this->hasMany(SalesBoxMovement::class);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
 
-    public function scopeClosed($query)
-    {
-        return $query->where('closed_at', '!=', null);
-    }
-
-    public function scopeOpened($query)
-    {
-        return $query->where('opened_at', '!=', null)
-                    ->where('closed_at', null);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-
-    public function getIsOpenedAttribute()
-    {
-        return ($this->opened_at !== null) && ($this->closed_at === null);
-    }
-
-    public function getIsClosedAttribute()
-    {
-        return ($this->opened_at !== null) && ($this->closed_at !== null);
-    }
 
     /*
     |--------------------------------------------------------------------------
