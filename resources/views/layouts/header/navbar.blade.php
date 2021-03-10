@@ -118,7 +118,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item active"><a class="nav-link" href="{{ url('/home') }}">Inicio</a></li>
                         <li class="nav-item active"><a class="nav-link" href="{{ url('/about-us') }}">Prolibro</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="https://camaradellibro.cl/wp-content/uploads/2021/02/Programa-Feria-Vin%CC%83a-2021-v.3.pdf" target="_blank" >Programa Cultural</a></li>
+                        {{-- <li class="nav-item active"><a class="nav-link" href="https://camaradellibro.cl/wp-content/uploads/2021/02/Programa-Feria-Vin%CC%83a-2021-v.3.pdf" target="_blank" >Programa Cultural</a></li> --}}
                         {{-- <li class="nav-item dropdown active"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Inicio</a>
                             <ul class="dropdown-menu">
                                 <li class="dropdown position-static mb-0"><a class="dropdown-item py-2 border-bottom" href="home-fashion-store-v1.html"><span class="d-block text-heading">Fashion
