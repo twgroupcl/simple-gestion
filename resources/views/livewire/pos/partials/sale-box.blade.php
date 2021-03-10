@@ -31,9 +31,11 @@
             @endif
         </div>
     </div>
+    @if ($isSaleBoxOpen)
     <div class="collapse" id="collapseCloseBox">
         <div class="card mt-4">
             <div class="card-body">
+                <form wire:submit.prevent="closeSaleBox">
                 <div class="row  ">
                     <div class="col-12 text-center">
                         <h3>Cierre de caja</h3>
@@ -57,26 +59,45 @@
                     </div>
                     <div class="col-12">
                     <!-- Sales -->
-                    @if(!is_null($sales))
+                    @if(count($sales)>0)
                     <table class="table table-sm mt-1">
                         <thead>
                             <tr>
                                 <th>Forma de pago</th>
-                                <th>Importe</th>
+                                <th>Teorico</th>
+                                <th>Real</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
                              $totalBox = 0;
                              $totalSale = 0;
+                             $openingAmount = $saleBox->opening_amount;
+
                             @endphp
                             @foreach ($sales as $sale)
                             @php
-                             $totalBox += $sale->total
+
+                             $teoricAmountCash = $sale->total + $openingAmount + $totalMovements;
+                             if($sale->method_title == 'cash'){
+                                $totalBox += $teoricAmountCash;
+                             }else{
+                                $totalBox += $sale->total;
+                             }
+
                             @endphp
                             <tr>
                                 <td>{{ $sale->method_title }}</td>
-                                <td class="text-right">{{currencyFormat(($sale->total ) ?? 0, 'CLP', true)}}</td>
+
+                                @if( $sale->method === 'cash')
+                                    <td class="text-right">{{currencyFormat( $teoricAmountCash ?? 0, 'CLP', true)}}</td>
+                                    <td class="text-right">
+                                        <input type="currency" id="realCashAmount" name="realCashAmount">
+                                    </td>
+                                @else
+                                    <td class="text-right">{{currencyFormat($sale->total  ?? 0, 'CLP', true)}}</td>
+                                    <td class="text-right">{{currencyFormat($sale->total  ?? 0, 'CLP', true)}}</td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
@@ -84,19 +105,28 @@
                             <tr>
                                 <td><strong>Total Caja</strong></td>
                                 <td class="text-right"><strong>{{currencyFormat(($totalBox ) ?? 0, 'CLP', true)}}</strong></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td><strong>Total Ventas</strong></td>
                                 <td class="text-right"><strong>{{currencyFormat(($totalSale ) ?? 0, 'CLP', true)}}</strong></td>
+                                <td></td>
                             </tr>
                         </tfoot>
                     </table>
                     @endif
                     </div>
                 </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Confirmar
+                    </button>
+                </div>
+                </form>
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Movements -->
     @if(!is_null($movements))
@@ -143,7 +173,7 @@
                 </div>
                 <div class="modal-body">
 
-                    @if ($isSaleBoxOpen)
+                   {{--  @if ($isSaleBoxOpen)
                         <form wire:submit.prevent="closeSaleBox">
                             <p class="text-uppercase font-weight-bold">Inicio: <span
                                     class="ml-2 text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }}</span>
@@ -168,7 +198,7 @@
                         </form>
 
                     @else
-
+ --}}
                         <form wire:submit.prevent="openSaleBox">
                             <div class="form-group">
                                 <label for="openingAmount">Sucursal</label>
@@ -221,7 +251,7 @@
                                 </button>
                             </div>
                         </form>
-                    @endif
+                    {{-- @endif --}}
                 </div>
 
             </div>
@@ -244,7 +274,7 @@
                     <form   >
                         <div class="row g-3 align-items-center">
                             <div class="col-4">
-                                <label for="inputPassword6" class="col-form-label">Sucursal</label>
+                                <label for="" class="col-form-label">Sucursal</label>
                             </div>
                             <div class="col-8">
                                 <span class="form-control"> {{$saleBox->branch->name}}</span>
@@ -333,3 +363,13 @@
 @endif
 </div>
 
+{{-- @push('after_scripts')
+<script>
+    window.addEventListener('openSaleBoxModal', event => {
+        $('#showSaleBoxModal').appendTo("body").modal('show');
+    })
+    window.addEventListener('closeSaleBoxModal', event => {
+        $('#showSaleBoxModal').appendTo("body").modal('hide');
+    })
+</script>
+@endpush --}}

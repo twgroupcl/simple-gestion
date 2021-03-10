@@ -50,6 +50,7 @@ class Pos extends Component
     public $movements;
     public $movementtypes;
     public $updateMovements;
+    public $totalMovements;
 
 
     //Payment Methods
@@ -155,6 +156,7 @@ class Pos extends Component
     public function render()
     {
         $this->validateBox();
+
         return view('livewire.pos.pos');
     }
 
@@ -633,6 +635,16 @@ class Pos extends Component
     {
         $this->saleBox->refresh();
         $this->movements = $this->saleBox->movements;
+        $this->totalMovements += $this->movements->sum(function($movement){
+
+            if($movement->movementtype->is_removal == 1){
+                return (float) $movement->amount * -1;
+            }else{
+                return (float) $movement->amount ;
+            }
+        });
+
+
 
     }
 
@@ -671,6 +683,7 @@ class Pos extends Component
            ->select('order_payments.method','order_payments.method_title', DB::raw('sum(orders.total) as total'))
            ->groupBy('order_payments.method','order_payments.method_title')
            ->get();
+
            return $tmpSales;
 
     }

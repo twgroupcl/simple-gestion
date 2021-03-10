@@ -23,6 +23,7 @@
             </div>
         </div>
     @endif
+
     <div class="row">
         <div class="col-12 card">
             <div class="row text-center mb-1">
@@ -40,10 +41,10 @@
             </div>
             <div class="row" id="payment-extra-data" style="display: none;">
                 <div class="col-4" >
-                    <input type="text" id="uid" class="form-control" placeholder="Nro Documento">
+                   {{--  <input type="text" id="uid-2" name="uid-2" class="form-control" placeholder="Nro Documento"> --}}
                 </div>
                 <div class="col-8">
-                    <select id="bank" class="form-control w-100" >
+                    <select id="bank" name="bank" class="form-control w-100" >
                         <option value="-1">Seleccione un banco</option>
                         @foreach($banks as $bank)
                             <option value="{{$bank->id}}">{{$bank->name}}</option>
@@ -53,6 +54,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="card col-md-6 mb-1">
             <div class='card-body p-1'>

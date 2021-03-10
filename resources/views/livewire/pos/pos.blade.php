@@ -674,7 +674,7 @@
 
         /* Show modals on sales box */
 
-        window.addEventListener('showSalesBoxModal', async (event) => {
+       /*  window.addEventListener('showSalesBoxModal', async (event) => {
 
             let modal = $('.app-body').find('#salesBoxModal');
             $('.app-body').find('#salesBoxModal').remove();
@@ -683,12 +683,13 @@
                 modal.appendTo('body');
             }
             //$('#salesBoxModal').modal('show');
-        })
+        }) */
 
-        window.addEventListener('closeSaleBoxView', async (event) => {
-            $('#salesBoxModal').appendTo("body").modal('hide');
-        })
 
+
+        window.addEventListener('closeSaleBoxView', event => {
+        $('#salesBoxModal').appendTo("body").modal('hide');
+        })
         //Show main pos after select customer
         window.addEventListener('showMainPos', async (event) => {
             hideAllViews()
