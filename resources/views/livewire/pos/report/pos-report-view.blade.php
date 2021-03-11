@@ -96,9 +96,20 @@
                     </li>
                 </ul>
                 <div class="card-body">
-                    <a target="_blanck"
-                    href="{{ route('order.invoice', ['order' => $selectedOrder->id, 'tipoPapel' => 75]) }}"
-                        class="btn btn-success">Imprimir Boleta</a>
+                    <a 
+                        target="_blanck"
+                        href="{{ route('order.invoice', ['order' => $selectedOrder->id, 'tipoPapel' => 75]) }}"
+                        class="btn btn-success"
+                    >
+                        Imprimir Boleta
+                    </a>
+                    <a 
+                        href="#"
+                        class="btn btn-danger"
+                        onclick="showReturnsModal({{ $selectedOrder->id }})"
+                    >
+                        Devolución
+                    </a>
                 </div>
             </div>
         </div>
