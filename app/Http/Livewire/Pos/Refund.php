@@ -41,13 +41,21 @@ class Refund extends Component
         $this->step = $step;
     }
 
-    public function selectOrder($orderId)
+    public function cleanData()
     {
         $this->step = 1;
         $this->messageError = null;
+        $this->reason = null;
+        $this->creditNote = null;
+        $this->totals = [];
+    }
+
+    public function selectOrder($orderId)
+    {
+        $this->cleanData();
+        
         $this->order = Order::find($orderId);
         $this->invoice = $this->order->invoice;
-        $this->totals = [];
         $this->itemsToRefund = $this->invoice->invoice_items->map(function ($item) {
             return [
                 'item_id' => $item->id,
@@ -146,6 +154,7 @@ class Refund extends Component
             'reference_type_document' => $invoice->invoice_type_id,
             'reference_folio' => $invoice->folio,
             'reference_date' => $invoice->invoice_date,
+            'reference_reason' => $this->reason,
             'reference_code' => 3, // Corrige montos
             'source' => 'pos',
         ];
