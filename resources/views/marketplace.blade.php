@@ -96,9 +96,9 @@
     <div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
         <div class="cz-carousel cz-dots-enabled">
             <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
-                <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
+               {{--  <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
                     <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
-                </a>
+                </a> --}}
                 <img src="{{ asset('img/prolibro/banner-medio-prolibro-2.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
             </div>
         </div>
@@ -108,9 +108,9 @@
         <div class="cz-carousel">
             <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled">
                 <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}'>
-                    <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
+                   {{--  <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
                         <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid ">
-                    </a>
+                    </a> --}}
                     <img src="{{ asset('img/prolibro/mobile-banner-medio-prolibro-2.jpg') }}" alt="Prolibro Banner" class="img-fluid">
 
                 </div>
@@ -163,13 +163,13 @@
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
-            <div class="col-md-4 text-center">
+           {{--  <div class="col-md-4 text-center">
                 <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
                 <img src="{{ asset('img/prolibro/partner-mercurio.jpg') }}" alt="Banner Mercurio" class="img-fluid w-50">
-            </div>
-            <div class="col-md-4 text-center">
+            </div> --}}
+            <div class="col-md-4 text-center mx-auto">
                 <a href="https://www.radiovalparaiso.cl/" target="_blank">
                     <img src="{{ asset('img/prolibro/partner-valparaiso.jpg') }}" alt="Banner Radio Valparaiso" class="img-fluid w-50">
                 </a>
