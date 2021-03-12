@@ -66,6 +66,7 @@ class Pos extends Component
     public $customerAddressId;
     public $subtotal = 0;
     public $discount = 0;
+    public $discountAmount = 0;
     public $taxes = 0;
     public $total = 0;
     public $totalProducts = 0;
@@ -281,6 +282,7 @@ class Pos extends Component
         $this->cartproducts = [];
         $this->total = 0;
         $this->discount = 0;
+        $this->discountAmount = 0;
         $this->subtotal = 0;
         $this->cash = 0;
         $this->taxes = 0;
@@ -431,6 +433,7 @@ class Pos extends Component
 
         }
         $this->subtotal = (float) $this->subtotal - (float) $tmpAmountDiscount;
+        $this->discountAmount = round((float) $tmpAmountDiscount * 100 / 119);
 
         $this->total = round($this->subtotal);
         $tmptaxes = ($this->total * 19) / 119;
@@ -542,8 +545,9 @@ class Pos extends Component
                 $invoice->phone = $order->phone;
                 $invoice->cellphone = $order->cellphone;
                 $invoice->address_id = $this->customerAddressId;
-                $invoice->discount_amount = $order->discount_total;
-                $invoice->discount_total = $order->discount_total;
+                //$invoice->discount_amount = $order->discount_total;
+                $invoice->discount_percent = $order->discount_total;
+                $invoice->discount_total = $this->discountAmount;
                 $invoice->total = $order->total;
 
                 $invoice->orders()->attach($order->id);
