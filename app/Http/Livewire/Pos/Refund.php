@@ -13,8 +13,6 @@ use App\Services\DTE\DTEService;
  * @todo
  * 
  * - Notas de credito no estan funcionando con invoices que poseen descuentos
- * - Agregar DB Transaction en el proceso de creacion de la nota de credito
- * - Atrapar exepciones que arroja el metodo para actualizar los inventarios
  */
 
 class Refund extends Component
@@ -154,7 +152,6 @@ class Refund extends Component
 
         $itemsData = collect(json_decode($creditNote->items_data, true));
 
-        // Change the qty
         $itemsData = $itemsData->map(function ($item) {
             foreach ($this->itemsToRefund as $itemRefund) {
                 // Si hay dos items con el mismo product id o si
@@ -168,23 +165,39 @@ class Refund extends Component
             return $item;
         });
 
-        // Remove items with qty 0
+        // Remove items with qty equals to 0
         $itemsData = $itemsData->filter(function ($item) {
             return $item['qty'] == 0 ? false : true;
         });
 
         if (!$itemsData->count()) return $this->messageError = 'La nota de credito debe contener por lo menos un item';
 
-        $creditNote->items_data = $itemsData;
-        $creditNote = $this->calculateInvoiceTotal($creditNote);
-        $creditNote->save();
+        \DB::beginTransaction();
+        $error = false;
 
-        if ($moveInventory) {
-            $this->updateInventory();
+        try {
+            $creditNote->items_data = $itemsData;
+            $creditNote = $this->calculateInvoiceTotal($creditNote);
+            $creditNote->save();
+    
+            if ($moveInventory) {
+                $this->updateInventory();
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error creando nota de credito para devolución: ' . $e->getMessage());
+            $error = true;
+            $errorMessage = $e->getMessage();
+        }
+        
+        if ($error) {
+            $this->messageError = 'Ocurrio un error: ' . $errorMessage;
+            \DB::rollBack();
+            return false;
         }
 
+        \DB::commit();
+
         $this->creditNote = $creditNote;
-        
         $this->goStep(3);
     }
 
