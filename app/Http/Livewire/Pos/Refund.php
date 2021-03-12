@@ -4,8 +4,18 @@ namespace App\Http\Livewire\Pos;
 
 use App\Models\Order;
 use App\Models\Invoice;
+use App\Models\Product;
 use Livewire\Component;
 use App\Models\InvoiceType;
+use App\Services\DTE\DTEService;
+
+/**
+ * @todo
+ * 
+ * - Notas de credito no estan funcionando con invoices que poseen descuentos
+ * - Agregar DB Transaction en el proceso de creacion de la nota de credito
+ * - Atrapar exepciones que arroja el metodo para actualizar los inventarios
+ */
 
 class Refund extends Component
 {
@@ -14,8 +24,12 @@ class Refund extends Component
     public $reason;
     public $order;
     public $invoice;
+    public $creditNote;
     public $itemsToRefund;
     public $totals;
+
+    public $step = 1;
+    public $messageError;
 
     protected $listeners = ['selectOrder' => 'selectOrder'];
 
@@ -26,8 +40,11 @@ class Refund extends Component
 
     public function selectOrder($orderId)
     {
+        $this->step = 1;
+        $this->messageError = null;
         $this->order = Order::find($orderId);
         $this->invoice = $this->order->invoice;
+        $this->totals = [];
         $this->itemsToRefund = $this->invoice->invoice_items->map(function ($item) {
             return [
                 'item_id' => $item->id,
@@ -96,14 +113,20 @@ class Refund extends Component
         $this->totals['total'] = $this->totals['subtotal'] * 1.19;
     }
 
-    public function issueCreditNote()
+
+    /**
+     * Create a new credit note 
+     */
+    public function issueCreditNote(bool $moveInventory = false)
     {
-        if (!$this->invoice) return dd('error');
+        $this->messageError = null;
+
+        if (!$this->invoice) return $this->messageError = 'Ocurrio un error';
 
         $invoice = $this->invoice;
 
         if (!isset($invoice->folio)) {
-            return dd('no tiene folio');
+            return $this->messageError = 'El documento que intentas referenciar no posee un folio';
         }
 
         $creditNote = new Invoice($invoice->toArray());
@@ -141,16 +164,27 @@ class Refund extends Component
             return $item['qty'] == 0 ? false : true;
         });
 
-        if (!$itemsData->count()) return dd('debes devolver algo');
+        if (!$itemsData->count()) return $this->messageError = 'La nota de credito debe contener por lo menos un item';
 
         $creditNote->items_data = $itemsData;
-
         $creditNote = $this->calculateInvoiceTotal($creditNote);
-    
         $creditNote->save();
+
+        if ($moveInventory) {
+            $this->updateInventory();
+        }
+
+        $this->creditNote = $creditNote;
+        $this->goStep(3);
     }
 
-    public function calculateInvoiceTotal($invoice)
+    /**
+     * Calculate the total of the invoice base on the new qty of products
+     * 
+     * @param $invoice
+     * @return Invoice the invoice with the new total
+     */
+    public function calculateInvoiceTotal(Invoice $invoice)
     {
         $referenceTypeDocument = InvoiceType::find($invoice->json_value['reference_type_document'])->first();
 
@@ -182,5 +216,31 @@ class Refund extends Component
         $invoice->total = $total;
 
         return $invoice;
+    }
+
+
+    public function goStep(int $step)
+    {
+        $this->step = $step;
+    }
+
+    /**
+     * Sum the qty returned to the inventory of the product
+     * 
+     */
+    public function updateInventory()
+    {
+        foreach ($this->itemsToRefund as $key => $item) {
+
+            $product = Product::find($item['product_id']);
+
+            if (!$product || $product->use_inventory_control == false) continue;
+
+            $inventory = $product->inventories->first();
+            $actualQty = $inventory->pivot->qty;
+            $newQty = $actualQty + $item['qty_to_return'];
+
+            $product->updateInventory($newQty, $inventory->id);            
+        }
     }
 }

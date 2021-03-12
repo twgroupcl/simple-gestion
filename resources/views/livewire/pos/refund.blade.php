@@ -7,6 +7,12 @@
     </div>
     <div class="modal-body">
 
+        @if ($messageError)
+            <div class="alert alert-danger" role="alert">
+                {{ $messageError }}
+            </div>
+        @endif
+
         @if (!$invoice)
             <div class="row">
                 <div class="col">
@@ -14,81 +20,102 @@
                 </div>
             </div>
         @else
-            <div class="row">
+            {{-- @if ($step == 1) --}}
+                <div class="row">
 
-                {{-- Product list --}}
-                <div class="col-md-8">
-                    @foreach ($itemsToRefund as $item)
-                        <div class="card  ">
-                            <div class="card-body pt-0 pb-0 ">
-                                <div class="row">
-                                    <div class="col-8 mt-1">
-                                        <h6 class="product-title font-size-base mb-2"><a {{-- href="{{ route('product', ['slug' => $product->url_key]) }}" --}}
-                                                target="_blank">{{ $item['name'] }}</a>
-                                        </h6>
+                    {{-- Product list --}}
+                    <div class="col-md-8">
+                        @foreach ($itemsToRefund as $item)
+                            <div class="card  ">
+                                <div class="card-body pt-0 pb-0 ">
+                                    <div class="row">
+                                        <div class="col-8 mt-1">
+                                            <h6 class="product-title font-size-base mb-2"><a {{-- href="{{ route('product', ['slug' => $product->url_key]) }}" --}}
+                                                    target="_blank">{{ $item['name'] }}</a>
+                                            </h6>
+                                        </div>
+                                        <div class="col-4">
+                                            <small>Cantidad maxima: {{ $item['max_qty'] }}</small>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <small>Cantidad maxima: {{ $item['max_qty'] }}</small>
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <a wire:click="removeQty({{ $item['item_id'] }}, 1)">
+                                                <i class="la la-minus-circle"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-2 text-center custom-currency"><strong>{{ $item['qty_to_return'] }}</strong></div>
+                                        <div class="col-1">
+                                            <a wire:click="addQty({{ $item['item_id'] }}, 1)">
+                                                <i class="la la-plus-circle"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <small><strong> {{ currencyFormat($item['price'], 'CLP', true)  }}</strong>
+                                                por
+                                                unidad</small>
+                                        </div>
+                                        <div class="col-3  text-right">
+                                            <span
+                                                class="custom-currency"><strong>{{  currencyFormat($item['qty_to_return'] * $item['price'], 'CLP', true) }}</strong>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-1">
-                                        <a wire:click="removeQty({{ $item['item_id'] }}, 1)">
-                                            <i class="la la-minus-circle"></i>
-                                        </a>
-                                    </div>
-                                    <div class="col-2 text-center custom-currency"><strong>{{ $item['qty_to_return'] }}</strong></div>
-                                    <div class="col-1">
-                                        <a wire:click="addQty({{ $item['item_id'] }}, 1)">
-                                            <i class="la la-plus-circle"></i>
-                                        </a>
-                                    </div>
-                                    <div class="col-4 text-center">
-                                        <small><strong> {{ currencyFormat($item['price'], 'CLP', true)  }}</strong>
-                                            por
-                                            unidad</small>
-                                    </div>
-                                    <div class="col-3  text-right">
-                                        <span
-                                            class="custom-currency"><strong>{{  currencyFormat($item['qty_to_return'] * $item['price'], 'CLP', true) }}</strong>
-                                        </span>
-                                    </div>
-                                </div>
+                            </div>    
+                        @endforeach
+                    </div>
+
+                    {{-- Options --}}
+                    <div class="col-md-4">
+                        {{-- <div class="row">
+                            <div class="col">
+                                <label>Tipo de devolución</label>
+                                <select class="form-control">
+                                    <option value="1">Correción de montos</option>
+                                    <option value="2">Otros</option>
+                                </select>
                             </div>
-                        </div>    
-                    @endforeach
-                </div>
-
-                {{-- Options --}}
-                <div class="col-md-4">
-                    {{-- <div class="row">
-                        <div class="col">
-                            <label>Tipo de devolución</label>
-                            <select class="form-control">
-                                <option value="1">Correción de montos</option>
-                                <option value="2">Otros</option>
-                            </select>
+                        </div> --}}
+                        <div class="row">
+                            <div class="col">
+                                <label>Motivo de devolución</label>
+                                <input wire:model.lazy="reason" class="form-control" type="text">
+                            </div>
                         </div>
-                    </div> --}}
-                    <div class="row">
-                        <div class="col">
-                            <label>Motivo de devolución</label>
-                            <input wire:model.lazy="reason" class="form-control" type="text">
+                        <div class="row mt-4">
+                            <div class="col">
+                                <strong>Subtotal: </strong> {{ currencyFormat($totals['subtotal'] ?? 0, 'CLP', true) }} <br>
+                                <strong>Impuestos: </strong> {{ currencyFormat($totals['iva'] ?? 0, 'CLP', true) }} <br>
+                                <strong>Total: </strong> {{ currencyFormat($totals['total'] ?? 0, 'CLP', true) }} <br>
+                            </div>
                         </div>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col">
-                            <strong>Subtotal: </strong> {{ currencyFormat($totals['subtotal'] ?? 0, 'CLP', true) }} <br>
-                            <strong>Impuestos: </strong> {{ currencyFormat($totals['iva'] ?? 0, 'CLP', true) }} <br>
-                            <strong>Total: </strong> {{ currencyFormat($totals['total'] ?? 0, 'CLP', true) }} <br>
-                        </div>
+                </div>     
+{{--             @elseif ($step == 2)
+                <div class="row">
+                    <div class="col">
+                        Paso 2
                     </div>
                 </div>
-            </div>
+            @endif --}}
         @endif
     </div>
+    @if ($step == 1)
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" wire:click="goStep(2)">Emitir nota de credito</button>
+        </div>
+    @elseif ($step == 2)
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" wire:click="issueCreditNote()">Emitir nota de credito</button>
+        <button type="button" class="btn btn-info" wire:click="issueCreditNote(true)">Emitir con movimiento de inv</button>
+        <button type="button" class="btn btn-primary" wire:click="issueCreditNote(false)">Emitir sin movimiento de inv</button>
     </div>
+    @elseif ($step == 3)
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <a type="button" class="btn btn-primary" target="_blank" href="{{ route('invoice.generate-temp-real-document', ['invoice' => $creditNote->id ?? 0, 'tipoPapel' => 75])  }}">Firmar e imprimir</a>
+    </div>
+    @endif
 </div>
