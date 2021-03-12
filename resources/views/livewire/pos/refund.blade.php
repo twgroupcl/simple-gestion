@@ -22,14 +22,13 @@
                         <div class="card  ">
                             <div class="card-body pt-0 pb-0 ">
                                 <div class="row">
-                                    <div class="col-9">
+                                    <div class="col-8 mt-1">
                                         <h6 class="product-title font-size-base mb-2"><a {{-- href="{{ route('product', ['slug' => $product->url_key]) }}" --}}
-                                                target="_blank">{{ $item['name'] }}</a></h6>
+                                                target="_blank">{{ $item['name'] }}</a>
+                                        </h6>
                                     </div>
-                                    <div class="col-3">
-                                        <a href="#">
-                                            <i class="la la-trash" style="font-size: 32px;"></i>
-                                        </a>
+                                    <div class="col-4">
+                                        <small>Cantidad maxima: {{ $item['max_qty'] }}</small>
                                     </div>
                                 </div>
                                 <div class="row">

@@ -98,12 +98,12 @@ class Refund extends Component
 
     public function issueCreditNote()
     {
-        if (!$this->invoice) return false;
+        if (!$this->invoice) return dd('error');
 
         $invoice = $this->invoice;
 
-        if (!isset($invoice->dte_code)) {
-            return dd('no tiene codigo dte');
+        if (!isset($invoice->folio)) {
+            return dd('no tiene folio');
         }
 
         $creditNote = new Invoice($invoice->toArray());
@@ -116,24 +116,71 @@ class Refund extends Component
             'reference_type_document' => $invoice->invoice_type_id,
             'reference_folio' => $invoice->folio,
             'reference_date' => $invoice->invoice_date,
+            'reference_code' => 3, // Corrige montos
+            'source' => 'pos',
         ];
 
         $itemsData = collect(json_decode($creditNote->items_data, true));
-        $creditNote->items_data = $itemsData->map(function ($item) {
-            foreach ($this->itemsToRefund as $itemRefund) {
 
+        // Change the qty
+        $itemsData = $itemsData->map(function ($item) {
+            foreach ($this->itemsToRefund as $itemRefund) {
                 // Si hay dos items con el mismo product id o si
                 // alguno de los items no tiene un product id (en el caso de items personalizados)
                 // el proceso fallara
                 if ($itemRefund['product_id'] == $item['product_id']) {
-                    $item['qty'] = $item['qty'] - $itemRefund['qty_to_return'];
+                    $item['qty'] = $itemRefund['qty_to_return'];
                     break;
                 }
             }
+            return $item;
+        });
+
+        // Remove items with qty 0
+        $itemsData = $itemsData->filter(function ($item) {
+            return $item['qty'] == 0 ? false : true;
+        });
+
+        if (!$itemsData->count()) return dd('debes devolver algo');
+
+        $creditNote->items_data = $itemsData;
+
+        $creditNote = $this->calculateInvoiceTotal($creditNote);
+    
+        $creditNote->save();
+    }
+
+    public function calculateInvoiceTotal($invoice)
+    {
+        $referenceTypeDocument = InvoiceType::find($invoice->json_value['reference_type_document'])->first();
+
+        $hasIva = in_array($referenceTypeDocument->code, [41, 34]) ? false : true;
+        $iva = 0;
+        $total = 0;
+        $subTotal = 0;
+
+        $itemsData = collect($invoice->items_data)->map(function ($item) use ($hasIva, &$iva, &$subTotal) {
+            $price = sanitizeNumber($item['price']);
+            $sub_total = $price * $item['qty'];
+            
+            $item['sub_total'] = number_format($sub_total, 0, ',', '.');
+            $subTotal += $sub_total; 
+
+            // @todo discount
+            $item['total'] = number_format($sub_total, 0, ',', '.');
+
+            if ($hasIva) $iva += $sub_total * 0.19;
 
             return $item;
         });
 
-        $creditNote->save();
+        $total = round($subTotal) + round($iva);
+
+        $invoice->items_data = $itemsData;
+        $invoice->sub_total = $subTotal;
+        $invoice->tax_amount = $iva; 
+        $invoice->total = $total;
+
+        return $invoice;
     }
 }
