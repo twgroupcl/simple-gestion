@@ -622,7 +622,7 @@
 {{-- Devoluciones Modal --}}
 <div class="modal fade" id="returnsModal" tabindex="-1" role="dialog">
     <div class="modal-dialog  modal-lg" role="document">
-        @livewire('pos.refund')
+        @livewire('pos.refund', [], key(time() . '.refund'))
     </div>
 </div>
 
