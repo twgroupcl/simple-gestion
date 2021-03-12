@@ -38,6 +38,11 @@ class Refund extends Component
         return view('livewire.pos.refund');
     }
 
+    public function goStep(int $step)
+    {
+        $this->step = $step;
+    }
+
     public function selectOrder($orderId)
     {
         $this->step = 1;
@@ -100,6 +105,10 @@ class Refund extends Component
         $this->calculateTotals();
     }
 
+    /**
+     * Calculate the subtotal, iva, and total of items to be returned
+     * 
+     */
     public function calculateTotals()
     {
         $this->totals = ['subtotal' => 0, 'iva' => 0, 'total' => 0];
@@ -108,14 +117,14 @@ class Refund extends Component
             $this->totals['subtotal'] += $item['price'] * $item['qty_to_return']; 
         }
 
-        
         $this->totals['iva'] = $this->totals['subtotal'] * 0.19;
         $this->totals['total'] = $this->totals['subtotal'] * 1.19;
     }
 
-
     /**
      * Create a new credit note 
+     * 
+     * @param bool $moveInventory if true, the qty of the returned items will be added to the inventories
      */
     public function issueCreditNote(bool $moveInventory = false)
     {
@@ -175,6 +184,7 @@ class Refund extends Component
         }
 
         $this->creditNote = $creditNote;
+        
         $this->goStep(3);
     }
 
@@ -216,12 +226,6 @@ class Refund extends Component
         $invoice->total = $total;
 
         return $invoice;
-    }
-
-
-    public function goStep(int $step)
-    {
-        $this->step = $step;
     }
 
     /**
