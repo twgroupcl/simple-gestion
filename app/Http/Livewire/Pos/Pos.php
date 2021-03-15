@@ -172,6 +172,19 @@ class Pos extends Component
 
         $this->customer = session()->get('user.pos.selectedCustomer');
 
+
+        // In case there is no address selected, we set the first address of the customer
+        if (in_array($typeDocument, [33, 34]) && $this->customerAddressId === null) {
+
+            $this->customerAddressId = $this->customer->addresses->first()->id ?? null;
+
+            // If customer doesnt have any address, throw an exception
+            if ($this->customerAddressId === null) {
+                throw new \Exception('Para emitir una factura el cliente debe poseer una dirección');
+            }
+
+        }
+
         if ($cash >= $this->total && !is_null($this->saleBox)) {
 
 
@@ -494,6 +507,11 @@ class Pos extends Component
     {
 
         $currentSeller = Seller::where('user_id', backpack_user()->id)->first();
+
+        if (in_array($typeDocument, [33, 34]) && $this->customerAddressId === null) {
+            throw new \Exception('Para emitir una factura debes seleccionar el cliente debe poseer una dirección');
+        }
+
         DB::beginTransaction();
         try {
 
