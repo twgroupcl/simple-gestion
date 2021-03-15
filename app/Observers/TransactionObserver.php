@@ -49,7 +49,7 @@ class TransactionObserver
 
         if ( !empty($transaction->json_transaction_details) ) {
 
-            TransactionDetail::where('transaction_id', $transaction->id)->delete();
+            TransactionDetail::where('transaction_id', $transaction->id)->forceDelete();
 
             $details = is_string($transaction->json_transaction_details) ? 
                     json_decode($transaction->json_transaction_details, true) : 
