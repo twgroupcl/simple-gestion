@@ -95,9 +95,15 @@ class ManageInvoiceCrudController extends CrudController
 
     private function getResponsePDF($blob, Invoice $invoice)
     {
+        $fileName = rutWithoutDV($invoice->company->uid) . '_T' . $invoice->invoice_type->code;
+
+        if (isset($invoice->folio) && !empty($invoice->folio)) {
+            $fileName .= 'F' . $invoice->folio;
+        }
+
         return response()->make($blob, 200, [
             'Content-Type' =>  'application/pdf',
-            'Content-Disposition' => 'inline; filename="'.$invoice->dte_code . '.pdf"'
+            'Content-Disposition' => 'inline; filename="' . $fileName . '.pdf"'
         ]);
     }
 
