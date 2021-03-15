@@ -237,8 +237,50 @@ class TransactionCrudController extends CrudController
             ],
         ]);
 
+        //person data reference
+        CRUD::addField([
+            'name' => 'person_name_reference',
+            'label' => 'Nombre p/referencia',
+            'type' => 'text',
+            'fake' => true,
+            'store_in' => 'json_value',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-3',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'person_surname_reference',
+            'label' => 'Apellido p/referencia',
+            'type' => 'text',
+            'fake' => true,
+            'store_in' => 'json_value',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-3',
+            ],
+        ]);
+
+        CRUD::addField([
+            'name' => 'person_uid_reference',
+            'label' => 'RUT p/referencia',
+            'type' => 'text',
+            'fake' => true,
+            'store_in' => 'json_value',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-3',
+            ],
+        ]);
+
+        CRUD::addField([
+            'type' => 'rut_formatter',
+            'name' => 'rut_formatter',
+            'rut_fields' => [
+                'person_uid_reference',
+            ],
+        ]);
 
         $dtes = Invoice::all()->pluck('title', 'id')->toArray();
+        $documentTypes = (\App\Models\InvoiceType::all()->pluck('name','code')->toArray());
         CRUD::addField([
             'name' => 'json_transaction_details',
             'type' => 'transactions.repeatable',
@@ -293,6 +335,19 @@ class TransactionCrudController extends CrudController
                     ],
                     'wrapper' => [
                         'class' => 'form-group col-md-6 offset-6',
+                    ],
+                ],
+                [
+                    'label' => 'Tipo de documento',
+                    'name' => 'document_type',
+                    'type' => 'select2_from_array',
+                    'options' => $documentTypes,
+                    //'value' => $documentType,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-6 offset-6 document-type',
+                    ],
+                    'attributes' => [
+                        'class' => 'form-control document-type-field',
                     ],
                 ],
                 [

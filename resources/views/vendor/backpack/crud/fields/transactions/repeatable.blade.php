@@ -235,11 +235,12 @@
                 element.parent().parent().siblings('.document-select').hide()
                 element.parent().parent().siblings('.custom-document-name').children('.document-name-field').val('')
                 element.parent().parent().siblings('.document-select').children('.document-id-field').val(null).trigger('change');
-                
+                //element.parent().parent().siblings('.document-type').children('.document-type-field').hide()
             } else {
                 element.parent().parent().siblings('.custom-document-name').hide()
                 element.parent().parent().siblings('.document-select').show()
                 element.parent().parent().siblings('.custom-document-name').children('.document-name-field').val('')
+                element.parent().parent().siblings('.document-type').children('.document-type-field').select2('disable')
             }
         })
     }
