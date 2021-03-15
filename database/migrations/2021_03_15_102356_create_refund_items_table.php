@@ -25,9 +25,13 @@ class CreateRefundItemsTable extends Migration
             $table->decimal('weight', 12, 4)->nullable();
             $table->decimal('weight_total', 12, 4)->nullable();
             $table->integer('qty')->nullable();
+            $table->integer('ind_exe')->default(0);
             $table->decimal('sub_total', 12, 4)->nullable();
             $table->decimal('shipping_total', 12, 4)->nullable();
             $table->decimal('discount_total', 12, 4)->nullable();
+            $table->decimal('additional_tax_id', 12, 4)->nullable();
+            $table->decimal('additional_tax_amount', 12, 4)->nullable();
+            $table->decimal('additional_tax_total', 12, 4)->nullable();
             $table->decimal('tax_percent', 12, 4)->nullable();
             $table->decimal('tax_amount', 12, 4)->nullable();
             $table->decimal('tax_total', 12, 4)->nullable();
