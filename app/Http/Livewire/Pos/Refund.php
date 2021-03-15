@@ -82,6 +82,7 @@ class Refund extends Component
                 break;
             }
         }
+
         if ($index === null) return false;
         
         $item = $this->itemsToRefund[$index];
@@ -103,6 +104,7 @@ class Refund extends Component
                 break;
             }
         }
+
         if ($index === null) return false;
         
         $item = $this->itemsToRefund[$index];
@@ -121,11 +123,16 @@ class Refund extends Component
      */
     public function calculateTotals()
     {
-        $this->totals = ['subtotal' => 0, 'iva' => 0, 'total' => 0];
+        $this->totals = [
+            'subtotal' => 0, 
+            'iva' => 0, 
+            'total' => 0
+        ];
 
         foreach ($this->itemsToRefund as $key => $item) {
             $this->totals['subtotal'] += $item['price'] * $item['qty_to_return']; 
         }
+
         if ($this->invoice->discount_percent > 0) {
             $this->totals['discount'] = $this->totals['subtotal'] * $this->invoice->discount_percent / 100; 
             $this->totals['iva'] = ($this->totals['subtotal'] - $this->totals['discount']) * 0.19;
@@ -273,6 +280,7 @@ class Refund extends Component
         $invoice->discount_amount = $globalDiscountAmount;
         $invoice->items_data = $itemsData;
         $invoice->sub_total = $subTotal;
+        $invoice->net = $subTotal - $globalDiscountAmount;
         $invoice->tax_amount = $iva; 
         $invoice->total = $total;
 
