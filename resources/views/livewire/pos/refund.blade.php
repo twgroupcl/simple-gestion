@@ -87,6 +87,9 @@
                         <div class="col">
                             <strong>Subtotal: </strong> {{ currencyFormat($totals['subtotal'] ?? 0, 'CLP', true) }} <br>
                             <strong>Impuestos: </strong> {{ currencyFormat($totals['iva'] ?? 0, 'CLP', true) }} <br>
+                            @if ($invoice->discount_percent > 0)
+                            <strong>Descuento ({{ number_format($invoice->discount_percent, 2, ',', '.') }}%): </strong> {{ currencyFormat($totals['discount'] ?? 0, 'CLP', true) }} <br>
+                            @endif
                             <strong>Total: </strong> {{ currencyFormat($totals['total'] ?? 0, 'CLP', true) }} <br>
                         </div>
                     </div>
@@ -99,7 +102,7 @@
     @if ($step == 1)
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary" wire:click="goStep(2)">Emitir nota de credito</button>
+            <button type="button" class="btn btn-primary" wire:click="goStep(2)">Emitir nota de crédito</button>
         </div>
     @elseif ($step == 2)
     <div class="modal-footer">

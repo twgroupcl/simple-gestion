@@ -122,9 +122,14 @@ class Refund extends Component
         foreach ($this->itemsToRefund as $key => $item) {
             $this->totals['subtotal'] += $item['price'] * $item['qty_to_return']; 
         }
-
-        $this->totals['iva'] = $this->totals['subtotal'] * 0.19;
-        $this->totals['total'] = $this->totals['subtotal'] * 1.19;
+        if ($this->invoice->discount_percent > 0) {
+            $this->totals['discount'] = $this->totals['subtotal'] * $this->invoice->discount_percent / 100; 
+            $this->totals['iva'] = ($this->totals['subtotal'] - $this->totals['discount']) * 0.19;
+            $this->totals['total'] = ($this->totals['subtotal'] - $this->totals['discount']) * 1.19;
+        } else {
+            $this->totals['iva'] = $this->totals['subtotal'] * 0.19;
+            $this->totals['total'] = $this->totals['subtotal'] * 1.19;
+        }
     }
 
     /**
@@ -213,6 +218,9 @@ class Refund extends Component
     /**
      * Calculate the total of the invoice base on the new qty of products
      * 
+     * @todo
+     * - tomar en cuenta los descuentos
+     * 
      * @param $invoice
      * @return Invoice the invoice with the new total
      */
@@ -224,24 +232,31 @@ class Refund extends Component
         $iva = 0;
         $total = 0;
         $subTotal = 0;
+        $globalDiscountAmount = 0;
 
-        $itemsData = collect($invoice->items_data)->map(function ($item) use ($hasIva, &$iva, &$subTotal) {
+        $itemsData = collect($invoice->items_data)->map(function ($item) use ($invoice, $hasIva, &$iva, &$subTotal, &$globalDiscountAmount) {
             $price = sanitizeNumber($item['price']);
             $sub_total = $price * $item['qty'];
-            
+            $discountAmount = 0;
+
             $item['sub_total'] = number_format($sub_total, 0, ',', '.');
-            $subTotal += $sub_total; 
-
-            // @todo discount
             $item['total'] = number_format($sub_total, 0, ',', '.');
+            $subTotal += $sub_total; 
+            
+            if ($invoice->discount_percent > 0) {
+                $discountAmount = $sub_total * $invoice->discount_percent / 100; 
+                $globalDiscountAmount += $discountAmount;
+            }
 
-            if ($hasIva) $iva += $sub_total * 0.19;
+            if ($hasIva) $iva += ($sub_total - $discountAmount) * 0.19;
 
             return $item;
         });
 
-        $total = round($subTotal) + round($iva);
+        $total = round($subTotal) + round($iva) - round($globalDiscountAmount);
 
+        $invoice->discount_total = $globalDiscountAmount;
+        $invoice->discount_amount = $globalDiscountAmount;
         $invoice->items_data = $itemsData;
         $invoice->sub_total = $subTotal;
         $invoice->tax_amount = $iva; 
