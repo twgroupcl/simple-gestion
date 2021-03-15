@@ -2,12 +2,16 @@
 
 namespace App\Http\Livewire\Pos;
 
+use Exception;
 use App\Models\Order;
 use App\Models\Invoice;
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\RefundItem;
 use App\Models\InvoiceType;
 use App\Services\DTE\DTEService;
+use Illuminate\Support\Facades\DB;
+use App\Models\Refund as RefundModel;
 
 /**
  * @todo
@@ -54,7 +58,7 @@ class Refund extends Component
     {
         $this->cleanData();
         
-        $this->order = Order::find($orderId);
+        $this->order = Order::findOrFail($orderId);
         $this->invoice = $this->order->invoice;
         $this->itemsToRefund = $this->invoice->invoice_items->map(function ($item) {
             return [
@@ -140,8 +144,11 @@ class Refund extends Component
     public function issueCreditNote(bool $moveInventory = false)
     {
         $this->messageError = null;
+        $error = false;
 
-        if (!$this->invoice) return $this->messageError = 'Ocurrio un error';
+        if (!$this->invoice) {
+            return $this->messageError = 'Ocurrio un error';
+        }
 
         $invoice = $this->invoice;
 
@@ -168,9 +175,15 @@ class Refund extends Component
 
         $itemsData = $itemsData->map(function ($item) {
             foreach ($this->itemsToRefund as $itemRefund) {
+
                 // Si hay dos items con el mismo product id o si
                 // alguno de los items no tiene un product id (en el caso de items personalizados)
                 // el proceso fallara
+
+                // @todo 
+                // Realizar una comparacion utilizando otros atributos (precio, qty, total)
+                // para buscar el producto cuando este no tenga un product_id
+                
                 if ($itemRefund['product_id'] == $item['product_id']) {
                     $item['qty'] = $itemRefund['qty_to_return'];
                     break;
@@ -179,47 +192,48 @@ class Refund extends Component
             return $item;
         });
 
-        // Remove items with qty equals to 0
+        // Remove items with quantity equals to 0
         $itemsData = $itemsData->filter(function ($item) {
             return $item['qty'] == 0 ? false : true;
         });
 
-        if (!$itemsData->count()) return $this->messageError = 'La nota de credito debe contener por lo menos un item';
+        if (!$itemsData->count()) {
+            return $this->messageError = 'La nota de credito debe contener por lo menos un item';
+        }
 
-        \DB::beginTransaction();
-        $error = false;
+        DB::beginTransaction();
 
         try {
+            // Create document (credit note)
             $creditNote->items_data = $itemsData;
             $creditNote = $this->calculateInvoiceTotal($creditNote);
             $creditNote->save();
+            
+            // Create refund
+            $this->createRefund($this->order, $creditNote);
     
-            if ($moveInventory) {
-                $this->updateInventory();
-            }
-        } catch (\Exception $e) {
+            if ($moveInventory) $this->updateInventory();
+            
+        } catch (Exception $e) {
             \Log::error('Error creando nota de credito para devolución: ' . $e->getMessage());
+
             $error = true;
             $errorMessage = $e->getMessage();
         }
         
         if ($error) {
             $this->messageError = 'Ocurrio un error: ' . $errorMessage;
-            \DB::rollBack();
+            DB::rollBack();
             return false;
         }
 
-        \DB::commit();
-
+        DB::commit();
         $this->creditNote = $creditNote;
         $this->goStep(3);
     }
 
     /**
      * Calculate the total of the invoice base on the new qty of products
-     * 
-     * @todo
-     * - tomar en cuenta los descuentos
      * 
      * @param $invoice
      * @return Invoice the invoice with the new total
@@ -283,5 +297,61 @@ class Refund extends Component
 
             $product->updateInventory($newQty, $inventory->id);            
         }
+    }
+
+    /**
+     * Create a refund record from the order and invoice
+     * 
+     * @param Order $order the original order
+     * @param Invoice $invoice the invoice with the returned items
+     */
+    public function createRefund(Order $order, Invoice $invoice)
+    {
+        $refundData = [
+            'order_id' => $order->id,
+            'invoice_id' => $invoice->id,
+            'items_count' => count($invoice->items_data),
+            'items_qty' => collect($invoice->items_data)->sum('qty'),
+            'sub_total' => $invoice->sub_total,
+            'discount_amount' => $invoice->discount_amount,
+            'discount_percent' => $invoice->discount_percent,
+            'discount_total' => $invoice->discount_total,
+            'tax_amount' => $invoice->tax_amount, 
+            'tax_percent' => 19,
+            'tax_total' => $invoice->tax_amount,
+            'total' => $invoice->total,
+            'currency_id' => 63,
+            'company_id' => $invoice->company_id,
+        ];
+
+        $refund = RefundModel::create($refundData);
+
+        $refundItems = $invoice->invoice_items->map(function ($item) {
+            $refundItem = new RefundItem();
+
+            $refundItem->sku = $item['sku'];
+            $refundItem->name = $item['name'];
+            $refundItem->description = $item['description'];
+            $refundItem->width = $item['width'];
+            $refundItem->height = $item['height'];
+            $refundItem->depth = $item['depth'];
+            $refundItem->weight = $item['weight'];
+            $refundItem->weight_total = $item['weight_total'];
+            $refundItem->qty = $item['qty'];
+            $refundItem->ind_exe = $item['ind_exe'] ?? 0;
+            $refundItem->sub_total = $item['sub_total'];
+            $refundItem->discount_total = $item['discount_total'];
+            $refundItem->tax_percent = $item['tax_percent'];
+            $refundItem->tax_amount = $item['tax_amount'];
+            $refundItem->tax_total = $item['tax_total'];
+            $refundItem->total = $item['total'];
+            $refundItem->currency_id = $item['currency_id'];
+            $refundItem->product_id = $item['product_id'];
+            $refundItem->seller_id = $item['seller_id'];
+
+            return $refundItem;
+        });
+
+        $refund->refund_items()->saveMany($refundItems);
     }
 }
