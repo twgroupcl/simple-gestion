@@ -66,7 +66,10 @@ class TransactionObserver
                     'value' => $detail['value'],
                     'document_identifier' => $documentArray['document_identifier'],
                     'document_model' => $documentArray['document_model'],
-                    'json_detail' => json_encode(['notes' => $notes]),
+                    'json_detail' => json_encode([
+                        'notes' => $notes,
+                        'document_type' => $detail['document_type']
+                    ]),
                     'transaction_id' => $transaction->id
                 ];
                 TransactionDetail::create($props);
