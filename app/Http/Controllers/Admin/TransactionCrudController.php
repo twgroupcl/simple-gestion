@@ -240,18 +240,7 @@ class TransactionCrudController extends CrudController
         //person data reference
         CRUD::addField([
             'name' => 'person_name_reference',
-            'label' => 'Nombre p/referencia',
-            'type' => 'text',
-            'fake' => true,
-            'store_in' => 'json_value',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-md-3',
-            ],
-        ]);
-
-        CRUD::addField([
-            'name' => 'person_surname_reference',
-            'label' => 'Apellido p/referencia',
+            'label' => 'Nombre o Razón (p/referencia)',
             'type' => 'text',
             'fake' => true,
             'store_in' => 'json_value',
@@ -262,7 +251,7 @@ class TransactionCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'person_uid_reference',
-            'label' => 'RUT p/referencia',
+            'label' => 'RUT (p/referencia)',
             'type' => 'text',
             'fake' => true,
             'store_in' => 'json_value',
