@@ -99,7 +99,11 @@
     </div>
 
     {{-- Botones --}}
-    @if ($step == 1)
+    @if (!$invoice)
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+    </div>
+    @elseif ($step == 1)
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-primary" wire:click="goStep(2)">Emitir nota de crédito</button>

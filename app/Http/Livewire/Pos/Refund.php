@@ -60,6 +60,9 @@ class Refund extends Component
         
         $this->order = Order::findOrFail($orderId);
         $this->invoice = $this->order->invoice;
+
+        if (!$this->invoice) return false;
+        
         $this->itemsToRefund = $this->invoice->invoice_items->map(function ($item) {
             return [
                 'item_id' => $item->id,
