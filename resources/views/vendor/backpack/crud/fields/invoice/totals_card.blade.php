@@ -256,15 +256,25 @@
             let acumTotalValue = 0
 
             $(items).each( function() {
-                let price = parseDecimal($(this).find('.price').val())
-                let discountItem = calculateItemDiscount($(this)).itemDiscount
-                let discountGlobal = calculateItemDiscount($(this)).globalDiscount
-                let itemQty = Number($(this).find('.qty').val())
-                let subTotal = $(this).find('.subtotal')
+                let price = parseDecimal($(this).find('.price').val());
+                let discountItem = calculateItemDiscount($(this)).itemDiscount;
+                let discountGlobal = calculateItemDiscount($(this)).globalDiscount;
+                let itemQty = Number($(this).find('.qty').val());
+                let subTotal = $(this).find('.subtotal');
+                let isExempt = $(this).find('.ind_exe');
+                let taxAmount = 0;
+                let taxAmountGeneral = 0;
 
+                isExempt.on('change', function() {
+                    console.log($(this).siblings('[data-repeatable-input-name="ind_exe"]').val())
+                })
+                console.log("Checkbox ", isExempt)
+                console.log("Checkbox ", isExempt.val())
 
-                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
-                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
+                if (!isExempt) {
+                    let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
+                    let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
+                }
                 
                 let subTotalValue = (price * itemQty) 
                 let totalValue = getRounded(( (price * itemQty) - discountItem))
@@ -454,6 +464,7 @@
         })
 
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
+            //setItemsExempts();
             calculateTotals();
             checkGiroField();
             checkTypeTax()

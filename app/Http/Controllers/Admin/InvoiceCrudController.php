@@ -440,14 +440,14 @@ class InvoiceCrudController extends CrudController
             'new_item_label' => 'Agregar producto / servicio',
             'fields' => [
                 [
-                    'label' => 'Exe',
+                    'label' => 'Exento',
                     'name' => 'ind_exe',
                     'type' => 'checkbox',
                     'wrapper' => [
-                        'class' => 'form-group align-middle',
+                        'class' => 'form-group mt-3',
                     ],
                     'attributes' => [
-                        'class' => 'mt-3',
+                        'class' => 'ind_exe',
                     ],
                 ],
                 [

@@ -14,7 +14,7 @@ class AddIndExeToInvoiceItemsTable extends Migration
     public function up()
     {
         Schema::table('invoice_items', function (Blueprint $table) {
-            $table->boolean('ind_exe')->default(0)->comment('item excepmt iva');
+            $table->integer('ind_exe')->unsigned()->default(0)->comment('item excepmt iva, honorarios');
         });
     }
 
