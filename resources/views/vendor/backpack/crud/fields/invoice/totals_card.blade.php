@@ -268,8 +268,8 @@
                 isExempt.on('change', function() {
                     console.log($(this).siblings('[data-repeatable-input-name="ind_exe"]').val())
                 })
-                console.log("Checkbox ", isExempt)
-                console.log("Checkbox ", isExempt.val())
+                //console.log("Checkbox ", isExempt)
+                //console.log("Checkbox ", isExempt.val())
 
                 if (!isExempt) {
                     let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
@@ -463,8 +463,15 @@
             checkTypeTax();
         })
 
+        function setItemsExempts() {
+            $('[data-repeatable-input-name="ind_exe"]').each(function (elem) {
+                        //TODO 
+
+            })
+        }
+
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
-            //setItemsExempts();
+            setItemsExempts();
             calculateTotals();
             checkGiroField();
             checkTypeTax()

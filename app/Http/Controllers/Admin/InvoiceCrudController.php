@@ -442,12 +442,16 @@ class InvoiceCrudController extends CrudController
                 [
                     'label' => 'Exento',
                     'name' => 'ind_exe',
-                    'type' => 'checkbox',
+                    'type' => 'select_from_array',
+                    'options' => [
+                        '0' => '',
+                        '1' => 'EX',
+                    ],
                     'wrapper' => [
-                        'class' => 'form-group mt-3',
+                        'class' => 'form-group ',
                     ],
                     'attributes' => [
-                        'class' => 'ind_exe',
+                        'class' => 'form-control ind_exe',
                     ],
                 ],
                 [
