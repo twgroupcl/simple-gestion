@@ -157,6 +157,7 @@ class InvoiceObserver
                         'total' => $item['total'],
                         'currency_id' => $invoice->currency_id,
                         'seller_id' => $invoice->seller_id ?? null,
+                        'ind_exe' => $item['ind_exe'],
                     ];
 
                     //if ( isset($options['set_item_status']) ) $props['item_status'] = $options['set_item_status'];
@@ -192,6 +193,7 @@ class InvoiceObserver
                         'additional_tax_total' => $item['additional_tax_total'],
                         'total' => $item['total'],
                         'currency_id' => $invoice->currency_id,
+                        'ind_exe' => $item['ind_exe'],
                     ];
 
                     //if ( isset($options['set_item_status']) ) $props['item_status'] = $options['set_item_status'];
