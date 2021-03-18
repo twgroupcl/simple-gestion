@@ -456,8 +456,9 @@
         *
         ***********************************************/
         $(document).on('click', '.add-repeatable-element-button', function () {
-            checkTypeTax();
+            prepareExeIndSelect()
             invoiceType = getCodeDTE($('select[name="invoice_type_id"]').val());
+            checkTypeTax();
             setItemsExempts();
         })
 
@@ -580,7 +581,15 @@
             calculateTotals();
         });
 
+        function prepareExeIndSelect()
+        {
+            $(document).on('change', '.ind_exe', function(){
+                calculateTotals();
+            })
+       }
+
         $(document).ready( function() {
+            prepareExeIndSelect();
             calculateTotals();
             checkGiroField();
             checkTypeTax();
