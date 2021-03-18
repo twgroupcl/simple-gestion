@@ -464,9 +464,16 @@
         })
 
         function setItemsExempts() {
-            $('[data-repeatable-input-name="ind_exe"]').each(function (elem) {
-                        //TODO 
 
+            let exempts = $('[data-repeatable-input-name="ind_exe"]');
+            exempts.each((index, elem) => {
+                if (invoiceType == 34) {
+                    console.log("Set val, ",elem)
+                    $(elem).val(1)
+
+                } else {
+                    $(elem).val(0)
+                }
             })
         }
 
