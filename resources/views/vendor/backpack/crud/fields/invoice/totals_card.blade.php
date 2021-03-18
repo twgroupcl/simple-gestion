@@ -265,9 +265,6 @@
                 let taxAmount = 0;
                 let taxAmountGeneral = 0;
 
-                //console.log("Checkbox ", isExempt)
-                //console.log("Checkbox ", isExempt.val())
-
                 // check exe_ind in row item
                 if (!isExempt) {
                     taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
@@ -309,6 +306,7 @@
             let totalVaxItems = getRounded(itemsData.totalVaxItem)
             let totalVaxGeneral = getRounded(itemsData.totalVaxGeneral)
 
+            //TODO show or hide 
             if (invoiceType === 'H') { //TO DO Honorarios??
                 $('input[name="tax_amount"]').val( (-1) * totalVaxGeneral)
                 document.querySelector('#retencion-field').innerText = formatWithComma((-1) * totalVaxGeneral);
