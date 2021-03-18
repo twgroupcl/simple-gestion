@@ -261,20 +261,18 @@
                 let discountGlobal = calculateItemDiscount($(this)).globalDiscount;
                 let itemQty = Number($(this).find('.qty').val());
                 let subTotal = $(this).find('.subtotal');
-                let isExempt = $(this).find('.ind_exe');
+                let isExempt = $(this).find('.ind_exe').val() == 0 ? false : true;
                 let taxAmount = 0;
                 let taxAmountGeneral = 0;
 
-                isExempt.on('change', function() {
-                    console.log($(this).siblings('[data-repeatable-input-name="ind_exe"]').val())
-                })
                 //console.log("Checkbox ", isExempt)
                 //console.log("Checkbox ", isExempt.val())
 
+                // check exe_ind in row item
                 if (!isExempt) {
-                    let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
-                    let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
-                }
+                    taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
+                    taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
+                } 
                 
                 let subTotalValue = (price * itemQty) 
                 let totalValue = getRounded(( (price * itemQty) - discountItem))
@@ -461,14 +459,14 @@
         ***********************************************/
         $(document).on('click', '.add-repeatable-element-button', function () {
             checkTypeTax();
+            invoiceType = getCodeDTE($('select[name="invoice_type_id"]').val());
+            setItemsExempts();
         })
 
         function setItemsExempts() {
-
             let exempts = $('[data-repeatable-input-name="ind_exe"]');
             exempts.each((index, elem) => {
                 if (invoiceType == 34) {
-                    console.log("Set val, ",elem)
                     $(elem).val(1)
 
                 } else {
@@ -478,6 +476,7 @@
         }
 
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
+            invoiceType = getCodeDTE($('select[name="invoice_type_id"]').val());
             setItemsExempts();
             calculateTotals();
             checkGiroField();

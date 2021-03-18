@@ -17,6 +17,7 @@ class AddTypeSellTransactionToInvoicesTable extends Migration
             //
             $table->smallInteger('type_sell_transaction')
                   ->unsigned()
+                  ->nullable()
                   ->comment('Type sell transaction. 1, 2 or 3. Ref: TpoTranVenta');
         });
     }
