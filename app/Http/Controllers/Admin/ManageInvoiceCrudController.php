@@ -128,6 +128,10 @@ class ManageInvoiceCrudController extends CrudController
         //);
     }
 
+    /**
+     * This method is called from the Invoices CRUD
+     * 
+     */
     public function createRealDocument(Request $request, Invoice $invoice)
     {
         if (!isset($invoice->dte_code)) {
@@ -135,12 +139,14 @@ class ManageInvoiceCrudController extends CrudController
         }
 
         // Check inventory of items
-        foreach($invoice->invoice_items as $item) {
-            if ($item['product_id']) {
-                $product = Product::find($item['product_id']);
-                if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
-                    \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
-                    return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        if ($invoice->invoice_type->code != 61 && $invoice->impact_inventory) {
+            foreach($invoice->invoice_items as $item) {
+                if ($item['product_id']) {
+                    $product = Product::find($item['product_id']);
+                    if (!$product->haveSufficientQuantity($item['qty'], 'Invoice', $invoice->id)) {
+                        \Alert::add('danger', 'No tienes suficiente stock del producto "' . $product->name .'"')->flash();
+                        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+                    }
                 }
             }
         }
@@ -155,6 +161,7 @@ class ManageInvoiceCrudController extends CrudController
 
         $folioService = $service->getFolioMaintainerStatus($invoice->invoice_type->code, $invoice->company->uid);
         $folio = 0;
+
         if ($folioService->getStatusCode() === 200) {
             $contentResponse = json_decode($folioService->getBody()->getContents(), true);
             if (isset($contentResponse) && array_key_exists('siguiente', $contentResponse)) {
@@ -169,6 +176,7 @@ class ManageInvoiceCrudController extends CrudController
         }
 
         $response = $service->generateDTE($invoice);
+
         if ($response->getStatusCode() === 200) {
             $contentResponse = $response->getBody()->getContents();
             $contentResponse = json_decode($contentResponse, true);
@@ -188,11 +196,17 @@ class ManageInvoiceCrudController extends CrudController
             $invoice->updateWithoutEvents();
 
             // Reduce inventory
-            try {
-                $invoice->reduceInventoryOfItems();
-            } catch (Exception $exception) {
-                \Log::error('Ocurrio un problema al actualizar el stock de productos: ' .  $exception->getMessage());
-                \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
+            if ($invoice->impact_inventory) {
+                try {
+                    if ($invoice->invoice_type->code == 61) {
+                        $invoice->incrementInventoryOfItems();
+                    } else {
+                        $invoice->reduceInventoryOfItems();
+                    }
+                } catch (Exception $exception) {
+                    \Log::error('Ocurrio un error actualizando el inventario: ' . $exception->getMessage());
+                    \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
+                }
             }
 
             if ($invoice->invoice_status === Invoice::STATUS_SEND && $invoice->way_to_payment === 2) {
@@ -218,58 +232,10 @@ class ManageInvoiceCrudController extends CrudController
 
     }
 
-    public function updateDteStatus(Request $request, Invoice $invoice)
-    {
-        $service = new DTEService();
-        $response = $service->getDteUpdatedStatus($invoice);
-
-        if ($response->getStatusCode() != 200) {
-            \Alert::add('warning', 'Hubo algun problema al consultar el estado del documento. Intentalo mas tarde')->flash();
-            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
-        }
-
-        $dteStatusResponse =  json_decode($response->getBody()->getContents(), true);
-
-        $dteStatus = [
-            'track_id' => $dteStatusResponse["track_id"] ?? '',
-            'revision_estado' =>  $dteStatusResponse["revision_estado"] ?? '',
-            'revision_detalle' => $dteStatusResponse["revision_detalle"] ?? '',
-        ];
-
-        $invoice->dte_status = $dteStatus;
-
-        $invoice->updateWithoutEvents();
-
-        \Alert::add('success', 'Estado del documento actualizado correctamente.')->flash();
-        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
-    }
-
-    public function issueCreditNote(Request $request, Invoice $invoice)
-    {
-        if (!isset($invoice->dte_code)) {
-            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
-        }
-
-        $creditNote = new Invoice($invoice->toArray());
-        $creditNote->folio = null;
-        $creditNote->dte_code = null;
-        $creditNote->dte_status = null;
-        $creditNoteType = InvoiceType::whereCode('61')->first();
-        $creditNote->invoice_type_id = $creditNoteType->id;
-        $creditNote->json_value = [
-            'reference_type_document' => $invoice->invoice_type_id,
-            'reference_folio' => $invoice->folio,
-            'reference_date' => $invoice->invoice_date,
-        ];
-
-        $creditNote->save();
-
-        \Alert::success('Se creó una nota de crédito a partir del documento seleccionado')->flash();
-
-        return redirect()->to('admin/invoice/' . $creditNote->id . '/edit');
-
-    }
-
+    /**
+     * This method if called from the POS
+     * 
+     */
     public function generateTemporalAndRealDocument(Request $request, Invoice $invoice)
     {
         $tipoPapel = $request->input('tipoPapel') ?? 0;
@@ -284,7 +250,7 @@ class ManageInvoiceCrudController extends CrudController
         }
 
         // Check inventory of items
-        if ($invoice->invoice_type->code != 61) {
+        if ($invoice->invoice_type->code != 61 && $invoice->impact_inventory) {
             foreach($invoice->invoice_items as $item) {
                 if ($item['product_id']) {
                     $product = Product::find($item['product_id']);
@@ -347,14 +313,18 @@ class ManageInvoiceCrudController extends CrudController
             $invoice->updateWithoutEvents();
 
             // Reduce inventory
-            if ($invoice->invoice_type->code != 61) {
+            if ($invoice->impact_inventory) {
                 try {
-                    $invoice->reduceInventoryOfItems();
+                    if ($invoice->invoice_type->code == 61) {
+                        $invoice->incrementInventoryOfItems();
+                    } else {
+                        $invoice->reduceInventoryOfItems();
+                    }
                 } catch (Exception $exception) {
+                    \Log::error('Ocurrio un error actualizando el inventario: ' . $exception->getMessage());
                     \Alert::add('warning', 'Ocurrio un problema al actualizar el stock de productos')->flash();
                 }
             }
-            
 
             if ($invoice->invoice_status === Invoice::STATUS_SEND && $invoice->way_to_payment === 2) {
                 $payment = Payments::insertDataInvoices($invoice);
@@ -374,4 +344,58 @@ class ManageInvoiceCrudController extends CrudController
         \Alert::add('warning', 'Hubo algun problema al generar el documento.')->flash();
         return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
     }
+
+    public function updateDteStatus(Request $request, Invoice $invoice)
+    {
+        $service = new DTEService();
+        $response = $service->getDteUpdatedStatus($invoice);
+
+        if ($response->getStatusCode() != 200) {
+            \Alert::add('warning', 'Hubo algun problema al consultar el estado del documento. Intentalo mas tarde')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        $dteStatusResponse =  json_decode($response->getBody()->getContents(), true);
+
+        $dteStatus = [
+            'track_id' => $dteStatusResponse["track_id"] ?? '',
+            'revision_estado' =>  $dteStatusResponse["revision_estado"] ?? '',
+            'revision_detalle' => $dteStatusResponse["revision_detalle"] ?? '',
+        ];
+
+        $invoice->dte_status = $dteStatus;
+
+        $invoice->updateWithoutEvents();
+
+        \Alert::add('success', 'Estado del documento actualizado correctamente.')->flash();
+        return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+    }
+
+    public function issueCreditNote(Request $request, Invoice $invoice)
+    {
+        if (!isset($invoice->dte_code)) {
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        $creditNote = new Invoice($invoice->toArray());
+        $creditNote->folio = null;
+        $creditNote->dte_code = null;
+        $creditNote->dte_status = null;
+        $creditNoteType = InvoiceType::whereCode('61')->first();
+        $creditNote->invoice_type_id = $creditNoteType->id;
+        $creditNote->json_value = [
+            'reference_type_document' => $invoice->invoice_type_id,
+            'reference_folio' => $invoice->folio,
+            'reference_date' => $invoice->invoice_date,
+        ];
+
+        $creditNote->save();
+
+        \Alert::success('Se creó una nota de crédito a partir del documento seleccionado')->flash();
+
+        return redirect()->to('admin/invoice/' . $creditNote->id . '/edit');
+
+    }
+
+    
 }

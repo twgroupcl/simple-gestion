@@ -16,7 +16,7 @@ use App\Models\Refund as RefundModel;
 /**
  * @todo
  * 
- * - Notas de credito no estan funcionando con invoices que poseen descuentos
+ * - Traspasar logica del movimiento de inventario a el controlador del ManageInvoice y crear campo en invoice
  */
 
 class Refund extends Component
@@ -205,7 +205,7 @@ class Refund extends Component
         // Remove items with quantity equals to 0
         $itemsData = $itemsData->filter(function ($item) {
             return $item['qty'] == 0 ? false : true;
-        });
+        })->values();
 
         if (!$itemsData->count()) {
             return $this->messageError = 'La nota de credito debe contener por lo menos un item';
@@ -217,13 +217,12 @@ class Refund extends Component
             // Create document (credit note)
             $creditNote->items_data = $itemsData;
             $creditNote = $this->calculateInvoiceTotal($creditNote);
+            $creditNote->impact_inventory = $moveInventory;
             $creditNote->save();
             
             // Create refund
             $this->createRefund($this->order, $creditNote);
     
-            if ($moveInventory) $this->updateInventory();
-            
         } catch (Exception $e) {
             \Log::error('Error creando nota de credito para devolución: ' . $e->getMessage());
 
@@ -292,9 +291,10 @@ class Refund extends Component
 
     /**
      * Sum the qty returned to the inventory of the product
+     * @deprecated the change in the inventory now happens in the ManageInvoice Controller
      * 
      */
-    public function updateInventory()
+    /* public function updateInventory()
     {
         foreach ($this->itemsToRefund as $key => $item) {
 
@@ -308,7 +308,7 @@ class Refund extends Component
 
             $product->updateInventory($newQty, $inventory->id);            
         }
-    }
+    } */
 
     /**
      * Create a refund record from the order and invoice

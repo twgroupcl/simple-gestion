@@ -495,6 +495,11 @@ class Product extends Model
      * @param int $qty
      * @param int $inventorySourceId
      * @param bool $attachInventory if false, an exception will be throw if the product doesnt have stock on the inventory id
+     * 
+     * @throws Exception if qty is not a number
+     * @throws Exception if qty if negative
+     * @throws Exception if product dosent use inventory control
+     * @throws Exception if inventory source id doesnt exists
      */
     public function updateInventory($qty, $inventorySourceId, $attachInventory = false)
     {
