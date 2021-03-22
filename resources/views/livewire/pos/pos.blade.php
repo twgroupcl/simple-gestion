@@ -619,6 +619,13 @@
     </div>
 </div>
 
+{{-- Devoluciones Modal --}}
+<div class="modal fade" id="returnsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document">
+        @livewire('pos.refund', [], key(time() . '.refund'))
+    </div>
+</div>
+
 </div>
 
 
@@ -1109,15 +1116,23 @@
         });
 
 
+        let returnsModalAppended = false
 
+        function showReturnsModal(orderId) {
+            if (!returnsModalAppended) {
+                $('#returnsModal').appendTo("body")
+                returnsModalAppended = true
+            }
 
+            Livewire.emit('selectOrder', orderId)
+            $('#returnsModal').modal('show')
+        }
     </script>
 
 
 
     <script>
         document.addEventListener('livewire:load', function() {
-
             btnPay = $('#btn-pay');
             const modalConfirm = function(callback) {
 
