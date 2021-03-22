@@ -25,6 +25,12 @@ class Transaction extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $casts = [
+        'json_value' => 'array',
+    ];
+    protected $fakeColumns = [
+        'json_value',
+    ];
 
     /*
     |--------------------------------------------------------------------------
