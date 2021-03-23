@@ -117,7 +117,11 @@
     @elseif ($step == 3)
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <a type="button" class="btn btn-success" target="_blank" href="{{ route('invoice.generate-temp-real-document', ['invoice' => $creditNote->id ?? 0, 'tipoPapel' => 75])  }}">Firmar e imprimir</a>
+        <form target="_blank" action="{{ route('invoice.generate-temp-real-document', ['invoice' => $creditNote->id ?? 0, 'tipoPapel' => 75])  }}" method="GET">
+            <button @if ($disabledSendButton) disabled @endif type="submit" class="btn btn-success" wire:click="sendCreditNote">
+                Firmar e imprimir
+            </button>
+        </form>
     </div>
     @endif
 </div>
