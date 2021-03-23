@@ -26,7 +26,7 @@ class HomeController extends Controller
             ->where('parent_id', '=', null);
         })->limit(3)->inRandomOrder()->get();
 
-        $featuredProducts = Product::where('status', '=' ,'1')
+        $featuredProducts = Product::byLocation()->where('status', '=' ,'1')
         ->where('featured', '=' ,'1')
         ->inRandomOrder()->get();
 
