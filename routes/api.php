@@ -132,6 +132,13 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::get('/product-classes', 'Api\v1\ProductClassController@all')
         ->name('api.product-classes.all');
 
+    // Product Class Attribute
+    Route::post('/attributes', 'Api\v1\ProductClassAttributeController@store')
+        ->middleware(['auth.jwt', 'permission:productclassattribute.create'])
+        ->name('api.product-class-attributes.show-by-code');
+    Route::get('/attributes/code/{code}', 'Api\v1\ProductClassAttributeController@showByCode')
+        ->name('api.product-class-attributes.show-by-code');
+
     // Orders
     Route::get('/orders/{id}', 'Api\v1\OrderController@show')
         ->name('api.orders.show');
