@@ -45,10 +45,6 @@ class ProductController extends Controller
         ], 200);
     }
 
-
-    
-
-
     public function showBySku(Request $request)
     {
         $product = Product::with('categories')
@@ -68,7 +64,6 @@ class ProductController extends Controller
         ], 200);
     }
 
-    
     public function showBySkuAndWarehouse($warehouseCode, $sku)
     {
         $messages = [
@@ -173,7 +168,6 @@ class ProductController extends Controller
             'data' => $product,
         ], 200);
     }
-
 
     public function store(ProductRequest $request)
     {
