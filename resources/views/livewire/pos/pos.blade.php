@@ -135,7 +135,7 @@
         .custom-badge{
             position: absolute;
             top: -0.3125rem;
-            right: 1.6875rem;
+            right: 0.6875rem;
             width: 1.25rem;
             height: 1.25rem;
             border-radius: 50%;
@@ -199,6 +199,23 @@
 
         }
 
+        @media screen and (max-width: 480px) {
+            .input-search{
+                font-size: 24px;
+                border-left: 0px;
+                border-right: 0px;
+                border-top: 0px;
+                border-bottom: 2px solid grey;
+            }
+            h4{
+                margin-bottom: 2px;
+                font-size: 1rem;
+            }
+            .table{
+                margin-bottom: 0px !important;
+            }
+        }
+
         .input-search input:focus{
             color: blueviolet;
         }
@@ -232,42 +249,31 @@
             color: #827e84;
             border: 2px solid #ffffff !important;
         }
+
+        .menu-mobile{
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            padding-left: 0;
+        }
+
+        .mobile-menu-item{
+            display: block;
+        }
+
+        .view-shadow{
+            -webkit-box-shadow: 4px -5px 5px -1px rgba(0,0,0,0.75);
+            -moz-box-shadow: 4px -5px 5px -1px rgba(0,0,0,0.75);
+            box-shadow: 4px -5px 5px -1px rgba(0,0,0,0.75);
+        }
     </style>
 @endpush
 
 
 <div class="content" wire:ignore.self>
-@handheld
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
-    id="modal-confirm-pay">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Confirmar</h4>
-            </div>
-            <div class="modal-body">
-                <p>Este proceso generará una nueva orden y una factura electrónica.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal-btn-yes">Si</button>
-                <button type="button" class="btn btn-default" id="modal-btn-no">No</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="cart-view" style="display: none;">
-    <div class="row">
-        <div class="col-12"><i class="la la-close float-right close-cart-view"></i></div>
-    </div>
-    <div class="row">
-        <div class="col-12 card">
-            @include('livewire.pos.partials.cart')
-        </div>
-    </div>
-
-</div>
-{{-- Menu --}}
+{{-- Menu Mobile--}}
 <div class="menu-content h-100" style="display: none;">
     <div class="row ">
         <div class="col-12 text-right">
@@ -312,94 +318,23 @@
     </div>
 
 </div>
-{{-- Header --}}
-<div class="header-pos">
-    <div class="row mb-2">
-        <div class="col-2 text-center">
-            <i class="las la-bars menu-mobile" style="font-size: 32px;"></i>
-        </div>
-        <div class="col-8 p-0 text-center">
-            <form class="form-inline search-products">
-                <input id="search" class="form-control w-100" type="search" placeholder="Buscar producto"
-                    aria-label="Search">
-           </form>
-           <form class="form-inline search-customers" style="display: none;">
-                <input class="form-control w-100 search-customers" type="search" placeholder="Buscar cliente"
-                aria-label="Search">
-           </form>
-           <form class="form-inline search-orders" style="display: none;">
-                <input id="searchOrder" class="form-control mr-sm-2 w-100 search-orders" type="text" placeholder="Buscar orden"
-           aria-label="Search">
-        </form>
-
-        </div>
-        <div class="col-2 p-0">
-            <span class="las la-shopping-cart " style="font-size:32px;">
-
-            <span
-                class="custom-badge badge-cart-view  "  @if( !empty($cartproducts)) id="mobile-cart-view" @endif> {{ empty($cartproducts)?0:count($cartproducts) }}</span>
-        </span>
-    </div>
-</div>
-</div>
-
-{{-- Customer view --}}
-<div class="h-50 customer-view" style="display: none;">
-    <div id="selectCustomer">@livewire('pos.customer.customer-view')</div>
-</div>
-{{-- Sale Box --}}
-    @include('livewire.pos.partials.sale-box')
-{{--Report Sales --}}
-<div class="col-12 sales-view" style="display: none;">
-    <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
-</div>
-{{-- Payment view --}}
-    @include('livewire.pos.partials.payment')
-{{-- Confirm payment view --}}
-    @include('livewire.pos.partials.confirm-payment')
-{{-- Final payment view --}}
-    @include('livewire.pos.partials.final-payment')
-<div class=" h-50 main-view">
-
-    <div id="productList">
-
-        @livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
-    </div>
-</div>
-<div class=" h-25 cart-buttons-view">
-    <div class="row fixed-bottom">
-
-        <div class="col-6 p-1"  @if(!$isSaleBoxOpen) style="display:none;" @endif>
-            <button class="btn btn-danger btn-block  h-100" id="btn-customer">
-                @if (session()->get('user.pos.selectedCustomer'))
-                    {{ session()->get('user.pos.selectedCustomer')->first_name }}
-                    {{ session()->get('user.pos.selectedCustomer')->last_name }}
-                @else
-                    Seleccionar Cliente
-                @endif
-            </button>
-        </div>
-        <div class="col-6 p-1 "  @if(!$isSaleBoxOpen) style="display:none;" @endif>
-            <button class="btn btn-danger btn-block " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif> {{ currencyFormat($total ?? 0, 'CLP', true) }} <br>
-                Pagar
-            </button>
-        </div>
-
-        <div class="col-12 p-4 "  @if($isSaleBoxOpen) style="display:none;" @endif>
-            <button class="btn btn-warning btn-block btn-box-sale">
-                Debe iniciar una caja para continuar operando
-            </button>
-        </div>
-
-    </div>
-
-</div>
-@elsehandheld
-
-
-{{-- Header --}}
-<div class="header-pos">
+{{-- Cart Mobile --}}
+<div class="cart-view" style="display: none;">
     <div class="row">
+        <div class="col-12"><i class="la la-times-circle float-right close-cart-view" style="font-size: 32px;"></i></div>
+    </div>
+    <div class="row">
+        <div class="col-12 card">
+            @include('livewire.pos.partials.cart')
+        </div>
+    </div>
+
+</div>
+
+{{-- Header --}}
+<div class="header-pos">
+
+    <div class="row"   id="short-cuts"  style="display: none;">
         <div class="col-4">
             <div wire:init="validateBox" class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="boxSwitch" @if($isSaleBoxOpen) checked="true" @endif>
@@ -412,7 +347,7 @@
                     class="text-primary">{{ \Carbon\Carbon::parse($saleBox->opened_at)->translatedFormat('j/m/Y - g:i a') }} -  ({{$user->name}})</strong>
             @endif
         </div>
-        <div class="col-8">
+        <div class="col-8 " >
             <div class="row">
                 <div class="col-3"><span class=" border border-white rounder p-2 custom-key">F1 </span> (Inicio)</div>
                 <div class="col-3"><span class=" border border-white rounder p-2 custom-key">F2 </span> (Cobrar)</div>
@@ -449,9 +384,9 @@
 
 <div class="row ">
     {{-- Sidebar--}}
-    <div class="col-1">
+    <div class="col-1  d-none d-sm-block">
         <div class="bg-light border-right" id="sidebar-wrapper">
-            <ul class="pos-list-group list-group-flush">
+            <ul id="menu-pos" class="pos-list-group list-group-flush">
                 <li class="pos-list-group-item text-center my-auto">
                     <a href="#" class=" list-group-item-action link-pos ">
                         <i class=" las la-calculator" style="font-size: 32px;"></i>
@@ -459,14 +394,28 @@
                         POS
                     </a>
                 </li>
-                <li class="pos-list-group-item text-center  my-auto"><a href="#"
+                <li class="pos-list-group-item text-center  my-auto">
+                    <a href="#"
+                        class=" link-box-sale ">
+                        <i class="las la-cash-register" style="font-size: 32px;"></i>
+                        <br>
+                        CAJA
+                    </a>
+                </li>
+                <li class="pos-list-group-item text-center  my-auto">
+                    <a href="#"
                         class="list-group-item-action link-sale">
                         <i class="las la-file-invoice-dollar" style="font-size: 32px;"></i>
                         <br>
-                        VENTAS</a></li>
-                <li class="pos-list-group-item text-center"><a href="#" class="list-group-item-action  link-customer">
+                        VENTAS
+                    </a>
+                </li>
+                <li class="pos-list-group-item text-center">
+                    <a href="#" class="list-group-item-action  link-customer">
                         <i class="las la-user" style="font-size: 32px;"></i>
-                        CLIENTES</a></li>
+                        CLIENTES
+                    </a>
+                </li>
 
                 {{-- <li class="pos-list-group-item text-center  my-auto"><a href="#" class="list-group-item-action ">
                         <i class="las la-cash-register" style="font-size: 32px;"></i>
@@ -487,24 +436,26 @@
         </div>
     </div>
     {{-- Customer view --}}
-    <div class="col-11 customer-view" style="display: none;">
+    <div class="col-md-11 col-12 customer-view" style="display: none;">
         <div id="selectCustomer">@livewire('pos.customer.customer-view')</div>
     </div>
     {{-- Salesbox --}}
-    <div class="col-11 sales-view" style="display: none;">
+    <div class="col-md-11 col-12 sales-view" style="display: none;">
         <div>@livewire('pos.report.pos-report-view', ['seller' => $seller])</div>
     </div>
     {{-- Payment view --}}
     @include('livewire.pos.partials.payment')
+     {{-- Movements Box --}}
+    {{--  @include('livewire.pos.partials.movements-box') --}}
     {{-- Sale Box --}}
     @include('livewire.pos.partials.sale-box')
     {{-- Confirm payment view --}}
     @include('livewire.pos.partials.confirm-payment')
     {{-- Final payment view --}}
     @include('livewire.pos.partials.final-payment')
-    <div class="col-11 main-view">
+    <div class="col-md-11 col-12 main-view" wire:ignore.self >
         <div class="row">
-            <div class="col-8">
+            <div class="col-md-8 col-12 m-0 p-0">
                 {{-- <div class="row">
                     <div class="col-7 text-center pt-1 pb-1">
                         <form class="form-inline">
@@ -515,12 +466,12 @@
                 {{--        </form>
                     </div>
                 </div> --}}
-                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode])
+                <div id="productList">@livewire('pos.list-products', ['seller' => $seller, 'view' => $viewMode , 'cartproducts'=> $totalProducts ])
                 </div>
             </div>
-            <div class="col-4">
-                <div class="vh-100">
-                    <div class="col-12 h-50 overflow-auto">
+            <div class="col-md-4 col-12">
+                <div id="cart-space" class="vh-100 ">
+                    <div class="col-12 h-50 overflow-auto d-none d-sm-block">
                         @include('livewire.pos.partials.cart')
                     </div>
 
@@ -543,7 +494,23 @@
                             </div>
                         </div> --}}
                         @if($total > 0)
-                        <div class='row col-md-12 p-0 m-0'>
+                        <div class="row col-md-12 p-0 m-0 p-1 bg-white">
+                            <div class="col-12 text-right ">
+                                <div class="form-group form-check mb-1">
+                                    <input type="checkbox" class="form-check-input" id="use_discount" @if($discount> 0) checked @endif>
+                                    <label class="form-check-label" for="use_discount">Aplicar descuento</label>
+                                  </div>
+                            </div>
+                            <div class="col-12 " id="amount_discount_view"  @if($discount == 0)style="display: none;" @endif>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">Dcto %</span>
+                                    </div>
+                                    <input type="number" class="form-control" placeholder="0" id="amount_discount" wire:model="discount" wire:change="updatedDiscount()">
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12 p-0 m-0 d-none d-sm-block p-1 bg-white">
                             <div class="col-md-3">
                                 <div class="  border-right-0"> Subtotal</div>
                             </div>
@@ -557,7 +524,7 @@
                         </div>
                         @endif
                         @if($total > 0)
-                        <div class='row col-md-12 p-0 m-0'>
+                        <div class="row col-md-12 p-0 m-0 d-none d-sm-block p-1 bg-white">
                             <div class="col-md-3">
                                 <div class="  border-right-0"> Impuestos</div>
                             </div>
@@ -570,50 +537,44 @@
                             </div>
                         </div>
                         @endif
-                        <div class='row col-md-12 p-0 m-0'>
-                            <div class="col-md-3">
+                        <div class="row col-md-12 p-0 m-0 border border-info  rounded p-1 bg-white">
+                            <div class="col-md-3 col-3">
                                 <div class="  border-right-0"> Total</div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-6">
                                 {{-- <div style="border-bottom: 2px dotted #000000;"> </div> --}}
                                 <span class="align-text-bottom w-100" style="border-bottom: 2px dotted #000000;"></span>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-3">
                                 <div class=" text-right"> <strong>{{ currencyFormat(($total ) ?? 0, 'CLP', true) }}</strong></div>
                             </div>
                         </div>
                         <div class="row mt-1">
                             <div class="col-12" @if(!$isSaleBoxOpen) style="display:none;" @endif>
 
-                                <div  class="border border-info  rounded p-1 ">
-                                    @if (session()->get('user.pos.selectedCustomer'))
+                                <div  class="border border-info  rounded p-1 bg-white ">
+                                    @if ($customer)
                                     <div class="row">
-                                        <div class="col-12">
-                                            <h6>Cliente</h6>
+                                        <div class="col-8">
+                                            <i class="las la-user" ></i>
+                                            {{ $customer->first_name }}
+                                            {{ $customer->last_name }}
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            {{ session()->get('user.pos.selectedCustomer')->first_name }}
-                                            {{ session()->get('user.pos.selectedCustomer')->last_name }}
+                                        <div class="col-4">
+                                            {{ $customer->rut }}
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                   {{--  <div class="row">
                                         <div class="col-12">
-                                            {{ session()->get('user.pos.selectedCustomer')->rut }}
+                                            {{ $customer->email }}
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            {{ session()->get('user.pos.selectedCustomer')->email }}
-                                        </div>
-                                    </div>
+                                    </div> --}}
                                     @endif
                                     <div class="row">
                                         <div class="col-12 text-center">
                                             <button class="btn btn-info " id="btn-customer">
-                                                @if (session()->get('user.pos.selectedCustomer'))
+                                                @if ($customer)
                                                     Cambiar Cliente (F6)
                                                 @else
                                                     Seleccionar Cliente (F6)
@@ -626,7 +587,7 @@
 
 
 
-                                <button class="btn btn-danger btn-block mt-1 " id="btn-pay" >Cobrar (F2)
+                                <button class="btn btn-danger btn-block mt-1 " id="btn-pay" @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar> Cobrar (F2)
                                  {{-- @if ($total <= 0 || is_null($customer)) disabled @endif>Pagar --}}
                                 </button>
                             </div>
@@ -643,9 +604,9 @@
 </div>
 </div>
 {{-- Footer --}}
-@endhandheld
+
 </div>
-<div class="modal fade" wire:ignore.self tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
+<div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="modalSelectAddress" aria-hidden="true" id="modalSelectAddress">
     <div class="modal-dialog modal-lg">
         @livewire('pos.customer.create-address-form', [], key(time().'.address.'.$seller->id))
     </div>
@@ -655,6 +616,13 @@
     aria-labelledby="createCustomerModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         @livewire('pos.customer.create-customer', [], key(time().'.customer.'.$seller->id))
+    </div>
+</div>
+
+{{-- Devoluciones Modal --}}
+<div class="modal fade" id="returnsModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document">
+        @livewire('pos.refund', [], key(time() . '.refund'))
     </div>
 </div>
 
@@ -671,6 +639,7 @@
     <script>
         var currentView = 'productList';
         var addressModalAppended = true;
+        var salexBoxModalAppended = true;
         var boardTarget = 'cash';
         const changeViewMode = (view, cartAlternative) => {
             $('#' + currentView).hide();
@@ -685,6 +654,12 @@
         window.addEventListener('hideCustomerModal', event => {
             $('#showCustomerModal').appendTo("body").modal('hide');
         })
+
+        window.addEventListener('hideMovementSalesBoxModal', event => {
+            $('#movementSalesBoxModal').appendTo("body").modal('hide');
+        })
+
+
 
         window.addEventListener('showAddressModal', async (event) => {
             let modal = $('.app-body').find('#modalSelectAddress');
@@ -704,6 +679,29 @@
             $('#showCustomerModal').appendTo("body").modal('hide');
         });
 
+        /* Show modals on sales box */
+
+       /*  window.addEventListener('showSalesBoxModal', async (event) => {
+
+            let modal = $('.app-body').find('#salesBoxModal');
+            $('.app-body').find('#salesBoxModal').remove();
+            if (salexBoxModalAppended) {
+                salexBoxModalAppended = false;
+                modal.appendTo('body');
+            }
+            //$('#salesBoxModal').modal('show');
+        }) */
+
+
+
+        window.addEventListener('closeSaleBoxView', event => {
+        $('#salesBoxModal').appendTo("body").modal('hide');
+        })
+        //Show main pos after select customer
+        window.addEventListener('showMainPos', async (event) => {
+            hideAllViews()
+            $('.main-view').show();
+        })
 
         //Colapse general menu
         $("body").removeClass('sidebar-lg-show');
@@ -743,7 +741,7 @@
 
             //Select customer
             if (event.which == 117 && event.target.id != 'customer-view'){
-                console.log('aca');
+
                 $("#btn-customer").trigger('click');
                 $('#search-customer').focus().select();
                 return false;
@@ -797,16 +795,30 @@
         confirmPay = $('#confirm-pay')
         inputCash = $('#inputCash')
 
+        //For mobile
+        spanCalc = $('.total-cash')
+
 
 
         spanCash.text('$0')
         spanChange.text('$0')
         spanTip.text('$0')
 
+
         confirmPay.prop("disabled", true);
 
 
         $('.payment-view').hide();
+
+
+
+        /* amountDiscount.keyup(function(){
+            let percentajeDiscount = $(this).val()
+            tmpTotalCart = clearCurrency(totalCart)
+            console.log( tmpTotalCart * (currentDiscount/100))
+
+        }) */
+
 
         // Calc
         function chr(value) {
@@ -817,6 +829,10 @@
 
                 case 'tip':
                     updateTip(value);
+                    break;
+
+                case 'calc':
+                    updateCalc(value);
                     break;
 
                 default:
@@ -895,6 +911,48 @@
             }
 
             spanTip.text(formatCurrency(tmpTip))
+        }
+
+        function updateCalc(value) {
+            tmpTotalCart = clearCurrency(totalCart)
+            tmpCalc = clearCurrency(spanCalc)
+
+            switch (value) {
+                case '<<':
+                    if(tmpCalc.length > 2){
+                        tmpCalc = tmpCalc.slice(0, -1);
+                    }else {
+                        tmpCalc = 0;
+                    }
+                    break;
+                case 'C':
+                    tmpCalc = '$0';
+                    break;
+                default:
+                    tmpCalc += value
+                    break;
+            }
+
+
+
+            //spanCalc.text(formatCurrency(tmpCalc))
+
+
+            tmpCalcFloat = parseFloat(tmpCalc)
+            tmpTotalCartFloat = parseFloat(tmpTotalCart)
+
+            spanCalc.text(formatCurrency(tmpCalcFloat))
+
+            if (tmpCalcFloat >= tmpTotalCartFloat) {
+                tmpChange = calculeChange(tmpCalcFloat, tmpTotalCartFloat)
+
+                spanChange.text(formatCurrency(tmpChange))
+                confirmPay.removeAttr('disabled');
+            } else {
+
+                spanChange.text(formatCurrency(0))
+                confirmPay.prop("disabled", true);
+            }
         }
 
         function transferTipToChange() {
@@ -988,220 +1046,94 @@
             transferTipToChange();
         }); */
 
+        paymentMethodText = $('#payment-method-text')
+        //Payment method change event
+            $('#payment-method-select').change(function(){
+                console.log(paymentMethodText.text())
+                let tmpPaymentMethodtext = $(this).find(":selected"). text()
+                if(tmpPaymentMethodtext != null){
+                    paymentMethodText.text(tmpPaymentMethodtext)
+                }else{
+                    paymentMethodText.text('Efectivo')
+                }
+        })
 
 
 
-        @handheld
-            $('header').hide()
-            $('footer').hide()
-            $('.menu-content').hide()
-            $('.container-fluid').addClass('p-1')
 
-            // @if(!$isSaleBoxOpen)
-            //     hideAllViews()
-            //     $('.sale-box-view').show();
-            // @endif
-
-            $('#btn-customer').click(function() {
-                hideAllViews()
-                $('.customer-view').show();
-                //$('.main-view').hide();
-                $('.search-customers').show();
-                $('.search-products').hide();
-                $('.search-orders').hide();
-
-
-            });
-
-            $('#btn-pay').click(function() {
-                hideAllViews()
-                $('.payment-view').show();
-                inputCash.focus().select();
-                //$('.main-view').hide();
-                //$('.cart-buttons').hide();
-            });
-
-            $('#close-payment').click(function() {
-                hideAllViews()
-                $('.main-view').show();
-              //  $('.payment-view').hide();
-                $('.cart-buttons-view').show();
-            });
-
-            $('.menu-mobile').click(function(){
-               $('.menu-content').show()
-            })
-
-            $('.close-mobile-menu').click(function(){
-               $('.menu-content').hide()
-            })
-
-            $('#mobile-cart-view').click(function(){
-                hideAllViews()
-
-               $('.header-pos').hide()
-               $('.cart-view').show()
-               $('.main-view').hide()
-            })
-
-
-            $('.close-cart-view').click(function(){
-                hideAllViews()
-            //    $('.cart-view').hide()
-               $('.main-view').show()
-               $('.header-pos').show()
-               $('.cart-buttons-view').show();
-            })
-
-            $('.btn-box-sale').click(function() {
-                hideAllViews();
-                $('.sale-box-view').show();
-
-            });
-
-            // $('.mobile-open-box').click(function() {
-            //     hideAllViews();
-            //     $('.sale-box-view').show();
-
-            // });
-
-            // $('.mobile-close-box').click(function() {
-            //     hideAllViews();
-            //     $('.main-view').show();
-            //     $('.cart-buttons-view').show();
-            // });
-
-            //Menu actions
-
-            $('.link-pos').click(function() {
-                hideAllViews();
-                $('.main-view').show();
-                $('.cart-buttons-view').show();
-                // $('.customer-view').hide();
-                // $('.sales-view').hide();
-                // $('.menu-content').hide()
-                //change search
-                $('.search-customers').hide();
-                $('.search-products').show();
-                $('.search-orders').hide();
-
-
-                $('.menu-content').hide()
-
-
-
-            });
-
-            $('.link-box-sale').click(function() {
-                hideAllViews();
-                $('.sale-box-view').show();
-                $('.menu-content').hide()
-            });
-
-
-
-            $('.link-sale').click(function() {
-                hideAllViews();
-                $('.sales-view').show();
-                // $('.main-view').hide();
-                // $('.customer-view').hide();
-                // $('.menu-content').hide()
-                 //change search
-                $('.search-customers').hide();
-                $('.search-products').hide();
-                $('.search-orders').show();
-                $('.menu-content').hide()
-            });
-
-            $('.link-customer').click(function() {
-                hideAllViews();
-                $('.customer-view').show();
-                // $('.main-view').hide();
-                // $('.sales-view').hide();
-                // $('.menu-content').hide()
-
-                //change search
-                $('.search-customers').show();
-                $('.search-products').hide();
-                $('.search-orders').hide();
-
-                $('.menu-content').hide()
-            });
-
-        @elsehandheld
-            $('header').show()
-            $('footer').show()
+        $('header').show()
+        $('footer').show()
              //Menu actions
 
-            $('.link-pos').click(function() {
-                hideAllViews()
-                $('.main-view').show();
-                $('.cart-buttons-view').show();
-                // $('.customer-view').hide();
-                // $('.sales-view').hide();
-                //change search
-                $('.search-customers').hide();
-                $('.search-products').show();
+        $('.link-pos').click(function() {
+            hideAllViews()
+            $('.main-view').show();
+            $('.menu-content').hide()
+        });
+
+        $('.link-box-sale').click(function() {
+            hideAllViews();
+            $('.sale-box-view').show();
+            $('.menu-content').hide()
+        });
+
+        $('.link-sale').click(function() {
+            hideAllViews()
+            $('.sales-view').show();
+            $('.menu-content').hide()
+        });
+
+        $('.link-customer').click(function() {
+            hideAllViews()
+            $('.customer-view').show();
+            $('.menu-content').hide()
+        });
+
+        $('#btn-customer').click(function() {
+            hideAllViews()
+            $('.customer-view').show();
+        });
+
+        $('#close-payment').click(function() {
+            hideAllViews()
+            $('.main-view').show();
+        });
+
+        $('#btn-pay').click(function() {
+            hideAllViews()
+            $('.payment-view').show();
+            inputCash.focus().select();
+        });
+
+        $('#btn-pay-mobile').click(function() {
+            hideAllViews()
+            $('.payment-view').show();
+        });
+
+        $('.btn-box-sale').click(function() {
+            hideAllViews();
+            $('.sale-box-view').show();
+        });
 
 
-            });
+        let returnsModalAppended = false
 
-            $('.link-box-sale').click(function() {
-                hideAllViews();
-                $('.sale-box-view').show();
-            });
+        function showReturnsModal(orderId) {
+            if (!returnsModalAppended) {
+                $('#returnsModal').appendTo("body")
+                returnsModalAppended = true
+            }
 
-
-            $('.link-sale').click(function() {
-                hideAllViews()
-                $('.sales-view').show();
-                // $('.main-view').hide();
-                // $('.customer-view').hide();
-            });
-
-            $('.link-customer').click(function() {
-                hideAllViews()
-                $('.customer-view').show();
-                // $('.main-view').hide();
-                // $('.sales-view').hide();
-            });
-
-            $('#btn-customer').click(function() {
-                hideAllViews()
-                $('.customer-view').show();
-                $('.search-customers').show();
-                //$('.main-view').hide();
-
-            });
-
-            $('#close-payment').click(function() {
-                hideAllViews()
-                $('.main-view').show();
-               // $('.payment-view').hide();
-            });
-
-            $('#btn-pay').click(function() {
-                hideAllViews()
-                $('.payment-view').show();
-                inputCash.focus().select();
-                //$('.main-view').hide();
-            });
-
-            $('.btn-box-sale').click(function() {
-                hideAllViews();
-                $('.sale-box-view').show();
-
-            });
-
-        @endhandheld
-
+            Livewire.emit('selectOrder', orderId)
+            $('#returnsModal').modal('show')
+        }
     </script>
 
 
 
     <script>
         document.addEventListener('livewire:load', function() {
-
+            btnPay = $('#btn-pay');
             const modalConfirm = function(callback) {
 
                 $("#confirm-pay").on("click", function() {
@@ -1245,13 +1177,13 @@
                     totalCash = parseFloat(totalCash)
 
                 let tip = clearCurrency(spanTip)
+                let typeDocument = $('#type_document_select').val()
+                let businessActivity = $('#business_activity_select').val()
+                let selectedPaymentMethod = $('#payment-method-select').val()
 
-                    await @this.confirmPayment(totalCash, tip)
+                    await @this.confirmPayment(totalCash, tip, typeDocument, businessActivity, selectedPaymentMethod)
                     hideAllViews()
-                    // $('.main-view').hide();
-                    // $('.cart-buttons').hide();
-                    // $('.payment-view').hide();
-                    // $('.confirm-payment-view').hide();
+
                     $('.final-payment-view').show();
             }
 
@@ -1286,7 +1218,174 @@
                 $('.cart-buttons-view').show();
             });
 
+
+
+
+
+
         })
+
+        //Mobile
+        document.addEventListener("DOMContentLoaded", () => {
+            Livewire.hook('component.initialized', (component) => {
+
+
+
+            // Business Activity
+            if ($('#type_document_select').val() == 33) {
+                $('#business_activity_div').show()
+            } else {
+                $('#business_activity_div').hide()
+            }
+
+            // Type document change event
+            $('#type_document_select').change( function () {
+                if (this.value == 33) {
+                    /* let address =  @this.getSelectedCustomerAddress()
+                    if(address == null) {
+                        //btnPay.prop("disabled", true);
+                    }else{
+                        $('#business_activity_div').show()
+                    } */
+                    $('#business_activity_div').show()
+                } else {
+                    $('#business_activity_div').hide()
+                }
+            })
+
+            //Discount
+            amountDiscountView = $('#amount_discount_view')
+            useDiscount = $('#use_discount')
+            amountDiscount = $('#amount_discount')
+
+           /*  if(useDiscount.checked){
+                amountDiscountView.show()
+            } */
+            useDiscount.change(async function() {
+                        if(this.checked) {
+                            amountDiscountView.show()
+                            amountDiscount.focus();
+                        }else{
+                            await @this.clearDiscount();
+                            amountDiscountView.hide()
+                        }
+            });
+
+
+
+            //Update mobile
+            var mobileMQ = window.matchMedia("(max-width: 360px)")
+            header =$(".app-header");
+            headerMobile = $("#header-mobile");
+            menuMobile = $("#menu-mobile");
+            cartMobile = $("#cart-mobile");
+            cartSpace = $('#cart-space');
+            shortCuts = $('#short-cuts');
+            panelCalc = $('#panel-calc');
+            inputCash = $('#inputCash');
+            paymentMethod = $('#payment-method');
+            cashDiv = $('#cash-div');
+            changeDiv = $('#change-div');
+            btnPay = $('#btn-pay');
+            btnCustomer = $('#btn-customer');
+            productList= $('#productList').find('.product-cart')
+
+            function checkMobile(mq) {
+
+
+               if (mq.matches) {
+                    cartSpace.removeClass('vh-100');
+                    cartSpace.addClass('fixed-bottom');
+                    header.hide();
+                    headerMobile.hide();
+                    productList.each(function() {
+                        $(this).find("div").removeClass("h-100")
+                    })
+
+                    menuMobile.show();
+                    cartMobile.show();
+                    shortCuts.hide();
+                    boardTarget = 'calc';
+                    panelCalc.show();
+                    inputCash.hide();
+                    btnPay.text('Cobrar');
+                    btnCustomer.text('Cambiar Cliente')
+
+
+                    //Check paymentmethod
+                    paymentMethod.change(function(){
+                       currentPaymentMethod = $(this).val()
+                       if(currentPaymentMethod != 1) {
+                           panelCalc.hide()
+                           cashDiv.hide()
+                           changeDiv.hide()
+                           confirmPay.removeAttr('disabled');
+                       }else{
+                           panelCalc.show()
+                           cashDiv.show()
+                           changeDiv.show()
+                           confirmPay.prop("disabled", true);
+                       }
+                    })
+
+                }else{
+                    cartSpace.addClass("vh-100");
+                    cartSpace.removeClass("fixed-bottom");
+                    header.show();
+                    headerMobile.hide();
+                    menuMobile.hide();
+                    cartMobile.hide();
+                    shortCuts.show();
+                    boardTarget = 'cash';
+                    panelCalc.hide();
+                    inputCash.show();
+                    btnPay.text('Cobrar (F2)');
+                    btnCustomer.text(' Cambiar Cliente (F6)')
+
+                }
+            }
+
+
+            mobileMQ.addListener(checkMobile)
+            checkMobile(mobileMQ)
+
+
+            // MENU MOBILE
+            $('.menu-mobile').click(function(){
+               $('.menu-content').show()
+            })
+            $('.close-mobile-menu').click(function(){
+               $('.menu-content').hide()
+            })
+
+            //CART MOBILE
+            $('#mobile-cart-view').click(function(){
+                hideAllViews()
+               $('.cart-view').show()
+
+            })
+
+
+            $('.close-cart-view').click(function(){
+                hideAllViews()
+               $('.main-view').show()
+
+            })
+            $('.close-pay-view').click(function(){
+                hideAllViews()
+               $('.main-view').show()
+
+            })
+            $('.close-customer-view').click(function(){
+                hideAllViews()
+               $('.main-view').show()
+
+            })
+
+        })
+
+    });
+
 
     </script>
 @endpush

@@ -14,6 +14,11 @@ class ListProducts extends Component
     public $showAddToCart = false;
     public $productSelected = null;
     public $productNotFound = false;
+    public $cartproducts =0 ;
+    protected $listeners =[
+        'list-product-qty' => 'productsQty'
+    ];
+
 
 
     public function render()
@@ -40,9 +45,11 @@ class ListProducts extends Component
         return view('livewire.pos.list-products');
     }
 
-    public function mount(Seller $seller)
+    public function mount(Seller $seller, $cartproducts)
     {
         $this->seller = $seller;
+        $this->cartproducts = $cartproducts;
+
         //$this->products = $this->getProducts($this->searchProduct);
     }
 
@@ -91,5 +98,10 @@ class ListProducts extends Component
     {
         $this->dispatchBrowserEvent('showAddFastProduct');
 
+    }
+
+    public function productsQty($productsqty)
+    {
+        $this->cartproducts = $productsqty;
     }
 }

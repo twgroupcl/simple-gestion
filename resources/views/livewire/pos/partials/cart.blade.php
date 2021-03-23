@@ -58,5 +58,12 @@ use App\Models\Product;
                 @endforeach
             @endif
         </div>
-</div>
+    </div>
+    <div class="row d-sm-none">
+        <div class="col-12">
+            <button class="btn btn-danger btn-block mt-1 " id="btn-pay-mobile" >
+                Cobrar
+            </button>
+        </div>
+    </div>
 

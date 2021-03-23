@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Rules\RutRule;
 
 class TransactionRequest extends FormRequest
 {
@@ -45,6 +46,11 @@ class TransactionRequest extends FormRequest
             //'payment_or_expense' => ['required', Rule::in([0,1])],
             'json_transaction_details_validation.*.value' => 'required|numeric|digits_between:0,10',
             'document_identifier' => $documentTypeRules,
+            'person_name_reference' => 'nullable|string|max:100',
+            'person_uid_reference' => [
+                new RutRule,
+                'string', 
+            ]
         ];
     }
 
@@ -63,6 +69,8 @@ class TransactionRequest extends FormRequest
             'transaction_type_id' => 'tipo de transacción',
             'json_transaction_details_validation.*.value' => 'valor',
             'note' => 'detalle de movimiento',
+            'person_uid_reference' => 'RUT p/referencia',
+            'person_name_reference' => 'Nombre o razón (p/referencia)',
         ];
     }
 
@@ -79,6 +87,7 @@ class TransactionRequest extends FormRequest
             'numeric' => 'El campo :attribute es numérico',
             'digits_between' => 'El número del campo ":attribute" tiene más de :max dígitos',
             'min' => 'Revise el campo :attribute, debe tener más de :min de largo',
+            'max' => 'Revise el campo :attribute, debe tener menos de :max de largo',
             //
             //
         ];
@@ -86,6 +95,7 @@ class TransactionRequest extends FormRequest
 
     protected function prepareForValidation()
     {
+        $validations = [];
         foreach ($this->prepareData as $attrName) {
             if (empty($this->$attrName)) {
                 return;
@@ -98,9 +108,10 @@ class TransactionRequest extends FormRequest
                 $forValidation[] = (array) $attrs;
             }
 
-            $this->merge([
-                $attrName.'_validation' => $forValidation,
-            ]);
+            $validations[] = [$attrName.'_validation' => $forValidation];
         }
+        $this->merge(array_merge([
+            'person_uid_reference' => str_replace('.', '', $this->person_uid_reference)
+        ], $validations));
     }
 }

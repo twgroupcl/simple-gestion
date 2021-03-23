@@ -1,11 +1,11 @@
-@handheld
+{{-- @handheld
 <div class="col-12 vh-100 final-payment-view " style="display: none;">
     <div class="row">
         <div class="col-12"><i class="la la-close float-right close-final-payment" ></i></div>
     </div>
 
     <div class="row h-25">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <h3>Operación finalizada</h3>
         </div>
     </div>
@@ -31,14 +31,25 @@
             @endif
         </div>
     </div>
+    <div class="row  h-25">
+        <div class="col-12"><h5 class="text-info text-center"><i class="las la-print" style="font-size: 32px;"></i>Enviar Factura al SII e Imprimir Factura </h5></div>
+        <div class="col-6">
+            <button class="btn btn-secondary btn-block close-final-payment">NO</button>
+        </div>
+        <div class="col-6">
+            @if(!is_null($existsOrder))
+            <a target="_blanck" href="" class="btn btn-primary btn-block ">Si</a>
+            @endif
+        </div>
+    </div>
 </div>
-@elsehandheld
+@elsehandheld --}}
 <div class="col-11  h-100 final-payment-view" style="display: none;">
     <div class="row">
         <div class="col-12"><i class="la la-close float-right close-final-payment" ></i></div>
     </div>
     <div class="row h-50">
-        <div class="col-12">
+        <div class="col-12 text-center">
             <h3>Venta finalizada</h3>
         </div>
     </div>
@@ -83,11 +94,11 @@
         <div class="col-6">
             {{-- <button class="btn btn-primary btn-block" >SI</button> --}}
             @if(isset($existsOrder))
-            <a target="_blank" href="{{ route('pos.order', ['id' => $existsOrder->id]) }}" class="btn btn-primary btn-block text-white">Imprimir boleta</a>
+            <a target="_blank" href="{{ route('order.invoice', ['order' => $existsOrder->id , 'tipoPapel'=> 75]) }}" class="btn btn-primary btn-block text-white">Imprimir boleta</a>
             @endif
         </div>
     </div>
 
 
 </div>
-@endhandheld
+{{-- @endhandheld --}}

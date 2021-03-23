@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class MovementType extends Model
 {
     use CrudTrait;
-    use SoftDeletes;
+
 
     /*
     |--------------------------------------------------------------------------
@@ -18,19 +18,14 @@ class Transaction extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'transactions';
+    protected $table = 'movement_types';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $casts = [
-        'json_value' => 'array',
-    ];
-    protected $fakeColumns = [
-        'json_value',
-    ];
+    //protected $appends = ['string_for_select'];
 
     /*
     |--------------------------------------------------------------------------
@@ -46,54 +41,12 @@ class Transaction extends Model
     }
 
 
-    public function getDocumentInfo()
-    {
-        $model = $this->document_model;
-        $documentId = $this->document_identifier;
-
-        $document = $model::find($documentId);
-        $details = $document->invoice_type->name;
-        if (isset($document->folio)) {
-            $details .= ' F' . $document->folio;
-        }
-        $details .= ' ' . $document->title;
-
-        return $details;
-    }
-
-    public function getTotalAmount()
-    {
-        $amount = 0;
-        $amount = $this->transaction_details->sum('value');
-
-        return currencyFormat($amount, 'CLP', true);
-
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function transaction_type()
-    {
-        return $this->belongsTo(TransactionType::class);
-    }
-    
-    public function accounting_account()
-    {
-        return $this->belongsTo(AccountingAccount::class);
-    }
 
-    public function bank_account()
-    {
-        return $this->belongsTo(BankAccount::class);
-    }
-
-    public function transaction_details()
-    {
-        return $this->hasMany(TransactionDetail::class);
-    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -105,10 +58,6 @@ class Transaction extends Model
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
-    public function getPaymentOrExpenseAttribute()
-    {
-        return $this->transaction_type->is_payment ? "Abono" : "Gasto";
-    }
 
     /*
     |--------------------------------------------------------------------------

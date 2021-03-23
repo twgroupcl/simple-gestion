@@ -1,4 +1,4 @@
-@handheld
+{{-- @handheld
 <div class="row ">
     <div class="col-12 text-center">
         <h6>Ordenes</h6>
@@ -52,7 +52,7 @@
         </div>
     </div>
 </div>
-@elsehandheld
+@elsehandheld --}}
 <div class="row col-md-12">
     <div class="col-md-4 px-0">
         <input id="searchOrder" class="form-control mr-sm-2 w-100 order-search" type="text" placeholder="Buscar orden"
@@ -96,9 +96,20 @@
                     </li>
                 </ul>
                 <div class="card-body">
-                    <a target="_blanck"
-                    href="{{ route('order.invoice', ['order' => $selectedOrder->id, 'tipoPapel' => 75]) }}"
-                        class="btn btn-success">Imprimir Boleta</a>
+                    <a 
+                        target="_blanck"
+                        href="{{ route('order.invoice', ['order' => $selectedOrder->id, 'tipoPapel' => 75]) }}"
+                        class="btn btn-success"
+                    >
+                        Imprimir Boleta
+                    </a>
+                    <a 
+                        href="#"
+                        class="btn btn-danger"
+                        onclick="showReturnsModal({{ $selectedOrder->id }})"
+                    >
+                        Devolución
+                    </a>
                 </div>
             </div>
         </div>
@@ -134,4 +145,4 @@
         </div>
     @endisset
 </div>
-@endhandheld
+{{-- @endhandheld --}}

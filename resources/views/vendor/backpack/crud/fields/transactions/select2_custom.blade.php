@@ -120,7 +120,6 @@
                     },
                     type: $method,
                     success: function (result) {
-
                         resolve(result);
                     },
                     error: function (result) {
@@ -130,6 +129,14 @@
             });
         };
 
+
+        $(element).on('change', function() {
+                let documentType = element.parent().siblings('.document-type').children('.document-type-field');
+                if ($(this).select2('data')[0] == undefined) {
+                        return;
+                }
+                documentType.val($(this).select2('data')[0].code).trigger('change');
+        })
         // do not initialise select2s that have already been initialised
         if ($(element).hasClass("select2-hidden-accessible"))
         {
@@ -169,7 +176,8 @@
                             return {
                                 text: item[textField],
                                 id: item[$connectedEntityKeyName],
-                                price: item.price,
+                                //price: item.price,
+                                code: item.invoice_type.code,
                             }
                         }),
                         pagination: {
@@ -196,11 +204,12 @@
                 result.forEach(function(item) {
                     $itemText = item[$fieldAttribute];
                     $itemValue = item[$connectedEntityKeyName];
+                    console.log($itemValue)
                     //add current key to be selected later.
                     optionsForSelect.push($itemValue);
 
                     //create the option in the select
-                    $(element).append('<option value="'+$itemValue+'">'+$itemText+'</option>');
+                    $(element).append('<option document-type="'+ item['code'] +'" value="'+$itemValue+'">'+$itemText+'</option>');
 
                 });
 

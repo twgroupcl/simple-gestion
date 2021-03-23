@@ -3,23 +3,26 @@
 namespace App\Http\Livewire\Pos;
 
 use App\Mail\PosBill;
-use Carbon\Carbon;
-use App\Models\Order;
-use App\Models\Seller;
-use App\Models\Invoice;
-use App\Models\Product;
-use Livewire\Component;
+use App\Models\Bank;
 use App\Models\Currency;
 use App\Models\Customer;
-use App\Models\OrderItem;
+use App\Models\Invoice;
 use App\Models\InvoiceType;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\OrderPayment;
+use App\Models\Product;
 use App\Models\SalesBox;
-use Illuminate\Support\Facades\DB;
+use App\Models\SalesBoxMovement;
+use App\Models\Seller;
+use App\Models\MovementType;
+use App\Models\PaymentMethod;
 use Backpack\Settings\app\Models\Setting;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
+use Livewire\Component;
 
 class Pos extends Component
 {
@@ -29,29 +32,62 @@ class Pos extends Component
     public $viewMode;
     public $cash;
     public $user;
+    public $branches;
 
     //salebox
     public $saleBox;
     public $checked;
+    public $branch_id;
     public $opening_amount;
     public $closing_amount;
-    public $remarks;
+    public $remarks_open;
+    public $remarks_close;
     public $isSaleBoxOpen = false;
+    public $sales;
+
+    //movements
+    public $movement;
+    public $movements;
+    public $movementtypes;
+    public $updateMovements;
+    public $totalMovements;
+
+
+    //Payment Methods
+    public $paymentMethods;
+
+    //Banks
+    public $banks;
+
     // cart
     public $cart;
     public $cartproducts;
     public $customer = null;
     public $customerAddressId;
     public $subtotal = 0;
-    public $discount = null;
+    public $discount = 0;
+    public $discountAmount = 0;
     public $taxes = 0;
     public $total = 0;
-    public $existsOrder= null;
+    public $totalProducts = 0;
+    public $existsOrder = null;
+
+    // document
+    public $selected_type_document;
+
     protected $listeners = [
         'viewModeChanged' => 'setView',
         'add-product-cart:post' => 'addProduct',
         'customerSelected' => 'setCustomer',
         'confirmPayment' => 'confirmPayment',
+
+    ];
+
+    protected $rules = [
+        'movement.date' => ['required'],
+        'movement.movement_type_id' => ['required'],
+        'movement.amount' => ['required'],
+        'movement.notes' => ['nullable'],
 
     ];
 
@@ -65,8 +101,17 @@ class Pos extends Component
             abort(403);
         }
 
+        $this->branches = $this->user->branches;
+        if (isset($this->branches)) {
+            if (count($this->branches) > 0) {
+                $this->branch_id = $this->branches->first()->id;
+            }
+        }
+
         //$this->products = $this->getProducts();
         //$this->setView('productList');
+
+        $this->sales = null;
         $this->validateBox();
 
         //Check if exist session cart
@@ -81,16 +126,38 @@ class Pos extends Component
                 $this->cartproducts[$product->product->id]['product'] = (array) $product->product;
                 $this->cartproducts[$product->product->id]['real_price'] = $product->real_price;
             }
+
+            $this->discount = $tmpCart->discount;
+
             $this->calculateAmounts();
+            $this->totalProducts = count($this->cartproducts);
         }
 
         if (session()->get('user.pos.selectedCustomer')) {
             $this->customer = session()->get('user.pos.selectedCustomer');
         }
+
+        $this->movement = new SalesBoxMovement();
+
+
+
+        //Load Movements
+        $this->movementtypes = MovementType::orderBy('name','asc')->get();
+
+        $this->updateMovements = 0;
+
+        //Load Payment Methods;
+        $this->paymentMethods = $this->loadPaymentMethods();
+
+        //Load banks
+        $this->banks = $this->loadBanks();
+
     }
 
     public function render()
     {
+        $this->validateBox();
+
         return view('livewire.pos.pos');
     }
 
@@ -99,10 +166,28 @@ class Pos extends Component
         $this->viewMode = $view;
     }
 
-    public function confirmPayment($cash, $tip = null)
+    public function confirmPayment($cash, $tip = null, $typeDocument = null, $businessActivity = null, $paymentMethod = null)
     {
+
+
         $this->customer = session()->get('user.pos.selectedCustomer');
+
+
+        // In case there is no address selected, we set the first address of the customer
+        if (in_array($typeDocument, [33, 34]) && $this->customerAddressId === null) {
+
+            $this->customerAddressId = $this->customer->addresses->first()->id ?? null;
+
+            // If customer doesnt have any address, throw an exception
+            if ($this->customerAddressId === null) {
+                throw new \Exception('Para emitir una factura el cliente debe poseer una dirección');
+            }
+
+        }
+
         if ($cash >= $this->total && !is_null($this->saleBox)) {
+
+
             $currency = Currency::where('code', Setting::get('default_currency'))->firstOrFail();
             //Make order
             $order = new Order();
@@ -150,16 +235,27 @@ class Pos extends Component
 
             $order->save();
 
+
+            //Get selected payment Method
+            /* $selectedPaymentMethod = $this->paymentMethods->first(function($key, $item) use ($paymentMethod) {
+                return $key->code === $paymentMethod ;
+            }); */
+
+            $tmpSelectedPaymentMethod = array_search($paymentMethod,array_column($this->paymentMethods,'code'));
+            $selectedPaymentMethod = $this->paymentMethods[$tmpSelectedPaymentMethod];
+
+            //dd($selectedPaymentMethod['title']);
+
             //Register payment
             $orderpayment = new OrderPayment();
             $data = [
-                'event' => 'Cash Payment',
+                'event' => $selectedPaymentMethod['title'],
                 'data' => $cash,
 
             ];
             $orderpayment->order_id = $order->id;
-            $orderpayment->method = 'cash';
-            $orderpayment->method_title = 'cash';
+            $orderpayment->method = $selectedPaymentMethod['code'];
+            $orderpayment->method_title = $selectedPaymentMethod['title'];
             $orderpayment->json_in = json_encode($data);
             $orderpayment->date_in = Carbon::now();
             $orderpayment->save();
@@ -176,18 +272,20 @@ class Pos extends Component
 
             $this->existsOrder = $order;
 
-            //$this->emitInvoice($order);
+            $this->emitInvoice($order, $typeDocument, $businessActivity);
 
             $this->clearCart();
 
             $this->emit('showToast', 'Cobro realizado', 'Cobro registrado.', 3000, 'info');
 
         } else {
+
             $this->emit('showToast', 'Error', 'Ocurrio un error al registrar el pago.', 3000, 'error');
         }
     }
 
-    protected function clearCart(){
+    protected function clearCart()
+    {
         //Clear cart
         session()->put([
             'user.pos.cart' => null,
@@ -196,9 +294,11 @@ class Pos extends Component
         ]);
         $this->cartproducts = [];
         $this->total = 0;
-        $this->discount = null;
+        $this->discount = 0;
+        $this->discountAmount = 0;
         $this->subtotal = 0;
         $this->cash = 0;
+        $this->taxes = 0;
         $this->existOrder = null;
     }
 
@@ -215,12 +315,23 @@ class Pos extends Component
         return json_encode($this->customer);
     }
 
+    public function getSelectedCustomerAddress()
+    {
+        $this->customer = session()->get('user.pos.selectedCustomer');
+
+        /*   if (!is_null($this->customer->addresses) && count($this->customer->addresses)>0) {
+        return json_encode($this->customer->addresses);
+        }else{ */
+        return null;
+        /*  } */
+    }
+
     public function getProducts()
     {
         return Product::where('status', '=', '1')
             ->where('is_approved', '=', '1')
             ->where('parent_id', '=', null)
-           // ->whereSellerId($this->seller->id)
+        // ->whereSellerId($this->seller->id)
             ->limit(15)
             ->get();
     }
@@ -232,9 +343,15 @@ class Pos extends Component
         $this->isSaleBoxOpen = optional($this->saleBox)->is_opened ?? false;
 
         $this->checked = isset($this->saleBox->id);
-        if (! $this->isSaleBoxOpen) {
+        if (!$this->isSaleBoxOpen) {
             $this->saleBox = null;
+            $this->sales = null;
             $this->dispatchBrowserEvent('openSaleBoxView');
+        }else{
+            $this->sales = $this->loadSales();
+
+            $this->loadMovements();
+
         }
     }
 
@@ -247,16 +364,18 @@ class Pos extends Component
 
     public function openSaleBox()
     {
+
         $this->saleBox = $this->seller->sales_boxes()->create([
+            'branch_id' => $this->branch_id,
             'opening_amount' => $this->opening_amount,
-            'remarks' => $this->remarks,
+            'remarks_open' => $this->remarks_open,
             'opened_at' => now(),
         ]);
 
         $this->isSaleBoxOpen = true;
         $this->opening_amount = null;
         $this->closing_amount = null;
-        $this->remarks = null;
+        $this->remarks_open = null;
         $this->updateBoxDetails($this->saleBox);
         $this->dispatchBrowserEvent('closeSaleBoxView');
     }
@@ -270,10 +389,10 @@ class Pos extends Component
         $this->isSaleBoxOpen = false;
         $this->updateBoxDetails($this->saleBox);
         $this->dispatchBrowserEvent('closeSaleBoxView');
+        $this->movements = null;
     }
 
     // Cart Operations
-
     public function addProduct(Product $product)
     {
 
@@ -287,6 +406,7 @@ class Pos extends Component
                 $this->currentPrice
             );
         }
+
 
     }
 
@@ -304,6 +424,7 @@ class Pos extends Component
 
         $this->calculateAmounts();
         //$this->cart->emit('item.updatedCustomQty', $product->id, $this->cart->products[$product->id]['qty']);
+        $this->totalProducts = count($this->cartproducts);
 
     }
 
@@ -319,15 +440,19 @@ class Pos extends Component
         // if ($this->discount > $this->subtotal) {
         //     $this->discount = $this->subtotal;
         // }
+        $tmpAmountDiscount = 0;
+        if($this->discount > 0){
+            $tmpAmountDiscount =     ((float) $this->subtotal * ((float) $this->discount / 100));
 
-        // $this->total = (float) $this->subtotal - (float) $this->discount;
+        }
+        $this->subtotal = (float) $this->subtotal - (float) $tmpAmountDiscount;
+        $this->discountAmount = round((float) $tmpAmountDiscount * 100 / 119);
 
-        $this->total = $this->subtotal;
+        $this->total = round($this->subtotal);
         $tmptaxes = ($this->total * 19) / 119;
         $this->subtotal = $this->total - $tmptaxes;
         $this->taxes = $tmptaxes;
-        //$this->total += $tmptaxes;
-
+       // $this->total +=  $this->taxes;
 
         $cart['products'] = $this->cartproducts;
         $cart['subtotal'] = $this->subtotal;
@@ -338,7 +463,7 @@ class Pos extends Component
         // Save cart to session
         session()->put(['user.pos.cart' => json_encode($cart)]);
 
-        // $this->emitUp('pos.updateCart');
+        $this->emit('list-product-qty', $this->totalProducts);
 
     }
 
@@ -353,6 +478,8 @@ class Pos extends Component
 
         unset($this->cartproducts[$productId]);
         $this->calculateAmounts();
+        $this->totalProducts = count($this->cartproducts);
+
     }
 
     public function updateQty($idProduct, $qty)
@@ -368,6 +495,7 @@ class Pos extends Component
     {
         $this->customer = session()->get('user.pos.selectedCustomer');
         $this->customerAddressId = $addressId;
+        $this->dispatchBrowserEvent('showMainPos');
     }
 
     public function getCartProducts()
@@ -375,20 +503,21 @@ class Pos extends Component
         return json_decode(session()->get('user.pos.cart') ?? '[]', true)['products'] ?? [];
     }
 
-    public function emitInvoice(Order $order)
+    public function emitInvoice(Order $order, $typeDocument, $businessActivity)
     {
 
-        /*
         $currentSeller = Seller::where('user_id', backpack_user()->id)->first();
+
+        if (in_array($typeDocument, [33, 34]) && $this->customerAddressId === null) {
+            throw new \Exception('Para emitir una factura debes seleccionar el cliente debe poseer una dirección');
+        }
+
         DB::beginTransaction();
         try {
 
-            $invoiceType = InvoiceType::firstOrCreate(
-                ['name' => "Boleta electrónica"],
-                ['country_id' => 43, 'code' => 39], // 41 => exenta, 39 => afecta(con impuestos)
-            );
+            $invoiceType = InvoiceType::where('code', $typeDocument)->first();
 
-            $order_items = $order->order_items->map(function ($item) {
+            $order_items = $order->order_items()->get()->map(function ($item) {
 
                 // Since the items in the POS are assumed with IVA, we must subtract it
                 // and make the total calculations again to save it in the invoice table
@@ -402,7 +531,7 @@ class Pos extends Component
                 $item->total = currencyFormat($total, 'CLP', false);
                 $item->discount = 0;
                 $item->discount_type = 'amount';
-                $item->is_custom = false;
+                $item->is_custom = "0";
                 $item->additional_tax_id = 0;
                 $item->additional_tax_amount = 0;
                 $item->additional_tax_total = 0;
@@ -413,11 +542,17 @@ class Pos extends Component
             $invoice->address_id = $this->customerAddressId;
             $invoice->seller_id = $currentSeller->id;
             $invoice->items_data = $order_items;
-            $invoice->invoice_type_id = $invoiceType->id;
             $invoice->invoice_date = now();
             $invoice->tax_amount = 19 * $invoice->total / 119;
             $invoice->net = $invoice->total - $invoice->tax_amount;
             $invoice->json_value = ['source' => 'pos'];
+
+            $invoice->invoice_type_id = $invoiceType->id;
+
+            if ($invoiceType->code == 33) {
+                $invoice->business_activity_id = $businessActivity;
+            }
+
             $invoice->save();
 
             Invoice::withoutEvents(function () use ($invoice, $order) {
@@ -428,8 +563,9 @@ class Pos extends Component
                 $invoice->phone = $order->phone;
                 $invoice->cellphone = $order->cellphone;
                 $invoice->address_id = $this->customerAddressId;
-                $invoice->discount_amount = $order->discount_total;
-                $invoice->discount_total = $order->discount_total;
+                //$invoice->discount_amount = $order->discount_total;
+                $invoice->discount_percent = $order->discount_total;
+                $invoice->discount_total = $this->discountAmount;
                 $invoice->total = $order->total;
 
                 $invoice->orders()->attach($order->id);
@@ -446,7 +582,7 @@ class Pos extends Component
             DB::rollback();
             dd($e->getMessage());
             return false;
-        }*/
+        }
         //return redirect()->route('pos.order', ['id' => $order->id]);
     }
 
@@ -460,8 +596,123 @@ class Pos extends Component
         $this->calculateAmounts();
     }
 
+    public function clearDiscount()
+    {
+        $this->discount = 0;
+        $this->calculateAmounts();
+    }
+
     public function sendMail(Invoice $invoice = null)
     {
         Mail::to($invoice->email)->send(new PosBill($invoice));
     }
+
+    public function showSalesBoxModal()
+    {
+        $this->dispatchBrowserEvent('showSalesBoxModal');
+    }
+
+    public function storeMovement()
+    {
+
+        $this->validate([
+            'movement.date' => ['required'],
+            'movement.movement_type_id' => ['required'],
+            'movement.amount' => ['required'],
+            'movement.notes' => ['nullable'],
+        ]);
+
+        //Convert date
+        $tmpDate = Carbon::parse($this->movement->date);
+
+
+        $tmpMovement = new SalesBoxMovement();
+
+        //Set sale_box_id
+        $tmpMovement->sales_box_id = $this->saleBox->id;
+        $tmpMovement->movement_type_id = $this->movement->movement_type_id;
+        $tmpMovement->date = $tmpDate;
+        $tmpMovement->amount = $this->movement->amount;
+        $tmpMovement->notes = $this->movement->notes;
+        $tmpMovement->save();
+
+
+        //Clear movement
+        $this->movement->date = null;
+        $this->movement->movement_type_id = null;
+        $this->movement->amount = null;
+        $this->movement->notes = null;
+
+        //Distpatch browser event
+        $this->dispatchBrowserEvent('hideMovementSalesBoxModal');
+
+
+        $this->loadMovements();
+
+
+
+    }
+
+    public function loadMovements()
+    {
+        $this->saleBox->refresh();
+        $this->movements = $this->saleBox->movements;
+        $this->totalMovements += $this->movements->sum(function($movement){
+
+            if($movement->movementtype->is_removal == 1){
+                return (float) $movement->amount * -1;
+            }else{
+                return (float) $movement->amount ;
+            }
+        });
+
+
+
+    }
+
+    public function loadPaymentMethods(){
+        //return PaymentMethod::where('status',1)->orderBy('title')->get();
+        $tmpPaymentMethods = [
+                [
+                    'code'=>'cash',
+                    'title'=> 'Efectivo'
+                ],
+                [
+                    'code'=>'transfer',
+                    'title'=> 'Transferencia'
+                ],
+                [
+                    'code'=>'checkbank',
+                    'title'=> 'Cheque'
+                ],
+                [
+                    'code'=>'creditcard',
+                    'title'=> 'Tarjeta de crédito'
+                ],
+                [
+                    'code'=>'debitcard',
+                    'title'=> 'Tarjeta de débito'
+                ],
+        ];
+        return $tmpPaymentMethods;
+    }
+
+    public function loadSales()
+    {
+           $tmpSales =DB::table('orders')
+           ->join('order_payments', 'orders.id', '=', 'order_payments.order_id')
+           ->whereIn('orders.id',$this->saleBox->logs()->pluck('order_id')->filter())
+           ->select('order_payments.method','order_payments.method_title', DB::raw('sum(orders.total) as total'))
+           ->groupBy('order_payments.method','order_payments.method_title')
+           ->get();
+
+           return $tmpSales;
+
+    }
+
+    public function loadBanks()
+    {
+        return Bank::all()->sortBy('name');
+    }
+
 }
