@@ -41,7 +41,7 @@ class ElectronicTicket implements DocumentType
             // desde la BD para evitar errores de redondeo con el IVA. Si fue creada desde el CRUD
             // de invoices o cotizaciones, aplicamos el calculo del IVA al precio unitario
             if (isset($this->invoice->json_value['source']) && $this->invoice->json_value['source'] === 'pos' && $item['ItemCodigo']) {
-                $itemPriceWithIva = Product::find($item['ItemCodigo'])->real_price;
+                $itemPriceWithIva = round(Product::find($item['ItemCodigo'])->real_price, 2);
             } else {
                 $itemPriceWithIva  = round($array['Detalle'][$key]['PrcItem'] * 1.19, 2, PHP_ROUND_HALF_ODD);
             }
