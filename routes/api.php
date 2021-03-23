@@ -118,7 +118,7 @@ Route::group([ 'prefix' => '/v1'], function() {
         ->name('api.categories.all');
 
     
-    // Product CLass
+    // Product Class
     Route::post('/product-classes', 'Api\v1\ProductClassController@store')
         ->middleware(['auth.jwt', 'permission:productclass.create'])
         ->name('api.product-classes.store');
@@ -136,13 +136,15 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/attributes', 'Api\v1\ProductClassAttributeController@store')
         ->middleware(['auth.jwt', 'permission:productclassattribute.create'])
         ->name('api.product-class-attributes.show-by-code');
+    Route::delete('/attributes/code/{code}', 'Api\v1\ProductClassAttributeController@delete')
+        ->middleware(['auth.jwt', 'permission:productclassattribute.delete'])
+        ->name('api.product-class-attributes.code-delete');
     Route::get('/attributes/code/{code}', 'Api\v1\ProductClassAttributeController@showByCode')
         ->name('api.product-class-attributes.show-by-code');
 
     // Orders
     Route::get('/orders/{id}', 'Api\v1\OrderController@show')
         ->name('api.orders.show');
-
 
     // Warehouse
     Route::post('/warehouses', 'Api\v1\ProductInventorySourceController@store')

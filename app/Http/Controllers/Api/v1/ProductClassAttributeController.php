@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\v1;
 use Exception;
 use App\Models\ProductClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductClassAttribute;
 use App\Http\Controllers\Api\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\ProductClassAttributeResource;
 use App\Http\Requests\Api\ProductClassAttributeRequest;
 
 class ProductClassAttributeController extends Controller
@@ -26,7 +28,7 @@ class ProductClassAttributeController extends Controller
         
         return response()->json([
             'status' => 'success',
-            'data' => $classAttribute,
+            'data' => new ProductClassAttributeResource($classAttribute),
         ], 200);
     }
 
@@ -54,6 +56,37 @@ class ProductClassAttributeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Atributo creado exitosamente',
+            'data' => $attribute,
+        ], 200);
+    }
+
+    public function delete($code)
+    {
+        $attribute = ProductClassAttribute::where('json_attributes->code', $code)->first();
+
+        if (!$attribute) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'El codigo de lel atributo no existe'
+        ],  404);
+
+        DB::beginTransaction();
+
+        try {
+            $attribute->forceDelete();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'Ocurrio un error intentando eliminar el atributo.',
+                'error_message' => $e->getMessage(),
+            ],  400);
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Atributo eliminado',
             'data' => $attribute,
         ], 200);
     }
