@@ -174,31 +174,36 @@ class InvoiceCrudController extends CrudController
             'name' => 'invoice_date',
             'type' => 'date',
             'format' => 'L',
+            'priority' => 3,
         ]);
 
         CRUD::addColumn([
             'name' => 'first_name',
-            'label' => 'Nombre / Razón Soc.'
+            'label' => 'Nombre / Razón Soc.',
+            'priority' => 2,
         ]);
 
         CRUD::addColumn([
             'name' => 'uid',
-            'label' => 'RUT'
+            'label' => 'RUT',
         ]);
 
         CRUD::addColumn([
             'name' => 'invoice_type',
             'type' => 'relationship',
             'label' => 'Tipo',
+            'priority' => 3,
         ]);
 
         CRUD::addColumn([
-            'name' => 'folio'
+            'name' => 'folio',
+            'priority' => 4,
         ]);
 
         CRUD::addColumn([
             'name' => 'total',
             'label' => 'Total',
+            'priority' => 1,
             'type' => 'number',
             'prefix'        => '$',
             'decimals'      => 0,
@@ -208,6 +213,7 @@ class InvoiceCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'status_description',
             'label' => 'Estado',
+            'priority' => 1,
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
