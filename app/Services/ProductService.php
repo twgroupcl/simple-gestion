@@ -111,9 +111,25 @@ class ProductService
                         'product_class_id' => $classId,
                     ])->first();
                     
-                    // @todo si el atributo es de tipo select, verificar que el value existe entre las opciones
+                    // Validate attribute exists in the class
                     if (!$attribute) {
-                        return [ 'status' => false, 'message' =>  'El atributo ' . $attributeData->code . ' no existe o es invalido', 'status_response' => 'error'];
+                        return [ 
+                            'status' => false, 
+                            'message' =>  'El atributo ' . $attributeData->code . ' no existe o no pertenece a la clase especificada',
+                            'status_response' => 'error'
+                        ];
+                    }
+
+                    // Validate the option is valid if the attribute is of type "select"
+                    if (
+                        $attribute->json_attributes['type_attribute'] === 'select' &&
+                        !in_array($attributeData->value, collect($attribute->json_options)->pluck('option_name')->toArray())
+                    ) {
+                        return [
+                            'status' => false, 
+                            'message' =>  'El valor del atributo ' . $attributeData->code . ' no esta entre las opciones permitidas', 
+                            'status_response' => 'error'
+                        ];
                     }
 
                     $attributes['attribute-' . $attribute->id] = $attributeData->value;
