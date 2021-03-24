@@ -32,6 +32,7 @@ class Refund extends Component
 
     public $step = 1;
     public $messageError;
+    public $disabledSendButton = false;
 
     protected $listeners = ['selectOrder' => 'selectOrder'];
 
@@ -52,6 +53,7 @@ class Refund extends Component
         $this->reason = null;
         $this->creditNote = null;
         $this->totals = [];
+        $this->disabledSendButton = false;
     }
 
     public function selectOrder($orderId)
@@ -181,7 +183,9 @@ class Refund extends Component
             'source' => 'pos',
         ];
 
-        $itemsData = collect(json_decode($creditNote->items_data, true));
+        $itemsData = collect(!is_array($creditNote->items_data) 
+                                ? json_decode($creditNote->items_data, true)
+                                : $creditNote->items_data);
 
         $itemsData = $itemsData->map(function ($item) {
             foreach ($this->itemsToRefund as $itemRefund) {
@@ -364,5 +368,10 @@ class Refund extends Component
         });
 
         $refund->refund_items()->saveMany($refundItems);
+    }
+
+    public function sendCreditNote()
+    {
+        $this->disabledSendButton = true;
     }
 }

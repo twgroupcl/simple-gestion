@@ -318,10 +318,10 @@ class DTEService
             return ($response);
 
         } catch (\GuzzleHttp\Exception\ServerException $e) {
-            \Log::error( $e->getResponse()->getBody()->getContents(), ['user' => auth()->user()]);
+            \Log::error('Server Exception: ' . $e->getResponse()->getBody()->getContents(), ['user' => auth()->user()]);
             return $e->getResponse();
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            \Log::error( $e->getResponse()->getBody()->getContents(), ['user' => auth()->user()]);
+            \Log::error('Client Exception: ' . $e->getResponse()->getBody()->getContents(), ['user' => auth()->user()]);
             return $e->getResponse();
         } catch (\Exception $e) {
             \Log::error($e->getMessage(), ['user' => auth()->user()]);
