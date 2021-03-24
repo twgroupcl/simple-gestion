@@ -11,6 +11,7 @@ use App\Services\DTE\DTEService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\InvoiceRequest;
+use Illuminate\Support\Facades\Cache;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Invoice, InvoiceType, CustomerAddress, Payments};
@@ -22,6 +23,8 @@ use App\Models\{Invoice, InvoiceType, CustomerAddress, Payments};
  */
 class ManageInvoiceCrudController extends CrudController
 {
+    const RETRY_SEND_DOCUMENT = 300;
+
     public function index(Invoice $invoice)
     {
         //@todo check permissions
@@ -138,6 +141,14 @@ class ManageInvoiceCrudController extends CrudController
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
+        if (Cache::has('dte_document_' . $invoice->id)) {
+            \Log::info('El usuario intentó emitir un documento otra vez. IdDoc: ' . $invoice->id . ' usuario ' . backpack_user()->id);
+            \Alert::add('warning', 'Parece que ya intentó enviar el documento. Debes esperar 5 minutos antes de solicitar nuevamente la emision de este documento')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        Cache::put('dte_document_' . $invoice->id, 'sending', self::RETRY_SEND_DOCUMENT);
+
         // Check inventory of items
         if ($invoice->invoice_type->code != 61 && $invoice->impact_inventory) {
             foreach($invoice->invoice_items as $item) {
@@ -249,6 +260,14 @@ class ManageInvoiceCrudController extends CrudController
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
+        if (Cache::has('dte_document_' . $invoice->id)) {
+            \Log::info('El usuario intentó emitir un documento otra vez. IdDoc: ' . $invoice->id . ' usuario ' . backpack_user()->id);
+            \Alert::add('warning', 'Parece que ya intentó enviar el documento. Debes esperar 5 minutos antes de solicitar nuevamente la emision de este documento')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        Cache::put('dte_document_' . $invoice->id, 'sending', self::RETRY_SEND_DOCUMENT);
+
         // Check inventory of items
         if ($invoice->invoice_type->code != 61 && $invoice->impact_inventory) {
             foreach($invoice->invoice_items as $item) {
@@ -262,7 +281,6 @@ class ManageInvoiceCrudController extends CrudController
             }
         }
         
-
         $service = new DTEService();
 
         // Check if emisor have folios. "disponibles >0 "
