@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Api\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\ProductClassAttributeResource;
 
 class ProductClassController extends Controller
 {
@@ -101,6 +102,21 @@ class ProductClassController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $productClasses,
+        ], 200);
+    }
+
+    public function getAttributes(Request $request, $code)
+    {
+        $productClass = ProductClass::where('code', $code)->with('product_class_attributes')->first();
+
+        if (!$productClass) return response()->json([ 
+            'status' => 'error', 
+            'message' => 'La clase de producto no existe'
+        ],  404);
+        
+        return response()->json([
+            'status' => 'success',
+            'data' => ProductClassAttributeResource::collection($productClass->product_class_attributes),
         ], 200);
     }
 

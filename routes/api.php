@@ -122,15 +122,18 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/product-classes', 'Api\v1\ProductClassController@store')
         ->middleware(['auth.jwt', 'permission:productclass.create'])
         ->name('api.product-classes.store');
+    Route::get('/product-classes', 'Api\v1\ProductClassController@all')
+        ->name('api.product-classes.all');
+    Route::get('/product-classes/code/{code}', 'Api\v1\ProductClassController@showBycode')
+        ->name('api.product-classes.show-by-code');
     Route::delete('/product-classes/code/{code}', 'Api\v1\ProductClassController@delete')
         ->middleware(['auth.jwt', 'permission:productclass.delete'])
         ->name('api.product-classes.code-delete');
     Route::get('/product-classes/{id}', 'Api\v1\ProductClassController@show')
         ->name('api.product-classes.show');
-    Route::get('/product-classes/code/{code}', 'Api\v1\ProductClassController@showBycode')
-        ->name('api.product-classes.show-by-code');
-    Route::get('/product-classes', 'Api\v1\ProductClassController@all')
-        ->name('api.product-classes.all');
+    Route::get('/product-classes/{code}/attributes', 'Api\v1\ProductClassController@getAttributes')
+        ->name('api.product-classes.get-attributes');
+    
 
     // Product Class Attribute
     Route::post('/attributes', 'Api\v1\ProductClassAttributeController@store')

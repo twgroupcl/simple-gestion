@@ -56,7 +56,7 @@ class ProductClassAttributeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Atributo creado exitosamente',
-            'data' => $attribute,
+            'data' => new ProductClassAttributeResource($attribute),
         ], 200);
     }
 
