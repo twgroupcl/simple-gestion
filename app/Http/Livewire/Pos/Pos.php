@@ -526,7 +526,7 @@ class Pos extends Component
                 $subtotal_iva = 19 * $item->sub_total / 119;
                 $total = (($item->price - $item_iva) * $item->qty) - $item->discount;
 
-                $item->price = currencyFormat($item->price - $item_iva, 'CLP', false);
+                $item->price = number_format($item->price - $item_iva, 2, ',', '');
                 $item->sub_total = currencyFormat($item->sub_total - $subtotal_iva, 'CLP', false);
                 $item->total = currencyFormat($total, 'CLP', false);
                 $item->discount = 0;

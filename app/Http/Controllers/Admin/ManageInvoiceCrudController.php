@@ -11,6 +11,7 @@ use App\Services\DTE\DTEService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\InvoiceRequest;
+use Illuminate\Support\Facades\Cache;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\{Invoice, InvoiceType, CustomerAddress, Payments};
@@ -22,6 +23,8 @@ use App\Models\{Invoice, InvoiceType, CustomerAddress, Payments};
  */
 class ManageInvoiceCrudController extends CrudController
 {
+    const RETRY_SEND_DOCUMENT = 300;
+
     public function index(Invoice $invoice)
     {
         //@todo check permissions
@@ -144,6 +147,14 @@ class ManageInvoiceCrudController extends CrudController
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
+        if (Cache::has('dte_document_' . $invoice->id)) {
+            \Log::info('El usuario intentó emitir un documento otra vez. IdDoc: ' . $invoice->id . ' usuario ' . backpack_user()->id);
+            \Alert::add('warning', 'Parece que ya intentó enviar el documento. Debes esperar 5 minutos antes de solicitar nuevamente la emision de este documento')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        Cache::put('dte_document_' . $invoice->id, 'sending', self::RETRY_SEND_DOCUMENT);
+
         // Check inventory of items
         if ($invoice->invoice_type->code != 61 && $invoice->impact_inventory) {
             foreach($invoice->invoice_items as $item) {
@@ -255,6 +266,14 @@ class ManageInvoiceCrudController extends CrudController
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
+        if (Cache::has('dte_document_' . $invoice->id)) {
+            \Log::info('El usuario intentó emitir un documento otra vez. IdDoc: ' . $invoice->id . ' usuario ' . backpack_user()->id);
+            \Alert::add('warning', 'Parece que ya intentó enviar el documento. Debes esperar 5 minutos antes de solicitar nuevamente la emision de este documento')->flash();
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        Cache::put('dte_document_' . $invoice->id, 'sending', self::RETRY_SEND_DOCUMENT);
+
         // Check inventory of items
         if ($invoice->invoice_type->code != 61 && $invoice->impact_inventory) {
             foreach($invoice->invoice_items as $item) {
@@ -268,7 +287,6 @@ class ManageInvoiceCrudController extends CrudController
             }
         }
         
-
         $service = new DTEService();
 
         // Check if emisor have folios. "disponibles >0 "
@@ -305,17 +323,40 @@ class ManageInvoiceCrudController extends CrudController
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
         }
 
+        $folioService = $service->getFolioMaintainerStatus($invoice->invoice_type->code, $invoice->company->uid);
+        $folio = 0;
+
+        if ($folioService->getStatusCode() === 200) {
+            $contentResponse = json_decode($folioService->getBody()->getContents(), true);
+            if (isset($contentResponse) && array_key_exists('siguiente', $contentResponse)) {
+                $folio = $contentResponse['siguiente'];
+            }
+        }
+
+        if ($folio === 0) {
+            \Alert::add('warning', 'Hubo un problema al obtener el folio. Intente nuevamente.')->flash();
+            \Log::error('Se trató de obtener el folio siguiente pero el servicio falló.');
+            return redirect()->route('dte_documents.index');
+        }
+
         $response = $service->generateDTE($invoice);
 
         if ($response->getStatusCode() === 200) {
             $contentResponse = $response->getBody()->getContents();
             $contentResponse = json_decode($contentResponse, true);
 
-            if (array_key_exists('folio', $contentResponse)) {
+            if (
+                isset($contentResponse) && 
+                is_array($contentResponse) && 
+                array_key_exists('folio', $contentResponse)
+            ) {
                 $invoice->folio = $contentResponse['folio'];
-                $invoice->invoice_status = Invoice::STATUS_SEND;
+            } else {
+                $invoice->folio = $folio;
+                \Log::warning('La respuesta de LibreDTE no trajo el folio. Se asignará el folio ' . $folio . ' obtenido de una consulta previa');
             }
 
+            $invoice->invoice_status = Invoice::STATUS_SEND;
             $invoice->updateWithoutEvents();
 
             // Reduce inventory
