@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Transaction;
+use App\Models\InvoiceType;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -40,6 +41,7 @@ class TransactionExport implements FromArray, WithMapping , WithHeadings
                     $metadataDetail = is_array($detail->json_detail) ? $detail->json_detail : json_decode($detail->json_detail, true);
                     $notes = $metadataDetail['notes'] ?? '';
                     $documentType = $metadataDetail['document_type'] ?? '';
+                    $documentType = InvoiceType::where('code', $documentType)->first()->name ?? '';
                 }
                 $transactionArray[] = [
                     'id' => $transaction->id,
