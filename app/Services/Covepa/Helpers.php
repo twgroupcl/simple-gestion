@@ -9,9 +9,9 @@ class Helpers {
 
     /**
      * Mapeo con el tipo de pago con Covepa
-     * 10 transferencia
-     * 15 tarj credito
-     * 26 tarje debito
+     * 10 - transferencia
+     * 15 - tarjeta credito
+     * 26 - tarjeta debito
      */
     const TYPE_PAYMENT_MAPPING = [
         'VD' => 26,

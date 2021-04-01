@@ -71,28 +71,24 @@ class CovepaService
             throw new Exception($response['error_message']);
         }
 
-        /* $dataResponse = $response->getBody()->getContents();
-
-        return json_decode($dataResponse, true); */
-
         return $response;
     }
 
     /**
      * Convierte una orden en un arreglo con la estructura de datos
      * aceptada por la API de Covepa para registrar una nueva venta
+     * 
+     * @todo de que manera se debe incluir el costo del shipping
      */
     public function prepareOrderData(Order $order) : array
     {
-
-        // @todo de que manera se debe incluir el costo del shipping
-
         // Amount calculations
         $net = round($order->total * 100 / 119, 2);
         $iva = $order->total - $net;
         $total = (double) $order->total;
 
         // Shipping address
+        $rut = str_replace('-', '', str_replace('.', '', $order->uid));
         $fullName = $order->first_name . ' ' . $order->last_name;
         $address = $order->json_value['addressShipping'];
         $fullAddress = $address->address_street . ' ' . $address->address_number . ' ' . $address->address_office;
@@ -134,14 +130,13 @@ class CovepaService
                 "BODEGA_CODIGO" => $item->product->inventories->first()->code, // Preguntar, utilizar el mismo codigo de la bodega que ellos setearon?
                 "VTAPLA_CANTID" => $item->qty,
                 "VTPLDI_DIRECC" => $fullAddress,
-                "COMUNA_CODIGO" => 1, // Codigo de la comuna mapeado
-                "CIUDAD_CODIGO" => 1, // Codigo de la ciudad mapeado
+                "COMUNA_CODIGO" => Helpers::COMMUNE_MAPPING[$commune->id]['id_commune'],
+                "CIUDAD_CODIGO" => Helpers::COMMUNE_MAPPING[$commune->id]['id_city'],
                 "VTPLDI_CONTN1" => $fullName,
                 "VTPLDI_CONTF1" => $order->cellphone,
-                "VTPLDI_CONTN2" => "", // Nombre contacto alternativo
                 "VTPLDI_CONTF2" => $order->phone,
                 "VTPLDI_NOMDIR" => "", // Nombre de la direccion ??
-                "VTPLDI_REFERE" => "", // Referencia o comentario, buscar donde esta gaurdado
+                "VTPLDI_REFERE" => $address->address_details,
                 "VTPLDI_COOGPS" => "0",
                 "VTPLDI_DISTAN" => 0
             ];
@@ -161,6 +156,7 @@ class CovepaService
 
         $orderData = [
             "VTAGEN_VTAREL" => $order->id,
+            // Codigo del documento
             "DOCMTO_CODTRI" => "26", // Preguntar
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
             "SUJETO_RUTSUJ" => 15903349,
@@ -168,27 +164,39 @@ class CovepaService
             "VTAGEN_OCONRO" => 0, // Preguntar, Nro Orden compra cliente
             "VTAGEN_SUCNRO" => 0, // Preguntar, Sucursal cotizacion
             "VTAGEN_COTNRO" => 0, // Preguntar, nro cotizacion
-            "TIPVAL_COD023" => 1, 
+            "TIPVAL_COD023" => 1,
+            
+            // Montos
             "VTAGEN_OIMPTO" => 0,
             "VTAGEN_EXENTO" => 0,
             "VTAGEN_MONETO" => $net,
             "VTAGEN_MONIVA" => $iva,
             "VTAGEN_MONTOT" => $total,
             "VTAGEN_OBSERV" => "", 
-            // Esto no lo tenemos almacenado
-            "VTAGEN_RUTRET" => "13326453", // Rut cliente que retira, buscar
-            // Buscar en que parte se esta guardando el nombre del que retira
-            "VTAGEN_NOMRET" => $order->first_name . ' ' . $order->last_name, // Nomre cliente que retira, buscar
+
+            // Persona que retira
+            "VTAGEN_RUTRET" => $rut, 
+            "VTAGEN_NOMRET" => $fullName,
             "VTAGEN_FECTRL" => Carbon::now()->format('d/m/Y h:i:s'),
-            "VTADIR_DIRECC" => $fullInvoiceAddress, // Direccion de facturacion, todo de aqui es facturacion
-            "CIUDAD_CODIGO" => 1, // Codigo de ciudad, utilizar mapeo provisto por covepa
-            "VTADIR_NOMCIU" => $invoiceCommune->name, // Nombre Ciudad
-            "COMUNA_CODIGO" => 1, // Codigo de comuna
-            "VTADIR_NOMCOM" => $invoiceCommune->name, // Nombre de comuna
-            "VTADIR_FONSUJ" => empty($invoiceAddress->cellphone) ? $order->cellphone : $invoiceAddress->cellphone, // Telefono del cliente
-            "VTADIR_NOMFAN" => $invoiceFullName, // nombre cliente
+
+            // Dirección de facturación
+            "VTADIR_DIRECC" => $fullInvoiceAddress,
+            "CIUDAD_CODIGO" => Helpers::COMMUNE_MAPPING[$invoiceCommune->id]['id_city'],
+            "VTADIR_NOMCIU" => $invoiceCommune->name,
+            "COMUNA_CODIGO" => Helpers::COMMUNE_MAPPING[$invoiceCommune->id]['id_commune'],
+            "VTADIR_NOMCOM" => $invoiceCommune->name,
+            "VTADIR_FONSUJ" => empty($invoiceAddress->cellphone) ? $order->cellphone : $invoiceAddress->cellphone,
+            "VTADIR_NOMFAN" => $invoiceFullName,
+            
             // Codigo de ellos o de nosotros
-            "TIPVAL_COD055" => 1292, // Codigo giro del cliente, 0 si es natural, de donde sale el codigo
+            // Que hacer cuando el cliente es empresa pero no tiene giro porque el giro
+            // solo ests disponible para seleccionar en la dirección de facturación, no esta
+            // disponible para la direccion de shipping
+            "TIPVAL_COD055" => $order->is_company 
+                                        ? (empty($invoiceAddress->business_activity_id)
+                                            ? 0
+                                            : $invoiceAddress->business_activity_id) 
+                                        : 0,
             "VTADET" => $itemsDetails,
             "VTAPLA" => $shippingDetails ,
             "VTAPGO" => $paymentDetails,
