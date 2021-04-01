@@ -314,6 +314,7 @@ class Checkout extends Component
                 'address_number' => $this->cart->address_number,
                 'address_office' => $this->cart->address_office,
                 'address_commune_id' => $this->cart->address_commune_id,
+                'address_details' => $this->cart->shipping_details,
             ];
             $addressShipping = json_encode($addressShipping);
             $addressInvoiceCart = null;
