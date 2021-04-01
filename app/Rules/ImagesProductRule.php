@@ -34,8 +34,9 @@ class ImagesProductRule implements Rule
     {
         if ( Str::startsWith($value, 'data:image' )){
             $image = Image::make($value);
+            $this->size = $image->mime() === 'image/png' ? $this->size * 1.30 : $this->size;
             $size = (int)(strlen(rtrim($value, '=')) * 0.75);
-
+            
             if ($size > $this->size) {
                 $this->message = 'El tamaño de la imagen debe ser menor a 500 KB';
                 return false;
