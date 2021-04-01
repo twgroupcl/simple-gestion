@@ -4,6 +4,8 @@ namespace App\Services\Covepa;
 
 use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\Commune;
+use App\Services\Covepa\Helpers;
 
 class CovepaService
 {
@@ -11,6 +13,7 @@ class CovepaService
 
     private $shippingMapping = [
         'picking' => 1,
+        'free_shipping' => 1, //@todo eliminar esto
         'chilexpress' => 2,
     ];
 
@@ -82,51 +85,63 @@ class CovepaService
     public function prepareOrderData(Order $order) : array
     {
 
-        // Calcular
-        $net = 0;
-        $iva = 0;
-        $total = 0;
+        // @todo de que manera se debe incluir el costo del shipping
+
+        // Amount calculations
+        $net = round($order->total * 100 / 119, 2);
+        $iva = $order->total - $net;
+        $total = (double) $order->total;
+
+        // Shipping address
+        $fullName = $order->first_name . ' ' . $order->last_name;
+        $address = $order->json_value['addressShipping'];
+        $fullAddress = $address->address_street . ' ' . $address->address_number . ' ' . $address->address_office;
+        $commune = Commune::find($address->address_commune_id);
+        
+        // Invoice address
+        $invoiceAddress = $order->json_value['addressInvoice']->status ? $order->json_value['addressInvoice'] : $address; 
+        $fullInvoiceAddress = $invoiceAddress->address_street . ' ' . $invoiceAddress->address_number . ' ' . $invoiceAddress->address_office;
+        $invoiceCommune = Commune::find($invoiceAddress->address_commune_id);
+        $invoiceFullName = empty($invoiceAddress->first_name) ? $fullName : $invoiceAddress->first_name . ' ' . $invoiceAddress->last_name;
 
         $itemsDetails = [];
         $shippingDetails = [];
 
-        foreach ($order->order_items() as $index => $item) {
+        foreach ($order->order_items as $index => $item) {
             $net = round($item->total * 100 / 119, 2);
-           /*  $iva = $net * 0.19;
-            $net = $net + $item->total - ($net + $iva); */
-            
+
             $detail = [
                 "VTADET_CORREL" => $index + 1,
                 "ARTICU_CODIGO" => $item->sku, // Preguntar si es el SKU u otro tipo de codigo
                 "VTADET_UMARTI" => "UN", // Preguntar que unidad usaremos
                 "VTADET_CANTID" => $item->qty,
                 "VTADET_BODEGA" => 1,
-                "VTADET_PREUNI" => $item->product->price,
-                "VTADET_PREVTA" => $item->price, // Preguntar si es unitario
+                "VTADET_PREUNI" => round($item->product->price, 2),
+                "VTADET_PREVTA" => round($item->price, 2), // Preguntar si es unitario
                 "VTADET_EXENTO" => 0,
                 "VTADET_MONETO" => $net,
-                "VTADET_MONTOT" => $item->total,
+                "VTADET_MONTOT" => (double) $item->total,
                 "VTADET_OIMPTO" => 0,
                 "VTADET_VALIVA" => 19,
                 "ARTICU_NOMBRE" => $item->name,
             ];
 
             $shipping = [
-                "VTAPLA_TIPENT" => $this->shippingMapping[$order->shipping->code],
+                "VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
                 "VTAPLA_CORREL" => $index + 1,
                 "ARTICU_CODIGO" => $item->sku, // Preguntar si es el sku u otro codigo
-                "VTAPLA_FECENT" => "20/08/2020", // Preguntar, no esta contemplado
+                "VTAPLA_FECENT" => "20/08/2020", // Preguntar, no esta contemplado, fecha de entrega
                 "BODEGA_CODIGO" => $item->product->inventories->first()->code, // Preguntar, utilizar el mismo codigo de la bodega que ellos setearon?
                 "VTAPLA_CANTID" => $item->qty,
-                "VTPLDI_DIRECC" => "Calle de prueba 999", // Direccion de entrega
+                "VTPLDI_DIRECC" => $fullAddress,
                 "COMUNA_CODIGO" => 1, // Codigo de la comuna mapeado
                 "CIUDAD_CODIGO" => 1, // Codigo de la ciudad mapeado
-                "VTPLDI_CONTN1" => "Scarlett Novakovich", // Nombre de contacto
-                "VTPLDI_CONTF1" => "988884455", // Telefono de contado
+                "VTPLDI_CONTN1" => $fullName,
+                "VTPLDI_CONTF1" => $order->cellphone,
                 "VTPLDI_CONTN2" => "", // Nombre contacto alternativo
-                "VTPLDI_CONTF2" => "", // Numero de telefono alternativo
-                "VTPLDI_NOMDIR" => "", // Nombre de la direccion ?
-                "VTPLDI_REFERE" => "", // Referencia o comentario
+                "VTPLDI_CONTF2" => $order->phone,
+                "VTPLDI_NOMDIR" => "", // Nombre de la direccion ??
+                "VTPLDI_REFERE" => "", // Referencia o comentario, buscar donde esta gaurdado
                 "VTPLDI_COOGPS" => "0",
                 "VTPLDI_DISTAN" => 0
             ];
@@ -135,20 +150,7 @@ class CovepaService
             $shippingDetails[] = $shipping;
         }
 
-
-        $order->
-        $paymentDetails = [
-            [
-                "FORPGO_CODIGO" => 26, // 10 transferencia, 15 tarj credito, 26 tarje debito
-                "VTAPGO_CORREL" => 1,
-                "VTAPGO_MONPGO" => $order->total,
-                "VTAPGO_NCUOTA" => 1, // numero de cuotas
-                "VTAPGO_FECUOT" => Carbon::now()->format('d/m/Y'), // fecha primera cuota
-                "VTAPGO_NRDCPG" => 987654, // Confirmar si es 
-                "SUJETO_RUTDUE" => 15903349, // Rut cliente que paga
-                "SUJETO_RUTSUJ" => 15903349 // Rut del documento de venta
-            ]
-        ];
+        $paymentDetails = Helpers::getPaymentArray($order);
 
         $extraDetails = [
             [
@@ -156,7 +158,6 @@ class CovepaService
                 "VTAEXT_VALOR" => ""
             ]
         ];
-
 
         $orderData = [
             "VTAGEN_VTAREL" => $order->id,
@@ -174,21 +175,26 @@ class CovepaService
             "VTAGEN_MONIVA" => $iva,
             "VTAGEN_MONTOT" => $total,
             "VTAGEN_OBSERV" => "", 
+            // Esto no lo tenemos almacenado
             "VTAGEN_RUTRET" => "13326453", // Rut cliente que retira, buscar
-            "VTAGEN_NOMRET" => "Scarlett Novakovich", // Nomre cliente que retira, buscar
+            // Buscar en que parte se esta guardando el nombre del que retira
+            "VTAGEN_NOMRET" => $order->first_name . ' ' . $order->last_name, // Nomre cliente que retira, buscar
             "VTAGEN_FECTRL" => Carbon::now()->format('d/m/Y h:i:s'),
-            "VTADIR_DIRECC" => "Calle de facturacion 123", // Direccion de facturacion
+            "VTADIR_DIRECC" => $fullInvoiceAddress, // Direccion de facturacion, todo de aqui es facturacion
             "CIUDAD_CODIGO" => 1, // Codigo de ciudad, utilizar mapeo provisto por covepa
-            "VTADIR_NOMCIU" => "PUERTO MONTT", // Nombre Ciudad
+            "VTADIR_NOMCIU" => $invoiceCommune->name, // Nombre Ciudad
             "COMUNA_CODIGO" => 1, // Codigo de comuna
-            "VTADIR_NOMCOM" => "PUERTO MONTT", // Nombre de comuna
-            "VTADIR_FONSUJ" => 933332211, // Telefono del cliente
-            "VTADIR_NOMFAN" => "EMPRESA 66555444", // nombre cliente
+            "VTADIR_NOMCOM" => $invoiceCommune->name, // Nombre de comuna
+            "VTADIR_FONSUJ" => empty($invoiceAddress->cellphone) ? $order->cellphone : $invoiceAddress->cellphone, // Telefono del cliente
+            "VTADIR_NOMFAN" => $invoiceFullName, // nombre cliente
+            // Codigo de ellos o de nosotros
             "TIPVAL_COD055" => 1292, // Codigo giro del cliente, 0 si es natural, de donde sale el codigo
             "VTADET" => $itemsDetails,
             "VTAPLA" => $shippingDetails ,
             "VTAPGO" => $paymentDetails,
             "VTAEXT" => $extraDetails,
         ];
+
+        return $orderData;
     }
 }
