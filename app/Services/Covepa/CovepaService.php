@@ -28,7 +28,7 @@ class CovepaService
 
         $request = [
             'headers' => array_merge($defaultHeaders, $headers),
-            //'http_errors' => false,
+            'http_errors' => false,
         ];
 
         if (!empty($data)) {
@@ -38,10 +38,6 @@ class CovepaService
         try {
             $response = $client->request($method, $url, $request);
             return $response;
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            $error = $e->getResponse()->getBody()->getContents();
-            \Log::error('ClientException: ' . $error);
-            return ['error_message' => $error];
         } catch (\GuzzleHttp\Exception\ServerException $e) {
             $error = $e->getResponse()->getBody()->getContents();
             \Log::error('ServerException: ' . $error);
@@ -86,7 +82,7 @@ class CovepaService
             throw new Exception($response['error_message']);
         }
 
-        return json_decode($response->getBody()->getContents(), true);
+        return $response;
     }
 
     public function createCustomer(array $customerData)
@@ -100,7 +96,7 @@ class CovepaService
             throw new Exception($response['error_message']);
         }
 
-        return json_decode($response->getBody()->getContents(), true);
+        return $response;
     }
 
     /**
