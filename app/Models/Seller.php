@@ -262,6 +262,8 @@ class Seller extends Model
 
     public function getCreatedAtFormatAttribute()
     {
+        if ($this->created_at === null) return null;
+        
         return $this->created_at->format('d/m/Y');
     }
 
