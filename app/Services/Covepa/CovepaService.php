@@ -5,7 +5,7 @@ namespace App\Services\Covepa;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Commune;
-use App\Services\Covepa\Helpers;
+use App\Services\Covepa\Helpers as CovepaHelper;
 
 class CovepaService
 {
@@ -88,7 +88,7 @@ class CovepaService
         $total = (double) $order->total;
 
         // Shipping address
-        $rut = str_replace('-', '', str_replace('.', '', $order->uid));
+        $rut = rutWithoutDV($order->uid);
         $fullName = $order->first_name . ' ' . $order->last_name;
         $address = $order->json_value['addressShipping'];
         $fullAddress = $address->address_street . ' ' . $address->address_number . ' ' . $address->address_office;
@@ -130,12 +130,11 @@ class CovepaService
                 "BODEGA_CODIGO" => $item->product->inventories->first()->code, // Preguntar, utilizar el mismo codigo de la bodega que ellos setearon?
                 "VTAPLA_CANTID" => $item->qty,
                 "VTPLDI_DIRECC" => $fullAddress,
-                "COMUNA_CODIGO" => Helpers::COMMUNE_MAPPING[$commune->id]['id_commune'],
-                "CIUDAD_CODIGO" => Helpers::COMMUNE_MAPPING[$commune->id]['id_city'],
+                "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
+                "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_city'],
                 "VTPLDI_CONTN1" => $fullName,
                 "VTPLDI_CONTF1" => $order->cellphone,
                 "VTPLDI_CONTF2" => $order->phone,
-                "VTPLDI_NOMDIR" => "", // Nombre de la direccion ??
                 "VTPLDI_REFERE" => $address->address_details,
                 "VTPLDI_COOGPS" => "0",
                 "VTPLDI_DISTAN" => 0
@@ -145,7 +144,7 @@ class CovepaService
             $shippingDetails[] = $shipping;
         }
 
-        $paymentDetails = Helpers::getPaymentArray($order);
+        $paymentDetails = CovepaHelper::getPaymentArray($order);
 
         $extraDetails = [
             [
@@ -157,13 +156,19 @@ class CovepaService
         $orderData = [
             "VTAGEN_VTAREL" => $order->id,
             // Codigo del documento
-            "DOCMTO_CODTRI" => "26", // Preguntar
+            "DOCMTO_CODTRI" => "26", // Preguntar, tipo de documento
+
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
-            "SUJETO_RUTSUJ" => 15903349,
-            "SUJSUC_CODIGO" => 0, // Preguntar, codigo sucursal
-            "VTAGEN_OCONRO" => 0, // Preguntar, Nro Orden compra cliente
-            "VTAGEN_SUCNRO" => 0, // Preguntar, Sucursal cotizacion
-            "VTAGEN_COTNRO" => 0, // Preguntar, nro cotizacion
+            
+            //@todo es posible que esta sea el ID del cliente y no su RUT
+            // preguntar
+            "SUJETO_RUTSUJ" => $rut,
+
+            "SUJSUC_CODIGO" => 0, // codigo sucursal
+            "VTAGEN_OCONRO" => 0, // Nro Orden compra cliente
+            "VTAGEN_SUCNRO" => 0, // Sucursal cotizacion
+            "VTAGEN_COTNRO" => 0, // nro cotizacion
+
             "TIPVAL_COD023" => 1,
             
             // Montos
@@ -175,15 +180,16 @@ class CovepaService
             "VTAGEN_OBSERV" => "", 
 
             // Persona que retira
+            //@todo es posible que este sea el RUT sin el digito verificador
             "VTAGEN_RUTRET" => $rut, 
             "VTAGEN_NOMRET" => $fullName,
             "VTAGEN_FECTRL" => Carbon::now()->format('d/m/Y h:i:s'),
 
             // Dirección de facturación
             "VTADIR_DIRECC" => $fullInvoiceAddress,
-            "CIUDAD_CODIGO" => Helpers::COMMUNE_MAPPING[$invoiceCommune->id]['id_city'],
+            "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_city'],
             "VTADIR_NOMCIU" => $invoiceCommune->name,
-            "COMUNA_CODIGO" => Helpers::COMMUNE_MAPPING[$invoiceCommune->id]['id_commune'],
+            "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_commune'],
             "VTADIR_NOMCOM" => $invoiceCommune->name,
             "VTADIR_FONSUJ" => empty($invoiceAddress->cellphone) ? $order->cellphone : $invoiceAddress->cellphone,
             "VTADIR_NOMFAN" => $invoiceFullName,

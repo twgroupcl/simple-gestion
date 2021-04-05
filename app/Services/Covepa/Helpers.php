@@ -380,8 +380,7 @@ class Helpers {
     public static function getPaymentArray(Order $order) : array
     {
         $payment = $order->order_payments->first(); 
-        $rut = str_replace('.', '', $order->uid);
-        $rut = str_replace('-', '', $rut);
+        $rut = rutWithoutDV($order->uid);
 
         if ($payment->method === 'tbkplus') {
             $details = json_decode($payment->json_in, true);
@@ -395,10 +394,10 @@ class Helpers {
                 "FORPGO_CODIGO" => $paymentType,
                 "VTAPGO_CORREL" => 1,
                 "VTAPGO_MONPGO" => (double) $order->total,
-                "VTAPGO_NCUOTA" => $quotes, // numero de cuotas
-                "VTAPGO_FECUOT" => Carbon::now()->format('d/m/Y'), // fecha primera cuota
+                "VTAPGO_NCUOTA" => $quotes,
+                "VTAPGO_FECUOT" => Carbon::now()->format('d/m/Y'), 
                 "VTAPGO_NRDCPG" => $authCode, // Confirmar si es autorizacion de transbank
-                "SUJETO_RUTDUE" => $rut, // Rut cliente que paga @todo sanitizar
+                "SUJETO_RUTDUE" => $rut,
                 "SUJETO_RUTSUJ" => $rut // Rut del documento de venta
             ]
         ];
