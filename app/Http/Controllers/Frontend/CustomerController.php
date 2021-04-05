@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Frontend\CustomerStoreRequest;
-use App\Http\Requests\Frontend\CustomerSupportRequest;
-use App\Http\Requests\Frontend\CustomerUpdateRequest;
-use App\Mail\CustomerSupport as MailCustomerSupport;
+use App\User;
 use App\Models\Commune;
 use App\Models\Customer;
-use App\Models\CustomerSupport;
-use App\User;
-use Backpack\Settings\app\Models\Setting;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Models\CustomerSupport;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
+use App\Services\Covepa\CovepaService;
+use Backpack\Settings\app\Models\Setting;
+use App\Http\Requests\Frontend\CustomerStoreRequest;
+use App\Mail\CustomerSupport as MailCustomerSupport;
+use App\Http\Requests\Frontend\CustomerUpdateRequest;
+use App\Http\Requests\Frontend\CustomerSupportRequest;
 
 class CustomerController extends Controller
 {
@@ -28,13 +29,56 @@ class CustomerController extends Controller
 
     public function store(CustomerStoreRequest $request)
     {
+        $covepaService = new CovepaService();
         $request['customer_segment_id'] = Setting::get('default_customer_segment');
         $request['company_id'] = Setting::get('default_company');
         $request['uid'] = strtoupper(
             str_replace('.', '', $request['uid'])
         );
 
-        Customer::create($request->all());
+        //@todo TERMINAR ESTA INTEGRACION
+       /*  try { */
+            $customer = Customer::create($request->all());
+
+            /* $covepaService->createCustomer([
+                'id' => rutWithoutDV($customer->uid),
+                'uid' => $customer->uid,
+                'taxable' => $customer->is_company,
+                'default_billing' => 1,
+                'default_shipping' => 1,
+                'confirmation' => Carbon::now()->format('d/m/Y'),
+                'email' => $customer->email,
+                'telephone' => $customer->phone,
+                'cellphone' => $customer->cellphone,
+                'firstname' => $customer->first_name,
+                'lastname' => $customer->last_name,
+
+                //@todo
+                // al momento de crear un cliente desde el front no se le pide una direccion
+                'addresses' => [
+                  0 => [
+                    'id' => 1,
+                    'city_id' => 2,
+                    'street' => 'Mi pasaje de prueba 2020',
+                    'number' => '0',
+                    'extra' => '',
+                    'telephone' => '',
+                    'cellphone' => '',
+                    'taxable' => false,
+                    'uid' => '13763965-3',
+                    'firstname' => '',
+                    'lastname' => '',
+                    'sii_activity' => '1001',
+                    'default_shipping' => true,
+                    'default_billing' => true,
+                  ],
+                ],
+                'custom_attributes' => [
+                ],
+              ]);
+        } catch (Exception $e) {
+
+        }; */
 
         //@todo: debo mostrar los errores de contraseña
 
