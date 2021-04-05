@@ -2,6 +2,7 @@
 
 namespace App\Services\Covepa;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Commune;
@@ -74,11 +75,41 @@ class CovepaService
         return $response;
     }
 
+    public function getCustomer($id)
+    {
+        $endpoint = $this->baseUrl . '/clientes/' . $id;
+        $method = 'GET';
+
+        $response = $this->makeRequest($endpoint, $method);
+
+        if (is_array($response) && array_key_exists('error_message', $response)) {
+            throw new Exception($response['error_message']);
+        }
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function createCustomer(array $customerData)
+    {
+        $endpoint = $this->baseUrl . '/clientes';
+        $method = 'POST';
+
+        $response = $this->makeRequest($endpoint, $method, $customerData);
+
+        if (is_array($response) && array_key_exists('error_message', $response)) {
+            throw new Exception($response['error_message']);
+        }
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
     /**
      * Convierte una orden en un arreglo con la estructura de datos
      * aceptada por la API de Covepa para registrar una nueva venta
      * 
      * @todo de que manera se debe incluir el costo del shipping
+     * @todo mapeo codigos de giro
+     * @todo fecha de entrega
      */
     public function prepareOrderData(Order $order) : array
     {
@@ -195,9 +226,6 @@ class CovepaService
             "VTADIR_NOMFAN" => $invoiceFullName,
             
             // Codigo de ellos o de nosotros
-            // Que hacer cuando el cliente es empresa pero no tiene giro porque el giro
-            // solo ests disponible para seleccionar en la dirección de facturación, no esta
-            // disponible para la direccion de shipping
             "TIPVAL_COD055" => $order->is_company 
                                         ? (empty($invoiceAddress->business_activity_id)
                                             ? 0
