@@ -332,6 +332,7 @@ class Checkout extends Component
             $order = new Order();
             $order->company_id = $this->cart->company_id;
             $order->uid = $this->cart->uid;
+            $order->is_company = $this->cart->is_company;
             $order->first_name = $this->cart->first_name;
             $order->last_name = $this->cart->last_name;
             $order->email = $this->cart->email;
