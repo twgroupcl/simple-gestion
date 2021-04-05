@@ -22,6 +22,17 @@
                     id="sd-businessname">
                 @error('data.business_name') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
+
+            <div class="col-sm-6 form-group">
+                <label for="sd-businessacitvity">Giro <span class='text-danger'>*</span></label>
+                <select class="custom-select" wire:model="data.business_activity_id" id="bd-business_activity_id">
+                    <option value>Seleccione las actividades...</option>
+                    @foreach (\App\Models\BusinessActivity::orderBy('name', 'asc')->get(['id', 'name']) as $businessActivity)
+                        <option value="{{ $businessActivity->id }}">{{ $businessActivity->name }}</option>
+                    @endforeach
+                </select>
+                @error('data.business_activity_id') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
         @else
             <div class="col-sm-6 form-group">
                 <label for="sd-fisrtname">Nombre <span class='text-danger'>*</span></label>

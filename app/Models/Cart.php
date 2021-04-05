@@ -27,6 +27,10 @@ class Cart extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $casts = [
+        'json_value' => 'array'
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

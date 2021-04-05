@@ -315,7 +315,9 @@ class Checkout extends Component
                 'address_office' => $this->cart->address_office,
                 'address_commune_id' => $this->cart->address_commune_id,
                 'address_details' => $this->cart->shipping_details,
+                'business_activity_id' => $this->cart->json_value['business_activity_id'] ?? null,
             ];
+            
             $addressShipping = json_encode($addressShipping);
             $addressInvoiceCart = null;
             if ($this->cart->invoice_value) {

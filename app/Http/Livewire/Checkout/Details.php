@@ -123,7 +123,7 @@ class Details extends Component
         if ($this->is_business) {
             $dynamicRules = [
                 'data.business_name' => 'required|min:3',
-                //'data.business_activity' => ''
+                'data.business_activity_id' => 'required'
             ];
         }
 
@@ -177,6 +177,7 @@ class Details extends Component
             $this->data['invoice_value'] = json_encode($this->invoice);
 
             $this->data['is_company'] = $this->is_business;
+            $this->data['json_value'] = ['business_activity_id' => $this->data['business_activity_id'] ?? null];
 
             $this->cart->update($this->data);
 
