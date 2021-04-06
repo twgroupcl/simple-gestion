@@ -2,11 +2,14 @@
 
 namespace App\Http\Livewire\Checkout;
 
-use App\Models\CartItem;
+use Carbon\Carbon;
 use App\Models\Order;
+use Livewire\Component;
+use App\Models\CartItem;
 use App\Models\OrderItem;
 use App\Models\ShippingMethod;
-use Livewire\Component;
+use App\Services\Covepa\CovepaService;
+use App\Services\Covepa\Helpers as CovepaHelper;
 
 class Checkout extends Component
 {
@@ -295,10 +298,10 @@ class Checkout extends Component
 
     public function pay()
     {
-
-        //Check if Sufficient Products
+        $covepaService = new CovepaService();
         $sufficienQuantity = true;
-        //Add Order Item
+
+        // Check inventory of every item
         foreach ($this->getItems() as $item) {
             $product = $item->product;
             if (!$product->haveSufficientQuantity($item->qty)) {
@@ -306,80 +309,132 @@ class Checkout extends Component
             }
         }
 
-        if ($sufficienQuantity) {
-
-            //get cart addresses ;
-            $addressShipping = [
-                'address_street' => $this->cart->address_street,
-                'address_number' => $this->cart->address_number,
-                'address_office' => $this->cart->address_office,
-                'address_commune_id' => $this->cart->address_commune_id,
-                'address_details' => $this->cart->shipping_details,
-                'business_activity_id' => $this->cart->json_value['business_activity_id'] ?? null,
-            ];
-            
-            $addressShipping = json_encode($addressShipping);
-            $addressInvoiceCart = null;
-            if ($this->cart->invoice_value) {
-                $addressInvoiceCart = $this->cart->invoice_value;
-            }
-
-            $addressData = [
-                'addressShipping' => $addressShipping,
-                'addressInvoice' => $addressInvoiceCart,
-            ];
-
-            $order = new Order();
-            $order->company_id = $this->cart->company_id;
-            $order->uid = $this->cart->uid;
-            $order->is_company = $this->cart->is_company;
-            $order->first_name = $this->cart->first_name;
-            $order->last_name = $this->cart->last_name;
-            $order->email = $this->cart->email;
-            $order->phone = $this->cart->phone;
-            $order->cellphone = $this->cart->cellphone;
-            $order->currency_id = $this->cart->currency_id;
-            $order->customer_id = $this->cart->customer_id;
-            $order->json_value = json_encode($addressData);
-            $order->status = 1; //initiated
-            $order->save();
-
-            $shippingtotal_order = 0;
-            $subtotal_order = 0;
-            $total_order = 0;
-
-            //Add Order Item
-            foreach ($this->getItems() as $item) {
-                $orderitem = new OrderItem();
-                $orderitem->order_id = $order->id;
-                $orderitem->seller_id = $item->product->seller->id;
-                $orderitem->currency_id = 63;
-                $orderitem->product_id = $item->product->id;
-                $orderitem->name = $item->product->name;
-                $orderitem->sku = $item->product->sku;
-                $orderitem->price = $item->price;
-                $orderitem->qty = $item->qty;
-                $orderitem->shipping_id = $item->shipping_id;
-                $orderitem->shipping_total = $item->shipping_total;
-                $orderitem->sub_total = $item->price * $item->qty;
-                $orderitem->total = ($item->price * $item->qty) + $item->shipping_total;
-                $orderitem->save();
-                //$shippingtotal_order += $item->shipping_total * $item->qty;
-                //$subtotal_order += $item->price * $item->qty;
-               // $total_order += ($item->price + $item->shipping_total) * $item->qty;
-
-            }
-
-            $order->shipping_total = $this->shippingTotal ;//$shippingtotal_order;
-            $order->sub_total = $this->subtotal ;//$subtotal_order;
-            $order->total = $this->total ; //$total_order;
-
-            $order->save();
-
-            return redirect()->to(route('transbank.webpayplus.redirect', ['order' => $order]));
-        } else {
-            $this->emit('showToast', '¡Stock insuficiente!', 'Verifique la cantidad de sus productos.', 3000, 'warning');
+        if (!$sufficienQuantity) {
+            return $this->emit('showToast', '¡Stock insuficiente!', 'Verifique la cantidad de sus productos.', 3000, 'warning');
         }
+
+        if ($this->checkCovepaCustomerExists(rutWithoutDV($this->cart->uid)) == 2) {
+            return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles.', 3000, 'warning');
+        }
+
+        if ($this->checkCovepaCustomerExists(rutWithoutDV($this->cart->uid)) == 0) {
+
+            $customerData = [
+                'id' => rutWithoutDV($this->cart->uid),
+                'uid' => sanitizeRUT($this->cart->uid),
+                'taxable' => (bool) $this->cart->is_company,
+                'default_billing' => 1,
+                'default_shipping' => 1,
+                'confirmation' => Carbon::now()->format('d/m/Y'),
+                'email' => $this->cart->email,
+                'telephone' => $this->cart->phone,
+                'cellphone' => $this->cart->cellphone,
+                'firstname' => $this->cart->first_name,
+                'lastname' => $this->cart->last_name,
+                'addresses' => [
+                    [
+                        'id' => 1,
+                        'city_id' => CovepaHelper::COMMUNE_MAPPING[$this->cart->address_commune_id]['id_city'],
+                        'street' => $this->cart->address_street,
+                        'number' => $this->cart->address_number,
+                        'telephone' => $this->cart->phone,
+                        'cellphone' => $this->cart->cellphone,
+                        'taxable' => (bool) $this->cart->is_company,
+                        'uid' => sanitizeRUT($this->cart->uid),
+                        'firstname' => $this->cart->first_name,
+                        'lastname' => $this->cart->last_name,
+    
+                        //@todo
+                        // codigo de ellos o nosotros?
+                        'sii_activity' => $this->cart->json_value['business_activity_id'] ?? null,
+    
+                        'default_shipping' => true,
+                        'default_billing' => true,
+                    ],
+                ],
+            ];
+
+            try {
+                $response = $covepaService->createCustomer($customerData);
+
+                if ($response->getStatusCode() !== 201) {
+                    \Log::error('Error creating new customer from pay() method on Checkout.php', ['error' => $response->getBody()->getContents(), 'data' => $customerData]);
+                    return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles.', 3000, 'warning');
+                }
+
+            } catch (\Exception $e) {
+                \Log::error('Error creating new customer from pay() method on Checkout.php: ' . $e->getMessage());
+                return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles.', 3000, 'warning');
+            }
+        }
+        
+        // Get cart addresses
+        $addressShipping = [
+            'address_street' => $this->cart->address_street,
+            'address_number' => $this->cart->address_number,
+            'address_office' => $this->cart->address_office,
+            'address_commune_id' => $this->cart->address_commune_id,
+            'address_details' => $this->cart->shipping_details,
+            'business_activity_id' => $this->cart->json_value['business_activity_id'] ?? null,
+        ];
+        
+        $addressShipping = json_encode($addressShipping);
+
+        $addressInvoiceCart = null;
+
+        if ($this->cart->invoice_value) {
+            $addressInvoiceCart = $this->cart->invoice_value;
+        }
+
+        $addressData = [
+            'addressShipping' => $addressShipping,
+            'addressInvoice' => $addressInvoiceCart,
+        ];
+
+        $order = new Order();
+        $order->company_id = $this->cart->company_id;
+        $order->uid = $this->cart->uid;
+        $order->is_company = $this->cart->is_company;
+        $order->first_name = $this->cart->first_name;
+        $order->last_name = $this->cart->last_name;
+        $order->email = $this->cart->email;
+        $order->phone = $this->cart->phone;
+        $order->cellphone = $this->cart->cellphone;
+        $order->currency_id = $this->cart->currency_id;
+        $order->customer_id = $this->cart->customer_id;
+        $order->json_value = json_encode($addressData);
+        $order->status = 1; //initiated
+        $order->save();
+
+        $shippingtotal_order = 0;
+        $subtotal_order = 0;
+        $total_order = 0;
+
+        //Add Order Item
+        foreach ($this->getItems() as $item) {
+            $orderitem = new OrderItem();
+            $orderitem->order_id = $order->id;
+            $orderitem->seller_id = $item->product->seller->id;
+            $orderitem->currency_id = 63;
+            $orderitem->product_id = $item->product->id;
+            $orderitem->name = $item->product->name;
+            $orderitem->sku = $item->product->sku;
+            $orderitem->price = $item->price;
+            $orderitem->qty = $item->qty;
+            $orderitem->shipping_id = $item->shipping_id;
+            $orderitem->shipping_total = $item->shipping_total;
+            $orderitem->sub_total = $item->price * $item->qty;
+            $orderitem->total = ($item->price * $item->qty) + $item->shipping_total;
+            $orderitem->save();
+        }
+
+        $order->shipping_total = $this->shippingTotal ;//$shippingtotal_order;
+        $order->sub_total = $this->subtotal ;//$subtotal_order;
+        $order->total = $this->total ; //$total_order;
+
+        $order->save();
+
+        return redirect()->to(route('transbank.webpayplus.redirect', ['order' => $order]));
     }
 
     public function updateTotals()
@@ -458,6 +513,29 @@ class Checkout extends Component
     {
         if ($this->activeStep['number'] ==3) {
             $this->blockButton = $value;
+        }
+    }
+
+    /**
+     * 0 - Customer doesnt exists on covepa
+     * 1 - Customer exists on covepa
+     * 2 - Internal or Server error
+     * 
+     */
+    public function checkCovepaCustomerExists($id)
+    {
+        $covepaService = new CovepaService();
+
+        try {
+            $response = $covepaService->getCustomer($id);
+
+            if ($response->getStatusCode() != 200) {
+                return 0;
+            }
+            return 1;
+        } catch (\Exception $e) {
+            \Log::warning('error on checkCovepaCustomerExists function: ' . $e->getMessage());
+            return 2;
         }
     }
 }
