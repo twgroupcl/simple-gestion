@@ -4,9 +4,9 @@
 <!-- Page title-->
 <!-- Page Content-->
 <!-- Hero One item + Dots + Loop (defaults)-->
-<div class="d-none d-lg-block d-md-block d-sm-block cz-carousel cz-dots-enabled">
-    <div class="cz-carousel cz-dots-enabled h-75">
-        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+<div class="d-none d-lg-block d-md-block d-sm-block">
+    <div class="cz-carousel cz-dots-enabled" style="max-height:450px">
+        <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}' style="max-height:450px">
             {{-- <img src="{{ asset('img/prolibro/banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
             <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
             {{-- <a href="https://filsaenvivo.com/" target="_blank">
@@ -32,7 +32,7 @@
 <section class="container p-0">
     <div class="col-12 text-right d-none d-sm-block">
         <a href="https://actividades.prolibro.cl/" target="_blank">
-            <img src="{{ asset('img/filsa/boton-transmision.jpg') }}" alt="Transmision en vivo" class="w-50">
+            <img src="{{ asset('img/filsa/boton-transmision.jpg') }}" alt="Transmision en vivo" style="width:35%">
         </a>
     </div>
     <div class="col-12 text-right d-sm-none">
