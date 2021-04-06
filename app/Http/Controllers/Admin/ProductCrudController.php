@@ -984,7 +984,7 @@ class ProductCrudController extends CrudController
     }
 
     public function setInventoryFields($product) {
-        $company = $product->company;
+        $branch = $product->seller->user->branches->first();
 
         // Only for validation purposes
         CRUD::addField([
@@ -997,7 +997,7 @@ class ProductCrudController extends CrudController
             ],
         ]);
 
-        foreach($company->inventory_sources as $inventory_source) {
+        foreach($branch->inventory_sources as $inventory_source) {
             CRUD::addField([
                 'label' => 'Inventario en ' . $inventory_source->name,
                 'name' => 'inventory-source-' . $inventory_source->id,
@@ -1014,10 +1014,10 @@ class ProductCrudController extends CrudController
     }
 
     public function inventoryFieldsToArray($product) {
-        $company = $product->company;
+        $branch = $product->seller->user->branches->first();
         $array = [];
 
-        foreach($company->inventory_sources as $inventory_source) {
+        foreach($branch->inventory_sources as $inventory_source) {
             array_push($array, [
                 'label' => 'Inventario en ' . $inventory_source->name,
                 'name' => 'inventory-source-' . $inventory_source->id,

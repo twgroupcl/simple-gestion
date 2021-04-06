@@ -51,6 +51,11 @@ class Branch extends Model
         return $this->belongsToMany(User::class, 'branch_users')->withPivot(['is_default', 'branch_id']);
     }
 
+    public function inventory_sources()
+    {
+        return $this->hasMany(ProductInventorySource::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
