@@ -32,7 +32,7 @@ class CovepaService
         ];
 
         if (!empty($data)) {
-            $request = array_merge($request, $data);
+            $request = array_merge($request, ['json' => $data]);
         }
 
         try {
@@ -65,10 +65,11 @@ class CovepaService
         $response = $this->makeRequest($endpoint, $method, $orderData);
 
         if (is_array($response) && array_key_exists('error_message', $response)) {
+            \Log::error('error creating order', ['data' => $orderData]);
             throw new Exception($response['error_message']);
         }
 
-        return $response;
+        return $response->getBody()->getContents();
     }
 
     public function getCustomer($id)
@@ -106,13 +107,14 @@ class CovepaService
      * @todo de que manera se debe incluir el costo del shipping
      * @todo mapeo codigos de giro
      * @todo fecha de entrega
+     * @todo no esta aceptando los valores para tipos de envio
      */
     public function prepareOrderData(Order $order) : array
     {
         // Amount calculations
-        $net = round($order->total * 100 / 119, 2);
-        $iva = $order->total - $net;
-        $total = (double) $order->total;
+        $total = round($order->total);
+        $net = round($total * 100 / 119);
+        $iva = $total - $net;
 
         // Shipping address
         $rut = rutWithoutDV($order->uid);
@@ -142,19 +144,26 @@ class CovepaService
                 "VTADET_PREUNI" => round($item->product->price, 2),
                 "VTADET_PREVTA" => round($item->price, 2), // Preguntar si es unitario
                 "VTADET_EXENTO" => 0,
-                "VTADET_MONETO" => $net,
-                "VTADET_MONTOT" => (double) $item->total,
+                "VTADET_MONETO" => (int) $net,
+                "VTADET_MONTOT" => (int) $item->total,
                 "VTADET_OIMPTO" => 0,
                 "VTADET_VALIVA" => 19,
                 "ARTICU_NOMBRE" => $item->name,
             ];
 
             $shipping = [
-                "VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
+                //@todo no acepta valores de envio
+                //"VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
+                "VTAPLA_TIPENT" => 'T', // just for testing
+                
                 "VTAPLA_CORREL" => $index + 1,
                 "ARTICU_CODIGO" => $item->sku, // Preguntar si es el sku u otro codigo
                 "VTAPLA_FECENT" => "20/08/2020", // Preguntar, no esta contemplado, fecha de entrega
-                "BODEGA_CODIGO" => $item->product->inventories->first()->code, // Preguntar, utilizar el mismo codigo de la bodega que ellos setearon?
+                
+                //@todo no esta aceptando el codigo de la bodega
+                //"BODEGA_CODIGO" => $item->product->inventories->first()->code, // Preguntar, utilizar el mismo codigo de la bodega que ellos setearon?
+                "BODEGA_CODIGO" => 0, // Just for testing
+                
                 "VTAPLA_CANTID" => $item->qty,
                 "VTPLDI_DIRECC" => $fullAddress,
                 "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
@@ -201,9 +210,9 @@ class CovepaService
             // Montos
             "VTAGEN_OIMPTO" => 0,
             "VTAGEN_EXENTO" => 0,
-            "VTAGEN_MONETO" => $net,
-            "VTAGEN_MONIVA" => $iva,
-            "VTAGEN_MONTOT" => $total,
+            "VTAGEN_MONETO" => (int) $net,
+            "VTAGEN_MONIVA" => (int) $iva,
+            "VTAGEN_MONTOT" => (int) $total,
             "VTAGEN_OBSERV" => "", 
 
             // Persona que retira

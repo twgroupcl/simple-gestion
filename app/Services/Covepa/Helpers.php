@@ -393,7 +393,7 @@ class Helpers {
             [ 
                 "FORPGO_CODIGO" => $paymentType,
                 "VTAPGO_CORREL" => 1,
-                "VTAPGO_MONPGO" => (double) $order->total,
+                "VTAPGO_MONPGO" => (int) $order->total,
                 "VTAPGO_NCUOTA" => $quotes,
                 "VTAPGO_FECUOT" => Carbon::now()->format('d/m/Y'), 
                 "VTAPGO_NRDCPG" => $authCode, // Confirmar si es autorizacion de transbank
