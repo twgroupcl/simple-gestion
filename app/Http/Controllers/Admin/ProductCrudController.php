@@ -112,6 +112,13 @@ class ProductCrudController extends CrudController
             'label' => 'Clase de producto',
             'type' => 'relationship',
         ]);
+
+        CRUD::addColumn([
+            'name' => 'unit',
+            'label' => 'Unidad',
+            'type' => 'relationship',
+        ]);
+
         CRUD::addColumn([
             'name' => 'product_type',
             'label' => 'Tipo de producto',
@@ -571,6 +578,14 @@ class ProductCrudController extends CrudController
             'attributes' => [
                 'step' => 'any',
             ],
+        ]);
+
+        CRUD::addField([
+            'label'     => "Unidad",
+            'type'      => 'select2',
+            'name'      => 'unit_id',
+            'entity'    => 'unit',
+            'tab' => 'Precio y envío',
         ]);
 
         CRUD::addField([
