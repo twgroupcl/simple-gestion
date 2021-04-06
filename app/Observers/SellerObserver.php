@@ -49,12 +49,14 @@ class SellerObserver
                 $branch_id = backpack_user()->current()->branch->id;
             }
 
-            $seller_branch = BranchUser::create([
-                'user_id' => $seller->user_id,
-                'branch_id' => $branch_id,
-                'is_default' => 1,
-            ]);
-
+            if ($seller->source != 'Api') {
+                $seller_branch = BranchUser::create([
+                    'user_id' => $seller->user_id,
+                    'branch_id' => $branch_id,
+                    'is_default' => 1,
+                ]);
+            }
+            
             $user->assignRole($seller_role);
         }
     }
