@@ -27,7 +27,7 @@ class AddUnitsToProducts extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropForeign('unit_id');
+            $table->dropForeign('products_unit_id_foreign');
             $table->dropColumn('unit_id');
         });
     }
