@@ -138,11 +138,14 @@ class CovepaService
             $detail = [
                 "VTADET_CORREL" => $index + 1,
                 "ARTICU_CODIGO" => $item->sku, // Preguntar si es el SKU u otro tipo de codigo
-                "VTADET_UMARTI" => "UN", // Preguntar que unidad usaremos
+                "VTADET_UMARTI" => "UN", // Preguntar que unidad usaremos. Listo, utilizar la del producto o 0 si no tiene
                 "VTADET_CANTID" => $item->qty,
-                "VTADET_BODEGA" => 1,
+
+                //@todo no esta aceptando el codigo de la bodega
+                "VTADET_BODEGA" => $item->product->inventories->first()->code,
+                
                 "VTADET_PREUNI" => round($item->product->price, 2),
-                "VTADET_PREVTA" => round($item->price, 2), // Preguntar si es unitario
+                "VTADET_PREVTA" => round($item->price, 2),
                 "VTADET_EXENTO" => 0,
                 "VTADET_MONETO" => (int) $net,
                 "VTADET_MONTOT" => (int) $item->total,
@@ -153,16 +156,14 @@ class CovepaService
 
             $shipping = [
                 //@todo no acepta valores de envio
-                //"VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
-                "VTAPLA_TIPENT" => 'T', // just for testing
+                "VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
                 
                 "VTAPLA_CORREL" => $index + 1,
                 "ARTICU_CODIGO" => $item->sku, // Preguntar si es el sku u otro codigo
                 "VTAPLA_FECENT" => "20/08/2020", // Preguntar, no esta contemplado, fecha de entrega
                 
                 //@todo no esta aceptando el codigo de la bodega
-                //"BODEGA_CODIGO" => $item->product->inventories->first()->code, // Preguntar, utilizar el mismo codigo de la bodega que ellos setearon?
-                "BODEGA_CODIGO" => 0, // Just for testing
+                "BODEGA_CODIGO" => $item->product->inventories->first()->code, // Preguntar, utilizar el mismo codigo de la bodega que ellos setearon?
                 
                 "VTAPLA_CANTID" => $item->qty,
                 "VTPLDI_DIRECC" => $fullAddress,
@@ -191,6 +192,7 @@ class CovepaService
 
         $orderData = [
             "VTAGEN_VTAREL" => $order->id,
+
             // Codigo del documento
             "DOCMTO_CODTRI" => "26", // Preguntar, tipo de documento
 
