@@ -610,6 +610,11 @@ class Product extends Model
         return $this->belongsToMany(ShippingMethod::class, 'shipping_method_product_mapping');
     }
 
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
