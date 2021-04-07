@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\CustomerSupport;
+use App\Services\Covepa\Helpers as CovepaHelper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -52,48 +53,38 @@ class CustomerController extends Controller
         ];
 
         //@todo TERMINAR ESTA INTEGRACION
-       /*  try { */
+        try {
             $customer = Customer::create($request->all());
 
-            /* $covepaService->createCustomer([
+            $covepaService->createCustomer([
                 'id' => rutWithoutDV($customer->uid),
-                'uid' => $customer->uid,
-                'taxable' => $customer->is_company,
+                'uid' => $request['uid'],
+                'taxable' => (bool) $customer->is_company,
                 'default_billing' => 1,
                 'default_shipping' => 1,
                 'confirmation' => Carbon::now()->format('d/m/Y'),
                 'email' => $customer->email,
-                'telephone' => $customer->phone,
-                'cellphone' => $customer->cellphone,
+                'telephone' => $request['phone'],
                 'firstname' => $customer->first_name,
                 'lastname' => $customer->last_name,
-
-                //@todo
-                // al momento de crear un cliente desde el front no se le pide una direccion
                 'addresses' => [
                   0 => [
                     'id' => 1,
-                    'city_id' => 2,
-                    'street' => 'Mi pasaje de prueba 2020',
-                    'number' => '0',
-                    'extra' => '',
-                    'telephone' => '',
-                    'cellphone' => '',
+                    'city_id' => CovepaHelper::COMMUNE_MAPPING[$request['commune']]['id_city'],
+                    'street' => $request['street'],
+                    'number' => $request['number'],
                     'taxable' => false,
-                    'uid' => '13763965-3',
-                    'firstname' => '',
-                    'lastname' => '',
-                    'sii_activity' => '1001',
+                    'uid' => $request['uid'],
+                    'firstname' => $customer->first_name,
+                    'lastname' => $customer->last_name,
                     'default_shipping' => true,
                     'default_billing' => true,
                   ],
                 ],
-                'custom_attributes' => [
-                ],
               ]);
         } catch (Exception $e) {
 
-        }; */
+        };
 
         //@todo: debo mostrar los errores de contraseña
 
