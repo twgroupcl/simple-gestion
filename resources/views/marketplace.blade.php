@@ -8,8 +8,8 @@
     <div class="cz-carousel cz-dots-enabled" style="max-height:450px">
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}' style="max-height:450px">
             {{-- <img src="{{ asset('img/prolibro/banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
-            <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
-            <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
+            {{-- <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner"> --}}
+            <img src="{{ asset('img/prolibro/slider-med-1.jpg') }}" alt="Prolibro Banner">
             {{-- <a href="https://filsaenvivo.com/" target="_blank">
                 <img src="{{ asset('img/filsa/banner-transmision-carousel.jpg') }}" alt="Prolibro Banner" class="w-100">
             </a> --}}
@@ -19,8 +19,8 @@
 
 <div class="d-block d-sm-none">
     <div class="cz-carousel">
-        <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled">
-            <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": true, "autoplayTimeout": 5000}'>
+        <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled" style="max-height: 285px">
+            <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}'>
                 {{-- <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
                 {{-- <a href="https://filsaenvivo.com/" target="_blank">
