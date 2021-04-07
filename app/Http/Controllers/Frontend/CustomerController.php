@@ -36,6 +36,21 @@ class CustomerController extends Controller
             str_replace('.', '', $request['uid'])
         );
 
+        $request['addresses_data'] = [
+            [
+                'email' => $request['email'],
+                'first_name' => $request['first_name'],
+                'last_name' => $request['last_name'],
+                'uid' => $request['uid'],
+                'commune_id' => $request['commune'],
+                'street' => $request['street'],
+                'number' => $request['number'],
+                'phone' => $request['phone'],
+                'cellphone' => '',
+                'extra' => '',
+            ]
+        ];
+
         //@todo TERMINAR ESTA INTEGRACION
        /*  try { */
             $customer = Customer::create($request->all());
