@@ -169,6 +169,58 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="col-sm-6 form-group">
+                        <label for="commune">Comuna <span class='text-danger'>*</span></label>
+                        <select class="custom-select" id="commune" name="commune">
+                            <option value>Seleccione una comuna</option>
+                            @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
+                                <option 
+                                    value="{{ $commune->id }}"
+                                >{{ $commune->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('commune')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="street">Calle <span class="text-danger">*</span></label>
+                            <input class="form-control @error('street') is-invalid @enderror" type="text" name="street" id="street" placeholder="Escribe aquí tu apellido" value="{{ old('street') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa tu calle.</div>
+                            @error('street')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="number">Numero <span class="text-danger">*</span></label>
+                            <input class="form-control @error('number') is-invalid @enderror" type="text" name="number" id="number" placeholder="Escribe aquí tu apellido" value="{{ old('number') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa tu numero de calle.</div>
+                            @error('number')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="phone">Telefono <span class="text-danger">*</span></label>
+                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" placeholder="Escribe aquí tu apellido" value="{{ old('phone') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa tu telefono.</div>
+                            @error('phone')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
                 <div class="text-right">
                     <button class="btn btn-primary" type="submit"><i class="czi-user mr-2 ml-n1"></i>Registrar</button>
