@@ -84,8 +84,8 @@
                         <div class="widget pb-2 mb-2">
                             <h3 class="widget-title text-dark pb-1">Patrocinan</h3>
                             <div class="d-flex flex-wrap">
-                                <div class="col-4 mb-2 text-center">
-                                    <img class="img-fluid w-75" src="{{ asset('img/prolibro/patroc-sant.png') }}" alt="Santiago Ilustre Municipalidad" />
+                                <div class="col-12 mb-2 text-center mt-3">
+                                    <img class="img-fluid w-25" src="{{ asset('img/prolibro/patroc-sant.png') }}" alt="Santiago Ilustre Municipalidad" />
                                 </div>
                                 
                                 {{--<div class="col-4 mb-2 text-center">
