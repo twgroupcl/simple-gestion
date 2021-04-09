@@ -163,7 +163,7 @@
                 @if($seller->banner)
                 <div class="py-sm-2">
                     <div class="d-sm-flex justify-content-between align-items-center overflow-hidden mb-4 rounded-lg">
-                        <img class="mw-75 w-50" src="{{ url($seller->banner) }}" alt="Banner {{ $seller->visible_name }}">
+                        <img {{--class="mw-75 w-50"--}} class="mr-4 rounded-lg" src="{{ url($seller->banner) }}" alt="Banner {{ $seller->visible_name }}">
                     </div>
                 </div>
                 @endif
