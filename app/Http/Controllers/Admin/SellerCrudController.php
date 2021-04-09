@@ -643,7 +643,7 @@ class SellerCrudController extends CrudController
         CRUD::addField([
             'name' => 'banner',
             'type' => 'image',
-            'label' => 'Banner (Tamaño recomendado: 1200 * 600)',
+            'label' => 'Banner (Tamaño recomendado: 1200 * 300)',
             'crop' => true,
             'wrapper' => [
                 'class' => 'form-group col-md-12'
