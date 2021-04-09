@@ -10,6 +10,7 @@
             {{-- <img src="{{ asset('img/prolibro/banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
             {{-- <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner"> --}}
             <img src="{{ asset('img/prolibro/slider-med-1.jpg') }}" alt="Prolibro Banner">
+            <img src="{{ asset('img/prolibro/banner-principal-prolibro-3.jpg') }}" alt="Prolibro Banner">
             {{-- <a href="https://filsaenvivo.com/" target="_blank">
                 <img src="{{ asset('img/filsa/banner-transmision-carousel.jpg') }}" alt="Prolibro Banner" class="w-100">
             </a> --}}
@@ -23,6 +24,7 @@
             <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}'>
                 {{-- <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
+                <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro-3.jpg') }}" alt="Prolibro Banner">
                 {{-- <a href="https://filsaenvivo.com/" target="_blank">
                     <img src="{{ asset('img/filsa/mobile-banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
                 </a> --}}
@@ -101,6 +103,7 @@
                     <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
                 </a> --}}
                 <img src="{{ asset('img/prolibro/banner-medio-prolibro-2.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
+                <img src="{{ asset('img/prolibro/banner-medio-prolibro-3.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
             </div>
         </div>
     </div>
@@ -113,6 +116,7 @@
                         <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid ">
                     </a> --}}
                     <img src="{{ asset('img/prolibro/mobile-banner-medio-prolibro-2.jpg') }}" alt="Prolibro Banner" class="img-fluid">
+                    <img src="{{ asset('img/prolibro/mobile-banner-medio-prolibro-3.jpg') }}" alt="Prolibro Banner" class="img-fluid">
 
                 </div>
             </div>
