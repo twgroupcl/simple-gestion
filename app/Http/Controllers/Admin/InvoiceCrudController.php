@@ -168,24 +168,15 @@ class InvoiceCrudController extends CrudController
             'line', 'create_temporary_document', 
             'invoice.to_manage', 'beginning'
         );
-
         CRUD::addColumn([
-            'label' => 'Fecha de emision',
-            'name' => 'invoice_date',
-            'type' => 'date',
-            'format' => 'L',
-            'priority' => 3,
+            'name' => 'uid',
+            'label' => 'RUT',
         ]);
 
         CRUD::addColumn([
             'name' => 'first_name',
             'label' => 'Nombre / Razón Soc.',
             'priority' => 2,
-        ]);
-
-        CRUD::addColumn([
-            'name' => 'uid',
-            'label' => 'RUT',
         ]);
 
         CRUD::addColumn([
@@ -198,6 +189,14 @@ class InvoiceCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'folio',
             'priority' => 4,
+        ]);
+
+        CRUD::addColumn([
+            'label' => 'Fecha de emision',
+            'name' => 'invoice_date',
+            'type' => 'date',
+            'format' => 'L',
+            'priority' => 3,
         ]);
 
         CRUD::addColumn([
