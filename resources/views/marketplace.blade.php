@@ -11,6 +11,9 @@
             {{-- <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner"> --}}
             <img src="{{ asset('img/prolibro/slider-med-1.jpg') }}" alt="Prolibro Banner">
             <img src="{{ asset('img/prolibro/banner-principal-prolibro-3.jpg') }}" alt="Prolibro Banner">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGtPc0Afwv5F1agWTizGcuU5OrFlxdlI8n_Sjn16uf03bI7Q/viewform" target="_blank">
+                <img src="{{ asset('img/prolibro/banner-principal-seminario.jpg') }}" alt="Seminario internacional de Literatura infantile" class="w-100">
+            </a>
             {{-- <a href="https://filsaenvivo.com/" target="_blank">
                 <img src="{{ asset('img/filsa/banner-transmision-carousel.jpg') }}" alt="Prolibro Banner" class="w-100">
             </a> --}}
@@ -25,6 +28,9 @@
                 {{-- <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro-3.jpg') }}" alt="Prolibro Banner">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGtPc0Afwv5F1agWTizGcuU5OrFlxdlI8n_Sjn16uf03bI7Q/viewform" target="_blank">
+                    <img src="{{ asset('img/prolibro/mobile-banner-principal-seminario.jpg') }}" alt="Seminario internacional de Literatura infantile" class="w-100">
+                </a>
                 {{-- <a href="https://filsaenvivo.com/" target="_blank">
                     <img src="{{ asset('img/filsa/mobile-banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
                 </a> --}}
@@ -168,12 +174,12 @@
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center">
-           {{--  <div class="col-md-4 text-center">
-                <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner Programa Cultural" class="img-fluid w-50">
+            <div class="col-md-4 text-center">
+                <img src="{{ asset('img/prolibro/logo_cooperativa.png') }}" alt="Banner Cooperativa" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
-                <img src="{{ asset('img/prolibro/partner-mercurio.jpg') }}" alt="Banner Mercurio" class="img-fluid w-50">
-            </div> --}}
+                <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner TVN" class="img-fluid w-50">
+            </div>
             <div class="col-md-4 text-center mx-auto">
                 <a href="https://www.radiovalparaiso.cl/" target="_blank">
                     <img src="{{ asset('img/prolibro/partner-valparaiso.jpg') }}" alt="Banner Radio Valparaiso" class="img-fluid w-50">
