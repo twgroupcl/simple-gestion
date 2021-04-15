@@ -53,6 +53,7 @@ class CustomerController extends Controller
         ];
 
         //@todo TERMINAR ESTA INTEGRACION
+        // La api no esta funcionando en este momentos, testear cuando vuelve a estar online
         try {
             $customer = Customer::create($request->all());
 
@@ -83,7 +84,7 @@ class CustomerController extends Controller
                 ],
               ]);
         } catch (Exception $e) {
-
+            //@todo devolver error o continuar el flujo?
         };
 
         //@todo: debo mostrar los errores de contraseña
