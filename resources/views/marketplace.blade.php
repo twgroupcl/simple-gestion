@@ -173,7 +173,7 @@
 
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
-        <div class="row align-items-center">
+        <div class="row align-items-center d-none d-md-flex">
             <div class="col-md-4 text-center">
                 <img src="{{ asset('img/prolibro/logo_cooperativa.png') }}" alt="Banner Cooperativa" class="img-fluid w-50">
             </div>
@@ -183,6 +183,19 @@
             <div class="col-md-4 text-center mx-auto">
                 <a href="https://www.radiovalparaiso.cl/" target="_blank">
                     <img src="{{ asset('img/prolibro/partner-valparaiso.jpg') }}" alt="Banner Radio Valparaiso" class="img-fluid w-50">
+                </a>
+            </div>
+        </div>
+        <div class="row align-items-center d-sm-none">
+            <div class="col-md-4 text-center">
+                <img src="{{ asset('img/prolibro/logo_cooperativa.png') }}" alt="Banner Cooperativa" class="img-fluid w-25">
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner TVN" class="img-fluid w-25">
+            </div>
+            <div class="col-md-4 text-center mx-auto">
+                <a href="https://www.radiovalparaiso.cl/" target="_blank">
+                    <img src="{{ asset('img/prolibro/partner-valparaiso.jpg') }}" alt="Banner Radio Valparaiso" class="img-fluid w-25">
                 </a>
             </div>
         </div>
