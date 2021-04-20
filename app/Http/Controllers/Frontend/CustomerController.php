@@ -52,10 +52,12 @@ class CustomerController extends Controller
             ]
         ];
 
-        //@todo TERMINAR ESTA INTEGRACION
-        // La api no esta funcionando en este momentos, testear cuando vuelve a estar online
         try {
             $customer = Customer::create($request->all());
+
+            //@todo
+            // verificar primero si el cliente existe antes de crearlo
+            // si ya existe, no hacer nada
 
             $covepaService->createCustomer([
                 'id' => rutWithoutDV($customer->uid),
@@ -84,7 +86,7 @@ class CustomerController extends Controller
                 ],
               ]);
         } catch (Exception $e) {
-            //@todo devolver error o continuar el flujo?
+            throw $e;
         };
 
         //@todo: debo mostrar los errores de contraseña

@@ -103,6 +103,18 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
+                            <label for="email">E-mail <span class="text-danger">*</span></label>
+                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Escribe aquí tu email" value="{{ old('email') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa un email válido.</div>
+                            @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
                             <label for="first_name">Nombre <span class="text-danger">*</span></label>
                             <input class="form-control @error('first_name') is-invalid @enderror" type="text" name="first_name" id="first_name" placeholder="Escribe aquí tu nombre" value="{{ old('first_name') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu nombre.</div>
@@ -119,50 +131,6 @@
                             <input class="form-control @error('last_name') is-invalid @enderror" type="text" name="last_name" id="last_name" placeholder="Escribe aquí tu apellido" value="{{ old('last_name') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu apellido.</div>
                             @error('last_name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="email">E-mail <span class="text-danger">*</span></label>
-                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Escribe aquí tu email" value="{{ old('email') }}" required>
-                            <div class="invalid-feedback">Por favor ingresa un email válido.</div>
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="password">Contraseña <span class="text-danger">*</span></label>
-                            <div class="password-toggle">
-                                <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" required>
-                                <label class="password-toggle-btn">
-                                    <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Mostrar contraseña</span>
-                                </label>
-                            </div>
-                            @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="password_confirmation">Confirmar contraseña <span class="text-danger">*</span></label>
-                            <div class="password-toggle">
-                                <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" id="password_confirmation" required>
-                                <label class="password-toggle-btn">
-                                    <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Mostrar contraseña</span>
-                                </label>
-                            </div>
-                            @error('password_confirmation')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -200,7 +168,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="number">Numero <span class="text-danger">*</span></label>
-                            <input class="form-control @error('number') is-invalid @enderror" type="text" name="number" id="number" placeholder="Escribe aquí tu apellido" value="{{ old('number') }}" required>
+                            <input class="form-control @error('number') is-invalid @enderror" type="text" name="number" id="number" placeholder="Escribe aquí tu numero de calle" value="{{ old('number') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu numero de calle.</div>
                             @error('number')
                             <span class="invalid-feedback" role="alert">
@@ -212,9 +180,41 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="phone">Telefono <span class="text-danger">*</span></label>
-                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" placeholder="Escribe aquí tu apellido" value="{{ old('phone') }}" required>
+                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" placeholder="Escribe aquí tu telefono" value="{{ old('phone') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu telefono.</div>
                             @error('phone')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="password">Contraseña <span class="text-danger">*</span></label>
+                            <div class="password-toggle">
+                                <input class="form-control @error('password') is-invalid @enderror" type="password" name="password" id="password" required>
+                                <label class="password-toggle-btn">
+                                    <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Mostrar contraseña</span>
+                                </label>
+                            </div>
+                            @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="password_confirmation">Confirmar contraseña <span class="text-danger">*</span></label>
+                            <div class="password-toggle">
+                                <input class="form-control @error('password_confirmation') is-invalid @enderror" type="password" name="password_confirmation" id="password_confirmation" required>
+                                <label class="password-toggle-btn">
+                                    <input class="custom-control-input" type="checkbox"><i class="czi-eye password-toggle-indicator"></i><span class="sr-only">Mostrar contraseña</span>
+                                </label>
+                            </div>
+                            @error('password_confirmation')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
