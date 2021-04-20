@@ -64,6 +64,10 @@ class CovepaService
     {
         $seconds = 18000;
 
+        if (Cache::get('covepa.auth.token') === null) {
+            Cache::forget('covepa.auth.token');
+        }
+
         $token = Cache::remember('covepa.auth.token', $seconds, function() {
 
             $credentials = [
