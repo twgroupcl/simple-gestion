@@ -6,6 +6,7 @@ use Exception;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Commune;
+use Illuminate\Support\Facades\Cache;
 use App\Services\Covepa\Helpers as CovepaHelper;
 
 class CovepaService
@@ -18,12 +19,15 @@ class CovepaService
         'chilexpress' => 2,
     ];
 
-    private function makeRequest($url, $method, array $data = [], array $headers = [])
+    private function makeRequest($url, $method, array $data = [], array $headers = [], $useAuth = true)
     {
         $client = new \GuzzleHttp\Client();
 
+        $token = $useAuth ? $this->getToken() : null;
+
         $defaultHeaders = [
             'Content-Type' => 'application/json',
+            'Authorization' => "$token",
         ];
 
         $request = [
@@ -54,6 +58,31 @@ class CovepaService
             \Log::error('Exception: ' . $error);
             return ['error_message' => $error];
         }
+    }
+
+    public function getToken()
+    {
+        $seconds = 18000;
+
+        $token = Cache::remember('covepa.auth.token', $seconds, function() {
+
+            $credentials = [
+                'usuario' => config('covepa.credentials.user'),
+                'password' => config('covepa.credentials.password'),
+            ];
+
+            $response = $this->makeRequest($this->baseUrl . '/auth', 'POST', $credentials, [], false);
+
+            $response = json_decode($response->getBody()->getContents(), true);
+
+            if ($response['resultado'] === false) {
+                return null;
+            }
+
+            return $response['token'];
+        });
+
+        return $token;
     }
 
     public function createOrder($order)
