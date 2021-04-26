@@ -239,7 +239,7 @@ class ManageInvoiceCrudController extends CrudController
             }
 
 
-            if ($request->send_mail_pos == 1) {
+            if ($request->input('send_mail_pos') == 1) {
                 Mail::to($invoice->email)->send(new PosBill($invoice));
             }
             
