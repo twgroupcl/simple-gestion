@@ -816,7 +816,8 @@ class OrderCrudController extends CrudController
             //return redirect()->to('admin/invoice/'.$invoice->id.'/send-temporary-document');
             return redirect()->route('invoice.generate-temp-real-document', [
                 'invoice' => $invoice,
-                'tipoPapel' => $request->input('tipoPapel') 
+                'tipoPapel' => $request->input('tipoPapel'),
+                'send_email_pos' => 1,
                 ]);
 
         } catch (Exception $e) {
