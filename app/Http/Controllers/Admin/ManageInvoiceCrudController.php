@@ -238,7 +238,10 @@ class ManageInvoiceCrudController extends CrudController
                 }
             }
 
-            Mail::to($invoice->email)->send(new PosBill($invoice));
+
+            if ($request->input('send_mail_pos') == 1) {
+                Mail::to($invoice->email)->send(new PosBill($invoice));
+            }
             
             \Alert::add('success', 'Documento enviado al SII')->flash();
             return redirect()->action([self::class, 'index'], ['invoice' => $invoice->id]);
