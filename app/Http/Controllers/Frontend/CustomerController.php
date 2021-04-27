@@ -93,15 +93,15 @@ class CustomerController extends Controller
 
                 if ($createResponse['resultado'] == false) {
                     Log::warning('Cliente no pudo ser creado', ['api_response' => $createResponse]);
-                    return redirect()->route('customer.sign')->withInput()->with('success', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde');
+                    return redirect()->route('customer.sign')->withInput()->with('error', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde');
                 }
             }
 
             $customer->save();
-            
+
         } catch (Exception $e) {
             Log::warning('Cliente no pudo ser creado', ['exception' => $e]);
-            return redirect()->route('customer.sign')->withInput()->with('success', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde');
+            return redirect()->route('customer.sign')->withInput()->with('error', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde');
         }
 
         return view('customer.sign')->with('success', 'Registro completado con éxito. Por favor inicie sesión.');

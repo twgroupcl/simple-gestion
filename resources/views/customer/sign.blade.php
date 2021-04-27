@@ -5,14 +5,16 @@
 <!-- Page Content-->
 <div class="container py-4 py-lg-5 my-4">
     <div class="row justify-content-md-center mt-3">
-        @if (isset($error))
+
+        @if (session('error'))
         <div class="alert alert-danger alert-with-icon" role="alert">
             <div class="alert-icon-box">
                 <i class="alert-icon czi-check-circle"></i>
             </div>
-            {{ $error }}
+            {{ session('error') }}
         </div>
         @endif
+
         @if (session('success'))
         <div class="alert alert-success alert-with-icon" role="alert">
             <div class="alert-icon-box">
@@ -21,6 +23,7 @@
             {{ session('success') }}
         </div>
         @endif
+
         @if (isset($success))
         <div class="alert alert-success alert-with-icon" role="alert">
             <div class="alert-icon-box">
