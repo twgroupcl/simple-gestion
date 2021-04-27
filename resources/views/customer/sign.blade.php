@@ -139,11 +139,13 @@
                     </div>
                     <div class="col-sm-6 form-group">
                         <label for="commune">Comuna <span class='text-danger'>*</span></label>
-                        <select class="custom-select" id="commune" name="commune">
+                        <select class="custom-select @error('commune') is-invalid @enderror" id="commune" name="commune">
                             <option value>Seleccione una comuna</option>
                             @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
-                                <option 
-                                    value="{{ $commune->id }}"
+                                <option value="{{ $commune->id }}" 
+                                    @if (old('commune') == $commune->id)
+                                    selected
+                                    @endif    
                                 >{{ $commune->name }}</option>
                             @endforeach
                         </select>
@@ -156,7 +158,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="street">Calle <span class="text-danger">*</span></label>
-                            <input class="form-control @error('street') is-invalid @enderror" type="text" name="street" id="street" placeholder="Escribe aquí tu apellido" value="{{ old('street') }}" required>
+                            <input class="form-control @error('street') is-invalid @enderror" type="text" name="street" id="street" placeholder="Escribe aquí tu calle" value="{{ old('street') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu calle.</div>
                             @error('street')
                             <span class="invalid-feedback" role="alert">
