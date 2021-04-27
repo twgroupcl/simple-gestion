@@ -270,6 +270,9 @@ class WebpayPlusController extends Controller
                 Mail::to($recipient)->send(new OrderUpdated($order, 3, null));
             }
 
+            //@todo
+            // Aqui colocar el llamado a la api de COVEPA para crear la orden
+
             return view('payments.transbank.webpay.plus.complete', compact('result', 'order'));
         } else {
             return view('payments.transbank.webpay.plus.failed', compact('result', 'order'));
