@@ -15,7 +15,7 @@ class CovepaService
 
     private $shippingMapping = [
         'picking' => 1,
-        'free_shipping' => 1, //@todo eliminar esto, ellos se equivocaon y en vez de colocar "pickink" le colocaron "free_shipping" al metodo de envio del producto
+        'free_shipping' => 1, //@todo eliminar esto, ellos se equivocaon y en vez de colocar "pickup" le colocaron "free_shipping" al metodo de envio del producto
         'chilexpress' => 2,
     ];
 
@@ -137,7 +137,6 @@ class CovepaService
      * Convierte una orden en un arreglo con la estructura de datos
      * aceptada por la API de Covepa para registrar una nueva venta
      * 
-     * @todo fecha de entrega
      */
     public function prepareOrderData(Order $order) : array
     {
@@ -167,11 +166,10 @@ class CovepaService
 
             $detail = [
                 "VTADET_CORREL" => $index + 1,
-                "ARTICU_CODIGO" => $item->sku, // Preguntar si es el SKU u otro tipo de codigo
-                "VTADET_UMARTI" => "UN", // Preguntar que unidad usaremos. Listo, utilizar la del producto o 0 si no tiene
+                "ARTICU_CODIGO" => $item->sku,
+                "VTADET_UMARTI" => 0,
                 "VTADET_CANTID" => $item->qty,
                 "VTADET_BODEGA" => $item->product->inventories->first()->code,
-                
                 "VTADET_PREUNI" => round($item->product->price, 2),
                 "VTADET_PREVTA" => round($item->price, 2),
                 "VTADET_EXENTO" => 0,
@@ -184,12 +182,10 @@ class CovepaService
 
             $shipping = [
                 "VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
-                
                 "VTAPLA_CORREL" => $index + 1,
-                "ARTICU_CODIGO" => $item->sku, // Preguntar si es el sku u otro codigo
+                "ARTICU_CODIGO" => $item->sku,
                 "VTAPLA_FECENT" => now()->add($order->company->delivery_days_max, 'days')->format('d/m/Y'),
                 "BODEGA_CODIGO" => $item->product->inventories->first()->code,
-                
                 "VTAPLA_CANTID" => $item->qty,
                 "VTPLDI_DIRECC" => $fullAddress,
                 "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
@@ -213,11 +209,11 @@ class CovepaService
                 "VTADET_UMARTI" => "UN",
                 "VTADET_CANTID" => 1,
                 "VTADET_BODEGA" => $order->order_items->first()->product->inventories->first()->code, // @todo que codigo colocar
-                "VTADET_PREUNI" => (int) $order->shipping_total, // Valor calculado del envio
-                "VTADET_PREVTA" => (int) $order->shipping_total, // Valor calculado del envio
+                "VTADET_PREUNI" => (int) $order->shipping_total, 
+                "VTADET_PREVTA" => (int) $order->shipping_total, 
                 "VTADET_EXENTO" => 0,
-                "VTADET_MONETO" => round($order->shipping_total * 100 / 119), // Valor iva
-                "VTADET_MONTOT" => (int) $order->shipping_total, // Valor calculado del envio
+                "VTADET_MONETO" => round($order->shipping_total * 100 / 119),
+                "VTADET_MONTOT" => (int) $order->shipping_total, 
                 "VTADET_OIMPTO" => 0,
                 "VTADET_VALIVA" => 19,
                 "ARTICU_NOMBRE" => "DESPACHO DOMICILIO ECOMMERCE",
@@ -251,13 +247,9 @@ class CovepaService
         ];
 
         $orderData = [
-            "VTAGEN_VTAREL" => $order->id,
-
-            // Codigo del documento
+            "VTAGEN_VTAREL" => 1003,
             "DOCMTO_CODTRI" => $order->is_company ? '25' : '26',
-
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
-        
             "SUJETO_RUTSUJ" => $rutWithoutDV,
 
             "SUJSUC_CODIGO" => 0, // codigo sucursal
@@ -286,12 +278,7 @@ class CovepaService
             "VTADIR_NOMCIU" => $invoiceCommune->name,
             "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_commune'],
             "VTADIR_NOMCOM" => $invoiceCommune->name,
-
-            // @todo problemas con el formato
-            //"VTADIR_FONSUJ" => empty($invoiceAddress->cellphone) ? (int) $order->cellphone : (int) $invoiceAddress->cellphone,
-            
             "VTADIR_NOMFAN" => $invoiceFullName,
-            
             "TIPVAL_COD055" => $order->is_company 
                                         ? (empty($invoiceAddress->business_activity_id)
                                             ? 0
