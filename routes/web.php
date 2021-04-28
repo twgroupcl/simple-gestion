@@ -108,3 +108,6 @@ Route::group([
 // Route::get('complete', function(){
 //     return view('payments.transbank.webpay.mall.complete');
 // });
+
+// Dev routes
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('only.admin');
