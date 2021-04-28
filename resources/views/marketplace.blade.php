@@ -10,7 +10,7 @@
             {{-- <img src="{{ asset('img/prolibro/banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
             {{-- <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner"> --}}
             <img src="{{ asset('img/prolibro/banner-principal-prolibro-3.jpg') }}" alt="Prolibro Banner">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGtPc0Afwv5F1agWTizGcuU5OrFlxdlI8n_Sjn16uf03bI7Q/viewform" target="_blank">
+            <a href="https://zoom.us/j/91004913743?pwd=MkFGT25xWUhZMVpCY2lEUHQyUGpXQT09" target="_blank">
                 <img src="{{ asset('img/prolibro/banner-principal-seminario.jpg') }}" alt="Seminario internacional de Literatura infantile" class="w-100">
             </a>
             <img src="{{ asset('img/prolibro/slider-med-1.jpg') }}" alt="Prolibro Banner">
@@ -27,7 +27,7 @@
             <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}'>
                 {{-- <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro-3.jpg') }}" alt="Prolibro Banner">
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGtPc0Afwv5F1agWTizGcuU5OrFlxdlI8n_Sjn16uf03bI7Q/viewform" target="_blank">
+                <a href="https://zoom.us/j/91004913743?pwd=MkFGT25xWUhZMVpCY2lEUHQyUGpXQT09" target="_blank">
                     <img src="{{ asset('img/prolibro/mobile-banner-principal-seminario.jpg') }}" alt="Seminario internacional de Literatura infantile" class="w-100">
                 </a>
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
