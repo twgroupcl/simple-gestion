@@ -343,11 +343,8 @@ class Checkout extends Component
                         'uid' => sanitizeRUT($this->cart->uid),
                         'firstname' => $this->cart->first_name,
                         'lastname' => $this->cart->last_name,
-    
-                        //@todo
-                        // codigo de ellos o nosotros?
-                        'sii_activity' => $this->cart->json_value['business_activity_id'] ?? null,
-    
+                        'sii_activity' => CovepaHelper::GIRO_MAPPING[$this->cart->json_value['business_activity_id']] ?? null,
+
                         'default_shipping' => true,
                         'default_billing' => true,
                     ],

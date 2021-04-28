@@ -15,7 +15,7 @@ class CovepaService
 
     private $shippingMapping = [
         'picking' => 1,
-        'free_shipping' => 1, //@todo eliminar esto
+        'free_shipping' => 1, //@todo eliminar esto, ellos se equivocaon y en vez de colocar "pickink" le colocaron "free_shipping" al metodo de envio del producto
         'chilexpress' => 2,
     ];
 
@@ -137,10 +137,7 @@ class CovepaService
      * Convierte una orden en un arreglo con la estructura de datos
      * aceptada por la API de Covepa para registrar una nueva venta
      * 
-     * @todo de que manera se debe incluir el costo del shipping
-     * @todo mapeo codigos de giro
      * @todo fecha de entrega
-     * @todo no esta aceptando los valores para tipos de envio
      */
     public function prepareOrderData(Order $order) : array
     {
@@ -150,7 +147,7 @@ class CovepaService
         $iva = $total - $net;
 
         // Shipping address
-        $rut = rutWithoutDV($order->uid);
+        $rutWithoutDV = rutWithoutDV($order->uid);
         $fullName = $order->first_name . ' ' . $order->last_name;
         $address = $order->json_value['addressShipping'];
         $fullAddress = $address->address_street . ' ' . $address->address_number . ' ' . $address->address_office;
@@ -166,37 +163,32 @@ class CovepaService
         $shippingDetails = [];
 
         foreach ($order->order_items as $index => $item) {
-            $net = round($item->total * 100 / 119, 2);
+            $netItem = round($item->sub_total * 100 / 119, 2);
 
             $detail = [
                 "VTADET_CORREL" => $index + 1,
                 "ARTICU_CODIGO" => $item->sku, // Preguntar si es el SKU u otro tipo de codigo
                 "VTADET_UMARTI" => "UN", // Preguntar que unidad usaremos. Listo, utilizar la del producto o 0 si no tiene
                 "VTADET_CANTID" => $item->qty,
-
-                //@todo no esta aceptando el codigo de la bodega
                 "VTADET_BODEGA" => $item->product->inventories->first()->code,
                 
                 "VTADET_PREUNI" => round($item->product->price, 2),
                 "VTADET_PREVTA" => round($item->price, 2),
                 "VTADET_EXENTO" => 0,
-                "VTADET_MONETO" => (int) $net,
-                "VTADET_MONTOT" => (int) $item->total,
+                "VTADET_MONETO" => (int) $netItem,
+                "VTADET_MONTOT" => (int) $item->sub_total,
                 "VTADET_OIMPTO" => 0,
                 "VTADET_VALIVA" => 19,
                 "ARTICU_NOMBRE" => $item->name,
             ];
 
             $shipping = [
-                //@todo no acepta valores de envio
                 "VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
                 
                 "VTAPLA_CORREL" => $index + 1,
                 "ARTICU_CODIGO" => $item->sku, // Preguntar si es el sku u otro codigo
-                "VTAPLA_FECENT" => "20/08/2020", // Preguntar, no esta contemplado, fecha de entrega
-                
-                //@todo no esta aceptando el codigo de la bodega
-                "BODEGA_CODIGO" => $item->product->inventories->first()->code, // Preguntar, utilizar el mismo codigo de la bodega que ellos setearon?
+                "VTAPLA_FECENT" => now()->add($order->company->delivery_days_max, 'days')->format('d/m/Y'),
+                "BODEGA_CODIGO" => $item->product->inventories->first()->code,
                 
                 "VTAPLA_CANTID" => $item->qty,
                 "VTPLDI_DIRECC" => $fullAddress,
@@ -214,6 +206,41 @@ class CovepaService
             $shippingDetails[] = $shipping;
         }
 
+        // Costo de envio (simulado como un articulo mas)
+        $itemsDetails[] = [
+                "VTADET_CORREL" => count($itemsDetails) + 1,
+                "ARTICU_CODIGO" => 308245,
+                "VTADET_UMARTI" => "UN",
+                "VTADET_CANTID" => 1,
+                "VTADET_BODEGA" => $order->order_items->first()->product->inventories->first()->code, // @todo que codigo colocar
+                "VTADET_PREUNI" => (int) $order->shipping_total, // Valor calculado del envio
+                "VTADET_PREVTA" => (int) $order->shipping_total, // Valor calculado del envio
+                "VTADET_EXENTO" => 0,
+                "VTADET_MONETO" => round($order->shipping_total * 100 / 119), // Valor iva
+                "VTADET_MONTOT" => (int) $order->shipping_total, // Valor calculado del envio
+                "VTADET_OIMPTO" => 0,
+                "VTADET_VALIVA" => 19,
+                "ARTICU_NOMBRE" => "DESPACHO DOMICILIO ECOMMERCE",
+        ];
+
+        $shippingDetails[] = [
+            "VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
+            "VTAPLA_CORREL" => count($shippingDetails) + 1,
+            "ARTICU_CODIGO" => 308245,
+            "VTAPLA_FECENT" => now()->add($order->company->delivery_days_max, 'days')->format('d/m/Y'),
+            "BODEGA_CODIGO" => $order->order_items->first()->product->inventories->first()->code, // @todo que codigo colocar
+            "VTAPLA_CANTID" => 1,
+            "VTPLDI_DIRECC" => $fullAddress,
+            "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
+            "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_city'],
+            "VTPLDI_CONTN1" => $fullName,
+            "VTPLDI_CONTF1" => $order->cellphone,
+            "VTPLDI_CONTF2" => $order->phone,
+            "VTPLDI_REFERE" => $address->address_details,
+            "VTPLDI_COOGPS" => "0",
+            "VTPLDI_DISTAN" => 0
+        ];
+
         $paymentDetails = CovepaHelper::getPaymentArray($order);
 
         $extraDetails = [
@@ -227,13 +254,11 @@ class CovepaService
             "VTAGEN_VTAREL" => $order->id,
 
             // Codigo del documento
-            "DOCMTO_CODTRI" => "26", // Preguntar, tipo de documento
+            "DOCMTO_CODTRI" => $order->is_company ? '25' : '26',
 
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
-            
-            //@todo es posible que esta sea el ID del cliente y no su RUT
-            // preguntar
-            "SUJETO_RUTSUJ" => $rut,
+        
+            "SUJETO_RUTSUJ" => $rutWithoutDV,
 
             "SUJSUC_CODIGO" => 0, // codigo sucursal
             "VTAGEN_OCONRO" => 0, // Nro Orden compra cliente
@@ -251,8 +276,7 @@ class CovepaService
             "VTAGEN_OBSERV" => "", 
 
             // Persona que retira
-            //@todo es posible que este sea el RUT sin el digito verificador
-            "VTAGEN_RUTRET" => $rut, 
+            "VTAGEN_RUTRET" => $rutWithoutDV,  
             "VTAGEN_NOMRET" => $fullName,
             "VTAGEN_FECTRL" => Carbon::now()->format('d/m/Y h:i:s'),
 
@@ -262,14 +286,16 @@ class CovepaService
             "VTADIR_NOMCIU" => $invoiceCommune->name,
             "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_commune'],
             "VTADIR_NOMCOM" => $invoiceCommune->name,
-            "VTADIR_FONSUJ" => empty($invoiceAddress->cellphone) ? $order->cellphone : $invoiceAddress->cellphone,
+
+            // @todo problemas con el formato
+            //"VTADIR_FONSUJ" => empty($invoiceAddress->cellphone) ? (int) $order->cellphone : (int) $invoiceAddress->cellphone,
+            
             "VTADIR_NOMFAN" => $invoiceFullName,
             
-            // Codigo de ellos o de nosotros
             "TIPVAL_COD055" => $order->is_company 
                                         ? (empty($invoiceAddress->business_activity_id)
                                             ? 0
-                                            : $invoiceAddress->business_activity_id) 
+                                            : CovepaHelper::GIRO_MAPPING[$invoiceAddress->business_activity_id] ?? 0) 
                                         : 0,
             "VTADET" => $itemsDetails,
             "VTAPLA" => $shippingDetails ,
