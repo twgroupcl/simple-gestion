@@ -1079,7 +1079,7 @@ class Helpers {
                 "VTAPGO_MONPGO" => (int) $order->total,
                 "VTAPGO_NCUOTA" => $quotes,
                 "VTAPGO_FECUOT" => Carbon::now()->format('d/m/Y'), 
-                "VTAPGO_NRDCPG" => $authCode, // Confirmar si es autorizacion de transbank
+                "VTAPGO_NRDCPG" => $authCode,
                 "SUJETO_RUTDUE" => $rut,
                 "SUJETO_RUTSUJ" => $rut // Rut del documento de venta
             ]
