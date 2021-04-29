@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Seller;
 // use Barryvdh\DomPDF\PDF;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\OrderLog;
 use App\Models\OrderItem;
@@ -21,6 +22,7 @@ use App\Models\PaymentMethodSeller;
 use Illuminate\Support\Facades\Log;
 use Transbank\Webpay\Configuration;
 use App\Http\Controllers\Controller;
+use App\Mail\OrderNotSendCovepaMail;
 use App\Services\OrderLoggerService;
 use Illuminate\Support\Facades\Mail;
 use App\Services\Covepa\CovepaService;
@@ -246,6 +248,9 @@ class WebpayPlusController extends Controller
                         'order' => $order,
                         'user' => backpack_user()
                     ]);
+
+                    $mail = new OrderNotSendCovepaMail($order, json_encode($orderResponse));
+                    Company::sendMailToAdmin($mail);
                 } else {
                     //@todo eliminar luego
                     Log::info('Orden enviada con exito', ['api_response' => $orderResponse]);
@@ -257,6 +262,9 @@ class WebpayPlusController extends Controller
                     'user' => backpack_user(),
                     'exception' => $e,
                 ]);
+
+                $mail = new OrderNotSendCovepaMail($order, '', $e->getMessage());
+                Company::sendMailToAdmin($mail);
             }
             
 
