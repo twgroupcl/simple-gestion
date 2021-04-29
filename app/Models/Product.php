@@ -651,6 +651,13 @@ class Product extends Model
         });
     }
 
+    public function scopeCanShow($query)
+    {
+        return $query->where('id', '<>', '')->where('is_approved', '=', 1)->whereHas('seller', function($query) {
+            return $query->where('is_approved', '=', 1);
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
