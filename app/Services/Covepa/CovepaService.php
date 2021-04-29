@@ -28,6 +28,7 @@ class CovepaService
         $defaultHeaders = [
             'Content-Type' => 'application/json',
             'Authorization' => "$token",
+            'Accept'     => 'application/json',
         ];
 
         $request = [
