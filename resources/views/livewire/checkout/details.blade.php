@@ -22,6 +22,17 @@
                     id="sd-businessname">
                 @error('data.business_name') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
+
+            <div class="col-sm-6 form-group">
+                <label for="sd-businessacitvity">Giro <span class='text-danger'>*</span></label>
+                <select class="custom-select" wire:model="data.business_activity_id" id="bd-business_activity_id">
+                    <option value>Seleccione las actividades...</option>
+                    @foreach (\App\Models\BusinessActivity::orderBy('name', 'asc')->get(['id', 'name']) as $businessActivity)
+                        <option value="{{ $businessActivity->id }}">{{ $businessActivity->name }}</option>
+                    @endforeach
+                </select>
+                @error('data.business_activity_id') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
         @else
             <div class="col-sm-6 form-group">
                 <label for="sd-fisrtname">Nombre <span class='text-danger'>*</span></label>
@@ -84,12 +95,15 @@
             @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
 
         </div>
-        <div class="col-sm-6 form-group">
+        
+        {{-- @todo --}}
+        {{-- Ocultado hasta que se coloque el campo de RUT de persona que recibe/retira --}}
+        {{-- <div class="col-sm-6 form-group">
             <label for="sd-receiver">Nombre de quien va a recibir</label>
             <input class="form-control" type="text" placeholder="" wire:model="data.receiver_name" id="sd-receiver">
             @error('data.receiver_name') <small class="text-danger">{{ $message }}</small> @enderror
 
-        </div>
+        </div> --}}
         <div class="col-12 form-group">
             <label for="sd-message">Detalle</label>
             <textarea class="form-control" wire:model="data.shipping_details" id="sd-message" rows="6"

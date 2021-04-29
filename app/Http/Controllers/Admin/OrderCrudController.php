@@ -142,6 +142,9 @@ class OrderCrudController extends CrudController
                     if ($column['text'] == 'Pagada') {
                         return 'badge badge-success';
                     }
+                    if ($column['text'] == 'Rechazada') {
+                        return 'badge badge-danger';
+                    }
                     return 'badge badge-default';
                 },
             ],

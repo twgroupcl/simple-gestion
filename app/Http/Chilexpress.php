@@ -389,7 +389,7 @@ class Chilexpress
 
         // If there is no coverage for the selected destine, we mark it so we can return it later
 
-        $destineCommuneCoverage = collect($destineCoverages->coverageAreas)->where('coverageName', $customerCity[0]->value)->first();
+        $destineCommuneCoverage = collect($destineCoverages->coverageAreas)->where('coverageName', $customerCity[0]->value ?? '')->first();
 
         if (empty($destineCommuneCoverage)) {
             // return [
@@ -545,7 +545,7 @@ class Chilexpress
 
         // If there is no coverage for the selected destine, we mark it so we can return it later
 
-        $destineCommuneCoverage = collect($destineCoverages->coverageAreas)->where('coverageName', $customerCity[0]->value)->first();
+        $destineCommuneCoverage = collect($destineCoverages->coverageAreas)->where('coverageName', $customerCity[0]->value ?? '')->first();
 
         if (empty($destineCommuneCoverage)) {
             // return [

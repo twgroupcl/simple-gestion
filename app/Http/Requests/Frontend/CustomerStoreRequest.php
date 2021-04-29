@@ -34,6 +34,10 @@ class CustomerStoreRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required',
+            'commune' => 'required|exists:communes,id',
+            'street' => 'required',
+            'number' => 'required|numeric',
+            'phone' => 'required|numeric',
         ];
     }
 
@@ -50,6 +54,10 @@ class CustomerStoreRequest extends FormRequest
             'last_name' => 'Apellido',
             'email' => 'Email',
             'password' => 'Contraseña',
+            'phone' => 'Telefono',
+            'commune' => 'Comuna',
+            'street' => 'Calle',
+            'number' => 'Numero',
         ];
     }
 
@@ -66,6 +74,7 @@ class CustomerStoreRequest extends FormRequest
             'date' => 'El campo :attribute debe ser de tipo fecha',
             'unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
             'exists' => 'No se pudo encontrar una relación con el campo :attribute.',
+            'numeric' => 'El campo :attribute debe ser numerico',
         ];
     }
 }

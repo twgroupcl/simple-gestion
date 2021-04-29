@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Frontend\CustomerStoreRequest;
-use App\Http\Requests\Frontend\CustomerSupportRequest;
-use App\Http\Requests\Frontend\CustomerUpdateRequest;
-use App\Mail\CustomerSupport as MailCustomerSupport;
+use App\User;
+use Exception;
 use App\Models\Commune;
 use App\Models\Customer;
-use App\Models\CustomerSupport;
-use App\User;
-use Backpack\Settings\app\Models\Setting;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Models\CustomerSupport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
+use App\Services\Covepa\CovepaService;
+use Backpack\Settings\app\Models\Setting;
+use App\Services\Covepa\Helpers as CovepaHelper;
+use App\Http\Requests\Frontend\CustomerStoreRequest;
+use App\Mail\CustomerSupport as MailCustomerSupport;
+use App\Http\Requests\Frontend\CustomerUpdateRequest;
+use App\Http\Requests\Frontend\CustomerSupportRequest;
 
 class CustomerController extends Controller
 {
@@ -28,15 +32,77 @@ class CustomerController extends Controller
 
     public function store(CustomerStoreRequest $request)
     {
+        $covepaService = new CovepaService();
         $request['customer_segment_id'] = Setting::get('default_customer_segment');
         $request['company_id'] = Setting::get('default_company');
         $request['uid'] = strtoupper(
             str_replace('.', '', $request['uid'])
         );
 
-        Customer::create($request->all());
+        $request['addresses_data'] = [
+            [
+                'email' => $request['email'],
+                'first_name' => $request['first_name'],
+                'last_name' => $request['last_name'],
+                'uid' => $request['uid'],
+                'commune_id' => $request['commune'],
+                'street' => $request['street'],
+                'number' => $request['number'],
+                'phone' => $request['phone'],
+                'cellphone' => '',
+                'extra' => '',
+            ]
+        ];
 
-        //@todo: debo mostrar los errores de contraseña
+        try {
+            $customer = new Customer($request->all());
+            
+            $response = $covepaService->getCustomer(rutWithoutDV($customer->uid));
+            $response = json_decode($response->getBody()->getContents(), true);
+
+            if (isset($response['resultado']) && $response['resultado'] == false) {
+                
+                $createResponse = $covepaService->createCustomer([
+                    'id' => rutWithoutDV($customer->uid),
+                    'uid' => $request['uid'],
+                    'taxable' => (bool) $customer->is_company,
+                    'default_billing' => 1,
+                    'default_shipping' => 1,
+                    'confirmation' => Carbon::now()->format('d/m/Y'),
+                    'email' => $customer->email,
+                    'telephone' => $request['phone'],
+                    'firstname' => $customer->first_name,
+                    'lastname' => $customer->last_name,
+                    'addresses' => [
+                      0 => [
+                        'id' => 1,
+                        'city_id' => CovepaHelper::COMMUNE_MAPPING[$request['commune']]['id_city'],
+                        'street' => $request['street'],
+                        'number' => $request['number'],
+                        'taxable' => false,
+                        'uid' => $request['uid'],
+                        'firstname' => $customer->first_name,
+                        'lastname' => $customer->last_name,
+                        'default_shipping' => true,
+                        'default_billing' => true,
+                      ],
+                    ],
+                ]);
+
+                $createResponse = json_decode($createResponse->getBody()->getContents(), true);
+
+                if ($createResponse['resultado'] == false) {
+                    Log::warning('Cliente no pudo ser creado', ['api_response' => $createResponse]);
+                    return redirect()->route('customer.sign')->withInput()->with('error', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde');
+                }
+            }
+
+            $customer->save();
+
+        } catch (Exception $e) {
+            Log::warning('Cliente no pudo ser creado', ['exception' => $e]);
+            return redirect()->route('customer.sign')->withInput()->with('error', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde');
+        }
 
         return view('customer.sign')->with('success', 'Registro completado con éxito. Por favor inicie sesión.');
     }

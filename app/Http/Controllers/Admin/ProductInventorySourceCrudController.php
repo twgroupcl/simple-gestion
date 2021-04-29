@@ -92,6 +92,18 @@ class ProductInventorySourceCrudController extends CrudController
         //CRUD::setFromDb(); // fields
 
         CRUD::addField([
+            'name' => 'company_id',
+            'type' => 'hidden',
+            'default' => backpack_user()->current()->company->id,
+        ]);
+
+        CRUD::addField([
+            'name' => 'branch_id',
+            'type' => 'hidden',
+            'default' => backpack_user()->current()->branch->id,
+        ]);
+
+        CRUD::addField([
             'name' => 'name',
             'label' => 'Nombre de la bodega',
             'type' => 'text',

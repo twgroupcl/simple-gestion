@@ -103,6 +103,10 @@ if (!function_exists('determineSource')) {
             return 'Admin';
         }
 
+        if (strpos($request->path(), 'api/') !== false) {
+            return 'Api';
+        }
+
         return 'Front';
     }
 }

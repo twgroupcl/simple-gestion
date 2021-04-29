@@ -25,9 +25,10 @@
         "livewire/livewire": "2.3.8",
         "orangehill/iseed": "^2.6",
         "qoraiche/laravel-mail-editor": "^2.2",
-        "tymon/jwt-auth": "^1.0",
+        "rap2hpoutre/laravel-log-viewer": "^1.7",
         "rinvex/laravel-subscriptions": "^4.1",
-        "transbank/transbank-sdk": "^1.8"
+        "transbank/transbank-sdk": "^1.8",
+        "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
         "backpack/generators": "^3.1",

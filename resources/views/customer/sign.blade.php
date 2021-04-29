@@ -5,14 +5,16 @@
 <!-- Page Content-->
 <div class="container py-4 py-lg-5 my-4">
     <div class="row justify-content-md-center mt-3">
-        @if (isset($error))
+
+        @if (session('error'))
         <div class="alert alert-danger alert-with-icon" role="alert">
             <div class="alert-icon-box">
                 <i class="alert-icon czi-check-circle"></i>
             </div>
-            {{ $error }}
+            {{ session('error') }}
         </div>
         @endif
+
         @if (session('success'))
         <div class="alert alert-success alert-with-icon" role="alert">
             <div class="alert-icon-box">
@@ -21,6 +23,7 @@
             {{ session('success') }}
         </div>
         @endif
+
         @if (isset($success))
         <div class="alert alert-success alert-with-icon" role="alert">
             <div class="alert-icon-box">
@@ -103,6 +106,18 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
+                            <label for="email">E-mail <span class="text-danger">*</span></label>
+                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Escribe aquí tu email" value="{{ old('email') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa un email válido.</div>
+                            @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
                             <label for="first_name">Nombre <span class="text-danger">*</span></label>
                             <input class="form-control @error('first_name') is-invalid @enderror" type="text" name="first_name" id="first_name" placeholder="Escribe aquí tu nombre" value="{{ old('first_name') }}" required>
                             <div class="invalid-feedback">Por favor ingresa tu nombre.</div>
@@ -125,12 +140,54 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="col-sm-6 form-group">
+                        <label for="commune">Comuna <span class='text-danger'>*</span></label>
+                        <select class="custom-select @error('commune') is-invalid @enderror" id="commune" name="commune">
+                            <option value>Seleccione una comuna</option>
+                            @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
+                                <option value="{{ $commune->id }}" 
+                                    @if (old('commune') == $commune->id)
+                                    selected
+                                    @endif    
+                                >{{ $commune->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('commune')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="email">E-mail <span class="text-danger">*</span></label>
-                            <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email" placeholder="Escribe aquí tu email" value="{{ old('email') }}" required>
-                            <div class="invalid-feedback">Por favor ingresa un email válido.</div>
-                            @error('email')
+                            <label for="street">Calle <span class="text-danger">*</span></label>
+                            <input class="form-control @error('street') is-invalid @enderror" type="text" name="street" id="street" placeholder="Escribe aquí tu calle" value="{{ old('street') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa tu calle.</div>
+                            @error('street')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="number">Numero <span class="text-danger">*</span></label>
+                            <input class="form-control @error('number') is-invalid @enderror" type="text" name="number" id="number" placeholder="Escribe aquí tu numero de calle" value="{{ old('number') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa tu numero de calle.</div>
+                            @error('number')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="phone">Telefono <span class="text-danger">*</span></label>
+                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" placeholder="Escribe aquí tu telefono" value="{{ old('phone') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa tu telefono.</div>
+                            @error('phone')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

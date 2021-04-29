@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\User;
 use App\Models\Branch;
 use App\Models\Seller;
+use App\Models\BranchUser;
 use Illuminate\Http\Request;
 use Freshwork\ChileanBundle\Rut;
 use Illuminate\Support\Facades\DB;
@@ -71,8 +72,14 @@ class ProductInventorySourceController extends Controller
 
             $branch->companies()->attach(auth()->user()->companies->first()->id);
 
+            $user = User::where('email', $request['contact_email'])->first();
+
             // Asign user to branch
-            User::where('email', $request['contact_email'])->first()->branches()->attach($branch->id);
+            BranchUser::create([
+                'user_id' => $user->id,
+                'branch_id' => $branch->id,
+                'is_default' => 1,
+            ]);
 
             // Asing branch to warehouse
             $productInventorySource->branch_id = $branch->id;

@@ -610,6 +610,11 @@ class Product extends Model
         return $this->belongsToMany(ShippingMethod::class, 'shipping_method_product_mapping');
     }
 
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -643,6 +648,13 @@ class Product extends Model
         
         return $query->whereHas('inventories', function ($query2) {
             return $query2->where('commune_id', '=', request()->session()->get('commune_id'));
+        });
+    }
+
+    public function scopeCanShow($query)
+    {
+        return $query->where('id', '<>', '')->where('is_approved', '=', 1)->whereHas('seller', function($query) {
+            return $query->where('is_approved', '=', 1);
         });
     }
 

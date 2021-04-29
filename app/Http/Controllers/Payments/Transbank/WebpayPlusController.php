@@ -2,27 +2,32 @@
 
 namespace App\Http\Controllers\Payments\Transbank;
 
-use App\Http\Controllers\Controller;
-use App\Mail\OrderUpdated;
+use Exception;
+use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\OrderItem;
-// use Barryvdh\DomPDF\PDF;
-use App\Models\OrderLog;
-use App\Models\OrderPayment;
-use App\Models\PaymentMethod;
-use App\Models\PaymentMethodSeller;
-use App\Models\Product;
 use App\Models\Seller;
-use App\Services\OrderLoggerService;
-use Barryvdh\DomPDF\Facade as PDF;
-use Carbon\Carbon;
-use Illuminate\Contracts\Session\Session;
+// use Barryvdh\DomPDF\PDF;
+use App\Models\Company;
+use App\Models\Product;
+use App\Models\OrderLog;
+use App\Models\OrderItem;
+use App\Mail\OrderUpdated;
+use App\Models\OrderPayment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Transbank\Webpay\Configuration;
 use Transbank\Webpay\Webpay;
+use App\Models\PaymentMethod;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Models\PaymentMethodSeller;
+use Illuminate\Support\Facades\Log;
+use Transbank\Webpay\Configuration;
+use App\Http\Controllers\Controller;
+use App\Mail\OrderNotSendCovepaMail;
+use App\Services\OrderLoggerService;
+use Illuminate\Support\Facades\Mail;
+use App\Services\Covepa\CovepaService;
 use Backpack\Settings\app\Models\Setting;
+use Illuminate\Contracts\Session\Session;
 
 
 
@@ -34,9 +39,11 @@ class WebpayPlusController extends Controller
     private $returnUrl;
     private $finalUrl;
     private $orderId;
+    private $covepaService;
 
     public function __construct()
     {
+        $this->covepaService = new CovepaService();
 
         $paymentMethodId = null;
         //Get Config Payment Method
@@ -216,8 +223,7 @@ class WebpayPlusController extends Controller
         $orderlog->save();
 
         $order = Order::where('id', $this->orderId)->first();
-        $order->status = 2; //paid
-        $order->update();
+
         $finalresult = false;
 
         $output = $result->detailOutput;
@@ -228,6 +234,39 @@ class WebpayPlusController extends Controller
         }
 
         if ($finalresult) {
+
+            $order->status = 2; // pagada
+            $order->update();
+
+            try {
+                $orderResponse = $this->covepaService->createOrder($order);
+                $orderResponse = json_decode($orderResponse, true);
+
+                if ($orderResponse['resultado'] == false) {
+                    Log::error('Error enviando venta a covepa', [
+                        'api_response' => $orderResponse,
+                        'order' => $order,
+                        'user' => backpack_user()
+                    ]);
+
+                    $mail = new OrderNotSendCovepaMail($order, json_encode($orderResponse));
+                    Company::sendMailToAdmin($mail);
+                } else {
+                    //@todo eliminar luego
+                    Log::info('Orden enviada con exito', ['api_response' => $orderResponse]);
+                }
+
+            } catch (Exception $e) {
+                Log::error('Error enviando venta a covepa', [
+                    'order' => $order,
+                    'user' => backpack_user(),
+                    'exception' => $e,
+                ]);
+
+                $mail = new OrderNotSendCovepaMail($order, '', $e->getMessage());
+                Company::sendMailToAdmin($mail);
+            }
+            
 
             // Reducir invententario de product
             // Por cada item
@@ -272,6 +311,8 @@ class WebpayPlusController extends Controller
 
             return view('payments.transbank.webpay.plus.complete', compact('result', 'order'));
         } else {
+            $order->status = 4; // rechazada
+            $order->update();
             return view('payments.transbank.webpay.plus.failed', compact('result', 'order'));
         }
     }
