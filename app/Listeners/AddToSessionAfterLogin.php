@@ -29,7 +29,10 @@ class AddToSessionAfterLogin
     public function handle($event)
     {
         backpack_user()->set_current_branch();
-        $statusMerge = Cart::mergeCart(auth()->user(),session('cart_session'));
+
+        if ( !is_null( session('cart_session') ) ) {
+            $statusMerge = Cart::mergeCart(auth()->user(), session('cart_session'));
+        }
 
     }
 }
