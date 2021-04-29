@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use Carbon\Carbon;
+use App\Models\Cart;
 use App\Models\Seller;
 use App\Models\Slider;
 use App\Models\Banners;
@@ -135,6 +136,13 @@ class HomeController extends Controller
 
     public function setLocation(Request $request)
     {   
+        $cart = Cart::where('session_id', session()->getId())->first();
+
+        if ($cart) {
+            $cart->cart_items()->delete();
+            $cart->delete();
+        }
+
         $commune = Commune::find($request->commune_id);
         $request->session()->put('commune_id', $commune->id);
         $request->session()->put('commune_name', $commune->name);
