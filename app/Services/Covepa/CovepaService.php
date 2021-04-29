@@ -247,7 +247,7 @@ class CovepaService
         ];
 
         $orderData = [
-            "VTAGEN_VTAREL" => 1003,
+            "VTAGEN_VTAREL" => $order->id,
             "DOCMTO_CODTRI" => $order->is_company ? '25' : '26',
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
             "SUJETO_RUTSUJ" => $rutWithoutDV,
