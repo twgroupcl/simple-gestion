@@ -48,6 +48,22 @@ class ProductCategory extends Model
         static::addGlobalScope(new CompanyBranchScope);
     }
 
+    public function getChildrensId($array = [])
+    {
+        if (!$this->children->count()) {
+            return [];
+        }
+
+        $array = $this->children->pluck('id')->toArray();
+
+        foreach ($this->children as $children) {
+            $aux = $children->getChildrensId();
+            $array = array_merge($array, $aux);
+        }
+
+        return $array;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -68,6 +84,7 @@ class ProductCategory extends Model
     {
         return $this->hasMany('App\Models\ProductCategory', 'parent_id');
     }
+
     public function product_class()
     {
         return $this->hasMany('App\Models\ProductClass', 'category_id');
@@ -76,6 +93,11 @@ class ProductCategory extends Model
     public function products() 
     {
         return $this->belongsToMany(Product::class, 'product_category_mapping');
+    }
+
+    public function products_location()
+    {
+        return $this->belongsToMany(Product::class, 'product_category_mapping')->byLocation()->canShow();
     }
 
     /*
