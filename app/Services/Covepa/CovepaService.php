@@ -78,6 +78,11 @@ class CovepaService
 
             $response = $this->makeRequest($this->baseUrl . '/auth', 'POST', $credentials, [], false);
 
+            if (is_array($response) && array_key_exists('error_message', $response)) {
+                \Log::error('Error getting auth token');
+                throw new Exception($response['error_message']);
+            }
+
             $response = json_decode($response->getBody()->getContents(), true);
 
             if ($response['resultado'] === false) {
