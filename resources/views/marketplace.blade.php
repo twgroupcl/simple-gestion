@@ -163,7 +163,7 @@
                         <a href="http://www.radiovalparaiso.cl/" target="_blank" class="border border-white">
                             <img src="{{ asset('img/prolibro/banner-radio-valparaiso.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid w-100">
                         </a>
-                        <img src="{{ asset('img/prolibro/banner-medio-prolibro-2.jpg') }}" alt="Prolibro Banner" class="img-fluid">
+                        <img src="{{ asset('img/prolibro/banner-medio-prolibro.jpg') }}" alt="Prolibro Banner" class="img-fluid">
                     </div>
                 </div>
             </div>
