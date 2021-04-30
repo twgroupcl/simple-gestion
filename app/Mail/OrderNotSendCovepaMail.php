@@ -13,6 +13,7 @@ class OrderNotSendCovepaMail extends Mailable
 
     public $order;
     public $apiResponse;
+    public $jsonData;
     public $e;
 
     /**
@@ -20,10 +21,11 @@ class OrderNotSendCovepaMail extends Mailable
      *
      * @return void
      */
-    public function __construct($order, $apiResponse, $e = '')
+    public function __construct($order, $apiResponse, $e = null, $jsonData = null)
     {
         $this->order = $order;
         $this->apiResponse = $apiResponse;
+        $this->jsonData = $jsonData;
     }
 
     /**

@@ -245,11 +245,13 @@ class WebpayPlusController extends Controller
                 if ($orderResponse['resultado'] == false) {
                     Log::error('Error enviando venta a covepa', [
                         'api_response' => $orderResponse,
-                        'order' => $order,
-                        'user' => backpack_user()
+                        'json_data' => json_encode($this->covepaService->prepareOrderData($order)),
+                        'order_id' => $order->id,
+                        'user_id' => backpack_user()->id,
                     ]);
 
                     $mail = new OrderNotSendCovepaMail($order, json_encode($orderResponse));
+
                     Company::sendMailToAdmin($mail);
                 } else {
                     //@todo eliminar luego
@@ -258,12 +260,13 @@ class WebpayPlusController extends Controller
 
             } catch (Exception $e) {
                 Log::error('Error enviando venta a covepa', [
-                    'order' => $order,
-                    'user' => backpack_user(),
+                    'order_id' => $order->id,
+                    'user_id' => backpack_user()->id,
                     'exception' => $e,
                 ]);
 
                 $mail = new OrderNotSendCovepaMail($order, '', $e->getMessage());
+
                 Company::sendMailToAdmin($mail);
             }
             
