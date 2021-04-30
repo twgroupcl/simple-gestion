@@ -247,7 +247,7 @@ class WebpayPlusController extends Controller
                         'api_response' => $orderResponse,
                         'json_data' => json_encode($this->covepaService->prepareOrderData($order)),
                         'order_id' => $order->id,
-                        'user_id' => backpack_user()->id,
+                        'user_id' => backpack_user()->id ?? null,
                     ]);
 
                     $mail = new OrderNotSendCovepaMail($order, json_encode($orderResponse), null, json_encode($this->covepaService->prepareOrderData($order)));
@@ -261,7 +261,7 @@ class WebpayPlusController extends Controller
             } catch (Exception $e) {
                 Log::error('Error enviando venta a covepa', [
                     'order_id' => $order->id,
-                    'user_id' => backpack_user()->id,
+                    'user_id' => backpack_user()->id ?? null,
                     'exception' => $e,
                 ]);
 
