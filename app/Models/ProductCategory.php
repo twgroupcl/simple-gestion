@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use App\Scopes\CompanyBranchScope;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\CustomAttributeRelations;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Support\Str;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ProductCategory extends Model
@@ -62,6 +63,16 @@ class ProductCategory extends Model
         }
 
         return $array;
+    }
+
+    public function getProductCount()
+    {
+        $ids = $this->getChildrensId();
+        $ids[] = $this->id;
+        $result = DB::table('product_category_mapping')->whereIn('product_category_id', $ids)->get();
+        $result = $result->unique('product_id');
+
+        return $result->count();
     }
 
     /*
