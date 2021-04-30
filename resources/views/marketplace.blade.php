@@ -9,11 +9,11 @@
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}' style="max-height:450px">
             {{-- <img src="{{ asset('img/prolibro/banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
             {{-- <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner"> --}}
-            <img src="{{ asset('img/prolibro/banner-principal-prolibro-3.jpg') }}" alt="Prolibro Banner">
+            <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
+            <img src="{{ asset('img/prolibro/banner-principal-prolibro-2.jpg') }}" alt="Prolibro Banner">
             {{--<a href="https://zoom.us/j/91004913743?pwd=MkFGT25xWUhZMVpCY2lEUHQyUGpXQT09" target="_blank">
                 <img src="{{ asset('img/prolibro/banner-principal-seminario.jpg') }}" alt="Seminario internacional de Literatura infantile" class="w-100">
             </a>--}}
-            <img src="{{ asset('img/prolibro/slider-med-1.jpg') }}" alt="Prolibro Banner">
             {{-- <a href="https://filsaenvivo.com/" target="_blank">
                 <img src="{{ asset('img/filsa/banner-transmision-carousel.jpg') }}" alt="Prolibro Banner" class="w-100">
             </a> --}}
@@ -26,11 +26,11 @@
         <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled" style="max-height: 285px">
             <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}'>
                 {{-- <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
-                <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro-3.jpg') }}" alt="Prolibro Banner">
+                <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
+                <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro-2.jpg') }}" alt="Prolibro Banner">
                 <{{--a href="https://zoom.us/j/91004913743?pwd=MkFGT25xWUhZMVpCY2lEUHQyUGpXQT09" target="_blank">
                     <img src="{{ asset('img/prolibro/mobile-banner-principal-seminario.jpg') }}" alt="Seminario internacional de Literatura infantile" class="w-100">
                 </a>--}}
-                <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
                 {{-- <a href="https://filsaenvivo.com/" target="_blank">
                     <img src="{{ asset('img/filsa/mobile-banner-transmision-carousel.jpg') }}" alt="Filsa Banner" class="w-100">
                 </a> --}}
@@ -108,8 +108,8 @@
                {{--  <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
                     <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
                 </a> --}}
-                <img src="{{ asset('img/prolibro/banner-medio-prolibro-2.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
-                <img src="{{ asset('img/prolibro/banner-medio-prolibro-3.jpg') }}" alt="Banner Suscripcion Mercurio" class="">
+                <img src="{{ asset('img/prolibro/banner-medio-prolibro.jpg') }}" alt="Banner Prolibro" class="">
+                <img src="{{ asset('img/prolibro/banner-medio-prolibro-2.jpg') }}" alt="Banner Prolibro" class="">
             </div>
         </div>
     </div>
@@ -121,8 +121,8 @@
                    {{--  <a href="http://www.clubmercuriovalpo.cl/suscripciones/" target="_blank" class="border border-white">
                         <img src="{{ asset('img/prolibro/banner-suscripcion-mercurio.jpg') }}" alt="Banner Suscripcion Mercurio" class="img-fluid ">
                     </a> --}}
+                    <img src="{{ asset('img/prolibro/mobile-banner-medio-prolibro.jpg') }}" alt="Prolibro Banner" class="img-fluid">
                     <img src="{{ asset('img/prolibro/mobile-banner-medio-prolibro-2.jpg') }}" alt="Prolibro Banner" class="img-fluid">
-                    <img src="{{ asset('img/prolibro/mobile-banner-medio-prolibro-3.jpg') }}" alt="Prolibro Banner" class="img-fluid">
 
                 </div>
             </div>
@@ -174,28 +174,28 @@
 <section class="container mt-5 mb-grid-gutter">
     <div class="rounded-lg py-4">
         <div class="row align-items-center d-none d-md-flex">
-            <div class="col-md-4 text-center">
+            {{--<div class="col-md-4 text-center">
                 <img src="{{ asset('img/prolibro/logo_cooperativa.png') }}" alt="Banner Cooperativa" class="img-fluid w-50">
             </div>
             <div class="col-md-4 text-center">
                 <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner TVN" class="img-fluid w-50">
-            </div>
-            <div class="col-md-4 text-center mx-auto">
+            </div>--}}
+            <div class="col-md-4 offset-4 text-center mx-auto">
                 <a href="https://www.radiovalparaiso.cl/" target="_blank">
                     <img src="{{ asset('img/prolibro/partner-valparaiso.jpg') }}" alt="Banner Radio Valparaiso" class="img-fluid w-50">
                 </a>
             </div>
         </div>
         <div class="row align-items-center d-sm-none">
-            <div class="col-md-4 text-center">
+            {{--<div class="col-md-4 text-center">
                 <img src="{{ asset('img/prolibro/logo_cooperativa.png') }}" alt="Banner Cooperativa" class="img-fluid w-25">
             </div>
             <div class="col-md-4 text-center">
                 <img src="{{ asset('img/filsa/tvn.jpg') }}" alt="Banner TVN" class="img-fluid w-25">
-            </div>
-            <div class="col-md-4 text-center mx-auto">
+            </div>--}}
+            <div class="col-md-12 col-lg-4 text-center mx-auto">
                 <a href="https://www.radiovalparaiso.cl/" target="_blank">
-                    <img src="{{ asset('img/prolibro/partner-valparaiso.jpg') }}" alt="Banner Radio Valparaiso" class="img-fluid w-25">
+                    <img src="{{ asset('img/prolibro/partner-valparaiso.jpg') }}" alt="Banner Radio Valparaiso" class="img-fluid w-50">
                 </a>
             </div>
         </div>
