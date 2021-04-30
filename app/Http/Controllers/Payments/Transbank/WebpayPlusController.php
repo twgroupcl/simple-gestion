@@ -250,7 +250,7 @@ class WebpayPlusController extends Controller
                         'user_id' => backpack_user()->id,
                     ]);
 
-                    $mail = new OrderNotSendCovepaMail($order, json_encode($orderResponse));
+                    $mail = new OrderNotSendCovepaMail($order, json_encode($orderResponse), null, json_encode($this->covepaService->prepareOrderData($order)));
 
                     Company::sendMailToAdmin($mail);
                 } else {
@@ -265,7 +265,7 @@ class WebpayPlusController extends Controller
                     'exception' => $e,
                 ]);
 
-                $mail = new OrderNotSendCovepaMail($order, '', $e->getMessage());
+                $mail = new OrderNotSendCovepaMail($order, null, $e);
 
                 Company::sendMailToAdmin($mail);
             }

@@ -325,5 +325,64 @@ class ProductController extends Controller
         ], 200);
     }
 
+    public function updateShipping(Request $request, $warehouseCode, $sku)
+    {
+        $messages = [
+            '*.exists' => 'El valor de :attribute no se encuentra en la base de datos',
+        ];
+
+        $data = [
+            'sku' => $sku,
+            'warehouse' => $warehouseCode,
+            'shipping_type' => $request['shipping_type']
+        ];
+
+        $rules = [
+            'sku' => 'required|exists:products,sku',
+            'warehouse' => 'required|exists:product_inventory_sources,code',
+            'shipping_type' => 'required|array',
+            'shipping_type.*' => 'required|exists:shipping_methods,id',
+        ];
+
+
+        $validator = Validator::make($data, $rules, $messages);
+      
+        if ($validator->fails()) {
+          return response()->json([ 'status' => 'error', 'message' => $validator->errors() ], 400);
+        }
+
+        /**
+         * NOTE: This may fail when there is two seller with the same product SKU in the same warehouse
+         * 
+         */
+        $warehouse = ProductInventorySource::where('code', $warehouseCode)->firstOrFail();
+
+        $productInventory = ProductInventory::where('product_inventory_source_id', $warehouse->id)
+                                ->whereHas('product', function ($query) use ($sku)  {
+                                   return $query->where('sku', $sku);
+                                })->first();
+
+        if (!$productInventory) {
+            return response()->json([ 
+                'status' => 'error', 
+                'message' => 'La bodega no contiene el producto con el SKU indicado',
+            ],  404);
+        };
+
+        $product = Product::find($productInventory->product_id);
+
+        try {
+            $product->shipping_methods->sync($request['shipping_type']);
+        } catch(Exception $exception) {
+            return response()->json([ 'status' => 'error', 'message' => $exception->getMessage() ], 400);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Tipo de envio del producto (' . $product->sku . ') en la bodega (' . $warehouse->name . ') actualizado',
+            'data' => $product,
+        ], 200);
+    }
+
 
 }
