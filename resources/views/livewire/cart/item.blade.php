@@ -74,7 +74,7 @@ $product = $item->product;
                         </div>
                     @endif --}}
 
-                    @if ($showShipping && $shippingMethods)
+                    {{-- @if ($showShipping && $shippingMethods)
                         <div class="select-shipping mb-0 pt-2">
                             <select class="custom-select custom-select-sm my-1 mr-2" wire:model="selected"
                             wire:init="setSelected({{ $item->shipping_id ? $item->shipping_id : 0 }})">
@@ -88,7 +88,7 @@ $product = $item->product;
                                 <span style="font-size: 13px;">Envio no disponible para la comuna seleccionada.</span>
                             @endif
                         </div>
-                    @endif
+                    @endif --}}
                 @endif
             </div>
 

@@ -63,6 +63,31 @@
                                     </div>
                                 </div>
                             </div> --}}
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    Metodos de envio disponible para esta orden
+                                </div>
+                                <div class="col-12">
+                                    <div class="select-shipping mb-0 pt-2">
+                                        <select class="custom-select custom-select-sm my-1 mr-2"
+                                            wire:model="selectedShippingMethodId"
+                                            wire:change="setShippingMethod"
+                                            >
+                                            @foreach ($sellersShippingMethods[$seller->id] as $shippingMethod)
+                                                <option value="{{ $shippingMethod['id'] }}">
+                                                    {{ $shippingMethod['title'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @if (!count($sellersShippingMethods[$seller->id]))
+                                            <span style="font-size: 13px;">Envio no disponible para la comuna seleccionada.</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr style="margin: 15px 5px 10px 5px">
 
                             @if ($shippings)
 

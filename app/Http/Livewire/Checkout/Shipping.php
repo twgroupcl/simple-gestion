@@ -19,6 +19,8 @@ class Shipping extends Component
     public $sellers;
     public $sellersShippings;
     public $communeDestine;
+    public $selectedShippingMethodId;
+    public $sellersShippingMethods;
     protected $listeners = [
         'deleteItem' => 'deleteItem',
         'shipping-update' => 'updateSellersShippings',
@@ -31,7 +33,7 @@ class Shipping extends Component
         $this->sellersShippings = [];
         //$this->updateSellersShippings();
         $this->communeDestine = $this->cart->address_commune_id;
-
+        $this->getShippingMethods();
     }
     public function render()
     {
@@ -244,5 +246,30 @@ class Shipping extends Component
     public function getItems()
     {
         return CartItem::whereCartId($this->cart->id)->with('product')->get();
+    }
+
+    public function getShippingMethods()
+    {
+        foreach ($this->sellers as $seller) {
+            $communeShippingMethods = $seller->getAvailableShippingMethodsByCommune($this->communeDestine);
+
+            $shippingMethods = ShippingMethod::whereIn('code', $communeShippingMethods)->where('status', 1)->get();
+
+            foreach ($this->items as $item) {
+                $shippingMethods = $shippingMethods->whereIn('id', $item->product->shipping_methods->pluck('id')->toArray());
+            }
+
+            $this->sellersShippingMethods[$seller->id] = $shippingMethods;
+        }
+    }
+
+    public function setShippingMethod()
+    {
+           foreach ($this->items as $item) {
+               $item->shipping_id = $this->selectedShippingMethodId;
+               $item->update();
+            }
+
+           $this->updateSellersShippings();
     }
 }
