@@ -41,7 +41,7 @@ class ProductCategoryRequest extends FormRequest
                 'required',
                 Rule::in(['products_and_description']),
             ],
-            'icon' => 'required',
+            /* 'icon' => 'required', */
             'slug' => [
                 'required',
                 Rule::unique('product_categories')->where( function($query) {
