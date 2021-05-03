@@ -65,10 +65,19 @@ class ProductCategory extends Model
         return $array;
     }
 
-    public function getProductCount()
+    /**
+     * Get the qty of products that belongs to a category, including products that belongs to children
+     * categories
+     * 
+     * @param bool $exclude self Exclude the parent category products from the count
+     * @return int
+     */
+    public function getProductCount(bool $excludeSelf = false)
     {
         $ids = $this->getChildrensId();
-        $ids[] = $this->id;
+        if (!$excludeSelf) {
+            $ids[] = $this->id;
+        }
         $result = DB::table('product_category_mapping')->whereIn('product_category_id', $ids)->get();
         $result = $result->unique('product_id');
 
