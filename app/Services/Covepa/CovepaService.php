@@ -214,7 +214,7 @@ class CovepaService
                 "ARTICU_CODIGO" => 308245,
                 "VTADET_UMARTI" => "UN",
                 "VTADET_CANTID" => 1,
-                "VTADET_BODEGA" => $order->order_items->first()->product->inventories->first()->code, // @todo que codigo colocar
+                "VTADET_BODEGA" => $order->order_items->first()->product->inventories->first()->code,
                 "VTADET_PREUNI" => (int) $order->shipping_total, 
                 "VTADET_PREVTA" => (int) $order->shipping_total, 
                 "VTADET_EXENTO" => 0,
@@ -226,11 +226,11 @@ class CovepaService
         ];
 
         $shippingDetails[] = [
-            "VTAPLA_TIPENT" => $this->shippingMapping[$item->shipping->code],
+            "VTAPLA_TIPENT" => $this->shippingMapping[$order->order_items->first()->shipping->code],
             "VTAPLA_CORREL" => count($shippingDetails) + 1,
             "ARTICU_CODIGO" => 308245,
             "VTAPLA_FECENT" => now()->add($order->company->delivery_days_max, 'days')->format('d/m/Y'),
-            "BODEGA_CODIGO" => $order->order_items->first()->product->inventories->first()->code, // @todo que codigo colocar
+            "BODEGA_CODIGO" => $order->order_items->first()->product->inventories->first()->code,
             "VTAPLA_CANTID" => 1,
             "VTPLDI_DIRECC" => $fullAddress,
             "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
