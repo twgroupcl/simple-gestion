@@ -64,7 +64,8 @@
                                 </div>
                             </div> --}}
                             
-                            {{-- <div class="row">
+                            @if (isset($sellersShippingMethods[$seller->id]))
+                            <div class="row">
                                 <div class="col-12">
                                     Metodos de envio disponible para esta orden
                                 </div>
@@ -85,8 +86,8 @@
                                         @endif
                                     </div>
                                 </div>
-                            </div> --}}
-
+                            </div> 
+                            @endif
                             <hr style="margin: 15px 5px 10px 5px">
 
                             @if ($shippings)
