@@ -67,7 +67,7 @@
                             @if (isset($sellersShippingMethods[$seller->id]))
                             <div class="row">
                                 <div class="col-12">
-                                    Metodos de envio disponible para esta orden
+                                    Métodos de envió disponibles para esta orden
                                 </div>
                                 <div class="col-12">
                                     <div class="select-shipping mb-0 pt-2">
