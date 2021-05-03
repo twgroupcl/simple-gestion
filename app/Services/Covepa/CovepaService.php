@@ -208,8 +208,11 @@ class CovepaService
             $shippingDetails[] = $shipping;
         }
 
-        // Costo de envio (simulado como un articulo mas)
-        $itemsDetails[] = [
+        // Costo de envio si es envio Chilexpress
+        // Como todos los items de la orden deben tener el mismo tipo de envio
+        // podemos verificar el tipo denvio por la orden con el primer item
+        if ($order->order_items->first()->shipping->code === 'chilexpress') {
+            $itemsDetails[] = [
                 "VTADET_CORREL" => count($itemsDetails) + 1,
                 "ARTICU_CODIGO" => 308245,
                 "VTADET_UMARTI" => "UN",
@@ -223,26 +226,27 @@ class CovepaService
                 "VTADET_OIMPTO" => 0,
                 "VTADET_VALIVA" => 19,
                 "ARTICU_NOMBRE" => "DESPACHO DOMICILIO ECOMMERCE",
-        ];
+            ];
 
-        $shippingDetails[] = [
-            "VTAPLA_TIPENT" => $this->shippingMapping[$order->order_items->first()->shipping->code],
-            "VTAPLA_CORREL" => count($shippingDetails) + 1,
-            "ARTICU_CODIGO" => 308245,
-            "VTAPLA_FECENT" => now()->add($order->company->delivery_days_max, 'days')->format('d/m/Y'),
-            "BODEGA_CODIGO" => $order->order_items->first()->product->inventories->first()->code,
-            "VTAPLA_CANTID" => 1,
-            "VTPLDI_DIRECC" => $fullAddress,
-            "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
-            "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_city'],
-            "VTPLDI_CONTN1" => $fullName,
-            "VTPLDI_CONTF1" => $order->cellphone,
-            "VTPLDI_CONTF2" => $order->phone,
-            "VTPLDI_REFERE" => $address->address_details,
-            "VTPLDI_COOGPS" => "0",
-            "VTPLDI_DISTAN" => 0
-        ];
-
+            $shippingDetails[] = [
+                "VTAPLA_TIPENT" => $this->shippingMapping[$order->order_items->first()->shipping->code],
+                "VTAPLA_CORREL" => count($shippingDetails) + 1,
+                "ARTICU_CODIGO" => 308245,
+                "VTAPLA_FECENT" => now()->add($order->company->delivery_days_max, 'days')->format('d/m/Y'),
+                "BODEGA_CODIGO" => $order->order_items->first()->product->inventories->first()->code,
+                "VTAPLA_CANTID" => 1,
+                "VTPLDI_DIRECC" => $fullAddress,
+                "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
+                "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_city'],
+                "VTPLDI_CONTN1" => $fullName,
+                "VTPLDI_CONTF1" => $order->cellphone,
+                "VTPLDI_CONTF2" => $order->phone,
+                "VTPLDI_REFERE" => $address->address_details,
+                "VTPLDI_COOGPS" => "0",
+                "VTPLDI_DISTAN" => 0
+            ];
+        }
+        
         $paymentDetails = CovepaHelper::getPaymentArray($order);
 
         $extraDetails = [
