@@ -372,7 +372,7 @@ class ProductController extends Controller
         $product = Product::find($productInventory->product_id);
 
         try {
-            $product->shipping_methods->sync($request['shipping_type']);
+            $product->shipping_methods()->sync($request['shipping_type']);
         } catch(Exception $exception) {
             return response()->json([ 'status' => 'error', 'message' => $exception->getMessage() ], 400);
         }
@@ -380,7 +380,9 @@ class ProductController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Tipo de envio del producto (' . $product->sku . ') en la bodega (' . $warehouse->name . ') actualizado',
-            'data' => $product,
+            'data' => [
+                'shipping_methods' => $product->shipping_methods,
+            ],
         ], 200);
     }
 
