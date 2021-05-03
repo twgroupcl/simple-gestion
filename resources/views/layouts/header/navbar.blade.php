@@ -28,14 +28,14 @@
                         <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-menu"></i></div>
                     </a>
                     <div class="navbar-toolbar d-flex flex-shrink-0 align-items-center">
-                        <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#locationModal" data-toggle="modal" data-target="#locationModal">
+                        {{-- <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#locationModal" data-toggle="modal" data-target="#locationModal"> --}}
                             <div class="navbar-tool-icon-box"><i class="navbar-tool-icon czi-map"></i></div>
                             @if (session()->has('commune_name'))
-                                <div class="navbar-tool-text ml-n3"><small>Cambiar ubicacion</small>{{ session()->get('commune_name') }}</div>
+                                <div class="navbar-tool-text ml-n3"><small>Sucursal</small>{{ session()->get('commune_name') }}</div>
                             @else
                                 <div class="navbar-tool-text ml-n3"><small>Cambiar ubicacion</small>Desconocida</div>
                             @endif
-                        </a>
+                        {{-- </a> --}}
                     </div>
                     @guest
                     {{-- <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#signin-modal" data-toggle="modal"> --}}
