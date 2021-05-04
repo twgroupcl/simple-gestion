@@ -38,7 +38,7 @@
         </div>
     </div>
 </div>
-<!-- <section class="container p-0">
+<section class="container p-0">
     <div class="col-12 text-right d-none d-sm-block">
         <a href="https://actividades.prolibro.cl/" target="_blank">
             <img src="{{ asset('img/filsa/boton-transmision.jpg') }}" alt="Transmision en vivo" style="width:35%">
@@ -49,7 +49,7 @@
             <img src="{{ asset('img/filsa/boton-transmision.jpg') }}" alt="Transmision en vivo">
         </a>
     </div>
-</section> -->
+</section>
 
 <!--
     <section class="container mt-5 mb-grid-gutter">
