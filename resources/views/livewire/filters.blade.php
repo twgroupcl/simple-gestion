@@ -125,7 +125,7 @@
             @foreach($attributes as $attribute)
             @php
                 $product_attributes = $attribute->product_attributes->unique("json_value");
-                $product_attributes = $product_attributes->where('json_value','<>', '* No aplica');
+                $product_attributes = $product_attributes->where('json_value','<>', '* No aplica')->sortBy('json_value');
             @endphp
 
             <div class="widget cz-filter mb-4 pb-4 border-bottom">
