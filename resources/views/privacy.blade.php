@@ -1,3 +1,7 @@
+@php
+    $company = App\Models\Company::find(1);
+@endphp
+
 @extends('layouts.base')
 
 @section('content')
@@ -23,7 +27,11 @@
 <!-- Page Content-->
 <div class="container py-5 mt-md-2 mb-2">
     <div class="row">
-        <embed src="{{ url('pdf/politicas-de-privacidad.pdf') }}" type="application/pdf" width="100%" height="600px" />
+        <embed src="{{ $company->privacy_policy_path 
+                            ? asset($company->privacy_policy_path)
+                            : url('pdf/politicas-de-privacidad.pdf') 
+                    }}" 
+                type="application/pdf" width="100%" height="600px" />
     </div>
 </div>
 @endsection

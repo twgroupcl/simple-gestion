@@ -104,7 +104,7 @@ class Company extends Model
     {
         $attribute_name = "terms_and_conditions_path";
         $disk = "public";
-        $destination_path = "pdf/";
+        $destination_path = "pdf";
 
         $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
     }

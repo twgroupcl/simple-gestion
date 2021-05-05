@@ -1,3 +1,7 @@
+@php
+    $company = App\Models\Company::find(1);    
+@endphp
+
 @extends('layouts.base')
 
 @section('content')
@@ -23,7 +27,11 @@
 <!-- Page Content-->
 <div class="container py-5 mt-md-2 mb-2">
     <div class="row" >
-        <embed src="{{ url('pdf/Terminos-y-Condiciones.pdf') }}" type="application/pdf" width="100%" height="600px" />
+        <embed src="{{ $company->terms_and_conditions_path 
+                        ? asset($company->terms_and_conditions_path)
+                        : url('pdf/Terminos-y-Condiciones.pdf') 
+                    }}" 
+                type="application/pdf" width="100%" height="600px" />
     </div>
 </div>
 @endsection

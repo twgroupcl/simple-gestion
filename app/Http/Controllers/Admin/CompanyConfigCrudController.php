@@ -28,7 +28,7 @@ class CompanyConfigCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Company::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/companyconfig');
-        CRUD::setEntityNameStrings('company', 'companies');
+        CRUD::setEntityNameStrings('compañía', 'compañías');
 
         $this->crud->denyAccess('create');
         $this->crud->denyAccess('show');
@@ -63,33 +63,33 @@ class CompanyConfigCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'name',
-            'label' => 'Compañia',
+            'label' => 'Compañía',
         ]);
 
         CRUD::addField([
             'name' => 'delivery_days_min',
-            'label' => 'Tiempo estimado de envio minimo',
+            'label' => 'Tiempo estimado de envió mínimo',
             'type' => 'number',
-            'suffix' => 'dias',
+            'suffix' => 'días',
         ]);
 
         CRUD::addField([
             'name' => 'delivery_days_max',
-            'label' => 'Tiempo estimado de envio maximo',
+            'label' => 'Tiempo estimado de envió máximo',
             'type' => 'number',
-            'suffix' => 'dias',
+            'suffix' => 'días',
         ]);
 
         CRUD::addField([
             'name' => 'privacy_policy_path',
-            'label' => 'Politicas de privacidad',
+            'label' => 'Políticas de privacidad (PDF)',
             'type' => 'upload',
             'upload'    => true,
         ]);
 
         CRUD::addField([
             'name' => 'terms_and_conditions_path',
-            'label' => 'Terminos y condiciones',
+            'label' => 'Términos y condiciones (PDF)',
             'type' => 'upload',
             'upload'    => true,
         ]);
