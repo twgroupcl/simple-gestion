@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductClassAttribute;
 use App\Models\ProductInventorySource;
+use App\Http\Resources\ProductResource;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Requests\Api\ProductRequest;
@@ -105,7 +106,7 @@ class ProductController extends Controller
         
         return response()->json([
             'status' => 'success',
-            'data' => $product,
+            'data' => new ProductResource($product),
         ], 200);
     }
 
