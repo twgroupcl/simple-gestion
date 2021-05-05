@@ -46,9 +46,9 @@
 	</ul>
 </li>
 
-@can('config.company')
+@canany(['config.company'])
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('companyconfig') }}'><i class='nav-icon la la-building'></i> Configuración general</a></li>
-@endcan
+@endcanany
 
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-lightbulb-o"></i> Atributos</a>
