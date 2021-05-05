@@ -24,6 +24,7 @@ Route::group([
     Route::crud('invoicetype', 'InvoiceTypeCrudController');
     Route::crud('unit', 'UnitCrudController');
     Route::crud('company', 'CompanyCrudController');
+    Route::crud('companyconfig', 'CompanyConfigCrudController');
     Route::crud('branch', 'BranchCrudController');
     Route::crud('attributemodule', 'AttributeModuleCrudController');
     Route::crud('attributefamily', 'AttributeFamilyCrudController');
