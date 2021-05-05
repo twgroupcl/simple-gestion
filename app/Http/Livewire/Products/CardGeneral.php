@@ -137,6 +137,9 @@ class CardGeneral extends Component
                     return $q->where('name', 'LIKE', '%' . $product_search . '%')
                             ->orWhereHas('brand', function ($q) use ($product_search) {
                                 $q->where('name', 'LIKE', '%' . $product_search . '%');
+                            })
+                            ->orWhereHas('custom_attributes', function ($q) use ($product_search) {
+                                $q->where('json_value', 'LIKE', '%' . $product_search . '%');
                             });
                 }); 
             })
