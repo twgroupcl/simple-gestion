@@ -313,11 +313,13 @@ class Checkout extends Component
             return $this->emit('showToast', '¡Stock insuficiente!', 'Verifique la cantidad de sus productos.', 3000, 'warning');
         }
 
-        if ($this->checkCovepaCustomerExists(rutWithoutDV($this->cart->uid)) == 2) {
+        $checkCovepaCusomterExists = $this->checkCovepaCustomerExists(rutWithoutDV($this->cart->uid));
+
+        if ($checkCovepaCusomterExists == 2) {
             return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles.', 3000, 'warning');
         }
 
-        if ($this->checkCovepaCustomerExists(rutWithoutDV($this->cart->uid)) == 0) {
+        if ($checkCovepaCusomterExists == 0) {
 
             $customerData = [
                 'id' => rutWithoutDV($this->cart->uid),

@@ -42,6 +42,16 @@ class CovepaService
 
         try {
             $response = $client->request($method, $url, $request);
+
+            if (in_array($response->getStatusCode(), [400, 401, 500])) {
+                \Log::warning('Codigo de error en peticion realizada a covepa', [
+                    'url' => $url,
+                    'status_code' => $response->getStatusCode(),
+                    'response_headers' => $response->getHeaders(),
+                    'request_headers' => array_merge($defaultHeaders, $headers),
+                ]);
+            }
+
             return $response;
         } catch (\GuzzleHttp\Exception\ServerException $e) {
             $error = $e->getResponse()->getBody()->getContents();
