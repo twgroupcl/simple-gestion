@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\CompanyRequest;
+use App\Http\Requests\CompanyConfigRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -59,7 +59,7 @@ class CompanyConfigCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(CompanyRequest::class);
+        CRUD::setValidation(CompanyConfigRequest::class);
 
         CRUD::addField([
             'name' => 'name',
