@@ -20,13 +20,14 @@ class Details extends Component
     protected $rules = [
 
         //'business_name' => '',
-        'data.address_street' => 'required|min:3',
-        'data.address_number' => 'required|numeric',
+        'data.address_street' => 'required|min:3|max:60',
+        'data.address_number' => 'required|numeric|max:99999999999999999',
         'data.address_commune_id' => 'required',
         'data.email' => 'required|email',
-        'data.cellphone' => 'required',
+        'data.cellphone' => 'required|max:20',
         'data.receiver_name' => 'max:255',
-        'data.shipping_details' => 'max:500'
+        'data.shipping_details' => 'max:500',
+        'data.address_office' => 'max:60',
     ];
 
 
@@ -116,13 +117,13 @@ class Details extends Component
     private function getCustomRules()
     {
         $dynamicRules = [
-            'data.first_name' => 'required|min:3',
-            'data.last_name' => 'required|min:3',
+            'data.first_name' => 'required|min:2|max:40',
+            'data.last_name' => 'required|min:2|max:40',
         ];
 
         if ($this->is_business) {
             $dynamicRules = [
-                'data.business_name' => 'required|min:3',
+                'data.business_name' => 'required|min:3|max:40',
                 'data.business_activity_id' => 'required'
             ];
         }
@@ -130,14 +131,14 @@ class Details extends Component
         if ($this->anotherDataInvoice) {
             $dynamicRules = array_merge($dynamicRules, [
                 'invoice.uid' => ['required', new RutRule()],
-                'invoice.first_name' => 'required|min:3',
-                'invoice.last_name' => 'required|min:3',
+                'invoice.first_name' => 'required|min:2|max:40',
+                'invoice.last_name' => 'required|min:2|max:40',
                 'invoice.phone' => new PhoneRule('El número ingresado no es válido'),
                 'invoice.cellphone' => ['required',new PhoneRule('El número ingresado no es válido')],
                 'invoice.email' => 'required|email',
-                'invoice.address_street' => 'required',
-                'invoice.address_number' => 'required|numeric',
-                'invoice.address_street' => 'required',
+                'invoice.address_street' => 'required|max:60',
+                'invoice.address_number' => 'required|numeric|max:999999999999999',
+                'invoice.address_street' => 'required|max:60',
                 'invoice.address_commune_id' => 'required|exists:communes,id',
                 // 'invoice.business_activity_id' => 'required|exists:business_activities,id',
                 // 'invoice.business_name' => 'required|min:3',
