@@ -170,6 +170,7 @@ class CovepaService
         
         // Invoice address
         $invoiceAddress = $order->json_value['addressInvoice']->status ? $order->json_value['addressInvoice'] : $address; 
+        $invoiceRut = empty($invoiceAddress->uid) ?  $rutWithoutDV : rutWithoutDV($invoiceAddress->uid);
         $fullInvoiceAddress = $invoiceAddress->address_street . ' ' . $invoiceAddress->address_number . ' ' . $invoiceAddress->address_office;
         $invoiceCommune = Commune::find($invoiceAddress->address_commune_id);
         $invoiceFullName = empty($invoiceAddress->first_name) ? $fullName : $invoiceAddress->first_name . ' ' . $invoiceAddress->last_name;
@@ -270,7 +271,6 @@ class CovepaService
             "VTAGEN_VTAREL" => $order->id,
             "DOCMTO_CODTRI" => $order->is_company ? '25' : '26',
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
-            "SUJETO_RUTSUJ" => $rutWithoutDV,
 
             "SUJSUC_CODIGO" => 0, // codigo sucursal
             "VTAGEN_OCONRO" => 0, // Nro Orden compra cliente
@@ -293,12 +293,13 @@ class CovepaService
             "VTAGEN_FECTRL" => Carbon::now()->format('d/m/Y h:i:s'),
 
             // Dirección de facturación
+            "SUJETO_RUTSUJ" => $invoiceRut,
+            "VTADIR_NOMFASN" => $invoiceFullName,
             "VTADIR_DIRECC" => $fullInvoiceAddress,
-            "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_city'],
-            "VTADIR_NOMCIU" => $invoiceCommune->name,
-            "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_commune'],
             "VTADIR_NOMCOM" => $invoiceCommune->name,
-            "VTADIR_NOMFAN" => $invoiceFullName,
+            "VTADIR_NOMCIU" => $invoiceCommune->name,
+            "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_city'],
+            "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_commune'],
             "TIPVAL_COD055" => $order->is_company 
                                         ? (empty($invoiceAddress->business_activity_id)
                                             ? 0

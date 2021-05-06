@@ -65,6 +65,15 @@ class Order extends Model
             return currencyFormat($totalOrder?$totalOrder: 0, 'CLP',true);
         }
     }
+
+    public function getInvoiceRut()
+    {
+        $addressRut = $this->uid;
+        $address = $this->json_value['addressShipping'];
+        $invoiceAddress = $this->json_value['addressInvoice']->status ? $this->json_value['addressInvoice'] : $address; 
+        $invoiceRut = empty($invoiceAddress->uid) ?  $addressRut : $invoiceAddress->uid;
+        return $invoiceRut;
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

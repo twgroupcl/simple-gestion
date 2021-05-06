@@ -1065,6 +1065,11 @@ class Helpers {
         $payment = $order->order_payments->first(); 
         $rut = rutWithoutDV($order->uid);
 
+        $rutWithoutDV = rutWithoutDV($order->uid);
+        $address = $order->json_value['addressShipping'];
+        $invoiceAddress = $order->json_value['addressInvoice']->status ? $order->json_value['addressInvoice'] : $address; 
+        $invoiceRut = empty($invoiceAddress->uid) ?  $rutWithoutDV : rutWithoutDV($invoiceAddress->uid);
+
         if ($payment->method === 'tbkplus') {
             $details = json_decode($payment->json_in, true);
             $authCode = (int) $details['data']['detailOutput']['authorizationCode'];
@@ -1080,8 +1085,8 @@ class Helpers {
                 "VTAPGO_NCUOTA" => $quotes,
                 "VTAPGO_FECUOT" => Carbon::now()->format('d/m/Y'), 
                 "VTAPGO_NRDCPG" => $authCode,
-                "SUJETO_RUTDUE" => $rut,
-                "SUJETO_RUTSUJ" => $rut // Rut del documento de venta
+                "SUJETO_RUTDUE" => rutWithoutDV($order->getInvoiceRut()),
+                "SUJETO_RUTSUJ" => rutWithoutDV($order->getInvoiceRut()), // Rut del documento de venta
             ]
         ];
     }
