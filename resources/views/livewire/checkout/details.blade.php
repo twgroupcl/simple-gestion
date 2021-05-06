@@ -84,17 +84,18 @@
             @error('data.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
-            <label for="sd-cellphone">Teléfono móvil<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="" wire:model="data.cellphone" id="sd-cellphone">
-            @error('data.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
-
-        </div>
-        <div class="col-sm-6 form-group">
-            <label for="sd-phone">Teléfono </label>
+            <label for="sd-phone">Teléfono <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="" wire:model="data.phone" id="sd-phone">
             @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
 
         </div>
+        <div class="col-sm-6 form-group">
+            <label for="sd-cellphone">Teléfono móvil</label>
+            <input class="form-control" type="text" placeholder="" wire:model="data.cellphone" id="sd-cellphone">
+            @error('data.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
+
+        </div>
+        
         
         {{-- @todo --}}
         {{-- Ocultado hasta que se coloque el campo de RUT de persona que recibe/retira --}}
@@ -196,17 +197,16 @@
                     @endforeach
                 </select>
                 @error('invoice.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
+            </div><div class="col-sm-6 form-group">
+                <label for="bd-phone">Teléfono <span class='text-danger'>*</span></label>
+                <input class="form-control" type="text" placeholder="" wire:model="invoice.phone" id="bd-phone">
+                @error('invoice.phone') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
             <div class="col-sm-6 form-group">
-                <label for="bd-cellphone">Teléfono móvil<span class='text-danger'>*</span></label>
+                <label for="bd-cellphone">Teléfono móvil</label>
                 <input class="form-control" type="text" placeholder="" wire:model="invoice.cellphone" id="bd-cellphone">
                 @error('invoice.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
 
-            </div>
-            <div class="col-sm-6 form-group">
-                <label for="bd-phone">Teléfono </label>
-                <input class="form-control" type="text" placeholder="" wire:model="invoice.phone" id="bd-phone">
-                @error('invoice.phone') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
             @if ($invoice['is_business'])
                 <div class="col-sm-6 form-group">

@@ -8,7 +8,6 @@ use App\Rules\PhoneRule;
 
 class Details extends Component
 {
-
     public $data;
     public $invoice;
     public $cart;
@@ -24,10 +23,11 @@ class Details extends Component
         'data.address_number' => 'required|numeric|max:99999999999999999',
         'data.address_commune_id' => 'required',
         'data.email' => 'required|email',
-        'data.cellphone' => 'required|max:20',
+        /* 'data.cellphone' => 'required|max:20', */
         'data.receiver_name' => 'max:255',
         'data.shipping_details' => 'max:500',
         'data.address_office' => 'max:60',
+        'data.uid' => ['required', 'asd'],
     ];
 
 
@@ -102,15 +102,8 @@ class Details extends Component
 
     public function updated($propertyName)
     {
-
-
         $dynamicRules = $this->getCustomRules();
         $this->rules = array_merge($this->rules, $dynamicRules);
-        $this->rules = array_merge($this->rules, [
-            'data.uid' => ['required', new RutRule()],
-            'data.cellphone' => ['required', new PhoneRule('El número ingresado no es válido')],
-            'data.phone' => new PhoneRule('El número ingresado no es válido'),
-        ]);
         $this->validateOnly($propertyName);
     }
 
@@ -151,6 +144,12 @@ class Details extends Component
                 ]);
             }
         }
+
+        $dynamicRules = array_merge($dynamicRules, [
+            'data.uid' => ['required', new RutRule()],
+            'data.cellphone' => ['required', new PhoneRule('El número ingresado no es válido')],
+            'data.phone' => ['required', new PhoneRule('El número ingresado no es válido')],
+        ]);
 
         return $dynamicRules;
     }
