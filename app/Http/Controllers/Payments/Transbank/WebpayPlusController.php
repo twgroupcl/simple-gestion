@@ -252,7 +252,7 @@ class WebpayPlusController extends Controller
 
                     $mail = new OrderNotSendCovepaMail($order, json_encode($orderResponse), null, json_encode($this->covepaService->prepareOrderData($order)));
 
-                    Company::sendMailToAdmin($mail);
+                    Mail::to(Company::MAIL_TO_ERRORS)->send($mail);
                 } else {
                     //@todo eliminar luego
                     Log::info('Orden enviada con exito', ['api_response' => $orderResponse]);
@@ -267,7 +267,7 @@ class WebpayPlusController extends Controller
 
                 $mail = new OrderNotSendCovepaMail($order, null, $e);
 
-                Company::sendMailToAdmin($mail);
+                Mail::to(Company::MAIL_TO_ERRORS)->send($mail);
             }
             
 
