@@ -179,6 +179,11 @@ class Details extends Component
             $this->data['is_company'] = $this->is_business;
             $this->data['json_value'] = ['business_activity_id' => $this->data['business_activity_id'] ?? null];
 
+            if ($this->is_business) {
+                $this->data['first_name'] = $this->data['business_name'];
+                $this->data['last_name'] = '';
+            }
+
             $this->cart->update($this->data);
 
             $this->emitUp('finishTask');
