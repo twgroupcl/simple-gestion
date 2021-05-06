@@ -16,9 +16,8 @@ class CovepaService
     private $baseUrl = 'http://216.155.76.46:8080/ServApi/rest';
 
     private $shippingMapping = [
-        'picking' => 1,
-        'free_shipping' => 1, //@todo eliminar esto, ellos se equivocaon y en vez de colocar "pickup" le colocaron "free_shipping" al metodo de envio del producto
-        'chilexpress' => 2,
+        'picking' => 5,
+        'chilexpress' => 1,
     ];
 
     private function makeRequest($url, $method, array $data = [], array $headers = [], $useAuth = true)
