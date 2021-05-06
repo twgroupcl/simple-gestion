@@ -28,7 +28,7 @@ class Cart extends Model
     // protected $dates = [];
 
     protected $casts = [
-        'json_value' => 'array'
+        'json_value' => 'array',
     ];
 
     /*
@@ -247,6 +247,56 @@ class Cart extends Model
         $this->phone = $address->phone;
         $this->cellphone = $address->cellphone;
         $this->email = $address->email;
+    }
+
+    public function getShippingData()
+    {
+        return [
+            'uid' => $this->uid,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'cellphone' => $this->cellphone,
+            'address_street' => $this->address_street,
+            'address_number' => $this->address_number,
+            'address_office' => $this->address_office,
+            'address_commune_id' => $this->address_commune_id,
+            'address_details' => $this->address_details,
+            'business_activity_id' => $this->business_activity_id,
+            'is_company' => (bool) $this->is_company,
+            'business_name' => $this->business_name,
+        ];
+    }
+
+    public function getInvoiceData()
+    {
+        if (empty($this->invoice_value)) {
+            return $this->getShippingData();
+        }
+
+        $invoice_value = json_decode($this->invoice_value, true);
+
+        if ($invoice_value['status'] == false) {
+            return $this->getShippingData();
+        }
+
+        return [
+            'uid' => $invoice_value['uid'],
+            'first_name' => $invoice_value['first_name'],
+            'last_name' => $invoice_value['last_name'],
+            'email' => $invoice_value['email'],
+            'phone' => $invoice_value['phone'],
+            'cellphone' => $invoice_value['cellphone'],
+            'address_street' => $invoice_value['address_street'],
+            'address_number' => $invoice_value['address_number'],
+            'address_office' => $invoice_value['address_office'],
+            'address_commune_id' => $invoice_value['address_commune_id'],
+            'address_details' => $invoice_value['address_details'],
+            'business_activity_id' => $invoice_value['business_activity_id'],
+            'is_company' => (bool) $invoice_value['is_business'],
+            'business_name' => $invoice_value['business_name'],
+        ];
     }
 
     /*

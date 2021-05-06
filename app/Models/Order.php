@@ -74,6 +74,46 @@ class Order extends Model
         $invoiceRut = empty($invoiceAddress->uid) ?  $addressRut : $invoiceAddress->uid;
         return $invoiceRut;
     }
+
+    public function getShippingData()
+    {
+        return [
+            'uid' => $this->uid,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'cellphone' => $this->cellphone,
+            'address_street' => $this->json_value['addressShipping']->address_street ?? '',
+            'address_number' => $this->json_value['addressShipping']->address_number ?? '',
+            'address_office' => $this->json_value['addressShipping']->address_office ?? '',
+            'address_commune_id' => $this->json_value['addressShipping']->address_commune_id ?? null,
+            'address_details' => $this->json_value['addressShipping']->address_details ?? '',
+            'business_activity_id' => $this->json_value['addressShipping']->business_activity_id ?? null,
+        ];
+    }
+
+    public function getInvoiceData()
+    {
+        if ($this->json_value['addressInvoice']->status == false) {
+            return $this->getShippingData();
+        }
+
+        return [
+            'uid' => $this->json_value['addressInvoice']->uid ?? '',
+            'first_name' => $this->json_value['addressInvoice']->first_name ?? '',
+            'last_name' => $this->json_value['addressInvoice']->last_name ?? '',
+            'email' => $this->json_value['addressInvoice']->email ?? '',
+            'phone' => $this->json_value['addressInvoice']->phone ?? '',
+            'cellphone' => $this->json_value['addressInvoice']->cellphone ?? '',
+            'address_street' => $this->json_value['addressInvoice']->address_street ?? '',
+            'address_number' => $this->json_value['addressInvoice']->address_number ?? '',
+            'address_office' => $this->json_value['addressInvoice']->address_office ?? '',
+            'address_commune_id' => $this->json_value['addressInvoice']->address_commune_id ?? null,
+            'address_details' => $this->json_value['addressInvoice']->address_details ?? '',
+            'business_activity_id' => $this->json_value['addressInvoice']->business_activity_id ?? null,
+        ]; 
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
