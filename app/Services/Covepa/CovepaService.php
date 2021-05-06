@@ -11,6 +11,8 @@ use App\Services\Covepa\Helpers as CovepaHelper;
 
 class CovepaService
 {
+    const CACHE_SECONDS_API_TOKEN = 7200;
+    
     private $baseUrl = 'http://216.155.76.46:8080/ServApi/rest';
 
     private $shippingMapping = [
@@ -73,13 +75,12 @@ class CovepaService
 
     public function getToken()
     {
-        $seconds = 18000;
 
         if (Cache::get('covepa.auth.token') === null) {
             Cache::forget('covepa.auth.token');
         }
 
-        $token = Cache::remember('covepa.auth.token', $seconds, function() {
+        $token = Cache::remember('covepa.auth.token', self::CACHE_SECONDS_API_TOKEN, function() {
 
             $credentials = [
                 'usuario' => config('covepa.credentials.user'),
