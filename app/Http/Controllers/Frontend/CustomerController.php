@@ -136,7 +136,7 @@ class CustomerController extends Controller
             return redirect('home');
         }
 
-        return view('customer.sign')->with('error', 'Upps! Las credenciales son incorrectas.');
+        return redirect()->route('customer.sign')->withInput()->with('error', 'Upps! Las credenciales son incorrectas.');
     }
 
     public function logout()
