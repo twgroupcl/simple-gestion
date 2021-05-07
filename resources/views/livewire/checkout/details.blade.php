@@ -2,6 +2,9 @@
     <div class="loading" wire:loading  wire:target="save">Loading&#8230;</div>
     <!-- Title-->
     <h2 class="h6 border-bottom pb-3 mb-3">Información de envío</h2>
+    <p>En caso de no requerir envio, colocar la información de la persona que retirara
+        en la sucursal
+    </p>
     <!-- Shipping detail-->
     <div class="row pb-4">
         <div class="col-12 form-group text-left">
