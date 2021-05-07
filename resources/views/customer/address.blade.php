@@ -98,7 +98,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cerrar</button>
-                <button class="btn btn-primary btn-shadow" type="submit">Añadir dirección</button>
+                <button class="btn btn-primary btn-shadow" type="submit">Guardar dirección</button>
             </div>
         </div>
     </div>

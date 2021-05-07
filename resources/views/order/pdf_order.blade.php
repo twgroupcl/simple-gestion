@@ -111,6 +111,10 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
 {{-- @section('content') --}}
 
 
+<div style="background: #FDCA00; height: 120px; padding-top: 25px; padding-left: 10px">
+    <img src="{{ public_path() . '/img/covepa-logo.png' }}" alt="Covepa" height="80px">
+</div>
+
 <table width="100%" style="margin-top: 25px;">
     <tr>
 
