@@ -90,6 +90,7 @@ class Order extends Model
             'address_commune_id' => $this->json_value['addressShipping']->address_commune_id ?? null,
             'address_details' => $this->json_value['addressShipping']->address_details ?? '',
             'business_activity_id' => $this->json_value['addressShipping']->business_activity_id ?? null,
+            'is_company' => $this->is_company,
         ];
     }
 
@@ -112,6 +113,7 @@ class Order extends Model
             'address_commune_id' => $this->json_value['addressInvoice']->address_commune_id ?? null,
             'address_details' => $this->json_value['addressInvoice']->address_details ?? '',
             'business_activity_id' => $this->json_value['addressInvoice']->business_activity_id ?? null,
+            'is_company' => $this->json_value['addressInvoice']->is_business,
         ]; 
     }
     /*

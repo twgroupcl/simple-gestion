@@ -191,6 +191,7 @@ class CovepaService
         $fullInvoiceAddress = $invoiceAddress->address_street . ' ' . $invoiceAddress->address_number . ' ' . $invoiceAddress->address_office;
         $invoiceCommune = Commune::find($invoiceAddress->address_commune_id);
         $invoiceFullName = empty($invoiceAddress->first_name) ? $fullName : $invoiceAddress->first_name . ' ' . $invoiceAddress->last_name;
+        $invoiceData = $order->getInvoiceData();
 
         $itemsDetails = [];
         $shippingDetails = [];
@@ -286,7 +287,7 @@ class CovepaService
 
         $orderData = [
             "VTAGEN_VTAREL" => $order->id,
-            "DOCMTO_CODTRI" => $order->is_company ? '25' : '26',
+            "DOCMTO_CODTRI" => $$invoiceData['is_company'] ? '25' : '26',
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
 
             "SUJSUC_CODIGO" => 0, // codigo sucursal
