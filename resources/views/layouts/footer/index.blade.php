@@ -9,3 +9,5 @@
 @include('layouts.footer.top')
 
 <x-location-modal/>
+
+@livewire('loading')
