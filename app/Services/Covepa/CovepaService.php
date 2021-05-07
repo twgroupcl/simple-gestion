@@ -135,6 +135,23 @@ class CovepaService
         return $response;
     }
 
+    public function updateCustomerEmail($id, $email)
+    {
+        $endpoint = $this->baseUrl . '/clientes/' . $id;
+        $method = 'POST';
+        $data = [
+            'email' => $email,
+        ];
+
+        $response = $this->makeRequest($endpoint, $method, $data);
+
+        if (is_array($response) && array_key_exists('error_message', $response)) {
+            throw new Exception($response['error_message']);
+        }
+
+        return $response;
+    }
+
     public function createCustomer(array $customerData)
     {
         $endpoint = $this->baseUrl . '/clientes';
