@@ -294,7 +294,7 @@ class CovepaService
 
             // Dirección de facturación
             "SUJETO_RUTSUJ" => $invoiceRut,
-            "VTADIR_NOMFASN" => $invoiceFullName,
+            "VTADIR_NOMFAN" => $invoiceFullName,
             "VTADIR_DIRECC" => $fullInvoiceAddress,
             "VTADIR_NOMCOM" => $invoiceCommune->name,
             "VTADIR_NOMCIU" => $invoiceCommune->name,
