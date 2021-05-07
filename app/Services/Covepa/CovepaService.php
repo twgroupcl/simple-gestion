@@ -208,8 +208,8 @@ class CovepaService
                 "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
                 "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_city'],
                 "VTPLDI_CONTN1" => $fullName,
-                "VTPLDI_CONTF1" => $order->cellphone,
-                "VTPLDI_CONTF2" => $order->phone,
+                "VTPLDI_CONTF1" => $order->phone,
+                "VTPLDI_CONTF2" => $order->cellphone,
                 "VTPLDI_REFERE" => $address->address_details,
                 "VTPLDI_COOGPS" => "0",
                 "VTPLDI_DISTAN" => 0
@@ -250,8 +250,8 @@ class CovepaService
                 "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
                 "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_city'],
                 "VTPLDI_CONTN1" => $fullName,
-                "VTPLDI_CONTF1" => $order->cellphone,
-                "VTPLDI_CONTF2" => $order->phone,
+                "VTPLDI_CONTF1" => $order->phone,
+                "VTPLDI_CONTF2" => $order->cellphone,
                 "VTPLDI_REFERE" => $address->address_details,
                 "VTPLDI_COOGPS" => "0",
                 "VTPLDI_DISTAN" => 0
