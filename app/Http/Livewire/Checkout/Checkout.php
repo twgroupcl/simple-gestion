@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Checkout;
 
+use Exception;
 use Carbon\Carbon;
 use App\Models\Order;
 use Livewire\Component;
@@ -369,6 +370,26 @@ class Checkout extends Component
                 return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles.', 3000, 'warning');
             }
         }
+
+        if (is_array($checkCovepaCusomterExists)) {
+            $covepaService = new CovepaService();
+
+            if (isset($checkCovepaCusomterExists['email']) && $checkCovepaCusomterExists['email'] != $invoiceData->email) {
+
+                try {
+                    $updateCustomer = $covepaService->updateCustomerEmail(rutWithoutDV($invoiceData->uid), $invoiceData->email);
+
+                    if ($updateCustomer->getStatusCode() != 200) {
+                        \Log::error('Error creating new customer from pay() method on Checkout.php', ['error' => $updateCustomer->getBody()->getContents(), 'data' => ['email' => $invoiceData->email, 'id' => rutWithoutDV($invoiceData->uid)]]);
+                        return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles. COD: CC-001', 3000, 'warning');    
+                    }
+
+                } catch (Exception $e) {
+                    \Log::error('Error updating email customer from pay() method on Checkout.php: ' . $e->getMessage());
+                    return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles. COD: CC-002', 3000, 'warning');    
+                }
+            }
+        }
         
         // Get cart addresses
         $addressShipping = [
@@ -520,9 +541,8 @@ class Checkout extends Component
 
     /**
      * 0 - Customer doesnt exists on covepa
-     * 1 - Customer exists on covepa
      * 2 - Internal or Server error
-     * 
+     * ARRAY RESPONSE - Customer exists on covepa
      */
     public function checkCovepaCustomerExists($id)
     {
@@ -534,7 +554,9 @@ class Checkout extends Component
             if ($response->getStatusCode() != 200) {
                 return 0;
             }
-            return 1;
+
+            return json_decode($response->getBody()->getContents(), true);
+
         } catch (\Exception $e) {
             \Log::warning('error on checkCovepaCustomerExists function: ' . $e->getMessage());
             return 2;
