@@ -67,7 +67,7 @@ class Cart extends Model
             $cart->sub_total = 0;
         
 
-            if ($cart->is_company) {
+            /* if ($cart->is_company) {
                 $cart->business_name = $customer = $customer->first_name;
                 //todo activity data ??
                 $activity_data = $customer->activities_data ? 
@@ -92,12 +92,27 @@ class Cart extends Model
                     $cart->address_office = array_key_exists('address_subnumber', $addresses_data) ? $addresses_data['address_subnumber'] : '';
                     $cart->address_commune_id = array_key_exists('commune_id', $addresses_data) ? $addresses_data['commune_id'] : '';
                 }
+            } */
+
+            if ($cart->is_company) {
+                $cart->business_name = $customer->first_name;
+            } else {
+                $cart->first_name = $customer->first_name;
+                $cart->last_name = $customer->last_name;
             }
 
             $cart->uid = $customer->uid;
             $cart->email = $customer->email;
-            $cart->phone = $customer->phone;
-            $cart->cellphone = $customer->cellphone;
+
+            $address = $customer->addresses->first();
+
+            if ($address) {
+                $cart->phone = $address->phone;
+                $cart->cellphone = $address->cellphone;
+                $cart->address_street = $address->street;
+                $cart->address_office = $address->subnumber;
+                $cart->address_number = $address->number;
+            }
             
             return $cart;
         }
@@ -263,7 +278,7 @@ class Cart extends Model
             'address_office' => $this->address_office,
             'address_commune_id' => $this->address_commune_id,
             'address_details' => $this->address_details,
-            'business_activity_id' => $this->business_activity_id,
+            'business_activity_id' => $this->json_value['business_activity_id'],
             'is_company' => (bool) $this->is_company,
             'business_name' => $this->business_name,
         ];
@@ -292,7 +307,7 @@ class Cart extends Model
             'address_number' => $invoice_value['address_number'],
             'address_office' => $invoice_value['address_office'],
             'address_commune_id' => $invoice_value['address_commune_id'],
-            'address_details' => $invoice_value['address_details'],
+            'address_details' => null,
             'business_activity_id' => $invoice_value['business_activity_id'],
             'is_company' => (bool) $invoice_value['is_business'],
             'business_name' => $invoice_value['business_name'],
