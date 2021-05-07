@@ -43,6 +43,9 @@
                             <div class="invalid-feedback">Seleccione la comuna</div>
                         </div>
                     </div>
+                    <div class="col-sm-12">
+                        <strong>* Indica los datos de cliente si necesitas Factura/Boleta con otros datos</strong>
+                    </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="uid">RUT</label>

@@ -13,11 +13,15 @@ class Details extends Component
     public $cart;
     public $is_business;
     public $anotherDataInvoice;
+
+    public $customer_id;
+    public $addresses_customer_id;
+
     protected $listeners = [
         'details:save' => 'save'
     ];
-    protected $rules = [
 
+    protected $rules = [
         //'business_name' => '',
         'data.address_street' => 'required|min:3|max:60',
         'data.address_number' => 'required|numeric|max:99999999999999999',
@@ -30,7 +34,6 @@ class Details extends Component
         'data.uid' => ['required', 'asd'],
     ];
 
-
     protected $messages = [
         'required' => 'Es necesario completar este campo',
         'email' => 'Revise la dirección de email',
@@ -41,11 +44,11 @@ class Details extends Component
 
     ];
 
-
-
     public function mount()
     {
         $this->is_business = $this->cart->is_company != 0;
+        $this->customer_id = $this->cart->customer_id;
+
         $this->data = [
             'uid' => $this->cart->uid,
             'first_name' => $this->cart->first_name,
@@ -61,8 +64,6 @@ class Details extends Component
             'receiver_name' => $this->cart->receiver_name,
             'shipping_details' => $this->cart->shipping_details
         ];
-
-
 
         $invoice = [];
         //this variable can be simplified @todo
@@ -97,7 +98,7 @@ class Details extends Component
 
     public function render()
     {
-        return view('livewire.checkout.details');
+        return view('livewire.checkout.details', ['customer_id' => $this->customer_id]);
     }
 
     public function updated($propertyName)
@@ -165,9 +166,6 @@ class Details extends Component
 
     public function save()
     {
-
-
-
         $dynamicRules = $this->getCustomRules();
 
         $this->rules = array_merge($this->rules,$dynamicRules);
@@ -191,14 +189,90 @@ class Details extends Component
         } catch (\Throwable $th){ // (\Throwable $th) {
             $this->emitUp('notFinishTask');
             throw $th;
+        }
+    }
 
+    public function updatedAddressesCustomerId($value)
+    {
+        if(!empty($value)) {
+            $address = \App\Models\CustomerAddress::where('id', $value)->first();
 
+            $this->is_business = $this->cart->is_company != 0;
+            $this->customer_id = $this->cart->customer_id;
 
+            $this->data = [
+                'uid' => !empty($address->uid) ? $address->uid : $this->cart->uid,
+                'first_name' => !empty($address->first_name) ? $address->first_name : $this->cart->first_name,
+                'last_name' => !empty($address->last_name) ? $address->last_name : $this->cart->last_name,
+                'phone' => !empty($address->phone) ? $address->phone : $this->cart->phone,
+                'cellphone' => !empty($address->cellphone) ? $address->cellphone : $this->cart->cellphone,
+                'email' => !empty($address->email) ? $address->email : $this->cart->email,
+                'address_commune_id' => $address->commune_id,
+                'address_street' => $address->street,
+                'address_number' => $address->number,
+                'address_office' => $address->subnumber,
+                'business_name' => $this->cart->business_name,
+                'receiver_name' => $this->cart->receiver_name,
+                'shipping_details' => $this->cart->shipping_details
+            ];
+
+            $invoice = [];
+
+            // if(!empty($address->uid)) {
+            //     $this->anotherDataInvoice = true;
+            // } else {
+            //     $this->anotherDataInvoice = false;
+            // }
+            
+            return;
         }
 
+        $this->is_business = $this->cart->is_company != 0;
+        $this->customer_id = $this->cart->customer_id;
 
+        $this->data = [
+            'uid' => $this->cart->uid,
+            'first_name' => $this->cart->first_name,
+            'last_name' => $this->cart->last_name,
+            'phone' => $this->cart->phone,
+            'cellphone' => $this->cart->cellphone,
+            'email' => $this->cart->email,
+            'address_commune_id' => $this->cart->address_commune_id ?? (session()->get('commune_id') ?? null),
+            'address_street' => $this->cart->address_street,
+            'address_number' => $this->cart->address_number,
+            'address_office' => $this->cart->address_office,
+            'business_name' => $this->cart->business_name,
+            'receiver_name' => $this->cart->receiver_name,
+            'shipping_details' => $this->cart->shipping_details
+        ];
 
+        $invoice = [];
+        $this->anotherDataInvoice = false;
 
+        if ($this->cart->invoice_value) {
+            $invoice = json_decode($this->cart->invoice_value, true);
+            if (array_key_exists('status', $invoice)) {
+                $this->anotherDataInvoice = $invoice['status'];
+            }
+        }
 
+        $this->invoice = [
+            'status' => $this->anotherDataInvoice,
+            'uid' => array_key_exists('uid', $invoice) ? $invoice['uid'] : '',
+            'first_name' =>  array_key_exists('first_name', $invoice) ? $invoice['first_name'] : '',
+            'last_name' =>  array_key_exists('last_name', $invoice) ? $invoice['last_name'] : '',
+            'phone' =>  array_key_exists('phone', $invoice) ? $invoice['phone'] : '',
+            'cellphone' =>  array_key_exists('cellphone', $invoice) ? $invoice['cellphone'] : '',
+            'email' =>  array_key_exists('email', $invoice) ? $invoice['email'] : '',
+            'address_commune_id' =>  array_key_exists('address_commune_id', $invoice) ? $invoice['address_commune_id'] : '',
+            'address_street' =>  array_key_exists('address_street', $invoice) ? $invoice['address_street'] : '',
+            'address_number' =>  array_key_exists('address_number', $invoice) ? $invoice['address_number'] : '',
+            'address_office' =>  array_key_exists('address_office', $invoice) ? $invoice['address_office'] : '',
+            'business_activity_id' => array_key_exists('business_activity_id', $invoice) ? $invoice['business_activity_id'] : '',
+            'is_business' => array_key_exists('is_business', $invoice) ? $invoice['is_business'] : false,
+            'business_name' => array_key_exists('business_name', $invoice) ? $invoice['business_name'] : '',
+        ];
+
+        return;
     }
 }
