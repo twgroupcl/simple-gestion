@@ -313,7 +313,10 @@ class Checkout extends Component
             return $this->emit('showToast', '¡Stock insuficiente!', 'Verifique la cantidad de sus productos.', 3000, 'warning');
         }
 
-        $checkCovepaCusomterExists = $this->checkCovepaCustomerExists(rutWithoutDV($this->cart->uid));
+        // Cliente de covepa debe ser creado en base a la informacion de facturacion
+        $invoiceData = (object) $this->cart->getInvoiceData();
+
+        $checkCovepaCusomterExists = $this->checkCovepaCustomerExists(rutWithoutDV($invoiceData->uid));
 
         if ($checkCovepaCusomterExists == 2) {
             return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles.', 3000, 'warning');
@@ -322,30 +325,30 @@ class Checkout extends Component
         if ($checkCovepaCusomterExists == 0) {
 
             $customerData = [
-                'id' => rutWithoutDV($this->cart->uid),
-                'uid' => sanitizeRUT($this->cart->uid),
-                'taxable' => (bool) $this->cart->is_company,
+                'id' => rutWithoutDV($invoiceData->uid),
+                'uid' => sanitizeRUT($invoiceData->uid),
+                'taxable' => (bool) $invoiceData->is_company,
                 'default_billing' => 1,
                 'default_shipping' => 1,
                 'confirmation' => Carbon::now()->format('d/m/Y'),
-                'email' => $this->cart->email,
-                'cellphone' => !empty($this->cart->phone) ? $this->cart->phone : null,
-                'telephone' => $this->cart->cellphone,
-                'firstname' => $this->cart->first_name,
-                'lastname' => $this->cart->last_name,
+                'email' => $invoiceData->email,
+                'telephone' => !empty($invoiceData->phone) ? $invoiceData->phone : null,
+                'cellphone' => $invoiceData->cellphone,
+                'firstname' => $invoiceData->is_company ? $invoiceData->business_name : $invoiceData->first_name,
+                'lastname' => $invoiceData->is_company ? null : $invoiceData->last_name,
                 'addresses' => [
                     [
                         'id' => 1,
-                        'city_id' => CovepaHelper::COMMUNE_MAPPING[$this->cart->address_commune_id]['id_city'],
-                        'street' => $this->cart->address_street,
-                        'number' => $this->cart->address_number,
-                        'telephone' => $this->cart->cellphone,
-                        'cellphone' => !empty($this->cart->phone) ? $this->cart->phone : null,
-                        'taxable' => (bool) $this->cart->is_company,
-                        'uid' => sanitizeRUT($this->cart->uid),
-                        'firstname' => $this->cart->first_name,
-                        'lastname' => $this->cart->last_name,
-                        'sii_activity' => CovepaHelper::GIRO_MAPPING[$this->cart->json_value['business_activity_id']] ?? null,
+                        'city_id' => CovepaHelper::COMMUNE_MAPPING[$invoiceData->address_commune_id]['id_city'],
+                        'street' => $invoiceData->address_street,
+                        'number' => $invoiceData->address_number,
+                        'cellphone' => $invoiceData->cellphone,
+                        'telephone' => !empty($invoiceData->phone) ? $invoiceData->phone : null,
+                        'taxable' => (bool) $invoiceData->is_company,
+                        'uid' => sanitizeRUT($invoiceData->uid),
+                        'firstname' => $invoiceData->is_company ? $invoiceData->business_name : $invoiceData->first_name,
+                        'lastname' => $invoiceData->is_company ? null : $invoiceData->last_name,
+                        'sii_activity' => CovepaHelper::GIRO_MAPPING[$invoiceData->business_activity_id] ?? null,
 
                         'default_shipping' => true,
                         'default_billing' => true,
