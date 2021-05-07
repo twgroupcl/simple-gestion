@@ -407,6 +407,11 @@ class Checkout extends Component
 
         if ($this->cart->invoice_value) {
             $addressInvoiceCart = $this->cart->invoice_value;
+            $addressInvoiceCart = json_decode($addressInvoiceCart, true);
+            
+            if ($addressInvoiceCart['is_business'] == true) {
+                $addressInvoiceCart['first_name'] = $addressInvoiceCart['business_name'];
+            }
         }
 
         $addressData = [
