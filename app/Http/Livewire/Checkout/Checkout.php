@@ -336,7 +336,7 @@ class Checkout extends Component
                 'telephone' => !empty($invoiceData->phone) ? $invoiceData->phone : null,
                 'cellphone' => $invoiceData->cellphone,
                 'firstname' => $invoiceData->is_company ? $invoiceData->business_name : $invoiceData->first_name,
-                'lastname' => $invoiceData->is_company ? null : $invoiceData->last_name,
+                'lastname' => $invoiceData->is_company ? $invoiceData->business_name : $invoiceData->last_name,
                 'addresses' => [
                     [
                         'id' => 1,
