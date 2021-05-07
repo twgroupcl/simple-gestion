@@ -42,6 +42,10 @@ class AddToCart extends Component
 
         $this->validate();
 
+        if ($this->view == 'standard') {
+            $this->emit('set.loading');
+        }
+        
         $this->emit('cart:add', $this->product, $this->qty);
     }
 

@@ -1,5 +1,6 @@
 
 <div class="container mb-5 pb-3">
+    <div class="loading" wire:loading>Cargando&#8230;</div>
     <div class="bg-light box-shadow-lg rounded-lg overflow-hidden">
         <div class="row">
             <!-- Content-->
