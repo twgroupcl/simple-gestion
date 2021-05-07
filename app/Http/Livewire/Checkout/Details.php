@@ -125,8 +125,6 @@ class Details extends Component
         if ($this->anotherDataInvoice) {
             $dynamicRules = array_merge($dynamicRules, [
                 'invoice.uid' => ['required', new RutRule()],
-                'invoice.first_name' => 'required|min:2|max:40',
-                'invoice.last_name' => 'required|min:2|max:40',
                 'invoice.phone' => ['required', new PhoneRule('El número ingresado no es válido')],
                 'invoice.cellphone' => [new PhoneRule('El número ingresado no es válido')],
                 'invoice.email' => 'required|email',
@@ -138,10 +136,15 @@ class Details extends Component
                 // 'invoice.business_name' => 'required|min:3',
             ]);
 
-            if($this->invoice['is_business']){
+            if ($this->invoice['is_business']) {
                 $dynamicRules = array_merge($dynamicRules, [
                     'invoice.business_activity_id' => 'required|exists:business_activities,id',
                     'invoice.business_name' => 'required|min:3',
+                ]);
+            } else {
+                $dynamicRules = array_merge($dynamicRules, [
+                    'invoice.first_name' => 'required|min:2|max:40',
+                    'invoice.last_name' => 'required|min:2|max:40',
                 ]);
             }
         }
