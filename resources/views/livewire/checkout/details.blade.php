@@ -7,6 +7,20 @@
     </p>
     <!-- Shipping detail-->
     <div class="row pb-4">
+        @if(!empty($customer_id))
+        <div class="col-sm-12 form-group">
+            <label for="addresses">Mis direcciones <span class='text-danger'>*</span></label>
+            <select class="custom-select" wire:model="addresses_customer_id" id="addresses">
+                <option value>Seleccione una dirección</option>
+                @foreach (\App\Models\CustomerAddress::where('customer_id', $customer_id)->orderBy('id', 'asc')->get() as $addresses)
+                    <option 
+                        value="{{ $addresses->id }}"
+                    >{{ $addresses->street }} {{ $addresses->number }} {{ $addresses->subnumber }}, {{ $addresses->commune->name }}</option>
+                @endforeach
+            </select>
+            @error('data.addresses_customer_id') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+        @endif
         <div class="col-12 form-group text-left">
             <div class="custom-control custom-checkbox pb-3 mb-3">
                 <input class="custom-control-input" type="checkbox" id="is-business" wire:model="is_business">
