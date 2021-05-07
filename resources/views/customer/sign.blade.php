@@ -15,6 +15,15 @@
         </div>
         @endif
 
+        @if (session('error_message'))
+        <div class="alert alert-danger alert-with-icon" role="alert">
+            <div class="alert-icon-box">
+                <i class="alert-icon czi-check-circle"></i>
+            </div>
+            {{ session('error_message') }}
+        </div>
+        @endif
+
         @if (session('success'))
         <div class="alert alert-success alert-with-icon" role="alert">
             <div class="alert-icon-box">

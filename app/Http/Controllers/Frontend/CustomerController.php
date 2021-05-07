@@ -95,6 +95,14 @@ class CustomerController extends Controller
                     Log::warning('Cliente no pudo ser creado', ['api_response' => $createResponse]);
                     return redirect()->route('customer.sign')->withInput()->with('error', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde');
                 }
+
+            } else if (isset($response['email']) && $response['email'] != $customer->email) {
+                $updateCustomer = $covepaService->updateCustomerEmail(rutWithoutDV($customer->uid), $customer->email);
+
+                if ($updateCustomer->getStatusCode() != 200) {
+                    \Log::error('Error actualizando el correo del customer desde el CustomerController', ['error' => $updateCustomer->getBody()->getContents(), 'data' => ['email' => $customer->email, 'id' => rutWithoutDV($customer->uid)]]);  
+                    return redirect()->route('customer.sign')->withInput()->with('error', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde. COD: RC-002');
+                }
             }
 
             $customer->save();
@@ -128,7 +136,7 @@ class CustomerController extends Controller
             return redirect('home');
         }
 
-        return view('customer.sign')->with('error', 'Upps! Las credenciales son incorrectas.');
+        return redirect()->route('customer.sign')->withInput()->with('error', 'Upps! Las credenciales son incorrectas.');
     }
 
     public function logout()
