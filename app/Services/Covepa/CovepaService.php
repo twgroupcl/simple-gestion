@@ -287,7 +287,7 @@ class CovepaService
 
         $orderData = [
             "VTAGEN_VTAREL" => $order->id,
-            "DOCMTO_CODTRI" => $$invoiceData['is_company'] ? '25' : '26',
+            "DOCMTO_CODTRI" => $invoiceData['is_company'] ? '25' : '26',
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
 
             "SUJSUC_CODIGO" => 0, // codigo sucursal
@@ -318,10 +318,8 @@ class CovepaService
             "VTADIR_NOMCIU" => $invoiceCommune->name,
             "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_city'],
             "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$invoiceCommune->id]['id_commune'],
-            "TIPVAL_COD055" => $order->is_company 
-                                        ? (empty($invoiceAddress->business_activity_id)
-                                            ? 0
-                                            : CovepaHelper::GIRO_MAPPING[$invoiceAddress->business_activity_id] ?? 0) 
+            "TIPVAL_COD055" => $invoiceData['is_company'] 
+                                        ? (CovepaHelper::GIRO_MAPPING[$invoiceData['business_activity_id']] ?? 0 )
                                         : 0,
             "VTADET" => $itemsDetails,
             "VTAPLA" => $shippingDetails ,
