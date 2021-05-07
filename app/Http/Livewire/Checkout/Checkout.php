@@ -412,6 +412,8 @@ class Checkout extends Component
             if ($addressInvoiceCart['is_business'] == true) {
                 $addressInvoiceCart['first_name'] = $addressInvoiceCart['business_name'];
             }
+
+            $addressInvoiceCart = json_encode($addressInvoiceCart);
         }
 
         $addressData = [
