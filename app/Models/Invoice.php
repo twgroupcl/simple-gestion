@@ -286,6 +286,10 @@ class Invoice extends Model
     {
         $string = '';
 
+        if (isset($this->folio)) {
+            $string .= 'F' . $this->folio . ' - ';
+        }
+
         if (isset($this->title)) {
             $string = $this->title . ' - ';
         }

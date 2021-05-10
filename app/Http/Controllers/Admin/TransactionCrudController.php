@@ -487,7 +487,9 @@ class TransactionCrudController extends CrudController
 
         // Filter by search term
         if ($search_term) {
-            $results = $options->whereRaw('LOWER(title) like ?', '%'.strtolower($search_term).'%')->paginate(10);
+            $term = '%'.strtolower($search_term).'%';
+            $results = $options->whereRaw('LOWER(title) like ?', $term)
+                               ->orWhereRaw('CONCAT("F", folio) like ?', $term)->paginate(10);
         } else {
             $results = $options->paginate(10);
         }
