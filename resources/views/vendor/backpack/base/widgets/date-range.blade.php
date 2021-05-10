@@ -1,6 +1,6 @@
 <div class="col-12">
-    <div class="row {{$widget['content']['wrapperClass']}}">
-        <span class="font-weight-bold">{{$widget['content']['title']}}</span>
+    <div class="row {{array_key_exists('wrapperClass', $widget)? $widget['content']['wrapperClass'] : ''}}">
+        <span class="font-weight-bold">{{array_key_exists('wrapperClass', $widget) ? $widget['content']['title'] : ''}}</span>
     </div>
     <div class="row {{$widget['wrapperClass']['row'] ?? ''}}">
         <div class="form-group {{$widget['wrapperClass']['date_width'] ?? 'col-md-12'}}">
