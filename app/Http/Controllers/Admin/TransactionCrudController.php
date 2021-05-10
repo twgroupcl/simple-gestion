@@ -6,7 +6,11 @@ use App\Http\Requests\TransactionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Models\{ Invoice, Transaction };
+use App\Models\{
+    Invoice,
+    Transaction,
+    BankAccount,
+};
 use App\Exports\TransactionExport;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
@@ -91,7 +95,6 @@ class TransactionCrudController extends CrudController
             'type' => 'model_function',
             'function_name' => 'getTotalAmount',
         ]);
-
 
         CRUD::addColumn([
             'name' => 'accounting_account',
@@ -572,6 +575,21 @@ class TransactionCrudController extends CrudController
                 $query->where('is_payment', $value);
             });
         });
+
+        $this->crud->addFilter([
+          'type'  => 'select2',
+          'name'  => 'bank_account',
+          'label' => 'Cuenta afectada'
+        ],
+        function () {
+            return BankAccount::whereHas('transactions')->get()
+                                                        ->pluck('account_number', 'id')
+                                                        ->toArray();
+        },
+        function ($value) {
+            $this->crud->addClause('where', 'bank_account_id', $value);
+        });
+
     }
 
 }
