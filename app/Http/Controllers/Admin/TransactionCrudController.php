@@ -126,7 +126,7 @@ class TransactionCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'payment_or_expense',
-            'label' => 'Cargo/Gasto',
+            'label' => 'Abono/Gasto',
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
@@ -557,11 +557,11 @@ class TransactionCrudController extends CrudController
         $this->crud->addFilter([
           'type'  => 'select2',
           'name'  => 'payment_or_expense',
-          'label' => 'Cargo/Gasto'
+          'label' => 'Abono/Gasto'
         ],
         function () {
             return [
-                1 => 'Cargo',
+                1 => 'Abono',
                 0 => 'Gasto',
             ];
         },
