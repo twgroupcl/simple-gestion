@@ -142,7 +142,7 @@
                                 </div>
                                 @endif
                                 <small>
-                                    <p>Metodos de envíos disponibles (Puede variar de acuerdo a la comuna):</p>
+                                    <p>Métodos de envíos disponibles (puede variar de acuerdo a la comuna):</p>
 
                                     <ul>
                                         @foreach($product->seller->getResumeAvailableShippingMethods() as $method)
