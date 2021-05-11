@@ -53,6 +53,60 @@
                     @if($seller->return_policy)
                         <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
                     @endif
+                    @if($seller->addresses)
+                        @php
+                            $sellerAddress = $seller->addresses[0];
+                        @endphp
+                        <h6>Dirección</h6>
+                        @if($sellerAddress->commune)
+                            <p class="font-size-ms text-muted mb-0">Comuna: {{$sellerAddress->commune->name}}</p>
+                        @endif
+                        @if($sellerAddress->street)
+                            <p class="font-size-ms text-muted mb-0">Calle: {{$sellerAddress->street}}</p>
+                        @endif
+                        @if($sellerAddress->number)
+                            <p class="font-size-ms text-muted mb-0">Número: {{$sellerAddress->number}}</p>
+                        @endif
+                        @if($sellerAddress->subnumber)
+                            <p class="font-size-ms text-muted mb-0">Casa/Dpto/Oficina: {{$sellerAddress->subnumber}}</p>
+                        @endif
+                        <br>
+                    @endif
+                      @if($seller->web)
+                        <h6>Web</h6>
+                        <a 
+                            class="font-size-ms text-muted" 
+                            target="_blank"
+                            @if (Illuminate\Support\Str::startsWith($seller->web, 'https://') || Illuminate\Support\Str::startsWith($seller->web, 'http://',))
+                                href="{{ $seller->web }}" 
+                            @else
+                                href="{{ 'https://' . $seller->web }}" 
+                            @endif
+                        >
+                            {{$seller->web}}
+                        </a>
+                        <br>
+                        <br>
+                    @endif
+                    
+                    @if($seller->contacts_data)
+                        <h6>Redes Sociales</h6>
+                            @foreach($seller->contacts_data as $socialMedia)
+                                <a 
+                                    class="font-size-ms text-muted" 
+                                    target="_blank"
+                                    @if (Illuminate\Support\Str::startsWith($socialMedia['url'], 'https://') || Illuminate\Support\Str::startsWith($socialMedia['url'], 'http://')) 
+                                        href="{{ $socialMedia['url'] }}" 
+                                    @else
+                                        href="{{ 'https://' . $socialMedia['url'] }}" 
+                                    @endif
+                                >
+                                    {{$socialMedia['url']}}
+                                </a>                    
+                            @endforeach
+                        <br>
+                        <br>
+                    @endif
                     <hr class="my-4">
                     <!--
                         <h6>Contacts</h6>
