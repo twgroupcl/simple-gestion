@@ -113,6 +113,15 @@
                             </div>
                         </div>
                         @endif
+                        <small>
+                            <p>Metodos de envíos disponibles (Puede variar de acuerdo a la comuna):</p>
+
+                            <ul>
+                                @foreach($parentProduct->seller->getResumeAvailableShippingMethods() as $method)
+                                    <li>{{$method->title}}</li>
+                                @endforeach
+                            </ul>
+                        </small>
                         <!--
                             <div class="d-flex mb-4">
                                 <div class="w-100 mr-3">

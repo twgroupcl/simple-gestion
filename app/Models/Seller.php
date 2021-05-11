@@ -143,6 +143,16 @@ class Seller extends Model
         return $shippingConfig->getAvailableShippingMethodCodes();
     }
 
+    public function getResumeAvailableShippingMethods()
+    {
+        $availableShippingMethods = CommuneShippingMethod::where([ 'seller_id' => $this->id ])->get()->map(function($communeShippingMethod) {
+            return $communeShippingMethod->getAvailableShippingMethodCodes();
+        })->flatten()->unique();
+        $finalMethods = ShippingMethod::whereIn('code', $availableShippingMethods)->where('status', 1)->get();
+        
+        return $finalMethods;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
