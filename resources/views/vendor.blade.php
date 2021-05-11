@@ -53,6 +53,11 @@
                     @if($seller->return_policy)
                         <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
                     @endif
+                    @if($seller->legal_representative_name)
+                        <h6>Representante</h6>
+                        <p class="font-size-ms text-muted mb-0">{{$seller->legal_representative_name}}</p>
+                        <br>
+                    @endif
                     @if($seller->addresses)
                         @php
                             $sellerAddress = $seller->addresses[0];
