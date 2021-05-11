@@ -65,7 +65,7 @@
                     </ul>
                 </div>
             </div> --}}
-            <div class="col-md-12 mb-4">
+            <div class="col-md-12 mb-4 d-none d-md-block">
                 <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
 
                 {{-- <div class="widget pb-2 mb-2">
@@ -129,6 +129,9 @@
                         <div class="mb-2"><a class="btn-market btn-google" href="#" role="button"><span class="btn-market-subtitle">Download on the</span><span class="btn-market-title">Google Play</span></a></div>
                     </div>
                 </div> --}}
+            </div>
+            <div class="col-md-12 mb-4 d-block d-sm-block d-md-none">
+                <img class="img-fluid" src="{{ asset('img/logos/footer_mobile.png') }}" alt="Footer" />
             </div>
         </div>
     </div>
