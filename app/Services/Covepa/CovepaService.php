@@ -11,7 +11,7 @@ use App\Services\Covepa\Helpers as CovepaHelper;
 
 class CovepaService
 {
-    const CACHE_SECONDS_API_TOKEN = 7200;
+    const CACHE_SECONDS_API_TOKEN = 3600;
     
     private $baseUrl = 'http://216.155.76.46:8080/ServApi/rest';
 
