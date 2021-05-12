@@ -77,6 +77,7 @@ class Seller extends Model
         'user_id',
         'company_id',
         'slug',
+        'maximun_days_for_shipped',
     ];
 
     protected $hidden = [
