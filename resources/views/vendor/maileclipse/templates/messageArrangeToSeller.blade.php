@@ -133,17 +133,9 @@ use App\Models\Product;
                                             cellpadding="0">
                                             <tbody>
                                                 <tr>
-                                                    <td style="font-size: 30px; text-align: center; background:#fa4239;"><br />{{config('app.name')}}<br /><br /></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table class="force-full-width" style="margin: 0 auto;padding-top:15px;"
-                                            cellspacing="0" cellpadding="0" bgcolor="#f5774e">
-                                            <tbody>
-                                                <tr style="padding-top:15px;">
-                                                    <td> <br><br> </td>
-                                                </tr>
-                                                <tr style="padding-top:15px;">
+                                                    <td style="font-size: 30px; text-align: center;"><br /><img
+                                                            src="{{ asset('img/logos/logo-crcp.png') }}"
+                                                            alt="CRCP" /><br /><br /></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -153,20 +145,19 @@ use App\Models\Product;
                                             <tbody>
                                                 <tr>
                                                     <td style="background-color: #f5774e;">
+                                                       <p style="color: #ffffff;">
+                                                            Saludos cordiales,
+                                                       </p>
+                                                       <p style="color: #ffffff;">
+                                                            Le notificamos que un cliente ha dejado un mensaje para acordar el envío de sus productos. 
+                                                       </p>
+                                                       <br />
                                                         <center>
                                                            <div>
-                                                               <p style="color: #ffffff;">
-                                                                    Saludos cordiales, el siguiente correo electrónico es para 
-                                                                    notificarle que un cliente ha dejado un mensaje para acordar el envío de la orden 
-                                                                    <strong>#{{$order->id}}</strong>:
-                                                               </p>
-                                                               <p><strong>Cliente:</strong> {{$order->first_name}} {{$order->last_name}}</p>
-                                                               <p><strong>Mensaje:</strong></p>
-                                                               @php
-                                                                   $sellerMessage = json_decode($order->arrange_messages, true);
-                                                                   $sellerMessage =  $sellerMessage[$seller->id];
-                                                               @endphp
-                                                               <p><small>{{$sellerMessage}}</small></p>
+                                                               <p style="color: #ffffff;"><strong>Orden: #{{$order->id}}</strong></p>
+                                                               <p style="color: #ffffff;"><strong>Cliente:</strong> {{$order->first_name}} {{$order->last_name}}</p>
+                                                               <p style="color: #ffffff;"><strong>Mensaje:</strong></p>
+                                                               <p style="color: #ffffff;">{{$sellerMessage}}</p>
                                                            </div>
                                                         </center>
                                                     </td>
