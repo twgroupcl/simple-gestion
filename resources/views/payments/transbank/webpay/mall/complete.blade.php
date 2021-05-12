@@ -416,6 +416,25 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                 </div>
             </div>
         </div>
+        <div class="pt-1">
+            <div class="card py-1 mt-sm-1">
+                <div class="card-body text-center">
+                    <p class="font-size-sm mb-2">Hay productos que poseen "Envio a convenir con el vendedor". Puede dejarle un mensaje a cada uno de ellos.</p>
+                        @php
+                            $sellersArrange = $order->order_items()->with('seller')->whereHas('shipping', function($query) {
+                                $query->where('code', 'arrange_with_seller');
+                            })->get()->map(function($item) {
+                                return $item->seller;
+                            });
+                        @endphp
+                        @foreach($sellersArrange as $seller)
+                            <div class="col-md-6">
+                            @livewire('send-message-to-seller',['seller' => $seller, 'order' => $order])
+                            </div>
+                        @endforeach
+                </div>
+            </div>
+        </div>
         <div class="pt-5">
             <div class="card py-3 mt-sm-3">
                 <div class="card-body text-center">
