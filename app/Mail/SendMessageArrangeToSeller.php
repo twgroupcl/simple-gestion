@@ -37,6 +37,6 @@ class NotificationSuscription extends Mailable
      */
     public function build()
     {
-        return $this->subject('Un cliente ha dejado un mensaje para acordar envío.')->view('maileclipse::templates.notificationSuscriptionTemplate');
+        return $this->subject('Un cliente ha dejado un mensaje para acordar envío.')->view('maileclipse::templates.messageArrangeToSeller');
     }
 }
