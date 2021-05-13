@@ -49,6 +49,9 @@ class ProductCategory extends Model
         static::addGlobalScope(new CompanyBranchScope);
     }
 
+    /**
+     * Get all the childrens categories IDs
+     */
     public function getChildrensId($array = [])
     {
         if (!$this->children->count()) {

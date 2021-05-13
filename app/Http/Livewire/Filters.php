@@ -61,21 +61,30 @@ class Filters extends Component
     public function loadAttributes() 
     {
         $category_id = $this->data['category'] ?? null;
+        $childrenIds = null;
+        if ($category_id) {
+            $childrenIds = ProductCategory::find($category_id)->getChildrensId();
+            $childrenIds[] = $category_id;
+        }
 
-        $this->attributes = ProductClassAttribute::where('json_options','<>','[]')
+        $this->attributes = ProductClassAttribute::withCount('product_attributes')
+        ->where('json_options','<>','[]')
         ->where('json_attributes->type_attribute','select')
-        ->whereHas('product_attributes', function ($query) use ($category_id) {
+        ->whereHas('product_attributes', function ($query) use ($category_id, $childrenIds) {
             return $query->where('json_value', '<>', '')
                          ->where('json_value', 'NOT LIKE', "%*%")
-                         ->when($category_id, function ($query) use ($category_id) {
-                            return $query->whereHas('product', function ($query) use ($category_id)  {
-                                return $query->whereHas('categories', function ($query) use ($category_id)  {
-                                    return $query->where('id', $category_id);
+                         ->when($category_id, function ($query) use ($childrenIds) {
+                            return $query->whereHas('product', function ($query) use ($childrenIds)  {
+                                return $query->whereHas('categories', function ($query) use ($childrenIds)  {
+                                    return $query->whereIn('id', $childrenIds);
                                 });
                             });
                         })
                 ->groupBy('json_value');
-        })->get();
+        })
+        ->limit(10)
+        ->orderBy('product_attributes_count')
+        ->get();
     }
 
     public function loadCategories() 
