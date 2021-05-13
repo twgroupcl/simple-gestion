@@ -148,8 +148,8 @@
                                         $sellerAddress = $product->seller->addresses[0];
                                     @endphp
                                     <small><strong>Dirección</strong></small>
-                                    @if($sellerAddress->commune)
-                                        <p class="font-size-ms text-muted mb-0">Comuna: {{$sellerAddress->commune->name}}</p>
+                                    @if($sellerAddress->commune_id)
+                                        <p class="font-size-ms text-muted mb-0">Comuna: {{\App\Models\Commune::find($sellerAddress->commune_id)->name}}</p>
                                     @endif
                                     @if($sellerAddress->street)
                                         <p class="font-size-ms text-muted mb-0">Calle: {{$sellerAddress->street}}</p>
@@ -160,20 +160,19 @@
                                     @if($sellerAddress->subnumber)
                                         <p class="font-size-ms text-muted mb-0">Casa/Dpto/Oficina: {{$sellerAddress->subnumber}}</p>
                                     @endif
-                                    @if($sellerAddress->email)
-                                        <p class="font-size-ms text-muted mb-0">Email: {{$sellerAddress->email}}</p>
+                                    @if ($product->seller->email)
+                                        <p class="font-size-ms text-muted mb-0">Email: {{$product->seller->email}}</p>
                                     @endif
-                                    @if($sellerAddress->cellphone)
-                                        <p class="font-size-ms text-muted mb-0">Tél.: {{$sellerAddress->cellphone}} </p>
+                                    @if ($product->seller->phone)
+                                        <p class="font-size-ms text-muted mb-0">Teléfono: {{$product->seller->phone}}</p>
                                     @endif
-                                    @if($sellerAddress->phone)
-                                        <p class="font-size-ms text-muted mb-0">Tél.: {{$sellerAddress->phone}} </p>
+                                    @if ($product->seller->cellphone)
+                                        <p class="font-size-ms text-muted mb-0">Celular: {{$product->seller->cellphone}}</p>
                                     @endif
                                     <br>
                                 @endif
                                 <small>
                                     <p>Métodos de envíos disponibles (puede variar de acuerdo a la comuna):</p>
-
                                     <ul>
                                         @foreach($product->seller->getResumeAvailableShippingMethods() as $method)
                                             <li>{{$method->title}}</li>

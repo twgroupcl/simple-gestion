@@ -68,7 +68,7 @@
                             <p class="font-size-ms text-muted mb-0">Email: {{$seller->email}}</p>
                         @endif
                         @if ($seller->phone)
-                            <p class="font-size-ms text-muted mb-0">Teléfono: {{$seller->email}}</p>
+                            <p class="font-size-ms text-muted mb-0">Teléfono: {{$seller->phone}}</p>
                         @endif
                         @if ($seller->cellphone)
                             <p class="font-size-ms text-muted mb-0">Celular: {{$seller->cellphone}}</p>
