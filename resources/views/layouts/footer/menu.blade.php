@@ -206,6 +206,7 @@
                         </ul>
                         <span class="font-size-md text-light"><a href="mailto:contigopyme@crcpvalpo.cl">contigopyme@crcpvalpo.cl</a></span>
                     </div>
+                    <span class="font-size-md text-light"><a href="tel:+56322354000">(+56) 32 235 4000</a></span>
                 </div>
                 <div class="col-md-6 text-center text-md-right mb-4">
                     <div class="mb-3">
