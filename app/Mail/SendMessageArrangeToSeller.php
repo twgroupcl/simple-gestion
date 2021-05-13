@@ -30,7 +30,7 @@ class SendMessageArrangeToSeller extends Mailable
         $this->order = $order;
 
         $sellerMessage = is_array($order->arrange_messages) ? $order->arrange_messages : json_decode($order->arrange_messages, true);
-        $this->sellerMessage =  $sellerMessage[$seller->id] ?? '';
+        $this->sellerMessage =  $sellerMessage[$seller->id]['message'] ?? '';
     }
 
     /**

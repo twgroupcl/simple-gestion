@@ -13,12 +13,20 @@ class SendMessageToSeller extends Component
     public $seller;
     public $order;
 
-    protected function rules()
-    {
-        return [
-            'order.arrange_messages.*' => 'required:min:6:max:500',
-        ];
-    } 
+    protected $rules = [
+        'order.arrange_messages.*.message' => 'required|string|min:6|max:500',
+    ];
+
+    protected $messages = [
+        'order.arrange_messages.*.message.required' => 'El mensaje es requerido para enviar',
+        'order.arrange_messages.*.message.min' => 'Debe contener al menos 6 letras',
+        'order.arrange_messages.*.message.max' => 'Se ha superado el límite del mensaje (500 caracteres)',
+    ];
+
+    protected $validationAttributes = [
+        'order.arrange_messages.*.message' => 'Mensaje'
+    ];
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -26,17 +34,25 @@ class SendMessageToSeller extends Component
 
     public function mount()
     {
-        $this->enable = true;
+        $sellerMessages = is_array($this->order->arrange_messages) ? 
+            $this->order->arrange_messages : 
+            json_decode($this->order->arrange_messages, true);
+        //$sellerMessages = $sellerMessages[$this->seller->id]['send'] ?? null;
+        $this->enable = $sellerMessages !== true ?? true;
     }
 
     public function send()
     {
-        $this->validate();
-        $this->order->updateWithoutEvents();
+        $validatedData = $this->validate();
         try {
             \Mail::send(new SendMessageArrangeToSeller($this->seller, $this->order));
+            $sellerMessage = $this->order->arrange_messages;
+            $sellerMessage[$this->seller->id]['send'] = true;
+            $this->order->arrange_messages = $sellerMessage;
+            $this->order->updateWithoutEvents();
+            $this->enable = false;
         } catch(\Exception $e) {
-            dd($e);
+            $this->enable = 'error';
         }
     }
 
