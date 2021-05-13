@@ -114,9 +114,9 @@
                         </div>
                         @endif
                         <p> Información sobre el vendedor </p>
-                        @if($product->seller->addresses)
+                        @if($parentProduct->seller->addresses)
                             @php
-                                $sellerAddress = $product->seller->addresses[0];
+                                $sellerAddress = $parentProduct->seller->addresses[0];
                             @endphp
                             <small><strong>Dirección</strong></small>
                             @if($sellerAddress->commune)
