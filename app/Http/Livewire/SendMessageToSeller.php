@@ -19,7 +19,7 @@ class SendMessageToSeller extends Component
 
     protected $messages = [
         'order.arrange_messages.*.message.required' => 'El mensaje es requerido para enviar',
-        'order.arrange_messages.*.message.min' => 'Debe contener al menos 6 letras',
+        'order.arrange_messages.*.message.min' => 'Debe contener al menos 6 caracteres',
         'order.arrange_messages.*.message.max' => 'Se ha superado el límite del mensaje (500 caracteres)',
     ];
 
@@ -37,7 +37,7 @@ class SendMessageToSeller extends Component
         $sellerMessages = is_array($this->order->arrange_messages) ? 
             $this->order->arrange_messages : 
             json_decode($this->order->arrange_messages, true);
-        //$sellerMessages = $sellerMessages[$this->seller->id]['send'] ?? null;
+        $sellerMessages = $sellerMessages[$this->seller->id]['send'] ?? null;
         $this->enable = $sellerMessages !== true ?? true;
     }
 
