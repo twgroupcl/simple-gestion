@@ -193,6 +193,8 @@ class CovepaService
         $invoiceFullName = empty($invoiceAddress->first_name) ? $fullName : $invoiceAddress->first_name . ' ' . $invoiceAddress->last_name;
         $invoiceData = $order->getInvoiceData();
 
+        $fullInvoiceAddress = substr($fullInvoiceAddress, 0, 50);
+
         $itemsDetails = [];
         $shippingDetails = [];
 

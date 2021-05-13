@@ -23,14 +23,14 @@ class Details extends Component
 
     protected $rules = [
         //'business_name' => '',
-        'data.address_street' => 'required|min:3|max:50',
-        'data.address_number' => 'required|numeric|max:99999999999999999',
+        'data.address_street' => 'required|min:3|max:40',
+        'data.address_office' => 'max:10',
+        'data.address_number' => 'required|numeric|max:99999',
         'data.address_commune_id' => 'required',
         'data.email' => 'required|email',
         /* 'data.cellphone' => 'required|max:20', */
         'data.receiver_name' => 'max:255',
         'data.shipping_details' => 'max:500',
-        'data.address_office' => 'max:50',
         'data.uid' => ['required', 'asd'],
     ];
 
@@ -111,8 +111,8 @@ class Details extends Component
     private function getCustomRules()
     {
         $dynamicRules = [
-            'data.first_name' => 'required|min:2|max:40',
-            'data.last_name' => 'required|min:2|max:40',
+            'data.first_name' => 'required|min:2|max:25',
+            'data.last_name' => 'required|min:2|max:25',
         ];
 
         if ($this->is_business) {
@@ -128,9 +128,9 @@ class Details extends Component
                 'invoice.phone' => ['required', new PhoneRule('El número ingresado no es válido')],
                 'invoice.cellphone' => [new PhoneRule('El número ingresado no es válido')],
                 'invoice.email' => 'required|email',
-                'invoice.address_street' => 'required|max:50',
-                'invoice.address_number' => 'required|numeric|max:999999999999999',
-                'invoice.address_street' => 'required|max:50',
+                'invoice.address_street' => 'required|max:40',
+                'invoice.address_office' => 'max:10',
+                'invoice.address_number' => 'required|numeric|max:999999',
                 'invoice.address_commune_id' => 'required|exists:communes,id',
                 // 'invoice.business_activity_id' => 'required|exists:business_activities,id',
                 // 'invoice.business_name' => 'required|min:3',
@@ -143,8 +143,8 @@ class Details extends Component
                 ]);
             } else {
                 $dynamicRules = array_merge($dynamicRules, [
-                    'invoice.first_name' => 'required|min:2|max:40',
-                    'invoice.last_name' => 'required|min:2|max:40',
+                    'invoice.first_name' => 'required|min:2|max:25',
+                    'invoice.last_name' => 'required|min:2|max:25',
                 ]);
             }
         }
