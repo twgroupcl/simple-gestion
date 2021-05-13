@@ -61,8 +61,17 @@
                         @if($sellerAddress->subnumber)
                             <p class="font-size-ms text-muted mb-0">Casa/Dpto/Oficina: {{$sellerAddress->subnumber}}</p>
                         @endif
-                        @if($sellerAddress->commune)
-                            <p class="font-size-ms text-muted mb-0">Comuna: {{$sellerAddress->commune->name}}</p>
+                        @if($sellerAddress->commune_id)
+                            <p class="font-size-ms text-muted mb-0">Comuna: {{\App\Models\Commune::find($sellerAddress->commune_id)->name}}</p>
+                        @endif
+                        @if ($seller->email)
+                            <p class="font-size-ms text-muted mb-0">Email: {{$seller->email}}</p>
+                        @endif
+                        @if ($seller->phone)
+                            <p class="font-size-ms text-muted mb-0">Teléfono: {{$seller->email}}</p>
+                        @endif
+                        @if ($seller->cellphone)
+                            <p class="font-size-ms text-muted mb-0">Celular: {{$seller->cellphone}}</p>
                         @endif
                         <br>
                     @endif
