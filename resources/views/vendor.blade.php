@@ -42,17 +42,6 @@
                         <h6>Información</h6>
                         <p>{{$seller->description}}</p>
                     @endif
-                    @if($seller->privacy_policy)
-                        <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
-                        <br>
-                    @endif
-                    @if($seller->shipping_policy)
-                        <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
-                        <br>
-                    @endif
-                    @if($seller->return_policy)
-                        <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
-                    @endif
                     @if($seller->legal_representative_name)
                         <h6>Representante</h6>
                         <p class="font-size-ms text-muted mb-0">{{$seller->legal_representative_name}}</p>
@@ -63,9 +52,6 @@
                             $sellerAddress = $seller->addresses[0];
                         @endphp
                         <h6>Dirección</h6>
-                        @if($sellerAddress->commune)
-                            <p class="font-size-ms text-muted mb-0">Comuna: {{$sellerAddress->commune->name}}</p>
-                        @endif
                         @if($sellerAddress->street)
                             <p class="font-size-ms text-muted mb-0">Calle: {{$sellerAddress->street}}</p>
                         @endif
@@ -74,6 +60,9 @@
                         @endif
                         @if($sellerAddress->subnumber)
                             <p class="font-size-ms text-muted mb-0">Casa/Dpto/Oficina: {{$sellerAddress->subnumber}}</p>
+                        @endif
+                        @if($sellerAddress->commune)
+                            <p class="font-size-ms text-muted mb-0">Comuna: {{$sellerAddress->commune->name}}</p>
                         @endif
                         <br>
                     @endif
@@ -111,6 +100,21 @@
                             @endforeach
                         <br>
                         <br>
+                    @endif
+                    @if ($seller->privacy_policy || $seller->shipping_policy || $seller->return_policy)
+                        <h6>Políticas</h6>
+                    @endif
+
+                    @if($seller->privacy_policy)
+                        <a href="#" data-toggle="modal" data-policy="privacy_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Políticas de privacidad</a>
+                        <br>
+                    @endif
+                    @if($seller->shipping_policy)
+                        <a href="#" data-toggle="modal" data-policy="shipping_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de compra</a>
+                        <br>
+                    @endif
+                    @if($seller->return_policy)
+                        <a href="#" data-toggle="modal" data-policy="return_policy" data-target="#policy" class="font-size-ms text-muted go-policy">Política de devolución</a>
                     @endif
                     <hr class="my-4">
                     <!--
