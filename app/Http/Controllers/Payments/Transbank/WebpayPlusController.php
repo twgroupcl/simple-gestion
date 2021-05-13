@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\OrderLog;
 use App\Models\OrderItem;
 use App\Mail\OrderUpdated;
+use App\Mail\OrderPayedMail;
 use App\Models\OrderPayment;
 use Illuminate\Http\Request;
 use Transbank\Webpay\Webpay;
@@ -298,18 +299,18 @@ class WebpayPlusController extends Controller
             $sellers = $order->getSellers();
 
             //Order to customer
-            Mail::to($order->email)->send(new OrderUpdated($order, 1, null));
+            Mail::to($order->email)->send(new OrderPayedMail($order, 1));
 
             //Order to seller
-            foreach ($sellers as $seller) {
+            /* foreach ($sellers as $seller) {
                 Mail::to($seller->email)->cc('jorge.castro@twgroup.cl')->send(new OrderUpdated($order, 2, $seller));
-            }
+            } */
 
             //Order to admins
             $administrators = Setting::get('administrator_email');
             $recipients = explode(';', $administrators);
             foreach ($recipients as $key => $recipient) {
-                Mail::to($recipient)->send(new OrderUpdated($order, 3, null));
+                Mail::to($recipient)->send(new OrderPayedMail($order, 2));
             }
 
             return view('payments.transbank.webpay.plus.complete', compact('result', 'order'));

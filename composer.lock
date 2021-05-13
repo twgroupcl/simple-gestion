@@ -3366,16 +3366,16 @@
         },
         {
             "name": "qoraiche/laravel-mail-editor",
-            "version": "v2.2.2",
+            "version": "v2.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Qoraiche/laravel-mail-editor.git",
-                "reference": "4c9bc96e5899faaf1a60c7c4d55ec0779cf474d9"
+                "reference": "a98d0fee2360f6a4cc947ffa5fd04b350cd48efc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Qoraiche/laravel-mail-editor/zipball/4c9bc96e5899faaf1a60c7c4d55ec0779cf474d9",
-                "reference": "4c9bc96e5899faaf1a60c7c4d55ec0779cf474d9",
+                "url": "https://api.github.com/repos/Qoraiche/laravel-mail-editor/zipball/a98d0fee2360f6a4cc947ffa5fd04b350cd48efc",
+                "reference": "a98d0fee2360f6a4cc947ffa5fd04b350cd48efc",
                 "shasum": ""
             },
             "require": {
@@ -3426,13 +3426,17 @@
                 "mailable-editor",
                 "markdown"
             ],
+            "support": {
+                "issues": "https://github.com/Qoraiche/laravel-mail-editor/issues",
+                "source": "https://github.com/Qoraiche/laravel-mail-editor/tree/v2.2.4"
+            },
             "funding": [
                 {
                     "url": "https://www.paypal.me/streamaps",
                     "type": "custom"
                 }
             ],
-            "time": "2020-10-02T19:47:01+00:00"
+            "time": "2020-12-10T22:04:35+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
