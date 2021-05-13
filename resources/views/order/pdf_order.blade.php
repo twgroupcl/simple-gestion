@@ -125,9 +125,24 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
 {{-- @section('content') --}}
 
 
-<div style="background: #FDCA00; height: 100px; padding-top: 25px; padding-left: 10px">
-    <img src="{{ public_path() . '/img/covepa-logo.png' }}" alt="Covepa" height="80px">
+<div style="background: #FDCA00; height: 80px; padding-top: 25px; padding-left: 10px">
+    <img src="{{ public_path() . '/img/covepa-logo.png' }}" alt="Covepa" height="60px">
 </div>
+
+<table width="100%" style="margin-top: 25px;">
+    <tr>
+
+        <td width="70%">
+
+            <h3 class="h3-titulo">{{ 'Orden #' . $order->id }}</h3>
+        </td>
+        <td width="30%">
+            <p class="p-estrecho"><strong>Fecha </strong>: {{ $order->created_at->format('d/m/Y H:i:s') }}
+            </p>
+        </td>
+    </tr>
+
+</table>
 
 <br>
 
@@ -166,22 +181,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
         </td>
     </tr>
 
-</table>    
-
-<table width="100%" style="margin-top: 25px;">
-    <tr>
-
-        <td width="70%">
-
-            <h3 class="h3-titulo">{{ 'Orden #' . $order->id }}</h3>
-        </td>
-        <td width="30%">
-            <p class="p-estrecho"><strong>Fecha </strong>: {{ $order->created_at->format('d/m/Y H:i:s') }}
-            </p>
-        </td>
-    </tr>
-
-</table>
+</table>   
 
 <h3 class="h3-titulo"> Productos</h3>
 <table width="100%">
