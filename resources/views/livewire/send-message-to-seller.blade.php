@@ -8,7 +8,7 @@
         </small>
     @endif
     <div>
-        <textarea wire:model="order.arrange_messages.{{$seller->id}}.message"></textarea>
+        <textarea wire:model.debounce.700ms="order.arrange_messages.{{$seller->id}}.message"></textarea>
     </div>
 
     <div>
