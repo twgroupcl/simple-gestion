@@ -38,7 +38,7 @@ class SendMessageToSeller extends Component
             $this->order->arrange_messages : 
             json_decode($this->order->arrange_messages, true);
         $sellerMessages = $sellerMessages[$this->seller->id]['send'] ?? null;
-        $this->enable = $sellerMessages !== true ?? true;
+        $this->enable = $sellerMessages === false ?? true;
     }
 
     public function send()
@@ -46,13 +46,14 @@ class SendMessageToSeller extends Component
         $validatedData = $this->validate();
         try {
             \Mail::send(new SendMessageArrangeToSeller($this->seller, $this->order));
-            $sellerMessage = $this->order->arrange_messages;
+            $sellerMessage = is_array($this->order->arrange_messages) ? $this->order->arrange_messages: json_decode($this->order->arrange_messages, true);
             $sellerMessage[$this->seller->id]['send'] = true;
             $this->order->arrange_messages = $sellerMessage;
             $this->order->updateWithoutEvents();
             $this->enable = false;
         } catch(\Exception $e) {
             $this->enable = 'error';
+            \Log::error($e);
         }
     }
 
