@@ -27,14 +27,14 @@ class AddressRequest extends FormRequest
         // $rutRule = new RutRule;
 
         return [
-            "street" => 'required',
-            "number" => 'required',
-            "subnumber" => 'nullable',
+            "street" => 'required|max:40',
+            "number" => 'required|numeric|max:99999',
+            "subnumber" => 'nullable|max:10',
             "commune_id" => "required",
-            'uid' => ['nullable'/* , 'unique:customers,uid', 'string', $rutRule */],
-            "first_name" => 'nullable',
-            "last_name" => 'nullable',
-            "email" => 'nullable',
+            'uid' => 'nullable',
+            "first_name" => 'nullable|max:20',
+            "last_name" => 'nullable|max:20',
+            "email" => 'nullable|email',
             "phone" => 'nullable',
             "cellphone" => 'nullable',
             "extra" => 'nullable',

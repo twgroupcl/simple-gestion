@@ -17,17 +17,26 @@ class AddressForm extends Component
     ];
 
     protected $rules = [
-        "address.street" => 'required',
-        "address.number" => 'required',
-        "address.subnumber" => 'nullable',
+        "address.street" => 'required|max:40',
+        "address.number" => 'required|numeric|max:99999',
+        "address.subnumber" => 'nullable|max:10',
         "address.commune_id" => "required",
         'address.uid' => 'nullable',
-        "address.first_name" => 'nullable',
-        "address.last_name" => 'nullable',
-        "address.email" => 'nullable',
+        "address.first_name" => 'nullable|max:20',
+        "address.last_name" => 'nullable|max:20',
+        "address.email" => 'nullable|email',
         "address.phone" => 'nullable',
         "address.cellphone" => 'nullable',
         "address.extra" => 'nullable',
+    ];
+
+    protected $messages = [
+        'required' => 'Es necesario completar este campo',
+        'email' => 'Revise la dirección de email',
+        'exists' => 'Cuidado, ha ingresado un valor no válido',
+        'min' => 'El mínimo es de 3 caracteres.',
+        'numeric' => 'El valor ingresado no es numérico.',
+        'max' => 'El máximo es de :max caracteres.',
     ];
 
     public function render()

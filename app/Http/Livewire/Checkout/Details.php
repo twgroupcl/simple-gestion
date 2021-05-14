@@ -31,7 +31,7 @@ class Details extends Component
         /* 'data.cellphone' => 'required|max:20', */
         'data.receiver_name' => 'max:255',
         'data.shipping_details' => 'max:500',
-        'data.uid' => ['required', 'asd'],
+        'data.uid' => ['required'],
     ];
 
     protected $messages = [
@@ -216,7 +216,7 @@ class Details extends Component
                 'address_office' => $address->subnumber,
                 'business_name' => $this->cart->business_name,
                 'receiver_name' => $this->cart->receiver_name,
-                'shipping_details' => $this->cart->shipping_details
+                'shipping_details' => $address->extra
             ];
 
             $invoice = [];
