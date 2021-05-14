@@ -104,13 +104,13 @@ class Details extends Component
             $region = $this->data['address_region_id'];
             $this->communes = \App\Models\Commune::whereHas('attribute_province', function($q) use($region) {
                 $q->where('region_id', $region);
-            })->get();
+            })->orderBy('name')->get();
         }
         if (!empty($this->invoice['address_region_id'])) {
             $region = $this->invoice['address_region_id'];
             $this->invoiceCommunes = \App\Models\Commune::whereHas('attribute_province', function($q) use($region) {
                 $q->where('region_id', $region);
-            })->get();
+            })->orderBy('name')->get();
         }
         return view('livewire.checkout.details');
     }
