@@ -71,9 +71,13 @@ class AddressRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'Es necesario completar el campo :attribute.',
-            'string' => 'El campo :attribute debe ser texto',
-            'unique' => 'El campo :attribute ya está siendo utilizado por otro cliente.',
+            'required' => 'Es necesario completar este campo',
+            'email' => 'Revise la dirección de email',
+            'exists' => 'Cuidado, ha ingresado un valor no válido',
+            'min' => 'El mínimo es de 3 caracteres.',
+            'numeric' => 'El valor ingresado no es numérico.',
+            'max' => 'El máximo es de :max caracteres.',
+    
         ];
     }
 }

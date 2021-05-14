@@ -15,21 +15,24 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="street">Calle <span class="text-danger">*</span></label>
-                            <input class="form-control" name="street" type="text" id="street" required>
+                            <input class="form-control" name="street" type="text" id="street" required value="{{ old('street') }}">
                             <div class="invalid-feedback">Escriba la calle</div>
+                            @error('street') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="number">Número <span class="text-danger">*</span></label>
-                            <input class="form-control" name="number" type="text" id="number" required>
+                            <input class="form-control" name="number" type="text" id="number" required value="{{ old('street') }}">
                             <div class="invalid-feedback">Escriba el número!</div>
+                            @error('number') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-company">Casa/Dpto/Oficina</label>
-                            <input class="form-control" type="text" name="subnumber" id="address-company">
+                            <input class="form-control" type="text" name="subnumber" id="address-company" value="{{ old('street') }}">
+                            @error('subnumber') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -37,10 +40,11 @@
                             <label for="commune_id">Comuna <span class="text-danger">*</span></label>
                             <select class="custom-select" name="commune_id" id="commune_id" required>
                                 @foreach ($communes as $id => $commune)
-                                    <option value="{{ $id }}">{{ $commune }}</option>
+                                    <option @if (old('commune_id') == $id) selected @endif value="{{ $id }}">{{ $commune }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">Seleccione la comuna</div>
+                            @error('commune_id') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-12">
@@ -49,49 +53,57 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="uid">RUT</label>
-                            <input class="form-control" name="uid" type="text" id="uid">
+                            <input class="form-control" name="uid" type="text" id="uid" value="{{ old('street') }}">
                             <div class="invalid-feedback">Escriba el Rut</div>
+                            @error('uid') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="first_name">Nombre</label>
-                            <input class="form-control" name="first_name" type="text" id="first_name">
+                            <input value="{{ old('first_name') }}" class="form-control" name="first_name" type="text" id="first_name">
                             <div class="invalid-feedback">Escriba el nombre</div>
+                            @error('first_name') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="last_name">Apellido</label>
-                            <input class="form-control" name="last_name" type="text" id="last_name">
+                            <input value="{{ old('last_name') }}" class="form-control" name="last_name" type="text" id="last_name">
                             <div class="invalid-feedback">Escriba el apellido</div>
+                            @error('last_name') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input class="form-control" name="email" type="text" id="email">
+                            <input value="{{ old('email') }}" class="form-control" name="email" type="text" id="email">
                             <div class="invalid-feedback">Escriba el email</div>
+                            @error('email') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="phone">Teléfono</label>
-                            <input class="form-control" name="phone" type="text" id="phone">
+                            <input value="{{ old('phone') }}" class="form-control" name="phone" type="text" id="phone">
                             <div class="invalid-feedback">Escriba el teléfono</div>
+                            @error('phone') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="cellphone">Teléfono móvil</label>
-                            <input class="form-control" name="cellphone" type="text" id="cellphone">
+                            <input value="{{ old('cellphone') }}" class="form-control" name="cellphone" type="text" id="cellphone">
                             <div class="invalid-feedback">Escriba el teléfono móvil</div>
+                            @error('cellphone') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="extra">Detalles</label>
-                            <textarea class="form-control" name="extra" id="extra"></textarea>                            <div class="invalid-feedback">Escriba el teléfono móvil</div>
+                            <textarea class="form-control" name="extra" id="extra">{{ old('extra') }}</textarea>                            
+                            <div class="invalid-feedback">Escriba el teléfono móvil</div>
+                            @error('extra') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                 </div>
@@ -146,11 +158,17 @@
         </section>
     </div>
 </div>
+
 @endsection
 
 @push('scripts')
 <script src="{{ asset('js/rut-formatter.js') }}"></script>
 <script>
     $('input#uid').rut();
+        
+    @if ($errors->any())
+        $("#add-address").modal('show');
+    @endif
+    
 </script>
 @endpush
