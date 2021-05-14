@@ -162,7 +162,7 @@ use App\Models\Product;
                                                            </div>
                                                         </center>
                                                         <div style="margin-bottom: 2%;">
-                                                        <a style="background-color: #4b566b; border-radius: 4px; color: #ffffff; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none;" href="mailito:{{$order->email}}">Contactar al cliente</a>
+                                                        <a style="background-color: #4b566b; border-radius: 4px; color: #ffffff; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none;" href="mailto:{{$order->email}}">Contactar al cliente</a>
                                                         </div>
                                                     </td>
                                                 </tr>
