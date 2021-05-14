@@ -336,7 +336,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                 </li>
                                                 <li class="woocommerce-customer-details--phone d-flex">
                                                     <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
-                                                    <div>{{ $addressInvoice->cellphone }}</div>
+                                                    <div>{{ $addressInvoice->phone }}</div>
                                                 </li>
                                                 <li class="woocommerce-customer-details--email d-flex">
                                                     <i class="czi-mail opacity-60 mr-2 mt-1"></i>
@@ -362,7 +362,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
-                                                    <div>{{ $order->cellphone }}</div>
+                                                    <div>{{ $order->phone }}</div>
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mail opacity-60 mr-2 mt-1"></i>
@@ -396,7 +396,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
-                                                    <div>{{ $order->cellphone }}</div>
+                                                    <div>{{ $order->phone }}</div>
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mail opacity-60 mr-2 mt-1"></i>
