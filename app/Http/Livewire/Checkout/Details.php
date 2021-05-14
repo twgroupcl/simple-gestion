@@ -15,6 +15,7 @@ class Details extends Component
     public $is_business;
     public $anotherDataInvoice;
     public $communes;
+    public $invoiceCommunes;
     protected $listeners = [
         'details:save' => 'save'
     ];
@@ -102,7 +103,13 @@ class Details extends Component
         if (!empty($this->data['address_region_id'])) {
             $region = $this->data['address_region_id'];
             $this->communes = \App\Models\Commune::whereHas('attribute_province', function($q) use($region) {
-                $q->where('region_id', $this->data['address_region_id']);
+                $q->where('region_id', $region);
+            })->get();
+        }
+        if (!empty($this->invoice['address_region_id'])) {
+            $region = $this->invoice['address_region_id'];
+            $this->invoiceCommunes = \App\Models\Commune::whereHas('attribute_province', function($q) use($region) {
+                $q->where('region_id', $region);
             })->get();
         }
         return view('livewire.checkout.details');
@@ -110,8 +117,6 @@ class Details extends Component
 
     public function updated($propertyName)
     {
-
-
         $dynamicRules = $this->getCustomRules();
         $this->rules = array_merge($this->rules, $dynamicRules);
         $this->rules = array_merge($this->rules, [
