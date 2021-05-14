@@ -61,7 +61,7 @@
                 border-radius: 4px 4px 4px 4px;
                 line-height: 5px;
                 height: 130px;
-                margin-bottom: 10px;
+                padding-bottom: 10px;
             }
 
             .items-table tbody {
@@ -95,7 +95,7 @@
         }
         .top {
             background-color: #fdca00;
-            min-height: 330px;
+            min-height: 340px;
             padding-right: 20px;
             padding-left: 20px;
         }
@@ -168,7 +168,7 @@
     <div class="container">
         <div class="top">
 
-            <div style="text-align: center; margin-bottom: 10px; margin-top: 15px;">
+            <div style="text-align: center; margin-bottom: 10px; padding-top: 15px;">
                 <img src="{{ asset('img/covepa-logo.png') }}" alt="" height="100px">
             </div>
             <div class="top-title">
