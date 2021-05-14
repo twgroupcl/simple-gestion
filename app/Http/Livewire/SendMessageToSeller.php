@@ -38,7 +38,7 @@ class SendMessageToSeller extends Component
             $this->order->arrange_messages : 
             json_decode($this->order->arrange_messages, true);
         $sellerMessages = $sellerMessages[$this->seller->id]['send'] ?? null;
-        $this->enable = $sellerMessages === false ?? true;
+        $this->enable = $sellerMessages !== true ?? true;
     }
 
     public function send()
