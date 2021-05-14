@@ -77,7 +77,6 @@ class AddressRequest extends FormRequest
             'min' => 'El mínimo es de 3 caracteres.',
             'numeric' => 'El valor ingresado no es numérico.',
             'max' => 'El máximo es de :max caracteres.',
-    
         ];
     }
 }

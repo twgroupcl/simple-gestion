@@ -194,6 +194,8 @@ class CovepaService
         $invoiceData = $order->getInvoiceData();
 
         $fullInvoiceAddress = substr($fullInvoiceAddress, 0, 50);
+        $fullName = substr($fullName, 0, 44);
+        $invoiceFullName = substr($invoiceFullName, 0, 44);
 
         $itemsDetails = [];
         $shippingDetails = [];
