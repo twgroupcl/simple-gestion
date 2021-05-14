@@ -12,7 +12,7 @@ $addressShipping = $addressData['addressShipping'];
 
 
 $addressInvoice = null;
-if(isset($addressData['addressInvoice']) && !empty($addressData['addressInvoice']->last_name)){
+if(isset($addressData['addressInvoice']) && !empty($addressData['addressInvoice']->first_name)){
 $addressInvoice = $addressData['addressInvoice'];
 }
 
