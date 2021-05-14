@@ -23,7 +23,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="number">Número <span class="text-danger">*</span></label>
-                            <input class="form-control" name="number" type="text" id="number" required value="{{ old('street') }}">
+                            <input class="form-control" name="number" type="text" id="number" required value="{{ old('number') }}">
                             <div class="invalid-feedback">Escriba el número!</div>
                             @error('number') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
@@ -31,7 +31,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-company">Casa/Dpto/Oficina</label>
-                            <input class="form-control" type="text" name="subnumber" id="address-company" value="{{ old('street') }}">
+                            <input class="form-control" type="text" name="subnumber" id="address-company" value="{{ old('subnumber') }}">
                             @error('subnumber') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="uid">RUT</label>
-                            <input class="form-control" name="uid" type="text" id="uid" value="{{ old('street') }}">
+                            <input class="form-control" name="uid" type="text" id="uid" value="{{ old('uid') }}">
                             <div class="invalid-feedback">Escriba el Rut</div>
                             @error('uid') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
