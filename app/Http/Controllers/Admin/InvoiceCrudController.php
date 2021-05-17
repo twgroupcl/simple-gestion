@@ -793,7 +793,7 @@ class InvoiceCrudController extends CrudController
     protected function referencesFields() : void
     {
         CRUD::addField([
-            'name' => 'reference_json',
+            'name' => 'references_json',
             'type' => 'repeatable',
             'tab' => 'Referencias',
             'label' => '',
@@ -853,8 +853,8 @@ class InvoiceCrudController extends CrudController
                     ],
                     'attributes' => [
                         'maxlength' => 30,
-                    ]
-                ]
+                    ],
+                ],
             ],
         ]);
 
