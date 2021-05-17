@@ -807,7 +807,7 @@ class InvoiceCrudController extends CrudController
                         'class' => 'form-group col-md-3',
                     ],
                     'attributes' => [
-                        'readonly' => true,
+                        //'readonly' => true,
                     ],
                 ],
                 [
@@ -817,7 +817,7 @@ class InvoiceCrudController extends CrudController
                         'class' => 'form-group col-md-4',
                     ],
                     'attributes' => [
-                        'readonly' => true,
+                        //'readonly' => true,
                     ],
                 ],
                 [
