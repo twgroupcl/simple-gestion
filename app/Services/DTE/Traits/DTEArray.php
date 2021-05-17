@@ -31,6 +31,39 @@ trait DTEArray
             ]; 
         } 
 
+        //references to dte
+        $referencesData = is_array($this->invoice->references_json) ? 
+            $this->invoice->references_json : json_decode($this->invoice->references_json, true);
+
+        $referencesArray = [];
+        foreach($referencesData as $reference) {
+            $tpoDocRef = $this->getRefDataByKey($reference, 'reference_type_document') ?? false;
+
+            if ($tpoDocRef) {
+                $tpoDocRef = InvoiceType::find($tpoDocRef)->code;
+            }
+            // invoice item exent true or false
+            //if ($tpoDocRef == 41 || $tpoDocRef == 34) {
+            //    foreach ($array['Detalle'] as $key => $item) {
+            //        $array['Detalle'][$key]['IndExe'] = 1;
+            //    }
+
+            //    if ($this->invoice->discount_percent > 0 || $this->invoice->discount_amount > 0) {
+            //        $array['DscRcgGlobal']['IndExeDR'] = 1;
+            //    }
+            //}
+
+            $referencesArray[] = [
+                'TpoDocRef' => $tpoDocRef, 
+                'FolioRef' => $this->getRefDataByKey($reference, 'reference_folio') ?? false,
+                'FchRef' =>  $this->getRefDataByKey($reference, 'reference_date') ?? false,
+                'CodRef' => $this->getRefDataByKey($reference, 'reference_code') ?? false,
+                //'CodRef' => 1, 1-Anula 2-CorrigeTextDocDeRef 3-CorrigeMonto
+                'RazonRef' => $this->getRefDataByKey($reference, 'reference_reason') ?? false, 
+            ];
+
+        }
+
         return [
             'Encabezado' => [
                 'IdDoc' => [
@@ -95,6 +128,7 @@ trait DTEArray
                 // DscItem - Desactivado porque se imprime con formato incorrecto
                 //'DscItem' => empty($item->description) ? false : $item->description,
                 'CodImpAdic' => !empty($item->additional_tax) ? $item->additional_tax->code : false,
+                'Referencia' => $referencesArray,
 
             ];
 
@@ -113,6 +147,15 @@ trait DTEArray
         }
 
         return $itemsDTE;
+    }
+
+    private function getRefDataByKey($array, string $key) : ?string
+    {
+        if (! array_key_exists($key, $array)) {
+            return null;
+        }
+
+        return $array[$key];
     }
 
 }
