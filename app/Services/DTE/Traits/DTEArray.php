@@ -58,7 +58,7 @@ trait DTEArray
                 'TpoDocRef' => $tpoDocRef, 
                 'FolioRef' => $this->getRefDataByKey($reference, 'reference_folio') ?? false,
                 'FchRef' =>  $this->getRefDataByKey($reference, 'reference_date') ?? false,
-                'CodRef' => $this->getRefDataByKey($reference, 'reference_code') ?? false,
+                'CodRef' => $this->getRefDataByKey($reference, 'reference_code') ?? null,
                 //'CodRef' => 1, 1-Anula 2-CorrigeTextDocDeRef 3-CorrigeMonto
                 'RazonRef' => $this->getRefDataByKey($reference, 'reference_reason') ?? false, 
             ];
