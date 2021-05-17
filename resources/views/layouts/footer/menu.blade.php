@@ -65,8 +65,8 @@
                     </ul>
                 </div>
             </div> --}}
-            <div class="col-md-12 mb-4 d-none d-md-block">
-                <img class="img-fluid" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
+            <div class="col-md-12 mb-4 d-none d-md-flex justify-content-center">
+                <img class="img-fluid w-75" src="{{ asset('img/logos/footer.png') }}" alt="Footer" />
 
                 {{-- <div class="widget pb-2 mb-2">
                     <h3 class="widget-title text-dark pb-1">Organizan</h3>
