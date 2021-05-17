@@ -812,6 +812,7 @@ class InvoiceCrudController extends CrudController
                 ],
                 [
                     'name' => 'reference_folio',
+                    'label' => 'Número de folio',
                     'wrapper' => [
                         'class' => 'form-group col-md-4',
                     ],
@@ -841,14 +842,18 @@ class InvoiceCrudController extends CrudController
                         'class' => 'form-group col-md-3',
                     ],
                     'name' => 'reference_code',
+                    'label' => 'Código de referencia',
                 ],
                 [
                     'name' => 'reference_reason',
                     'type' => 'textarea',
-                    'label' => 'Descripción',
+                    'label' => 'Razón',
                     'wrapperAttributes' => [
-                        'class' => 'form-group col-md-12'
+                        'class' => 'form-group col-md-12',
                     ],
+                    'attributes' => [
+                        'maxlength' => 30,
+                    ]
                 ]
             ],
         ]);
