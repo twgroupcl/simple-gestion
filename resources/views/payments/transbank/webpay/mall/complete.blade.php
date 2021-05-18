@@ -422,7 +422,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                 $query->where('code', 'arrange_with_seller');
             })->get()->map(function($item) {
                 return $item->seller;
-            });
+            })->unique();
         @endphp
         @if (count($sellersArrange) > 0)
         <div class="pt-1">
