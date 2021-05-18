@@ -8,7 +8,7 @@ use App\Models\Product;
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mensaje de envío a convenir</title>
+    <title>Comprobante de pago</title>
     <!-- Designed by https://github.com/kaytcat -->
     <!-- Robot header image designed by Freepik.com -->
 
@@ -149,21 +149,17 @@ use App\Models\Product;
                                                             Saludos cordiales,
                                                        </p>
                                                        <p style="color: #ffffff;">
-                                                            Le notificamos que un cliente ha dejado un mensaje para acordar el envío de sus productos. 
+                                                            Le notificamos que el mensaje para acordar el envío fue entregado al vendedor. 
                                                        </p>
                                                        <br />
                                                         <center>
                                                            <div>
-                                                               <p style="color: #ffffff;"><strong>Orden: #{{$order->id}}</strong></p>
-                                                               <p style="color: #ffffff;"><strong>Cliente:</strong> {{$order->first_name}} {{$order->last_name}}</p>
+                                                               <p style="color: #ffffff;"><strong>El número de orden es: #{{$order->id}}</strong></p>
+                                                               <p style="color: #ffffff;"><strong>Para el vendedor: {{$seller->visible_name}}</strong></p>
                                                                <p style="color: #ffffff;"><strong>Mensaje:</strong></p>
                                                                <p style="color: #ffffff; max-width:200px;overflow-wrap: break-word;">{{$sellerMessage}}</p>
-
                                                            </div>
                                                         </center>
-                                                        <div style="margin-bottom: 2%;">
-                                                            <a style="background-color: #4b566b; border-radius: 4px; color: #ffffff; display: inline-block; font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align: center; text-decoration: none; width: 200px; -webkit-text-size-adjust: none;" href="mailto:{{$order->email}}" target="_blank">Contactar al cliente</a>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             </tbody>

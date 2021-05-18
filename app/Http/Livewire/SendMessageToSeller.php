@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Models\Seller;
 use App\Mail\SendMessageArrangeToSeller;
+use App\Mail\SendMessageArrangeToCustomer;
 
 class SendMessageToSeller extends Component
 {
@@ -46,6 +47,8 @@ class SendMessageToSeller extends Component
         $validatedData = $this->validate();
         try {
             \Mail::send(new SendMessageArrangeToSeller($this->seller, $this->order));
+            \Mail::send(new SendMessageArrangeToCustomer($this->order->email, $this->seller, $this->order));
+            sleep(1);
             $sellerMessage = is_array($this->order->arrange_messages) ? $this->order->arrange_messages: json_decode($this->order->arrange_messages, true);
             $sellerMessage[$this->seller->id]['send'] = true;
             $this->order->arrange_messages = $sellerMessage;
