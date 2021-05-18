@@ -177,8 +177,10 @@
             let taxPercentField = item.find('.tax_percent_item')
             let taxTotalField = item.find('.tax_total_item')
             let taxType = $('select[name="tax_type"]').val();
+            let itemIndExe = item.find('.is_exent').val()
 
-            if  (taxIdField.val() == 0 || taxType == 'E') { 
+            if  (taxIdField.val() == 0 || taxType == 'E' || itemIndExe === 1) { 
+                console.log("ITem ", item, " is exent " , itemIndExe)
                 taxPercentField.val(0)
                 taxAmountField.val(0)
                 taxTotalField.val(0)

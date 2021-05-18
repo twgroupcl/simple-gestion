@@ -159,6 +159,7 @@
 
         function isExent()
         {
+            //return invoiceType !== '33' && invoiceType !== '39';
             return invoiceType !== '33' && invoiceType !== '39';
         }
     
@@ -169,8 +170,10 @@
             let taxIdField = item.find('.tax_id_field')
             let taxPercentField = item.find('.tax_percent_item')
             let taxTotalField = item.find('.tax_total_item')
+            let itemIndExe = item.find('.is_exent').val()
 
-            if  (taxIdField.val() == 0 || isExent()) { 
+            if  (taxIdField.val() == 0 || taxType == 'E' || itemIndExe == 1) { 
+                console.log("ITem ", item, " is exent " , itemIndExe)
                 taxPercentField.val(0)
                 taxAmountField.val(0)
                 taxTotalField.val(0)
@@ -261,10 +264,19 @@
                 let discountGlobal = calculateItemDiscount($(this)).globalDiscount
                 let itemQty = Number($(this).find('.qty').val())
                 let subTotal = $(this).find('.subtotal')
+                let itemIndExe = $(this).find('.is_exent').val()
 
-
-                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
-                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
+                let taxAmount;
+                let taxAmountGeneral;
+                console.log(itemIndExe, 'is exe ???? ?', itemIndExe == 1)
+                if(itemIndExe != 1) {
+                    taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
+                    taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
+                } else {
+                    console.log('general item data ' , $(this))
+                    taxAmount = 0;
+                    taxAmountGeneral = 0;
+                }
                 
                 let subTotalValue = (price * itemQty) 
                 let totalValue = getRounded(( (price * itemQty) - discountItem))

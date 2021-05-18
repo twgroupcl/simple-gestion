@@ -41,16 +41,25 @@ class ElectronicTicket implements DocumentType
             // desde la BD para evitar errores de redondeo con el IVA. Si fue creada desde el CRUD
             // de invoices o cotizaciones, aplicamos el calculo del IVA al precio unitario
             if (isset($this->invoice->json_value['source']) && $this->invoice->json_value['source'] === 'pos' && $item['ItemCodigo']) {
-                $itemPriceWithIva = round(Product::find($item['ItemCodigo'])->real_price, 2);
+                $itemPrice = round(Product::find($item['ItemCodigo'])->real_price, 2);
             } else {
-                $itemPriceWithIva  = round($array['Detalle'][$key]['PrcItem'] * 1.19, 2, PHP_ROUND_HALF_ODD);
+                if ($array['Detalle'][$key]['IndExe'] == 1) {
+                    $itemPrice = round($array['Detalle'][$key]['PrcItem'], 2, PHP_ROUND_HALF_ODD);
+                } else {
+                    $itemPrice = round($array['Detalle'][$key]['PrcItem'] * 1.19, 2, PHP_ROUND_HALF_ODD);
+                }
             }
             
-            $array['Detalle'][$key]['PrcItem'] = $itemPriceWithIva;
+            $array['Detalle'][$key]['PrcItem'] = $itemPrice;
 
             if (isset($item['DescuentoMonto']) && $item['DescuentoMonto'] > 0) {
-                $discountWIthIva = round($array['Detalle'][$key]['DescuentoMonto'] * 1.19, 0, PHP_ROUND_HALF_ODD);
-                $array['Detalle'][$key]['DescuentoMonto'] = $discountWIthIva;
+                if ($array['Detalle'][$key]['IndExe'] == 1) {
+                    $discountWithoutIva = round($array['Detalle'][$key]['DescuentoMonto'], 0, PHP_ROUND_HALF_ODD);
+                    $array['Detalle'][$key]['DescuentoMonto'] = $discountWithoutIva;
+                } else {
+                    $discountWIthIva = round($array['Detalle'][$key]['DescuentoMonto'] * 1.19, 0, PHP_ROUND_HALF_ODD);
+                    $array['Detalle'][$key]['DescuentoMonto'] = $discountWIthIva;
+                }
             }
 
             unset($array['Detalle'][$key]['ItemCodigo']);
