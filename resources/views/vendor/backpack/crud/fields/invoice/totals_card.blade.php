@@ -467,6 +467,12 @@
             checkGiroField();
             checkTypeTax()
         });
+
+        $(document).on('change', '.is_exent', function () {
+            calculateTotals();
+            checkGiroField();
+            checkTypeTax()
+        });
     
         $(document).on('keyup', 'input[data-repeatable-input-name="qty"]', function () {
             calculateTotals();

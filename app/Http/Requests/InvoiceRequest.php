@@ -67,6 +67,9 @@ class InvoiceRequest extends FormRequest
             'items_data' => function($attribute, $value, $fail) use ($invoiceType) {
                 $items = json_decode($value, true);
                 if ( !count($items) ) return $fail('Debes añadir por lo menos un producto / servicio.');
+                if (!isset($invoiceType)) {
+                    return $fail('Revise el tipo de documento');
+                }
 
                 if ($invoiceType->code != 61) {
                     foreach($items as $item) {

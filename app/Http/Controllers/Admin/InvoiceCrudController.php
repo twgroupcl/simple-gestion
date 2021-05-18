@@ -815,6 +815,7 @@ class InvoiceCrudController extends CrudController
             'tab' => 'Referencias',
             'label' => '',
             'new_item_label' => 'Añadir referencia',
+            'default' => '{}',
             'fields' => [
                 [
                     'name' => 'reference_date',
