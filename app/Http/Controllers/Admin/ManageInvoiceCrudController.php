@@ -432,6 +432,11 @@ class ManageInvoiceCrudController extends CrudController
         $creditNote->dte_code = null;
         $creditNote->dte_status = null;
         $creditNoteType = InvoiceType::whereCode('61')->first();
+        $items = $creditNote->items_data;
+        foreach ($items as &$item) {
+            $item['ind_exe'] = 1;
+        }
+        $creditNote->items_data = $items;
         $creditNote->invoice_type_id = $creditNoteType->id;
         $creditNote->invoice_date = null;
         $creditNote->references_json = json_encode([
