@@ -95,6 +95,7 @@ trait DTEArray
                 // DscItem - Desactivado porque se imprime con formato incorrecto
                 //'DscItem' => empty($item->description) ? false : $item->description,
                 'CodImpAdic' => !empty($item->additional_tax) ? $item->additional_tax->code : false,
+                'IndExe' => $item->ind_exe === 1 ? 1 : false,
 
             ];
 
