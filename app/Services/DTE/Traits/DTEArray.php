@@ -54,11 +54,13 @@ trait DTEArray
             //    }
             //}
 
+            $refCode = $this->getRefDataByKey($reference, 'reference_code');
+            $refCode = isset($refCode) && !empty($refCode) && is_numeric($refCode) ? $refCode : false;
             $referencesArray[] = [
                 'TpoDocRef' => $tpoDocRef, 
                 'FolioRef' => $this->getRefDataByKey($reference, 'reference_folio') ?? false,
                 'FchRef' =>  $this->getRefDataByKey($reference, 'reference_date') ?? false,
-                'CodRef' => $this->getRefDataByKey($reference, 'reference_code') ?? null,
+                'CodRef' =>  $refCode,
                 //'CodRef' => 1, 1-Anula 2-CorrigeTextDocDeRef 3-CorrigeMonto
                 'RazonRef' => $this->getRefDataByKey($reference, 'reference_reason') ?? false, 
             ];
