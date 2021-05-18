@@ -794,7 +794,7 @@ class InvoiceCrudController extends CrudController
     {
         CRUD::addField([
             'name' => 'references_json',
-            'type' => 'repeatable',
+            'type' => 'quotation.repeatable',
             'tab' => 'Referencias',
             'label' => '',
             'new_item_label' => 'Añadir referencia',
