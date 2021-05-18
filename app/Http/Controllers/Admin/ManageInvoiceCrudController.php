@@ -433,7 +433,7 @@ class ManageInvoiceCrudController extends CrudController
         $creditNote->dte_status = null;
         $creditNoteType = InvoiceType::whereCode('61')->first();
         $creditNote->invoice_type_id = $creditNoteType->id;
-        $creditNote->json_value = [
+        $creditNote->references_json = [
             'reference_type_document' => $invoice->invoice_type_id,
             'reference_folio' => $invoice->folio,
             'reference_date' => $invoice->invoice_date,
