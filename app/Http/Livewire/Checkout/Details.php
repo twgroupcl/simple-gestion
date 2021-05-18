@@ -125,8 +125,8 @@ class Details extends Component
         if ($this->anotherDataInvoice) {
             $dynamicRules = array_merge($dynamicRules, [
                 'invoice.uid' => ['required', new RutRule()],
-                'invoice.phone' => ['required', new PhoneRule('El número ingresado no es válido')],
-                'invoice.cellphone' => [new PhoneRule('El número ingresado no es válido')],
+                'invoice.phone' => ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'],
+                'invoice.cellphone' => [new PhoneRule('El número ingresado no es válido'), 'max:19'],
                 'invoice.email' => 'required|email',
                 'invoice.address_street' => 'required|max:40',
                 'invoice.address_office' => 'max:10',
@@ -151,8 +151,8 @@ class Details extends Component
 
         $dynamicRules = array_merge($dynamicRules, [
             'data.uid' => ['required', new RutRule()],
-            'data.cellphone' => [new PhoneRule('El número ingresado no es válido')],
-            'data.phone' => ['required', new PhoneRule('El número ingresado no es válido')],
+            'data.cellphone' => [new PhoneRule('El número ingresado no es válido'), 'max:19'],
+            'data.phone' => ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'],
         ]);
 
         return $dynamicRules;
