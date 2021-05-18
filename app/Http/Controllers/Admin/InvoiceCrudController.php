@@ -445,6 +445,23 @@ class InvoiceCrudController extends CrudController
             'new_item_label' => 'Agregar producto / servicio',
             'fields' => [
                 [
+                    'label' => 'Exento',
+                    'name' => 'ind_exe',
+                    'type' => 'select2_from_array',
+                    'default' => 0,
+                    'allows_null' => false,
+                    'options' => [
+                        0 => 'No',
+                        1 => 'Si',
+                    ],
+                    'attributes' => [
+                        'class' => 'form-control is_exent',
+                    ],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-1',
+                    ],
+                ],
+                [
                     'label' => 'Producto / Servicio',
                     'name' => 'product_id',
                     'type' => 'quotation.select2_custom',
