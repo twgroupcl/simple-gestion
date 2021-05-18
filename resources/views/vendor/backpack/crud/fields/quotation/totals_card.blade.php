@@ -180,7 +180,6 @@
             let itemIndExe = item.find('.is_exent').val()
 
             if  (taxIdField.val() == 0 || taxType == 'E' || itemIndExe === 1) { 
-                console.log("ITem ", item, " is exent " , itemIndExe)
                 taxPercentField.val(0)
                 taxAmountField.val(0)
                 taxTotalField.val(0)
@@ -272,15 +271,21 @@
                 let discountGlobal = calculateItemDiscount($(this)).globalDiscount
                 let itemQty = Number($(this).find('.qty').val())
                 let subTotal = $(this).find('.subtotal')
+                let itemIndExe = $(this).find('.is_exent').val()
 
                 let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
                 let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
                 
-                let subTotalValue = (price * itemQty) 
-                let totalValue = getRounded( (price * itemQty) - discountItem) 
-                
+                let subTotalValue;
+                let totalValue;
+                if (itemIndExe == 1) {
+                    subTotalValue = 0;
+                    totalValue = 0;
+                } else {
+                    subTotalValue = (price * itemQty) 
+                    totalValue = getRounded( (price * itemQty) - discountItem) 
+                }
                 subTotal.val(formatWithComma(totalValue))
-
                 subTotalGeneral += subTotalValue
                 acumTotalValue += totalValue
                 totalDiscountItems+= discountItem
