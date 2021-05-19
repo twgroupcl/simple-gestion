@@ -162,6 +162,13 @@
             //return invoiceType !== '33' && invoiceType !== '39';
             return invoiceType !== '33' && invoiceType !== '39';
         }
+        function setAllToExent()
+        {
+            let itemsIndExeField = $(document).find('.is_exent')
+            itemsIndExeField.each(function(elem, field) {
+                $(field).val(1).trigger('change.select2')
+            })
+        }
     
         function calculateAndSetTaxItem(item, itemPrice, itemQty, itemDiscount) {
             let itemSubtotal = (itemQty * itemPrice) - itemDiscount
@@ -459,10 +466,15 @@
         *
         ***********************************************/
         $(document).on('click', '.add-repeatable-element-button', function () {
+            if (invoiceType == 34 || invoiceType == 41)
+                setAllToExent();
             checkTypeTax();
         })
 
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
+            invoiceType = getCodeDTE($('select[name="invoice_type_id"]').val());
+            if (invoiceType == 34 || invoiceType == 41)
+                setAllToExent();
             calculateTotals();
             checkGiroField();
             checkTypeTax()
