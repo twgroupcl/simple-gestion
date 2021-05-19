@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\DTE\Traits;
+use App\Models\InvoiceType;
 
 trait DTEArray
 {
@@ -30,6 +31,41 @@ trait DTEArray
                 //'IndExeDR' => 1 // Afecta a productos exentos
             ]; 
         } 
+
+        //references to dte
+        $referencesData = is_array($this->invoice->references_json) ? 
+            $this->invoice->references_json : json_decode($this->invoice->references_json, true);
+
+        $referencesArray = [];
+        foreach($referencesData as $reference) {
+            $tpoDocRef = $this->getRefDataByKey($reference, 'reference_type_document') ?? false;
+
+            if ($tpoDocRef) {
+                $tpoDocRef = InvoiceType::find($tpoDocRef)->code;
+            }
+            // invoice item exent true or false
+            //if ($tpoDocRef == 41 || $tpoDocRef == 34) {
+            //    foreach ($array['Detalle'] as $key => $item) {
+            //        $array['Detalle'][$key]['IndExe'] = 1;
+            //    }
+
+            //    if ($this->invoice->discount_percent > 0 || $this->invoice->discount_amount > 0) {
+            //        $array['DscRcgGlobal']['IndExeDR'] = 1;
+            //    }
+            //}
+
+            $refCode = $this->getRefDataByKey($reference, 'reference_code');
+            $refCode = isset($refCode) && !empty($refCode) && is_numeric($refCode) ? $refCode : false;
+            $referencesArray[] = [
+                'TpoDocRef' => $tpoDocRef, 
+                'FolioRef' => $this->getRefDataByKey($reference, 'reference_folio') ?? false,
+                'FchRef' =>  $this->getRefDataByKey($reference, 'reference_date') ?? false,
+                'CodRef' =>  $refCode,
+                //'CodRef' => 1, 1-Anula 2-CorrigeTextDocDeRef 3-CorrigeMonto
+                'RazonRef' => $this->getRefDataByKey($reference, 'reference_reason') ?? false, 
+            ];
+
+        }
 
         return [
             'Encabezado' => [
@@ -71,7 +107,7 @@ trait DTEArray
             'Detalle' => $itemsDTE,
             'DscRcgGlobal' => $globalDiscounts,
             'Comisiones' => false,
-            'Referencia' => false,
+            'Referencia' => $referencesArray,
             'SubTotInfo' => false
         ];
     }
@@ -93,8 +129,9 @@ trait DTEArray
                     round($item->custom_price, 2, PHP_ROUND_HALF_ODD) : 
                     round($item->price, 2, PHP_ROUND_HALF_ODD),
                 // DscItem - Desactivado porque se imprime con formato incorrecto
-                //'DscItem' => empty($item->description) ? false : $item->description,
+                'DscItem' => empty($item->description) ? false : $item->description,
                 'CodImpAdic' => !empty($item->additional_tax) ? $item->additional_tax->code : false,
+                'IndExe' => $item->ind_exe === 1 ? 1 : false,
 
             ];
 
@@ -113,6 +150,15 @@ trait DTEArray
         }
 
         return $itemsDTE;
+    }
+
+    private function getRefDataByKey($array, string $key) : ?string
+    {
+        if (! array_key_exists($key, $array)) {
+            return null;
+        }
+
+        return $array[$key];
     }
 
 }

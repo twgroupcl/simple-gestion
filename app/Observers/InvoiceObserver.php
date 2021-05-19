@@ -156,6 +156,7 @@ class InvoiceObserver
                         'additional_tax_total' => $item['additional_tax_total'],
                         'total' => $item['total'],
                         'currency_id' => $invoice->currency_id,
+                        'ind_exe' => $item['ind_exe'] ?? 0,
                         'seller_id' => $invoice->seller_id ?? null,
                     ];
 
@@ -186,6 +187,7 @@ class InvoiceObserver
                         'discount_percent' => $item['discount_percent'],
                         'discount_amount' => $item['discount_amount'],
                         'discount_total' => $item['discount_total'],
+                        'ind_exe' => $item['ind_exe'] ?? 0,
                         //'tax_percent' => $item['tax_percent'],
                         'additional_tax_id' => $item['additional_tax_id'] == 0 ? null : $item['additional_tax_id'],
                         'additional_tax_amount' => $item['additional_tax_amount'],

@@ -91,6 +91,7 @@ class Invoice extends Model
         'way_to_payment',
         'dte_status',
         'impact_inventory',
+        'references_json',
     ];
     public function getToStringAttribute()
     {
@@ -105,6 +106,7 @@ class Invoice extends Model
     protected $casts = [
         'items_data' => 'array',
         'json_value' => 'array',
+        'references_json' => 'array',
         'dte_status' => 'array',
        // 'address_data' => 'array',
     ];
