@@ -452,7 +452,6 @@
 
         $(document).on('change', '.is_exent', function () {
             calculateTotals();
-            checkGiroField();
             checkTypeTax()
         });
     
