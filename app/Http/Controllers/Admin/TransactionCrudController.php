@@ -334,6 +334,7 @@ class TransactionCrudController extends CrudController
                     'name' => 'document_type',
                     'type' => 'select2_from_array',
                     'options' => $documentTypes,
+                    'allows_null' => true,
                     //'value' => $documentType,
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-6 offset-6 document-type',
