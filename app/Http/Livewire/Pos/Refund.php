@@ -174,14 +174,17 @@ class Refund extends Component
         $creditNote->dte_status = null;
         $creditNoteType = InvoiceType::whereCode('61')->first();
         $creditNote->invoice_type_id = $creditNoteType->id;
-        $creditNote->json_value = [
-            'reference_type_document' => $invoice->invoice_type_id,
-            'reference_folio' => $invoice->folio,
-            'reference_date' => $invoice->invoice_date,
-            'reference_reason' => $this->reason,
-            'reference_code' => 3, // Corrige montos
-            'source' => 'pos',
-        ];
+
+        $creditNote->references_json = json_encode([
+            [
+                'reference_type_document' => $invoice->invoice_type_id,
+                'reference_folio' => $invoice->folio,
+                'reference_date' => $invoice->invoice_date,
+                'reference_reason' => $this->reason,
+                'reference_code' => 3, // Corrige montos
+                'source' => 'pos',
+            ]
+        ]);
 
         $itemsData = collect(!is_array($creditNote->items_data) 
                                 ? json_decode($creditNote->items_data, true)
