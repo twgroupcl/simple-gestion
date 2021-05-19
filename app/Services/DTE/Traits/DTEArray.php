@@ -33,8 +33,8 @@ trait DTEArray
         } 
 
         //references to dte
-        $referencesData = is_array($this->invoice->references_json) ? 
-            $this->invoice->references_json : json_decode($this->invoice->references_json, true);
+        $referencesData = isset($this->invoice->references_json) ? is_array($this->invoice->references_json) ? 
+            $this->invoice->references_json : json_decode($this->invoice->references_json, true) : [];
 
         $referencesArray = [];
         foreach($referencesData as $reference) {
