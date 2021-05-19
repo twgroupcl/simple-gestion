@@ -256,7 +256,7 @@ class Refund extends Component
      */
     public function calculateInvoiceTotal(Invoice $invoice)
     {
-        $referenceTypeDocument = InvoiceType::find($invoice->json_value['reference_type_document'])->first();
+        $referenceTypeDocument = InvoiceType::find($invoice->references_json[0]['reference_type_document'])->first();
 
         $hasIva = in_array($referenceTypeDocument->code, [41, 34]) ? false : true;
         $iva = 0;
