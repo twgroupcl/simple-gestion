@@ -141,7 +141,10 @@
             }
         }
 
-        function calculateGeneralTax(itemPrice, itemQty, itemDiscount) {
+        function calculateGeneralTax(itemPrice, itemQty, itemDiscount, itemIsExent) {
+            if (itemIsExent == 1) {
+                    return 0;
+            }
             let itemSubtotal = (itemQty * itemPrice) - itemDiscount
             switch (invoiceType) {
                 case '33':
@@ -274,15 +277,11 @@
 
                 let taxAmount;
                 let taxAmountGeneral;
+                taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
+                taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal, itemIndExe)
                 if(itemIndExe != 1) {
-                    taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
-                    taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
                     totalDiscountGlobal += discountGlobal
-                } else {
-                    taxAmount = 0;
-                    taxAmountGeneral = 0;
-                }
-                
+                }                
                 let subTotalValue = (price * itemQty) 
                 let totalValue = getRounded(( (price * itemQty) - discountItem))
                 
