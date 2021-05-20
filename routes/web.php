@@ -111,3 +111,13 @@ Route::group([
 
 // Dev routes
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('only.admin');
+
+Route::get('dev/config/up', function () {
+    Artisan::call('up');
+    return 'Modo mantenimiento desactivado';
+});
+
+Route::get('dev/config/down', function () {
+    Artisan::call('down');
+    return 'Modo mantenimiento activado';
+});

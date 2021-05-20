@@ -12,6 +12,7 @@ class CheckForMaintenanceMode extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'dev/config/up',
+        'dev/config/down',
     ];
 }
