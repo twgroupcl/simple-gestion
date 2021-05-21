@@ -38,9 +38,9 @@ class OrderController extends Controller
 
     public function fetchErrorLog($id)
     {
-        $orderLog = OrderErrorLog::where('order_id', $id)->first();
+        $orderLog = OrderErrorLog::where('order_id', $id);
 
-        if (!$orderLog) return response()->json([ 
+        if (!$orderLog->count()) return response()->json([ 
             'status' => 'error', 
             'message' => 'La orden solicitada no existe',
         ],  404);
