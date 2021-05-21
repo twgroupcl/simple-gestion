@@ -152,6 +152,10 @@ Route::group([ 'prefix' => '/v1'], function() {
     // Orders
     Route::get('/orders/{id}', 'Api\v1\OrderController@show')
         ->name('api.orders.show');
+    Route::get('/orders/error/logs', 'Api\v1\OrderController@fetchErrorLogs')
+        ->name('api.orders.show.logs');
+    Route::get('/orders/error/logs/{id}', 'Api\v1\OrderController@fetchErrorLog')
+        ->name('api.orders.show.log');
 
     // Warehouse
     Route::post('/warehouses', 'Api\v1\ProductInventorySourceController@store')

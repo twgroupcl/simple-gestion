@@ -17,6 +17,7 @@ use App\Mail\OrderPayedMail;
 use App\Models\OrderPayment;
 use Illuminate\Http\Request;
 use Transbank\Webpay\Webpay;
+use App\Models\OrderErrorLog;
 use App\Models\PaymentMethod;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\PaymentMethodSeller;
@@ -253,7 +254,15 @@ class WebpayPlusController extends Controller
 
                     $mail = new OrderNotSendCovepaMail($order, json_encode($orderResponse), null, json_encode($this->covepaService->prepareOrderData($order)));
 
+                    OrderErrorLog::create([
+                        'order_id' => $order->id,
+                        'order_json' => $this->covepaService->prepareOrderData($order),
+                        'api_response' => json_encode($orderResponse),
+                        'error_message' => 'Error enviando orden a servidores de Covepa'
+                    ]);
+                    
                     Mail::to(Company::MAIL_TO_ERRORS)->send($mail);
+                    
                 } else {
                     //@todo eliminar luego
                     Log::info('Orden enviada con exito', ['api_response' => $orderResponse]);
@@ -264,6 +273,12 @@ class WebpayPlusController extends Controller
                     'order_id' => $order->id,
                     'user_id' => backpack_user()->id ?? null,
                     'exception' => $e,
+                ]);
+
+                OrderErrorLog::create([
+                    'order_id' => $order->id,
+                    'order_json' => $this->covepaService->prepareOrderData($order),
+                    'error_message' => $e->getMessage(),
                 ]);
 
                 $mail = new OrderNotSendCovepaMail($order, null, $e);
