@@ -48,7 +48,7 @@ class CovepaService
 
             for ($retry = 0; $retry < self::RETRY_ATTEMPTS_TOKEN; $retry++) {
 
-                if ($reloadToken) {
+                if ($reloadToken && $useAuth) {
                     $request['headers']['Authorization'] = $this->getToken(true);
                 }
 
