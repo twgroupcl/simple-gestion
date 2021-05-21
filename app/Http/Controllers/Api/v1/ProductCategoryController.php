@@ -67,7 +67,7 @@ class ProductCategoryController extends Controller
         
         return response()->json([
             'status' => 'success',
-            'message' => 'Marca de producto creada exitosamente',
+            'message' => 'Categoria de producto creada exitosamente',
             'data' => $productCategory,
         ], 200);
 

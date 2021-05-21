@@ -31,63 +31,46 @@ class CompanyController extends Controller
         DB::beginTransaction();
 
         try {
-            $cartItems = CartItem::all();
-            foreach ($cartItems as $cartItem) {
-                $cartItem->forceDelete();
-            }
 
-            $carts = Cart::all();
-            foreach ($carts as $cart) {
-                $cart->forceDelete();
-            }
-            
-            $products = Product::all();
-            foreach ($products as $product) {
-                $product->delete();
-            }
-    
-            $brands = ProductBrand::all();
-            foreach ($brands as $brand) {
-                $brand->forceDelete();
-            }
-            
-            $categories = ProductCategory::all();
-            foreach ($categories as $categorie) {
-                $classes = $categorie->product_class;
-                foreach ($classes as $class) {
-                    $class->category_id = null;
-                    $class->save();
-                }
-                $categorie->forceDelete();
-            }
-    
-            $sellers = Seller::all();
-            foreach ($sellers as $seller) {
-                DB::table('shipping_method_seller_mapping')->where('seller_id', $seller->id)->delete();
-                DB::table('payment_method_seller_mapping')->where('seller_id', $seller->id)->delete();
-                DB::table('seller_addresses')->where('seller_id', $seller->id)->delete();
-                $seller->shippingmethods()->detach();
-                $seller->forceDelete();
-            }
-    
-            $warehouses = ProductInventorySource::all();
-            foreach ($warehouses as $warehouse) {
-                $warehouse->forceDelete();
-            }
-    
-            $users = User::whereNotIn('id', [1, 2, 3])->get();
-            foreach ($users as $user) {
-                DB::table('branch_users')->where('user_id', $user->id)->delete();
-                DB::table('company_users')->where('user_id', $user->id)->delete();
-                $user->forceDelete();
-            }
-
-            $branchs = Branch::whereNotIn('id', [1, 2, 3, 4])->get();
-            foreach ($branchs as $branch) {
-                DB::table('branch_companies')->where('branch_id', $branch->id)->delete();
-                DB::table('branch_users')->where('branch_id', $branch->id)->delete();
-                $branch->forceDelete();
-            }
+            DB::table('order_payments')->delete();
+            DB::table('order_logs')->delete();
+            DB::table('order_items')->delete();
+            DB::table('order_errors_log')->delete();
+            DB::table('orders')->delete();
+            DB::table('cart_logs')->delete();
+            DB::table('cart_payments')->delete();
+            DB::table('cart_items')->delete();
+            DB::table('cart_items')->delete();
+            DB::table('carts')->delete();
+            DB::table('product_attributes')->delete();
+            DB::table('product_category_mapping')->delete();
+            DB::table('product_images')->delete();
+            DB::table('shipping_method_product_mapping')->delete();
+            DB::table('product_super_attributes')->delete();
+            DB::table('product_inventories')->delete();
+            DB::table('product_inventories')->delete();
+            DB::table('products')->delete();
+            DB::table('product_brands')->delete();
+            DB::table('product_class_attributes')->delete();
+            DB::table('product_classes')->delete();
+            DB::table('product_categories')->orderBy('created_at', 'DESC')->delete();
+            DB::table('commune_shipping_methods')->delete();
+            DB::table('shipping_method_seller_mapping')->delete();
+            DB::table('payment_method_seller_mapping')->delete();
+            DB::table('seller_addresses')->delete();
+            DB::table('seller_notifications')->delete();
+            DB::table('sellers')->delete();
+            DB::table('product_inventory_sources')->delete();
+            DB::table('customer_addresses')->delete();
+            DB::table('customer_notifications')->delete();
+            DB::table('customer_support')->delete();
+            DB::table('customer_support_history')->delete();
+            DB::table('customers')->delete();
+            DB::table('branch_users')->whereNotIn('user_id', [1, 2, 3, 84])->delete();
+            DB::table('company_users')->whereNotIn('user_id', [1, 2, 3, 84])->delete();
+            DB::table('users')->whereNotIn('id', [1, 2, 3, 84])->delete();
+            DB::table('branch_companies')->whereNotIn('branch_id', [1, 2])->delete();
+            DB::table('branches')->whereNotIn('id', [1, 2])->delete();
         } catch (\Exception $e) {
             DB::rollBack();
             return $e;
