@@ -64,6 +64,7 @@ class CovepaService
                 }
     
                 if ($response->getStatusCode() == 401) {
+                    \log::info('Tratando de obtener nuevo token de autorizacion');
                     $reloadToken = true;
                     continue;
                 } else {
