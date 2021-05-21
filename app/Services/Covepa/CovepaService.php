@@ -11,7 +11,8 @@ use App\Services\Covepa\Helpers as CovepaHelper;
 
 class CovepaService
 {
-    const CACHE_SECONDS_API_TOKEN = 10;
+    const CACHE_SECONDS_API_TOKEN = 3600;
+    const RETRY_ATTEMPTS_TOKEN = 3;
     
     private $baseUrl = 'http://216.155.76.46:8080/ServApi/rest';
 
@@ -41,16 +42,33 @@ class CovepaService
             $request = array_merge($request, ['json' => $data]);
         }
 
-        try {
-            $response = $client->request($method, $url, $request);
 
-            if (in_array($response->getStatusCode(), [400, 401, 500])) {
-                \Log::warning('Codigo de error en peticion realizada a covepa', [
-                    'url' => $url,
-                    'status_code' => $response->getStatusCode(),
-                    'response_headers' => $response->getHeaders(),
-                    'request_headers' => array_merge($defaultHeaders, $headers),
-                ]);
+        try {
+            $reloadToken = false;
+
+            for ($retry = 0; $retry < self::RETRY_ATTEMPTS_TOKEN; $retry++) {
+
+                if ($reloadToken) {
+                    $request['headers']['Authorization'] = $this->getToken(true);
+                }
+
+                $response = $client->request($method, $url, $request);
+    
+                if (in_array($response->getStatusCode(), [400, 401, 500])) {
+                    \Log::warning('Codigo de error en peticion realizada a covepa', [
+                        'url' => $url,
+                        'status_code' => $response->getStatusCode(),
+                        'response_headers' => $response->getHeaders(),
+                        'request_headers' => array_merge($defaultHeaders, $headers),
+                    ]);
+                }
+    
+                if ($response->getStatusCode() == 401) {
+                    $reloadToken = true;
+                    continue;
+                } else {
+                    break;
+                }
             }
 
             return $response;
@@ -72,14 +90,14 @@ class CovepaService
         }
     }
 
-    public function getToken()
+    public function getToken($force = false)
     {
 
-        if (Cache::get('covepa.auth.token') === null) {
+        if (Cache::get('covepa.auth.token') === null || $force) {
             Cache::forget('covepa.auth.token');
         }
 
-        $token = Cache::remember('covepa.auth.token', self::CACHE_SECONDS_API_TOKEN, function() {
+        $token = Cache::remember('covepa.auth.token', self::CACHE_SECONDS_API_TOKEN, function () {
 
             $credentials = [
                 'usuario' => config('covepa.credentials.user'),

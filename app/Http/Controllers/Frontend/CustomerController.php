@@ -58,6 +58,12 @@ class CustomerController extends Controller
             $customer = new Customer($request->all());
             
             $response = $covepaService->getCustomer(rutWithoutDV($customer->uid));
+
+            if ($response->getStatusCode() === 401) {
+                Log::warning('Error consultando cliente. La api respondio con error 401');
+                return redirect()->route('customer.sign')->withInput()->with('error', 'Ocurrio un error tratando de crear tu cuenta, intentalo mas tarde');
+            }
+
             $response = json_decode($response->getBody()->getContents(), true);
 
             if (isset($response['resultado']) && $response['resultado'] == false) {
