@@ -55,11 +55,12 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" style="min-width: 14rem;">
                                 <h6 class="dropdown-header">Cuenta</h6>
+                                @if (Auth::user()->customer)
                                 <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.profile') }}"><i class="czi-settings opacity-60 mr-2"></i>Perfil</a>
                                 <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.address') }}"><i class="czi-settings opacity-60 mr-2"></i>Direcciones</a>
-                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.order') }}"><i class="czi-settings opacity-60 mr-2"></i>Órdenes</a>
-                               
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('customer.order') }}"><i class="czi-settings opacity-60 mr-2"></i>Órdenes</a>               
                                 <div class="dropdown-divider"></div>
+                                @endif
                                 <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     <i class="czi-sign-out opacity-60 mr-2"></i> Cerrar sesión
                                 </a>

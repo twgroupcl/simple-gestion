@@ -5,11 +5,12 @@ namespace App;
 use App\Models\Branch;
 use App\Models\Seller;
 use App\Models\Company;
+use App\Models\Customer;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Rinvex\Subscriptions\Traits\HasSubscriptions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -156,5 +157,10 @@ class User extends Authenticatable implements JWTSubject
     public function seller()
     {
         return $this->hasOne(Seller::class);
+    }
+
+    public function customer()
+    {
+        return $this->hasOne(Customer::class);
     }
 }
