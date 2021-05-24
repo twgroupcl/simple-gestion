@@ -27,7 +27,11 @@
 @if (isset($invoice->folio) && $invoice->invoice_status == App\Models\Invoice::STATUS_SEND)
 @include('invoice.manage_invoice.update_dte_status')
 
-@include('invoice.manage_invoice.issue_credit_note')
+@if ($invoice->invoice_type->code != 61)
+    @include('invoice.manage_invoice.issue_credit_note')
+@else
+    @include('invoice.manage_invoice.issue_debit_note')
+@endif
 
 @endif
 
