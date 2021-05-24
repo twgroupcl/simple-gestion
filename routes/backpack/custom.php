@@ -83,6 +83,7 @@ Route::group([
     Route::get('invoice/{invoice}/to-manage', 'ManageInvoiceCrudController@index');
     Route::get('invoice/{invoice}/get-pdf', 'ManageInvoiceCrudController@getPDF')->name('invoice.get-pdf');
     Route::get('invoice/{invoice}/issue-credit-note', 'ManageInvoiceCrudController@issueCreditNote');
+    Route::get('invoice/{invoice}/issue-debit-note', 'ManageInvoiceCrudController@issueDebitNote');
     Route::get('invoice-type/{invoiceType}/get-code', 'InvoiceTypeCrudController@getCode');
     Route::crud('payments', 'PaymentsCrudController');
     Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
