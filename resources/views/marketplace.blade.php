@@ -121,6 +121,23 @@ $today =  Carbon::now();
             <div class="cz-carousel-inner" data-carousel-options='{"items": 4, "nav": false, "responsive": {"0":{"items":1},"500":{"items":2, "gutter": 18},"768":{"items":4, "gutter": 20}, "1100":{"gutter": 24}}}'>
                 @foreach($featuredProducts as $products)
                     <div class="card product-card">
+                        <div class="row">
+                            @if($products->has_special_price)
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <span class="badge badge-warning badge-shadow">Dcto</span>
+                                </div>
+                            @endif
+                            @if($products->new)
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <span class="badge badge-info badge-shadow">Nuevo</span>
+                                </div>
+                            @endif
+                            @if($products->product_type_id == 2)
+                                <div class="col-lg-4 col-md-4 col-sm-4">
+                                    <span class="badge badge-danger badge-shadow">Variable</span>
+                                </div>
+                            @endif
+                        </div>
                         <a class="card-img-top d-block overflow-hidden" href="{{ route('product',['slug' => $products->url_key]) }}">
                             <img class="w-100 max-height-14 min-height-14" src="{{ url($products->getFirstImagePath()) }}" alt="Product">
                         </a>
@@ -186,8 +203,11 @@ $today =  Carbon::now();
                                     @endif
                                 </a>
                             </div>
+                            
                         </div>
+                        
                     </div>
+                    
                 @endforeach
             </div>
         </div>
