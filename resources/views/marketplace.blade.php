@@ -131,7 +131,7 @@ $today =  Carbon::now();
                             <div class="d-flex justify-content-between">
                                 <div class="product-price">
                                     @if ($products->children()->count())
-                                        @if ($products->special_price)
+                                        @if ($products->has_special_price)
                                             <div class="product-price">
                                                 @if ($products->getRealPriceRange()[0] == $products->getRealPriceRange()[1])
                                                     <span class="text-accent">
@@ -162,7 +162,7 @@ $today =  Carbon::now();
                                         @endif
                                     @else
                                         <div class="product-price">
-                                            @if($products->special_price)
+                                            @if($products->has_special_price)
                                                 <span class="text-accent">{{ currencyFormat($products->special_price, defaultCurrency(), true) }}</span>
                                                 <del class="font-size-sm text-muted"><small>{{ currencyFormat($products->price, defaultCurrency(), true) }}</small></del>
                                             @else
