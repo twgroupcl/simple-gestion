@@ -190,7 +190,7 @@
 </li>
 @endcanany
 
-@canany(['invoice.list'])
+@canany(['invoice.list', 'bys_books.export'])
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-file"></i> Reportes</a>
     <ul class="nav-dropdown-items">
