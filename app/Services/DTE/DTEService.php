@@ -110,6 +110,8 @@ class DTEService
     public function downloadBook(string $period, int $type, string $rut)
     {
         $method = 'POST';
+        $rut = rutWithoutDV($rut);
+
         //retry 10 times send SII. With 0 send "automatically"
         if ($type == 0) {
             $url = $this->url . '/dte/dte_ventas/csv/' . $rut;
