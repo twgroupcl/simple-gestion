@@ -197,6 +197,9 @@
         @can('invoice.list')
             <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoice/dte_sales_report') }}'><i class='nav-icon la la-file'></i> Ventas</a></li>
         @endcan
+        @can('bys_books.export')
+            <li class='nav-item'><a class='nav-link' href='{{ backpack_url('exports/buysell-books') }}'><i class='nav-icon la la-file'></i> Libros de compra y venta</a></li>
+        @endcan
     </ul>
 </li>
 @endcanany
