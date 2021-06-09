@@ -82,7 +82,7 @@ class SalesReportController extends BaseController
                         $period->last()->endOfDay()]
                 )->with(['order_items.seller' => function ($query) {
                 $query->groupBy('id');
-            }])->where('status', '=', Order::STATUS_PAID)
+            }])->whereIn('status', [Order::STATUS_PAID, Order::STATUS_COMPLETED])
                 ->get();
 
         } else {
@@ -96,7 +96,7 @@ class SalesReportController extends BaseController
                     $period->last()->endOfDay()]
             )->with(['order_items.seller' => function ($query) use ($requestSellerId) {
                 $query->where('id', $requestSellerId)->groupBy('id');
-            }])->where('status', '=', Order::STATUS_PAID)
+            }])->whereIn('status', [Order::STATUS_PAID, Order::STATUS_COMPLETED])
                 ->get();
         }
 
