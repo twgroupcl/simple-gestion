@@ -359,7 +359,7 @@ class WebpayPlusController extends Controller
         # code...
         $order = Order::where('id', $orderId)->first();
         $result = null;
-        return view('payments.transbank.webpay.mall.complete', compact('result', 'order'));
+        return view('payments.transbank.webpay.plus.complete', compact('result', 'order'));
     }
 
     function final () {

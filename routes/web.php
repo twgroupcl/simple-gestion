@@ -88,6 +88,7 @@ Route::get('/filter-products', 'Frontend\HomeController@filterProducts');
 Route::group([
     'prefix' => '/transbank'
 ], function () {
+
     Route::get('main', function(){
         return view('payments.transbank.test');
     });
@@ -97,17 +98,16 @@ Route::group([
     Route::post('webpay/mall/response', 'Payments\Transbank\WebpayPlusMallController@response')->name('transbank.webpayplus.mall.response');
     Route::post('final', 'Payments\Transbank\WebpayPlusMallController@final')->name('transbank.final');
     Route::get('webpay/mall/download/{order}', 'Payments\Transbank\WebpayPlusMallController@download')->name('transbank.webpayplus.mall.download');
-    Route::get('test/{order}', 'Payments\Transbank\WebpayPlusMallController@test')->name('transbank.test.view');
 
     // WebPayPlus
     Route::get('webpay/plus/{order}', 'Payments\Transbank\WebpayPlusController@redirect')->name('transbank.webpayplus.redirect');
     Route::post('webpay/plus/response', 'Payments\Transbank\WebpayPlusController@response')->name('transbank.webpayplus.response');
     Route::post('plus/final', 'Payments\Transbank\WebpayPlusController@final')->name('transbank.plus.final');
+    
+    // For dev purposes
+    //Route::get('test/{order}', 'Payments\Transbank\WebpayPlusController@test')->name('transbank.test.view');
 
 });
-// Route::get('complete', function(){
-//     return view('payments.transbank.webpay.mall.complete');
-// });
 
 // Dev routes
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('only.admin');

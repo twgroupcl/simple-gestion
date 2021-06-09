@@ -151,7 +151,13 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
         <td width="50%"class="address-section" >
             @if ($addressShipping)
                 <div class="direccion-facturacion-titulo">
+                    @if ($order->order_items->first()->shipping->code === 'chilexpress')
                     <p><strong>Dirección de envío</strong></p>
+                    @endif
+                    
+                    @if ($order->order_items->first()->shipping->code === 'picking')
+                    <p><strong>Dirección</strong></p>
+                    @endif
                 </div>
                 <p>
                 <p class="p-estrecho">{{ $order->first_name . ', ' . $order->last_name }}</p>
@@ -243,6 +249,10 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
             <tr>
                 <td><strong>Método de pago</strong></td>
                 <td style="text-align: right"><strong>{{ $order->order_payments->first()->method_title }}</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Tipo de despacho</strong></td>
+                <td style="text-align: right"><strong>{{ $order->order_items->first()->shipping->title }}</strong></td>
             </tr>
             <tr>
                 <td><strong>Total</strong></td>

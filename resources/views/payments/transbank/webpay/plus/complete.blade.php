@@ -95,11 +95,17 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                         class="font-weight-medium">{{ $order->order_payments->first()->method_title }}</span>
                                 </div>
                             </div>
+                            <div class="woocommerce-order-overview__payment-method method col-sm-6 mb-3 px-2">
+                                <div class="bg-secondary rounded-lg p-3 text-center font-size-md">
+                                    Tipo de despacho : <span
+                                        class="font-weight-medium">{{ $order->order_items->first()->shipping->title }}</span>
+                                </div>
+                            </div>
                             @if ($transactionData)
                                 <div class="woocommerce-order-overview__payment-method method col-sm-6 mb-3 px-2">
                                     <div class="bg-secondary rounded-lg p-3 text-center font-size-md">
                                         Fecha de pago : <span
-                                            class="font-weight-medium">{{ $transactionData->transactionDate }}</span>
+                                            class="font-weight-medium">{{ Carbon\Carbon::create($transactionData->transactionDate)->format('d/m/Y') }}</span>
                                     </div>
                                 </div>
                             @endif
@@ -374,7 +380,12 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="border rounded-lg p-4 h-100">
+                                        @if ($order->order_items->first()->shipping->code === 'chilexpress')
                                         <h2 class="woocommerce-column__title h6">Dirección de envío</h2>
+                                        @endif
+                                        @if ($order->order_items->first()->shipping->code === 'picking')
+                                        <h2 class="woocommerce-column__title h6">Dirección</h2>
+                                        @endif
                                         @if (isset($addressShipping))
                                             <ul class="font-size-sm list-unstyled">
                                                 <li class="woocommerce-customer-details--address d-flex">
