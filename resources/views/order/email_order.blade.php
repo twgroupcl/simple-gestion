@@ -197,8 +197,9 @@
                 <div class="order-info">
                     <div style="padding: 10px;">
                         <span class="title-1">Orden #{{ $order->id }}</span>
-                        <p>Fecha {{ $order->created_at->format('d-m-Y') }}</p>
+                        <p>Fecha {{ $order->created_at->format('d/m/Y') }}</p>
                         <p>Metodo de pago: {{ $order->order_payments->first()->method_title }}</p>
+                        <p>Tipo de despacho: {{ $order->order_items->first()->shipping->title }}</p>
                     </div>
                 </div>
             </div>
