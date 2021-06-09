@@ -40,12 +40,18 @@ class Filters extends Component
     public function loadBrands() 
     {
         $category_id = $this->data['category'] ?? null;
+        $childrenIds = null;
+
+        if ($category_id) {
+            $childrenIds = ProductCategory::find($category_id)->getChildrensId();
+            $childrenIds[] = $category_id;
+        }
 
         $this->brands = ProductBrand::where('status','=','1')
-            ->when($category_id, function ($query) use ($category_id) {
-                return $query->whereHas('products', function ($query) use ($category_id)  {
-                    return $query->byLocation()->whereHas('categories', function ($query) use ($category_id)  {
-                        return $query->where('id', $category_id);
+            ->when($category_id, function ($query) use ($category_id, $childrenIds) {
+                return $query->whereHas('products', function ($query) use ($category_id, $childrenIds)  {
+                    return $query->byLocation()->whereHas('categories', function ($query) use ($category_id, $childrenIds)  {
+                        return $query->whereIn('id', $childrenIds);
                     });
                 });
             })
