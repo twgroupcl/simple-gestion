@@ -130,7 +130,7 @@
 </li>
 @endcanany
 
-@canany(['quotation.list', 'order.list', 'invoice.list', 'payments.list'])
+@canany(['quotation.list', 'order.list', 'invoice.list', 'payments.list', 'interchanges.list'])
 <li class="nav-item nav-dropdown">
 	<a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-money-bill"></i> Ventas</a>
 	<ul class="nav-dropdown-items">
