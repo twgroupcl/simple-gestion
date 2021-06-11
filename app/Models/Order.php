@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Seller;
 use App\Models\OrderItem;
 use App\Models\OrderPayment;
-use App\Models\Seller;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Order extends Model
 {
@@ -21,6 +23,13 @@ class Order extends Model
     const STATUS_PAID = 2;
     const STATUS_COMPLETED = 3;
     const STATUS_REJECTED = 4;
+
+    const ORDER_STATUS_CONFIRMED = 'C';                   // Compra confirmada
+    const ORDER_STATUS_INVOICED_DOCUMENT = 'F';           // Documento facturado
+    const ORDER_STATUS_IN_PREPARATION = 'P';              // En preparación
+    const ORDER_STATUS_AVAILABLE_FOR_PICKUP = 'R';        // Disponible para retiro
+    const ORDER_STATUS_DISPATCHED = 'D';                  // Despachado
+    const ORDER_STATUS_DELIVERED= 'E';                    // Entregado
 
     protected $table = 'orders';
     // protected $primaryKey = 'id';
@@ -115,6 +124,46 @@ class Order extends Model
             'business_activity_id' => $this->json_value['addressInvoice']->business_activity_id ?? null,
             'is_company' => $this->json_value['addressInvoice']->is_business,
         ]; 
+    }
+
+    public function getOrderStatusString()
+    {
+        switch ($this->order_status) {
+            case self::ORDER_STATUS_CONFIRMED:
+                return 'Compra confirmada';
+                break;
+
+            case self::ORDER_STATUS_INVOICED_DOCUMENT:
+                return 'Documento facturado';
+                break;
+
+            case self::ORDER_STATUS_IN_PREPARATION:
+                return 'En preparación';
+                break;
+
+            case self::ORDER_STATUS_AVAILABLE_FOR_PICKUP:
+                return 'Disponible para retiro';
+                break;
+
+            case self::ORDER_STATUS_DISPATCHED:
+                return 'Despachado';
+                break;
+
+            case self::ORDER_STATUS_DELIVERED:
+                return 'Entregado';
+                break;
+
+            default:
+                return 'Desconocido';
+                break;
+        }           
+    }
+
+    public function getStatusHistory() : Collection
+    {
+        $history = DB::table('orders_status_history')->where('order_id', $this->id)->get();
+
+        return !empty($history) ? $history : collect();
     }
     /*
     |--------------------------------------------------------------------------

@@ -65,12 +65,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     Route::post('/products/{warehouse}/{sku}/shipping', 'Api\v1\ProductController@updateShipping')
         ->middleware(['auth.jwt', 'permission:product.update'])
         ->name('api.products.update-shipping');
-        
-   
     Route::get('/products/{id}', 'Api\v1\ProductController@show')
         ->name('api.products.show');
 
-    
 
     // Product Brand
     Route::post('/product-brands', 'Api\v1\ProductBrandController@store')
@@ -152,6 +149,9 @@ Route::group([ 'prefix' => '/v1'], function() {
     // Orders
     Route::get('/orders/{id}', 'Api\v1\OrderController@show')
         ->name('api.orders.show');
+    Route::put('/orders/{id}/status', 'Api\v1\OrderController@updateStatus')
+        ->middleware(['auth.jwt', 'permission:order.update'])
+        ->name('api.orders.status.update');
     Route::get('/orders/error/logs', 'Api\v1\OrderController@fetchErrorLogs')
         ->name('api.orders.show.logs');
     Route::get('/orders/error/logs/{id}', 'Api\v1\OrderController@fetchErrorLog')

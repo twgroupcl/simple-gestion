@@ -380,7 +380,7 @@ class Checkout extends Component
                     $updateCustomer = $covepaService->updateCustomerEmail(rutWithoutDV($invoiceData->uid), $invoiceData->email);
 
                     if ($updateCustomer->getStatusCode() != 200) {
-                        \Log::error('Error creating new customer from pay() method on Checkout.php', ['error' => $updateCustomer->getBody()->getContents(), 'data' => ['email' => $invoiceData->email, 'id' => rutWithoutDV($invoiceData->uid)]]);
+                        \Log::error('Error updating customer email from pay() method on Checkout.php', ['error' => $updateCustomer->getBody()->getContents(), 'data' => ['email' => $invoiceData->email, 'id' => rutWithoutDV($invoiceData->uid)]]);
                         return  $this->emit('showToast', '¡No pudimos generar la orden!', 'Ocurrio un problema generando esta orden, contacte con el administrador para mas detalles. COD: CC-001', 3000, 'warning');    
                     }
 
@@ -434,6 +434,7 @@ class Checkout extends Component
         $order->customer_id = $this->cart->customer_id;
         $order->json_value = json_encode($addressData);
         $order->status = 1; //initiated
+        $order->order_status = Order::ORDER_STATUS_CONFIRMED;
         $order->save();
 
         $shippingtotal_order = 0;
