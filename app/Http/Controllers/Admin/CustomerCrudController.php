@@ -689,4 +689,21 @@ class CustomerCrudController extends CrudController
 
         return response()->json($customers);
     }
+
+    /**
+     * Get customer data by invoice complete
+     * @param int $id customer id
+     */
+    public function getData(Request $request, int $id)
+    {
+        $customer = Customer::findOrFail($id);
+
+        return response()->json([
+            'data' => [
+                'activities' => $customer->activities_data
+            ],
+            'message' => 'Se obtienen los datos del cliente',
+        ], 200);
+
+    }
 }

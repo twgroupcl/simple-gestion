@@ -95,6 +95,7 @@ Route::group([
     Route::post('api/quotation/generalStatus', 'QuotationCrudController@generalStatus');
     Route::post('api/product/top_table_dashboard', 'ProductCrudController@getTopTableDashboard');
     Route::post('api/customer/top_table_dashboard', 'CustomerCrudController@getTopTableDashboard');
+    Route::get('api/customer/get-data/{id}', 'CustomerCrudController@getData');
     Route::get('charts/top-customers-in-period', 'Charts\TopCustomersInPeriodChartController@response')->name('charts.top-customers-in-period.index');
     ///
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
