@@ -7,7 +7,7 @@
     </p>
     <!-- Shipping detail-->
     <div class="row pb-4">
-        @if(!empty($customer_id))
+        {{-- @if(!empty($customer_id))
         <div class="col-sm-12 form-group">
             <label for="addresses">Mis direcciones <span class='text-danger'>*</span></label>
             <select class="custom-select" wire:model="addresses_customer_id" id="addresses">
@@ -20,7 +20,7 @@
             </select>
             @error('data.addresses_customer_id') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
-        @endif
+        @endif --}}
         <div class="col-12 form-group text-left">
             <div class="custom-control custom-checkbox pb-3 mb-3">
                 <input class="custom-control-input" type="checkbox" id="is-business" wire:model="is_business">
@@ -77,17 +77,17 @@
             @error('data.address_street') <small class="text-danger">{{ $message }}</small> @enderror
 
         </div>
-        <div class="col-sm-6 form-group">
+        {{-- <div class="col-sm-6 form-group">
             <label for="sd-number">Número<span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="" wire:model="data.address_number" id="sd-number">
             @error('data.address_number') <small class="text-danger">{{ $message }}</small> @enderror
 
-        </div>
-        <div class="col-sm-6 form-group">
+        </div> --}}
+        {{-- <div class="col-sm-6 form-group">
             <label for="sd-subnumber">Oficina/Casa/Dpto</label>
             <input class="form-control" type="text" placeholder="" wire:model="data.address_office" id="sd-subnumber">
             @error('data.address_office') <small class="text-danger">{{ $message }}</small> @enderror
-        </div>
+        </div> --}}
         <div class="col-sm-6 form-group">
             <label for="sd-commune">Comuna <span class='text-danger'>*</span></label>
             <select class="custom-select" wire:model="data.address_commune_id" id="sd-commune">
@@ -100,18 +100,17 @@
             </select>
             @error('data.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
-        <div class="col-sm-6 form-group">
+        {{-- <div class="col-sm-6 form-group">
             <label for="sd-phone">Teléfono <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="" wire:model="data.phone" id="sd-phone">
             @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
 
-        </div>
-        <div class="col-sm-6 form-group">
+        </div> --}}
+        {{-- <div class="col-sm-6 form-group">
             <label for="sd-cellphone">Teléfono móvil</label>
             <input class="form-control" type="text" placeholder="" wire:model="data.cellphone" id="sd-cellphone">
             @error('data.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
-
-        </div>
+        </div> --}}
         
         
         {{-- @todo --}}
@@ -122,18 +121,18 @@
             @error('data.receiver_name') <small class="text-danger">{{ $message }}</small> @enderror
 
         </div> --}}
-        <div class="col-12 form-group">
+        {{-- <div class="col-12 form-group">
             <label for="sd-message">Detalle</label>
             <textarea class="form-control" wire:model="data.shipping_details" id="sd-message" rows="6"
                 placeholder="Ingrese algún detalle en caso de ser necesario" required="" spellcheck="false"
                 data-gramm="false"></textarea>
             @error('data.shipping_details') <small class="text-danger">{{ $message }}</small> @enderror
 
-        </div>
+        </div> --}}
     </div>
 
     <!-- Title-->
-    <h2 class="h6 border-bottom pb-3 mb-3">Información de Facturación</h2>
+    {{-- <h2 class="h6 border-bottom pb-3 mb-3">Información de Facturación</h2>
     <div class="custom-control custom-checkbox pb-3 mb-3">
         <input class="custom-control-input" type="checkbox"  wire:model="anotherDataInvoice"
             id="same-address">
@@ -239,7 +238,7 @@
                 </div>
             @endif
         </div>
-    @endif
+    @endif --}}
     {{-- <div class="d-none d-lg-flex pt-4 mt-3">
         <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" wire:click="prevStep()"><i
                     class="czi-arrow-left mt-sm-0 mr-1"></i><span class="d-none d-sm-inline">Volver al carro</span><span
