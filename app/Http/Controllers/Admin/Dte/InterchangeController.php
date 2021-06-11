@@ -12,8 +12,8 @@ class InterchangeController extends Controller
     public function index()
     {
         //$dteService = new DTEService();
-        //$interchanges = $dteService->getIntercambios('76100687', 1);
-        //$interchanges = $dteService->getDTEIntercambios('76100687', 1);
+        //$interchanges = $dteService->getIntercambios($rut, 1);
+        //$interchanges = $dteService->getDTEIntercambios($rut, 1);
         return view('interchanges.list', [
             'columns' => [
                 '',
@@ -53,8 +53,8 @@ class InterchangeController extends Controller
     public function view(Request $request, int $code)
     {
         $dteService = new DTEService();
-        //$interchanges = $dteService->getIntercambios('76100687', 1);
-        $interchange = $dteService->getIntercambio('76100687', $code);
+        $rut = Company::findOrFail(backpack_user()->current()->company->id)->uid;
+        $interchange = $dteService->getIntercambio($rut, $code);
         if ($interchange->getStatusCode() == 200) {
             return view('interchanges.view', [ 'data' => json_decode($interchange->getBody()->getContents()) ]);
         }
@@ -83,7 +83,8 @@ class InterchangeController extends Controller
         // end filters
 
         // get interchanges from libredte
-        $interchanges = $dteService->getDTEIntercambios('76100687', $interchangesStatus, $initEmitDate, $endEmitDate);
+        $rut = Company::findOrFail(backpack_user()->current()->company->id)->uid;
+        $interchanges = $dteService->getDTEIntercambios($rut, $interchangesStatus, $initEmitDate, $endEmitDate);
         $data = [];
         // get types names by code
         $types = \App\Models\DteDocumentType::all()->pluck('name','code');
@@ -186,7 +187,8 @@ class InterchangeController extends Controller
             //    "resultado": "T33F66: Acci\u00ef\u00bf\u00bdn autorizada solo para empresa receptora",
             //    "status": 200
             //}}';
-            $interchanges = $dteService->sendIntercambios('76100687', $dtes);
+            $rut = Company::findOrFail(backpack_user()->current()->company->id)->uid;
+            $interchanges = $dteService->sendIntercambios($rut, $dtes);
 
             $interchangeLog->response = json_encode(json_decode($interchanges->getBody()->getContents(), true));
             $interchangeLog->response_status = $interchanges->getStatusCode();
