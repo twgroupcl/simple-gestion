@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Services\DTE\DTEService;
 use App\Http\Controllers\Controller;
 use App\Models\InterchangeLog;
+use App\Models\Company;
+use App\Models\InvoiceType;
 
 class InterchangeController extends Controller
 {
@@ -87,7 +89,7 @@ class InterchangeController extends Controller
         $interchanges = $dteService->getDTEIntercambios($rut, $interchangesStatus, $initEmitDate, $endEmitDate);
         $data = [];
         // get types names by code
-        $types = \App\Models\DteDocumentType::all()->pluck('name','code');
+        $types = InvoiceType::all()->pluck('name','code');
 
         // if response is valid prepare response for front and return data.
         if ($interchanges->getStatusCode() == 200) {
@@ -115,7 +117,7 @@ class InterchangeController extends Controller
                     'net' => $document['Encabezado']['Totales']['MntNeto'],
                     'iva' => $document['Encabezado']['Totales']['IVA'],
                     'total' => $document['Encabezado']['Totales']['MntTotal'],
-                    'status' => $document['interchange']['estado'] === 0 ? '<i class="fas fa-check-circle fa-fw text-success"></i>Conforme' : '',
+                    'status' => $document['interchange']['estado'] === 0 ? '<i class="la la-check-circle fa-fw text-success"></i>Conforme' : '',
                 ];
             }
         }
@@ -153,7 +155,7 @@ class InterchangeController extends Controller
             'RFP' => 'Reclamo por falta parcial de mercaderías',
             'RFT' => 'Reclamo por falta total de mercaderías',
         ];
-        $types = \App\Models\DteDocumentType::all()->pluck('code','name');
+        $types = InvoiceType::all()->pluck('code','name');
 
         $interchangeLog = new InterchangeLog();
         try {
