@@ -416,6 +416,7 @@ class InvoiceCrudController extends CrudController
         CRUD::addField([
             'name' => 'customer_change_script',
             'type' => 'invoice.customer_change_script',
+            'tab' => 'General',
         ]);
 
         CRUD::addField([
