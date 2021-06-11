@@ -152,6 +152,9 @@
         @can('invoice.list')
         <li class='nav-item'><a class='nav-link' href='{{ backpack_url('invoice') }}'><i class='nav-icon la la-file-invoice-dollar'></i> Doc. Electrónicos </a></li>
         @endcan
+        @can('interchanges.list')
+        <li class='nav-item'><a class='nav-link' href='{{ backpack_url('dte/interchanges') }}'><i class='nav-icon las la-exchange-alt'></i> Intercambios</a></li>
+        @endcan
     </ul>
 </li>
 @endcanany
