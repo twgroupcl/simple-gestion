@@ -49,6 +49,7 @@
                         <tr>
                             <th>#</th>
                             <th>Fecha</th>
+                            <th>Pago</th>
                             <th>Estado</th>
                             <th>Total</th>
                             <th class="d-flex justify-content-center">Reporte</th>
@@ -69,6 +70,7 @@
                             <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm" href="#order-details" data-toggle="modal">{{ $order->id }}</a></td>
                             <td class="py-3">{{ $order->created_at->format('d-m-Y') }}</td>
                             <td class="py-3"><span class="badge badge-{{ array_key_exists($order->status_description, $badge) ? $badge[$order->status_description]: 'secondary' }} m-0">{{ $order->status_description ?? 'Pendiente' }}</span></td>
+                            <td class="py-3">{{ $order->getOrderStatusString() }}</td>
                             <td class="py-3">{{ currencyFormat($order->total ?? 0, 'CLP', true) }}</td>
                             <td class="py-3 d-flex justify-content-center"><a target="blank" href="{{ route('transbank.webpayplus.mall.download', ['order' => $order->id]) }}"><i class="czi-download"></i></a></td>
                         </tr>

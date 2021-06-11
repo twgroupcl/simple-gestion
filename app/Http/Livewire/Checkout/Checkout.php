@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\CartItem;
 use App\Models\OrderItem;
 use App\Models\ShippingMethod;
+use Illuminate\Support\Facades\DB;
 use App\Services\Covepa\CovepaService;
 use App\Services\Covepa\Helpers as CovepaHelper;
 
@@ -255,7 +256,7 @@ class Checkout extends Component
 
             }
 
-        }
+            }
 
         if ($this->shippingtotals) {
             foreach ($this->shippingtotals as $shippingtotal) {
@@ -434,7 +435,7 @@ class Checkout extends Component
         $order->customer_id = $this->cart->customer_id;
         $order->json_value = json_encode($addressData);
         $order->status = 1; //initiated
-        $order->order_status = Order::ORDER_STATUS_CONFIRMED;
+        $order->order_status = Order::ORDER_STATUS_WAITING_PAYMENT;
         $order->save();
 
         $shippingtotal_order = 0;
@@ -460,10 +461,17 @@ class Checkout extends Component
         }
 
         $order->shipping_total = $this->shippingTotal ;//$shippingtotal_order;
-        $order->sub_total = $this->subtotal ;//$subtotal_order;
+        $order->sub_total = $this->subtotal;//$subtotal_order;
         $order->total = $this->total ; //$total_order;
 
         $order->save();
+
+        DB::table('orders_status_history')->insert([
+            'order_id' => $order->id,
+            'order_status' => Order::ORDER_STATUS_WAITING_PAYMENT,
+            'created_at' =>  now(),
+            'updated_at' => now(),
+        ]);
 
         return redirect()->to(route('transbank.webpayplus.redirect', ['order' => $order]));
     }

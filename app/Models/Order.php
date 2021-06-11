@@ -24,6 +24,7 @@ class Order extends Model
     const STATUS_COMPLETED = 3;
     const STATUS_REJECTED = 4;
 
+    const ORDER_STATUS_WAITING_PAYMENT = 'WP';                  // Esperando pago
     const ORDER_STATUS_CONFIRMED = 'C';                   // Compra confirmada
     const ORDER_STATUS_INVOICED_DOCUMENT = 'F';           // Documento facturado
     const ORDER_STATUS_IN_PREPARATION = 'P';              // En preparación
@@ -129,6 +130,48 @@ class Order extends Model
     public function getOrderStatusString()
     {
         switch ($this->order_status) {
+            
+            case self::ORDER_STATUS_WAITING_PAYMENT:
+                return 'Esperando pago';
+                break;
+
+            case self::ORDER_STATUS_CONFIRMED:
+                return 'Compra confirmada';
+                break;
+
+            case self::ORDER_STATUS_INVOICED_DOCUMENT:
+                return 'Documento facturado';
+                break;
+
+            case self::ORDER_STATUS_IN_PREPARATION:
+                return 'En preparación';
+                break;
+
+            case self::ORDER_STATUS_AVAILABLE_FOR_PICKUP:
+                return 'Disponible para retiro';
+                break;
+
+            case self::ORDER_STATUS_DISPATCHED:
+                return 'Despachado';
+                break;
+
+            case self::ORDER_STATUS_DELIVERED:
+                return 'Entregado';
+                break;
+
+            default:
+                return 'Desconocido';
+                break;
+        }           
+    }
+
+    public static function orderStatusString($status)
+    {
+        switch ($status) {
+            case self::ORDER_STATUS_WAITING_PAYMENT:
+                return 'Esperando pago';
+                break;
+            
             case self::ORDER_STATUS_CONFIRMED:
                 return 'Compra confirmada';
                 break;

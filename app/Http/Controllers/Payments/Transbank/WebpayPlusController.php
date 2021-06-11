@@ -20,6 +20,7 @@ use Transbank\Webpay\Webpay;
 use App\Models\OrderErrorLog;
 use App\Models\PaymentMethod;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
 use App\Models\PaymentMethodSeller;
 use Illuminate\Support\Facades\Log;
 use Transbank\Webpay\Configuration;
@@ -236,9 +237,16 @@ class WebpayPlusController extends Controller
         }
 
         if ($finalresult) {
-
-            $order->status = 2; // pagada
+            $order->status = 2; // Pagada
+            $order->order_status = Order::ORDER_STATUS_CONFIRMED;
             $order->update();
+
+            DB::table('orders_status_history')->insert([
+                'order_id' => $order->id,
+                'order_status' => Order::ORDER_STATUS_CONFIRMED,
+                'created_at' =>  now(),
+                'updated_at' => now(),
+            ]);
 
             try {
                 $orderResponse = $this->covepaService->createOrder($order);

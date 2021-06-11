@@ -165,7 +165,7 @@
                                         <div class="collapse show" id="shippingOptions" data-parent="#productPanels">
                                             <div class="card-body font-size-sm">
                                                 @foreach ($product->getShippingMethodsByCommune((int) session()->get('commune_id')) as $method)
-                                                    <div class="d-flex justify-content-between {{ !$loop->last ? 'border-bottom' : '' }} pb-2">
+                                                    <div class="d-flex justify-content-between {{ !$loop->last ? 'border-bottom' : '' }} pb-2 mt-2">
                                                         <div>
                                                             <div class="font-weight-semibold text-dark">{{ $method->title }}</div>
                                                             {{-- <div class="font-size-sm text-muted">2 - 4 days</div> --}}
