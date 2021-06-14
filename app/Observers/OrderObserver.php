@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Mail\OrderUpdated;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class OrderObserver
@@ -15,6 +16,15 @@ class OrderObserver
             if ($order->status == 3) {
                 Mail::to($order->email)->send(new OrderUpdated($order, 1, null));
             }
+        }
+
+        if ($order->isDirty('order_status')) {
+            DB::table('orders_status_history')->insert([
+                'order_id' => $order->id,
+                'order_status' => $order->order_status,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
     }
     public function updating(Order $order)

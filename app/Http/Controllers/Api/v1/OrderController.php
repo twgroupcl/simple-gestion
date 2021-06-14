@@ -39,6 +39,7 @@ class OrderController extends Controller
                     Order::ORDER_STATUS_DISPATCHED,
                     Order::ORDER_STATUS_IN_PREPARATION,
                     Order::ORDER_STATUS_INVOICED_DOCUMENT,
+                    Order::ORDER_STATUS_WAITING_PAYMENT,
                 ]),
             ],
         ]);
@@ -56,14 +57,14 @@ class OrderController extends Controller
 
         $order->order_status = $request->status;
 
-        $order->save();
+        $order->update();
 
-        DB::table('orders_status_history')->insert([
+        /* DB::table('orders_status_history')->insert([
             'order_id' => $order->id,
             'order_status' => $request->status,
             'created_at' =>  now(),
             'updated_at' => now(),
-        ]);
+        ]); */
 
         return response()->json([
             'status' => 'success',
