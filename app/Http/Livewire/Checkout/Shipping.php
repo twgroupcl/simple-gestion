@@ -218,7 +218,6 @@ class Shipping extends Component
             }
 
             array_push($this->sellersShippings, $itemShippingSeller);
-
         }
 
         if (!$shippingMethodAvailable) {
@@ -253,9 +252,15 @@ class Shipping extends Component
         // vamos a seleccionar el primer metodo disponible de la primera tienda para colocarlo
         // como metodo de envio por default
 
-        if (!empty($this->sellersShippingMethods) && !empty($this->sellersShippingMethods->first())) {
-            $this->selectedShippingMethodId = $this->sellersShippingMethods->first()->first()->id;
+        if (empty($this->sellersShippingMethods)) {
+            return;
         }
+
+        if (!$this->sellersShippingMethods->first()->count()) {
+            return;
+        }
+
+        $this->selectedShippingMethodId = $this->sellersShippingMethods->first()->first()->id;
     }
 
     /**
@@ -263,6 +268,7 @@ class Shipping extends Component
      */
     public function setShippingMethod()
     {
+        
         foreach ($this->items as $item) {
             $item->shipping_id = $this->selectedShippingMethodId;
             $item->update();

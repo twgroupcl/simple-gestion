@@ -1,4 +1,4 @@
-<div {{-- wire:init="updateSellersShippings()" --}}>
+<div wire:init="updateSellersShippings()">
     <div class="loading" wire:loading>Loading&#8230;</div>
     <div class="accordion mb-2" id="seller" role="tablist">
         @if ($sellers)
@@ -45,7 +45,17 @@
                     <label class="form-check-label" for="{{ 'sh' . $loop->index }}"></label>
                   </div>
                 </td>
-                <td class="align-middle"><span class="text-dark fw-medium">{{ $shippingMethod['title'] }}</span><br><span class="text-muted">All addresses (default zone), United States &amp; Canada</span></td>
+                <td class="align-middle">
+                    <span class="text-dark fw-medium">{{ $shippingMethod['title'] }}</span>
+                    <br>
+                    @if ($shippingMethod['code'] === 'chilexpress')
+                        <span class="text-muted">Envío a domicilio</span>
+                    @elseif($shippingMethod['code'] === 'picking')
+                        <span class="text-muted">Gratis</span>
+                    @else 
+                        <span class="text-muted"></span>
+                    @endif
+                </td>
               </tr>
                 
               @endforeach
