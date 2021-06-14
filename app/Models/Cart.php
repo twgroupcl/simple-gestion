@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\User;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Exception;
 use Hamcrest\Arrays\IsArray;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Session\SessionManager;
-use Illuminate\Support\Facades\Session;
+use App\Models\ShippingMethod;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Session\SessionManager;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Cart extends Model
 {
@@ -314,6 +315,23 @@ class Cart extends Model
             'is_company' => (bool) $invoice_value['is_business'],
             'business_name' => $invoice_value['business_name'],
         ];
+    }
+
+    public function getShippingMethod()
+    {
+        if (empty($this->cart_items)) {
+            return null;
+        }
+
+        // Como solo puede existir un tipo de envio por orden/carrito, asumimos que el tipo de envio
+        // es el envio del primer item
+        $shipping = ShippingMethod::find($this->cart_items->first()->shipping_id);
+
+        if (empty($shipping)) {
+            return null;
+        }
+
+        return $shipping;
     }
 
     /*

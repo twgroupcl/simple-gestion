@@ -73,11 +73,22 @@ class Checkout extends Component
 
             ],
             [
-                'name' => 'Envío',
+                'name' => 'Despacho',
                 'status' => '',
                 'number' => 3,
                 'icon' => 'czi-package',
                 'prev-button' => 'Volver a información de envío',
+                'next-button' => 'Detalles de despacho',
+                'event-prev' => null,
+                'event-next' => null,
+
+            ],
+            [
+                'name' => 'Detalles',
+                'status' => '',
+                'number' => 4,
+                'icon' => 'czi-package',
+                'prev-button' => 'Volver a información de despacho',
                 'next-button' => 'Seleccionar método de pago',
                 'event-prev' => null,
                 'event-next' => null,
