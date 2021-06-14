@@ -33,6 +33,9 @@
                         @livewire('checkout.shipping-details', ['cart'=>$cart ])
                         @break
                         @case(5)
+                        @livewire('checkout.overview', ['cart'=>$cart])
+                        @break
+                        @case(6)
                         @livewire('checkout.payments', ['cart'=>$cart])
                         @break
                         @default

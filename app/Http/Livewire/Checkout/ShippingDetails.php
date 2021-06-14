@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Checkout;
 
+use App\Rules\RutRule;
 use Livewire\Component;
+use App\Rules\PhoneRule;
 
 class ShippingDetails extends Component
 {
@@ -15,6 +17,15 @@ class ShippingDetails extends Component
 
     protected $listeners = [
         'shipping-details:save' => 'saveData'
+    ];
+
+    protected $messages = [
+        'required' => 'Es necesario completar este campo',
+        'email' => 'Revise la dirección de email',
+        'exists' => 'Cuidado, ha ingresado un valor no válido',
+        'min' => 'El mínimo es de 3 caracteres.',
+        'numeric' => 'El valor ingresado no es numérico.',
+        'max' => 'El máximo es de :max caracteres.',
     ];
 
     public function mount($cart)
@@ -36,24 +47,24 @@ class ShippingDetails extends Component
         $rules = [];
 
         if ($this->shippingMethod->code === 'picking') {
-            $rules['picking.name'] = ['required'];
-            $rules['picking.uid'] = ['required'];
-            $rules['picking.email'] = ['required'];
-            $rules['picking.phone'] = ['required'];
+            $rules['picking.name'] = ['required', 'min:2', 'max:25'];
+            $rules['picking.uid'] = ['required',  new RutRule()];
+            $rules['picking.email'] = ['required', 'email'];
+            $rules['picking.phone'] = ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'];
         } else {
-            $rules['data.address_office'] = ['required'];
+            $rules['data.address_office'] = ['required', 'max:10'];
             $rules['data.phone'] = ['required'];
         }
 
         if ($this->requiredInvoice) {
-            $rules['invoice.uid'] = ['required'];
-            $rules['invoice.business_name'] = ['required'];
+            $rules['invoice.uid'] = ['required',  new RutRule()];
+            $rules['invoice.business_name'] = ['required', 'min:2', 'max:40'];
             $rules['invoice.business_activity_id'] = ['required'];
-            $rules['invoice.email'] = ['required'];
+            $rules['invoice.email'] = ['required', 'max:50', 'email'];
             $rules['invoice.address_commune_id'] = ['required'];
-            $rules['invoice.address_street'] = ['required'];
-            $rules['invoice.address_office'] = ['required'];
-            $rules['invoice.phone'] = ['required'];
+            $rules['invoice.address_street'] = ['required', 'min:2', 'max:40'];
+            $rules['invoice.address_office'] = ['min:2', 'max:10'];
+            $rules['invoice.phone'] = ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'];
         }
 
         return $rules;
@@ -61,9 +72,11 @@ class ShippingDetails extends Component
 
     public function saveData()
     {
-        dd(123);
         try {
             $validatedData = $this->validate();
+
+            $this->saveAddressData();
+            $this->updateInvoiceData();
 
             $this->emitUp('finishTask');
 
@@ -82,11 +95,12 @@ class ShippingDetails extends Component
     {
         $this->cart->address_office = $this->data['address_office'];
         $this->cart->phone = $this->data['phone'];
+        $this->cart->update();
     }
 
     public function updateInvoiceData() 
     {
-        if (!$requiredInvoice) return;
+        if (!$this->requiredInvoice) return;
 
         $this->cart->invoice_value = [
             'status' => true,
@@ -100,8 +114,8 @@ class ShippingDetails extends Component
             "address_number" => "",
             "address_office" => $this->invoice['address_office'],
             "business_activity_id" => $this->invoice['business_activity_id'],
-            "is_business" => true,"
-            business_name" => $this->invoice['business_name'],
+            "is_business" => true,
+            "business_name" => $this->invoice['business_name'],
         ];
 
         $this->cart->update();

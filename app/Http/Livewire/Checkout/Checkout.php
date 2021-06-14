@@ -97,7 +97,7 @@ class Checkout extends Component
             [
                 'name' => 'Pago',
                 'status' => '',
-                'number' => 4,
+                'number' => 5,
                 'icon' => 'czi-card',
                 'prev-button' => 'Volver a método de pago',
                 'next-button' => '',
@@ -107,7 +107,7 @@ class Checkout extends Component
             [
                 'name' => 'Revisión',
                 'status' => '',
-                'number' => 5,
+                'number' => 6,
                 'icon' => 'czi-check-circle',
                 'prev-button' => 'Continuar comprando',
                 'next-button' => 'Descargar',

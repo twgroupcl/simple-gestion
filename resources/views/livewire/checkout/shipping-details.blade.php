@@ -87,7 +87,7 @@
             <label for="sd-fisrtname">Razón social <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="invoice.business_name"
                 id="sd-business_name">
-            @error('invoice.first_name') <small class="text-danger">{{ $message }}</small> @enderror
+            @error('invoice.business_name') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-businessacitvity">Giro <span class='text-danger'>*</span></label>
@@ -107,7 +107,7 @@
         </div>
         <div class="col-sm-6 form-group">
             <label for="sda-commune">Comuna <span class='text-danger'>*</span></label>
-            <select class="custom-select" wire:model="invoice.address_commune_id" id="sda-commune" disabled>
+            <select class="custom-select" wire:model="invoice.address_commune_id" id="sda-commune">
                 <option value>Seleccione una comuna</option>
                 @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
                     <option 
