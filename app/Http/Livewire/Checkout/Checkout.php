@@ -91,7 +91,7 @@ class Checkout extends Component
                 'prev-button' => 'Volver a información de despacho',
                 'next-button' => 'Seleccionar método de pago',
                 'event-prev' => null,
-                'event-next' => null,
+                'event-next' => 'shipping-details:save',
 
             ],
             [
@@ -103,7 +103,6 @@ class Checkout extends Component
                 'next-button' => '',
                 'event-prev' => null,
                 'event-next' => null,
-
             ],
             [
                 'name' => 'Revisión',

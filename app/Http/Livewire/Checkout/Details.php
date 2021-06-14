@@ -24,13 +24,13 @@ class Details extends Component
     protected $rules = [
         //'business_name' => '',
         'data.address_street' => 'required|min:3|max:40',
-        'data.address_office' => 'max:10',
-        'data.address_number' => 'required|numeric|max:99999',
+        /* 'data.address_office' => 'max:10',
+        'data.address_number' => 'required|numeric|max:99999', */
         'data.address_commune_id' => 'required',
         'data.email' => 'required|email',
         /* 'data.cellphone' => 'required|max:20', */
-        'data.receiver_name' => 'max:255',
-        'data.shipping_details' => 'max:500',
+        /* 'data.receiver_name' => 'max:255',
+        'data.shipping_details' => 'max:500', */
         'data.uid' => ['required'],
     ];
 
@@ -53,16 +53,16 @@ class Details extends Component
             'uid' => $this->cart->uid,
             'first_name' => $this->cart->first_name,
             'last_name' => $this->cart->last_name,
-            'phone' => $this->cart->phone,
-            'cellphone' => $this->cart->cellphone,
+            /* 'phone' => $this->cart->phone,
+            'cellphone' => $this->cart->cellphone, */
             'email' => $this->cart->email,
             'address_commune_id' => $this->cart->address_commune_id ?? (session()->get('commune_id') ?? null),
             'address_street' => $this->cart->address_street,
-            'address_number' => $this->cart->address_number,
+            /* 'address_number' => $this->cart->address_number,
             'address_office' => $this->cart->address_office,
             'business_name' => $this->cart->business_name,
             'receiver_name' => $this->cart->receiver_name,
-            'shipping_details' => $this->cart->shipping_details
+            'shipping_details' => $this->cart->shipping_details */
         ];
 
         $invoice = [];
@@ -77,7 +77,7 @@ class Details extends Component
             }
         }
 
-        $this->invoice = [
+        /* $this->invoice = [
             'status' => $this->anotherDataInvoice,
             'uid' => array_key_exists('uid', $invoice) ? $invoice['uid'] : '',
             'first_name' =>  array_key_exists('first_name', $invoice) ? $invoice['first_name'] : '',
@@ -92,7 +92,7 @@ class Details extends Component
             'business_activity_id' => array_key_exists('business_activity_id', $invoice) ? $invoice['business_activity_id'] : '',
             'is_business' => array_key_exists('is_business', $invoice) ? $invoice['is_business'] : false,
             'business_name' => array_key_exists('business_name', $invoice) ? $invoice['business_name'] : '',
-        ];
+        ]; */
     }
 
 
@@ -122,7 +122,7 @@ class Details extends Component
             ];
         }
 
-        if ($this->anotherDataInvoice) {
+        /* if ($this->anotherDataInvoice) {
             $dynamicRules = array_merge($dynamicRules, [
                 'invoice.uid' => ['required', new RutRule()],
                 'invoice.phone' => ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'],
@@ -134,9 +134,9 @@ class Details extends Component
                 'invoice.address_commune_id' => 'required|exists:communes,id',
                 // 'invoice.business_activity_id' => 'required|exists:business_activities,id',
                 // 'invoice.business_name' => 'required|min:3',
-            ]);
+            ]); */
 
-            if ($this->invoice['is_business']) {
+            /* if ($this->invoice['is_business']) {
                 $dynamicRules = array_merge($dynamicRules, [
                     'invoice.business_activity_id' => 'required|exists:business_activities,id',
                     'invoice.business_name' => 'required|min:3',
@@ -146,13 +146,13 @@ class Details extends Component
                     'invoice.first_name' => 'required|min:2|max:25',
                     'invoice.last_name' => 'required|min:2|max:25',
                 ]);
-            }
-        }
+            } 
+        }*/
 
         $dynamicRules = array_merge($dynamicRules, [
             'data.uid' => ['required', new RutRule()],
-            'data.cellphone' => [new PhoneRule('El número ingresado no es válido'), 'max:19'],
-            'data.phone' => ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'],
+            /* 'data.cellphone' => [new PhoneRule('El número ingresado no es válido'), 'max:19'],
+            'data.phone' => ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'], */
         ]);
 
         return $dynamicRules;
@@ -172,6 +172,7 @@ class Details extends Component
         $dynamicRules = $this->getCustomRules();
 
         $this->rules = array_merge($this->rules,$dynamicRules);
+
         try {
             $validatedData = $this->validate();
             $this->invoice['status'] = $this->anotherDataInvoice;
@@ -237,27 +238,28 @@ class Details extends Component
             'uid' => $this->cart->uid,
             'first_name' => $this->cart->first_name,
             'last_name' => $this->cart->last_name,
-            'phone' => $this->cart->phone,
-            'cellphone' => $this->cart->cellphone,
+            /* 'phone' => $this->cart->phone,
+            'cellphone' => $this->cart->cellphone, */
             'email' => $this->cart->email,
             'address_commune_id' => $this->cart->address_commune_id ?? (session()->get('commune_id') ?? null),
             'address_street' => $this->cart->address_street,
-            'address_number' => $this->cart->address_number,
+            /* 'address_number' => $this->cart->address_number,
             'address_office' => $this->cart->address_office,
             'business_name' => $this->cart->business_name,
             'receiver_name' => $this->cart->receiver_name,
-            'shipping_details' => $this->cart->shipping_details
+            'shipping_details' => $this->cart->shipping_details */
         ];
 
-        $invoice = [];
-        $this->anotherDataInvoice = false;
+        /* $invoice = [];
+        
+        $this->anotherDataInvoice = false; */
 
-        if ($this->cart->invoice_value) {
+        /* if ($this->cart->invoice_value) {
             $invoice = json_decode($this->cart->invoice_value, true);
             if (array_key_exists('status', $invoice)) {
                 $this->anotherDataInvoice = $invoice['status'];
             }
-        }
+        } */
 
         $this->invoice = [
             'status' => $this->anotherDataInvoice,
