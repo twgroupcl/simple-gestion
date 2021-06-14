@@ -67,7 +67,7 @@ class Checkout extends Component
                 'number' => 2,
                 'icon' => 'czi-user-circle',
                 'prev-button' => 'Volver al carro',
-                'next-button' => 'Seleccionar métodos de envío',
+                'next-button' => 'Seleccionar tipo de despacho',
                 'event-prev' => 'cartpreview',
                 'event-next' => 'details:save',
 

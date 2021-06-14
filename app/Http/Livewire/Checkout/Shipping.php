@@ -19,7 +19,7 @@ class Shipping extends Component
     public $sellers;
     public $sellersShippings;
     public $communeDestine;
-    public $selectedShippingMethodId;
+    public $selectedShippingMethodId ;
     public $sellersShippingMethods;
     protected $listeners = [
         'deleteItem' => 'deleteItem',
@@ -28,12 +28,15 @@ class Shipping extends Component
 
     public function mount()
     {
+        $this->sellersShippings = [];
+        $this->sellersShippingMethods = collect();
+        
         $this->items = $this->getItems();
         $this->sellers = $this->getSellers();
-        $this->sellersShippings = [];
-        //$this->updateSellersShippings();
         $this->communeDestine = $this->cart->address_commune_id;
+        
         $this->getShippingMethods();
+        $this->setShippingMethod();
     }
     public function render()
     {
@@ -107,6 +110,7 @@ class Shipping extends Component
                     $itemShipping['shipping']['totalPrice'] = 0;
                     $itemShipping['shipping']['totalShippingPackage'] = 0;
                     $itemShipping['shipping']['items_id'] = [];
+
                     // Se actualiza las dimensiones del paquete
                     foreach ($shippingValue as $item) {
                         $itemShipping['shipping']['totalShippingPackage'] += 1;
@@ -133,6 +137,7 @@ class Shipping extends Component
                         $communeOrigin = $seller->addresses_data[0]['commune_id'];
                         $communeDestine = $this->cart->address_commune_id;
                         $itemShipping['shipping']['isAvailable'] = true;
+
                         switch ($shippingMethod->code) {
 
                             case 'chilexpress':
@@ -178,24 +183,6 @@ class Shipping extends Component
                             default:
                                 $itemShipping['shipping']['totalPrice'] = null;
                         }
-
-                        /* if ($shippingMethod->code == 'chilexpress') {
-                        $chilexpress = new Chilexpress();
-                        $communeOrigin = $seller->addresses_data[0]['commune_id'];
-                        $communeDestine = $this->cart->address_commune_id;
-
-                        $chilexpressResult = $chilexpress->calculateItemBySeller($itemShipping, $sellerKey, $communeOrigin, $communeDestine);
-                        dd($chilexpressResult);
-                        $resultitem = json_decode(json_encode($chilexpressResult['item']), false);
-
-                        $itemShipping['shipping']['totalPrice'] = $resultitem->service->serviceValue;
-                        } else {
-                        if (is_null($itemShipping['shipping']['pricePackpage'])) {
-                        $itemShipping['shipping']['totalPrice'] = null;
-                        } else {
-                        $itemShipping['shipping']['totalPrice'] = $itemShipping['shipping']['pricePackpage'] * $itemShipping['shipping']['totalShippingPackage'];
-                        }
-                        } */
 
                         if ($itemShipping['shipping']['totalPrice']) {
                             $firstItemSeller = CartItem::whereCartId($this->cart->id)->with('product')->get();
@@ -261,15 +248,26 @@ class Shipping extends Component
 
             $this->sellersShippingMethods[$seller->id] = $shippingMethods;
         }
+
+        // Como actualmente no tenemos habilitada la posibilidad de comprar desde varias sucursales
+        // vamos a seleccionar el primer metodo disponible de la primera tienda para colocarlo
+        // como metodo de envio por default
+
+        if (!empty($this->sellersShippingMethods) && !empty($this->sellersShippingMethods->first())) {
+            $this->selectedShippingMethodId = $this->sellersShippingMethods->first()->first()->id;
+        }
     }
 
+    /**
+     * Set the selected shipping methods for all the items in the order
+     */
     public function setShippingMethod()
     {
-           foreach ($this->items as $item) {
-               $item->shipping_id = $this->selectedShippingMethodId;
-               $item->update();
-            }
+        foreach ($this->items as $item) {
+            $item->shipping_id = $this->selectedShippingMethodId;
+            $item->update();
+        }
 
-           $this->updateSellersShippings();
+        $this->updateSellersShippings();
     }
 }
