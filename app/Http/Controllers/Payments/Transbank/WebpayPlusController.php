@@ -241,12 +241,12 @@ class WebpayPlusController extends Controller
             $order->order_status = Order::ORDER_STATUS_CONFIRMED;
             $order->update();
 
-            DB::table('orders_status_history')->insert([
+            /* DB::table('orders_status_history')->insert([
                 'order_id' => $order->id,
                 'order_status' => Order::ORDER_STATUS_CONFIRMED,
                 'created_at' =>  now(),
                 'updated_at' => now(),
-            ]);
+            ]); */
 
             try {
                 $orderResponse = $this->covepaService->createOrder($order);
