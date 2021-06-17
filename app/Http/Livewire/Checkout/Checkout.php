@@ -95,26 +95,27 @@ class Checkout extends Component
 
             ],
             [
-                'name' => 'Pago',
+                'name' => 'Revisión',
                 'status' => '',
                 'number' => 5,
+                'icon' => 'czi-check-circle',
+                'prev-button' => 'Volver a detalles de despacho',
+                'next-button' => 'Seleccionar metodo de pago',
+                'event-prev' => null,
+                'event-next' => null,
+
+            ],
+            [
+                'name' => 'Pago',
+                'status' => '',
+                'number' => 6,
                 'icon' => 'czi-card',
                 'prev-button' => 'Volver a método de pago',
                 'next-button' => '',
                 'event-prev' => null,
                 'event-next' => null,
             ],
-            [
-                'name' => 'Revisión',
-                'status' => '',
-                'number' => 6,
-                'icon' => 'czi-check-circle',
-                'prev-button' => 'Continuar comprando',
-                'next-button' => 'Descargar',
-                'event-prev' => null,
-                'event-next' => null,
 
-            ],
 
         ];
 
@@ -292,7 +293,7 @@ class Checkout extends Component
 
     public function finishTask()
     {
-
+       
         $currentStep = array_search($this->activeStep, $this->steps);
         $this->steps[$currentStep + 1]['status'] = 'active';
         $this->activeStep = $this->steps[$currentStep + 1];

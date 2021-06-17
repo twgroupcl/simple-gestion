@@ -41,6 +41,7 @@ class Order extends Model
     // protected $dates = [];
     protected $casts = [
         'json_value' => 'array',
+        'pickup_person_info' => 'array',
     ];
 
     /*

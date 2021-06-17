@@ -13,7 +13,7 @@ class ShippingDetails extends Component
     public $data;
     public $picking;
     public $invoice;
-    public $requiredInvoice;
+    public $requiredInvoice = false;
 
     protected $listeners = [
         'shipping-details:save' => 'saveData'
@@ -32,6 +32,7 @@ class ShippingDetails extends Component
     {
         $this->cart = $cart;
         $this->shippingMethod = $this->cart->getShippingMethod();
+        $this->picking = empty($this->cart->pickup_person_info) ? [] : $this->cart->pickup_person_info;
 
         $this->data['address_street'] = $this->cart->address_street;
         $this->data['address_commune_id'] = $this->cart->address_commune_id;
@@ -74,10 +75,19 @@ class ShippingDetails extends Component
     {
         try {
             $validatedData = $this->validate();
-
-            $this->saveAddressData();
+            
+            if ($this->shippingMethod->code === 'picking') {
+                $this->savePickupData();
+            } else {
+                $this->saveAddressData();
+            }
+           
             $this->updateInvoiceData();
+           
+            $this->cart->required_invoice = $this->requiredInvoice;
 
+            $this->cart->update();
+    
             $this->emitUp('finishTask');
 
         } catch (\Throwable $th){ // (\Throwable $th) {
@@ -95,6 +105,18 @@ class ShippingDetails extends Component
     {
         $this->cart->address_office = $this->data['address_office'];
         $this->cart->phone = $this->data['phone'];
+        $this->cart->update();
+    }
+
+    public function savePickupData()
+    {  
+        $this->cart->pickup_person_info = [
+            'uid' => $this->picking['uid'],
+            'email' => $this->picking['email'],
+            'name' => $this->picking['name'],
+            'phone' => $this->picking['phone'],
+        ];
+
         $this->cart->update();
     }
 

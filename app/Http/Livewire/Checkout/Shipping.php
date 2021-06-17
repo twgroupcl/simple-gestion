@@ -78,7 +78,6 @@ class Shipping extends Component
 
         //$this->emit('updateLoading',true);
         //  if ($this->sellers) {
-
         $items = $this->items->groupBy(['product.seller_id', 'shipping_id']);
 
         $this->sellersShippings = [];

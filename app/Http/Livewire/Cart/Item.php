@@ -62,12 +62,12 @@ class Item extends Component
         $this->communeSelected =  $this->item->cart->address_commune_id;
         $product = $this->item->product;
         $this->sellerId = $this->item->product->seller->id;
-        $this->shippingMethods = $this->getShippingMethods();
+        /* $this->shippingMethods = $this->getShippingMethods();
         if (count($this->shippingMethods) > 0) {
             $this->item->shipping_id = $this->shippingMethods->first()->id;
         }else{
             $this->item->shipping_id =  null;
-        }
+        } */
         $this->item->update();
 
         // if($this->item->shipping_id){
@@ -117,6 +117,7 @@ class Item extends Component
         // $this->updatedSelected($this->selected);
         // $this->addShippingItem();
 
+        // @todo por aqui
         $this->emitUp('shipping-update');
 
         $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
@@ -254,16 +255,12 @@ class Item extends Component
 
     public function addShippingItem()
     {
-
-
-
         if ($this->selected) {
            // $this->emitUp('select-shipping', $this->shippingSelected, $this->item->id);
            $this->item->shipping_id = $this->selected  ; //$this->shippingSelected['id'];
            $this->item->update();
            $this->emitUp('shipping-update');
         }
-
     }
 
 

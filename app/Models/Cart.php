@@ -30,6 +30,7 @@ class Cart extends Model
 
     protected $casts = [
         'json_value' => 'array',
+        'pickup_person_info' => 'array',
     ];
 
     /*
@@ -234,9 +235,9 @@ class Cart extends Model
                 $cartCustomer->recalculateSubtotal();
                 $cartCustomer->update();
 
--               $cartSession->delete();
+                $cartSession->delete();
 
-               // DB::rollBack();
+                // DB::rollBack();
                 DB::commit();
                 return true;
 
@@ -334,6 +335,19 @@ class Cart extends Model
         return $shipping;
     }
 
+    public function getSeller()
+    {
+        // Por regla de negocio, una orden solo puede pertenecer a una sucursal, por lo tanto para
+        // obtener la sucursal de la orden/carrito buscaremos el seller del primer item de la orden
+        $item = $this->cart_items->first();
+
+        if (empty($item)) {
+            return false;
+        }
+
+        return $item->product->seller;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -342,6 +356,11 @@ class Cart extends Model
     public function cart_items()
     {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function commune()
+    {
+        return $this->belongsTo(Commune::class, 'address_commune_id');
     }
 
     /*
