@@ -366,10 +366,10 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                         @endif
                                                     </div>
                                                 </li>
-                                                <li class="woocommerce-customer-details--address d-flex">
+                                                {{-- <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
-                                                    <div>{{ $order->phone }}</div>
-                                                </li>
+                                                    <div>{{ $order->pickup_person_info['phone'] ?? ''}}</div>
+                                                </li> --}}
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mail opacity-60 mr-2 mt-1"></i>
                                                     <div>{{ $order->email }}</div>
@@ -380,21 +380,17 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="border rounded-lg p-4 h-100">
-                                        @if ($order->order_items->first()->shipping->code === 'chilexpress')
-                                        <h2 class="woocommerce-column__title h6">Dirección de envío</h2>
-                                        @endif
-                                        @if ($order->order_items->first()->shipping->code === 'picking')
-                                        <h2 class="woocommerce-column__title h6">Dirección</h2>
-                                        @endif
-                                        @if (isset($addressShipping))
+                                        @if ($order->getShippingMethod()->code === 'picking')
+                                        <h2 class="woocommerce-column__title h6">Persona que retira</h2>
+                                            @if (isset($addressShipping))
                                             <ul class="font-size-sm list-unstyled">
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-card opacity-60 mr-2 mt-1"></i>
-                                                    <div>{{ $order->uid }}
+                                                    <div>{{ $order->pickup_person_info['uid'] ?? '' }}
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-user opacity-60 mr-2 mt-1"></i>
-                                                    <div>{{ $order->first_name . ' ' . $order->last_name }}
+                                                    <div>{{ $order->pickup_person_info['name'] ?? '' }}
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-location opacity-60 mr-2 mt-1"></i>
@@ -407,13 +403,45 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
-                                                    <div>{{ $order->phone }}</div>
+                                                    <div>{{ $order->pickup_person_info['phone'] ?? ''}}</div>
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mail opacity-60 mr-2 mt-1"></i>
-                                                    <div>{{ $order->email }}</div>
+                                                    <div>{{ $order->pickup_person_info['email'] ?? '' }}</div>
                                                 </li>
                                             </ul>
+                                            @endif
+                                        @else
+                                        <h2 class="woocommerce-column__title h6">Dirección de envío</h2>
+                                            @if (isset($addressShipping))
+                                                <ul class="font-size-sm list-unstyled">
+                                                    <li class="woocommerce-customer-details--address d-flex">
+                                                        <i class="czi-card opacity-60 mr-2 mt-1"></i>
+                                                        <div>{{ $order->uid }}
+                                                    </li>
+                                                    <li class="woocommerce-customer-details--address d-flex">
+                                                        <i class="czi-user opacity-60 mr-2 mt-1"></i>
+                                                        <div>{{ $order->first_name . ' ' . $order->last_name }}
+                                                    </li>
+                                                    <li class="woocommerce-customer-details--address d-flex">
+                                                        <i class="czi-location opacity-60 mr-2 mt-1"></i>
+                                                        <div>
+                                                            {{ $addressShipping->address_street . ' ' . $addressShipping->address_number . ' ' . $addressShipping->address_office }}
+                                                            @if ($communeShipping)
+                                                                {{ $communeShipping->name }}
+                                                            @endif
+                                                        </div>
+                                                    </li>
+                                                    <li class="woocommerce-customer-details--address d-flex">
+                                                        <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
+                                                        <div>{{ $order->phone }}</div>
+                                                    </li>
+                                                    <li class="woocommerce-customer-details--address d-flex">
+                                                        <i class="czi-mail opacity-60 mr-2 mt-1"></i>
+                                                        <div>{{ $order->email }}</div>
+                                                    </li>
+                                                </ul>
+                                            @endif
                                         @endif
                                     </div>
                                 </div>

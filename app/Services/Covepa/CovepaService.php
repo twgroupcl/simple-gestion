@@ -192,6 +192,9 @@ class CovepaService
      */
     public function prepareOrderData(Order $order) : array
     {
+        // Shipping Method
+        $shippingMethod = $order->getShippingMethod();
+        
         // Amount calculations
         $total = round($order->total);
         $net = round($total * 100 / 119);
@@ -201,7 +204,8 @@ class CovepaService
         $rutWithoutDV = rutWithoutDV($order->uid);
         $fullName = $order->first_name . ' ' . $order->last_name;
         $address = $order->json_value['addressShipping'];
-        $fullAddress = $address->address_street . ' ' . $address->address_number . ' ' . $address->address_office;
+        /* $fullAddress = $address->address_street . ' ' . $address->address_number . ' ' . $address->address_office; */
+        $fullAddress = $address->address_street . ' ' . $address->address_office;
         $commune = Commune::find($address->address_commune_id);
         
         // Invoice address
@@ -249,9 +253,9 @@ class CovepaService
                 "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
                 "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_city'],
                 "VTPLDI_CONTN1" => $fullName,
-                "VTPLDI_CONTF1" => $order->phone,
-                "VTPLDI_CONTF2" => $order->cellphone,
-                "VTPLDI_REFERE" => $address->address_details,
+                "VTPLDI_CONTF1" => $shippingMethod->code === 'picking' ? $order->pickup_person_info['phone'] : $order->phone,
+                /* "VTPLDI_CONTF2" => $order->cellphone, */
+                /* "VTPLDI_REFERE" => $address->address_details, */
                 "VTPLDI_COOGPS" => "0",
                 "VTPLDI_DISTAN" => 0
             ];
@@ -291,8 +295,8 @@ class CovepaService
                 "COMUNA_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_commune'],
                 "CIUDAD_CODIGO" => CovepaHelper::COMMUNE_MAPPING[$commune->id]['id_city'],
                 "VTPLDI_CONTN1" => $fullName,
-                "VTPLDI_CONTF1" => $order->phone,
-                "VTPLDI_CONTF2" => $order->cellphone,
+                "VTPLDI_CONTF1" => $shippingMethod->code === 'picking' ? $order->pickup_person_info['phone'] : $order->phone,
+                /* "VTPLDI_CONTF2" => $order->cellphone, */
                 "VTPLDI_REFERE" => $address->address_details,
                 "VTPLDI_COOGPS" => "0",
                 "VTPLDI_DISTAN" => 0
@@ -310,7 +314,7 @@ class CovepaService
 
         $orderData = [
             "VTAGEN_VTAREL" => $order->id,
-            "DOCMTO_CODTRI" => $invoiceData['is_company'] ? '25' : '26',
+            "DOCMTO_CODTRI" => $order->required_invoice ? '25' : '26',
             "VTAGEN_FECDOC" => Carbon::now()->format('d/m/Y'),
 
             "SUJSUC_CODIGO" => 0, // codigo sucursal
@@ -329,8 +333,8 @@ class CovepaService
             "VTAGEN_OBSERV" => "", 
 
             // Persona que retira
-            "VTAGEN_RUTRET" => $rutWithoutDV,  
-            "VTAGEN_NOMRET" => $fullName,
+            "VTAGEN_RUTRET" => $shippingMethod->code === 'picking' ? rutWithoutDV($order->pickup_person_info['uid']) : $rutWithoutDV,  
+            "VTAGEN_NOMRET" => $shippingMethod->code === 'picking' ? $order->pickup_person_info['name'] : $fullName,
             "VTAGEN_FECTRL" => Carbon::now()->format('d/m/Y h:i:s'),
 
             // Dirección de facturación

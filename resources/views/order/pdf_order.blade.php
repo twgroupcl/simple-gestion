@@ -150,22 +150,27 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
     <tr>
         <td width="50%"class="address-section" >
             @if ($addressShipping)
+                @if ($order->order_items->first()->shipping->code === 'picking')
                 <div class="direccion-facturacion-titulo">
-                    @if ($order->order_items->first()->shipping->code === 'chilexpress')
-                    <p><strong>Dirección de envío</strong></p>
-                    @endif
-                    
-                    @if ($order->order_items->first()->shipping->code === 'picking')
-                    <p><strong>Dirección</strong></p>
-                    @endif
+                    <p><strong>Persona que retira</strong></p>
+                    <p>
+                        <p class="p-estrecho">{{ $order->pickup_person_info['name'] ?? '' }}</p>
+                        <p class="p-estrecho">{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}</p>
+                        <p class="p-estrecho">{{ $communeShipping->name }}</p>
+                        <p class="p-estrecho">Teléfono: {{ $order->pickup_person_info['phone'] ?? '' }}</p>
+                    </p>
                 </div>
-                <p>
-                <p class="p-estrecho">{{ $order->first_name . ', ' . $order->last_name }}</p>
-                <p class="p-estrecho">{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}
-                </p>
-                <p class="p-estrecho">{{ $communeShipping->name }}</p>
-                <p class="p-estrecho">Teléfono: {{ $order->phone }}</p>
-                </p>
+                @else
+                <div class="direccion-facturacion-titulo">
+                    <p><strong>Dirección de envío</strong></p>
+                    <p>
+                        <p class="p-estrecho">{{ $order->first_name . ', ' . $order->last_name }}</p>
+                        <p class="p-estrecho">{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}</p>
+                        <p class="p-estrecho">{{ $communeShipping->name }}</p>
+                        <p class="p-estrecho">Teléfono: {{ $order->phone }}</p>
+                    </p>
+                </div>
+                @endif
             @endif
         </td>
         <td width="50%"  @if ($addressInvoice)  class="address-section" @endif>
