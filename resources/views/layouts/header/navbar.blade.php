@@ -117,7 +117,10 @@
                     <!-- Primary menu-->
                     <ul class="navbar-nav">
                         <li class="nav-item active"><a class="nav-link" href="{{ url('/home') }}">Inicio</a></li>
-                        <li class="nav-item active"><a class="nav-link" href="{{ url('/about-us') }}">Prolibro</a></li>
+                        <li class="nav-item active"><a class="nav-link" href="{{ url('/about-us') }}">Quienes Somos</a></li>
+                        @if( ! empty(Setting::get('featured_page_title')))
+                            <li class="nav-item active"><a class="nav-link" href="{{ url('/featured-products') }}">{{ Setting::get('featured_page_title') }}</a></li>
+                        @endif
                     <!-- <li class="nav-item active"><a class="nav-link" href="https://camaradellibro.cl/wp-content/uploads/2021/04/Programa-Feria-Libro-2021-02.pdf" target="_blank" >Programa Cultural</a></li> -->
                         {{-- <li class="nav-item dropdown active"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Inicio</a>
                             <ul class="dropdown-menu">

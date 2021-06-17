@@ -11,6 +11,7 @@ use App\Models\SellerAddress;
 use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
 use App\Services\ProductFilterService;
+use Backpack\Settings\app\Models\Setting;
 
 class HomeController extends Controller
 {
@@ -57,15 +58,31 @@ class HomeController extends Controller
         $render = ['view' => 'searchProduct'];
         $data = ['category' => $request->category, 'product' => $request->product];
 
-        return view('shop-grid', compact('render', 'data'));
+        if(!empty($request->category)) {
+            $cat = ProductCategory::where('id', '=', $request->category)->first();
+
+            $category = $cat->name;
+        } else {
+            $category = null;
+        }
+        
+        return view('shop-grid', compact('render', 'data', 'category'));
     }
 
     public function getProductsByCategory(Request $request)
     {
         $render = ['view' => 'searchCategory'];
         $data = ['category' => $request->category];
+        
+        if(!empty($request->category)) {
+            $cat = ProductCategory::where('id', '=', $request->category)->first();
 
-        return view('shop-grid', compact('render', 'data'));
+            $category = $cat->name;
+        } else {
+            $category = null;
+        }
+
+        return view('shop-grid', compact('render', 'data', 'category'));
     }
 
     public function getSeller(Request $request)
@@ -112,5 +129,14 @@ class HomeController extends Controller
     {
         $filterService = new ProductFilterService();
         $filterService->filterByParams($request);
+    }
+
+    public function featuredProduct(Request $request)
+    {
+        $render = ['view' => 'featured'];
+        $data = ['category' => null];
+        $title = Setting::get('featured_page_title');
+        
+        return view('shop-grid', compact('render', 'data', 'title'));
     }
 }

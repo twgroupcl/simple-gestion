@@ -15,7 +15,7 @@
             </nav>
         </div> --}}
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
-            <h1 class="h3 text-light mb-0">Búsqueda de libros</h1>
+            <h1 class="h3 text-light mb-0">{{ !empty($title) ? $title : 'Búsqueda de libros' }}</h1>
         </div>
     </div>
 </div>
@@ -35,8 +35,9 @@
             <!-- Toolbar-->
             <div class="d-flex justify-content-center justify-content-sm-between align-items-center pt-2 pb-4 pb-sm-5">
                 @livewire('sorting-products')
+                <span class="text-light mb-0" style="font-size: 20px;">{{ !empty($category) ? $category : '' }}</span>
              {{--   <div class="d-flex pb-3"><a class="nav-link-style nav-link-light mr-3" href="#"><i class="czi-arrow-left"></i></a><span class="font-size-md text-light">1 / 5</span><a class="nav-link-style nav-link-light ml-3" href="#"><i class="czi-arrow-right"></i></a></div> --}}
-             <div class="d-none d-sm-flex pb-3">
+                <div class="d-none d-sm-flex pb-3">
                     <a class="btn btn-icon nav-link-style bg-light text-dark disabled opacity-100 mr-2" href="#"><i class="czi-view-grid"></i></a>
                     <!--
                         <a class="btn btn-icon nav-link-style nav-link-light" href="shop-list-ls.html"><i class="czi-view-list"></i></a>

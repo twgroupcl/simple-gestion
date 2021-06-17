@@ -44,6 +44,9 @@ class CardGeneral extends Component
             case 'seller': 
                 $render = [ 'products' => $this->searchSeller($this->valuesQuery)];
                 break;
+            case 'featured': 
+                $render = [ 'products' => $this->getProductsFeatured()];
+                break;
             default:
                 if ( empty($this->showFrom) ) {
                     $render = [ 'products' => $this->getProducts()];
@@ -113,7 +116,12 @@ class CardGeneral extends Component
         return 'paginator';
     }
 
-    private function baseQuery($random = false, $category_id = null, $product_search = null, $seller_id = null)
+    public function getProductsFeatured()
+    {
+        return $this->baseQuery(true, null, null, null, true);
+    }
+
+    private function baseQuery($random = false, $category_id = null, $product_search = null, $seller_id = null, $featured = false)
     {
 
         $this->sortingField = $this->sortingField ?? 'random';
@@ -153,6 +161,12 @@ class CardGeneral extends Component
                     return $query->whereHas('seller', function ($q) use ($seller_id) {
                         $q->where('id', '=', $seller_id);
                     });
+                }
+                return $query;
+            })
+            ->when($featured, function ($query) use ($featured) {
+                if ($featured) {
+                    return $query->where('featured', '=', '1');
                 }
                 return $query;
             });
