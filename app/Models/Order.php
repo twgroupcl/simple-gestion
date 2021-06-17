@@ -209,6 +209,23 @@ class Order extends Model
 
         return !empty($history) ? $history : collect();
     }
+
+    public function getShippingMethod()
+    {
+        if (empty($this->order_items)) {
+            return null;
+        }
+
+        // Como solo puede existir un tipo de envio por orden/carrito, asumimos que el tipo de envio
+        // es el envio del primer item
+        $shipping = ShippingMethod::find($this->order_items->first()->shipping_id);
+
+        if (empty($shipping)) {
+            return null;
+        }
+
+        return $shipping;
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

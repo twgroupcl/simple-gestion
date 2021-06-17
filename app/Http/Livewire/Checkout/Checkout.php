@@ -444,6 +444,8 @@ class Checkout extends Component
         $order->cellphone = $this->cart->cellphone;
         $order->currency_id = $this->cart->currency_id;
         $order->customer_id = $this->cart->customer_id;
+        $order->required_invoice = $this->cart->required_invoice;
+        $order->pickup_person_info = $this->cart->pickup_person_info;
         $order->json_value = json_encode($addressData);
         $order->status = 1; //initiated
         $order->order_status = Order::ORDER_STATUS_WAITING_PAYMENT;

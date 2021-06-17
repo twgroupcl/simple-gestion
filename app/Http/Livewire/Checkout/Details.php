@@ -23,7 +23,7 @@ class Details extends Component
 
     protected $rules = [
         //'business_name' => '',
-        'data.address_street' => 'required|min:3|max:40',
+        'data.address_street' => 'required|min:3|max:30',
         /* 'data.address_office' => 'max:10',
         'data.address_number' => 'required|numeric|max:99999', */
         'data.address_commune_id' => 'required',
@@ -174,7 +174,24 @@ class Details extends Component
 
         try {
             $validatedData = $this->validate();
-            $this->invoice['status'] = $this->anotherDataInvoice;
+
+            $this->invoice = [
+                'status' => false,
+                'uid' => '',
+                'first_name' => '',
+                'last_name' =>  '',
+                'phone' =>  '',
+                'cellphone' =>  '',
+                'email' =>  '',
+                'address_commune_id' => '',
+                'address_street' =>  '',
+                'address_number' =>  '',
+                'address_office' =>  '',
+                'business_activity_id' => '',
+                'is_business' => '',
+                'business_name' =>'',
+            ];
+            
             $this->data['invoice_value'] = json_encode($this->invoice);
 
             $this->data['is_company'] = $this->is_business;

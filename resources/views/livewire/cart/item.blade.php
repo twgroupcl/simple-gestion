@@ -10,6 +10,9 @@ $product = $item->product;
                 <h3 class="product-title font-size-base mb-2"><a
                         href="{{ route('product', ['slug' => $product->url_key]) }}"
                         target="_blank">{{ $product->name }}</a></h3>
+                    <div class="font-size-sm"><span
+                        class="text-muted mr-2">Cantidad:</span>{{ $item->qty }}
+                    </div>
                 @if ($showAttributes && filled($product->getAttributesWithNames()))
                     @foreach ($product->getAttributesWithNames() as $attribute)
                         @if ($attribute['value'] != '* No aplica')

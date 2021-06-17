@@ -11,20 +11,20 @@
             @error('picking.name') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
-            <label for="sd-fisrtname">RUT <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="picking.uid"
+            <label for="sd-uid">RUT <span class='text-danger'>*</span></label>
+            <input class="form-control" name="picking_rut" type="text" placeholder="Ingrese su RUT" wire:model="picking.uid"
                 id="sd-uid">
             @error('picking.uid') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Email <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="picking.email"
+            <input class="form-control" type="text" placeholder="Ingrese su email" wire:model="picking.email"
                 id="sd-email">
             @error('picking.email') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
-            <label for="sd-fisrtname">Telefono <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="picking.phone"
+            <label for="sd-fisrtname">Teléfono <span class='text-danger'>*</span></label>
+            <input class="form-control" type="text" placeholder="Ingrese su teléfono" wire:model="picking.phone"
                 id="sd-phone">
             @error('picking.phone') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Calle <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="data.address_street"
+            <input class="form-control" type="text" placeholder="Ingrese su calle" wire:model="data.address_street"
                 id="sd-address_street"
                 disabled
             >
@@ -55,13 +55,13 @@
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Oficina/Casa/Dpto <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="data.address_office"
+            <input class="form-control" type="text" placeholder="Ingrese su oficina/casa/dpto" wire:model="data.address_office"
                 id="sd-address_office">
             @error('data.address_office') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
-            <label for="sd-fisrtname">Telefono <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="data.phone"
+            <label for="sd-fisrtname">Teléfono <span class='text-danger'>*</span></label>
+            <input class="form-control" type="text" placeholder="Ingrese su teléfono" wire:model="data.phone"
                 id="sd-phone">
             @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
@@ -79,13 +79,13 @@
     <div class="row pb-4">
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">RUT <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="invoice.uid"
-                id="sd-uid">
+            <input class="form-control" name="invoice_rut" type="text" placeholder="Ingrese su RUT" wire:model="invoice.uid"
+                id="sd-uid-i">
             @error('invoice.uid') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Razón social <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="invoice.business_name"
+            <input class="form-control" type="text" placeholder="Ingrese su razón social" wire:model="invoice.business_name"
                 id="sd-business_name">
             @error('invoice.business_name') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
@@ -101,13 +101,13 @@
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Email <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="invoice.email"
-                id="sd-fisrtname">
+            <input class="form-control" type="text" placeholder="Ingrese su email" wire:model="invoice.email"
+                id="sd-email-i">
             @error('invoice.email') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
             <label for="sda-commune">Comuna <span class='text-danger'>*</span></label>
-            <select class="custom-select" wire:model="invoice.address_commune_id" id="sda-commune">
+            <select class="custom-select" wire:model="invoice.address_commune_id" id="sda-commune-i">
                 <option value>Seleccione una comuna</option>
                 @foreach (\App\Models\Commune::orderBy('name', 'asc')->get(['id', 'name']) as $commune)
                     <option 
@@ -119,23 +119,39 @@
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Calle <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="invoice.address_street"
-                id="sd-fisrtname">
+            <input class="form-control" type="text" placeholder="Ingrese su calle" wire:model="invoice.address_street"
+                id="sd-stree-i">
             @error('invoice.address_street') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Oficina/Casa/Dpto <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="invoice.address_office"
-                id="sd-fisrtname">
-            @error('invoice.office') <small class="text-danger">{{ $message }}</small> @enderror
+            <input class="form-control" type="text" placeholder="Ingrese su oficina/casa/dpto" wire:model="invoice.address_office"
+                id="sd-office-id">
+            @error('invoice.address_office') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
         <div class="col-sm-6 form-group">
-            <label for="sd-fisrtname">Telefono <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su nombre" wire:model="invoice.phone"
-                id="sd-fisrtname">
+            <label for="sd-fisrtname">Teléfono <span class='text-danger'>*</span></label>
+            <input class="form-control" type="text" placeholder="Ingrese su teléfono" wire:model="invoice.phone"
+                id="sd-phone-i">
             @error('invoice.phone') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
     </div>
     @endif
     
 </div>
+
+<script src="{{ asset('js/rut-formatter.js') }}"></script>
+<script>
+    const observer2 = new MutationObserver(mutation => {
+        $('input[name="picking_rut"]').rut()
+        $('input[name="invoice_rut"]').rut()
+    });
+
+    observer2.observe(document.body, {
+        childList: true,
+        attributes: true,
+        subtree: true,
+        characterData: true
+    });
+
+</script>

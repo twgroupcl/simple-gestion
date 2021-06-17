@@ -31,11 +31,27 @@ class ShippingDetails extends Component
     public function mount($cart)
     {
         $this->cart = $cart;
+        $this->requiredInvoice = $this->cart->required_invoice;
         $this->shippingMethod = $this->cart->getShippingMethod();
         $this->picking = empty($this->cart->pickup_person_info) ? [] : $this->cart->pickup_person_info;
 
-        $this->data['address_street'] = $this->cart->address_street;
-        $this->data['address_commune_id'] = $this->cart->address_commune_id;
+        if ($this->requiredInvoice) {
+            $invoiceValue = json_decode($this->cart->invoice_value, false);
+             $this->invoice['uid'] = $invoiceValue->uid ?? '';
+             $this->invoice['phone'] = $invoiceValue->phone ?? '';
+             $this->invoice['email'] = $invoiceValue->email ?? '';
+             $this->invoice['address_commune_id'] = $invoiceValue->address_commune_id ?? '';
+             $this->invoice['address_office'] = $invoiceValue->address_office ?? '';
+             $this->invoice['address_street'] = $invoiceValue->address_street ?? '';
+             $this->invoice['business_activity_id'] = $invoiceValue->business_activity_id ?? '';
+             $this->invoice['business_name'] = $invoiceValue->business_name ;
+        }
+
+        /* dd($this->cart->address_street); */
+        $this->data['address_street'] = $this->cart->address_street ?? '';
+        $this->data['address_commune_id'] = $this->cart->address_commune_id ?? '';
+        $this->data['address_office'] = $this->cart->address_office ?? '';
+        $this->data['phone'] = $this->cart->phone ?? '';
     }
 
     public function render()
@@ -53,7 +69,7 @@ class ShippingDetails extends Component
             $rules['picking.email'] = ['required', 'email'];
             $rules['picking.phone'] = ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'];
         } else {
-            $rules['data.address_office'] = ['required', 'max:10'];
+            $rules['data.address_office'] = ['required', 'max:20'];
             $rules['data.phone'] = ['required'];
         }
 
@@ -63,8 +79,8 @@ class ShippingDetails extends Component
             $rules['invoice.business_activity_id'] = ['required'];
             $rules['invoice.email'] = ['required', 'max:50', 'email'];
             $rules['invoice.address_commune_id'] = ['required'];
-            $rules['invoice.address_street'] = ['required', 'min:2', 'max:40'];
-            $rules['invoice.address_office'] = ['min:2', 'max:10'];
+            $rules['invoice.address_street'] = ['required', 'min:2', 'max:30'];
+            $rules['invoice.address_office'] = ['required', 'min:2', 'max:20'];
             $rules['invoice.phone'] = ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'];
         }
 
@@ -78,11 +94,17 @@ class ShippingDetails extends Component
             
             if ($this->shippingMethod->code === 'picking') {
                 $this->savePickupData();
+                $this->clearAddressData();
             } else {
                 $this->saveAddressData();
+                $this->clearPickupData();
             }
-           
-            $this->updateInvoiceData();
+
+            if ($this->requiredInvoice) {
+                $this->updateInvoiceData();
+            } else {
+                $this->clearInvoiceData();
+            }
            
             $this->cart->required_invoice = $this->requiredInvoice;
 
@@ -108,6 +130,13 @@ class ShippingDetails extends Component
         $this->cart->update();
     }
 
+    public function clearAddressData()
+    {
+        $this->cart->address_office = null;
+        $this->cart->phone = null;
+        $this->cart->update();
+    }
+
     public function savePickupData()
     {  
         $this->cart->pickup_person_info = [
@@ -120,6 +149,13 @@ class ShippingDetails extends Component
         $this->cart->update();
     }
 
+    public function clearPickupData()
+    {  
+        $this->cart->pickup_person_info = null;
+
+        $this->cart->update();
+    }
+
     public function updateInvoiceData() 
     {
         if (!$this->requiredInvoice) return;
@@ -128,6 +164,7 @@ class ShippingDetails extends Component
             'status' => true,
             "first_name" => "",
             "last_name" => "",
+            "uid" => $this->invoice['uid'],
             "phone" => $this->invoice['phone'],
             "cellphone" => "",
             "email" => $this->invoice['email'],
@@ -138,6 +175,28 @@ class ShippingDetails extends Component
             "business_activity_id" => $this->invoice['business_activity_id'],
             "is_business" => true,
             "business_name" => $this->invoice['business_name'],
+        ];
+
+        $this->cart->update();
+    }
+
+    public function clearInvoiceData() 
+    {
+        $this->cart->invoice_value = [
+            'status' => false,
+            "first_name" => "",
+            "last_name" => "",
+            "uid" => '',
+            "phone" => '',
+            "cellphone" => "",
+            "email" => '',
+            "address_commune_id" => '',
+            "address_street" => '',
+            "address_number" => "",
+            "address_office" => '',
+            "business_activity_id" => '',
+            "is_business" => '',
+            "business_name" => '',
         ];
 
         $this->cart->update();
