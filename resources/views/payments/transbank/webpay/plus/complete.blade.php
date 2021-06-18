@@ -393,15 +393,6 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                     <div>{{ $order->pickup_person_info['name'] ?? '' }}
                                                 </li>
                                                 <li class="woocommerce-customer-details--address d-flex">
-                                                    <i class="czi-location opacity-60 mr-2 mt-1"></i>
-                                                    <div>
-                                                        {{ $addressShipping->address_street . ' ' . $addressShipping->address_number . ' ' . $addressShipping->address_office }}
-                                                        @if ($communeShipping)
-                                                            {{ $communeShipping->name }}
-                                                        @endif
-                                                    </div>
-                                                </li>
-                                                <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
                                                     <div>{{ $order->pickup_person_info['phone'] ?? ''}}</div>
                                                 </li>

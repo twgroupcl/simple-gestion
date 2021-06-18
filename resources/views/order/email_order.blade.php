@@ -51,7 +51,7 @@
                 border: 1px solid #dfdfdf;
                 border-radius: 4px 4px 4px 4px;
                 line-height: 5px;
-                height: 130px;
+                height: 135px;
                 margin-bottom: 10px;
             }
             
@@ -60,7 +60,7 @@
                 border: 1px solid #dfdfdf;
                 border-radius: 4px 4px 4px 4px;
                 line-height: 5px;
-                height: 130px;
+                height: 135px;
                 padding-bottom: 10px;
             }
 
@@ -179,27 +179,37 @@
             </div>
     
             <div class="box-container">
+                @if ($order->getShippingMethod()->code === 'picking')
                 <div class="shipping">
                     <div style="padding: 10px;">
-                        @if ($order->order_items->first()->shipping->code === 'picking')
                         <span class="title-1">Persona que retira</span>
-                        @else
+                        <p>{{ $order->pickup_person_info['uid'] ?? '' }}</p>
+                        <p>{{ $order->pickup_person_info['name'] ?? '' }}</p>
+                        <p>{{ $order->pickup_person_info['email'] ?? '' }}</p>
+                        <p>{{ $order->pickup_person_info['phone'] ?? '' }}</p>
+                    </div>
+                </div> 
+                @else
+                <div class="shipping">
+                    <div style="padding: 10px;">
                         <span class="title-1">Dirección de envío</span>
-                        @endif
-                        
                         <p>{{ $order->first_name }} {{ $order->last_name }}</p>
                         <p>{{ $shippingInfo->address_street }} {{ $shippingInfo->address_number }} {{ $shippingInfo->address_office }}</p>
                         <p>{{ $communeShipping->name }}</p>
                         <p>{{ $order->phone }}</p>
                     </div>
-                    
                 </div>
+                @endif                        
+                
                 <div class="order-info">
                     <div style="padding: 10px;">
                         <span class="title-1">Orden #{{ $order->id }}</span>
                         <p>Fecha {{ $order->created_at->format('d/m/Y') }}</p>
                         <p>Metodo de pago: {{ $order->order_payments->first()->method_title }}</p>
                         <p>Tipo de despacho: {{ $order->order_items->first()->shipping->title }}</p>
+                        @if ($order->getShippingMethod()->code === 'picking')
+                        <p>Sucursal de retiro: {{ $order->getSeller()->visible_name ?? '' }}</p>
+                        @endif
                     </div>
                 </div>
             </div>

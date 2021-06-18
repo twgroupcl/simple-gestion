@@ -64,7 +64,7 @@
                             <tbody>
                                 @foreach ($order->getStatusHistory()->sortBy('created_at') as $history)
                                 <tr>
-                                    <td>{{ (new Carbon\Carbon($history->created_at))->format('d/m/Y') }}</td>
+                                    <td>{{ (new Carbon\Carbon($history->created_at))->format('d/m/Y H:i') }}</td>
                                     <td>{{ App\Models\Order::orderStatusString($history->order_status) }}</td>
                                 </tr>
                                 @endforeach

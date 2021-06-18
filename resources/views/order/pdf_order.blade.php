@@ -154,9 +154,9 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                 <div class="direccion-facturacion-titulo">
                     <p><strong>Persona que retira</strong></p>
                     <p>
+                        <p class="p-estrecho">{{ $order->pickup_person_info['uid'] ?? '' }}</p>
                         <p class="p-estrecho">{{ $order->pickup_person_info['name'] ?? '' }}</p>
-                        <p class="p-estrecho">{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}</p>
-                        <p class="p-estrecho">{{ $communeShipping->name }}</p>
+                        <p class="p-estrecho">{{ $order->pickup_person_info['email'] ?? '' }}</p>
                         <p class="p-estrecho">Teléfono: {{ $order->pickup_person_info['phone'] ?? '' }}</p>
                     </p>
                 </div>

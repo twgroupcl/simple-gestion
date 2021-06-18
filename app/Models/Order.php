@@ -226,6 +226,19 @@ class Order extends Model
 
         return $shipping;
     }
+
+    public function getSeller()
+    {
+        // Por regla de negocio, una orden solo puede pertenecer a una sucursal, por lo tanto para
+        // obtener la sucursal de la orden/carrito buscaremos el seller del primer item de la orden
+        $item = $this->order_items->first();
+
+        if (empty($item)) {
+            return false;
+        }
+
+        return $item->product->seller;
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

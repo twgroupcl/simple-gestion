@@ -28,37 +28,6 @@ class ShippingDetails extends Component
         'max' => 'El máximo es de :max caracteres.',
     ];
 
-    public function mount($cart)
-    {
-        $this->cart = $cart;
-        $this->requiredInvoice = $this->cart->required_invoice;
-        $this->shippingMethod = $this->cart->getShippingMethod();
-        $this->picking = empty($this->cart->pickup_person_info) ? [] : $this->cart->pickup_person_info;
-
-        if ($this->requiredInvoice) {
-            $invoiceValue = json_decode($this->cart->invoice_value, false);
-             $this->invoice['uid'] = $invoiceValue->uid ?? '';
-             $this->invoice['phone'] = $invoiceValue->phone ?? '';
-             $this->invoice['email'] = $invoiceValue->email ?? '';
-             $this->invoice['address_commune_id'] = $invoiceValue->address_commune_id ?? '';
-             $this->invoice['address_office'] = $invoiceValue->address_office ?? '';
-             $this->invoice['address_street'] = $invoiceValue->address_street ?? '';
-             $this->invoice['business_activity_id'] = $invoiceValue->business_activity_id ?? '';
-             $this->invoice['business_name'] = $invoiceValue->business_name ;
-        }
-
-        /* dd($this->cart->address_street); */
-        $this->data['address_street'] = $this->cart->address_street ?? '';
-        $this->data['address_commune_id'] = $this->cart->address_commune_id ?? '';
-        $this->data['address_office'] = $this->cart->address_office ?? '';
-        $this->data['phone'] = $this->cart->phone ?? '';
-    }
-
-    public function render()
-    {
-        return view('livewire.checkout.shipping-details');
-    }
-
     protected  function rules()
     {
         $rules = [];
@@ -86,6 +55,44 @@ class ShippingDetails extends Component
 
         return $rules;
     }
+
+    public function mount($cart)
+    {
+        $this->cart = $cart;
+        $this->requiredInvoice = $this->cart->required_invoice;
+        $this->shippingMethod = $this->cart->getShippingMethod();
+        $this->picking = empty($this->cart->pickup_person_info) 
+                                ? [
+                                    'name' => $this->cart->first_name . ' ' . $this->cart->last_name,
+                                    'uid' => $this->cart->uid,
+                                  ] 
+                                : $this->cart->pickup_person_info;
+
+        if ($this->requiredInvoice) {
+            $invoiceValue = json_decode($this->cart->invoice_value, false);
+             $this->invoice['uid'] = $invoiceValue->uid ?? '';
+             $this->invoice['phone'] = $invoiceValue->phone ?? '';
+             $this->invoice['email'] = $invoiceValue->email ?? '';
+             $this->invoice['address_commune_id'] = $invoiceValue->address_commune_id ?? '';
+             $this->invoice['address_office'] = $invoiceValue->address_office ?? '';
+             $this->invoice['address_street'] = $invoiceValue->address_street ?? '';
+             $this->invoice['business_activity_id'] = $invoiceValue->business_activity_id ?? '';
+             $this->invoice['business_name'] = $invoiceValue->business_name ;
+        }
+
+        /* dd($this->cart->address_street); */
+        $this->data['address_street'] = $this->cart->address_street ?? '';
+        $this->data['address_commune_id'] = $this->cart->address_commune_id ?? '';
+        $this->data['address_office'] = $this->cart->address_office ?? '';
+        $this->data['phone'] = $this->cart->phone ?? '';
+    }
+
+    public function render()
+    {
+        return view('livewire.checkout.shipping-details');
+    }
+
+    
 
     public function saveData()
     {
