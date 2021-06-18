@@ -88,8 +88,8 @@ class Checkout extends Component
                 'status' => '',
                 'number' => 4,
                 'icon' => 'czi-package',
-                'prev-button' => 'Volver a información de despacho',
-                'next-button' => 'Seleccionar método de pago',
+                'prev-button' => 'Volver a selección de despacho',
+                'next-button' => 'Ver detalles de la orden',
                 'event-prev' => null,
                 'event-next' => 'shipping-details:save',
 
