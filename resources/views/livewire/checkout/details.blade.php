@@ -14,7 +14,7 @@
                 <h5>¿Aún no tienes cuenta?</h5>
             </div>
             <div class="col-md-12">
-                <a href="{{ route('customer.sign') }}" class="btn btn-primary btn-lg mb-2 mb-sm-0" style="width: 230px">Registrarte</a>
+                <a href="{{ route('customer.sign') }}" class="btn btn-primary btn-lg mb-2 mb-sm-0" style="width: 230px">Regístrate</a>
                 <a href="#guest" id="guest" class="btn btn-primary btn-lg" style="width: 230px">Continuar como invitado</a>
             </div>
         </div>
