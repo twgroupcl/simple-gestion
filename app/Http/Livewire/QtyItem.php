@@ -38,6 +38,7 @@ class QtyItem extends Component
         // first send, after check. 
         //responsibility on the part of the client
         $this->emitUp($this->parentListener, $this->qty);
+        
         if (count($this->emitTo) > 0) {
             foreach ($this->emitTo as $key) {
                 $this->emit($key, $this->qty);

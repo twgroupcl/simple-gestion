@@ -32,6 +32,20 @@
     @else
     <h2 class="h6 pb-3 mb-2">Dirección de envío</h2>
 
+    @if(backpack_auth()->check() && backpack_user()->customer)
+        <div class="col-sm-12 form-group px-0">
+            <label for="addresses">Mis direcciones <span class='text-danger'>*</span></label>
+            <select class="custom-select" wire:model="selectedAddressId" id="addresses">
+                <option value>Seleccione una dirección</option>
+                @foreach (\App\Models\CustomerAddress::where('customer_id', backpack_user()->customer->id)->where('commune_id', $data['address_commune_id'])->orderBy('id', 'asc')->get() as $addresses)
+                    <option 
+                        value="{{ $addresses->id }}"
+                    >{{ $addresses->street }} {{ $addresses->subnumber }}, {{ $addresses->commune->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    @endif
+
     <div class="row pb-4">
         <div class="col-sm-6 form-group">
             <label for="sd-commune">Comuna <span class='text-danger'>*</span></label>
@@ -49,7 +63,6 @@
             <label for="sd-fisrtname">Calle <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="Ingrese su calle" wire:model="data.address_street"
                 id="sd-address_street"
-                disabled
             >
             @error('data.address_street') <small class="text-danger">{{ $message }}</small> @enderror
         </div>

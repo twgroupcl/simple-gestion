@@ -1,4 +1,5 @@
 <div wire:ignore.self class="modal fade" id="order-details">
+    @if ($order)
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -61,6 +62,7 @@
                                     <th>Estado</th>
                                 </tr>
                             </thead>
+                            @if ($order->getStatusHistory())
                             <tbody>
                                 @foreach ($order->getStatusHistory()->sortBy('created_at') as $history)
                                 <tr>
@@ -69,13 +71,12 @@
                                 </tr>
                                 @endforeach
                             </tbody>
+                            @endif             
                         </table>
                     </div>
                 </div>
               </div>
-              
-            
-            
         </div>
     </div>
+    @endif
 </div>

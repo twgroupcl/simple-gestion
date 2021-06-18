@@ -118,6 +118,7 @@
                 @endforeach
             </select>
             @error('data.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
+            <small>Utilizaremos esta comuna en caso de requerir envió a domicilio</small>
         </div>
         {{-- <div class="col-sm-6 form-group">
             <label for="sd-phone">Teléfono <span class='text-danger'>*</span></label>

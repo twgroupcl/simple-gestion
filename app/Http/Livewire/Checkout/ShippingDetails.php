@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Checkout;
 use App\Rules\RutRule;
 use Livewire\Component;
 use App\Rules\PhoneRule;
+use App\Models\CustomerAddress;
 
 class ShippingDetails extends Component
 {
@@ -14,6 +15,7 @@ class ShippingDetails extends Component
     public $picking;
     public $invoice;
     public $requiredInvoice = false;
+    public $selectedAddressId;
 
     protected $listeners = [
         'shipping-details:save' => 'saveData'
@@ -132,6 +134,7 @@ class ShippingDetails extends Component
 
     public function saveAddressData()
     {
+        $this->cart->address_street = $this->data['address_street'];
         $this->cart->address_office = $this->data['address_office'];
         $this->cart->phone = $this->data['phone'];
         $this->cart->update();
@@ -207,5 +210,17 @@ class ShippingDetails extends Component
         ];
 
         $this->cart->update();
+    }
+
+    public function updatedSelectedAddressId()
+    {
+        if (!$this->selectedAddressId) return;
+
+        
+        $address = CustomerAddress::find($this->selectedAddressId);
+
+        $this->data['address_street'] = $address->street;
+        $this->data['address_office'] = $address->subnumber;
+        $this->data['phone'] = $address->phone;
     }
 }
