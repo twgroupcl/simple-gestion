@@ -10,9 +10,10 @@ class Overview extends Component
     public $cart;
     public $shippingMethod;
     public $step; 
-    protected $listeners = [
+
+    /*  protected $listeners = [
         'shipping-update' => 'calculateShipping',
-    ];
+    ]; */
 
     public function mount($cart)
     {
@@ -25,7 +26,7 @@ class Overview extends Component
         return view('livewire.checkout.overview');
     }
 
-    public function calculateShipping()
+    /* public function calculateShipping()
     {
         $shippingComponent = New Shipping($this->cart, $this->step);
 
@@ -34,5 +35,5 @@ class Overview extends Component
         $shippings = $shippingComponent->updateSellersShippings();
         
         $this->emitUp('update-shipping-totals', $shippings);
-    }
+    } */
 }

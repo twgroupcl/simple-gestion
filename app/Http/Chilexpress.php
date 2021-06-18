@@ -362,7 +362,7 @@ class Chilexpress
 
             // return [
             //     'is_available' => false,
-            //     'message' => 'El metodo de envio Chilexpress no esta disponible desde la comuna del vendedor'
+            //     'message' => 'El método de envio Chilexpress no esta disponible desde la comuna del vendedor'
             // ];
 
 
@@ -394,10 +394,10 @@ class Chilexpress
         if (empty($destineCommuneCoverage)) {
             // return [
             //     'is_available' => false,
-            //     'message' => 'El metodo de envio Chilexpress no esta disponible para la comuna de destino seleccionada'
+            //     'message' => 'El método de envio Chilexpress no esta disponible para la comuna de destino seleccionada'
             // ];
             $result['is_available'] = false;
-            $result['message'] =  'El metodo de envio Chilexpress no esta disponible para la comuna de destino seleccionada';
+            $result['message'] =  'El método de envio Chilexpress no esta disponible para la comuna de destino seleccionada';
             return $result;
         }
         $tmpitem =  [
@@ -512,7 +512,7 @@ class Chilexpress
 
             // return [
             //     'is_available' => false,
-            //     'message' => 'El metodo de envio Chilexpress no esta disponible desde la comuna del vendedor'
+            //     'message' => 'El método de envio Chilexpress no esta disponible desde la comuna del vendedor'
             // ];
 
 
@@ -550,10 +550,10 @@ class Chilexpress
         if (empty($destineCommuneCoverage)) {
             // return [
             //     'is_available' => false,
-            //     'message' => 'El metodo de envio Chilexpress no esta disponible para la comuna de destino seleccionada'
+            //     'message' => 'El método de envio Chilexpress no esta disponible para la comuna de destino seleccionada'
             // ];
             $result['is_available'] = false;
-            $result['message'] =  'El metodo de envio Chilexpress no esta disponible para la comuna de destino seleccionada';
+            $result['message'] =  'El método de envio Chilexpress no esta disponible para la comuna de destino seleccionada';
             return $result;
         }
 

@@ -7,12 +7,19 @@ $product = $item->product;
                 class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;"><img
                     src="{{ url($product->getFirstImagePath()) }}" alt="Product"></a>
             <div class="media-body pt-2">
-                <h3 class="product-title font-size-base mb-2"><a
+                <h3 class="product-title font-size-base mb-2">
+                    <a
                         href="{{ route('product', ['slug' => $product->url_key]) }}"
-                        target="_blank">{{ $product->name }}</a></h3>
-                    <div class="font-size-sm"><span
-                        class="text-muted mr-2">Cantidad:</span>{{ $item->qty }}
-                    </div>
+                        target="_blank">{{ $product->name }}
+                    </a>
+                </h3>
+                
+                @if (!$showOptions)
+                <div class="font-size-sm"><span
+                    class="text-muted mr-2">Cantidad:</span>{{ $item->qty }}
+                </div>
+                @endif
+                
                 @if ($showAttributes && filled($product->getAttributesWithNames()))
                     @foreach ($product->getAttributesWithNames() as $attribute)
                         @if ($attribute['value'] != '* No aplica')
@@ -96,6 +103,7 @@ $product = $item->product;
             </div>
 
         </div>
+    @if ($showOptions)
         <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 9rem;">
             <div class="form-group mb-0">
                 @livewire('qty-item', [
@@ -112,7 +120,7 @@ $product = $item->product;
                         class="font-size-sm">Eliminar</span></button>
             @endif
 
-        </div>
-
+        </div> 
+        @endif
     </div>
 @endif

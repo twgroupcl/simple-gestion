@@ -229,7 +229,7 @@ class Shipping extends Component
             $this->emitUp('checkout.blockButton', false);
         }
         $this->emitUp('update-shipping-totals', $this->sellersShippings);
-        
+
         return $this->sellersShippings;
     }
 
@@ -253,8 +253,8 @@ class Shipping extends Component
         }
 
         // Como actualmente no tenemos habilitada la posibilidad de comprar desde varias sucursales
-        // vamos a seleccionar el primer metodo disponible de la primera tienda para colocarlo
-        // como metodo de envio por default
+        // vamos a seleccionar el primer método disponible de la primera tienda para colocarlo
+        // como método de envio por default
 
         if (empty($this->sellersShippingMethods)) {
             return;

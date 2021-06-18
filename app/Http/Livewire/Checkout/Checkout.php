@@ -87,7 +87,7 @@ class Checkout extends Component
                 'name' => 'Detalles',
                 'status' => '',
                 'number' => 4,
-                'icon' => 'czi-package',
+                'icon' => 'czi-lable',
                 'prev-button' => 'Volver a selección de despacho',
                 'next-button' => 'Ver detalles de la orden',
                 'event-prev' => null,
@@ -100,7 +100,7 @@ class Checkout extends Component
                 'number' => 5,
                 'icon' => 'czi-check-circle',
                 'prev-button' => 'Volver a detalles de despacho',
-                'next-button' => 'Seleccionar metodo de pago',
+                'next-button' => 'Seleccionar método de pago',
                 'event-prev' => null,
                 'event-next' => null,
 

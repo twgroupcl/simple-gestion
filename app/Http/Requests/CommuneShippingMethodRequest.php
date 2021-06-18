@@ -99,7 +99,7 @@ class CommuneShippingMethodRequest extends FormRequest
     public function messages()
     {
         return [
-            'shipping_methods_validation.required' => 'Debes seleccionar por lo menos un metodo de envío',
+            'shipping_methods_validation.required' => 'Debes seleccionar por lo menos un método de envío',
             'commune_id.unique' => 'Ya tienes otra configuracíon de envío para la comuna seleccionada',
             'commune_id.required_if' => 'Debes seleccionar una comuna',
             'is_global.unique' => 'Solo puedes tener una configuracion global de envíos',

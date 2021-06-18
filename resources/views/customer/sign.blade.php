@@ -193,9 +193,9 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="phone">Telefono <span class="text-danger">*</span></label>
-                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" placeholder="Escribe aquí tu telefono" value="{{ old('phone') }}" required>
-                            <div class="invalid-feedback">Por favor ingresa tu telefono.</div>
+                            <label for="phone">Teléfono <span class="text-danger">*</span></label>
+                            <input class="form-control @error('phone') is-invalid @enderror" type="text" name="phone" id="phone" placeholder="Escribe aquí tu Teléfono" value="{{ old('phone') }}" required>
+                            <div class="invalid-feedback">Por favor ingresa tu Teléfono.</div>
                             @error('phone')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

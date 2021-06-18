@@ -572,7 +572,7 @@ class OrderCrudController extends CrudController
 
             $shippingMethod = ShippingMethod::where('id', $shippingKey)->first();
             $totalShipping = $orderItems[0]->shipping_total;
-            $valueHtml = '<h5>Metodo de envío: ' . $shippingMethod->title;
+            $valueHtml = '<h5>método de envío: ' . $shippingMethod->title;
             if (!is_null($totalShipping)) {
                 $valueHtml .= ' (' . currencyFormat($totalShipping ? $totalShipping : 0, 'CLP', true) . ')';
             }

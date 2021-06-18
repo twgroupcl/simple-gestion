@@ -69,7 +69,7 @@ class ProductInventorySourceRequest extends FormRequest
             'contact_first_name' => 'nombre de contacto',
             'contact_last_name' => 'apellido de contacto',
             'contact_email' => 'email de contacto',
-            'contact_phone' => 'telefono de contacto',
+            'contact_phone' => 'Teléfono de contacto',
             'status' => 'estado',
         ];
     }

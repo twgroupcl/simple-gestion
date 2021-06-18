@@ -147,7 +147,7 @@
                 <p class="p-estrecho">{{ $quotation->uid }} </p>
                 <p class="p-estrecho">{{ $quotation->customer->addresses->first()->street }} {{ $quotation->customer->addresses->first()->number }}</p>
                 <p class="p-estrecho">{{ $quotation->address->commune->name }}</p>
-                <p class="p-estrecho">@if ($quotation->phone) Telefono: {{  $quotation->phone  }} @endif</p>
+                <p class="p-estrecho">@if ($quotation->phone) Teléfono: {{  $quotation->phone  }} @endif</p>
             </p>
         </td>
         <td width="31%" class="top-td">

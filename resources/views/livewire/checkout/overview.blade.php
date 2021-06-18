@@ -3,7 +3,12 @@
     <h2 class="h6 pt-1 pb-3 mb-3 border-bottom">Detalles de tu orden</h2>
 
     @foreach ($cart->cart_items as $item)
-        @livewire('cart.item', ['item' => $item, 'showShipping' => true , 'showAttributes' => true], key($item->id))
+        @livewire('cart.item', [
+            'item' => $item, 
+            'showShipping' => true , 
+            'showAttributes' => true, 
+            'showOptions' => false
+        ], key($item->id))
     @endforeach
     <!-- Client details-->
     <div class="bg-secondary rounded-3 px-4 pt-4 pb-2">
@@ -25,7 +30,7 @@
                     <li>{{ $cart->first_name }} {{ $cart->last_name }}</li>
                     <li>{{ $cart->address_street }} {{ $cart->address_office }}</li>
                     <li>{{ $cart->commune->name }}</li>
-                    <li><span class="text-muted">Telefono:&nbsp;</span> {{  $cart->phone }}</li>
+                    <li><span class="text-muted">Teléfono:&nbsp;</span> {{  $cart->phone }}</li>
                 </ul>
             </div>
             @endif

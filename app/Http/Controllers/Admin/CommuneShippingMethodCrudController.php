@@ -37,7 +37,7 @@ class CommuneShippingMethodCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\CommuneShippingMethod::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/communeshippingmethod');
-        CRUD::setEntityNameStrings('configuracion de envio', 'metodos de envio');
+        CRUD::setEntityNameStrings('configuracion de envio', 'métodos de envio');
 
         $this->crud->denyAccess('show');
         $this->crud->enableDetailsRow();
@@ -77,7 +77,7 @@ class CommuneShippingMethodCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'shipping_methods_accesor',
-            'label' => 'Metodos de envio habilitados',
+            'label' => 'métodos de envio habilitados',
         ]);
 
         CRUD::addColumn([
@@ -528,7 +528,7 @@ class CommuneShippingMethodCrudController extends CrudController
         CRUD::addFilter([
             'name'  => 'shipping_method',
             'type'  => 'select2_multiple',
-            'label' => 'Metodo de envío'
+            'label' => 'método de envío'
         ], function() {
             return [
                 'free_shipping_status' => 'Envío gratis',

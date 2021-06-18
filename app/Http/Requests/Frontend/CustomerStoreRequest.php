@@ -54,7 +54,7 @@ class CustomerStoreRequest extends FormRequest
             'last_name' => 'Apellido',
             'email' => 'Email',
             'password' => 'Contraseña',
-            'phone' => 'Telefono',
+            'phone' => 'Teléfono',
             'commune' => 'Comuna',
             'street' => 'Calle',
             'number' => 'Numero',

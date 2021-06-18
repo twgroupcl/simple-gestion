@@ -638,7 +638,7 @@ class SellerCrudController extends CrudController
                     'name' => 'payment_method_id',
                     'type' => 'select2_from_array',
                     'options' => PaymentMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
-                    'label' => 'Metodo de pago',
+                    'label' => 'Método de pago',
                     'wrapper' => [
                         'class' => 'form-group col-12',
                     ],
@@ -675,7 +675,7 @@ class SellerCrudController extends CrudController
                     'name' => 'shipping_method_id',
                     'type' => 'select2_from_array',
                     'options' => ShippingMethod::orderBy('title', 'asc')->pluck('title', 'id')->toArray(),
-                    'label' => 'Metodo de envío',
+                    'label' => 'Método de envío',
                     'wrapper' => [
                         'class' => 'form-group col-12',
                     ],
