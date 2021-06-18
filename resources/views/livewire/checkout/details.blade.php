@@ -1,5 +1,27 @@
 <div class="details-form">
     <div class="loading" wire:loading  wire:target="save">Loading&#8230;</div>
+
+    @if (!backpack_auth()->check())
+    <div class="d-fle flex-column h-100 rounded-3 bg-secondary px-3 px-sm-4 py-4 mb-4" style="text-align: center">  
+        <div class="row justify-center">
+            <div class="col-md-12 mb-4">
+                <a href="{{ route('customer.sign') }}" class="btn btn-primary btn-lg">Iniciar sesión</a>
+            </div>
+            <div class="col-md-12 mb-4">
+                <hr>
+            </div>
+            <div class="col-md-12 mb-2">
+                <h5>¿Aún no tienes cuenta?</h5>
+            </div>
+            <div class="col-md-12">
+                <a href="{{ route('customer.sign') }}" class="btn btn-primary btn-lg mb-2 mb-sm-0" style="width: 230px">Registrarte</a>
+                <a href="#guest" id="guest" class="btn btn-primary btn-lg" style="width: 230px">Continuar como invitado</a>
+            </div>
+        </div>
+        
+    </div>
+    @endif
+
     <!-- Title-->
     <h2 class="h6 border-bottom pb-3 mb-3">Datos personales</h2>
     <!-- Shipping detail-->
@@ -259,5 +281,15 @@
             subtree: true,
             characterData: true
         });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
     </script>
 @endpush
