@@ -255,6 +255,11 @@ class Shipping extends Component
             return;
         }
 
+        if (!empty($this->cart->getShippingMethod())) {
+            $this->selectedShippingMethodId = $this->cart->getShippingMethod()->id;
+            return;
+        }
+
         if (!$this->sellersShippingMethods->first()->count()) {
             return;
         }
