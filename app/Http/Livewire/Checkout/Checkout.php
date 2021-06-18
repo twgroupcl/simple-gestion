@@ -157,21 +157,28 @@ class Checkout extends Component
             $this->blockButton= false;
         }
     }
-    public function nextStep()
+    public function nextStep($currentStep)
     {
-        //$this->loading = true;
-       // $this->updateLoading(true);
-
         //$currentStep  = array_search($this->activeStep, $this->steps);
 
         if ($this->activeStep['event-next']) {
             $this->emit($this->activeStep['event-next']);
         } else {
-            $this->finishTask();
+            $this->finishTask($currentStep + 1);
         }
 //        $this->activeStep = $this->steps[$currentStep + 1];
         //$this->
 
+    }
+
+    public function finishTask($nextStep)
+    {
+        /* $currentStep = array_search($this->activeStep, $this->steps); */
+        $this->steps[$nextStep - 1]['status'] = 'active';
+        $this->activeStep = $this->steps[$nextStep - 1];
+
+       // $this->loading = false;
+      // $this->updateLoading(false);
     }
 
     public function getItems()
@@ -291,16 +298,7 @@ class Checkout extends Component
         return $total;
     }
 
-    public function finishTask()
-    {
-       
-        $currentStep = array_search($this->activeStep, $this->steps);
-        $this->steps[$currentStep + 1]['status'] = 'active';
-        $this->activeStep = $this->steps[$currentStep + 1];
-
-       // $this->loading = false;
-      // $this->updateLoading(false);
-    }
+    
 
     public function notFinishTask()
     {
@@ -491,14 +489,12 @@ class Checkout extends Component
 
     public function updateTotals()
     {
-
         $this->cart->recalculateSubtotal();
         $this->cart->update();
         $this->subtotal = $this->getSubTotal();
         $this->total = $this->getTotal();
         $this->emit('dropdown.update');
         $this->emit('cart.updateSubtotal');
-
     }
 
     public function cartpreview()
@@ -547,6 +543,7 @@ class Checkout extends Component
         }
 
         $this->shippingtotals = $itemShippingTotal;
+
         $this->emit('change');
 
         //$this->updateLoading(false);

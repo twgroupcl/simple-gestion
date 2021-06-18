@@ -96,7 +96,7 @@ $product = $item->product;
             </div>
 
         </div>
-        {{-- <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 9rem;">
+        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 9rem;">
             <div class="form-group mb-0">
                 @livewire('qty-item', [
                 'qty' => $item->qty,
@@ -112,7 +112,7 @@ $product = $item->product;
                         class="font-size-sm">Eliminar</span></button>
             @endif
 
-        </div> --}}
+        </div>
 
     </div>
 @endif

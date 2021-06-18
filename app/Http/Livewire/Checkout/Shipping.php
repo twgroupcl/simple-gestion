@@ -17,17 +17,20 @@ class Shipping extends Component
     public $cart;
     public $items;
     public $sellers;
+    public $step; 
     public $sellersShippings;
     public $communeDestine;
-    public $selectedShippingMethodId ;
+    public $selectedShippingMethodId;
     public $sellersShippingMethods;
     protected $listeners = [
         'deleteItem' => 'deleteItem',
         'shipping-update' => 'updateSellersShippings',
     ];
 
-    public function mount()
+    public function mount($cart, $step)
     {
+        $this->cart = $cart;
+        $this->step = $step;
         $this->sellersShippings = [];
         $this->sellersShippingMethods = collect();
         
@@ -75,13 +78,14 @@ class Shipping extends Component
 
     public function updateSellersShippings()
     {
-
         //$this->emit('updateLoading',true);
         //  if ($this->sellers) {
         $items = $this->items->groupBy(['product.seller_id', 'shipping_id']);
 
         $this->sellersShippings = [];
+
         $shippingMethodAvailable = true;
+
         foreach ($items as $sellerKey => $sellerValue) {
 
             $seller = Seller::where('id', $sellerKey)->first();
@@ -110,7 +114,7 @@ class Shipping extends Component
                     $itemShipping['shipping']['totalShippingPackage'] = 0;
                     $itemShipping['shipping']['items_id'] = [];
 
-                    // Se actualiza las dimensiones del paquete
+                    // Se actualizan las dimensiones del paquete
                     foreach ($shippingValue as $item) {
                         $itemShipping['shipping']['totalShippingPackage'] += 1;
                         $itemShipping['shipping']['items_id'][] = $item->product_id;
@@ -225,7 +229,8 @@ class Shipping extends Component
             $this->emitUp('checkout.blockButton', false);
         }
         $this->emitUp('update-shipping-totals', $this->sellersShippings);
-
+        
+        return $this->sellersShippings;
     }
 
     public function getItems()

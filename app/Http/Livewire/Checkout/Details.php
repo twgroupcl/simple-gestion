@@ -13,6 +13,7 @@ class Details extends Component
     public $cart;
     public $is_business;
     public $anotherDataInvoice;
+    public $step; 
 
     public $customer_id;
     public $addresses_customer_id;
@@ -204,7 +205,7 @@ class Details extends Component
 
             $this->cart->update($this->data);
 
-            $this->emitUp('finishTask');
+            $this->emitUp('finishTask', $this->step + 1);
 
         } catch (\Throwable $th){ // (\Throwable $th) {
             $this->emitUp('notFinishTask');

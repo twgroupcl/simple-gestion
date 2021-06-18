@@ -24,19 +24,19 @@
                         @case(1)
                         @break
                         @case(2)
-                        @livewire('checkout.details',['cart'=>$cart] ,key($activeStep['number']))
+                        @livewire('checkout.details',['cart'=>$cart, 'step' => 2], key($activeStep['number']))
                         @break
                         @case(3)
-                        @livewire('checkout.shipping', ['cart'=>$cart ])
+                        @livewire('checkout.shipping', ['cart'=>$cart, 'step' =>  3])
                         @break
                         @case(4)
-                        @livewire('checkout.shipping-details', ['cart'=>$cart ])
+                        @livewire('checkout.shipping-details', ['cart'=>$cart, 'step' =>  4])
                         @break
                         @case(5)
-                        @livewire('checkout.overview', ['cart'=>$cart])
+                        @livewire('checkout.overview', ['cart'=>$cart, 'step' => 5])
                         @break
                         @case(6)
-                        @livewire('checkout.payments', ['cart'=>$cart])
+                        @livewire('checkout.payments', ['cart'=>$cart, 'step' => 6])
                         @break
                         @default
                     @endswitch
@@ -100,7 +100,7 @@
                             {{-- @if ($loading || !$canContinue) disabled  @endif --}}
                             <button class="btn btn-primary btn-block"
                             @if ($blockButton) disabled @endif
-                             wire:click="nextStep()" >
+                             wire:click="nextStep({{ $activeStep['number'] }})" >
                     <span class="d-none d-sm-inline">
                         {{-- @if ($loading) --}}
                             {{-- <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" ></span> --}}

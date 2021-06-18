@@ -16,6 +16,7 @@ class ShippingDetails extends Component
     public $invoice;
     public $requiredInvoice = false;
     public $selectedAddressId;
+    public $step; 
 
     protected $listeners = [
         'shipping-details:save' => 'saveData'
@@ -119,7 +120,7 @@ class ShippingDetails extends Component
 
             $this->cart->update();
     
-            $this->emitUp('finishTask');
+            $this->emitUp('finishTask', $this->step + 1);
 
         } catch (\Throwable $th){ // (\Throwable $th) {
             $this->emitUp('notFinishTask');
