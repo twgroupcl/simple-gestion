@@ -343,7 +343,7 @@ class Checkout extends Component
                 'default_shipping' => 1,
                 'confirmation' => Carbon::now()->format('d/m/Y'),
                 'email' => $invoiceData->email,
-                'telephone' => !empty($invoiceData->phone) ? $invoiceData->phone : null,
+                'telephone' => !empty($invoiceData->phone) ? $invoiceData->phone : $this->cart->pickup_person_info['phone'],
                 'cellphone' => $invoiceData->cellphone,
                 'firstname' => !$invoiceData->is_company ? $invoiceData->first_name : $invoiceData->business_name,
                 'lastname' => !$invoiceData->is_company ? $invoiceData->last_name : '',
@@ -352,9 +352,15 @@ class Checkout extends Component
                         'id' => 1,
                         'city_id' => CovepaHelper::COMMUNE_MAPPING[$invoiceData->address_commune_id]['id_city'],
                         'street' => $invoiceData->address_street,
-                        'number' => $invoiceData->address_number,
+
+                        // @todo
+                        // Dato no requerido en el formulario. Colocar lo mismo que address_street o 
+                        // hacerlo requerido en el formulario?
+
+                        'number' => $invoiceData->address_office ?? $invoiceData->address_street,
+                        
                         'cellphone' => $invoiceData->cellphone,
-                        'telephone' => !empty($invoiceData->phone) ? $invoiceData->phone : null,
+                        'telephone' => !empty($invoiceData->phone) ? $invoiceData->phone : $this->cart->pickup_person_info['phone'],
                         'taxable' => (bool) $invoiceData->is_company,
                         'uid' => sanitizeRUT($invoiceData->uid),
                         'firstname' => $invoiceData->is_company ? $invoiceData->business_name : $invoiceData->first_name,

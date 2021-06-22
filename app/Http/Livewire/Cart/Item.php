@@ -119,7 +119,6 @@ class Item extends Component
         // $this->updatedSelected($this->selected);
         // $this->addShippingItem();
 
-        // @todo por aqui
         $this->emitUp('shipping-update');
 
         $this->emit('showToast', 'Cambió la cantidad', 'Has cambiado la cantidad de un item del carro.', 3000, 'info');
