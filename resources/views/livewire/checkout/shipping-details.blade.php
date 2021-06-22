@@ -16,12 +16,12 @@
                 id="sd-uid">
             @error('picking.uid') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
-        <div class="col-sm-6 form-group">
+        {{-- <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Email <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="Ingrese su email" wire:model="picking.email"
                 id="sd-email">
             @error('picking.email') <small class="text-danger">{{ $message }}</small> @enderror
-        </div>
+        </div> --}}
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Teléfono <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="Ingrese su teléfono" wire:model="picking.phone"

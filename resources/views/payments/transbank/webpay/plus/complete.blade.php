@@ -396,10 +396,10 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                     <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
                                                     <div>{{ $order->pickup_person_info['phone'] ?? ''}}</div>
                                                 </li>
-                                                <li class="woocommerce-customer-details--address d-flex">
+                                                {{-- <li class="woocommerce-customer-details--address d-flex">
                                                     <i class="czi-mail opacity-60 mr-2 mt-1"></i>
                                                     <div>{{ $order->pickup_person_info['email'] ?? '' }}</div>
-                                                </li>
+                                                </li> --}}
                                             </ul>
                                             @endif
                                         @else

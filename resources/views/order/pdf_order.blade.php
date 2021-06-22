@@ -156,7 +156,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                     <p>
                         <p class="p-estrecho">{{ $order->pickup_person_info['uid'] ?? '' }}</p>
                         <p class="p-estrecho">{{ $order->pickup_person_info['name'] ?? '' }}</p>
-                        <p class="p-estrecho">{{ $order->pickup_person_info['email'] ?? '' }}</p>
+                        {{-- <p class="p-estrecho">{{ $order->pickup_person_info['email'] ?? '' }}</p> --}}
                         <p class="p-estrecho">Teléfono: {{ $order->pickup_person_info['phone'] ?? '' }}</p>
                     </p>
                 </div>

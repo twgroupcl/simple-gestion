@@ -185,7 +185,7 @@
                         <span class="title-1">Persona que retira</span>
                         <p>{{ $order->pickup_person_info['uid'] ?? '' }}</p>
                         <p>{{ $order->pickup_person_info['name'] ?? '' }}</p>
-                        <p>{{ $order->pickup_person_info['email'] ?? '' }}</p>
+                        {{-- <p>{{ $order->pickup_person_info['email'] ?? '' }}</p> --}}
                         <p>{{ $order->pickup_person_info['phone'] ?? '' }}</p>
                     </div>
                 </div> 

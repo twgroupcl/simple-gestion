@@ -38,7 +38,7 @@ class ShippingDetails extends Component
         if ($this->shippingMethod->code === 'picking') {
             $rules['picking.name'] = ['required', 'min:2', 'max:25'];
             $rules['picking.uid'] = ['required',  new RutRule()];
-            $rules['picking.email'] = ['required', 'email'];
+            /* $rules['picking.email'] = ['required', 'email']; */
             $rules['picking.phone'] = ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'];
         } else {
             $rules['data.address_office'] = ['required', 'max:20'];
@@ -152,7 +152,7 @@ class ShippingDetails extends Component
     {  
         $this->cart->pickup_person_info = [
             'uid' => $this->picking['uid'],
-            'email' => $this->picking['email'],
+            /* 'email' => $this->picking['email'], */
             'name' => $this->picking['name'],
             'phone' => $this->picking['phone'],
         ];

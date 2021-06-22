@@ -19,7 +19,7 @@
                 <ul class="list-unstyled fs-sm">
                     <li>RUT {{ $cart->pickup_person_info['uid'] }}</li>
                     <li>{{ $cart->pickup_person_info['name'] }}</li>
-                    <li>{{ $cart->pickup_person_info['email'] }}</li>
+                    {{-- <li>{{ $cart->pickup_person_info['email'] }}</li> --}}
                     <li>{{ $cart->pickup_person_info['phone'] }}</li>
                 </ul>
             </div>
