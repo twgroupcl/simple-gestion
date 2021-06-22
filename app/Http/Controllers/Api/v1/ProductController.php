@@ -312,7 +312,7 @@ class ProductController extends Controller
         if ($request['special_price_to']) $product->special_price_to = new DateTime($request['special_price_to']);
 
         if (! is_null($request['special_price'])) {
-            $product->special_price = $request['special_price'] === 0 ? null : $request['special_price'];
+            $product->special_price = $request['special_price'] == 0 ? null : $request['special_price'];
         }
 
         try {
