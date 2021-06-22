@@ -90,23 +90,7 @@
             @error('data.email') <small class="text-danger">{{ $message }}</small> @enderror
 
         </div>
-        <div class="col-sm-6 form-group">
-            <label for="sd-street">Calle<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="" wire:model="data.address_street" id="sd-street">
-            @error('data.address_street') <small class="text-danger">{{ $message }}</small> @enderror
-
-        </div>
-        {{-- <div class="col-sm-6 form-group">
-            <label for="sd-number">Número<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="" wire:model="data.address_number" id="sd-number">
-            @error('data.address_number') <small class="text-danger">{{ $message }}</small> @enderror
-
-        </div> --}}
-        {{-- <div class="col-sm-6 form-group">
-            <label for="sd-subnumber">Oficina/Casa/Dpto</label>
-            <input class="form-control" type="text" placeholder="" wire:model="data.address_office" id="sd-subnumber">
-            @error('data.address_office') <small class="text-danger">{{ $message }}</small> @enderror
-        </div> --}}
+        
         <div class="col-sm-6 form-group">
             <label for="sd-commune">Comuna <span class='text-danger'>*</span></label>
             <select class="custom-select" wire:model="data.address_commune_id" id="sd-commune">
@@ -120,12 +104,31 @@
             @error('data.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
             <small>Utilizaremos esta comuna en caso de requerir envió a domicilio</small>
         </div>
-        {{-- <div class="col-sm-6 form-group">
+
+        <div class="col-sm-6 form-group">
+            <label for="sd-street">Calle<span class='text-danger'>*</span></label>
+            <input class="form-control" type="text" placeholder="" wire:model="data.address_street" id="sd-street">
+            @error('data.address_street') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
+        <div class="col-sm-6 form-group">
             <label for="sd-phone">Teléfono <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="" wire:model="data.phone" id="sd-phone">
             @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+        {{-- <div class="col-sm-6 form-group">
+            <label for="sd-number">Número<span class='text-danger'>*</span></label>
+            <input class="form-control" type="text" placeholder="" wire:model="data.address_number" id="sd-number">
+            @error('data.address_number') <small class="text-danger">{{ $message }}</small> @enderror
 
         </div> --}}
+        {{-- <div class="col-sm-6 form-group">
+            <label for="sd-subnumber">Oficina/Casa/Dpto</label>
+            <input class="form-control" type="text" placeholder="" wire:model="data.address_office" id="sd-subnumber">
+            @error('data.address_office') <small class="text-danger">{{ $message }}</small> @enderror
+        </div> --}}
+        
+        
         {{-- <div class="col-sm-6 form-group">
             <label for="sd-cellphone">Teléfono móvil</label>
             <input class="form-control" type="text" placeholder="" wire:model="data.cellphone" id="sd-cellphone">

@@ -72,12 +72,12 @@
                 id="sd-address_office">
             @error('data.address_office') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
-        <div class="col-sm-6 form-group">
+        {{-- <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Teléfono <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="Ingrese su teléfono" wire:model="data.phone"
                 id="sd-phone">
             @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
-        </div>
+        </div> --}}
     </div>
     @endif
 

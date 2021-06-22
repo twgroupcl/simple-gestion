@@ -53,8 +53,8 @@ class Details extends Component
             'uid' => $this->cart->uid,
             'first_name' => $this->cart->first_name,
             'last_name' => $this->cart->last_name,
-            /* 'phone' => $this->cart->phone,
-            'cellphone' => $this->cart->cellphone, */
+            'phone' => $this->cart->phone,
+            /* 'cellphone' => $this->cart->cellphone, */
             'email' => $this->cart->email,
             'address_commune_id' => $this->cart->address_commune_id ?? (session()->get('commune_id') ?? null),
             'address_street' => $this->cart->address_street,
@@ -151,8 +151,8 @@ class Details extends Component
 
         $dynamicRules = array_merge($dynamicRules, [
             'data.uid' => ['required', new RutRule()],
-            /* 'data.cellphone' => [new PhoneRule('El número ingresado no es válido'), 'max:19'],
-            'data.phone' => ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'], */
+            /* 'data.cellphone' => [new PhoneRule('El número ingresado no es válido'), 'max:19'], */
+            'data.phone' => ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'],
         ]);
 
         return $dynamicRules;

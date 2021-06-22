@@ -42,7 +42,7 @@ class ShippingDetails extends Component
             $rules['picking.phone'] = ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'];
         } else {
             $rules['data.address_office'] = ['required', 'max:20'];
-            $rules['data.phone'] = ['required'];
+            /* $rules['data.phone'] = ['required']; */
         }
 
         if ($this->requiredInvoice) {
@@ -87,7 +87,7 @@ class ShippingDetails extends Component
         $this->data['address_street'] = $this->cart->address_street ?? '';
         $this->data['address_commune_id'] = $this->cart->address_commune_id ?? '';
         $this->data['address_office'] = $this->cart->address_office ?? '';
-        $this->data['phone'] = $this->cart->phone ?? '';
+       /*  $this->data['phone'] = $this->cart->phone ?? ''; */
     }
 
     public function render()
@@ -137,14 +137,14 @@ class ShippingDetails extends Component
     {
         $this->cart->address_street = $this->data['address_street'];
         $this->cart->address_office = $this->data['address_office'];
-        $this->cart->phone = $this->data['phone'];
+        /* $this->cart->phone = $this->data['phone']; */
         $this->cart->update();
     }
 
     public function clearAddressData()
     {
         $this->cart->address_office = null;
-        $this->cart->phone = null;
+        /* $this->cart->phone = null; */
         $this->cart->update();
     }
 
@@ -222,6 +222,6 @@ class ShippingDetails extends Component
 
         $this->data['address_street'] = $address->street;
         $this->data['address_office'] = $address->subnumber;
-        $this->data['phone'] = $address->phone;
+        /* $this->data['phone'] = $address->phone; */
     }
 }
