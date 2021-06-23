@@ -205,7 +205,7 @@ class CovepaService
         $fullName = $order->first_name . ' ' . $order->last_name;
         $address = $order->json_value['addressShipping'];
         /* $fullAddress = $address->address_street . ' ' . $address->address_number . ' ' . $address->address_office; */
-        $fullAddress = $address->address_street . ' ' . $address->address_office;
+        $fullAddress = $address->address_street . ' ' . $address->address_number;
         $commune = Commune::find($address->address_commune_id);
         
         // Invoice address
@@ -255,7 +255,7 @@ class CovepaService
                 "VTPLDI_CONTN1" => $fullName,
                 "VTPLDI_CONTF1" => $shippingMethod->code === 'picking' ? $order->pickup_person_info['phone'] : $order->phone,
                 /* "VTPLDI_CONTF2" => $order->cellphone, */
-                /* "VTPLDI_REFERE" => $address->address_details, */
+                "VTPLDI_REFERE" => $address->address_details,
                 "VTPLDI_COOGPS" => "0",
                 "VTPLDI_DISTAN" => 0
             ];

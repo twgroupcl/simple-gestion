@@ -70,6 +70,7 @@ class ShippingDetails extends Component
                                 ? [
                                     'name' => $this->cart->first_name . ' ' . $this->cart->last_name,
                                     'uid' => $this->cart->uid,
+                                    'phone' => $this->cart->phone,
                                   ] 
                                 : $this->cart->pickup_person_info;
 

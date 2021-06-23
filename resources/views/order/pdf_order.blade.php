@@ -166,6 +166,7 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                     <p>
                         <p class="p-estrecho">{{ $order->first_name . ', ' . $order->last_name }}</p>
                         <p class="p-estrecho">{{ $addressShipping->address_street . ', ' . $addressShipping->address_number }}</p>
+                        <p class="p-estrecho">{{ $addressShipping->address_details }}</p>
                         <p class="p-estrecho">{{ $communeShipping->name }}</p>
                         <p class="p-estrecho">Teléfono: {{ $order->phone }}</p>
                     </p>

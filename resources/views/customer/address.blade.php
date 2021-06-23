@@ -47,7 +47,7 @@
                             @error('commune_id') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
-                    <div class="col-sm-12">
+                    {{-- <div class="col-sm-12">
                         <strong>* Indica los datos de cliente si necesitas Factura/Boleta con otros datos</strong>
                     </div>
                     <div class="col-sm-6">
@@ -105,7 +105,7 @@
                             <div class="invalid-feedback">Escriba el teléfono móvil</div>
                             @error('extra') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="modal-footer">

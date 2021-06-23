@@ -417,12 +417,22 @@ $communeInvoice = Commune::where('id', $addressInvoice->address_commune_id)->fir
                                                     <li class="woocommerce-customer-details--address d-flex">
                                                         <i class="czi-location opacity-60 mr-2 mt-1"></i>
                                                         <div>
-                                                            {{ $addressShipping->address_street . ' ' . $addressShipping->address_number . ' ' . $addressShipping->address_office }}
+                                                            {{ $addressShipping->address_street . ' ' . $addressShipping->address_number }}
                                                             @if ($communeShipping)
                                                                 {{ $communeShipping->name }}
                                                             @endif
                                                         </div>
                                                     </li>
+
+                                                    @if ($addressShipping->address_details)
+                                                    <li class="woocommerce-customer-details--address d-flex">
+                                                        <i class="czi-location opacity-60 mr-2 mt-1"></i>
+                                                        <div>
+                                                            {{ $addressShipping->address_details }}
+                                                        </div>
+                                                    </li>  
+                                                    @endif
+                                                    
                                                     <li class="woocommerce-customer-details--address d-flex">
                                                         <i class="czi-mobile opacity-60 mr-2 mt-1"></i>
                                                         <div>{{ $order->phone }}</div>

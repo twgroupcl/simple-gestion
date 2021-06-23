@@ -28,7 +28,8 @@
                 <h4 class="h6">Dirección de envío:</h4>
                 <ul class="list-unstyled fs-sm">
                     <li>{{ $cart->first_name }} {{ $cart->last_name }}</li>
-                    <li>{{ $cart->address_street }} {{ $cart->address_office }}</li>
+                    <li>{{ $cart->address_street }} {{ $cart->address_number }}</li>
+                    <li>{{ $cart->shipping_details }}</li>
                     <li>{{ $cart->commune->name }}</li>
                     <li><span class="text-muted">Teléfono:&nbsp;</span> {{  $cart->phone }}</li>
                 </ul>

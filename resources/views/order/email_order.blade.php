@@ -194,7 +194,8 @@
                     <div style="padding: 10px;">
                         <span class="title-1">Dirección de envío</span>
                         <p>{{ $order->first_name }} {{ $order->last_name }}</p>
-                        <p>{{ $shippingInfo->address_street }} {{ $shippingInfo->address_number }} {{ $shippingInfo->address_office }}</p>
+                        <p>{{ $shippingInfo->address_street }} {{ $shippingInfo->address_number }}</p>
+                        <p>{{ $shippingInfo->address_details }}</p>
                         <p>{{ $communeShipping->name }}</p>
                         <p>{{ $order->phone }}</p>
                     </div>

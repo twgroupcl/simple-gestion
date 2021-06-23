@@ -352,13 +352,7 @@ class Checkout extends Component
                         'id' => 1,
                         'city_id' => CovepaHelper::COMMUNE_MAPPING[$invoiceData->address_commune_id]['id_city'],
                         'street' => $invoiceData->address_street,
-
-                        // @todo
-                        // Dato no requerido en el formulario. Colocar lo mismo que address_street o 
-                        // hacerlo requerido en el formulario?
-
-                        'number' => $invoiceData->address_office ?? $invoiceData->address_street,
-                        
+                        'number' => $invoiceData->address_number,
                         'cellphone' => $invoiceData->cellphone,
                         'telephone' => !empty($invoiceData->phone) ? $invoiceData->phone : $this->cart->pickup_person_info['phone'],
                         'taxable' => (bool) $invoiceData->is_company,
