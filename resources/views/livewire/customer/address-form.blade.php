@@ -25,13 +25,13 @@
                             @error('address.number') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                   {{--  <div class="col-sm-6">
                         <div class="form-group">
                             <label for="address-company">Casa/Dpto/Oficina</label>
                             <input class="form-control" type="text" wire:model="address.subnumber" name="subnumber" id="address-company">
                             @error('address.subnumber') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="commune_id">Comuna <span class="text-danger">*</span></label>
@@ -44,57 +44,57 @@
                             @error('address.commune_id') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    {{-- <div class="col-sm-6">
                         <div class="form-group">
                             <label for="uid">RUT</label>
                             <input class="form-control" wire:model="address.uid" name="uid" type="text" id="uid">
                             <div class="invalid-feedback">Escriba el Rut</div>
                             @error('address.uid') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                    </div>
-                    <div class="col-sm-6">
+                    </div> --}}
+                    {{-- <div class="col-sm-6">
                         <div class="form-group">
                             <label for="first_name">Nombre</label>
                             <input class="form-control" wire:model="address.first_name" name="first_name" type="text" id="first_name">
                             <div class="invalid-feedback">Escriba el nombre</div>
                             @error('address.first_name') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                    </div>
-                    <div class="col-sm-6">
+                    </div> --}}
+                    {{-- <div class="col-sm-6">
                         <div class="form-group">
                             <label for="last_name">Apellido</label>
                             <input class="form-control" wire:model="address.last_name" name="last_name" type="text" id="last_name">
                             <div class="invalid-feedback">Escriba el apellido</div>
                             @error('address.last_name') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                    </div>
-                    <div class="col-sm-6">
+                    </div> --}}
+                    {{-- <div class="col-sm-6">
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input class="form-control" wire:model="address.email" name="email" type="text" id="email">
                             <div class="invalid-feedback">Escriba el email</div>
                             @error('address.email') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                    </div>
-                    <div class="col-sm-6">
+                    </div> --}}
+                    {{-- <div class="col-sm-6">
                         <div class="form-group">
                             <label for="phone">Teléfono</label>
                             <input class="form-control" wire:model="address.phone" name="phone" type="text" id="phone">
                             <div class="invalid-feedback">Escriba el teléfono</div>
                             @error('address.phone') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                    </div>
-                    <div class="col-sm-6">
+                    </div> --}}
+                    {{-- <div class="col-sm-6">
                         <div class="form-group">
                             <label for="cellphone">Teléfono móvil</label>
                             <input class="form-control" wire:model="address.cellphone" name="cellphone" type="text" id="cellphone">
                             <div class="invalid-feedback">Escriba el teléfono móvil</div>
                             @error('address.cellphone') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label for="extra">Detalles</label>
+                            <label for="extra">Referencias</label>
                             <textarea class="form-control" wire:model="address.extra" name="extra" id="extra"></textarea>      
                             @error('address.extra') <small class="text-danger">{{ $message }}</small> @enderror                      <div class="invalid-feedback">Escriba el teléfono móvil</div>
                         </div>

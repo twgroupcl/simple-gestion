@@ -41,6 +41,7 @@
                 <h4 class="h6">Sucursal de retiro:</h4>
                 <ul class="list-unstyled fs-sm">
                     <li>{{ $cart->getSeller()->visible_name }}</li>
+                    <li>{{ $cart->getSeller()->addresses->first()->street ?? '' }}</li>
                 </ul>
             </div>
             @endif

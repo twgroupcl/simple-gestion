@@ -30,9 +30,9 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label for="address-company">Casa/Dpto/Oficina</label>
-                            <input class="form-control" type="text" name="subnumber" id="address-company" value="{{ old('subnumber') }}">
-                            @error('subnumber') <small class="text-danger">{{ $message }}</small> @enderror
+                            <label for="address-company">Referencias</label>
+                            <input class="form-control" type="text" name="extra" id="address-company" value="{{ old('extra') }}">
+                            @error('extra') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     </div>
                     <div class="col-sm-6">
