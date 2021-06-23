@@ -40,7 +40,13 @@
                 @foreach (\App\Models\CustomerAddress::where('customer_id', backpack_user()->customer->id)->where('commune_id', $data['address_commune_id'])->orderBy('id', 'asc')->get() as $addresses)
                     <option 
                         value="{{ $addresses->id }}"
-                    >{{ $addresses->street }} {{ $addresses->subnumber }}, {{ $addresses->commune->name }}</option>
+                    >
+                        @if ($addresses->extra)
+                            {{ $addresses->street }} {{ $addresses->number }}, {{ $addresses->extra }}, {{ $addresses->commune->name }}
+                        @else   
+                            {{ $addresses->street }} {{ $addresses->number }}, {{ $addresses->commune->name }}
+                        @endif
+                    </option>
                 @endforeach
             </select>
         </div>
