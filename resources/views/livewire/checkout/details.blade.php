@@ -112,16 +112,16 @@
         </div>
 
         <div class="col-sm-6 form-group">
+            <label for="sd-number">Número de calle<span class='text-danger'>*</span></label>
+            <input class="form-control" type="text" placeholder="" wire:model="data.address_number" id="sd-number">
+            @error('data.address_number') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
+        <div class="col-sm-6 form-group">
             <label for="sd-phone">Teléfono <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="" wire:model="data.phone" id="sd-phone">
             @error('data.phone') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
-        {{-- <div class="col-sm-6 form-group">
-            <label for="sd-number">Número<span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="" wire:model="data.address_number" id="sd-number">
-            @error('data.address_number') <small class="text-danger">{{ $message }}</small> @enderror
-
-        </div> --}}
         {{-- <div class="col-sm-6 form-group">
             <label for="sd-subnumber">Oficina/Casa/Dpto</label>
             <input class="form-control" type="text" placeholder="" wire:model="data.address_office" id="sd-subnumber">

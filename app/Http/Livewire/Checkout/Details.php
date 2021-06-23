@@ -25,8 +25,8 @@ class Details extends Component
     protected $rules = [
         //'business_name' => '',
         'data.address_street' => 'required|min:3|max:30',
-        /* 'data.address_office' => 'max:10',
-        'data.address_number' => 'required|numeric|max:99999', */
+        /* 'data.address_office' => 'max:10', */
+        'data.address_number' => 'required|numeric|max:99999',
         'data.address_commune_id' => 'required',
         'data.email' => 'required|email',
         /* 'data.cellphone' => 'required|max:20', */
@@ -58,8 +58,8 @@ class Details extends Component
             'email' => $this->cart->email,
             'address_commune_id' => $this->cart->address_commune_id ?? (session()->get('commune_id') ?? null),
             'address_street' => $this->cart->address_street,
-            /* 'address_number' => $this->cart->address_number,
-            'address_office' => $this->cart->address_office,
+            'address_number' => $this->cart->address_number,
+            /* 'address_office' => $this->cart->address_office,
             'business_name' => $this->cart->business_name,
             'receiver_name' => $this->cart->receiver_name,
             'shipping_details' => $this->cart->shipping_details */

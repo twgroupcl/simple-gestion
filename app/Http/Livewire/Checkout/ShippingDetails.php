@@ -41,7 +41,9 @@ class ShippingDetails extends Component
             /* $rules['picking.email'] = ['required', 'email']; */
             $rules['picking.phone'] = ['required', new PhoneRule('El número ingresado no es válido'), 'max:19'];
         } else {
-            $rules['data.address_office'] = ['required', 'max:20'];
+            $rules['data.address_street'] = ['required', 'max:20'];
+            $rules['data.address_number'] = ['required', 'max:20'];
+            $rules['data.shipping_details'] = ['max:20'];
             /* $rules['data.phone'] = ['required']; */
         }
 
@@ -83,8 +85,10 @@ class ShippingDetails extends Component
              $this->invoice['business_name'] = $invoiceValue->business_name ;
         }
 
-        /* dd($this->cart->address_street); */
+        
         $this->data['address_street'] = $this->cart->address_street ?? '';
+        $this->data['address_number'] = $this->cart->address_number ?? '';
+        $this->data['shipping_details'] = $this->cart->shipping_details ?? '';
         $this->data['address_commune_id'] = $this->cart->address_commune_id ?? '';
         $this->data['address_office'] = $this->cart->address_office ?? '';
        /*  $this->data['phone'] = $this->cart->phone ?? ''; */
@@ -136,20 +140,21 @@ class ShippingDetails extends Component
     public function saveAddressData()
     {
         $this->cart->address_street = $this->data['address_street'];
-        $this->cart->address_office = $this->data['address_office'];
+        $this->cart->address_number = $this->data['address_number'];
+        $this->cart->shipping_details = $this->data['shipping_details'];
         /* $this->cart->phone = $this->data['phone']; */
         $this->cart->update();
     }
 
     public function clearAddressData()
     {
-        $this->cart->address_office = null;
+        $this->cart->shipping_details = null;
         /* $this->cart->phone = null; */
         $this->cart->update();
     }
 
     public function savePickupData()
-    {  
+    {
         $this->cart->pickup_person_info = [
             'uid' => $this->picking['uid'],
             /* 'email' => $this->picking['email'], */
@@ -221,7 +226,8 @@ class ShippingDetails extends Component
         $address = CustomerAddress::find($this->selectedAddressId);
 
         $this->data['address_street'] = $address->street;
-        $this->data['address_office'] = $address->subnumber;
+        $this->data['address_number'] = $address->number;
+        $this->data['shipping_details'] = $address->extra;
         /* $this->data['phone'] = $address->phone; */
     }
 }

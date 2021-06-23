@@ -110,12 +110,12 @@ class Cart extends Model
 
             if ($address) {
                 $cart->phone = $address->phone;
-                $cart->cellphone = $address->cellphone;
                 $cart->address_street = $address->street;
-                $cart->address_office = $address->subnumber;
-                $cart->address_number = $address->number;
                 $cart->address_commune_id = $address->commune_id;
                 $cart->shipping_details = $address->extra;
+                /* $cart->cellphone = $address->cellphone; */
+                /* $cart->address_office = $address->subnumber; */
+                $cart->address_number = $address->number;
             }
             
             return $cart;

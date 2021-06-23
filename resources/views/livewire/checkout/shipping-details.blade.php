@@ -47,6 +47,7 @@
     @endif
 
     <div class="row pb-4">
+
         <div class="col-sm-6 form-group">
             <label for="sd-commune">Comuna <span class='text-danger'>*</span></label>
             <select class="custom-select" wire:model="data.address_commune_id" id="sd-commune" disabled>
@@ -59,6 +60,7 @@
             </select>
             @error('data.address_commune_id') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
+
         <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Calle <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="Ingrese su calle" wire:model="data.address_street"
@@ -66,12 +68,20 @@
             >
             @error('data.address_street') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
+
         <div class="col-sm-6 form-group">
-            <label for="sd-fisrtname">Oficina/Casa/Dpto <span class='text-danger'>*</span></label>
-            <input class="form-control" type="text" placeholder="Ingrese su oficina/casa/dpto" wire:model="data.address_office"
-                id="sd-address_office">
-            @error('data.address_office') <small class="text-danger">{{ $message }}</small> @enderror
+            <label for="sd-number">Número de calle<span class='text-danger'>*</span></label>
+            <input class="form-control" type="text" placeholder="Ingrese su número de calle" wire:model="data.address_number" id="sd-number">
+            @error('data.address_number') <small class="text-danger">{{ $message }}</small> @enderror
         </div>
+
+        <div class="col-sm-6 form-group">
+            <label for="sd-fisrtname">Referencia</label>
+            <input class="form-control" type="text" placeholder="Ingrese referencia de la dirección" wire:model="data.shipping_details"
+                id="sd-address_office">
+            @error('data.shipping_details') <small class="text-danger">{{ $message }}</small> @enderror
+        </div>
+
         {{-- <div class="col-sm-6 form-group">
             <label for="sd-fisrtname">Teléfono <span class='text-danger'>*</span></label>
             <input class="form-control" type="text" placeholder="Ingrese su teléfono" wire:model="data.phone"
