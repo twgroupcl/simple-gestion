@@ -363,6 +363,11 @@ class Cart extends Model
         return $this->belongsTo(Commune::class, 'address_commune_id');
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

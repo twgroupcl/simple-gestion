@@ -22,6 +22,8 @@ class Shipping extends Component
     public $communeDestine;
     public $selectedShippingMethodId;
     public $sellersShippingMethods;
+    public $deliveryEstimateDate;
+
     protected $listeners = [
         'deleteItem' => 'deleteItem',
         'shipping-update' => 'updateSellersShippings',
@@ -37,6 +39,7 @@ class Shipping extends Component
         $this->items = $this->getItems();
         $this->sellers = $this->getSellers();
         $this->communeDestine = $this->cart->address_commune_id;
+        $this->deliveryEstimateDate = now()->add($cart->company->delivery_days_max ,'days');
         
         $this->getShippingMethods();
         $this->setShippingMethod();

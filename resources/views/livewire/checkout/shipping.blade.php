@@ -49,9 +49,11 @@
                     <span class="text-dark fw-medium">{{ $shippingMethod['title'] }}</span>
                     <br>
                     @if ($shippingMethod['code'] === 'chilexpress')
-                        <span class="text-muted">Envío a domicilio</span>
+                        <span class="text-muted">Envío a domicilio</span><br>
+                        <span class="text-muted">Fecha de entrega estimada: {{ $deliveryEstimateDate->format('d/m') }}</span>
                     @elseif($shippingMethod['code'] === 'picking')
-                        <span class="text-muted">Gratis</span>
+                        <span class="text-muted">Sucursal {{ $cart->getSeller()->visible_name }}</span><br>
+                        <span class="text-muted">{{ $cart->getSeller()->addresses->first()->street ?? '' }}</span>
                     @else 
                         <span class="text-muted"></span>
                     @endif
