@@ -14,5 +14,8 @@ class CheckForMaintenanceMode extends Middleware
     protected $except = [
         'dev/config/up',
         'dev/config/down',
+        'admin',
+        'admin/*',
+        'api/*',
     ];
 }
