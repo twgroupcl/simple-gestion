@@ -4,7 +4,7 @@
             <tr>
                 <th>Calle</th>
                 <th>Número</th>
-                <th>Casa/Dpto/Oficina</th>
+                <th>Referencia</th>
                 <th>Comuna</th>
                 <th>Acciones</th>
             </tr>

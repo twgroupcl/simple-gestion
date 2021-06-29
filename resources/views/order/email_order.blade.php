@@ -77,7 +77,7 @@
             border: 1px solid #dfdfdf;
             border-radius: 4px 4px 4px 4px;
             line-height: 5px;
-            height: 122px;
+            height: 135px;
         }
 
         .order-info {
@@ -87,7 +87,7 @@
             border: 1px solid #dfdfdf;
             border-radius: 4px 4px 4px 4px;
             line-height: 5px;
-            height: 122px;
+            height: 135px;
         }
         }
         .container {
