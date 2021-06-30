@@ -93,6 +93,7 @@ Route::group([
     Route::post('product/bulk-delete', 'ProductCrudController@bulkDelete')->name('products.bulk-delete');
 
     Route::crud('customersupport', 'CustomerSupportCrudController');
+    Route::crud('generalsettings', 'GeneralSettingsCrudController');
 }); // this should be the absolute last line of this file
 
 //Payment

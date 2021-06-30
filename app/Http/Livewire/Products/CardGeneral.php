@@ -118,7 +118,7 @@ class CardGeneral extends Component
 
     public function getProductsFeatured()
     {
-        return $this->baseQuery(true, null, null, null, true);
+        return $this->baseQuery(false, null, null, null, true);
     }
 
     private function baseQuery($random = false, $category_id = null, $product_search = null, $seller_id = null, $featured = false)

@@ -137,7 +137,7 @@
     <div class="pt-2 mx-n2">
         <!-- @livewire('sellers.card-seller', ['columnLg'=>3,'showPaginate'=>false,'paginateBy' => 8,'showFrom'=>'','data'=>'','limit'=>2]) -->
 
-        @if(count($sellers))
+        @if(count($sellers) && isset($sellers[1]))
             <div class="row">
                 @foreach($sellers[1] as $key => $seller)
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6 px-2 px-md-5 mb-4" wire:key="{{ $key }}">
