@@ -13,7 +13,7 @@ class GeneralSettingsCrudController extends CrudController
     public function setup()
     {
         CRUD::setModel("Backpack\Settings\app\Models\Setting");
-        CRUD::setEntityNameStrings(trans('backpack::settings.setting_singular'), trans('backpack::settings.setting_plural'));
+        CRUD::setEntityNameStrings('configuración', 'configuraciones');
         CRUD::setRoute(backpack_url('generalsettings'));
     }
 
