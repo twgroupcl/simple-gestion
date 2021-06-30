@@ -55,9 +55,9 @@ class CustomerSupportCrudController extends CrudController
         CRUD::addColumn([
             'name' => 'seller',
             'type' => 'relationship',
-            'label' => 'Vendedor',
+            'label' => 'Sucursal',
             'entity' => 'seller',
-            'attribute' => 'name',
+            'attribute' => 'visible_name',
         ]);
 
         CRUD::addColumn([
@@ -100,9 +100,9 @@ class CustomerSupportCrudController extends CrudController
         $this->crud->addFilter([
             'name'  => 'seller_id',
             'type'  => 'select2',
-            'label' => 'Vendedor'
+            'label' => 'Sucursal'
         ], function() {
-            return Seller::all()->sortBy('name')->pluck('name', 'id')->toArray();
+            return Seller::all()->sortBy('visible_name')->pluck('visible_name', 'id')->toArray();
         }, function($value) {
             $this->crud->addClause('whereHas', 'seller', function($query) use ($value) {
                 $query->where('id', $value);
@@ -364,10 +364,10 @@ class CustomerSupportCrudController extends CrudController
 
         CRUD::addField([
             'name' => 'seller_id',
-            'label' => 'Vendedor',
+            'label' => 'Sucursal',
             'type' => 'select2_from_array',
             'allows_null' => true,
-            'options' => Seller::pluck('name', 'id')->toArray(),
+            'options' => Seller::pluck('visible_name', 'id')->toArray(),
             'tab' => 'Administrador',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-12',

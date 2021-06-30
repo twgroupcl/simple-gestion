@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Province;
+use App\Services\Covepa\Helpers;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Commune extends Model
@@ -29,6 +31,12 @@ class Commune extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function booted()
+    {
+        static::addGlobalScope('available_in_covepa', function (Builder $builder) {
+            $builder->whereIn('id', collect(Helpers::COMMUNE_MAPPING)->where('id_commune', '!=', '#N/A')->keys());
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
