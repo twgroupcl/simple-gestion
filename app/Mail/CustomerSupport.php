@@ -23,7 +23,7 @@ class CustomerSupport extends Mailable
      */
     public function __construct()
     {
-        $this->logo = 'img/logo-pyme.png';
+        $this->logo = 'img/covepa-logo.png';
         $this->title = '¡Tu solicitud ha sido recibida!';
         $this->text = 'Muchas gracias por contactarte con nosotros y ayudarnos a mejorar tu experiencia. Vamos a revisar el detalle de lo enviado y te responderemos a la brevedad. Que tengas un buen día.';
         $this->subject = $this->title;
