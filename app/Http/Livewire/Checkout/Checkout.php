@@ -148,9 +148,9 @@ class Checkout extends Component
 
         //$currentStep  = array_search($this->activeStep, $this->steps);
 
-        if($this->activeStep['number'] == 2){
+        /* if ($this->activeStep['number'] == 2){
             $this->blockButton= true;
-        }
+        } */
 
         if ($this->activeStep['event-next']) {
             $this->emit($this->activeStep['event-next']);
