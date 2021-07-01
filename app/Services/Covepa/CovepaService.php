@@ -14,12 +14,32 @@ class CovepaService
     const CACHE_SECONDS_API_TOKEN = 3600;
     const RETRY_ATTEMPTS_TOKEN = 3;
     
-    private $baseUrl = 'http://216.155.76.46:8080/ServApi/rest';
+    private $baseUrl;
+    private $credentials;
 
     private $shippingMapping = [
         'picking' => 5,
         'chilexpress' => 1,
     ];
+
+    public function __construct()
+    {
+        if (config('covepa.env_production')) {
+            $this->baseUrl = config('covepa.api_endpoint_prop');
+
+            $this->credentials = [
+                'usuario' => config('covepa.credentials.user'),
+                'password' => config('covepa.credentials.password'),
+            ];
+        } else {
+            $this->baseUrl = config('covepa.api_endpoint_dev');
+
+            $this->credentials = [
+                'usuario' => config('covepa.credentials_dev.user'),
+                'password' => config('covepa.credentials_dev.password'),
+            ];
+        }
+    }
 
     private function makeRequest($url, $method, array $data = [], array $headers = [], $useAuth = true)
     {
@@ -100,12 +120,7 @@ class CovepaService
 
         $token = Cache::remember('covepa.auth.token', self::CACHE_SECONDS_API_TOKEN, function () {
 
-            $credentials = [
-                'usuario' => config('covepa.credentials.user'),
-                'password' => config('covepa.credentials.password'),
-            ];
-
-            $response = $this->makeRequest($this->baseUrl . '/auth', 'POST', $credentials, [], false);
+            $response = $this->makeRequest($this->baseUrl . '/auth', 'POST', $this->credentials, [], false);
 
             if (is_array($response) && array_key_exists('error_message', $response)) {
                 \Log::error('Error getting auth token');
