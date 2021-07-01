@@ -41,7 +41,7 @@ class Company extends Model
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     const MAIL_TO_ERRORS = [
-        'jose.dlucca@twgroup.cl',
+        'tiendaonline@covepa.org',
     ];
 
     /*
