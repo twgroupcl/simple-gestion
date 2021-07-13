@@ -9,6 +9,9 @@
         <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}' style="max-height:450px">
             {{-- <img src="{{ asset('img/prolibro/banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
             {{-- <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner"> --}}
+            <a href="{{ route('featured.products') }}">
+                <img src="{{ asset('img/slides/slide-1-pc.jpg') }}" alt="Prolibro Banner" class="w-100">
+            </a>
             <img src="{{ asset('img/prolibro/banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
             <img src="{{ asset('img/prolibro/banner-principal-prolibro-2.jpg') }}" alt="Prolibro Banner">
             {{--<a href="https://zoom.us/j/91004913743?pwd=MkFGT25xWUhZMVpCY2lEUHQyUGpXQT09" target="_blank">
@@ -26,9 +29,12 @@
         <div  class="cz-carousel-inner mh-75 h-75 cz-dots-enabled" style="max-height: 285px">
             <div class="cz-carousel-inner" data-carousel-options='{"autoplay": true, "autoHeight": false, "autoplayTimeout": 5000}'>
                 {{-- <img src="{{ asset('img/prolibro/mobile-banner-principal-feria.jpg') }}" alt="Prolibro Banner"> --}}
+                <a href="{{ route('featured.products') }}">
+                    <img src="{{ asset('img/slides/slide-1-mobile.jpg') }}" alt="Prolibro Banner" class="w-100">
+                </a>
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro.jpg') }}" alt="Prolibro Banner">
                 <img src="{{ asset('img/prolibro/mobile-banner-principal-prolibro-2.jpg') }}" alt="Prolibro Banner">
-                <{{--a href="https://zoom.us/j/91004913743?pwd=MkFGT25xWUhZMVpCY2lEUHQyUGpXQT09" target="_blank">
+                {{--a href="https://zoom.us/j/91004913743?pwd=MkFGT25xWUhZMVpCY2lEUHQyUGpXQT09" target="_blank">
                     <img src="{{ asset('img/prolibro/mobile-banner-principal-seminario.jpg') }}" alt="Seminario internacional de Literatura infantile" class="w-100">
                 </a>--}}
                 {{-- <a href="https://filsaenvivo.com/" target="_blank">

@@ -127,7 +127,7 @@ Route::group([
     Route::get('test/{order}', 'Payments\Transbank\WebpayPlusMallController@test')->name('transbank.test.view');
 });
 
-Route::get('/featured-products', 'Frontend\HomeController@featuredProduct');
+Route::get('/featured-products', 'Frontend\HomeController@featuredProduct')->name('featured.products');
 
 // Route::get('complete', function(){
 //     return view('payments.transbank.webpay.mall.complete');
