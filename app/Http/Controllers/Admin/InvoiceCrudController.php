@@ -138,7 +138,7 @@ class InvoiceCrudController extends CrudController
                 $moreData = $moreData['datos_dte'];
 
                 $totals = $moreData['Encabezado']['Totales'];
-                $document['net'] = $totals['MntNeto']; 
+                $document['net'] = empty($totals['MntNeto']) ? $totals['MntExe'] : $totals['MntNeto']; 
                 $document['tax'] = array_key_exists('IVA', $totals) ? $totals['IVA'] : ''; 
 
             }
