@@ -183,7 +183,7 @@
                 {{-- @if ($loading || !$canContinue) disabled  @endif  --}}
                     <div class="w-50 pl-2"><button class="btn btn-primary btn-block"
                         @if ($blockButton) disabled @endif
-                         wire:click.prevent="nextStep()" >
+                             wire:click="nextStep({{ $activeStep['number'] }})" >
                 {{-- @if ($loading) --}}
                     {{-- <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span> --}}
                 {{-- @endif --}}
