@@ -17,5 +17,6 @@ class CheckForMaintenanceMode extends Middleware
         'admin',
         'admin/*',
         'api/*',
+        '/logs',
     ];
 }
