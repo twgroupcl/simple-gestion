@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('layouts.base', ['showFilters' => $data['showFilters'] ?? false])
 
 @section('content')
 <!-- Page Title-->
