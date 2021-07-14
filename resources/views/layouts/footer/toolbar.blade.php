@@ -6,9 +6,7 @@
             <span class="cz-handheld-toolbar-icon"><i class="czi-heart"></i></span>
             <span class="cz-handheld-toolbar-label">Wishlist</span>
         </a> --}}
-        <a class="d-table-cell cz-handheld-toolbar-item" href="#shop-sidebar"
-                data-toggle="sidebar"><span class="cz-handheld-toolbar-icon"><i class="czi-filter-alt"></i></span><span
-                class="cz-handheld-toolbar-label">Filters</span>
+        <a class="d-table-cell cz-handheld-toolbar-item" href="#shop-sidebar" data-toggle="sidebar"><span class="cz-handheld-toolbar-icon"><i class="czi-filter-alt"></i></span><span class="cz-handheld-toolbar-label">Filters</span>
         </a>
         <a class="d-table-cell cz-handheld-toolbar-item" href="#navbarCollapse" data-toggle="collapse" onclick="window.scrollTo(0, 0)">
             <span class="cz-handheld-toolbar-icon"><i class="czi-menu"></i></span>
@@ -20,32 +18,30 @@
 @endif
 
 @push('scripts')
-<script>
+<script type="text/javascript">
+    var elemToObserve = document.getElementById('shop-sidebar');
+    var prevClassState = elemToObserve.classList.contains('your_class');
 
-    $(document).ready(function () {
-        console.log('cargado')
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName == 'class') {
+                var currentClassState = mutation.target.classList.contains('show');
 
-        let observer = new MutationObserver(function(mutations) {
-            console.log('observer creado')
-
-            mutations.forEach(function(mutationRecord) {
-
-                console.log('probando')
-
-                if (mutationRecord.target.className === "show") {
-                    console.log("Class added....")
-
+                if (currentClassState) {
+                    console.log('class added!');
                 } else {
-                    console.log("Class not added....")
-                };
-            })
+                    console.log('class removed!');
+
+                    //var e = document.querySelectorAll('[data-toggle="sidebar"]');
+                    //e.closest(".cz-sidebar").classList.remove("show");
+                    document.querySelector('body').classList.remove('offcanvas-open');
+                }
+            }
         });
+    });
 
-        let target = document.querySelector("#shop-sidebar");
-
-        observer.observe(target, { attributes : true, attributeFilter : ['style', 'className'] });
-
-    })
-    
+    observer.observe(elemToObserve, {
+        attributes: true
+    });
 </script>
 @endpush
