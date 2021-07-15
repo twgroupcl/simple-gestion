@@ -433,17 +433,50 @@ class ManageInvoiceCrudController extends CrudController
         $creditNote->dte_status = null;
         $creditNoteType = InvoiceType::whereCode('61')->first();
         $creditNote->invoice_type_id = $creditNoteType->id;
-        $creditNote->json_value = [
-            'reference_type_document' => $invoice->invoice_type_id,
-            'reference_folio' => $invoice->folio,
-            'reference_date' => $invoice->invoice_date,
-        ];
+        $creditNote->invoice_date = null;
+        $creditNote->references_json = json_encode([
+            [
+                'reference_type_document' => $invoice->invoice_type_id,
+                'reference_folio' => $invoice->folio,
+                'reference_date' => $invoice->invoice_date,
+            ]
+        ]);
 
         $creditNote->save();
 
         \Alert::success('Se creó una nota de crédito a partir del documento seleccionado')->flash();
 
         return redirect()->to('admin/invoice/' . $creditNote->id . '/edit');
+
+    }
+
+    public function issueDebitNote(Request $request, Invoice $invoice)
+    {
+        if (!isset($invoice->dte_code)) {
+            return redirect()->action([self::class, 'index'], ['invoice' => $invoice]);
+        }
+
+        $debitNote = new Invoice($invoice->toArray());
+        $debitNote->folio = null;
+        $debitNote->dte_code = null;
+        $debitNote->dte_status = null;
+        $debitNoteType = InvoiceType::whereCode('56')->first();
+        $debitNote->invoice_type_id = $debitNoteType->id;
+        $debitNote->invoice_date = null;
+        $debitNote->references_json = json_encode([
+            [
+                'reference_type_document' => $invoice->invoice_type_id,
+                'reference_folio' => $invoice->folio,
+                'reference_date' => $invoice->invoice_date,
+                'reference_code' => 1
+            ]
+        ]);
+
+        $debitNote->save();
+
+        \Alert::success('Se creó una nota de débito a partir del documento seleccionado')->flash();
+
+        return redirect()->to('admin/invoice/' . $debitNote->id . '/edit');
 
     }
 

@@ -174,14 +174,17 @@ class Refund extends Component
         $creditNote->dte_status = null;
         $creditNoteType = InvoiceType::whereCode('61')->first();
         $creditNote->invoice_type_id = $creditNoteType->id;
-        $creditNote->json_value = [
-            'reference_type_document' => $invoice->invoice_type_id,
-            'reference_folio' => $invoice->folio,
-            'reference_date' => $invoice->invoice_date,
-            'reference_reason' => $this->reason,
-            'reference_code' => 3, // Corrige montos
-            'source' => 'pos',
-        ];
+
+        $creditNote->references_json = json_encode([
+            [
+                'reference_type_document' => $invoice->invoice_type_id,
+                'reference_folio' => $invoice->folio,
+                'reference_date' => $invoice->invoice_date,
+                'reference_reason' => $this->reason,
+                'reference_code' => 3, // Corrige montos
+                'source' => 'pos',
+            ]
+        ]);
 
         $itemsData = collect(!is_array($creditNote->items_data) 
                                 ? json_decode($creditNote->items_data, true)
@@ -253,7 +256,8 @@ class Refund extends Component
      */
     public function calculateInvoiceTotal(Invoice $invoice)
     {
-        $referenceTypeDocument = InvoiceType::find($invoice->json_value['reference_type_document'])->first();
+        $references = isset($invoice->references_json) ? is_array($invoice->references_json) ? $invoice->references_json : json_decode($invoice->references_json, true) : [];
+        $referenceTypeDocument = InvoiceType::find($references[0]['reference_type_document'])->first();
 
         $hasIva = in_array($referenceTypeDocument->code, [41, 34]) ? false : true;
         $iva = 0;

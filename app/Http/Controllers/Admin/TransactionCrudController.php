@@ -6,7 +6,11 @@ use App\Http\Requests\TransactionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use App\Models\{ Invoice, Transaction };
+use App\Models\{
+    Invoice,
+    Transaction,
+    BankAccount,
+};
 use App\Exports\TransactionExport;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
@@ -92,7 +96,6 @@ class TransactionCrudController extends CrudController
             'function_name' => 'getTotalAmount',
         ]);
 
-
         CRUD::addColumn([
             'name' => 'accounting_account',
             'label' => 'Plan de cuenta',
@@ -126,7 +129,7 @@ class TransactionCrudController extends CrudController
 
         CRUD::addColumn([
             'name' => 'payment_or_expense',
-            'label' => 'Cargo/Gasto',
+            'label' => 'Abono/Gasto',
             'wrapper' => [
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
@@ -331,6 +334,7 @@ class TransactionCrudController extends CrudController
                     'name' => 'document_type',
                     'type' => 'select2_from_array',
                     'options' => $documentTypes,
+                    'allows_null' => true,
                     //'value' => $documentType,
                     'wrapperAttributes' => [
                         'class' => 'form-group col-md-6 offset-6 document-type',
@@ -487,7 +491,9 @@ class TransactionCrudController extends CrudController
 
         // Filter by search term
         if ($search_term) {
-            $results = $options->whereRaw('LOWER(title) like ?', '%'.strtolower($search_term).'%')->paginate(10);
+            $term = '%'.strtolower($search_term).'%';
+            $results = $options->whereRaw('LOWER(title) like ?', $term)
+                               ->orWhereRaw('CONCAT("F", folio) like ?', $term)->paginate(10);
         } else {
             $results = $options->paginate(10);
         }
@@ -557,11 +563,11 @@ class TransactionCrudController extends CrudController
         $this->crud->addFilter([
           'type'  => 'select2',
           'name'  => 'payment_or_expense',
-          'label' => 'Cargo/Gasto'
+          'label' => 'Abono/Gasto'
         ],
         function () {
             return [
-                1 => 'Cargo',
+                1 => 'Abono',
                 0 => 'Gasto',
             ];
         },
@@ -570,6 +576,21 @@ class TransactionCrudController extends CrudController
                 $query->where('is_payment', $value);
             });
         });
+
+        $this->crud->addFilter([
+          'type'  => 'select2',
+          'name'  => 'bank_account',
+          'label' => 'Cuenta afectada'
+        ],
+        function () {
+            return BankAccount::whereHas('transactions')->get()
+                                                        ->pluck('account_number', 'id')
+                                                        ->toArray();
+        },
+        function ($value) {
+            $this->crud->addClause('where', 'bank_account_id', $value);
+        });
+
     }
 
 }

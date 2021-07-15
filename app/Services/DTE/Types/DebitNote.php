@@ -6,11 +6,11 @@ use App\Models\Invoice;
 use App\Services\DTE\Traits\DTEArray;
 use App\Models\InvoiceType;
 
-class CreditNote implements DocumentType
+class DebitNote implements DocumentType
 {
     use DTEArray { toArray as ttArray; }
 
-    const TYPE=61;
+    const TYPE=56;
     protected $invoice;
 
     public function __construct(Invoice $invoice)

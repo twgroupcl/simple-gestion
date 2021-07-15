@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Scopes\CompanyBranchScope;
 use Illuminate\Database\Eloquent\Model;
 
 class BankAccount extends Model
@@ -28,6 +29,12 @@ class BankAccount extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new CompanyBranchScope);
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -42,6 +49,11 @@ class BankAccount extends Model
     public function bank()
     {
         return $this->belongsTo(Bank::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'bank_account_id', 'id');
     }
 
     /*

@@ -49,6 +49,7 @@ class InvoiceType extends Model
             41,
             34,
             61, //nota de credito
+            56,
         ];
         
         return $query->whereIn('code', $activeTypes);

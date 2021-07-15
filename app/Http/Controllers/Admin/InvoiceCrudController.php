@@ -412,6 +412,13 @@ class InvoiceCrudController extends CrudController
             ]
         ]);
 
+        // get business activity
+        CRUD::addField([
+            'name' => 'customer_change_script',
+            'type' => 'invoice.customer_change_script',
+            'tab' => 'General',
+        ]);
+
         CRUD::addField([
             'label' => 'Identificador de documento',
             'name' => 'dte_code',
@@ -444,6 +451,23 @@ class InvoiceCrudController extends CrudController
             'type' => 'quotation.repeatable',
             'new_item_label' => 'Agregar producto / servicio',
             'fields' => [
+                [
+                    'label' => 'Exento',
+                    'name' => 'ind_exe',
+                    'type' => 'select2_from_array',
+                    'default' => 0,
+                    'allows_null' => false,
+                    'options' => [
+                        0 => 'No',
+                        1 => 'Si',
+                    ],
+                    'attributes' => [
+                        'class' => 'form-control is_exent',
+                    ],
+                    'wrapper' => [
+                        'class' => 'form-group col-md-1',
+                    ],
+                ],
                 [
                     'label' => 'Producto / Servicio',
                     'name' => 'product_id',
@@ -736,8 +760,8 @@ class InvoiceCrudController extends CrudController
         ]);
 
         $model = $this->crud->getCurrentEntry();
+        $this->referencesFields();
         if (isset($model->invoice_type) && $model->invoice_type->code == 61) {
-            $this->creditNoteFields();
             CRUD::removeSaveActions(['save_and_back','save_and_new']);
         }
 
@@ -790,76 +814,73 @@ class InvoiceCrudController extends CrudController
 
     }
 
-    protected function creditNoteFields() : void
+    protected function referencesFields() : void
     {
         CRUD::addField([
-            'name' => 'reference_date',
-            'label' => 'Fecha del documento original',
-            'type' => 'date',
-            'tab' => 'Referencia',
-            'fake' => true,
-            'wrapper' => [
-                'class' => 'form-group col-md-3',
+            'name' => 'references_json',
+            'type' => 'quotation.repeatable',
+            'tab' => 'Referencias',
+            'label' => '',
+            'new_item_label' => 'Añadir referencia',
+            'default' => '{}',
+            'fields' => [
+                [
+                    'name' => 'reference_date',
+                    'label' => 'Fecha del documento original',
+                    'type' => 'date',
+                    'wrapper' => [
+                        'class' => 'form-group col-md-3',
+                    ],
+                    'attributes' => [
+                        //'readonly' => true,
+                    ],
+                ],
+                [
+                    'name' => 'reference_folio',
+                    'label' => 'Número de folio',
+                    'wrapper' => [
+                        'class' => 'form-group col-md-4',
+                    ],
+                    'attributes' => [
+                        //'readonly' => true,
+                    ],
+                ],
+                [
+                    'type' => 'select2_from_array',
+                    'options' => InvoiceType::all()->pluck('name','id'),
+                    'attribute' => 'name',
+                    'name' => 'reference_type_document',
+                    'label' => 'Tipo de documento',
+                    'wrapper' => [
+                        'class' => 'form-group col-md-3',
+                    ],
+                ],
+                [
+                    'type' => 'select2_from_array',
+                    'options' => [
+                        1 => 'Anula documento de referencia',
+                        2 => 'Corrige texto documento de referencia',
+                        3 => 'Corrige montos',
+                    ],
+                    'allows_null' => true,
+                    'wrapper' => [
+                        'class' => 'form-group col-md-3',
+                    ],
+                    'name' => 'reference_code',
+                    'label' => 'Código de referencia',
+                ],
+                [
+                    'name' => 'reference_reason',
+                    'type' => 'textarea',
+                    'label' => 'Razón',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-12',
+                    ],
+                    'attributes' => [
+                        'maxlength' => 30,
+                    ],
+                ],
             ],
-            'attributes' => [
-                'readonly' => true,
-            ],
-            'store_in' => 'json_value',
-        ]);
-
-        CRUD::addField([
-            'name' => 'reference_folio',
-            'tab' => 'Referencia',
-            'fake' => true,
-            'wrapper' => [
-                'class' => 'form-group col-md-4',
-            ],
-            'attributes' => [
-                'readonly' => true,
-            ],
-            'store_in' => 'json_value',
-        ]);
-
-        CRUD::addField([
-            'type' => 'select2_from_array',
-            'options' => InvoiceType::all()->pluck('name','id'),
-            'attribute' => 'name',
-            'name' => 'reference_type_document',
-            'label' => 'Tipo de documento',
-            'tab' => 'Referencia',
-            'fake' => true,
-            'store_in' => 'json_value',
-            'wrapper' => [
-                'class' => 'form-group col-md-3',
-            ],
-        ]);
-
-        CRUD::addField([
-            'type' => 'select2_from_array',
-            'options' => [
-                1 => 'Anula documento de referencia',
-                2 => 'Corrige texto documento de referencia',
-                3 => 'Corrige montos',
-            ],
-            'tab' => 'Referencia',
-            'wrapper' => [
-                'class' => 'form-group col-md-3',
-            ],
-            'fake' => true,
-            'store_in' => 'json_value',
-            'name' => 'reference_code',
-        ]);
-
-        CRUD::addField([
-            'name' => 'reference_reason',
-            'type' => 'textarea',
-            'label' => 'Descripción',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-md-12'
-            ],
-            'tab' => 'Referencia',
-            'fake' => true,
-            'store_in' => 'json_value'
         ]);
 
     }

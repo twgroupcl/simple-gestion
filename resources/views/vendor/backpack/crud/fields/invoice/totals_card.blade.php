@@ -141,7 +141,10 @@
             }
         }
 
-        function calculateGeneralTax(itemPrice, itemQty, itemDiscount) {
+        function calculateGeneralTax(itemPrice, itemQty, itemDiscount, itemIsExent) {
+            if (itemIsExent == 1) {
+                    return 0;
+            }
             let itemSubtotal = (itemQty * itemPrice) - itemDiscount
             switch (invoiceType) {
                 case '33':
@@ -159,7 +162,15 @@
 
         function isExent()
         {
+            //return invoiceType !== '33' && invoiceType !== '39';
             return invoiceType !== '33' && invoiceType !== '39';
+        }
+        function setAllToExent()
+        {
+            let itemsIndExeField = $(document).find('.is_exent')
+            itemsIndExeField.each(function(elem, field) {
+                $(field).val(1).trigger('change.select2')
+            })
         }
     
         function calculateAndSetTaxItem(item, itemPrice, itemQty, itemDiscount) {
@@ -169,8 +180,9 @@
             let taxIdField = item.find('.tax_id_field')
             let taxPercentField = item.find('.tax_percent_item')
             let taxTotalField = item.find('.tax_total_item')
+            let itemIndExe = item.find('.is_exent').val()
 
-            if  (taxIdField.val() == 0 || isExent()) { 
+            if  (taxIdField.val() == 0 || taxType == 'E' || itemIndExe == 1) { 
                 taxPercentField.val(0)
                 taxAmountField.val(0)
                 taxTotalField.val(0)
@@ -261,11 +273,15 @@
                 let discountGlobal = calculateItemDiscount($(this)).globalDiscount
                 let itemQty = Number($(this).find('.qty').val())
                 let subTotal = $(this).find('.subtotal')
+                let itemIndExe = $(this).find('.is_exent').val()
 
-
-                let taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
-                let taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal)
-                
+                let taxAmount;
+                let taxAmountGeneral;
+                taxAmount = calculateAndSetTaxItem($(this), price, itemQty, discountItem + discountGlobal)
+                taxAmountGeneral = calculateGeneralTax(price, itemQty, discountItem + discountGlobal, itemIndExe)
+                if(itemIndExe != 1) {
+                    totalDiscountGlobal += discountGlobal
+                }                
                 let subTotalValue = (price * itemQty) 
                 let totalValue = getRounded(( (price * itemQty) - discountItem))
                 
@@ -274,7 +290,6 @@
                 subTotalGeneral += subTotalValue
                 acumTotalValue += totalValue
                 totalDiscountItems+= discountItem
-                totalDiscountGlobal += discountGlobal
                 totalVaxItem += taxAmount
                 totalVaxGeneral += taxAmountGeneral
             })
@@ -450,10 +465,21 @@
         *
         ***********************************************/
         $(document).on('click', '.add-repeatable-element-button', function () {
+            if (invoiceType == 34 || invoiceType == 41)
+                setAllToExent();
             checkTypeTax();
         })
 
         $(document).on('change', 'select[name="invoice_type_id"]', function () {
+            invoiceType = getCodeDTE($('select[name="invoice_type_id"]').val());
+            if (invoiceType == 34 || invoiceType == 41)
+                setAllToExent();
+            calculateTotals();
+            checkGiroField();
+            checkTypeTax()
+        });
+
+        $(document).on('change', '.is_exent', function () {
             calculateTotals();
             checkGiroField();
             checkTypeTax()

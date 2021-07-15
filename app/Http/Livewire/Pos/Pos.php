@@ -516,8 +516,9 @@ class Pos extends Component
         try {
 
             $invoiceType = InvoiceType::where('code', $typeDocument)->first();
+            $itemsExempt = $typeDocument == 34 || $typeDocument == 41;
 
-            $order_items = $order->order_items()->get()->map(function ($item) {
+            $order_items = $order->order_items()->get()->map(function ($item) use($itemsExempt) {
 
                 // Since the items in the POS are assumed with IVA, we must subtract it
                 // and make the total calculations again to save it in the invoice table
@@ -530,6 +531,7 @@ class Pos extends Component
                 $item->sub_total = currencyFormat($item->sub_total - $subtotal_iva, 'CLP', false);
                 $item->total = currencyFormat($total, 'CLP', false);
                 $item->discount = 0;
+                $item->ind_exe = $itemsExempt ? 1 : 0;
                 $item->discount_type = 'amount';
                 $item->is_custom = "0";
                 $item->additional_tax_id = 0;

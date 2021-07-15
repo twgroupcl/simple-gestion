@@ -13,6 +13,7 @@ class InvoiceRequest extends FormRequest
 {
     private $prepareData = [
         'items_data',
+        'references_json',
     ];
 
     /**
@@ -63,10 +64,16 @@ class InvoiceRequest extends FormRequest
             'items_data_validation.*.qty' => 'required',
             'items_data_validation.*.price' => ['required', new NumericCommaRule()],
             'items_data_validation.*.total' => 'required',
+            'references_json_validation.*.reference_date' => 'required|date',
+            'references_json_validation.*.reference_folio' => 'required|integer',
+            'references_json_validation.*.reference_type_document' => 'required|exists:invoice_types,id',
 
             'items_data' => function($attribute, $value, $fail) use ($invoiceType) {
                 $items = json_decode($value, true);
                 if ( !count($items) ) return $fail('Debes añadir por lo menos un producto / servicio.');
+                if (!isset($invoiceType)) {
+                    return $fail('Revise el tipo de documento');
+                }
 
                 if ($invoiceType->code != 61) {
                     foreach($items as $item) {
@@ -113,6 +120,10 @@ class InvoiceRequest extends FormRequest
             'items_data_validation.*.qty' => 'cantidad del producto / servicio',
             'items_data_validation.*.price' => 'precio del producto / servicio',
             'items_data_validation.*.total' => 'total',
+            //references
+            'references_json_validation.*.reference_date' => 'Fecha de referencia',
+            'references_json_validation.*.reference_folio' => 'Folio de referencia',
+            'references_json_validation.*.reference_type_document' => 'Tipo de documento de referencia',
         ];
     }
 

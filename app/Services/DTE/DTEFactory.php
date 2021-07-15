@@ -8,6 +8,7 @@ use App\Services\DTE\Types\{
     ExemptElectronicInvoice,
     ElectronicTicket,
     CreditNote,
+    DebitNote,
     ExemptElectronicTicket
 };
 
@@ -27,9 +28,15 @@ class DTEFactory
                 break;
             case 41:
                 return new ExemptElectronicTicket($invoice);
+                break;
             case 61;
                 return new CreditNote($invoice);
                 break;
+            case 56;
+                return new DebitNote($invoice);
+                break;
+            default:
+                throw new \Exception("No se puede crear el tipo de documento porque no está disponible.");
         }
     }
 }

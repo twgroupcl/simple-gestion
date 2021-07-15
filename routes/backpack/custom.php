@@ -83,9 +83,15 @@ Route::group([
     Route::get('invoice/{invoice}/to-manage', 'ManageInvoiceCrudController@index');
     Route::get('invoice/{invoice}/get-pdf', 'ManageInvoiceCrudController@getPDF')->name('invoice.get-pdf');
     Route::get('invoice/{invoice}/issue-credit-note', 'ManageInvoiceCrudController@issueCreditNote');
+    Route::get('invoice/{invoice}/issue-debit-note', 'ManageInvoiceCrudController@issueDebitNote');
     Route::get('invoice-type/{invoiceType}/get-code', 'InvoiceTypeCrudController@getCode');
     Route::crud('payments', 'PaymentsCrudController');
     Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
+    //DTE Interchages
+    Route::get('dte/interchanges', 'Dte\InterchangeController@index');
+    Route::get('dte/interchanges/load-data', 'Dte\InterchangeController@loadData')->name('dte.interchanges.load-data');
+    Route::post('dte/interchanges/send', 'Dte\InterchangeController@send')->name('dte.interchanges.send');
+    Route::get('dte/interchanges/{code}/view', 'Dte\InterchangeController@view');
 
     // API routes
     // dashboard
@@ -94,6 +100,7 @@ Route::group([
     Route::post('api/quotation/generalStatus', 'QuotationCrudController@generalStatus');
     Route::post('api/product/top_table_dashboard', 'ProductCrudController@getTopTableDashboard');
     Route::post('api/customer/top_table_dashboard', 'CustomerCrudController@getTopTableDashboard');
+    Route::get('api/customer/get-data/{id}', 'CustomerCrudController@getData');
     Route::get('charts/top-customers-in-period', 'Charts\TopCustomersInPeriodChartController@response')->name('charts.top-customers-in-period.index');
     ///
     Route::get('api/productclass/get', 'ProductClassCrudController@searchProductClasses');
@@ -139,6 +146,9 @@ Route::group([
     Route::crud('accountingaccount', 'AccountingAccountCrudController');
     Route::crud('transactiondetail', 'TransactionDetailCrudController');
     Route::crud('accountingaccounttype', 'AccountingAccountTypeCrudController');
+    
+    Route::get('exports/buysell-books', 'Report\DownloadBuyingSellingBooks@index')->name('exports.buysell_books');
+    Route::post('exports/csv-book', 'Report\DownloadBuyingSellingBooks@csvBook');
 
     // Price List
     Route::crud('pricelist', 'PriceListCrudController');

@@ -91,6 +91,7 @@ class Invoice extends Model
         'way_to_payment',
         'dte_status',
         'impact_inventory',
+        'references_json',
     ];
     public function getToStringAttribute()
     {
@@ -105,6 +106,7 @@ class Invoice extends Model
     protected $casts = [
         'items_data' => 'array',
         'json_value' => 'array',
+        'references_json' => 'array',
         'dte_status' => 'array',
        // 'address_data' => 'array',
     ];
@@ -285,6 +287,10 @@ class Invoice extends Model
     public function getDescriptionForSelectAttribute()
     {
         $string = '';
+
+        if (isset($this->folio)) {
+            $string .= 'F' . $this->folio . ' - ';
+        }
 
         if (isset($this->title)) {
             $string = $this->title . ' - ';

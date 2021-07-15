@@ -72,6 +72,87 @@ class DTEService
         
     }
 
+     /**
+     * view intermcabio 
+     *
+     * @param string $rut 
+     * @param int $code 
+     */
+    public function getIntercambio(string $rut, int $code)
+    {
+        $method = 'post';
+        //retry 10 times send sii. with 0 send "automatically"
+        $url = $this->url . '/dte/dte_intercambios/ver/' . rutWithoutDV($rut) . '/' . $code;
+
+        //$data = [
+            //'estado' => $status
+        //];
+
+        $headers = $this->headers;
+
+        return self::exec($url, [], $headers, $method);
+    }
+
+
+    /**
+     * get intermcabio 
+     *
+     * @param string $rut 
+     * @param int $status 1 pending, 2 processed
+     */
+    public function getIntercambios(string $rut, int $status = 1)
+    {
+        $method = 'post';
+        //retry 10 times send sii. with 0 send "automatically"
+        $url = $this->url . '/dte/dte_intercambios/buscar/' . rutWithoutDV($rut);
+
+        $data = [
+            'estado' => $status
+        ];
+
+        $headers = $this->headers;
+
+        return self::exec($url, $data, $headers, $method);
+    }
+
+    public function sendIntercambios(string $rut, array $body)
+    {
+        $method = 'post';
+        //retry 10 times send sii. with 0 send "automatically"
+        $url = $this->url . '/dte/dte_intercambios/responder/' . rutWithoutDV($rut);
+
+        $data = $body; 
+
+        $headers = $this->headers;
+
+        return self::exec($url, $data, $headers, $method);
+    }
+
+    /**
+     * get documents intercambios 
+     *
+     * @param string $rut 
+     * @param int $status 1 pending, 2 processed
+     */
+    public function getDTEIntercambios(string $rut, int $status = 1, string $initEmitDate = null, string $endEmitDate = null)
+    {
+        $method = 'post';
+        //retry 10 times send sii. with 0 send "automatically"
+        $url = $this->url . '/dte/dte_intercambios/listardocumentos/' . rutWithoutDV($rut);
+
+        $data['estado']= $status;
+        if (isset($initEmitDate)) {
+            $data['fecha_emision_desde']= $initEmitDate;
+        }
+        if (isset($endEmitDate)) {
+            $data['fecha_emision_hasta']= $endEmitDate;
+        }
+
+        $headers = $this->headers;
+
+        return self::exec($url, $data, $headers, $method);
+    }
+
     /**
      * Generate REAL DTE with temporal document
      *
@@ -103,6 +184,29 @@ class DTEService
         ];
 
         $headers = $this->headers;
+
+        return self::exec($url, $data, $headers, $method);
+    }
+
+    public function downloadBook(string $period, int $type, string $rut)
+    {
+        $method = 'POST';
+        $rut = rutWithoutDV($rut);
+
+        //retry 10 times send SII. With 0 send "automatically"
+        if ($type == 0) {
+            $url = $this->url . '/dte/dte_ventas/csv/' . $rut;
+        } else if ($type == 1) {
+            $url = $this->url . '/dte/dte_compras/csv/' . $rut;
+        }
+
+        $data = [
+            'periodo' => $period 
+        ];
+
+        $headers = $this->headers;
+        $headers['Content-Type'] = 'text/csv';
+        $headers['Accept'] = 'text/csv';
 
         return self::exec($url, $data, $headers, $method);
     }
