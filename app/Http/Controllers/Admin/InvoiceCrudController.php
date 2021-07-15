@@ -412,6 +412,13 @@ class InvoiceCrudController extends CrudController
             ]
         ]);
 
+        // get business activity
+        CRUD::addField([
+            'name' => 'customer_change_script',
+            'type' => 'invoice.customer_change_script',
+            'tab' => 'General',
+        ]);
+
         CRUD::addField([
             'label' => 'Identificador de documento',
             'name' => 'dte_code',
