@@ -87,6 +87,11 @@ Route::group([
     Route::get('invoice-type/{invoiceType}/get-code', 'InvoiceTypeCrudController@getCode');
     Route::crud('payments', 'PaymentsCrudController');
     Route::get('get-data-invoice', 'InvoiceCrudController@getDataInvoice');
+    //DTE Interchages
+    Route::get('dte/interchanges', 'Dte\InterchangeController@index');
+    Route::get('dte/interchanges/load-data', 'Dte\InterchangeController@loadData')->name('dte.interchanges.load-data');
+    Route::post('dte/interchanges/send', 'Dte\InterchangeController@send')->name('dte.interchanges.send');
+    Route::get('dte/interchanges/{code}/view', 'Dte\InterchangeController@view');
 
     // API routes
     // dashboard
