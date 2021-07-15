@@ -140,6 +140,9 @@ Route::group([
     Route::crud('accountingaccount', 'AccountingAccountCrudController');
     Route::crud('transactiondetail', 'TransactionDetailCrudController');
     Route::crud('accountingaccounttype', 'AccountingAccountTypeCrudController');
+    
+    Route::get('exports/buysell-books', 'Report\DownloadBuyingSellingBooks@index')->name('exports.buysell_books');
+    Route::post('exports/csv-book', 'Report\DownloadBuyingSellingBooks@csvBook');
 
     // Price List
     Route::crud('pricelist', 'PriceListCrudController');
